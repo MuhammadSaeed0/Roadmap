@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { ApiError } from '../../core/api-error';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { TranslatePipe } from '../../core/i18n/pipes';
 import { DayOfWeek, SKILLS, SkillArea } from '../../core/models';
+import { SupabaseService } from '../../core/supabase.service';
 import { ThemeChoice, ThemeService, ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../../shared/ui.components';
@@ -76,6 +78,11 @@ import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../
         }
       </section>
 
+      <section class="card" aria-labelledby="ac-h">
+        <h2 id="ac-h" class="card-title">{{ 'auth.signedInAs' | t: { email: supabase.user()?.email ?? '' } }}</h2>
+        <button type="button" class="btn" (click)="signOut()">{{ 'auth.signOut' | t }}</button>
+      </section>
+
       <section class="card" aria-labelledby="ab-h">
         <h2 id="ab-h" class="card-title"><app-icon name="database" /> {{ 'settings.about' | t }}</h2>
         <p>{{ 'settings.aboutText' | t }}</p>
@@ -103,7 +110,19 @@ export default class SettingsPage {
     allowSkippingPrerequisites: [false],
   });
 
+  protected readonly supabase = inject(SupabaseService);
+  private readonly router = inject(Router);
+
   constructor() { void this.load(); }
+
+  protected async signOut(): Promise<void> {
+    try {
+      await this.supabase.signOut();
+      await this.router.navigateByUrl('/sign-in');
+    } catch (e) {
+      this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
+    }
+  }
 
   protected async load(): Promise<void> {
     this.loading.set(true);

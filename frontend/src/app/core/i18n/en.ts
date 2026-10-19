@@ -31,10 +31,17 @@ export const en = {
       concurrency_conflict: 'Someone else changed this record. Reload and try again.', request_failed: 'The request failed.',
       required: 'This field is required.', notFound: 'The linked item doesn’t exist.', futureDate: 'The date can’t be in the future.',
       unknown: 'Unexpected error.',
+      unauthenticated: 'Sign in to continue.', forbidden: 'You are not allowed to do that. Sign in and try again.',
+      not_available: 'This feature needs the backend and is not available on the hosted site.', conflict: 'That item already exists.',
     },
   },
   apiBanner: {
-    title: 'The API is offline', body: 'Start the backend with “dotnet run” in backend/DevPath.Api, then try again.', retry: 'Check again',
+    title: 'Cannot reach the database', body: 'Check your connection and the Supabase URL and key in the environment files, then try again.', retry: 'Check again',
+  },
+  auth: {
+    title: 'Sign in to DevPath', body: 'Enter your email and we will send you a link. No password needed.', email: 'Email address',
+    send: 'Send sign-in link', sent: 'Check your inbox for the sign-in link.', failed: 'We could not send the link. Check the address and try again.',
+    signOut: 'Sign out', signedInAs: 'Signed in as {email}',
   },
   validation: {
     required: 'This field is required.', maxLength: 'Use at most {max} characters.', min: 'The minimum is {min}.',

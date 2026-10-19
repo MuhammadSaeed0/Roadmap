@@ -1,8 +1,7 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/auth.guard';
 
-// Every feature page is lazy-loaded, so the initial bundle stays small.
-// `titleKey` is the translation key shown in the top bar breadcrumb.
-export const routes: Routes = [
+const appRoutes: Routes = [
   { path: '', loadComponent: () => import('./features/dashboard/dashboard.page'), data: { titleKey: 'nav.dashboard' } },
   { path: 'roadmap', loadComponent: () => import('./features/roadmap/roadmap.page'), data: { titleKey: 'nav.roadmap' } },
   { path: 'library', loadComponent: () => import('./features/library/library.page'), data: { titleKey: 'nav.library' } },
@@ -19,4 +18,12 @@ export const routes: Routes = [
   { path: 'settings', loadComponent: () => import('./features/settings/settings.page'), data: { titleKey: 'nav.settings' } },
   { path: 'search', loadComponent: () => import('./features/search/search.page'), data: { titleKey: 'nav.search' } },
   { path: '**', loadComponent: () => import('./features/not-found.page'), data: { titleKey: 'notFound.title' } },
+];
+
+// Every page needs a signed-in user, except the sign-in page itself.
+// Every feature page is lazy-loaded, so the initial bundle stays small.
+// `titleKey` is the translation key shown in the top bar breadcrumb.
+export const routes: Routes = [
+  { path: 'sign-in', loadComponent: () => import('./features/sign-in/sign-in.page'), data: { titleKey: 'auth.title' } },
+  ...appRoutes.map((route) => ({ ...route, canActivate: [authGuard] })),
 ];
