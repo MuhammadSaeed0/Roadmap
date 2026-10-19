@@ -1,0 +1,81 @@
+### DevPath API — example requests
+### Open in VS Code with the "REST Client" extension and click "Send Request".
+@api = http://localhost:5080/api
+
+### Health (also checks the database connection)
+GET {{api}}/health
+
+### Dashboard: overall progress, recommendation, skills, projects, activity
+GET {{api}}/dashboard
+
+### Whole roadmap with your progress
+GET {{api}}/roadmap
+
+### Paged, filtered topic list
+GET {{api}}/topics?skill=EfCore&status=NotStarted&page=1&pageSize=5
+
+### One topic with prerequisites, resources, exercises, interview questions...
+GET {{api}}/topics/1
+
+### Update your progress on a topic (status + prior knowledge + confidence 0-5)
+PUT {{api}}/topics/1/progress
+Content-Type: application/json
+
+{ "status": "Completed", "knowledge": "Unassessed", "confidence": 4 }
+
+### Validation error example → 400 ValidationProblemDetails
+PUT {{api}}/topics/1/progress
+Content-Type: application/json
+
+{ "status": "Completed", "knowledge": "Unassessed", "confidence": 9 }
+
+### "What should I study next?" for 45 minutes
+GET {{api}}/recommendations?minutes=45&take=3
+
+### A 60-minute study plan
+GET {{api}}/study-plan?minutes=60
+
+### Log a study session
+POST {{api}}/study-sessions
+Content-Type: application/json
+
+{ "topicId": 1, "plannedMinutes": 30, "actualMinutes": 25, "sessionDate": "2026-10-19", "note": "Practised dotnet CLI" }
+
+### Projects and one project with milestones, tasks and change requests
+GET {{api}}/projects
+###
+GET {{api}}/projects/2
+
+### Update a project task (Blocked requires a reason)
+PUT {{api}}/project-tasks/1/progress
+Content-Type: application/json
+
+{ "status": "InProgress" }
+
+### Practice: the solution is only revealed after an attempt (409 otherwise)
+POST {{api}}/practice/1/solution
+
+### Notes CRUD
+POST {{api}}/notes
+Content-Type: application/json
+
+{ "title": "EF Core tip", "content": "Use AsNoTracking for read-only queries.", "topicId": 1 }
+
+###
+GET {{api}}/notes?q=AsNoTracking
+
+### Spaced review queue
+GET {{api}}/reviews
+
+### Progress analytics, weekly review, career readiness
+GET {{api}}/progress
+###
+GET {{api}}/progress/weekly
+###
+GET {{api}}/career-readiness
+
+### Global search (English or Arabic)
+GET {{api}}/search?q=linq
+
+### OpenAPI document (Development only)
+GET http://localhost:5080/openapi/v1.json

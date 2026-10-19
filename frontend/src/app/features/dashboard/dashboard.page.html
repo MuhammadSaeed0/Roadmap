@@ -1,0 +1,207 @@
+@if (data.initialLoading()) {
+  <div class="grid grid-dashboard">
+    <section class="card span-8"><app-skeleton [rows]="5" [height]="22" /></section>
+    <section class="card span-4"><app-skeleton [rows]="4" /></section>
+    <section class="card span-6"><app-skeleton [rows]="4" /></section>
+    <section class="card span-6"><app-skeleton [rows]="4" /></section>
+  </div>
+} @else if (data.error()) {
+  <app-error-state [error]="data.error()" (retry)="data.reload()" />
+} @else if (data.value(); as d) {
+  <div class="grid grid-dashboard">
+
+    <!-- A. Welcome + B. overall progress -->
+    <section class="card hero span-8" aria-labelledby="page-title">
+      <div class="hero-text">
+        <p class="eyebrow">{{ greetingKey() | t }} 👋</p>
+        <h1 id="page-title" tabindex="-1">{{ 'app.fullName' | t }}</h1>
+        <p class="hero-journey">{{ 'dashboard.journey' | t }}</p>
+        <p class="hero-percent">{{ 'dashboard.completed' | t: { pct: (d.overall.percent | fmtNum: 1) } }}</p>
+        <p class="muted small">{{ 'dashboard.weightedNote' | t }}</p>
+      </div>
+      <app-progress-ring [value]="d.overall.percent" [size]="148" [stroke]="12" [label]="'dashboard.overall' | t" />
+      <dl class="stat-row">
+        <div><dt>{{ 'dashboard.completedTopics' | t }}</dt><dd>{{ d.overall.doneTopics }}</dd></div>
+        <div><dt>{{ 'dashboard.remainingTopics' | t }}</dt><dd>{{ d.overall.remainingTopics }}</dd></div>
+        <div><dt>{{ 'dashboard.remainingTime' | t }}</dt><dd>{{ d.overall.remainingMinutes | duration }}</dd></div>
+        <div>
+          <dt>{{ 'dashboard.currentPhase' | t }}</dt>
+          <dd class="dd-text">
+            @if (d.overall.currentPhase; as phase) {
+              <a routerLink="/roadmap" [fragment]="'phase-' + phase.id">{{ phase | loc: 'title' }}</a>
+            } @else { {{ 'dashboard.noPhase' | t }} }
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- Today -->
+    <section class="card span-4 today-card" aria-labelledby="today-h">
+      <h2 id="today-h" class="card-title"><app-icon name="flame" /> {{ 'common.today' | t }}</h2>
+      <p class="streak">{{ d.streakDays > 0 ? ('dashboard.streak' | t: { n: d.streakDays }) : ('dashboard.noStreak' | t) }}</p>
+      <p class="small">{{ 'dashboard.todayGoal' | t: { done: d.minutesToday, goal: d.dailyGoalMinutes } }}</p>
+      <app-progress-bar [value]="todayPercent()" tone="success" [label]="'dashboard.todayGoal' | t: { done: d.minutesToday, goal: d.dailyGoalMinutes }" />
+      <ul class="mini-list" role="list">
+        <li><app-icon name="calendar" [size]="16" /> {{ 'dashboard.weekMinutes' | t: { n: d.minutesThisWeek } }}</li>
+        <li>
+          <app-icon name="repeat" [size]="16" />
+          <a routerLink="/progress" [queryParams]="{ tab: 'review' }">
+            {{ d.reviewsDue > 0 ? ('dashboard.reviewsDue' | t: { n: d.reviewsDue }) : ('dashboard.noReviews' | t) }}
+          </a>
+        </li>
+      </ul>
+      <button type="button" class="btn btn-secondary btn-block" (click)="logSession()">
+        <app-icon name="clock" [size]="16" /> {{ 'quickAdd.session' | t }}
+      </button>
+    </section>
+
+    <!-- C. Continue learning -->
+    <section class="card span-6 accent-card" aria-labelledby="continue-h">
+      <h2 id="continue-h" class="card-title"><app-icon name="sparkle" /> {{ 'dashboard.continueLearning' | t }}</h2>
+      @if (d.recommendation; as rec) {
+        <div class="rec">
+          <div class="chips">
+            <span class="chip">{{ 'skills.' + rec.topic.skill | t }}</span>
+            <span class="chip" [attr.data-priority]="rec.topic.priority">{{ 'priority.' + rec.topic.priority | t }}</span>
+            <span class="chip chip-ghost"><app-icon name="clock" [size]="13" /> {{ rec.topic.estimatedMinutes | duration }}</span>
+          </div>
+          <h3 class="rec-title"><a [routerLink]="['/topics', rec.topic.id]">{{ rec.topic | loc: 'title' }}</a></h3>
+          <p class="muted">{{ rec.topic | loc: 'summary' }}</p>
+          <p class="rec-why-title">{{ 'dashboard.whyThis' | t }}</p>
+          <ul class="reasons" role="list">
+            @for (r of rec.reasons.slice(0, 4); track r.code) {
+              <li><app-icon name="check" [size]="14" /> {{ i18n.reason('reasons', r.code, r.params) }}</li>
+            }
+          </ul>
+          <a class="btn btn-primary" [routerLink]="['/topics', rec.topic.id]">
+            <app-icon name="play" [size]="15" /> {{ 'dashboard.startLearning' | t }}
+          </a>
+        </div>
+      } @else {
+        <app-empty-state icon="award" [title]="'dashboard.allDone' | t" />
+      }
+    </section>
+
+    <!-- D. Today's plan -->
+    <section class="card span-6" aria-labelledby="plan-h">
+      <div class="card-head">
+        <h2 id="plan-h" class="card-title"><app-icon name="calendar" /> {{ 'dashboard.todayPlan' | t }}</h2>
+        <div class="segmented" role="radiogroup" [attr.aria-label]="'dashboard.planIntro' | t">
+          @for (m of planOptions; track m) {
+            <button type="button" role="radio" [attr.aria-checked]="planMinutes() === m" [class.active]="planMinutes() === m" (click)="choosePlan(m)">
+              {{ 'common.minutes' | t: { n: m } }}
+            </button>
+          }
+        </div>
+      </div>
+      @if (plan.initialLoading() || plan.loading()) {
+        <app-skeleton [rows]="3" [height]="40" />
+      } @else if (plan.value(); as p) {
+        @if (p.items.length === 0) {
+          <p class="muted">{{ 'dashboard.planEmpty' | t }}</p>
+        } @else {
+          <ol class="plan" role="list">
+            @for (item of p.items; track $index) {
+              @let target = planLink(item);
+              <li class="plan-item">
+                <span class="plan-time">{{ 'common.minutes' | t: { n: item.minutes } }}</span>
+                <span class="plan-icon"><app-icon [name]="planIcon(item)" [size]="16" /></span>
+                <span class="plan-text">
+                  <span class="plan-kind">{{ 'plan.' + item.kind | t }}</span>
+                  <span class="plan-title">{{ planTitle(item) }}</span>
+                </span>
+                <a class="btn btn-ghost btn-sm" [routerLink]="target.link" [fragment]="target.fragment" [queryParams]="target.query">
+                  {{ 'plan.go' | t }} <app-icon name="chevron-right" [size]="14" />
+                </a>
+              </li>
+            }
+          </ol>
+        }
+      }
+    </section>
+
+    <!-- F. Skills overview -->
+    <section class="card span-6" aria-labelledby="skills-h">
+      <div class="card-head">
+        <h2 id="skills-h" class="card-title"><app-icon name="layers" /> {{ 'dashboard.skills' | t }}</h2>
+        <a routerLink="/progress" class="link-sm">{{ 'common.viewAll' | t }}</a>
+      </div>
+      <p class="muted small">{{ 'dashboard.skillsHint' | t }}</p>
+      <ul class="skill-list" role="list">
+        @for (s of d.skills; track s.skill) {
+          <li>
+            <div class="skill-row">
+              <span class="skill-name" [attr.data-skill]="s.skill">{{ 'skills.' + s.skill | t }}</span>
+              <span class="skill-meta">{{ s.done }}/{{ s.total }} · {{ s.percent | fmtNum }}%</span>
+            </div>
+            <app-progress-bar [value]="s.percent" [small]="true" [label]="'skills.' + s.skill | t" />
+          </li>
+        }
+      </ul>
+    </section>
+
+    <!-- E. Projects -->
+    <section class="card span-6" aria-labelledby="projects-h">
+      <div class="card-head">
+        <h2 id="projects-h" class="card-title"><app-icon name="folder" /> {{ 'dashboard.projects' | t }}</h2>
+        <a routerLink="/projects" class="link-sm">{{ 'common.viewAll' | t }}</a>
+      </div>
+      <ul class="project-mini" role="list">
+        @for (p of d.projects; track p.id) {
+          <li>
+            <a [routerLink]="['/projects', p.id]" class="project-mini-link">
+              <span class="project-num">{{ p.order }}</span>
+              <span class="project-mini-text">
+                <span class="project-mini-title">{{ p | loc: 'title' }}</span>
+                <span class="muted small" dir="ltr">{{ p.techStack }}</span>
+              </span>
+              <span class="badge" [attr.data-status]="p.status">{{ 'projectStatus.' + p.status | t }}</span>
+            </a>
+            <app-progress-bar [value]="p.percent" [small]="true" [tone]="p.status === 'completed' ? 'success' : 'accent'" [label]="p | loc: 'title'" />
+          </li>
+        }
+      </ul>
+    </section>
+
+    <!-- G. Recent activity -->
+    <section class="card span-7" aria-labelledby="activity-h">
+      <h2 id="activity-h" class="card-title"><app-icon name="clock" /> {{ 'dashboard.recentActivity' | t }}</h2>
+      @if (d.recentActivity.length === 0) {
+        <p class="muted">{{ 'dashboard.noActivity' | t }}</p>
+      } @else {
+        <ul class="activity" role="list">
+          @for (a of d.recentActivity; track $index) {
+            <li>
+              <span class="activity-icon" [attr.data-kind]="a.kind"><app-icon [name]="activityIcon(a.kind)" [size]="15" /></span>
+              <span class="activity-text">
+                <span class="muted small">{{ 'activity.' + a.kind | t: { minutes: a.minutes } }}</span>
+                @if (activityLink(a); as link) {
+                  <a [routerLink]="link" [queryParams]="activityQuery(a)">{{ a | loc: 'title' }}</a>
+                } @else { <span>{{ a | loc: 'title' }}</span> }
+              </span>
+              <time class="muted small" [attr.datetime]="a.at">{{ i18n.formatRelative(a.at) }}</time>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+
+    <!-- H. Quick actions -->
+    <section class="card span-5" aria-labelledby="actions-h">
+      <h2 id="actions-h" class="card-title"><app-icon name="target" /> {{ 'dashboard.quickActions' | t }}</h2>
+      <div class="quick-grid">
+        @if (d.recommendation; as rec) {
+          <a class="quick-action" [routerLink]="['/topics', rec.topic.id]"><app-icon name="play" /> {{ 'dashboard.continueLearning' | t }}</a>
+        } @else {
+          <a class="quick-action" routerLink="/roadmap"><app-icon name="map" /> {{ 'nav.roadmap' | t }}</a>
+        }
+        @if (activeProject(); as p) {
+          <a class="quick-action" [routerLink]="['/projects', p.id]"><app-icon name="folder" /> {{ 'dashboard.resumeProject' | t }}</a>
+        }
+        <a class="quick-action" routerLink="/practice"><app-icon name="code" /> {{ 'dashboard.startPractice' | t }}</a>
+        <a class="quick-action" routerLink="/progress" [queryParams]="{ tab: 'review' }"><app-icon name="repeat" /> {{ 'dashboard.reviewWeak' | t }}</a>
+        <a class="quick-action" routerLink="/career"><app-icon name="briefcase" /> {{ 'dashboard.viewReadiness' | t }}</a>
+      </div>
+    </section>
+  </div>
+}

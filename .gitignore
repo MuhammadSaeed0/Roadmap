@@ -1,0 +1,23 @@
+# .NET build output
+bin/
+obj/
+TestResults/
+*.user
+*.suo
+.vs/
+
+# Angular / Node
+node_modules/
+dist/
+.angular/
+coverage/
+
+# Local-only configuration (never commit secrets)
+appsettings.*.local.json
+*.env
+!.env.example
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log

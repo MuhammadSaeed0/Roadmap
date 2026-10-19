@@ -1,0 +1,252 @@
+@if (data.initialLoading() || (data.loading() && !data.value())) {
+  <div class="card"><app-skeleton [rows]="2" [height]="30" /></div>
+  <div class="card"><app-skeleton [rows]="8" /></div>
+} @else if (data.error()) {
+  <app-error-state [error]="data.error()" (retry)="data.reload()" />
+} @else if (data.value(); as t) {
+  <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | t">
+    <a routerLink="/roadmap">{{ 'topic.breadcrumb' | t }}</a>
+    <app-icon name="chevron-right" [size]="13" />
+    <a routerLink="/roadmap" [fragment]="'phase-' + t.phase.id">{{ t.phase | loc: 'title' }}</a>
+  </nav>
+
+  <header class="topic-header">
+    <div>
+      <div class="chips">
+        <span class="chip">{{ 'skills.' + t.skill | t }}</span>
+        <span class="chip" [attr.data-priority]="t.priority">{{ 'priority.' + t.priority | t }}</span>
+        <span class="chip chip-ghost"><app-icon name="clock" [size]="13" /> {{ t.estimatedMinutes | duration }}</span>
+        <span class="badge" [attr.data-status]="t.status"><app-icon [name]="statusIcon(t.status)" [size]="13" /> {{ 'topicStatus.' + t.status | t }}</span>
+      </div>
+      <h1 id="page-title" tabindex="-1">{{ t | loc: 'title' }}</h1>
+      @if (t.completedAt) { <p class="muted small">{{ 'topic.completedOn' | t: { date: (t.completedAt | fmtDate) } }}</p> }
+    </div>
+  </header>
+
+  @if (!t.prerequisitesMet && t.status === 'NotStarted') {
+    <p class="callout callout-warn"><app-icon name="lock" /> {{ 'topic.prereqWarning' | t }}</p>
+  }
+
+  <div class="detail-layout">
+    <article class="detail-main">
+      @for (s of sections(); track s.id) {
+        <section class="card content-section" [id]="s.id">
+          <h2 class="section-title"><app-icon [name]="s.icon" /> {{ s.title | t }}</h2>
+          <p class="prose">{{ s.text }}</p>
+        </section>
+      }
+
+      @if (t.codeSample) {
+        <section class="card content-section" id="code">
+          <h2 class="section-title"><app-icon name="code" /> {{ 'topic.codeExample' | t }}</h2>
+          <app-code-block [code]="t.codeSample" [language]="t.codeLanguage" />
+        </section>
+      }
+
+      <div class="two-col">
+        <section class="card content-section task-card" id="practice">
+          <h2 class="section-title"><app-icon name="edit" /> {{ 'topic.practiceTask' | t }}</h2>
+          <p class="prose">{{ t | loc: 'practiceTask' }}</p>
+        </section>
+        <section class="card content-section task-card challenge" id="challenge">
+          <h2 class="section-title"><app-icon name="flame" /> {{ 'topic.challenge' | t }}</h2>
+          <p class="prose">{{ t | loc: 'challenge' }}</p>
+        </section>
+      </div>
+
+      <section class="card content-section" id="resources">
+        <h2 class="section-title"><app-icon name="link" /> {{ 'topic.resources' | t }}</h2>
+        @if (t.resources.length === 0) {
+          <p class="muted">{{ 'topic.noResources' | t }}</p>
+        } @else {
+          <ul class="resource-list" role="list">
+            @for (r of t.resources; track r.id) {
+              <li>
+                <a [href]="r.url" target="_blank" rel="noopener noreferrer" class="resource-link">
+                  <span class="resource-title">{{ r | loc: 'title' }}</span>
+                  <app-icon name="external" [size]="14" />
+                </a>
+                <span class="muted small">{{ r.sourceName }} · {{ 'resourceType.' + r.type | t }} · {{ 'difficulty.' + r.difficulty | t }}</span>
+                @if (r.verificationStatus === 'Verified') {
+                  <span class="verified small"><app-icon name="check" [size]="12" /> {{ 'resources.lastVerified' | t: { date: (r.lastVerifiedAt | fmtDate) } }}</span>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      <section class="card content-section" id="notes">
+        <div class="card-head">
+          <h2 class="section-title"><app-icon name="note" /> {{ 'topic.notes' | t }}</h2>
+          @if (!showNoteForm()) {
+            <button type="button" class="btn btn-secondary btn-sm" (click)="showNoteForm.set(true)"><app-icon name="plus" [size]="14" /> {{ 'topic.addNote' | t }}</button>
+          }
+        </div>
+        @if (showNoteForm()) {
+          <form class="stack" [formGroup]="noteForm" (ngSubmit)="addNote()" novalidate>
+            <div class="field">
+              <label for="tn-title">{{ 'notes.titleLabel' | t }}</label>
+              <input id="tn-title" class="input" formControlName="title" maxlength="200"
+                     [attr.aria-invalid]="noteForm.controls.title.touched && noteForm.controls.title.invalid" />
+              @if (noteForm.controls.title.touched && noteForm.controls.title.hasError('required')) {
+                <small class="field-error">{{ 'validation.required' | t }}</small>
+              }
+            </div>
+            <div class="field">
+              <label for="tn-content">{{ 'notes.contentLabel' | t }}</label>
+              <textarea id="tn-content" class="input" rows="4" formControlName="content"></textarea>
+            </div>
+            <div class="row-end">
+              <button type="button" class="btn btn-ghost" (click)="showNoteForm.set(false)">{{ 'common.cancel' | t }}</button>
+              <button type="submit" class="btn btn-primary">{{ 'common.save' | t }}</button>
+            </div>
+          </form>
+        }
+        @if (notes.value(); as list) {
+          @if (list.length === 0 && !showNoteForm()) { <p class="muted">{{ 'topic.noNotes' | t }}</p> }
+          <ul class="note-mini" role="list">
+            @for (n of list; track n.id) {
+              <li><a [routerLink]="['/notes']" [queryParams]="{ id: n.id }"><strong>{{ n.title }}</strong></a>
+                <p class="muted small">{{ noteExcerpt(n) }}</p></li>
+            }
+          </ul>
+        }
+      </section>
+    </article>
+
+    <aside class="detail-side">
+      <section class="card progress-panel" aria-labelledby="yp-h">
+        <h2 id="yp-h" class="card-title">{{ 'topic.yourProgress' | t }}</h2>
+        <div class="btn-stack">
+          @if (t.status === 'Completed' || t.status === 'Skipped') {
+            <button type="button" class="btn btn-secondary btn-block" [disabled]="saving()" (click)="update({ status: 'InProgress' })">
+              <app-icon name="refresh" [size]="15" /> {{ 'topic.reopen' | t }}
+            </button>
+          } @else {
+            <button type="button" class="btn btn-primary btn-block" [disabled]="saving()" (click)="update({ status: 'Completed' })">
+              <app-icon name="check" [size]="15" /> {{ 'topic.markComplete' | t }}
+            </button>
+            @if (t.status === 'NotStarted') {
+              <button type="button" class="btn btn-secondary btn-block" [disabled]="saving()" (click)="update({ status: 'InProgress' })">
+                <app-icon name="play" [size]="15" /> {{ 'topic.markInProgress' | t }}
+              </button>
+            }
+            <button type="button" class="btn btn-ghost btn-block" [disabled]="saving()" (click)="markKnown()">
+              <app-icon name="skip" [size]="15" /> {{ 'topic.markKnown' | t }}
+            </button>
+          }
+        </div>
+
+        <div class="field">
+          <label for="t-knowledge">{{ 'topic.knowledge' | t }}</label>
+          <select id="t-knowledge" class="input" [disabled]="saving()" (change)="update({ knowledge: $any($event.target).value })">
+            @for (k of knowledgeLevels; track k) { <option [value]="k" [selected]="t.knowledge === k">{{ 'knowledge.' + k | t }}</option> }
+          </select>
+        </div>
+
+        <div class="field">
+          <span class="label">{{ 'confidence.label' | t }}</span>
+          <app-confidence-picker [value]="t.confidence" [disabled]="saving()" (changed)="update({ confidence: $event })" />
+        </div>
+
+        <div class="side-block">
+          <p class="label"><app-icon name="repeat" [size]="15" /> {{ 'topic.review' | t }}</p>
+          @if (t.review; as r) {
+            <p class="small">{{ r.isDue ? ('topic.reviewDue' | t) : ('topic.nextReview' | t: { date: (r.nextReviewOn | fmtDate) }) }}</p>
+            <div class="row-gap">
+              <a routerLink="/progress" [queryParams]="{ tab: 'review' }" class="btn btn-secondary btn-sm">{{ 'review.reviewNow' | t }}</a>
+              <button type="button" class="btn btn-ghost btn-sm" (click)="toggleReview(t)">{{ 'topic.removeFromReview' | t }}</button>
+            </div>
+          } @else {
+            <button type="button" class="btn btn-secondary btn-sm" (click)="toggleReview(t)">{{ 'topic.addToReview' | t }}</button>
+          }
+        </div>
+
+        <div class="side-block">
+          <div class="card-head">
+            <p class="label"><app-icon name="clock" [size]="15" /> {{ 'topic.sessions' | t }}</p>
+            <button type="button" class="btn btn-ghost btn-xs" (click)="logSession()"><app-icon name="plus" [size]="13" /> {{ 'topic.logSession' | t }}</button>
+          </div>
+          <p class="small muted">{{ 'topic.totalStudied' | t: { minutes: t.totalMinutesStudied } }}</p>
+          @if (t.sessions.length === 0) {
+            <p class="small muted">{{ 'topic.noSessions' | t }}</p>
+          } @else {
+            <ul class="session-list" role="list">
+              @for (s of t.sessions; track s.id) {
+                <li>
+                  <span>{{ s.sessionDate | fmtDate: 'short' }}</span>
+                  <span>{{ s.actualMinutes | duration }}@if (s.plannedMinutes) { <span class="muted"> / {{ s.plannedMinutes | duration }}</span> }</span>
+                  <button type="button" class="icon-btn" (click)="deleteSession(s.id)" [attr.aria-label]="'common.delete' | t"><app-icon name="trash" [size]="14" /></button>
+                  @if (s.note) { <span class="muted small session-note">{{ s.note }}</span> }
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="rel-h">
+        <h2 id="rel-h" class="card-title">{{ 'topic.prerequisites' | t }}</h2>
+        @if (t.prerequisites.length === 0) { <p class="muted small">{{ 'topic.none' | t }}</p> }
+        <ul class="link-list" role="list">
+          @for (p of t.prerequisites; track p.id) {
+            <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]">{{ p | loc: 'title' }}</a></li>
+          }
+        </ul>
+        @if (t.unlocks.length > 0) {
+          <h3 class="sub-title">{{ 'topic.unlocks' | t }}</h3>
+          <ul class="link-list" role="list">
+            @for (p of t.unlocks; track p.id) {
+              <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]">{{ p | loc: 'title' }}</a></li>
+            }
+          </ul>
+        }
+        @if (t.samePhase.length > 0) {
+          <h3 class="sub-title">{{ 'topic.samePhase' | t }}</h3>
+          <ul class="link-list" role="list">
+            @for (p of t.samePhase; track p.id) {
+              <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]">{{ p | loc: 'title' }}</a></li>
+            }
+          </ul>
+        }
+      </section>
+
+      @if (t.projects.length > 0) {
+        <section class="card" aria-labelledby="proj-h">
+          <h2 id="proj-h" class="card-title">{{ 'topic.relatedProjects' | t }}</h2>
+          <ul class="link-list" role="list">
+            @for (p of t.projects; track p.projectId) {
+              <li><app-icon name="folder" [size]="15" /><a [routerLink]="['/projects', p.projectId]">{{ p | loc: 'title' }}</a>
+                <span class="muted small">{{ 'topic.tasks' | t: { n: p.taskCount } }}</span></li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (t.exercises.length > 0) {
+        <section class="card" aria-labelledby="ex-h">
+          <h2 id="ex-h" class="card-title">{{ 'topic.exercises' | t }}</h2>
+          <ul class="link-list" role="list">
+            @for (e of t.exercises; track e.id) {
+              <li><app-icon [name]="statusIcon(e.status)" [size]="15" class="status-icon" [attr.data-status]="e.status" />
+                <a [routerLink]="['/practice', e.id]">{{ e | loc: 'title' }}</a>
+                <span class="muted small">{{ 'exerciseType.' + e.type | t }}</span></li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (t.interviewQuestions.length > 0) {
+        <section class="card" aria-labelledby="iq-h">
+          <h2 id="iq-h" class="card-title">{{ 'topic.interviewQs' | t }}</h2>
+          <ul class="link-list" role="list">
+            @for (q of t.interviewQuestions; track q.id) {
+              <li><app-icon name="chat" [size]="15" /><a routerLink="/interviews" [queryParams]="{ question: q.id }">{{ q | loc: 'question' }}</a></li>
+            }
+          </ul>
+        </section>
+      }
+    </aside>
+  </div>
+}

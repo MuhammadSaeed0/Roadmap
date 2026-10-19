@@ -1,0 +1,116 @@
+<app-page-header [title]="'interviews.title' | t" [subtitle]="'interviews.subtitle' | t">
+  <div class="segmented" role="radiogroup" [attr.aria-label]="'common.mode' | t">
+    <button type="button" role="radio" [attr.aria-checked]="mode() === 'study'" [class.active]="mode() === 'study'" (click)="setMode('study')">
+      <app-icon name="book" [size]="15" /> {{ 'interviews.studyMode' | t }}
+    </button>
+    <button type="button" role="radio" [attr.aria-checked]="mode() === 'practice'" [class.active]="mode() === 'practice'" (click)="setMode('practice')">
+      <app-icon name="play" [size]="15" /> {{ 'interviews.practiceMode' | t }}
+    </button>
+  </div>
+</app-page-header>
+
+@if (data.value(); as list) {
+  <div class="category-chips" role="group" [attr.aria-label]="'interviews.allCategories' | t">
+    <button type="button" class="chip chip-btn" [class.active]="category() === ''" (click)="setCategory('')">{{ 'interviews.allCategories' | t }}</button>
+    @for (c of list.categories; track c.category) {
+      <button type="button" class="chip chip-btn" [class.active]="category() === c.category" (click)="setCategory(c.category)">
+        {{ 'interviewCategory.' + c.category | t }} <span class="chip-count">{{ c.confident }}/{{ c.total }}</span>
+      </button>
+    }
+  </div>
+}
+<div class="toolbar">
+  <label class="sr-only" for="iq-rating">{{ 'interviews.anyRating' | t }}</label>
+  <select id="iq-rating" class="input input-sm" (change)="setRating($any($event.target).value)">
+    <option value="">{{ 'interviews.anyRating' | t }}</option>
+    <option value="unrated">{{ 'rating.unrated' | t }}</option>
+    @for (r of ratings; track r) { <option [value]="r">{{ 'rating.' + r | t }}</option> }
+  </select>
+</div>
+
+@if (data.initialLoading()) {
+  <div class="card"><app-skeleton [rows]="6" [height]="26" /></div>
+} @else if (data.error()) {
+  <app-error-state [error]="data.error()" (retry)="data.reload()" />
+} @else if (questions().length === 0) {
+  <app-empty-state icon="chat" [title]="'interviews.empty' | t" />
+} @else if (mode() === 'study') {
+  <ul class="qa-list" role="list">
+    @for (q of questions(); track q.id) {
+      <li class="card qa" [id]="'q-' + q.id">
+        <button type="button" class="qa-head" (click)="toggle(q.id)" [attr.aria-expanded]="isRevealed(q.id)" [attr.aria-controls]="'qa-' + q.id">
+          <span class="qa-q">{{ q | loc: 'question' }}</span>
+          <span class="chips">
+            <span class="chip chip-sm">{{ 'interviewCategory.' + q.category | t }}</span>
+            <span class="chip chip-sm chip-ghost">{{ 'difficulty.' + q.difficulty | t }}</span>
+            @if (q.rating) { <span class="chip chip-sm" [attr.data-rating]="q.rating">{{ 'rating.' + q.rating | t }}</span> }
+          </span>
+          <app-icon name="chevron-down" class="chev" [class.open]="isRevealed(q.id)" />
+        </button>
+        @if (isRevealed(q.id)) {
+          <div class="qa-body" [id]="'qa-' + q.id">
+            <p class="prose">{{ q | loc: 'answer' }}</p>
+            @if (q.exampleCode) { <p class="label">{{ 'interviews.example' | t }}</p><app-code-block [code]="q.exampleCode" /> }
+            @if (q.followUpEn) { <p class="callout"><app-icon name="chat" [size]="15" /> <strong>{{ 'interviews.followUp' | t }}:</strong> {{ q | loc: 'followUp' }}</p> }
+            <div class="qa-foot">
+              <span class="small muted">{{ 'interviews.relatedTopic' | t }}: <a [routerLink]="['/topics', q.topicId]">{{ q | loc: 'topicTitle' }}</a></span>
+              <div class="rate-group" role="group" [attr.aria-label]="'interviews.rateYourself' | t">
+                @for (r of ratings; track r) {
+                  <button type="button" class="btn btn-xs rate-btn" [attr.data-rating]="r" [class.active]="q.rating === r" [disabled]="busy()" (click)="rate(q, r, false)">
+                    {{ 'rating.' + r | t }}
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </li>
+    }
+  </ul>
+} @else {
+  <!-- Practice mode: one question at a time -->
+  @if (finished()) {
+    <app-empty-state icon="award" [title]="'interviews.finished' | t">
+      <button type="button" class="btn btn-primary" (click)="restart()"><app-icon name="refresh" [size]="15" /> {{ 'interviews.restart' | t }}</button>
+    </app-empty-state>
+  } @else if (current(); as q) {
+    <section class="card practice-card" aria-live="polite">
+      <div class="card-head">
+        <span class="small muted">{{ 'interviews.questionOf' | t: { n: index() + 1, total: questions().length } }}</span>
+        <span class="chips">
+          <span class="chip chip-sm">{{ 'interviewCategory.' + q.category | t }}</span>
+          <span class="chip chip-sm chip-ghost">{{ 'difficulty.' + q.difficulty | t }}</span>
+          @if (q.timesPracticed > 0) { <span class="chip chip-sm chip-ghost">{{ 'interviews.practiced' | t: { n: q.timesPracticed } }}</span> }
+        </span>
+      </div>
+      <app-progress-bar [value]="(index() / questions().length) * 100" [small]="true" [label]="'interviews.questionOf' | t: { n: index() + 1, total: questions().length }" />
+      <h2 class="practice-q">{{ q | loc: 'question' }}</h2>
+
+      @if (!isRevealed(q.id)) {
+        <p class="muted"><app-icon name="bulb" [size]="15" /> {{ 'interviews.thinkFirst' | t }}</p>
+        <div class="row-gap">
+          <button type="button" class="btn btn-primary" (click)="reveal(q.id)"><app-icon name="eye" [size]="15" /> {{ 'interviews.showAnswer' | t }}</button>
+          <button type="button" class="btn btn-ghost" (click)="index.set(index() + 1)">{{ 'common.next' | t }} <app-icon name="chevron-right" [size]="14" /></button>
+        </div>
+      } @else {
+        <div class="answer-box">
+          <p class="prose">{{ q | loc: 'answer' }}</p>
+          @if (q.exampleCode) { <app-code-block [code]="q.exampleCode" /> }
+          @if (q.followUpEn) { <p class="callout"><strong>{{ 'interviews.followUp' | t }}:</strong> {{ q | loc: 'followUp' }}</p> }
+        </div>
+        <p class="label">{{ 'interviews.rateYourself' | t }}</p>
+        <div class="rate-group big" role="group" [attr.aria-label]="'interviews.rateYourself' | t">
+          @for (r of ratings; track r) {
+            <button type="button" class="btn rate-btn" [attr.data-rating]="r" [disabled]="busy()" (click)="rate(q, r, true)">{{ 'rating.' + r | t }}</button>
+          }
+        </div>
+      }
+      <div class="row-gap practice-nav">
+        <button type="button" class="btn btn-ghost btn-sm" [disabled]="index() === 0" (click)="index.set(index() - 1)">
+          <app-icon name="chevron-left" [size]="14" /> {{ 'common.previous' | t }}
+        </button>
+        <a class="small" [routerLink]="['/topics', q.topicId]">{{ q | loc: 'topicTitle' }}</a>
+      </div>
+    </section>
+  }
+}

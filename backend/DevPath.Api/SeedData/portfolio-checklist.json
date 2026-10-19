@@ -1,0 +1,11 @@
+[
+  { "key": "readme", "titleEn": "Clear README", "titleAr": "ملف README واضح", "descriptionEn": "A one-line summary of what the project does and who it is for.", "descriptionAr": "ملخص من سطر واحد لما يفعله المشروع ولمن هو." },
+  { "key": "setup", "titleEn": "Setup instructions", "titleAr": "تعليمات الإعداد", "descriptionEn": "Prerequisites and commands that work on a clean machine.", "descriptionAr": "المتطلبات والأوامر التي تعمل على جهاز نظيف." },
+  { "key": "screenshots", "titleEn": "Screenshots", "titleAr": "لقطات الشاشة", "descriptionEn": "Two or three screenshots (or a short GIF) of the main screens.", "descriptionAr": "لقطتان أو ثلاث (أو صورة متحركة قصيرة) للشاشات الرئيسية." },
+  { "key": "features", "titleEn": "Feature list", "titleAr": "قائمة الميزات", "descriptionEn": "What a user can do, in plain language.", "descriptionAr": "ما يستطيع المستخدم فعله بلغة بسيطة." },
+  { "key": "architecture", "titleEn": "Architecture summary", "titleAr": "ملخص البنية", "descriptionEn": "Layers, main folders and key design decisions.", "descriptionAr": "الطبقات والمجلدات الرئيسية وقرارات التصميم الأساسية." },
+  { "key": "database", "titleEn": "Database setup", "titleAr": "إعداد قاعدة البيانات", "descriptionEn": "How to create the database, apply migrations and seed data.", "descriptionAr": "كيفية إنشاء قاعدة البيانات وتطبيق الـ Migrations وتعبئة البيانات." },
+  { "key": "api-examples", "titleEn": "Example API requests", "titleAr": "أمثلة طلبات API", "descriptionEn": "An .http file or curl examples for the main endpoints.", "descriptionAr": "ملف .http أو أمثلة curl لنقاط النهاية الرئيسية." },
+  { "key": "testing", "titleEn": "Testing instructions", "titleAr": "تعليمات الاختبار", "descriptionEn": "How to run the tests — and they pass.", "descriptionAr": "كيفية تشغيل الاختبارات، وأنها ناجحة." },
+  { "key": "limitations", "titleEn": "Known limitations", "titleAr": "القيود المعروفة", "descriptionEn": "An honest list of what's missing or simplified.", "descriptionAr": "قائمة صادقة بما هو ناقص أو مبسّط." }
+]

@@ -1,0 +1,14 @@
+<<<<<<< HEAD (your branch)
+builder.Services.AddScoped<ProductService>();
+=======
+builder.Services.AddScoped<CategoryService>();
+>>>>>>> main
+
+Correct resolution — keep BOTH registrations:
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<CategoryService>();
+
+Then:
+  dotnet build && dotnet test
+  git add Program.cs
+  git commit            # (or: git rebase --continue)

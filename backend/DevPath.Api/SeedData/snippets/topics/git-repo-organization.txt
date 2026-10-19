@@ -1,0 +1,13 @@
+sales-order-management/
+├── backend/
+│   ├── SalesOrders.Api/
+│   └── SalesOrders.Api.Tests/
+├── frontend/
+├── docs/
+│   └── screenshots/
+├── .editorconfig
+├── .gitignore          ← bin/ obj/ node_modules/ dist/ .vs/ *.user appsettings.*.local.json
+└── README.md
+
+Never commit: passwords, connection strings with credentials, API keys, build output.
+Secrets → dotnet user-secrets (local) or environment variables (servers).

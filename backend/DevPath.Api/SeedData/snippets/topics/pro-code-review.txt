@@ -1,0 +1,12 @@
+Review order
+1. Correctness   does it do what the ticket says? edge cases? error paths?
+2. Security      authorization on the server? input validated? secrets?
+3. Data          migrations safe? transactions? concurrency?
+4. Performance   N+1? unbounded lists? missing index?
+5. Readability   names, small methods, no dead code
+6. Tests         is the important behaviour tested?
+
+Comment style
+❌ "This is wrong."
+✅ "This loads every order before filtering — could we move the Where before
+    ToListAsync so SQL Server does the filtering? (Orders has ~2M rows in prod.)"

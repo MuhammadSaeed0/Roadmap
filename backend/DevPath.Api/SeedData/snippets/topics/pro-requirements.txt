@@ -1,0 +1,12 @@
+Change request: "Prevent invalid order transitions"
+
+Clarifying questions
+1. Which transitions are valid? (draw the state diagram and confirm it)
+2. Can an administrator override a rule? With an audit log?
+3. What should the user see when a transition is refused?
+4. What happens to orders already in an "impossible" state?
+5. Does cancelling a shipped order restore stock?
+
+Acceptance criteria (agreed in writing)
+- Given an order in Shipped, when someone sets it to Draft, the API returns 409 with code "invalid_transition"
+- The UI only offers valid next statuses

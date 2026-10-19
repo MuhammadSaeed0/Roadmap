@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "API: debug (C#)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "api: build",
+      "program": "${workspaceFolder}/backend/DevPath.Api/bin/Debug/net10.0/DevPath.Api.dll",
+      "cwd": "${workspaceFolder}/backend/DevPath.Api",
+      "env": { "ASPNETCORE_ENVIRONMENT": "Development", "ASPNETCORE_URLS": "http://localhost:5080" },
+      "stopAtEntry": false
+    },
+    {
+      "name": "Web: debug in Edge (Angular)",
+      "type": "msedge",
+      "request": "launch",
+      "preLaunchTask": "web: serve",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}/frontend"
+    }
+  ],
+  "compounds": [
+    { "name": "Full stack: API + Web", "configurations": ["API: debug (C#)", "Web: debug in Edge (Angular)"], "stopAll": true }
+  ]
+}

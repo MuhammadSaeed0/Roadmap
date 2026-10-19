@@ -1,0 +1,17 @@
+### List (safe, cacheable)
+GET http://localhost:5080/api/products?page=1&pageSize=20
+
+### Create → 201 Created + Location header
+POST http://localhost:5080/api/products
+Content-Type: application/json
+
+{ "name": "Mouse", "price": 25.5, "categoryId": 3 }
+
+### Replace (idempotent)
+PUT http://localhost:5080/api/products/42
+Content-Type: application/json
+
+{ "name": "Wireless Mouse", "price": 29.9, "categoryId": 3 }
+
+### Delete → 204 No Content
+DELETE http://localhost:5080/api/products/42

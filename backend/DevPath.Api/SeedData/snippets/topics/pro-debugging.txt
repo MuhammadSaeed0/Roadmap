@@ -1,0 +1,10 @@
+1. Reproduce   exact steps, data and environment — make it fail on purpose
+2. Observe     read the WHOLE exception + stack trace, logs, Network tab, SQL log
+3. Hypothesise "I think X happens because Y"
+4. Test it     breakpoint / log / smaller input — change ONE thing at a time
+5. Fix         the cause, not the symptom
+6. Protect     add a test that failed before the fix
+7. Explain     a one-line note in the PR: cause → fix
+
+Useful tools: conditional breakpoints, Debug Console, browser DevTools,
+EF Core SQL logging, `git bisect` to find the commit that introduced a bug.

@@ -1,0 +1,17 @@
+Project 4 test plan (example)
+
+Unit tests (fast, many)              ~70%
+  - Order total = Σ quantity × unit price (never trust the browser's total)
+  - Status transitions: every allowed and forbidden pair
+  - Stock rules: can't go negative, exact boundary (stock == quantity)
+
+API tests (WebApplicationFactory)    ~25%
+  - POST /api/orders → 201 + Location; invalid product → 400; out of stock → 409
+  - GET /api/orders/{id} → 404 for unknown / other user's order
+  - Validation errors contain the right field names
+
+Integration / end-to-end              ~5%
+  - Place order → stock reduced in the database (one transaction)
+  - Two concurrent updates → second gets 409
+
+Rule: every bug fix starts with a failing test that reproduces it.

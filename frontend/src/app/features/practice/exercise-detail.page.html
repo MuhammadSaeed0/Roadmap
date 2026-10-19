@@ -1,0 +1,97 @@
+@if (data.initialLoading() || (data.loading() && !data.value())) {
+  <div class="card"><app-skeleton [rows]="8" /></div>
+} @else if (data.error()) {
+  <app-error-state [error]="data.error()" (retry)="data.reload()" />
+} @else if (data.value(); as d) {
+  <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | t">
+    <a routerLink="/practice">{{ 'practice.title' | t }}</a>
+    <app-icon name="chevron-right" [size]="13" />
+    <a routerLink="/practice" [queryParams]="{ type: d.summary.type }">{{ 'exerciseType.' + d.summary.type | t }}</a>
+  </nav>
+
+  <header class="topic-header">
+    <div>
+      <div class="chips">
+        <span class="type-pill" [attr.data-type]="d.summary.type"><app-icon [name]="typeIcons[d.summary.type]" [size]="14" /> {{ 'exerciseType.' + d.summary.type | t }}</span>
+        <span class="chip">{{ 'difficulty.' + d.summary.difficulty | t }}</span>
+        <span class="chip chip-ghost"><app-icon name="clock" [size]="13" /> {{ d.summary.estimatedMinutes | duration }}</span>
+        <span class="chip" [attr.data-practice]="d.summary.status">{{ 'practiceStatus.' + d.summary.status | t }}</span>
+      </div>
+      <h1 id="page-title" tabindex="-1">{{ d.summary | loc: 'title' }}</h1>
+      <p class="muted small">{{ 'practice.relatedTopic' | t }}: <a [routerLink]="['/topics', d.summary.topicId]">{{ d.summary | loc: 'topicTitle' }}</a></p>
+    </div>
+  </header>
+
+  <ol class="stepper" [attr.aria-label]="'practice.title' | t">
+    @for (s of steps; track s; let i = $index) {
+      <li [class.done]="i < step()" [class.current]="i === step()" [attr.aria-current]="i === step() ? 'step' : null">
+        <span class="step-dot">{{ i + 1 }}</span><span>{{ 'practice.steps.' + s | t }}</span>
+      </li>
+    }
+  </ol>
+
+  <div class="detail-layout">
+    <article class="detail-main">
+      <section class="card content-section">
+        <h2 class="section-title"><app-icon name="info" /> {{ 'practice.problem' | t }}</h2>
+        <p class="prose">{{ d | loc: 'problem' }}</p>
+        @if (d.code) { <app-code-block [code]="d.code" [language]="d.codeLanguage" /> }
+        <h3 class="sub-title">{{ 'practice.expected' | t }}</h3>
+        <p class="prose">{{ d | loc: 'expectedOutcome' }}</p>
+      </section>
+
+      <section class="card content-section">
+        <h2 class="section-title"><app-icon name="edit" /> {{ 'practice.yourAttempt' | t }}</h2>
+        <label for="attempt" class="sr-only">{{ 'practice.yourAttempt' | t }}</label>
+        <textarea id="attempt" class="input mono-ok" rows="8" [formControl]="answer" [placeholder]="'practice.attemptPlaceholder' | t"
+                  [attr.aria-invalid]="answer.touched && answer.invalid"></textarea>
+        @if (answer.touched && answer.hasError('required')) { <small class="field-error">{{ 'validation.required' | t }}</small> }
+        <div class="row-gap">
+          <button type="button" class="btn btn-primary" [disabled]="busy()" (click)="saveAttempt()"><app-icon name="check" [size]="15" /> {{ 'practice.saveAttempt' | t }}</button>
+        </div>
+      </section>
+
+      @if (d.solutionRevealed) {
+        <section class="card content-section solution" aria-live="polite">
+          <h2 class="section-title"><app-icon name="bulb" /> {{ 'practice.solution' | t }}</h2>
+          <p class="prose">{{ d | loc: 'solution' }}</p>
+          @if (d.solutionCode) { <app-code-block [code]="d.solutionCode" [language]="d.codeLanguage" /> }
+        </section>
+      }
+    </article>
+
+    <aside class="detail-side">
+      <section class="card" aria-labelledby="hints-h">
+        <h2 id="hints-h" class="card-title"><app-icon name="bulb" /> {{ 'practice.hints' | t }}</h2>
+        <p class="small muted">{{ 'practice.hintsCount' | t: { n: hints().length, total: d.hintCount } }}</p>
+        <ol class="hint-list" aria-live="polite">
+          @for (h of hints(); track $index) { <li>{{ h }}</li> }
+        </ol>
+        @if (hints().length < d.hintCount) {
+          <button type="button" class="btn btn-secondary btn-block" [disabled]="busy()" (click)="revealHint()">{{ 'practice.revealHint' | t }}</button>
+        }
+      </section>
+
+      <section class="card" aria-labelledby="sol-h">
+        <h2 id="sol-h" class="card-title"><app-icon name="eye" /> {{ 'practice.solution' | t }}</h2>
+        @if (!d.solutionRevealed) {
+          @if (!d.userAnswer) {
+            <p class="small muted"><app-icon name="lock" [size]="13" /> {{ 'practice.solutionLocked' | t }}</p>
+          }
+          <button type="button" class="btn btn-secondary btn-block" [disabled]="busy() || !d.userAnswer" (click)="revealSolution()">{{ 'practice.revealSolution' | t }}</button>
+        } @else {
+          <p class="small muted"><app-icon name="check" [size]="13" /> {{ 'practice.solution' | t }} ✓</p>
+        }
+      </section>
+
+      <section class="card">
+        @if (d.summary.status !== 'Completed') {
+          <button type="button" class="btn btn-primary btn-block" [disabled]="busy()" (click)="complete()"><app-icon name="check-circle" [size]="15" /> {{ 'practice.markCompleted' | t }}</button>
+        } @else {
+          <p class="success-text"><app-icon name="check-circle" /> {{ 'practice.completed' | t }} · {{ d.completedAt | fmtDate }}</p>
+        }
+        <button type="button" class="btn btn-ghost btn-block" [disabled]="busy()" (click)="reset()"><app-icon name="refresh" [size]="15" /> {{ 'practice.resetExercise' | t }}</button>
+      </section>
+    </aside>
+  </div>
+}

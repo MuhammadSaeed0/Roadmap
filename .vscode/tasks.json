@@ -1,0 +1,60 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "api: run",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["run", "--launch-profile", "http"],
+      "options": { "cwd": "${workspaceFolder}/backend/DevPath.Api" },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "dotnet",
+        "pattern": { "regexp": "^(.*)\\((\\d+),(\\d+)\\): (error|warning) (.*)$", "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5 },
+        "background": { "activatesOnStart": true, "beginsPattern": "Building", "endsPattern": "Now listening on" }
+      }
+    },
+    {
+      "label": "api: build",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["build", "${workspaceFolder}/DevPath.slnx"],
+      "problemMatcher": "$msCompile",
+      "group": "build"
+    },
+    {
+      "label": "api: test",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["test", "${workspaceFolder}/DevPath.slnx"],
+      "problemMatcher": "$msCompile",
+      "group": "test"
+    },
+    {
+      "label": "web: serve",
+      "type": "npm",
+      "script": "start",
+      "path": "frontend",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": { "activatesOnStart": true, "beginsPattern": "Building", "endsPattern": "Local:" }
+      }
+    },
+    {
+      "label": "web: test",
+      "type": "npm",
+      "script": "test",
+      "path": "frontend",
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "dev: start everything",
+      "dependsOn": ["api: run", "web: serve"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    }
+  ]
+}

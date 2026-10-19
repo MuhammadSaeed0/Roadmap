@@ -1,0 +1,12 @@
+Orientation recipe for a new codebase (first day)
+
+1. README → how to run it. Run it.
+2. Backend entry: Program.cs → which services, middleware, database?
+3. Frontend entry: app.config.ts, app.routes.ts → which screens exist?
+4. Pick ONE feature. Trace it:
+     button (template) → component method → service → HTTP call
+     → controller action → service → DbContext → SQL table
+5. Set breakpoints along that path and click the button.
+6. Write down: names of the main folders, where business rules live, how errors are handled.
+
+VS Code: F12 Go to Definition · Shift+F12 Find All References · Ctrl+P open file · Ctrl+Shift+F search

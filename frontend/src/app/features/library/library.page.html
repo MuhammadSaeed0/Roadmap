@@ -1,0 +1,89 @@
+<app-page-header [title]="'library.title' | t" [subtitle]="'library.subtitle' | t" />
+
+<section class="card filter-bar" [attr.aria-label]="'common.filters' | t">
+  <div class="field grow">
+    <label for="lib-q" class="sr-only">{{ 'library.searchPlaceholder' | t }}</label>
+    <div class="input-icon">
+      <app-icon name="search" [size]="16" />
+      <input id="lib-q" type="search" class="input" [placeholder]="'library.searchPlaceholder' | t"
+             [value]="filters().q" (input)="onSearch($any($event.target).value)" />
+    </div>
+  </div>
+  <label class="sr-only" for="lib-skill">{{ 'library.allSkills' | t }}</label>
+  <select id="lib-skill" class="input" [value]="filters().skill" (change)="set('skill', $any($event.target).value)">
+    <option value="">{{ 'library.allSkills' | t }}</option>
+    @for (s of skills; track s) { <option [value]="s" [selected]="filters().skill === s">{{ 'skills.' + s | t }}</option> }
+  </select>
+  <label class="sr-only" for="lib-phase">{{ 'library.allPhases' | t }}</label>
+  <select id="lib-phase" class="input" [value]="filters().phaseId" (change)="set('phaseId', $any($event.target).value)">
+    <option value="">{{ 'library.allPhases' | t }}</option>
+    @for (p of phases.value() ?? []; track p.id) { <option [value]="'' + p.id" [selected]="filters().phaseId === '' + p.id">{{ p.order }}. {{ p | loc: 'title' }}</option> }
+  </select>
+  <label class="sr-only" for="lib-status">{{ 'library.allStatuses' | t }}</label>
+  <select id="lib-status" class="input" [value]="filters().status" (change)="set('status', $any($event.target).value)">
+    <option value="">{{ 'library.allStatuses' | t }}</option>
+    @for (s of statuses; track s) { <option [value]="s" [selected]="filters().status === s">{{ 'topicStatus.' + s | t }}</option> }
+  </select>
+  <label class="sr-only" for="lib-priority">{{ 'library.allPriorities' | t }}</label>
+  <select id="lib-priority" class="input" [value]="filters().priority" (change)="set('priority', $any($event.target).value)">
+    <option value="">{{ 'library.allPriorities' | t }}</option>
+    @for (p of priorities; track p) { <option [value]="p" [selected]="filters().priority === p">{{ 'priority.' + p | t }}</option> }
+  </select>
+  <label class="sr-only" for="lib-knowledge">{{ 'library.allKnowledge' | t }}</label>
+  <select id="lib-knowledge" class="input" [value]="filters().knowledge" (change)="set('knowledge', $any($event.target).value)">
+    <option value="">{{ 'library.allKnowledge' | t }}</option>
+    @for (k of knowledgeLevels; track k) { <option [value]="k" [selected]="filters().knowledge === k">{{ 'knowledge.' + k | t }}</option> }
+  </select>
+  @if (hasFilters()) {
+    <button type="button" class="btn btn-ghost btn-sm" (click)="clear()"><app-icon name="x" [size]="14" /> {{ 'common.clear' | t }}</button>
+  }
+</section>
+
+@if (data.initialLoading()) {
+  <div class="card"><app-skeleton [rows]="8" [height]="28" /></div>
+} @else if (data.error()) {
+  <app-error-state [error]="data.error()" (retry)="data.reload()" />
+} @else if (data.value(); as result) {
+  @if (result.items.length === 0) {
+    <app-empty-state icon="search" [title]="'library.empty' | t">
+      <button type="button" class="btn btn-secondary" (click)="clear()">{{ 'common.clear' | t }}</button>
+    </app-empty-state>
+  } @else {
+    <div class="card table-card" [class.is-loading]="data.loading()">
+      <ul class="topic-list" role="list">
+        @for (topic of result.items; track topic.id) {
+          <li class="topic-row" [attr.data-status]="topic.status">
+            <app-icon [name]="statusIcon(topic.status)" class="status-icon" [attr.data-status]="topic.status" />
+            <div class="topic-main">
+              <a class="topic-title" [routerLink]="['/topics', topic.id]">{{ topic | loc: 'title' }}</a>
+              <p class="topic-summary">{{ topic | loc: 'summary' }}</p>
+              <div class="chips">
+                <span class="chip chip-sm">{{ 'skills.' + topic.skill | t }}</span>
+                <span class="chip chip-sm" [attr.data-priority]="topic.priority">{{ 'priority.' + topic.priority | t }}</span>
+                <span class="chip chip-sm chip-ghost"><app-icon name="clock" [size]="12" /> {{ topic.estimatedMinutes | duration }}</span>
+              </div>
+            </div>
+            <span class="badge" [attr.data-status]="topic.status">{{ 'topicStatus.' + topic.status | t }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <nav class="pager" [attr.aria-label]="'common.page' | t: { page: result.page, pages: result.totalPages }">
+      @if (range(); as r) { <span class="muted small">{{ 'common.showing' | t: r }}</span> }
+      <div class="pager-controls">
+        <label class="small muted" for="lib-size">{{ 'common.perPage' | t }}</label>
+        <select id="lib-size" class="input input-sm" [value]="'' + filters().pageSize" (change)="set('pageSize', +$any($event.target).value)">
+          @for (s of pageSizes; track s) { <option [value]="'' + s" [selected]="filters().pageSize === s">{{ s }}</option> }
+        </select>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="result.page <= 1" (click)="set('page', result.page - 1)">
+          <app-icon name="chevron-left" [size]="14" /> {{ 'common.previous' | t }}
+        </button>
+        <span class="small">{{ 'common.page' | t: { page: result.page, pages: result.totalPages } }}</span>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="result.page >= result.totalPages" (click)="set('page', result.page + 1)">
+          {{ 'common.next' | t }} <app-icon name="chevron-right" [size]="14" />
+        </button>
+      </div>
+    </nav>
+  }
+}

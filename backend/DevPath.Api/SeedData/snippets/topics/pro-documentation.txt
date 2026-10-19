@@ -1,0 +1,15 @@
+# ADR 003: Monthly sales report uses a stored procedure
+
+Status: accepted (2026-10-19)
+
+Context
+The report aggregates ~3M order lines. The EF Core version took 9 s and
+loaded too much data into memory.
+
+Decision
+Use dbo.usp_MonthlySales, called with parameters via Database.SqlQuery.
+Order placement and other writes stay in EF Core.
+
+Consequences
++ 300 ms instead of 9 s
+- logic lives in SQL; covered by an integration test against SQL Server

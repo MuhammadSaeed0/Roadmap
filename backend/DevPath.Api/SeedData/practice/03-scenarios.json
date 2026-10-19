@@ -1,0 +1,98 @@
+[
+  {
+    "key": "scn-thousands-of-records", "type": "Scenario", "topic": "ef-query-performance", "difficulty": "Intermediate", "minutes": 25,
+    "titleEn": "An API returns thousands of unnecessary records", "titleAr": "واجهة API تُرجع آلاف السجلات غير الضرورية",
+    "problemEn": "The customers page loads slowly. The Network tab shows GET /api/customers returning 18 MB: every customer with every order and order line. The page displays 20 rows with name, city and order count. What would you do, in what order, and how would you prove it worked?",
+    "problemAr": "تُحمَّل صفحة العملاء ببطء، ويُظهر تبويب Network أن GET /api/customers يُرجع 18 ميجابايت: كل عميل مع كل طلباته وأسطر الطلبات، بينما تعرض الصفحة 20 صفًا بالاسم والمدينة وعدد الطلبات. ماذا ستفعل، وبأي ترتيب، وكيف ستثبت أن الحل نجح؟",
+    "expectedEn": "A plan covering measurement, paging, projection, query count and verification.",
+    "expectedAr": "خطة تغطي القياس، والتقسيم إلى صفحات، والتحويل، وعدد الاستعلامات، والتحقق.",
+    "hintsEn": ["What does the screen actually need?", "Where is the data shaped — in SQL or in C#?", "How will you measure before and after?"],
+    "hintsAr": ["ما الذي تحتاجه الشاشة فعليًا؟", "أين يتشكل شكل البيانات: في SQL أم في C#؟", "كيف ستقيس قبل وبعد؟"],
+    "solutionEn": "1) Measure: response size, duration and SQL statement count. 2) Add paging (page/pageSize with a max). 3) Replace Include(...) with a Select projection to a CustomerListItem(Name, City, OrderCount = c.Orders.Count()). 4) AsNoTracking. 5) Add an index if the sort/filter needs one. 6) Measure again and record the numbers in the PR. Also update the Angular page to request pages.",
+    "solutionAr": "1) قِس حجم الاستجابة ومدتها وعدد جمل SQL. 2) أضف التقسيم إلى صفحات (page/pageSize مع حد أقصى). 3) استبدل Include(...) بتحويل Select إلى CustomerListItem(Name, City, OrderCount = c.Orders.Count()). 4) استخدم AsNoTracking. 5) أضف فهرسًا إذا احتاجه الترتيب أو التصفية. 6) قِس مرة أخرى وسجّل الأرقام في طلب الدمج. وحدّث صفحة Angular لتطلب الصفحات."
+  },
+  {
+    "key": "scn-concurrent-order-update", "type": "Scenario", "topic": "fs-concurrent-updates", "difficulty": "Intermediate", "minutes": 25,
+    "titleEn": "Two users update the same order", "titleAr": "مستخدمان يحدّثان الطلب نفسه",
+    "problemEn": "Sara changes order #42's shipping address. At the same time Omar, who opened the order 10 minutes ago, changes its status and saves. Sara's address change disappears. Explain what happened and design a fix across database, API and UI.",
+    "problemAr": "تغيّر سارة عنوان الشحن للطلب رقم 42، وفي الوقت نفسه يغيّر عمر حالته ويحفظ بعد أن فتحه قبل 10 دقائق، فتختفي تعديلات سارة على العنوان. اشرح ما حدث وصمّم حلًا عبر قاعدة البيانات والـ API والواجهة.",
+    "expectedEn": "An explanation of the lost update and an optimistic concurrency design with a user-friendly conflict message.",
+    "expectedAr": "شرح لمشكلة فقدان التحديث وتصميم للتزامن المتفائل مع رسالة تعارض ودية للمستخدم.",
+    "hintsEn": ["Omar's form sent the whole order back, including the old address.", "How can the API know Omar edited an old version?"],
+    "hintsAr": ["أرسل نموذج عمر الطلب كاملًا، بما في ذلك العنوان القديم.", "كيف يعرف الـ API أن عمر عدّل نسخة قديمة؟"],
+    "solutionEn": "It's a lost update (last write wins). Add a rowversion to Order, include it in the DTO, send it back on save and set it as the OriginalValue. EF adds 'WHERE RowVersion = @original'; a stale save throws DbUpdateConcurrencyException → 409 'concurrency_conflict'. The UI tells Omar the order changed and offers to reload. Also consider sending only changed fields (PATCH) to reduce conflicts.",
+    "solutionAr": "إنها مشكلة فقدان التحديث (آخر كتابة تفوز). أضف rowversion إلى Order، وضمّنه في الـ DTO، وأعده عند الحفظ، واضبطه كـ OriginalValue. سيضيف EF الشرط WHERE RowVersion = @original، والحفظ القديم يرمي DbUpdateConcurrencyException ← 409 بالرمز concurrency_conflict. وتخبر الواجهة عمر بأن الطلب تغيّر وتعرض إعادة التحميل. وفكّر أيضًا في إرسال الحقول المتغيرة فقط (PATCH) لتقليل التعارضات."
+  },
+  {
+    "key": "scn-angular-page-slow", "type": "Scenario", "topic": "ng-templates-binding", "difficulty": "Intermediate", "minutes": 25,
+    "titleEn": "An Angular page becomes slow", "titleAr": "صفحة Angular تصبح بطيئة",
+    "problemEn": "The tasks page was fast with 50 tasks. With 3,000 tasks, typing in the search box lags and the page freezes for a second after each status change. How do you investigate and what are the likely fixes?",
+    "problemAr": "كانت صفحة المهام سريعة مع 50 مهمة، ومع 3000 مهمة أصبحت الكتابة في مربع البحث متأخرة وتتجمد الصفحة ثانية بعد كل تغيير حالة. كيف تحقق، وما الإصلاحات المرجحة؟",
+    "expectedEn": "A DevTools-based investigation and at least three concrete fixes.",
+    "expectedAr": "تحقيق يعتمد على أدوات المطورين وثلاثة إصلاحات محددة على الأقل.",
+    "hintsEn": ["Record a Performance profile while typing.", "How many DOM nodes are rendered? Is every row re-created?", "Are expensive functions called from the template?"],
+    "hintsAr": ["سجّل ملف أداء Performance أثناء الكتابة.", "كم عدد عقد DOM المعروضة؟ وهل يُعاد إنشاء كل صف؟", "هل تُستدعى دوال مكلفة من القالب؟"],
+    "solutionEn": "Profile first. Typical causes: rendering all 3,000 rows (add pagination or virtual scrolling), @for tracking by index or object identity after immutable updates (track task.id), expensive methods called in the template on every change (move to computed()), and filtering on every keystroke (debounce). Re-profile to confirm.",
+    "solutionAr": "حلّل الأداء أولًا. الأسباب المعتادة: عرض 3000 صف كلها (أضف التقسيم إلى صفحات أو التمرير الافتراضي)، وتتبع @for بالفهرس أو بهوية الكائن بعد التحديثات غير القابلة للتغيير (استخدم track task.id)، واستدعاء دوال مكلفة في القالب مع كل تغيير (انقلها إلى computed())، والتصفية مع كل ضغطة مفتاح (استخدم Debounce). ثم أعد التحليل للتأكد."
+  },
+  {
+    "key": "scn-fast-local-slow-prod", "type": "Scenario", "topic": "sql-execution-plans", "difficulty": "Advanced", "minutes": 30,
+    "titleEn": "Fast locally, slow in production", "titleAr": "سريع محليًا وبطيء في الإنتاج",
+    "problemEn": "The product search endpoint takes 40 ms on your machine and 6 seconds in production. Same code, same query. List the possible reasons and how you would confirm each one.",
+    "problemAr": "تستغرق نقطة نهاية البحث عن المنتجات 40 مللي ثانية على جهازك و6 ثوانٍ في الإنتاج، بالكود نفسه والاستعلام نفسه. اذكر الأسباب المحتملة وكيف ستتحقق من كل منها.",
+    "expectedEn": "Data volume, plans, parameter sniffing, missing indexes, blocking, network/payload size — each with a way to check.",
+    "expectedAr": "حجم البيانات، والخطط، وParameter sniffing، والفهارس المفقودة، والحجب، وحجم الشبكة/البيانات، مع طريقة تحقق لكل منها.",
+    "hintsEn": ["How many rows does production have?", "Is the same execution plan used?", "Is the query waiting rather than working?"],
+    "hintsAr": ["كم عدد الصفوف في الإنتاج؟", "هل تُستخدم خطة التنفيذ نفسها؟", "هل الاستعلام ينتظر بدلًا من أن يعمل؟"],
+    "solutionEn": "Check: data volume (5k vs 5M rows) → test with realistic data; the actual plan from Query Store (scan vs seek, missing index); parameter sniffing (a plan compiled for a rare value) → compare plans for different parameters; blocking/waits (sys.dm_exec_requests); stale statistics; and response size/network. Fix the confirmed cause, not all of them blindly.",
+    "solutionAr": "افحص: حجم البيانات (5 آلاف مقابل 5 ملايين صف) واختبر ببيانات واقعية؛ والخطة الفعلية من Query Store (مسح أم Seek، وفهرس مفقود)؛ وParameter sniffing (خطة مترجمة لقيمة نادرة) بمقارنة الخطط لمعاملات مختلفة؛ والحجب والانتظار (sys.dm_exec_requests)؛ والإحصاءات القديمة؛ وحجم الاستجابة والشبكة. أصلح السبب المؤكد لا كل الأسباب عشوائيًا."
+  },
+  {
+    "key": "scn-validation-ui", "type": "Scenario", "topic": "fs-form-validation", "difficulty": "Intermediate", "minutes": 20,
+    "titleEn": "The UI can't display an API validation error", "titleAr": "الواجهة لا تستطيع عرض خطأ تحقق من الـ API",
+    "problemEn": "Users report that 'Save' sometimes does nothing. The API returns 400 { errors: { \"Lines[2].Quantity\": [\"Quantity exceeds stock\"] } } but the form shows no message. What needs to change on each side?",
+    "problemAr": "يبلغ المستخدمون أن زر الحفظ أحيانًا لا يفعل شيئًا. يُرجع الـ API الرمز 400 { errors: { \"Lines[2].Quantity\": [\"Quantity exceeds stock\"] } } لكن النموذج لا يعرض أي رسالة. ما الذي يجب تغييره في كل جهة؟",
+    "expectedEn": "A mapping strategy from API error keys to form controls, plus a fallback message.",
+    "expectedAr": "استراتيجية لتحويل مفاتيح أخطاء الـ API إلى حقول النموذج، مع رسالة احتياطية.",
+    "hintsEn": ["The key uses PascalCase and an index path.", "What should happen to errors that don't match any control?"],
+    "hintsAr": ["يستخدم المفتاح صيغة PascalCase ومسارًا بالفهرس.", "ماذا يجب أن يحدث للأخطاء التي لا تطابق أي حقل؟"],
+    "solutionEn": "Agree on a key format (camelCase JSON paths: lines[2].quantity) or normalise on the client. Map the path to the FormArray control (form.get(['lines', 2, 'quantity'])) and setErrors({ server: message }). Show any unmatched errors in a summary at the top of the form, and never let a failed save look like nothing happened.",
+    "solutionAr": "اتفقوا على صيغة للمفاتيح (مسارات JSON بصيغة camelCase مثل lines[2].quantity) أو وحّدوها في العميل. حوّل المسار إلى حقل FormArray (form.get(['lines', 2, 'quantity'])) واستدعِ setErrors({ server: message }). واعرض الأخطاء غير المطابقة في ملخص أعلى النموذج، ولا تدع حفظًا فاشلًا يبدو وكأن شيئًا لم يحدث."
+  },
+  {
+    "key": "scn-change-breaks-feature", "type": "Scenario", "topic": "test-strategy", "difficulty": "Intermediate", "minutes": 20,
+    "titleEn": "A change breaks an existing feature", "titleAr": "تغيير يكسر ميزة موجودة",
+    "problemEn": "You added discount codes. Two days later, finance reports that invoices for orders without a code now show a total of 0. What do you do right now, and what do you change so this can't happen again?",
+    "problemAr": "أضفت رموز الخصم، وبعد يومين أبلغ قسم المالية أن فواتير الطلبات دون رمز تعرض الآن إجماليًا قدره 0. ماذا تفعل الآن، وماذا تغيّر حتى لا يتكرر ذلك؟",
+    "expectedEn": "Immediate mitigation, root cause, a regression test and process improvements.",
+    "expectedAr": "تخفيف فوري، والسبب الجذري، واختبار انحدار، وتحسينات في العملية.",
+    "hintsEn": ["Can you roll back or hot-fix quickly?", "Write the failing test before fixing.", "Which orders were affected and need correcting?"],
+    "hintsAr": ["هل يمكنك التراجع أو إصدار إصلاح عاجل بسرعة؟", "اكتب الاختبار الفاشل قبل الإصلاح.", "أي الطلبات تأثرت وتحتاج إلى تصحيح؟"],
+    "solutionEn": "Mitigate (roll back or hot-fix), reproduce with a failing test (order without code → total unchanged), fix (null discount treated as 0%), identify and correct affected invoices with a reviewed SQL script, then add tests for the 'no discount' path and a pre-merge test run. Write a short blameless review.",
+    "solutionAr": "خفّف الأثر (تراجع أو إصلاح عاجل)، وأعد إنتاج الخطأ باختبار فاشل (طلب دون رمز ← إجمالي دون تغيير)، وأصلح (اعتبار الخصم الفارغ 0%)، وحدّد الفواتير المتأثرة وصحّحها بسكربت SQL مُراجع، ثم أضف اختبارات لمسار عدم وجود خصم وتشغيلًا للاختبارات قبل الدمج، واكتب مراجعة قصيرة دون لوم."
+  },
+  {
+    "key": "scn-oversell-stock", "type": "Scenario", "topic": "sql-concurrency", "difficulty": "Advanced", "minutes": 25,
+    "titleEn": "The last item was sold twice", "titleAr": "بيعت القطعة الأخيرة مرتين",
+    "problemEn": "During a flash sale, stock for a product went to -3. The code loads the product, checks Stock >= quantity, subtracts and saves. Explain the race and propose two different fixes with their trade-offs.",
+    "problemAr": "أثناء تخفيضات سريعة وصل مخزون منتج إلى -3. يحمّل الكود المنتج، ويتحقق من Stock >= quantity، ثم يطرح ويحفظ. اشرح حالة السباق واقترح إصلاحين مختلفين مع مفاضلاتهما.",
+    "expectedEn": "A clear race-condition timeline and two fixes (atomic conditional UPDATE, optimistic concurrency) plus a database constraint.",
+    "expectedAr": "خط زمني واضح لحالة السباق، وإصلاحان (تحديث شرطي ذري، وتزامن متفائل)، إضافة إلى قيد في قاعدة البيانات.",
+    "hintsEn": ["Two requests read Stock = 1 at the same time.", "Can the check and the update happen in one statement?", "What should the database itself refuse?"],
+    "hintsAr": ["طلبان يقرآن Stock = 1 في الوقت نفسه.", "هل يمكن أن يحدث الفحص والتحديث في جملة واحدة؟", "ما الذي يجب أن ترفضه قاعدة البيانات نفسها؟"],
+    "solutionEn": "Both requests read 1, both pass the check, both subtract. Fix A: UPDATE ... SET Stock = Stock - @q WHERE Id = @id AND Stock >= @q (ExecuteUpdateAsync) and treat 0 rows as 'out of stock' — simple and fast. Fix B: rowversion on Product and retry on DbUpdateConcurrencyException — more code, but works for complex changes. Add CHECK (Stock >= 0) as the last line of defence.",
+    "solutionAr": "يقرأ الطلبان القيمة 1، وينجح كلاهما في الفحص، ويطرح كلاهما. الإصلاح أ: UPDATE ... SET Stock = Stock - @q WHERE Id = @id AND Stock >= @q (عبر ExecuteUpdateAsync) واعتبار 0 صفوف نفادًا للمخزون، وهو بسيط وسريع. الإصلاح ب: rowversion على Product وإعادة المحاولة عند DbUpdateConcurrencyException، وهو كود أكثر لكنه يصلح للتغييرات المعقدة. وأضف CHECK (Stock >= 0) كخط دفاع أخير."
+  },
+  {
+    "key": "scn-pool-exhausted", "type": "Scenario", "topic": "sql-connection-management", "difficulty": "Advanced", "minutes": 20,
+    "titleEn": "Timeout: max pool size was reached", "titleAr": "انتهاء المهلة: تم الوصول إلى الحجم الأقصى للمجمّع",
+    "problemEn": "After the API runs for about an hour, every request fails with 'Timeout expired. The timeout period elapsed prior to obtaining a connection from the pool.' Restarting fixes it temporarily. How do you find the cause?",
+    "problemAr": "بعد تشغيل الـ API لمدة ساعة تقريبًا تفشل كل الطلبات مع الرسالة Timeout expired. The timeout period elapsed prior to obtaining a connection from the pool. وإعادة التشغيل تحل المشكلة مؤقتًا. كيف تجد السبب؟",
+    "expectedEn": "Evidence-based investigation pointing to leaked connections or long-held connections, and the code fix.",
+    "expectedAr": "تحقيق قائم على الأدلة يشير إلى اتصالات مسرّبة أو محتجزة طويلًا، مع إصلاح الكود.",
+    "hintsEn": ["Count sessions per program_name in sys.dm_exec_sessions over time.", "Search the code for 'new SqlConnection' without using.", "Are long transactions or streaming readers holding connections?"],
+    "hintsAr": ["احسب الجلسات لكل program_name في sys.dm_exec_sessions عبر الزمن.", "ابحث في الكود عن new SqlConnection دون using.", "هل تحتجز معاملات طويلة أو قارئات تدفقية الاتصالات؟"],
+    "solutionEn": "Watch sessions grow towards 100 (the default Max Pool Size). The usual cause is a connection or DbContext that's never disposed (e.g. created manually in a background job) or kept open across slow work. Wrap connections in using/await using, use scoped DbContexts, keep transactions short. Raising Max Pool Size only hides the leak.",
+    "solutionAr": "راقب نمو الجلسات نحو 100 (القيمة الافتراضية لـ Max Pool Size). السبب المعتاد اتصال أو DbContext لا يُتخلص منه أبدًا (مثل إنشائه يدويًا في مهمة خلفية) أو يبقى مفتوحًا أثناء عمل بطيء. غلّف الاتصالات بـ using/await using، واستخدم DbContext بنطاق Scoped، واجعل المعاملات قصيرة. ورفع Max Pool Size يخفي التسريب فقط."
+  }
+]

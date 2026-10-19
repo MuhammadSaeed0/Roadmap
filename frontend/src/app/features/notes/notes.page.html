@@ -1,0 +1,115 @@
+<app-page-header [title]="'notes.title' | t" [subtitle]="'notes.subtitle' | t">
+  <button type="button" class="btn btn-primary btn-sm" (click)="createNew()"><app-icon name="plus" [size]="15" /> {{ 'notes.new' | t }}</button>
+</app-page-header>
+
+<div class="notes-layout">
+  <section class="card notes-list" [attr.aria-label]="'notes.title' | t">
+    <div class="input-icon">
+      <app-icon name="search" [size]="16" />
+      <label for="notes-q" class="sr-only">{{ 'notes.searchPlaceholder' | t }}</label>
+      <input id="notes-q" type="search" class="input" [placeholder]="'notes.searchPlaceholder' | t" (input)="onSearch($any($event.target).value)" />
+    </div>
+    @if (topicFilter() || projectFilter()) {
+      <button type="button" class="chip chip-btn active" (click)="clearFilter()">{{ 'common.filters' | t }} <app-icon name="x" [size]="12" /></button>
+    }
+
+    @if (data.initialLoading()) {
+      <app-skeleton [rows]="5" [height]="40" />
+    } @else if (data.error()) {
+      <app-error-state [error]="data.error()" (retry)="data.reload()" />
+    } @else if (data.value(); as notes) {
+      @if (notes.length === 0) {
+        <app-empty-state icon="note" [title]="'notes.empty' | t" [message]="'notes.emptyHint' | t">
+          <button type="button" class="btn btn-primary btn-sm" (click)="createNew()">{{ 'notes.new' | t }}</button>
+        </app-empty-state>
+      } @else {
+        <ul class="note-items" role="listbox" [attr.aria-label]="'notes.title' | t">
+          @for (n of notes; track n.id) {
+            <li role="option" [attr.aria-selected]="selectedId() === n.id">
+              <button type="button" class="note-item" [class.active]="selectedId() === n.id" (click)="open(n)">
+                <span class="note-item-title">{{ n.title }}</span>
+                <span class="note-item-excerpt">{{ excerpt(n) }}</span>
+                <span class="note-item-meta">
+                  @if (n.linkType) { <span class="chip chip-sm">{{ n | loc: 'linkTitle' }}</span> }
+                  <span>{{ n.updatedAt | fmtDate: 'short' }}</span>
+                </span>
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    }
+  </section>
+
+  <section class="card note-editor" aria-labelledby="editor-h">
+    @if (selectedId() === null) {
+      <app-empty-state icon="edit" [title]="'notes.selectNote' | t" />
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="save()" novalidate class="stack">
+        <h2 id="editor-h" class="sr-only">{{ form.controls.title.value || ('notes.new' | t) }}</h2>
+        <div class="field">
+          <label for="note-title">{{ 'notes.titleLabel' | t }}</label>
+          <input id="note-title" class="input input-lg" formControlName="title" maxlength="200"
+                 [attr.aria-invalid]="form.controls.title.touched && form.controls.title.invalid" aria-describedby="note-title-err" />
+          @if (form.controls.title.touched && form.controls.title.hasError('required')) {
+            <small id="note-title-err" class="field-error">{{ 'validation.required' | t }}</small>
+          }
+          @if (form.controls.title.hasError('server')) { <small class="field-error">{{ form.controls.title.getError('server') }}</small> }
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="note-link-kind">{{ 'notes.linkTo' | t }}</label>
+            <select id="note-link-kind" class="input" formControlName="linkKind">
+              <option value="none">{{ 'notes.linkNone' | t }}</option>
+              <option value="topic">{{ 'notes.linkTopic' | t }}</option>
+              <option value="project">{{ 'notes.linkProject' | t }}</option>
+            </select>
+          </div>
+          @if (form.controls.linkKind.value === 'topic') {
+            <div class="field grow">
+              <label for="note-link-topic">{{ 'notes.linkTopic' | t }}</label>
+              <select id="note-link-topic" class="input" formControlName="linkId">
+                <option [ngValue]="0">{{ 'notes.choose' | t }}</option>
+                @for (p of phases(); track p.id) {
+                  <optgroup [label]="p | loc: 'title'">
+                    @for (t of p.topics; track t.id) { <option [ngValue]="t.id">{{ t | loc: 'title' }}</option> }
+                  </optgroup>
+                }
+              </select>
+            </div>
+          } @else if (form.controls.linkKind.value === 'project') {
+            <div class="field grow">
+              <label for="note-link-project">{{ 'notes.linkProject' | t }}</label>
+              <select id="note-link-project" class="input" formControlName="linkId">
+                <option [ngValue]="0">{{ 'notes.choose' | t }}</option>
+                @for (p of projects(); track p.id) { <option [ngValue]="p.id">{{ p | loc: 'title' }}</option> }
+              </select>
+            </div>
+          }
+        </div>
+
+        <div class="field">
+          <label for="note-content">{{ 'notes.contentLabel' | t }}</label>
+          <textarea id="note-content" class="input note-textarea" rows="16" formControlName="content" dir="auto"></textarea>
+        </div>
+
+        <div class="row-between">
+          <span class="small muted">
+            @if (selected(); as n) {
+              {{ 'notes.updated' | t: { date: (n.updatedAt | fmtDate) } }}
+              @if (linkRoute(n); as link) { · <a [routerLink]="link">{{ n | loc: 'linkTitle' }}</a> }
+            }
+            @if (form.dirty) { · {{ 'notes.unsaved' | t }} }
+          </span>
+          <div class="row-gap">
+            @if (selected(); as n) {
+              <button type="button" class="btn btn-ghost btn-danger-text" (click)="remove(n)"><app-icon name="trash" [size]="15" /> {{ 'common.delete' | t }}</button>
+            }
+            <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ (saving() ? 'common.saving' : 'common.save') | t }}</button>
+          </div>
+        </div>
+      </form>
+    }
+  </section>
+</div>

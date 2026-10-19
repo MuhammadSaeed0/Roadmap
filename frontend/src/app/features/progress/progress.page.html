@@ -1,0 +1,311 @@
+<app-page-header [title]="'progress.title' | t" />
+
+<div class="tabs" role="tablist" [attr.aria-label]="'progress.title' | t">
+  @for (t of tabs; track t) {
+    <button type="button" role="tab" [id]="'tab-' + t" [attr.aria-selected]="tab() === t" [attr.aria-controls]="'panel-' + t"
+            [class.active]="tab() === t" (click)="setTab(t)">{{ 'progress.tabs.' + t | t }}</button>
+  }
+</div>
+
+<!-- ========== Overview ========== -->
+@if (tab() === 'overview') {
+  <div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview">
+    @if (report.initialLoading()) {
+      <div class="grid grid-2"><div class="card"><app-skeleton [rows]="6" /></div><div class="card"><app-skeleton [rows]="6" /></div></div>
+    } @else if (report.error()) {
+      <app-error-state [error]="report.error()" (retry)="report.reload()" />
+    } @else if (report.value(); as r) {
+      <p class="callout"><app-icon name="info" /> {{ 'progress.separate' | t }}</p>
+      <div class="grid grid-dashboard">
+        <section class="card span-4 center-card" aria-labelledby="ov-h">
+          <h2 id="ov-h" class="card-title">{{ 'progress.overall' | t }}</h2>
+          <app-progress-ring [value]="r.overall.percent" [size]="150" [stroke]="12" [label]="'progress.overall' | t" />
+          <p class="small muted">{{ 'roadmap.topicsDone' | t: { done: r.overall.doneTopics, total: r.overall.totalTopics } }}</p>
+          <p class="small">{{ 'progress.totalStudied' | t }}: <strong>{{ r.totalMinutesStudied | duration }}</strong></p>
+          <details class="formula">
+            <summary>{{ 'progress.formula' | t }}</summary>
+            <p class="small">{{ 'progress.formulaText' | t }}</p>
+            <table class="mini-table">
+              <tbody>
+                @for (s of r.skills; track s.skill) { <tr><th scope="row">{{ 'skills.' + s.skill | t }}</th><td dir="ltr">× {{ s.weight }}</td></tr> }
+                <tr><th scope="row">{{ 'priority.Core' | t }} / {{ 'priority.Important' | t }} / {{ 'priority.Optional' | t }}</th>
+                  <td dir="ltr">{{ r.formula.priorityWeights['Core'] }} / {{ r.formula.priorityWeights['Important'] }} / {{ r.formula.priorityWeights['Optional'] }}</td></tr>
+              </tbody>
+            </table>
+          </details>
+        </section>
+
+        <section class="card span-8" aria-labelledby="sk-h">
+          <h2 id="sk-h" class="card-title"><app-icon name="layers" /> {{ 'progress.bySkill' | t }}</h2>
+          <ul class="skill-list two-col-list" role="list">
+            @for (s of r.skills; track s.skill) {
+              <li>
+                <div class="skill-row">
+                  <span class="skill-name">{{ 'skills.' + s.skill | t }}</span>
+                  <span class="skill-meta">{{ s.done }}/{{ s.total }} · {{ s.percent | fmtNum }}%</span>
+                </div>
+                <app-progress-bar [value]="s.percent" [small]="true" [label]="'skills.' + s.skill | t" />
+                @if (s.averageConfidence !== null) { <span class="tiny muted">{{ 'progress.avgConfidence' | t: { n: (s.averageConfidence | fmtNum: 1) } }}</span> }
+              </li>
+            }
+          </ul>
+        </section>
+
+        <section class="card span-6" aria-labelledby="ph-h">
+          <h2 id="ph-h" class="card-title"><app-icon name="map" /> {{ 'progress.byPhase' | t }}</h2>
+          <ul class="skill-list" role="list">
+            @for (p of r.phases; track p.id) {
+              <li>
+                <div class="skill-row"><span>{{ p.order }}. {{ p | loc: 'title' }}</span><span class="skill-meta">{{ p.done }}/{{ p.total }}</span></div>
+                <app-progress-bar [value]="p.percent" [small]="true" [tone]="p.percent >= 100 ? 'success' : 'accent'" [label]="p | loc: 'title'" />
+              </li>
+            }
+          </ul>
+        </section>
+
+        <section class="card span-6" aria-labelledby="conf-h">
+          <h2 id="conf-h" class="card-title"><app-icon name="target" /> {{ 'progress.confidence' | t }}</h2>
+          <ul class="hbars" role="list">
+            @for (b of confidenceBars(); track b.level) {
+              <li>
+                <span class="hbar-label">{{ b.level === 'unrated' ? ('confidence.unrated' | t) : b.level + ' · ' + ('confidence.levels.' + b.level | t) }}</span>
+                <span class="hbar-track"><span class="hbar-fill" [attr.data-level]="b.level" [style.width.%]="b.pct"></span></span>
+                <span class="hbar-value">{{ b.count }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+
+        <section class="card span-6" aria-labelledby="wk-h">
+          <h2 id="wk-h" class="card-title"><app-icon name="calendar" /> {{ 'progress.weeklyStudy' | t }}</h2>
+          <div class="vbars" role="img" [attr.aria-label]="'progress.weeklyStudy' | t">
+            @for (w of weekBars(); track w.weekStart) {
+              <div class="vbar" [title]="(w.weekStart | fmtDate: 'short') + ': ' + (w.minutes | duration)">
+                <span class="vbar-value">{{ w.minutes > 0 ? (w.minutes | duration) : '' }}</span>
+                <span class="vbar-fill" [style.height.%]="w.pct"></span>
+                <span class="vbar-label">{{ w.weekStart | fmtDate: 'short' }}</span>
+              </div>
+            }
+          </div>
+        </section>
+
+        <section class="card span-6" aria-labelledby="pp-h">
+          <h2 id="pp-h" class="card-title"><app-icon name="folder" /> {{ 'progress.projects' | t }}</h2>
+          <ul class="skill-list" role="list">
+            @for (p of r.projects; track p.id) {
+              <li>
+                <div class="skill-row"><a [routerLink]="['/projects', p.id]">{{ p | loc: 'title' }}</a><span class="skill-meta">{{ p.completedTasks }}/{{ p.totalTasks }}</span></div>
+                <app-progress-bar [value]="p.percent" [small]="true" [tone]="p.percent >= 100 ? 'success' : 'accent'" [label]="p | loc: 'title'" />
+              </li>
+            }
+          </ul>
+          <h3 class="sub-title">{{ 'progress.practice' | t }}</h3>
+          <ul class="skill-list" role="list">
+            @for (s of r.practice; track s.type) {
+              <li>
+                <div class="skill-row"><span>{{ 'exerciseType.' + s.type | t }}</span><span class="skill-meta">{{ s.completed }}/{{ s.total }}</span></div>
+                <app-progress-bar [value]="s.total ? (s.completed / s.total) * 100 : 0" [small]="true" tone="success" [label]="'exerciseType.' + s.type | t" />
+              </li>
+            }
+          </ul>
+        </section>
+
+        <section class="card span-4" aria-labelledby="iv-h">
+          <h2 id="iv-h" class="card-title"><app-icon name="chat" /> {{ 'progress.interviews' | t }}</h2>
+          <div class="stacked-bar" role="img" [attr.aria-label]="'progress.interviews' | t">
+            <span data-rating="Confident" [style.flex-grow]="r.interview.confident"></span>
+            <span data-rating="Partial" [style.flex-grow]="r.interview.partial"></span>
+            <span data-rating="NeedReview" [style.flex-grow]="r.interview.needReview"></span>
+            <span data-rating="none" [style.flex-grow]="r.interview.notPracticed"></span>
+          </div>
+          <ul class="legend" role="list">
+            <li><i data-rating="Confident"></i> {{ 'rating.Confident' | t }}: {{ r.interview.confident }}</li>
+            <li><i data-rating="Partial"></i> {{ 'rating.Partial' | t }}: {{ r.interview.partial }}</li>
+            <li><i data-rating="NeedReview"></i> {{ 'rating.NeedReview' | t }}: {{ r.interview.needReview }}</li>
+            <li><i data-rating="none"></i> {{ 'rating.unrated' | t }}: {{ r.interview.notPracticed }}</li>
+          </ul>
+        </section>
+
+        <section class="card span-4" aria-labelledby="ach-h">
+          <h2 id="ach-h" class="card-title"><app-icon name="award" /> {{ 'progress.achievements' | t }}</h2>
+          @if (r.achievements.length === 0) {
+            <p class="muted small">{{ 'progress.noAchievements' | t }}</p>
+          } @else {
+            <ul class="achievements" role="list">
+              @for (a of r.achievements; track $index) {
+                <li><span class="ach-icon"><app-icon name="award" [size]="15" /></span>
+                  <span>{{ achievementText(a) }}@if (a.at) { <span class="muted tiny"> · {{ a.at | fmtDate: 'short' }}</span> }</span></li>
+              }
+            </ul>
+          }
+        </section>
+
+        <section class="card span-4" aria-labelledby="weak-h">
+          <h2 id="weak-h" class="card-title"><app-icon name="alert" /> {{ 'progress.weakAreas' | t }}</h2>
+          @if (r.weakAreas.length === 0) {
+            <p class="muted small">{{ 'progress.noWeak' | t }}</p>
+          } @else {
+            <ul class="link-list" role="list">
+              @for (w of r.weakAreas; track w.topic.id) {
+                <li><a [routerLink]="['/topics', w.topic.id]">{{ w.topic | loc: 'title' }}</a>
+                  <span class="tiny muted">{{ 'weakReasons.' + w.reason | t }}</span></li>
+              }
+            </ul>
+          }
+        </section>
+      </div>
+    }
+  </div>
+}
+
+<!-- ========== Weekly review ========== -->
+@if (tab() === 'weekly') {
+  <div role="tabpanel" id="panel-weekly" aria-labelledby="tab-weekly">
+    @if (weekly.initialLoading()) {
+      <div class="card"><app-skeleton [rows]="6" /></div>
+    } @else if (weekly.error()) {
+      <app-error-state [error]="weekly.error()" (retry)="weekly.reload()" />
+    } @else if (weekly.value(); as w) {
+      <div class="week-nav">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="shiftWeek(-7)"><app-icon name="chevron-left" [size]="14" /> {{ 'weekly.previous' | t }}</button>
+        <h2>{{ 'weekly.title' | t: { start: (w.weekStart | fmtDate) } }}</h2>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="isCurrentWeek()" (click)="shiftWeek(7)">{{ 'weekly.next' | t }} <app-icon name="chevron-right" [size]="14" /></button>
+      </div>
+
+      <div class="grid grid-4 stat-cards">
+        <div class="card stat-card"><span class="stat-label">{{ 'weekly.minutes' | t }}</span><span class="stat-value">{{ w.minutesStudied | duration }}</span>
+          <span class="tiny muted">{{ 'weekly.vsLast' | t: { n: w.previousWeekMinutes } }}</span></div>
+        <div class="card stat-card"><span class="stat-label">{{ 'weekly.topicsCompleted' | t }}</span><span class="stat-value">{{ w.topicsCompleted.length }}</span></div>
+        <div class="card stat-card"><span class="stat-label">{{ 'weekly.tasksCompleted' | t }}</span><span class="stat-value">{{ w.tasksCompleted.length }}</span></div>
+        <div class="card stat-card"><span class="stat-label">{{ 'weekly.exercises' | t }} / {{ 'weekly.questions' | t }}</span><span class="stat-value">{{ w.exercisesCompleted }} / {{ w.questionsPracticed }}</span></div>
+      </div>
+
+      <div class="grid grid-2">
+        <section class="card" aria-labelledby="days-h">
+          <h3 id="days-h" class="card-title">{{ 'weekly.minutes' | t }} · {{ 'weekly.sessions' | t }}: {{ w.sessionCount }}</h3>
+          <div class="vbars" role="img" [attr.aria-label]="'weekly.minutes' | t">
+            @for (d of dayBars(); track d.date) {
+              <div class="vbar" [title]="(d.date | fmtDate) + ': ' + (d.minutes | duration)">
+                <span class="vbar-value">{{ d.minutes > 0 ? d.minutes : '' }}</span>
+                <span class="vbar-fill" [style.height.%]="d.pct"></span>
+                <span class="vbar-label">{{ weekday(d.date) }}</span>
+              </div>
+            }
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="sug-h">
+          <h3 id="sug-h" class="card-title"><app-icon name="sparkle" /> {{ 'weekly.suggestions' | t }}</h3>
+          <ul class="suggestions" role="list">
+            @for (s of w.suggestions; track s.code) {
+              @let target = suggestionLink(s);
+              <li>
+                <app-icon name="arrow-right" [size]="14" />
+                @if (target) { <a [routerLink]="target.link" [queryParams]="target.query">{{ suggestionText(s) }}</a> }
+                @else { <span>{{ suggestionText(s) }}</span> }
+              </li>
+            }
+          </ul>
+        </section>
+
+        <section class="card" aria-labelledby="tc-h">
+          <h3 id="tc-h" class="card-title">{{ 'weekly.topicsCompleted' | t }}</h3>
+          @if (w.topicsCompleted.length === 0) { <p class="muted small">{{ 'weekly.nothing' | t }}</p> }
+          <ul class="link-list" role="list">
+            @for (t of w.topicsCompleted; track t.id) { <li><app-icon name="check-circle" [size]="15" /><a [routerLink]="['/topics', t.id]">{{ t | loc: 'title' }}</a></li> }
+          </ul>
+          <h3 class="sub-title">{{ 'weekly.tasksCompleted' | t }}</h3>
+          @if (w.tasksCompleted.length === 0) { <p class="muted small">{{ 'weekly.nothing' | t }}</p> }
+          <ul class="link-list" role="list">
+            @for (t of w.tasksCompleted; track t.id) { <li><app-icon name="folder" [size]="15" /><a [routerLink]="['/projects', t.projectId]" [fragment]="'task-' + t.id">{{ t | loc: 'title' }}</a></li> }
+          </ul>
+        </section>
+
+        <section class="card" aria-labelledby="wt-h">
+          <h3 id="wt-h" class="card-title">{{ 'progress.weakAreas' | t }}</h3>
+          @if (w.weakTopics.length === 0) { <p class="muted small">{{ 'progress.noWeak' | t }}</p> }
+          <ul class="link-list" role="list">
+            @for (t of w.weakTopics; track t.topic.id) {
+              <li><a [routerLink]="['/topics', t.topic.id]">{{ t.topic | loc: 'title' }}</a> <span class="tiny muted">{{ 'weakReasons.' + t.reason | t }}</span></li>
+            }
+          </ul>
+        </section>
+      </div>
+    }
+  </div>
+}
+
+<!-- ========== Review queue ========== -->
+@if (tab() === 'review') {
+  <div role="tabpanel" id="panel-review" aria-labelledby="tab-review">
+    @if (reviews.initialLoading()) {
+      <div class="card"><app-skeleton [rows]="5" /></div>
+    } @else if (reviews.error()) {
+      <app-error-state [error]="reviews.error()" (retry)="reviews.reload()" />
+    } @else if (reviews.value(); as q) {
+      <div class="detail-layout">
+        <div class="detail-main">
+          <section class="card" aria-labelledby="due-h">
+            <h2 id="due-h" class="card-title"><app-icon name="repeat" /> {{ 'review.due' | t }} <span class="badge badge-accent">{{ q.due.length }}</span></h2>
+            @if (q.due.length === 0) {
+              <app-empty-state icon="check-circle" [title]="'review.empty' | t" />
+            } @else {
+              <ul class="review-list" role="list">
+                @for (item of q.due; track item.topicId) {
+                  <li class="review-item">
+                    <div class="grow">
+                      <a [routerLink]="['/topics', item.topicId]" class="topic-title">{{ item | loc: 'title' }}</a>
+                      <p class="tiny muted">{{ 'skills.' + item.skill | t }}
+                        @if (item.daysOverdue > 0) { · <span class="warn-text">{{ 'review.overdue' | t: { n: item.daysOverdue } }}</span> }</p>
+                    </div>
+                    <div class="review-rate">
+                      <span class="tiny">{{ 'review.howConfident' | t }}</span>
+                      <app-confidence-picker [value]="item.confidence" [disabled]="reviewing() === item.topicId" (changed)="completeReview(item, $event)" />
+                    </div>
+                  </li>
+                }
+              </ul>
+            }
+          </section>
+
+          <section class="card" aria-labelledby="up-h">
+            <h2 id="up-h" class="card-title"><app-icon name="calendar" /> {{ 'review.upcoming' | t }}</h2>
+            @if (q.upcoming.length === 0) { <p class="muted small">{{ 'weekly.nothing' | t }}</p> }
+            <ul class="review-list" role="list">
+              @for (item of q.upcoming; track item.topicId) {
+                <li class="review-item">
+                  <div class="grow">
+                    <a [routerLink]="['/topics', item.topicId]" class="topic-title">{{ item | loc: 'title' }}</a>
+                    <p class="tiny muted">{{ 'review.next' | t: { date: (item.nextReviewOn | fmtDate) } }} · {{ 'confidence.label' | t }} {{ item.confidence ?? '—' }}/5</p>
+                  </div>
+                  <button type="button" class="btn btn-ghost btn-xs" (click)="removeReview(item.topicId)">{{ 'review.remove' | t }}</button>
+                </li>
+              }
+            </ul>
+          </section>
+        </div>
+
+        <aside class="detail-side">
+          <section class="card" aria-labelledby="rules-h">
+            <h2 id="rules-h" class="card-title"><app-icon name="info" /> {{ 'review.rules' | t }}</h2>
+            <p class="small muted">{{ 'review.rulesIntro' | t }}</p>
+            <ul class="rules" role="list">
+              @for (rule of q.rules; track rule.confidence) { <li>{{ 'review.ruleText' | t: { c: rule.confidence, d: rule.days } }}</li> }
+            </ul>
+          </section>
+          @if (q.suggested.length > 0) {
+            <section class="card" aria-labelledby="sugg-h">
+              <h2 id="sugg-h" class="card-title"><app-icon name="sparkle" /> {{ 'review.suggested' | t }}</h2>
+              <ul class="link-list" role="list">
+                @for (t of q.suggested; track t.id) {
+                  <li><a [routerLink]="['/topics', t.id]">{{ t | loc: 'title' }}</a>
+                    <button type="button" class="btn btn-ghost btn-xs" (click)="addReview(t.id)" [attr.aria-label]="('topic.addToReview' | t) + ': ' + (t | loc: 'title')"><app-icon name="plus" [size]="12" /></button></li>
+                }
+              </ul>
+            </section>
+          }
+        </aside>
+      </div>
+    }
+  </div>
+}

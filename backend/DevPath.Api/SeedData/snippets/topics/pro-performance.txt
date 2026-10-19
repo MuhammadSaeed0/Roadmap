@@ -1,0 +1,10 @@
+Work from the outside in:
+
+Browser       DevTools → Network: which request is slow? how big is the response?
+              Performance tab: is rendering the problem (huge lists, no track)?
+API           request timing logs: which endpoint, how many ms?
+Data access   EF Core SQL log: how many queries per request? (N+1?)
+Database      execution plan, logical reads, missing indexes, blocking
+
+Fix the biggest cost first, then MEASURE AGAIN.
+Typical wins: projection + paging, AsNoTracking, removing N+1, one index, caching lookups.

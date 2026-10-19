@@ -1,0 +1,24 @@
+<table class="table">
+  <caption class="sr-only">Products</caption>
+  <thead>
+    <tr>
+      <th scope="col" [attr.aria-sort]="sort() === 'name' ? 'ascending' : 'none'">
+        <button type="button" (click)="sortBy('name')">Name</button>
+      </th>
+      <th scope="col">Price</th>
+      <th scope="col"><span class="sr-only">Actions</span></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (p of rows(); track p.id) {
+      <tr>
+        <td>{{ p.name }}</td>
+        <td>{{ p.price | currency }}</td>
+        <td>
+          <button type="button" (click)="edit(p)">Edit</button>
+          <button type="button" class="danger" (click)="confirmDelete(p)">Delete</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

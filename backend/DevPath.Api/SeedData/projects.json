@@ -1,0 +1,972 @@
+[
+  {
+    "slug": "employee-management",
+    "order": 1,
+    "titleEn": "Employee Management System",
+    "titleAr": "نظام إدارة الموظفين",
+    "summaryEn": "A C# console application to manage employees, departments and payroll. Learn C# and OOP without the web stack getting in the way.",
+    "summaryAr": "تطبيق Console بلغة C# لإدارة الموظفين والأقسام والرواتب، لتتعلم C# والبرمجة الكائنية دون تعقيدات الويب.",
+    "requirementsEn": [
+      "Add, list, update and delete employees from a console menu",
+      "Support salaried and hourly employees with different pay rules",
+      "Validate input and never crash on bad data",
+      "Search and report with LINQ (by department, salary range, payroll totals)",
+      "Save and load data to a JSON file asynchronously",
+      "Unit tests for payroll rules"
+    ],
+    "requirementsAr": [
+      "إضافة الموظفين وعرضهم وتعديلهم وحذفهم من قائمة في Console",
+      "دعم الموظفين برواتب شهرية وبالساعة بقواعد دفع مختلفة",
+      "التحقق من المدخلات وعدم التوقف أبدًا بسبب بيانات خاطئة",
+      "البحث وإعداد التقارير باستخدام LINQ (حسب القسم، ونطاق الراتب، وإجماليات الرواتب)",
+      "حفظ البيانات وتحميلها من ملف JSON بشكل غير متزامن",
+      "اختبارات وحدة لقواعد الرواتب"
+    ],
+    "techStack": "C# · .NET console · LINQ · xUnit",
+    "startAfterPhase": "object-oriented-programming",
+    "milestones": [
+      {
+        "key": "p1-m1",
+        "titleEn": "Milestone 1 — Project setup and model",
+        "titleAr": "المرحلة 1 — إعداد المشروع والنموذج",
+        "descriptionEn": "Create the solution and model employees with proper encapsulation.",
+        "descriptionAr": "أنشئ الـ Solution ونمذج الموظفين بتغليف سليم.",
+        "tasks": [
+          {
+            "key": "p1-t1", "minutes": 30, "priority": "High", "topics": ["cs-project-structure", "git-fundamentals"],
+            "titleEn": "Create the solution and console project",
+            "titleAr": "إنشاء الـ Solution ومشروع Console",
+            "descriptionEn": "Create EmployeeManagement.sln with a console app and a class library for the domain, and initialise Git.",
+            "descriptionAr": "أنشئ EmployeeManagement.sln يحتوي على تطبيق Console ومكتبة Class Library للمجال، وهيّئ Git.",
+            "criteriaEn": ["dotnet build succeeds", "The console app references the library", "A .gitignore excludes bin/ and obj/"],
+            "criteriaAr": ["ينجح الأمر dotnet build", "يشير تطبيق Console إلى المكتبة", "يستثني ملف .gitignore المجلدين bin/ وobj/"]
+          },
+          {
+            "key": "p1-t2", "minutes": 45, "priority": "High", "topics": ["oop-classes-objects", "oop-encapsulation"],
+            "titleEn": "Define the Employee class",
+            "titleAr": "تعريف الـ Class الخاص بالموظف",
+            "descriptionEn": "Employee has Id, FullName, Email, Department and a constructor that rejects invalid values.",
+            "descriptionAr": "يحتوي Employee على Id وFullName وEmail وDepartment ومُنشئ يرفض القيم غير الصالحة.",
+            "criteriaEn": ["Properties can't be set to invalid values from outside", "Invalid email or empty name throws ArgumentException"],
+            "criteriaAr": ["لا يمكن ضبط الخصائص على قيم غير صالحة من الخارج", "البريد غير الصالح أو الاسم الفارغ يرمي ArgumentException"]
+          },
+          {
+            "key": "p1-t3", "minutes": 60, "priority": "Medium", "topics": ["oop-inheritance", "oop-polymorphism"],
+            "titleEn": "Salaried and hourly employees",
+            "titleAr": "موظفون برواتب شهرية وبالساعة",
+            "descriptionEn": "Make Employee abstract with CalculateMonthlyPay(), implemented by SalariedEmployee and HourlyEmployee.",
+            "descriptionAr": "اجعل Employee مجردًا مع الدالة CalculateMonthlyPay()، ونفّذها في SalariedEmployee وHourlyEmployee.",
+            "criteriaEn": ["Payroll code never checks the concrete type", "Hourly pay = rate × hours, overtime above 160h at 1.5×"],
+            "criteriaAr": ["كود الرواتب لا يتحقق من النوع الفعلي أبدًا", "أجر الساعة = المعدل × الساعات، والعمل الإضافي فوق 160 ساعة بمعامل 1.5"]
+          }
+        ]
+      },
+      {
+        "key": "p1-m2",
+        "titleEn": "Milestone 2 — Storage and operations",
+        "titleAr": "المرحلة 2 — التخزين والعمليات",
+        "descriptionEn": "Store employees behind an interface and build the console menu.",
+        "descriptionAr": "خزّن الموظفين خلف Interface وابنِ قائمة Console.",
+        "tasks": [
+          {
+            "key": "p1-t4", "minutes": 60, "priority": "High", "topics": ["oop-interfaces", "cs-collections"],
+            "titleEn": "IEmployeeRepository with an in-memory implementation",
+            "titleAr": "الواجهة IEmployeeRepository مع تطبيق في الذاكرة",
+            "descriptionEn": "Define Add, GetById, GetAll, Update and Delete, and implement them with a Dictionary<int, Employee>.",
+            "descriptionAr": "عرّف Add وGetById وGetAll وUpdate وDelete، ونفّذها باستخدام Dictionary<int, Employee>.",
+            "criteriaEn": ["GetById is O(1)", "The console code depends only on the interface"],
+            "criteriaAr": ["تعمل GetById في O(1)", "يعتمد كود Console على الـ Interface فقط"]
+          },
+          {
+            "key": "p1-t5", "minutes": 60, "priority": "High", "topics": ["cs-loops", "cs-conditions", "cs-methods"],
+            "titleEn": "Console menu: add, list, update, delete",
+            "titleAr": "قائمة Console: إضافة وعرض وتعديل وحذف",
+            "descriptionEn": "A loop shows a menu, reads the choice and calls small methods for each operation.",
+            "descriptionAr": "حلقة تعرض قائمة، وتقرأ الاختيار، وتستدعي دوالًا صغيرة لكل عملية.",
+            "criteriaEn": ["Each menu option is a separate method", "Choosing 0 exits cleanly"],
+            "criteriaAr": ["كل خيار في القائمة دالة منفصلة", "اختيار 0 يخرج من البرنامج بشكل سليم"]
+          },
+          {
+            "key": "p1-t6", "minutes": 45, "priority": "Medium", "topics": ["cs-exceptions", "cs-nullable-reference-types"],
+            "titleEn": "Input validation and error handling",
+            "titleAr": "التحقق من المدخلات ومعالجة الأخطاء",
+            "descriptionEn": "Use TryParse for numbers, show friendly messages and handle 'employee not found'.",
+            "descriptionAr": "استخدم TryParse للأرقام، واعرض رسائل ودية، وتعامل مع حالة عدم وجود الموظف.",
+            "criteriaEn": ["Typing letters for a salary never crashes the app", "Nullable warnings: zero"],
+            "criteriaAr": ["كتابة حروف في حقل الراتب لا توقف التطبيق أبدًا", "عدد تحذيرات Nullable: صفر"]
+          }
+        ]
+      },
+      {
+        "key": "p1-m3",
+        "titleEn": "Milestone 3 — Reports and persistence",
+        "titleAr": "المرحلة 3 — التقارير والحفظ",
+        "descriptionEn": "Answer business questions with LINQ and save data between runs.",
+        "descriptionAr": "أجب عن أسئلة العمل باستخدام LINQ واحفظ البيانات بين مرات التشغيل.",
+        "tasks": [
+          {
+            "key": "p1-t7", "minutes": 45, "priority": "High", "topics": ["linq-fundamentals", "cs-lambdas"],
+            "titleEn": "Search and filter employees",
+            "titleAr": "البحث عن الموظفين وتصفيتهم",
+            "descriptionEn": "Search by name (case-insensitive), filter by department and salary range, sort by name or pay.",
+            "descriptionAr": "ابحث بالاسم (دون تمييز حالة الأحرف)، وصفِّ حسب القسم ونطاق الراتب، ورتّب حسب الاسم أو الأجر.",
+            "criteriaEn": ["Implemented with LINQ, no manual loops", "Filters can be combined"],
+            "criteriaAr": ["مُنفّذ باستخدام LINQ دون حلقات يدوية", "يمكن الجمع بين المرشحات"]
+          },
+          {
+            "key": "p1-t8", "minutes": 60, "priority": "High", "topics": ["linq-advanced"],
+            "titleEn": "Payroll and department reports",
+            "titleAr": "تقارير الرواتب والأقسام",
+            "descriptionEn": "Total payroll per department, average pay, headcount, and the top 3 earners per department.",
+            "descriptionAr": "إجمالي الرواتب لكل قسم، ومتوسط الأجر، وعدد الموظفين، وأعلى 3 أجورًا في كل قسم.",
+            "criteriaEn": ["Uses GroupBy with aggregation", "Output is aligned in columns"],
+            "criteriaAr": ["يستخدم GroupBy مع التجميع", "المخرجات منسقة في أعمدة"]
+          },
+          {
+            "key": "p1-t9", "minutes": 60, "priority": "Medium", "topics": ["cs-async-await", "cs-exceptions"],
+            "titleEn": "Save and load data as JSON",
+            "titleAr": "حفظ البيانات وتحميلها بصيغة JSON",
+            "descriptionEn": "Persist employees to employees.json with System.Text.Json and async file APIs.",
+            "descriptionAr": "احفظ الموظفين في employees.json باستخدام System.Text.Json وواجهات الملفات غير المتزامنة.",
+            "criteriaEn": ["Data survives restarting the app", "A missing or corrupt file is handled with a clear message"],
+            "criteriaAr": ["تبقى البيانات بعد إعادة تشغيل التطبيق", "يُعالَج الملف المفقود أو التالف برسالة واضحة"]
+          }
+        ]
+      },
+      {
+        "key": "p1-m4",
+        "titleEn": "Milestone 4 — Quality and change requests",
+        "titleAr": "المرحلة 4 — الجودة وطلبات التغيير",
+        "descriptionEn": "Test the rules, document the project and handle stakeholder change requests.",
+        "descriptionAr": "اختبر القواعد، ووثّق المشروع، وتعامل مع طلبات التغيير من أصحاب المصلحة.",
+        "tasks": [
+          {
+            "key": "p1-t10", "minutes": 60, "priority": "High", "topics": ["test-unit-csharp", "test-business-logic"],
+            "titleEn": "Unit tests for payroll rules",
+            "titleAr": "اختبارات وحدة لقواعد الرواتب",
+            "descriptionEn": "Add an xUnit project and test pay calculations including overtime boundaries.",
+            "descriptionAr": "أضف مشروع xUnit واختبر حسابات الأجور بما فيها حدود العمل الإضافي.",
+            "criteriaEn": ["At least 8 tests, all passing", "Covers exactly 160 hours and 161 hours"],
+            "criteriaAr": ["8 اختبارات على الأقل وكلها ناجحة", "تغطي 160 ساعة بالضبط و161 ساعة"]
+          },
+          {
+            "key": "p1-t11", "minutes": 30, "priority": "Medium", "topics": ["git-readme", "git-commit-quality"],
+            "titleEn": "README and repository",
+            "titleAr": "ملف README والمستودع",
+            "descriptionEn": "Write a README with features, a screenshot of the console and run instructions; push to GitHub.",
+            "descriptionAr": "اكتب README يحتوي على الميزات ولقطة شاشة من Console وتعليمات التشغيل، وارفعه إلى GitHub.",
+            "criteriaEn": ["Someone can run it by following the README", "Commit history has meaningful messages"],
+            "criteriaAr": ["يستطيع أي شخص تشغيله باتباع README", "سجل الـ Commits يحتوي على رسائل ذات معنى"]
+          },
+          {
+            "key": "p1-cr1", "minutes": 45, "priority": "Medium", "topics": ["linq-advanced", "cs-records"],
+            "changeRequest": true, "unlockAt": 40,
+            "titleEn": "Change request: add hire date and years of service",
+            "titleAr": "طلب تغيير: إضافة تاريخ التعيين وسنوات الخدمة",
+            "descriptionEn": "HR wants a HireDate on every employee and a report of years of service per department. Existing JSON files must still load.",
+            "descriptionAr": "تريد الموارد البشرية حقل HireDate لكل موظف وتقريرًا بسنوات الخدمة لكل قسم، ويجب أن تظل ملفات JSON الحالية قابلة للتحميل.",
+            "criteriaEn": ["Old employees.json files load without errors", "Report shows average years of service per department"],
+            "criteriaAr": ["تُحمَّل ملفات employees.json القديمة دون أخطاء", "يعرض التقرير متوسط سنوات الخدمة لكل قسم"]
+          },
+          {
+            "key": "p1-cr2", "minutes": 30, "priority": "High", "topics": ["cs-collections", "cs-exceptions"],
+            "changeRequest": true, "unlockAt": 60,
+            "titleEn": "Change request: prevent duplicate emails",
+            "titleAr": "طلب تغيير: منع تكرار البريد الإلكتروني",
+            "descriptionEn": "Two employees were created with the same email. Make emails unique (case-insensitive) on add and update.",
+            "descriptionAr": "تم إنشاء موظفين بالبريد الإلكتروني نفسه. اجعل البريد فريدًا (دون تمييز حالة الأحرف) عند الإضافة والتعديل.",
+            "criteriaEn": ["Adding 'Sara@x.com' when 'sara@x.com' exists is refused", "A test covers the rule"],
+            "criteriaAr": ["يُرفض إضافة Sara@x.com إذا كان sara@x.com موجودًا", "يوجد اختبار يغطي القاعدة"]
+          },
+          {
+            "key": "p1-cr3", "minutes": 40, "priority": "Low", "topics": ["cs-async-await", "linq-advanced"],
+            "changeRequest": true, "unlockAt": 80,
+            "titleEn": "Change request: export payroll to CSV",
+            "titleAr": "طلب تغيير: تصدير الرواتب إلى CSV",
+            "descriptionEn": "Finance needs the monthly payroll as a CSV file they can open in Excel.",
+            "descriptionAr": "يحتاج قسم المالية إلى كشف الرواتب الشهري كملف CSV يمكن فتحه في Excel.",
+            "criteriaEn": ["Values containing commas are quoted correctly", "Decimal separator is consistent (invariant culture)"],
+            "criteriaAr": ["القيم التي تحتوي على فواصل توضع بين علامات اقتباس بشكل صحيح", "فاصل الكسور العشرية ثابت (Invariant culture)"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "inventory-api",
+    "order": 2,
+    "titleEn": "Inventory Management API",
+    "titleAr": "واجهة API لإدارة المخزون",
+    "summaryEn": "A REST API for products, categories, suppliers and stock built with ASP.NET Core, EF Core and SQL Server.",
+    "summaryAr": "واجهة REST للمنتجات والفئات والموردين والمخزون مبنية باستخدام ASP.NET Core وEF Core وSQL Server.",
+    "requirementsEn": [
+      "CRUD for products, categories and suppliers",
+      "Validation with clear error responses",
+      "Search, filtering, sorting and pagination",
+      "Correct HTTP status codes and consistent ProblemDetails errors",
+      "Stock adjustments that can never make stock negative",
+      "Structured logging and basic automated tests"
+    ],
+    "requirementsAr": [
+      "عمليات CRUD للمنتجات والفئات والموردين",
+      "التحقق من البيانات مع استجابات أخطاء واضحة",
+      "البحث والتصفية والترتيب والتقسيم إلى صفحات",
+      "رموز حالة HTTP صحيحة وأخطاء ProblemDetails موحدة",
+      "تعديلات مخزون لا يمكن أن تجعل المخزون سالبًا أبدًا",
+      "تسجيل منظم واختبارات آلية أساسية"
+    ],
+    "techStack": "ASP.NET Core · EF Core · SQL Server · xUnit",
+    "startAfterPhase": "ef-core",
+    "milestones": [
+      {
+        "key": "p2-m1",
+        "titleEn": "Milestone 1 — Data model",
+        "titleAr": "المرحلة 1 — نموذج البيانات",
+        "descriptionEn": "Design the entities and relationships and create the database with migrations.",
+        "descriptionAr": "صمّم الكيانات والعلاقات وأنشئ قاعدة البيانات باستخدام الـ Migrations.",
+        "tasks": [
+          {
+            "key": "p2-t1", "minutes": 30, "priority": "High", "topics": ["api-startup", "cs-project-structure"],
+            "titleEn": "Create the Web API project",
+            "titleAr": "إنشاء مشروع Web API",
+            "descriptionEn": "Create Inventory.Api (controllers) and Inventory.Api.Tests in one solution.",
+            "descriptionAr": "أنشئ Inventory.Api (بوحدات تحكم) وInventory.Api.Tests في Solution واحدة.",
+            "criteriaEn": ["dotnet run starts the API", "The OpenAPI document is reachable in Development"],
+            "criteriaAr": ["يشغّل الأمر dotnet run الـ API", "وثيقة OpenAPI متاحة في بيئة التطوير"]
+          },
+          {
+            "key": "p2-t2", "minutes": 45, "priority": "High", "topics": ["ef-entities", "ef-dbset"],
+            "titleEn": "Define Product, Category and Supplier entities",
+            "titleAr": "تعريف كيانات Product وCategory وSupplier",
+            "descriptionEn": "Product: Name, Sku, Price, Stock, CategoryId. Category: Name. Supplier: Name, Email.",
+            "descriptionAr": "Product: الاسم وSku والسعر والمخزون وCategoryId. وCategory: الاسم. وSupplier: الاسم والبريد.",
+            "criteriaEn": ["Max lengths and decimal(18,2) configured", "Sku has a unique index"],
+            "criteriaAr": ["الأطوال القصوى وdecimal(18,2) مضبوطة", "يوجد فهرس فريد على Sku"]
+          },
+          {
+            "key": "p2-t3", "minutes": 45, "priority": "High", "topics": ["ef-relationships"],
+            "titleEn": "Configure relationships",
+            "titleAr": "ضبط العلاقات",
+            "descriptionEn": "Product → Category (many-to-one) and Product ↔ Supplier (many-to-many with SupplierPrice).",
+            "descriptionAr": "العلاقة Product → Category (متعدد-إلى-واحد)، والعلاقة Product ↔ Supplier (متعدد-إلى-متعدد مع SupplierPrice).",
+            "criteriaEn": ["Deleting a category with products is refused", "Join entity has a composite key"],
+            "criteriaAr": ["يُرفض حذف فئة تحتوي على منتجات", "كيان الربط له مفتاح مركب"]
+          },
+          {
+            "key": "p2-t4", "minutes": 30, "priority": "High", "topics": ["ef-dbcontext", "api-configuration"],
+            "titleEn": "Configure DbContext and connection string",
+            "titleAr": "ضبط DbContext وسلسلة الاتصال",
+            "descriptionEn": "Register InventoryDbContext with a LocalDB connection string from appsettings.json.",
+            "descriptionAr": "سجّل InventoryDbContext بسلسلة اتصال LocalDB من appsettings.json.",
+            "criteriaEn": ["No credentials committed", "DbContext is scoped"],
+            "criteriaAr": ["لا توجد بيانات اعتماد مرفوعة", "الـ DbContext بنطاق Scoped"]
+          },
+          {
+            "key": "p2-t5", "minutes": 40, "priority": "High", "topics": ["ef-migrations", "sql-indexing"],
+            "titleEn": "Create the initial migration and verify the schema",
+            "titleAr": "إنشاء الـ Migration الأولى والتحقق من المخطط",
+            "descriptionEn": "Generate and apply InitialCreate, then inspect tables, keys and indexes in SSMS.",
+            "descriptionAr": "أنشئ InitialCreate وطبّقها، ثم افحص الجداول والمفاتيح والفهارس في SSMS.",
+            "criteriaEn": ["Schema matches your design", "Foreign keys are indexed"],
+            "criteriaAr": ["المخطط يطابق تصميمك", "المفاتيح الأجنبية مفهرسة"]
+          }
+        ]
+      },
+      {
+        "key": "p2-m2",
+        "titleEn": "Milestone 2 — CRUD endpoints",
+        "titleAr": "المرحلة 2 — نقاط نهاية CRUD",
+        "descriptionEn": "Expose the data through a clean, validated REST API.",
+        "descriptionAr": "اكشف البيانات عبر واجهة REST نظيفة ومتحقق منها.",
+        "tasks": [
+          {
+            "key": "p2-t6", "minutes": 60, "priority": "High", "topics": ["api-controllers-routing", "api-dtos", "ef-crud"],
+            "titleEn": "Categories CRUD with DTOs",
+            "titleAr": "عمليات CRUD للفئات باستخدام DTOs",
+            "descriptionEn": "GET list, GET by id, POST, PUT and DELETE for categories, using request/response DTOs.",
+            "descriptionAr": "نقاط GET للقائمة وGET بالمعرف وPOST وPUT وDELETE للفئات باستخدام DTOs للطلبات والاستجابات.",
+            "criteriaEn": ["Entities are never returned directly", "POST returns 201 with Location"],
+            "criteriaAr": ["لا تُرجَع الكيانات مباشرة أبدًا", "تُرجع POST الرمز 201 مع Location"]
+          },
+          {
+            "key": "p2-t7", "minutes": 75, "priority": "High", "topics": ["api-validation", "ef-crud"],
+            "titleEn": "Products CRUD with validation",
+            "titleAr": "عمليات CRUD للمنتجات مع التحقق",
+            "descriptionEn": "Full CRUD for products with data annotations and a check that the category exists.",
+            "descriptionAr": "CRUD كامل للمنتجات مع Data annotations والتحقق من وجود الفئة.",
+            "criteriaEn": ["Invalid input returns 400 with field errors", "Unknown categoryId returns 400, not 500"],
+            "criteriaAr": ["المدخلات غير الصالحة تُرجع 400 مع أخطاء الحقول", "المعرف categoryId غير الموجود يُرجع 400 وليس 500"]
+          },
+          {
+            "key": "p2-t8", "minutes": 45, "priority": "High", "topics": ["api-status-codes", "api-error-handling"],
+            "titleEn": "Status codes and ProblemDetails",
+            "titleAr": "رموز الحالة وProblemDetails",
+            "descriptionEn": "Add a global exception handler and consistent 404/409/500 responses.",
+            "descriptionAr": "أضف معالج استثناءات عامًا واستجابات موحدة للرموز 404/409/500.",
+            "criteriaEn": ["No stack traces in responses", "Every error response has the same shape"],
+            "criteriaAr": ["لا توجد Stack traces في الاستجابات", "كل استجابات الأخطاء لها الشكل نفسه"]
+          },
+          {
+            "key": "p2-t9", "minutes": 60, "priority": "High", "topics": ["sql-concurrency", "ef-transactions"],
+            "titleEn": "Stock adjustment endpoint",
+            "titleAr": "نقطة نهاية لتعديل المخزون",
+            "descriptionEn": "POST /api/products/{id}/stock-adjustments with a quantity (+/-) and a reason, applied atomically.",
+            "descriptionAr": "النقطة POST /api/products/{id}/stock-adjustments بكمية (+/-) وسبب، تُطبَّق بشكل ذري.",
+            "criteriaEn": ["Stock can never go below zero, even with parallel requests", "Insufficient stock returns 409"],
+            "criteriaAr": ["لا يمكن أن ينخفض المخزون عن الصفر أبدًا حتى مع الطلبات المتوازية", "عدم كفاية المخزون يُرجع 409"]
+          }
+        ]
+      },
+      {
+        "key": "p2-m3",
+        "titleEn": "Milestone 3 — Query features",
+        "titleAr": "المرحلة 3 — ميزات الاستعلام",
+        "descriptionEn": "Make the product list usable and fast with real-world data volumes.",
+        "descriptionAr": "اجعل قائمة المنتجات قابلة للاستخدام وسريعة مع أحجام بيانات واقعية.",
+        "tasks": [
+          {
+            "key": "p2-t10", "minutes": 40, "priority": "High", "topics": ["api-pagination"],
+            "titleEn": "Pagination",
+            "titleAr": "التقسيم إلى صفحات",
+            "descriptionEn": "Return PagedResult<ProductDto> with page, pageSize (max 100) and totalCount.",
+            "descriptionAr": "أرجع PagedResult<ProductDto> مع page وpageSize (بحد أقصى 100) وtotalCount.",
+            "criteriaEn": ["Deterministic order", "pageSize=1000 is clamped to 100"],
+            "criteriaAr": ["ترتيب حتمي", "القيمة pageSize=1000 تُقيَّد إلى 100"]
+          },
+          {
+            "key": "p2-t11", "minutes": 40, "priority": "High", "topics": ["api-filtering"],
+            "titleEn": "Search and filtering",
+            "titleAr": "البحث والتصفية",
+            "descriptionEn": "Optional q (name/sku), minPrice, maxPrice and inStock filters.",
+            "descriptionAr": "مرشحات اختيارية: q (الاسم/Sku) وminPrice وmaxPrice وinStock.",
+            "criteriaEn": ["All values are SQL parameters", "Filters combine correctly"],
+            "criteriaAr": ["كل القيم معاملات SQL", "تتجمع المرشحات بشكل صحيح"]
+          },
+          {
+            "key": "p2-t12", "minutes": 30, "priority": "Medium", "topics": ["api-sorting"],
+            "titleEn": "Sorting",
+            "titleAr": "الترتيب",
+            "descriptionEn": "sortBy = name | price | stock with a desc flag, using an allow-list.",
+            "descriptionAr": "المعامل sortBy = name | price | stock مع علم desc، باستخدام قائمة مسموحة.",
+            "criteriaEn": ["Unknown sortBy falls back to name", "Tie-breaker on Id"],
+            "criteriaAr": ["القيمة غير المعروفة لـ sortBy ترجع إلى name", "ترتيب ثانوي حسب Id"]
+          },
+          {
+            "key": "p2-t13", "minutes": 45, "priority": "Medium", "topics": ["ef-n-plus-one", "ef-generated-sql", "ef-tracking"],
+            "titleEn": "Check the generated SQL",
+            "titleAr": "فحص SQL المولَّد",
+            "descriptionEn": "Enable SQL logging, confirm one query per list request and use AsNoTracking for reads.",
+            "descriptionAr": "فعّل تسجيل SQL، وتأكد من استعلام واحد لكل طلب قائمة، واستخدم AsNoTracking للقراءة.",
+            "criteriaEn": ["No N+1 queries", "List endpoints select only the DTO columns"],
+            "criteriaAr": ["لا توجد استعلامات N+1", "نقاط نهاية القوائم تختار أعمدة الـ DTO فقط"]
+          }
+        ]
+      },
+      {
+        "key": "p2-m4",
+        "titleEn": "Milestone 4 — Production readiness",
+        "titleAr": "المرحلة 4 — الجاهزية للإنتاج",
+        "descriptionEn": "Logging, tests, documentation — and stakeholder change requests.",
+        "descriptionAr": "التسجيل والاختبارات والتوثيق، إضافة إلى طلبات التغيير من أصحاب المصلحة.",
+        "tasks": [
+          {
+            "key": "p2-t14", "minutes": 40, "priority": "Medium", "topics": ["api-logging", "api-middleware"],
+            "titleEn": "Structured logging and request timing",
+            "titleAr": "التسجيل المنظم وتوقيت الطلبات",
+            "descriptionEn": "Log stock changes with message templates and add a middleware that logs request duration.",
+            "descriptionAr": "سجّل تغييرات المخزون بقوالب الرسائل، وأضف Middleware يسجل مدة الطلب.",
+            "criteriaEn": ["No string interpolation in log calls", "Requests over 500 ms log a warning"],
+            "criteriaAr": ["لا يوجد String interpolation في استدعاءات التسجيل", "الطلبات التي تتجاوز 500 مللي ثانية تسجل تحذيرًا"]
+          },
+          {
+            "key": "p2-t15", "minutes": 45, "priority": "High", "topics": ["test-business-logic", "test-unit-csharp"],
+            "titleEn": "Unit tests for stock rules",
+            "titleAr": "اختبارات وحدة لقواعد المخزون",
+            "descriptionEn": "Test stock adjustment rules, including the exact boundary (stock == quantity).",
+            "descriptionAr": "اختبر قواعد تعديل المخزون، بما فيها الحد الدقيق (المخزون == الكمية).",
+            "criteriaEn": ["Boundaries covered", "Tests run in under a second"],
+            "criteriaAr": ["الحدود مغطاة", "تعمل الاختبارات في أقل من ثانية"]
+          },
+          {
+            "key": "p2-t16", "minutes": 60, "priority": "High", "topics": ["test-api", "test-integration"],
+            "titleEn": "API tests with WebApplicationFactory",
+            "titleAr": "اختبارات API باستخدام WebApplicationFactory",
+            "descriptionEn": "Test 200/201/400/404/409 paths for products against a test database.",
+            "descriptionAr": "اختبر مسارات 200/201/400/404/409 للمنتجات على قاعدة بيانات اختبار.",
+            "criteriaEn": ["Tests don't touch your development database", "dotnet test is green"],
+            "criteriaAr": ["لا تلمس الاختبارات قاعدة بيانات التطوير", "نتيجة dotnet test ناجحة"]
+          },
+          {
+            "key": "p2-t17", "minutes": 30, "priority": "Medium", "topics": ["git-readme", "api-http-rest"],
+            "titleEn": "README with example requests",
+            "titleAr": "ملف README مع أمثلة طلبات",
+            "descriptionEn": "Document setup, migrations and include an .http file with example requests.",
+            "descriptionAr": "وثّق الإعداد والـ Migrations، وأرفق ملف .http بأمثلة طلبات.",
+            "criteriaEn": ["Setup works on a clean machine", "Every endpoint has an example"],
+            "criteriaAr": ["يعمل الإعداد على جهاز نظيف", "لكل نقطة نهاية مثال"]
+          },
+          {
+            "key": "p2-cr1", "minutes": 45, "priority": "Medium", "topics": ["ef-schema-changes", "ef-migrations"],
+            "changeRequest": true, "unlockAt": 30,
+            "titleEn": "Change request: add a Barcode to products",
+            "titleAr": "طلب تغيير: إضافة باركود للمنتجات",
+            "descriptionEn": "The warehouse scans barcodes. Add a required, unique Barcode without breaking existing rows.",
+            "descriptionAr": "يمسح المستودع الباركود ضوئيًا. أضف Barcode مطلوبًا وفريدًا دون كسر الصفوف الموجودة.",
+            "criteriaEn": ["Migration backfills existing rows", "DTOs and validation updated", "Existing tests still pass"],
+            "criteriaAr": ["تملأ الـ Migration الصفوف الموجودة", "تم تحديث الـ DTOs والتحقق", "الاختبارات الحالية لا تزال ناجحة"]
+          },
+          {
+            "key": "p2-cr2", "minutes": 30, "priority": "Medium", "topics": ["api-filtering", "sql-indexing"],
+            "changeRequest": true, "unlockAt": 50,
+            "titleEn": "Change request: filter by category and supplier",
+            "titleAr": "طلب تغيير: التصفية حسب الفئة والمورد",
+            "descriptionEn": "Purchasing wants to see all products of a category, or supplied by a specific supplier.",
+            "descriptionAr": "يريد قسم المشتريات رؤية كل منتجات فئة ما، أو المنتجات التي يوردها مورد محدد.",
+            "criteriaEn": ["categoryId and supplierId filters work together", "Supporting index exists"],
+            "criteriaAr": ["يعمل المرشحان categoryId وsupplierId معًا", "يوجد فهرس داعم"]
+          },
+          {
+            "key": "p2-cr3", "minutes": 60, "priority": "High", "topics": ["ef-query-performance", "sql-execution-plans"],
+            "changeRequest": true, "unlockAt": 70,
+            "titleEn": "Change request: the product list is slow",
+            "titleAr": "طلب تغيير: قائمة المنتجات بطيئة",
+            "descriptionEn": "With 100,000 products the list takes 4 seconds. Find out why and fix it; document before/after timings.",
+            "descriptionAr": "مع 100,000 منتج تستغرق القائمة 4 ثوانٍ. اكتشف السبب وأصلحه، ووثّق الأزمنة قبل وبعد.",
+            "criteriaEn": ["Root cause identified from SQL/plan", "Response under 200 ms for page 1"],
+            "criteriaAr": ["تحديد السبب الجذري من SQL/الخطة", "الاستجابة أقل من 200 مللي ثانية للصفحة الأولى"]
+          },
+          {
+            "key": "p2-cr4", "minutes": 40, "priority": "Low", "topics": ["linq-advanced", "api-dtos"],
+            "changeRequest": true, "unlockAt": 85,
+            "titleEn": "Change request: low-stock report",
+            "titleAr": "طلب تغيير: تقرير المخزون المنخفض",
+            "descriptionEn": "GET /api/reports/low-stock?threshold=10 grouped by category with counts.",
+            "descriptionAr": "النقطة GET /api/reports/low-stock?threshold=10 مجمّعة حسب الفئة مع الأعداد.",
+            "criteriaEn": ["Aggregation runs in SQL", "Threshold validated (1–1000)"],
+            "criteriaAr": ["يُنفَّذ التجميع في SQL", "التحقق من الحد (1–1000)"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "project-dashboard",
+    "order": 3,
+    "titleEn": "Project Management Dashboard",
+    "titleAr": "لوحة إدارة المشاريع",
+    "summaryEn": "An Angular + TypeScript app with mock data: projects, tasks, a dashboard, forms, search and pagination. Learn Angular without backend complexity.",
+    "summaryAr": "تطبيق Angular وTypeScript ببيانات وهمية: مشاريع ومهام ولوحة معلومات ونماذج وبحث وتقسيم إلى صفحات، لتتعلم Angular دون تعقيدات الخلفية.",
+    "requirementsEn": [
+      "Project list, project detail with tasks, and a dashboard",
+      "Create and edit tasks with validated reactive forms",
+      "Update task status",
+      "Routing between screens",
+      "Search, filter, sort and paginate tasks",
+      "Reusable components, signals and RxJS where appropriate"
+    ],
+    "requirementsAr": [
+      "قائمة المشاريع، وتفاصيل المشروع مع المهام، ولوحة معلومات",
+      "إنشاء المهام وتعديلها بنماذج تفاعلية متحقق منها",
+      "تحديث حالة المهمة",
+      "التوجيه بين الشاشات",
+      "البحث في المهام وتصفيتها وترتيبها وتقسيمها إلى صفحات",
+      "مكونات قابلة لإعادة الاستخدام وSignals وRxJS حيث يناسب"
+    ],
+    "techStack": "Angular · TypeScript · Signals · RxJS · Vitest",
+    "startAfterPhase": "angular",
+    "milestones": [
+      {
+        "key": "p3-m1",
+        "titleEn": "Milestone 1 — Setup and models",
+        "titleAr": "المرحلة 1 — الإعداد والنماذج",
+        "descriptionEn": "Create the app, its structure and a mock data service.",
+        "descriptionAr": "أنشئ التطبيق وهيكله وخدمة بيانات وهمية.",
+        "tasks": [
+          {
+            "key": "p3-t1", "minutes": 30, "priority": "High", "topics": ["ng-architecture", "ng-app-organization"],
+            "titleEn": "Create the Angular app and folder structure",
+            "titleAr": "إنشاء تطبيق Angular وهيكل المجلدات",
+            "descriptionEn": "ng new with routing, then create core/, shared/ and features/ folders.",
+            "descriptionAr": "نفّذ ng new مع التوجيه، ثم أنشئ المجلدات core/ وshared/ وfeatures/.",
+            "criteriaEn": ["ng serve runs", "Structure documented in the README"],
+            "criteriaAr": ["يعمل ng serve", "الهيكل موثّق في README"]
+          },
+          {
+            "key": "p3-t2", "minutes": 30, "priority": "High", "topics": ["ts-interfaces-aliases", "ts-types-inference"],
+            "titleEn": "TypeScript models",
+            "titleAr": "نماذج TypeScript",
+            "descriptionEn": "Interfaces for Project and Task; TaskStatus as a string literal union.",
+            "descriptionAr": "Interfaces لـ Project وTask، والحالة TaskStatus كاتحاد نصوص حرفية.",
+            "criteriaEn": ["No 'any' anywhere", "Dates typed consistently"],
+            "criteriaAr": ["لا يوجد any في أي مكان", "التواريخ محددة الأنواع بشكل متسق"]
+          },
+          {
+            "key": "p3-t3", "minutes": 45, "priority": "High", "topics": ["ng-services", "ng-signals"],
+            "titleEn": "Mock data service with signals",
+            "titleAr": "خدمة بيانات وهمية باستخدام Signals",
+            "descriptionEn": "A ProjectStore service holding projects and tasks in signals with methods to change them.",
+            "descriptionAr": "خدمة ProjectStore تحمل المشاريع والمهام في Signals مع دوال لتغييرها.",
+            "criteriaEn": ["Components never mutate arrays directly", "At least 3 projects and 40 tasks of sample data"],
+            "criteriaAr": ["لا تعدّل المكونات المصفوفات مباشرة أبدًا", "3 مشاريع و40 مهمة على الأقل كبيانات تجريبية"]
+          }
+        ]
+      },
+      {
+        "key": "p3-m2",
+        "titleEn": "Milestone 2 — Screens and routing",
+        "titleAr": "المرحلة 2 — الشاشات والتوجيه",
+        "descriptionEn": "Build the main screens and navigation.",
+        "descriptionAr": "ابنِ الشاشات الرئيسية والتنقل.",
+        "tasks": [
+          {
+            "key": "p3-t4", "minutes": 40, "priority": "High", "topics": ["ng-routing"],
+            "titleEn": "Routes and navigation",
+            "titleAr": "المسارات والتنقل",
+            "descriptionEn": "Routes for /dashboard, /projects and /projects/:id, lazy-loaded, with a not-found page.",
+            "descriptionAr": "مسارات لـ /dashboard و/projects و/projects/:id بتحميل كسول، مع صفحة غير موجود.",
+            "criteriaEn": ["Refreshing a detail URL works", "Unknown URLs show the not-found page"],
+            "criteriaAr": ["تحديث عنوان صفحة التفاصيل يعمل", "العناوين غير المعروفة تعرض صفحة غير موجود"]
+          },
+          {
+            "key": "p3-t5", "minutes": 45, "priority": "High", "topics": ["ng-standalone-components", "ng-inputs-outputs"],
+            "titleEn": "Project list with reusable cards",
+            "titleAr": "قائمة المشاريع ببطاقات قابلة لإعادة الاستخدام",
+            "descriptionEn": "A ProjectCard component with inputs for the project and an output when opened.",
+            "descriptionAr": "مكون ProjectCard بمدخلات للمشروع ومخرج عند فتحه.",
+            "criteriaEn": ["ProjectCard doesn't inject any service", "Progress shown per project"],
+            "criteriaAr": ["لا يحقن ProjectCard أي خدمة", "يُعرض التقدم لكل مشروع"]
+          },
+          {
+            "key": "p3-t6", "minutes": 60, "priority": "High", "topics": ["ng-templates-binding", "ng-component-communication"],
+            "titleEn": "Task list with status updates",
+            "titleAr": "قائمة المهام مع تحديث الحالة",
+            "descriptionEn": "Show tasks of a project and let the user change status; the dashboard updates immediately.",
+            "descriptionAr": "اعرض مهام المشروع واسمح للمستخدم بتغيير الحالة، مع تحديث لوحة المعلومات فورًا.",
+            "criteriaEn": ["@for with track", "Status change reflected everywhere"],
+            "criteriaAr": ["استخدام @for مع track", "يظهر تغيير الحالة في كل مكان"]
+          },
+          {
+            "key": "p3-t7", "minutes": 45, "priority": "Medium", "topics": ["ng-signals"],
+            "titleEn": "Dashboard with computed statistics",
+            "titleAr": "لوحة معلومات بإحصائيات محسوبة",
+            "descriptionEn": "Totals per status, overdue tasks and progress per project using computed().",
+            "descriptionAr": "الإجماليات حسب الحالة، والمهام المتأخرة، والتقدم لكل مشروع باستخدام computed().",
+            "criteriaEn": ["No manual recalculation code", "Numbers match the task list"],
+            "criteriaAr": ["لا يوجد كود إعادة حساب يدوي", "الأرقام تطابق قائمة المهام"]
+          }
+        ]
+      },
+      {
+        "key": "p3-m3",
+        "titleEn": "Milestone 3 — Forms and lists",
+        "titleAr": "المرحلة 3 — النماذج والقوائم",
+        "descriptionEn": "Create and edit tasks, and make large lists manageable.",
+        "descriptionAr": "أنشئ المهام وعدّلها، واجعل القوائم الكبيرة سهلة الإدارة.",
+        "tasks": [
+          {
+            "key": "p3-t8", "minutes": 60, "priority": "High", "topics": ["ng-reactive-forms"],
+            "titleEn": "Create/edit task form with validation",
+            "titleAr": "نموذج إنشاء/تعديل المهمة مع التحقق",
+            "descriptionEn": "One reactive form for create and edit: title (required, max 120), status, due date, assignee.",
+            "descriptionAr": "نموذج تفاعلي واحد للإنشاء والتعديل: العنوان (مطلوب، 120 حرفًا كحد أقصى)، والحالة، وتاريخ الاستحقاق، والمسؤول.",
+            "criteriaEn": ["Errors shown after touch or submit", "Edit mode pre-fills values"],
+            "criteriaAr": ["تظهر الأخطاء بعد لمس الحقل أو الإرسال", "وضع التعديل يملأ القيم مسبقًا"]
+          },
+          {
+            "key": "p3-t9", "minutes": 45, "priority": "High", "topics": ["ng-rxjs", "ng-search-pagination"],
+            "titleEn": "Search, filter and sort tasks",
+            "titleAr": "البحث في المهام وتصفيتها وترتيبها",
+            "descriptionEn": "Debounced search box, status filter and sortable columns.",
+            "descriptionAr": "مربع بحث مؤجَّل، ومرشح للحالة، وأعمدة قابلة للترتيب.",
+            "criteriaEn": ["Search waits 300 ms after typing", "Filters combine"],
+            "criteriaAr": ["ينتظر البحث 300 مللي ثانية بعد الكتابة", "تتجمع المرشحات"]
+          },
+          {
+            "key": "p3-t10", "minutes": 30, "priority": "Medium", "topics": ["ng-search-pagination"],
+            "titleEn": "Pagination",
+            "titleAr": "التقسيم إلى صفحات",
+            "descriptionEn": "Paginate the task list (10/20/50 per page) and reset to page 1 when filters change.",
+            "descriptionAr": "قسّم قائمة المهام إلى صفحات (10/20/50 لكل صفحة) وعُد إلى الصفحة الأولى عند تغيّر المرشحات.",
+            "criteriaEn": ["Shows 'x–y of total'", "Prev/Next disabled at the edges"],
+            "criteriaAr": ["يعرض النطاق من x إلى y من الإجمالي", "زرا السابق/التالي معطّلان عند الحدود"]
+          },
+          {
+            "key": "p3-t11", "minutes": 30, "priority": "Medium", "topics": ["ng-loading-error-states", "ng-reusable-components"],
+            "titleEn": "Loading, empty and error states",
+            "titleAr": "حالات التحميل والفراغ والخطأ",
+            "descriptionEn": "Simulate latency in the mock service and add skeleton, empty and error states.",
+            "descriptionAr": "حاكِ التأخير في الخدمة الوهمية، وأضف حالات الهيكل والفراغ والخطأ.",
+            "criteriaEn": ["Every list has an empty state", "Errors offer a retry"],
+            "criteriaAr": ["لكل قائمة حالة فراغ", "تعرض الأخطاء إعادة المحاولة"]
+          }
+        ]
+      },
+      {
+        "key": "p3-m4",
+        "titleEn": "Milestone 4 — Quality and change requests",
+        "titleAr": "المرحلة 4 — الجودة وطلبات التغيير",
+        "descriptionEn": "Tests, documentation and stakeholder change requests.",
+        "descriptionAr": "الاختبارات والتوثيق وطلبات التغيير من أصحاب المصلحة.",
+        "tasks": [
+          {
+            "key": "p3-t12", "minutes": 45, "priority": "Medium", "topics": ["test-angular-components"],
+            "titleEn": "Component tests",
+            "titleAr": "اختبارات المكونات",
+            "descriptionEn": "Test ProjectCard rendering and the task form validation.",
+            "descriptionAr": "اختبر عرض ProjectCard والتحقق في نموذج المهمة.",
+            "criteriaEn": ["ng test is green", "Tests assert on rendered text, not internals"],
+            "criteriaAr": ["نتيجة ng test ناجحة", "تتحقق الاختبارات من النص المعروض لا التفاصيل الداخلية"]
+          },
+          {
+            "key": "p3-t13", "minutes": 30, "priority": "Medium", "topics": ["test-angular-services"],
+            "titleEn": "Service tests",
+            "titleAr": "اختبارات الخدمات",
+            "descriptionEn": "Test ProjectStore: adding a task, changing status and computed progress.",
+            "descriptionAr": "اختبر ProjectStore: إضافة مهمة، وتغيير الحالة، والتقدم المحسوب.",
+            "criteriaEn": ["Covers at least 5 behaviours"],
+            "criteriaAr": ["تغطي 5 سلوكيات على الأقل"]
+          },
+          {
+            "key": "p3-t14", "minutes": 30, "priority": "Medium", "topics": ["git-readme"],
+            "titleEn": "README and screenshots",
+            "titleAr": "ملف README ولقطات الشاشة",
+            "descriptionEn": "Document features and add screenshots of the dashboard and task list.",
+            "descriptionAr": "وثّق الميزات وأضف لقطات شاشة للوحة المعلومات وقائمة المهام.",
+            "criteriaEn": ["Screenshots in docs/screenshots", "Run instructions verified"],
+            "criteriaAr": ["لقطات الشاشة في docs/screenshots", "تعليمات التشغيل متحقق منها"]
+          },
+          {
+            "key": "p3-cr1", "minutes": 30, "priority": "High", "topics": ["ng-reactive-forms", "pro-debugging"],
+            "changeRequest": true, "unlockAt": 40,
+            "titleEn": "Bug report: due date before start date is accepted",
+            "titleAr": "بلاغ خطأ: يُقبل تاريخ استحقاق قبل تاريخ البدء",
+            "descriptionEn": "A user saved a task due before it starts. Add a start date and a cross-field validator.",
+            "descriptionAr": "حفظ مستخدم مهمة يحين موعدها قبل بدئها. أضف تاريخ بدء ومتحققًا بين الحقلين.",
+            "criteriaEn": ["The error appears on the due date field", "A test reproduces the original bug"],
+            "criteriaAr": ["يظهر الخطأ على حقل تاريخ الاستحقاق", "يوجد اختبار يعيد إنتاج الخطأ الأصلي"]
+          },
+          {
+            "key": "p3-cr2", "minutes": 45, "priority": "Medium", "topics": ["ts-interfaces-aliases", "ng-search-pagination"],
+            "changeRequest": true, "unlockAt": 60,
+            "titleEn": "Change request: task priority",
+            "titleAr": "طلب تغيير: أولوية المهمة",
+            "descriptionEn": "Add a priority (Low/Medium/High) to tasks, show it as a badge and allow filtering by it.",
+            "descriptionAr": "أضف أولوية (منخفضة/متوسطة/عالية) للمهام، واعرضها كشارة، واسمح بالتصفية حسبها.",
+            "criteriaEn": ["Existing sample data gets a default priority", "Filter combines with the others"],
+            "criteriaAr": ["البيانات التجريبية الموجودة تحصل على أولوية افتراضية", "يتجمع المرشح مع المرشحات الأخرى"]
+          },
+          {
+            "key": "p3-cr3", "minutes": 60, "priority": "Medium", "topics": ["ng-signals", "ng-templates-binding", "pro-performance"],
+            "changeRequest": true, "unlockAt": 80,
+            "titleEn": "Change request: dashboard is slow with 2,000 tasks",
+            "titleAr": "طلب تغيير: لوحة المعلومات بطيئة مع 2000 مهمة",
+            "descriptionEn": "Generate 2,000 tasks, profile the dashboard with DevTools and fix what makes it slow.",
+            "descriptionAr": "أنشئ 2000 مهمة، وحلّل أداء لوحة المعلومات بأدوات المطورين، وأصلح ما يجعلها بطيئة.",
+            "criteriaEn": ["Profiling evidence before and after", "Typing in search stays responsive"],
+            "criteriaAr": ["أدلة تحليل الأداء قبل وبعد", "تبقى الكتابة في البحث سريعة الاستجابة"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "sales-order-management",
+    "order": 4,
+    "titleEn": "Sales and Order Management System",
+    "titleAr": "نظام إدارة المبيعات والطلبات",
+    "summaryEn": "Your main portfolio project: a full-stack Angular + ASP.NET Core + EF Core + SQL Server system with realistic business rules.",
+    "summaryAr": "مشروعك الرئيسي في معرض الأعمال: نظام متكامل بـ Angular وASP.NET Core وEF Core وSQL Server بقواعد عمل واقعية.",
+    "requirementsEn": [
+      "Customers, products, categories, orders and order items",
+      "The API calculates order totals — it never trusts totals from the browser",
+      "Orders can't contain invalid products, and inventory is never reduced incorrectly",
+      "Order status changes are validated against the current state",
+      "Concurrent updates are detected (409 Conflict)",
+      "Search, filtering, pagination and a sales dashboard",
+      "Authentication and role-based authorization fundamentals",
+      "Logging, error handling and automated tests",
+      "No payment processing or real financial services"
+    ],
+    "requirementsAr": [
+      "العملاء والمنتجات والفئات والطلبات وعناصر الطلبات",
+      "يحسب الـ API إجماليات الطلبات ولا يثق أبدًا بالإجماليات القادمة من المتصفح",
+      "لا يمكن أن تحتوي الطلبات على منتجات غير صالحة، ولا يُنقص المخزون بشكل خاطئ أبدًا",
+      "تُتحقق تغييرات حالة الطلب مقابل الحالة الحالية",
+      "اكتشاف التحديثات المتزامنة (409 Conflict)",
+      "البحث والتصفية والتقسيم إلى صفحات ولوحة مبيعات",
+      "أساسيات المصادقة والتفويض القائم على الأدوار",
+      "التسجيل ومعالجة الأخطاء والاختبارات الآلية",
+      "دون معالجة مدفوعات أو خدمات مالية حقيقية"
+    ],
+    "techStack": "Angular · ASP.NET Core · EF Core · SQL Server · xUnit · Vitest",
+    "startAfterPhase": "full-stack-integration",
+    "milestones": [
+      {
+        "key": "p4-m1",
+        "titleEn": "Milestone 1 — Domain and database",
+        "titleAr": "المرحلة 1 — المجال وقاعدة البيانات",
+        "descriptionEn": "Model the sales domain and create a well-constrained SQL Server schema.",
+        "descriptionAr": "نمذج مجال المبيعات وأنشئ مخطط SQL Server بقيود سليمة.",
+        "tasks": [
+          {
+            "key": "p4-t1", "minutes": 40, "priority": "High", "topics": ["git-repo-organization", "fs-connect-angular-api"],
+            "titleEn": "Repository and solution structure",
+            "titleAr": "هيكل المستودع والـ Solution",
+            "descriptionEn": "backend/ (API + tests) and frontend/ (Angular) in one repository with a .gitignore and README skeleton.",
+            "descriptionAr": "المجلدان backend/ (الـ API والاختبارات) وfrontend/ (Angular) في مستودع واحد مع .gitignore وهيكل README.",
+            "criteriaEn": ["Both apps start", "Angular can call a health endpoint (CORS configured)"],
+            "criteriaAr": ["يعمل التطبيقان", "يستطيع Angular استدعاء نقطة الصحة (مع ضبط CORS)"]
+          },
+          {
+            "key": "p4-t2", "minutes": 60, "priority": "High", "topics": ["ef-entities", "ef-relationships", "oop-object-modeling"],
+            "titleEn": "Entities: Customer, Category, Product, Order, OrderItem",
+            "titleAr": "الكيانات: Customer وCategory وProduct وOrder وOrderItem",
+            "descriptionEn": "Order owns its items; OrderItem stores the unit price at the time of ordering.",
+            "descriptionAr": "يملك الطلب عناصره، ويخزن OrderItem سعر الوحدة وقت الطلب.",
+            "criteriaEn": ["Changing a product price doesn't change past orders", "Relationships and delete behaviours justified"],
+            "criteriaAr": ["تغيير سعر المنتج لا يغيّر الطلبات السابقة", "العلاقات وسلوك الحذف مبرّرة"]
+          },
+          {
+            "key": "p4-t3", "minutes": 45, "priority": "High", "topics": ["sql-indexing", "ef-concurrency", "ef-entities"],
+            "titleEn": "Constraints, indexes and rowversion",
+            "titleAr": "القيود والفهارس وrowversion",
+            "descriptionEn": "Check constraints (quantity > 0, stock >= 0), indexes for list screens and a rowversion on Order and Product.",
+            "descriptionAr": "قيود CHECK (الكمية > 0، والمخزون >= 0)، وفهارس لشاشات القوائم، وrowversion على Order وProduct.",
+            "criteriaEn": ["Constraints exist in the database, not only in C#", "Indexes match the planned queries"],
+            "criteriaAr": ["القيود موجودة في قاعدة البيانات وليس في C# فقط", "الفهارس تطابق الاستعلامات المخططة"]
+          },
+          {
+            "key": "p4-t4", "minutes": 40, "priority": "Medium", "topics": ["ef-migrations", "ef-schema-changes"],
+            "titleEn": "Migration and demo seed data",
+            "titleAr": "الـ Migration وبيانات العرض التجريبية",
+            "descriptionEn": "Initial migration plus an idempotent seed of categories, products and customers.",
+            "descriptionAr": "Migration أولية مع تعبئة Idempotent للفئات والمنتجات والعملاء.",
+            "criteriaEn": ["Running the seed twice creates no duplicates"],
+            "criteriaAr": ["تشغيل التعبئة مرتين لا ينشئ تكرارات"]
+          }
+        ]
+      },
+      {
+        "key": "p4-m2",
+        "titleEn": "Milestone 2 — Ordering API and business rules",
+        "titleAr": "المرحلة 2 — واجهة الطلبات وقواعد العمل",
+        "descriptionEn": "The heart of the system: placing and managing orders safely.",
+        "descriptionAr": "قلب النظام: تقديم الطلبات وإدارتها بأمان.",
+        "tasks": [
+          {
+            "key": "p4-t5", "minutes": 60, "priority": "High", "topics": ["api-pagination", "api-filtering", "api-sorting"],
+            "titleEn": "Customers and products endpoints",
+            "titleAr": "نقاط نهاية العملاء والمنتجات",
+            "descriptionEn": "Paged, searchable and sortable list endpoints plus CRUD for customers and products.",
+            "descriptionAr": "نقاط قوائم مقسّمة إلى صفحات وقابلة للبحث والترتيب، مع CRUD للعملاء والمنتجات.",
+            "criteriaEn": ["PagedResult contract shared with Angular", "Projection to DTOs"],
+            "criteriaAr": ["عقد PagedResult مشترك مع Angular", "التحويل إلى DTOs"]
+          },
+          {
+            "key": "p4-t6", "minutes": 90, "priority": "High", "topics": ["fs-api-contracts", "api-validation", "ef-transactions"],
+            "titleEn": "Place order with server-calculated totals",
+            "titleAr": "تقديم الطلب مع إجماليات يحسبها الخادم",
+            "descriptionEn": "POST /api/orders receives customerId and lines (productId, quantity) only; prices and totals come from the database.",
+            "descriptionAr": "تستقبل POST /api/orders المعرف customerId والأسطر (productId وquantity) فقط، وتأتي الأسعار والإجماليات من قاعدة البيانات.",
+            "criteriaEn": ["Unknown or inactive product → 400 with the line index", "Any 'total' sent by the client is ignored", "Duplicate product lines are merged or rejected consistently"],
+            "criteriaAr": ["المنتج غير الموجود أو غير النشط ← 400 مع رقم السطر", "يُتجاهل أي إجمالي يرسله العميل", "تُدمج أسطر المنتجات المكررة أو تُرفض بشكل متسق"]
+          },
+          {
+            "key": "p4-t7", "minutes": 60, "priority": "High", "topics": ["sql-concurrency", "ef-transactions"],
+            "titleEn": "Inventory reduction in the same transaction",
+            "titleAr": "خفض المخزون في المعاملة نفسها",
+            "descriptionEn": "Placing an order reduces stock atomically; if any line lacks stock, nothing is saved.",
+            "descriptionAr": "يُنقص تقديم الطلب المخزون بشكل ذري، وإذا نقص المخزون في أي سطر لا يُحفظ شيء.",
+            "criteriaEn": ["Out of stock → 409 'out_of_stock' and no partial order", "Parallel orders can't oversell"],
+            "criteriaAr": ["نفاد المخزون ← 409 بالرمز out_of_stock دون طلب جزئي", "الطلبات المتوازية لا تبيع أكثر من المتاح"]
+          },
+          {
+            "key": "p4-t8", "minutes": 45, "priority": "High", "topics": ["cs-pattern-matching", "api-status-codes"],
+            "titleEn": "Order status transitions",
+            "titleAr": "انتقالات حالة الطلب",
+            "descriptionEn": "Draft → Submitted → Shipped → Delivered, and Submitted → Cancelled. Invalid transitions return 409.",
+            "descriptionAr": "Draft ← Submitted ← Shipped ← Delivered، وSubmitted ← Cancelled. والانتقالات غير الصالحة تُرجع 409.",
+            "criteriaEn": ["Rule lives in one place and is unit-tested", "The API returns allowed next statuses for the UI"],
+            "criteriaAr": ["القاعدة في مكان واحد ومختبرة باختبارات وحدة", "يُرجع الـ API الحالات التالية المسموحة للواجهة"]
+          },
+          {
+            "key": "p4-t9", "minutes": 45, "priority": "Medium", "topics": ["ef-concurrency", "fs-concurrent-updates"],
+            "titleEn": "Detect concurrent updates",
+            "titleAr": "اكتشاف التحديثات المتزامنة",
+            "descriptionEn": "Order updates require the rowVersion the client saw; stale updates return 409 'concurrency_conflict'.",
+            "descriptionAr": "تتطلب تحديثات الطلب قيمة rowVersion التي رآها العميل، والتحديثات القديمة تُرجع 409 بالرمز concurrency_conflict.",
+            "criteriaEn": ["Two-tab scenario demonstrated", "Integration test asserts the 409"],
+            "criteriaAr": ["سيناريو التبويبين مُثبت", "اختبار تكامل يتحقق من 409"]
+          }
+        ]
+      },
+      {
+        "key": "p4-m3",
+        "titleEn": "Milestone 3 — Angular UI",
+        "titleAr": "المرحلة 3 — واجهة Angular",
+        "descriptionEn": "A clean, responsive frontend for daily sales work.",
+        "descriptionAr": "واجهة نظيفة ومتجاوبة للعمل اليومي في المبيعات.",
+        "tasks": [
+          {
+            "key": "p4-t10", "minutes": 60, "priority": "High", "topics": ["ng-routing", "ng-http-client", "fs-connect-angular-api"],
+            "titleEn": "App shell, routing and API services",
+            "titleAr": "هيكل التطبيق والتوجيه وخدمات الـ API",
+            "descriptionEn": "Sidebar layout, lazy routes for customers, products, orders and dashboard, and typed API services.",
+            "descriptionAr": "تخطيط بشريط جانبي، ومسارات كسولة للعملاء والمنتجات والطلبات ولوحة المعلومات، وخدمات API محددة الأنواع.",
+            "criteriaEn": ["No HttpClient calls inside components", "Base URL configured in one place"],
+            "criteriaAr": ["لا توجد استدعاءات HttpClient داخل المكونات", "العنوان الأساسي مضبوط في مكان واحد"]
+          },
+          {
+            "key": "p4-t11", "minutes": 75, "priority": "High", "topics": ["fs-pagination", "fs-search-filtering", "ng-tables-forms"],
+            "titleEn": "Products and customers tables",
+            "titleAr": "جداول المنتجات والعملاء",
+            "descriptionEn": "Server-side search, filters and paging with create/edit forms and delete confirmation.",
+            "descriptionAr": "بحث وتصفية وتقسيم إلى صفحات على الخادم، مع نماذج إنشاء/تعديل وتأكيد للحذف.",
+            "criteriaEn": ["Filters in the URL", "Deleting the last row of a page behaves correctly"],
+            "criteriaAr": ["المرشحات في العنوان", "حذف آخر صف في صفحة يتصرف بشكل صحيح"]
+          },
+          {
+            "key": "p4-t12", "minutes": 90, "priority": "High", "topics": ["ng-reactive-forms", "fs-form-validation"],
+            "titleEn": "Order form with dynamic lines",
+            "titleAr": "نموذج الطلب بأسطر ديناميكية",
+            "descriptionEn": "FormArray of lines, product picker, quantity validation and a display-only estimated total.",
+            "descriptionAr": "FormArray للأسطر، ومنتقي المنتجات، والتحقق من الكمية، وإجمالي تقديري للعرض فقط.",
+            "criteriaEn": ["Server validation errors shown on the right line", "The saved total shown comes from the API response"],
+            "criteriaAr": ["تظهر أخطاء تحقق الخادم على السطر الصحيح", "الإجمالي المحفوظ المعروض يأتي من استجابة الـ API"]
+          },
+          {
+            "key": "p4-t13", "minutes": 45, "priority": "Medium", "topics": ["fs-error-handling", "fs-loading-states"],
+            "titleEn": "Error handling and loading states",
+            "titleAr": "معالجة الأخطاء وحالات التحميل",
+            "descriptionEn": "An HTTP error interceptor, toasts for 409/5xx, offline detection and loading skeletons.",
+            "descriptionAr": "Interceptor لأخطاء HTTP، وتنبيهات للرموز 409/5xx، واكتشاف انقطاع الاتصال، وهياكل التحميل.",
+            "criteriaEn": ["Stopping the API shows a friendly message", "Double-submitting an order is impossible"],
+            "criteriaAr": ["إيقاف الـ API يعرض رسالة ودية", "يستحيل إرسال الطلب مرتين"]
+          },
+          {
+            "key": "p4-t14", "minutes": 75, "priority": "Medium", "topics": ["linq-advanced", "sql-data-access-design"],
+            "titleEn": "Sales dashboard",
+            "titleAr": "لوحة المبيعات",
+            "descriptionEn": "Revenue by month, top products and orders by status, aggregated on the server.",
+            "descriptionAr": "الإيرادات حسب الشهر، وأفضل المنتجات، والطلبات حسب الحالة، مجمّعة على الخادم.",
+            "criteriaEn": ["One request per widget at most", "Aggregation runs in SQL"],
+            "criteriaAr": ["طلب واحد لكل عنصر كحد أقصى", "يُنفَّذ التجميع في SQL"]
+          }
+        ]
+      },
+      {
+        "key": "p4-m4",
+        "titleEn": "Milestone 4 — Security, testing and polish",
+        "titleAr": "المرحلة 4 — الأمان والاختبار والصقل",
+        "descriptionEn": "Make it trustworthy and presentable — then handle change requests.",
+        "descriptionAr": "اجعله جديرًا بالثقة وقابلًا للعرض، ثم تعامل مع طلبات التغيير.",
+        "tasks": [
+          {
+            "key": "p4-t15", "minutes": 90, "priority": "High", "topics": ["api-authentication", "fs-auth-flow"],
+            "titleEn": "Authentication with a demo user",
+            "titleAr": "المصادقة بمستخدم تجريبي",
+            "descriptionEn": "A login endpoint issuing a JWT for seeded demo users; Angular login page, interceptor and guard.",
+            "descriptionAr": "نقطة نهاية لتسجيل الدخول تصدر JWT لمستخدمين تجريبيين، مع صفحة دخول وInterceptor وGuard في Angular.",
+            "criteriaEn": ["Signing key in user secrets", "Requests without a token get 401"],
+            "criteriaAr": ["مفتاح التوقيع في User secrets", "الطلبات بدون رمز تحصل على 401"]
+          },
+          {
+            "key": "p4-t16", "minutes": 45, "priority": "High", "topics": ["api-authorization"],
+            "titleEn": "Role-based authorization",
+            "titleAr": "التفويض القائم على الأدوار",
+            "descriptionEn": "Sales users create orders; only Managers can ship or cancel submitted orders.",
+            "descriptionAr": "يُنشئ مستخدمو المبيعات الطلبات، والمديرون فقط يستطيعون شحن الطلبات المقدمة أو إلغاءها.",
+            "criteriaEn": ["403 for forbidden actions", "The UI hides actions the user can't perform"],
+            "criteriaAr": ["403 للإجراءات الممنوعة", "تخفي الواجهة الإجراءات التي لا يستطيع المستخدم تنفيذها"]
+          },
+          {
+            "key": "p4-t17", "minutes": 60, "priority": "High", "topics": ["test-business-logic", "test-unit-csharp"],
+            "titleEn": "Unit tests for totals and transitions",
+            "titleAr": "اختبارات وحدة للإجماليات والانتقالات",
+            "descriptionEn": "Test total calculation, rounding and every status transition.",
+            "descriptionAr": "اختبر حساب الإجمالي والتقريب وكل انتقال للحالة.",
+            "criteriaEn": ["All transitions covered with [Theory]", "Rounding rule documented in a test name"],
+            "criteriaAr": ["كل الانتقالات مغطاة بـ [Theory]", "قاعدة التقريب موثقة في اسم اختبار"]
+          },
+          {
+            "key": "p4-t18", "minutes": 75, "priority": "High", "topics": ["test-api", "test-integration", "test-angular-components"],
+            "titleEn": "API, integration and component tests",
+            "titleAr": "اختبارات الـ API والتكامل والمكونات",
+            "descriptionEn": "Order endpoints via WebApplicationFactory, stock reduction integration test and order form component tests.",
+            "descriptionAr": "نقاط نهاية الطلبات عبر WebApplicationFactory، واختبار تكامل لخفض المخزون، واختبارات مكون نموذج الطلب.",
+            "criteriaEn": ["dotnet test and ng test both green", "Tests run without your dev database"],
+            "criteriaAr": ["نتيجتا dotnet test وng test ناجحتان", "تعمل الاختبارات دون قاعدة بيانات التطوير"]
+          },
+          {
+            "key": "p4-t19", "minutes": 40, "priority": "Medium", "topics": ["api-logging", "pro-logging-diagnostics"],
+            "titleEn": "Logging and diagnostics",
+            "titleAr": "التسجيل والتشخيص",
+            "descriptionEn": "Structured logs for order events with OrderId, traceId in error responses, and slow-request warnings.",
+            "descriptionAr": "سجلات منظمة لأحداث الطلبات مع OrderId، وtraceId في استجابات الأخطاء، وتحذيرات للطلبات البطيئة.",
+            "criteriaEn": ["You can answer 'what happened to order 42?' from the logs"],
+            "criteriaAr": ["تستطيع الإجابة عن سؤال: ماذا حدث للطلب 42؟ من السجلات"]
+          },
+          {
+            "key": "p4-t20", "minutes": 60, "priority": "Medium", "topics": ["git-readme", "pro-deployment", "git-portfolio-hygiene"],
+            "titleEn": "README, screenshots and local publishing",
+            "titleAr": "ملف README ولقطات الشاشة والنشر المحلي",
+            "descriptionEn": "Complete the portfolio checklist and document how to publish the app locally.",
+            "descriptionAr": "أكمل قائمة تحقق معرض الأعمال، ووثّق كيفية نشر التطبيق محليًا.",
+            "criteriaEn": ["All portfolio checklist items done", "Known limitations listed honestly"],
+            "criteriaAr": ["كل بنود قائمة تحقق معرض الأعمال منجزة", "القيود المعروفة مذكورة بصدق"]
+          },
+          {
+            "key": "p4-cr1", "minutes": 75, "priority": "Medium", "topics": ["api-validation", "test-business-logic"],
+            "changeRequest": true, "unlockAt": 30,
+            "titleEn": "Change request: discount codes",
+            "titleAr": "طلب تغيير: رموز الخصم",
+            "descriptionEn": "Marketing wants percentage discount codes with an expiry date. The server validates codes and applies the discount.",
+            "descriptionAr": "يريد التسويق رموز خصم بنسبة مئوية مع تاريخ انتهاء، ويتحقق الخادم من الرموز ويطبّق الخصم.",
+            "criteriaEn": ["Expired or unknown codes → 400", "Discount never makes a total negative", "Existing totals tests still pass"],
+            "criteriaAr": ["الرموز المنتهية أو غير المعروفة ← 400", "لا يجعل الخصم الإجمالي سالبًا أبدًا", "اختبارات الإجماليات الحالية لا تزال ناجحة"]
+          },
+          {
+            "key": "p4-cr2", "minutes": 60, "priority": "High", "topics": ["cs-pattern-matching", "ef-transactions"],
+            "changeRequest": true, "unlockAt": 50,
+            "titleEn": "Change request: restock on cancellation",
+            "titleAr": "طلب تغيير: إعادة المخزون عند الإلغاء",
+            "descriptionEn": "Cancelling a submitted order must return its quantities to stock; delivered orders can never be cancelled.",
+            "descriptionAr": "يجب أن يعيد إلغاء الطلب المقدَّم كمياته إلى المخزون، ولا يمكن إلغاء الطلبات المسلّمة أبدًا.",
+            "criteriaEn": ["Status change and restock in one transaction", "Cancelling twice doesn't restock twice"],
+            "criteriaAr": ["تغيير الحالة وإعادة المخزون في معاملة واحدة", "الإلغاء مرتين لا يعيد المخزون مرتين"]
+          },
+          {
+            "key": "p4-cr3", "minutes": 60, "priority": "High", "topics": ["ef-query-performance", "api-pagination", "ef-n-plus-one"],
+            "changeRequest": true, "unlockAt": 60,
+            "titleEn": "Incident: the orders endpoint returns thousands of records",
+            "titleAr": "حادثة: نقطة نهاية الطلبات تُرجع آلاف السجلات",
+            "descriptionEn": "The orders page takes 6 seconds and the response is 9 MB. Investigate and fix with paging and projection.",
+            "descriptionAr": "تستغرق صفحة الطلبات 6 ثوانٍ وحجم الاستجابة 9 ميجابايت. حقّق وأصلح بالتقسيم إلى صفحات والتحويل.",
+            "criteriaEn": ["Response under 50 KB per page", "Number of SQL queries per request documented before/after"],
+            "criteriaAr": ["الاستجابة أقل من 50 كيلوبايت لكل صفحة", "توثيق عدد استعلامات SQL لكل طلب قبل وبعد"]
+          },
+          {
+            "key": "p4-cr4", "minutes": 30, "priority": "Medium", "topics": ["fs-form-validation", "pro-debugging"],
+            "changeRequest": true, "unlockAt": 70,
+            "titleEn": "Bug report: quantity error isn't displayed",
+            "titleAr": "بلاغ خطأ: خطأ الكمية لا يظهر",
+            "descriptionEn": "When the API rejects a line quantity, the order form shows nothing. Find the mismatch and fix it.",
+            "descriptionAr": "عندما يرفض الـ API كمية سطر ما، لا يعرض نموذج الطلب شيئًا. اكتشف عدم التطابق وأصلحه.",
+            "criteriaEn": ["Error shown next to the right line", "A component test covers it"],
+            "criteriaAr": ["يظهر الخطأ بجوار السطر الصحيح", "يغطيه اختبار مكون"]
+          },
+          {
+            "key": "p4-cr5", "minutes": 60, "priority": "Low", "topics": ["sql-data-access-design", "linq-advanced"],
+            "changeRequest": true, "unlockAt": 85,
+            "titleEn": "Change request: monthly sales CSV export",
+            "titleAr": "طلب تغيير: تصدير المبيعات الشهرية إلى CSV",
+            "descriptionEn": "Finance needs a CSV of monthly sales per category, downloadable from the dashboard.",
+            "descriptionAr": "يحتاج قسم المالية إلى ملف CSV للمبيعات الشهرية لكل فئة، قابل للتنزيل من لوحة المعلومات.",
+            "criteriaEn": ["Correct Content-Type and file name", "Large months stream without loading everything in memory"],
+            "criteriaAr": ["Content-Type واسم ملف صحيحان", "الأشهر الكبيرة تُرسل تدفقيًا دون تحميل كل شيء في الذاكرة"]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,70 @@
+using System.Linq.Expressions;
+using DevPath.Api.Data;
+using DevPath.Api.DTOs;
+using DevPath.Api.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace DevPath.Api.Services;
+
+public class InterviewService(AppDbContext db, TimeProvider clock)
+{
+    private static readonly Expression<Func<InterviewQuestion, InterviewQuestionDto>> Projection = q => new InterviewQuestionDto(
+        q.Id, q.Key, q.Category, q.TopicId, q.Topic.TitleEn, q.Topic.TitleAr, q.Difficulty,
+        q.QuestionEn, q.QuestionAr, q.AnswerEn, q.AnswerAr, q.ExampleCode, q.FollowUpEn, q.FollowUpAr,
+        q.Progress != null ? q.Progress.Rating : null,
+        q.Progress != null ? q.Progress.TimesPracticed : 0,
+        q.Progress != null ? q.Progress.LastPracticedAt : null);
+
+    public async Task<InterviewListDto> ListAsync(InterviewCategory? category, int? topicId, string? rating, CancellationToken ct)
+    {
+        // Enums are stored as strings, so ORDER BY in SQL would sort them alphabetically
+        // ("Advanced" before "Beginner"). Sorting in memory uses the enum's declared order.
+        var all = (await db.InterviewQuestions.AsNoTracking().Select(Projection).ToListAsync(ct))
+            .OrderBy(q => q.Category).ThenBy(q => q.Difficulty).ThenBy(q => q.Id)
+            .ToList();
+
+        var stats = Enum.GetValues<InterviewCategory>()
+            .Select(c => all.Where(q => q.Category == c).ToList())
+            .Where(list => list.Count > 0)
+            .Select(list => new InterviewCategoryStatsDto(list[0].Category, list.Count,
+                list.Count(q => q.Rating == InterviewRating.Confident),
+                list.Count(q => q.Rating == InterviewRating.Partial),
+                list.Count(q => q.Rating == InterviewRating.NeedReview)))
+            .ToList();
+
+        var filtered = all
+            .Where(q => category == null || q.Category == category)
+            .Where(q => topicId == null || q.TopicId == topicId)
+            .Where(q => rating switch
+            {
+                null or "" => true,
+                "unrated" => q.Rating == null,
+                _ => Enum.TryParse<InterviewRating>(rating, true, out var r) && q.Rating == r
+            })
+            .ToList();
+
+        return new InterviewListDto(filtered, stats);
+    }
+
+    public async Task<InterviewQuestionDto> GetAsync(int id, CancellationToken ct) =>
+        await db.InterviewQuestions.AsNoTracking().Where(q => q.Id == id).Select(Projection).SingleOrDefaultAsync(ct)
+        ?? throw new NotFoundException("InterviewQuestion", id);
+
+    public async Task<InterviewQuestionDto> RateAsync(int id, InterviewRating rating, CancellationToken ct)
+    {
+        if (!await db.InterviewQuestions.AnyAsync(q => q.Id == id, ct)) throw new NotFoundException("InterviewQuestion", id);
+
+        var progress = await db.InterviewProgress.FindAsync([id], ct);
+        if (progress is null)
+        {
+            progress = new InterviewProgress { QuestionId = id };
+            db.InterviewProgress.Add(progress);
+        }
+        progress.Rating = rating;
+        progress.TimesPracticed++;
+        progress.LastPracticedAt = clock.GetUtcNow().UtcDateTime;
+        await db.SaveChangesAsync(ct);
+
+        return await GetAsync(id, ct);
+    }
+}

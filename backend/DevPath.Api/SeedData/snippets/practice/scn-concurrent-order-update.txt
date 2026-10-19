@@ -1,0 +1,6 @@
+10:00  Omar opens order #42        (address = "Old St.", status = Submitted)
+10:05  Sara opens order #42        (address = "Old St.")
+10:06  Sara saves address = "New St."         → UPDATE ... SET Address = 'New St.'
+10:10  Omar saves status = Shipped, and his form still contains address = "Old St."
+                                               → UPDATE ... SET Address = 'Old St.', Status = 'Shipped'
+Result: Sara's change is silently lost.

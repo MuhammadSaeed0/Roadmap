@@ -1,0 +1,12 @@
+Feature: "Customers can filter orders by date range"
+
+1. API: add from/to query parameters to GET /api/orders            (45 min)
+   ✓ from > to returns 400 with a clear message
+   ✓ dates are inclusive and interpreted in UTC
+2. DB: index on Orders(CustomerId, OrderDate)                        (20 min)
+   ✓ migration reviewed; plan uses an index seek
+3. UI: two date inputs in the orders toolbar                         (60 min)
+   ✓ changing a date resets to page 1
+   ✓ filters stored in the URL query string
+4. Tests: API tests for valid range, invalid range, empty result      (40 min)
+Unknown to investigate first: which time zone do users expect?

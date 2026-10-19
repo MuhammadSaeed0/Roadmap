@@ -1,0 +1,20 @@
+src/app/
+├── core/                 # singletons used everywhere
+│   ├── api.service.ts
+│   ├── i18n/
+│   └── theme.service.ts
+├── shared/               # reusable, API-agnostic UI
+│   ├── progress-ring.component.ts
+│   ├── empty-state.component.ts
+│   └── confirm-dialog.component.ts
+├── layout/
+│   └── shell.component.ts
+├── features/             # one folder per feature, lazy-loaded
+│   ├── products/
+│   │   ├── product-list.page.ts
+│   │   └── product-form.component.ts
+│   └── orders/
+├── app.routes.ts
+└── app.config.ts
+
+Rule: features import from core/ and shared/, never from each other.

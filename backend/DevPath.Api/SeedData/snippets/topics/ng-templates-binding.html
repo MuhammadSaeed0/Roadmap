@@ -1,0 +1,22 @@
+<!-- Interpolation, property binding and event binding -->
+<h2>{{ title() }}</h2>
+<button type="button" [disabled]="saving()" (click)="save()">Save</button>
+<input [value]="query()" (input)="query.set($any($event.target).value)" />
+
+<!-- Built-in control flow -->
+@if (loading()) {
+  <app-skeleton />
+} @else if (products().length === 0) {
+  <p>No products yet.</p>
+} @else {
+  <ul>
+    @for (p of products(); track p.id) {
+      <li [class.low]="p.stock < 5">{{ p.name }} — {{ p.stock }}</li>
+    }
+  </ul>
+}
+
+@switch (status()) {
+  @case ('Completed') { <span>Done</span> }
+  @default { <span>In progress</span> }
+}

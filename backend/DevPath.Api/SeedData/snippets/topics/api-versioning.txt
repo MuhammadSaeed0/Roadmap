@@ -1,0 +1,14 @@
+Non-breaking (safe) changes
+  + add a new endpoint
+  + add an optional request field
+  + add a new field to a response
+
+Breaking changes (need a new version)
+  - rename or remove a field            qty  -> quantity
+  - change a field's type               price: 10.5 -> price: { amount, currency }
+  - make an optional field required
+  - change the meaning of a status code
+
+URL versioning example
+  GET /api/v1/orders/42   -> { "qty": 3 }
+  GET /api/v2/orders/42   -> { "quantity": 3 }

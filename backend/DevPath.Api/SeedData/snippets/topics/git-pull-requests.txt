@@ -1,0 +1,17 @@
+## What
+Adds a category filter to GET /api/products.
+
+## Why
+Change request CR-2: users need to see products of one category.
+
+## How
+- New optional query parameter `categoryId`
+- Index IX_Products_CategoryId (migration AddProductCategoryIndex)
+- 3 new API tests
+
+## How to test
+1. dotnet ef database update
+2. GET http://localhost:5080/api/products?categoryId=2 → only category 2
+
+## Screenshots
+(UI changes only)

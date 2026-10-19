@@ -1,0 +1,98 @@
+[
+  {
+    "key": "rev-orders-controller", "type": "CodeReview", "topic": "api-dtos", "difficulty": "Intermediate", "minutes": 25,
+    "titleEn": "Review: create order endpoint", "titleAr": "مراجعة: نقطة نهاية إنشاء الطلب",
+    "problemEn": "Review this endpoint as if it were a pull request. List correctness, security, performance and maintainability problems, missing validation and testing gaps.",
+    "problemAr": "راجع نقطة النهاية هذه كأنها طلب دمج. اذكر مشكلات الصحة والأمان والأداء وقابلية الصيانة، والتحقق الناقص، والفجوات في الاختبار.",
+    "expectedEn": "At least six findings with a suggested fix for each.",
+    "expectedAr": "ست ملاحظات على الأقل مع إصلاح مقترح لكل منها.",
+    "hintsEn": ["Where does the total come from?", "What does the client receive back?", "What happens with 2 parallel orders for the last item?"],
+    "hintsAr": ["من أين يأتي الإجمالي؟", "ماذا يستقبل العميل في الاستجابة؟", "ماذا يحدث مع طلبين متوازيين لآخر قطعة؟"],
+    "solutionEn": "Findings: (1) trusts the client's Total — recalculate from database prices; (2) binds directly to the entity (over-posting, e.g. Status) — use a request DTO; (3) no validation (empty lines, quantity <= 0, unknown products); (4) synchronous Find/SaveChanges — use async with CancellationToken; (5) N+1 product lookups in the loop; (6) race on stock — atomic update or concurrency token, plus CHECK constraint; (7) returns the entity (cycles, internal fields) and 200 — return 201 with a DTO; (8) no tests for totals or stock rules.",
+    "solutionAr": "الملاحظات: (1) يثق بإجمالي العميل، والصحيح إعادة الحساب من أسعار قاعدة البيانات؛ (2) يربط الطلب مباشرة بالكيان (Over-posting مثل Status)، فاستخدم DTO للطلب؛ (3) لا يوجد تحقق (أسطر فارغة، وكمية <= 0، ومنتجات غير معروفة)؛ (4) استدعاءات Find/SaveChanges متزامنة، فاستخدم الإصدارات غير المتزامنة مع CancellationToken؛ (5) بحث N+1 عن المنتجات داخل الحلقة؛ (6) حالة سباق على المخزون، فاستخدم تحديثًا ذريًا أو رمز تزامن مع قيد CHECK؛ (7) يُرجع الكيان (حلقات وحقول داخلية) مع 200، والصحيح 201 مع DTO؛ (8) لا توجد اختبارات للإجماليات أو قواعد المخزون."
+  },
+  {
+    "key": "rev-sql-search", "type": "CodeReview", "topic": "sql-injection", "difficulty": "Intermediate", "minutes": 15,
+    "titleEn": "Review: product search with raw SQL", "titleAr": "مراجعة: البحث عن المنتجات بـ SQL خام",
+    "problemEn": "A teammate wrote a 'faster' search with raw SQL and dynamic sorting. Review it.",
+    "problemAr": "كتب زميل بحثًا أسرع باستخدام SQL خام وترتيب ديناميكي. راجعه.",
+    "expectedEn": "Identify the injection points and propose a safe version.",
+    "expectedAr": "حدّد نقاط الحقن واقترح نسخة آمنة.",
+    "hintsEn": ["Which parts of the SQL come from the user?", "Can column names be parameters?"],
+    "hintsAr": ["أي أجزاء SQL تأتي من المستخدم؟", "هل يمكن أن تكون أسماء الأعمدة معاملات؟"],
+    "solutionEn": "Both 'term' and 'sortBy' are concatenated into the SQL — classic injection (and plan-cache pollution). Use FromSql with interpolation (parameters) or plain LINQ for the filter, map sortBy through an allow-list switch, cap the result size and escape LIKE wildcards.",
+    "solutionAr": "يُدمج كل من term وsortBy في نص SQL، وهو حقن كلاسيكي (مع تلويث ذاكرة الخطط). استخدم FromSql مع الإدماج (معاملات) أو LINQ العادية للتصفية، وحوّل sortBy عبر switch بقائمة مسموحة، وحدّد حجم النتائج، وعالج رموز LIKE الخاصة."
+  },
+  {
+    "key": "rev-angular-component", "type": "CodeReview", "topic": "ng-http-client", "difficulty": "Intermediate", "minutes": 20,
+    "titleEn": "Review: Angular orders component", "titleAr": "مراجعة: مكون الطلبات في Angular",
+    "problemEn": "Review this component for correctness, maintainability, performance and user experience.",
+    "problemAr": "راجع هذا المكون من حيث الصحة وقابلية الصيانة والأداء وتجربة المستخدم.",
+    "expectedEn": "At least five findings with improvements.",
+    "expectedAr": "خمس ملاحظات على الأقل مع التحسينات.",
+    "hintsEn": ["Where should HTTP calls live?", "What happens when the user navigates away?", "What does the user see while loading or on error?"],
+    "hintsAr": ["أين يجب أن تكون استدعاءات HTTP؟", "ماذا يحدث عندما ينتقل المستخدم إلى صفحة أخرى؟", "ماذا يرى المستخدم أثناء التحميل أو عند الخطأ؟"],
+    "solutionEn": "Findings: HttpClient and URL hard-coded in the component (move to a typed service + base URL token); 'any' everywhere (use interfaces); the interval subscription is never cleaned up (takeUntilDestroyed or toSignal); no loading, empty or error states; @for without a proper track (track order.id); total recalculated by a template method on every change (computed()); a delete without confirmation.",
+    "solutionAr": "الملاحظات: الـ HttpClient والعنوان مكتوبان مباشرة في المكون (انقلهما إلى خدمة محددة الأنواع مع InjectionToken للعنوان)؛ واستخدام any في كل مكان (استخدم Interfaces)؛ واشتراك interval لا يُنظَّف أبدًا (استخدم takeUntilDestroyed أو toSignal)؛ ولا توجد حالات تحميل أو فراغ أو خطأ؛ و@for دون track مناسب (track order.id)؛ والإجمالي يُعاد حسابه بدالة في القالب مع كل تغيير (استخدم computed())؛ وحذف دون تأكيد."
+  },
+  {
+    "key": "rev-swallowed-exceptions", "type": "CodeReview", "topic": "cs-exceptions", "difficulty": "Beginner", "minutes": 15,
+    "titleEn": "Review: error handling in an import job", "titleAr": "مراجعة: معالجة الأخطاء في مهمة استيراد",
+    "problemEn": "This import 'never fails', but customers keep disappearing from imports. Review the error handling.",
+    "problemAr": "مهمة الاستيراد هذه لا تفشل أبدًا، لكن العملاء يختفون باستمرار من عمليات الاستيراد. راجع معالجة الأخطاء.",
+    "expectedEn": "Explain why errors are invisible and rewrite the handling.",
+    "expectedAr": "اشرح لماذا الأخطاء غير مرئية وأعد كتابة المعالجة.",
+    "hintsEn": ["What happens inside the empty catch?", "What does 'throw ex' do to the stack trace?"],
+    "hintsAr": ["ماذا يحدث داخل catch الفارغة؟", "ماذا تفعل throw ex بـ Stack trace؟"],
+    "solutionEn": "The empty catch swallows every failure, so bad rows vanish silently; catching Exception also hides programming bugs; 'throw ex' resets the stack trace. Validate rows explicitly, collect per-row errors into a report, log unexpected exceptions with context and rethrow with 'throw;'. Return a summary (imported, rejected with reasons).",
+    "solutionAr": "تبتلع catch الفارغة كل الأعطال فتختفي الصفوف الخاطئة بصمت، والتقاط Exception يخفي أيضًا أخطاء البرمجة، وتعيد throw ex ضبط Stack trace. تحقق من الصفوف صراحةً، واجمع أخطاء كل صف في تقرير، وسجّل الاستثناءات غير المتوقعة مع السياق وأعد رميها بـ throw;. وأرجع ملخصًا (المستورد، والمرفوض مع الأسباب)."
+  },
+  {
+    "key": "rev-tolist-before-where", "type": "CodeReview", "topic": "ef-iqueryable-ienumerable", "difficulty": "Intermediate", "minutes": 15,
+    "titleEn": "Review: a reusable data-access helper", "titleAr": "مراجعة: أداة مساعدة قابلة لإعادة الاستخدام للوصول إلى البيانات",
+    "problemEn": "This helper is used by 12 endpoints. Review it for performance.",
+    "problemAr": "تستخدم 12 نقطة نهاية هذه الأداة المساعدة. راجعها من حيث الأداء.",
+    "expectedEn": "Explain what SQL runs and how to fix the helper without breaking callers.",
+    "expectedAr": "اشرح ما يُنفَّذ في SQL وكيف تُصلح الأداة دون كسر المستدعين.",
+    "hintsEn": ["What does ToList() inside GetAll() do?", "What is the return type?"],
+    "hintsAr": ["ماذا تفعل ToList() داخل GetAll()؟", "ما نوع القيمة المُرجعة؟"],
+    "solutionEn": "GetAll() materialises the entire table (with tracking), so every caller's Where/Take runs in memory — 12 endpoints reading the full table. Return IQueryable<T> with AsNoTracking (or, better, specific query methods that filter and project in SQL), and check the generated SQL for each endpoint.",
+    "solutionAr": "تنفّذ GetAll() الجدول كاملًا (مع التتبع)، فتعمل Where/Take لدى كل مستدعٍ في الذاكرة، أي 12 نقطة نهاية تقرأ الجدول كاملًا. أرجع IQueryable<T> مع AsNoTracking (أو الأفضل: دوال استعلام محددة تصفّي وتحوّل في SQL)، وافحص SQL المولَّد لكل نقطة نهاية."
+  },
+  {
+    "key": "rev-god-service", "type": "CodeReview", "topic": "oop-solid", "difficulty": "Intermediate", "minutes": 20,
+    "titleEn": "Review: OrderManager", "titleAr": "مراجعة: OrderManager",
+    "problemEn": "OrderManager has grown to 1,400 lines. Review the excerpt for design problems and suggest a refactoring plan that can be done in small, safe steps.",
+    "problemAr": "نما OrderManager إلى 1400 سطر. راجع المقتطف لاكتشاف مشكلات التصميم، واقترح خطة إعادة هيكلة يمكن تنفيذها بخطوات صغيرة وآمنة.",
+    "expectedEn": "Identified responsibilities, SOLID violations and an incremental plan.",
+    "expectedAr": "تحديد المسؤوليات ومخالفات SOLID وخطة تدريجية.",
+    "hintsEn": ["Count the reasons this class would change.", "Which dependencies are created with 'new'?", "How would you test PlaceOrder today?"],
+    "hintsAr": ["احسب الأسباب التي قد تجعل هذا الصنف يتغير.", "أي الاعتماديات تُنشأ بـ new؟", "كيف ستختبر PlaceOrder اليوم؟"],
+    "solutionEn": "It validates, prices, persists, emails and writes files (SRP); it creates SmtpClient/DbContext with new and reads DateTime.Now (DIP, untestable). Plan: add characterisation tests; extract OrderValidator and PriceCalculator (pure, unit-tested); inject IEmailSender and TimeProvider; move persistence into OrderService; delete the dead code. Commit each step separately.",
+    "solutionAr": "يتحقق ويسعّر ويحفظ ويرسل البريد ويكتب الملفات (مخالفة SRP)، وينشئ SmtpClient/DbContext بـ new ويقرأ DateTime.Now (مخالفة DIP وغير قابل للاختبار). الخطة: أضف اختبارات توصيفية؛ واستخرج OrderValidator وPriceCalculator (صافيين ومختبرين)؛ واحقن IEmailSender وTimeProvider؛ وانقل الحفظ إلى OrderService؛ واحذف الكود الميت. ونفّذ Commit لكل خطوة على حدة."
+  },
+  {
+    "key": "rev-weak-tests", "type": "CodeReview", "topic": "test-business-logic", "difficulty": "Intermediate", "minutes": 15,
+    "titleEn": "Review: tests that don't test", "titleAr": "مراجعة: اختبارات لا تختبر شيئًا",
+    "problemEn": "These tests are all green, yet a discount bug reached production. Review the tests.",
+    "problemAr": "كل هذه الاختبارات ناجحة، ومع ذلك وصل خطأ في الخصم إلى الإنتاج. راجع الاختبارات.",
+    "expectedEn": "Explain why each test gives false confidence and rewrite one properly.",
+    "expectedAr": "اشرح لماذا يعطي كل اختبار ثقة زائفة، وأعد كتابة واحد منها بشكل صحيح.",
+    "hintsEn": ["Does every test have a meaningful assertion?", "Is the expected value calculated with the same code being tested?"],
+    "hintsAr": ["هل لكل اختبار تحقق ذو معنى؟", "هل القيمة المتوقعة محسوبة بالكود نفسه الذي يُختبر؟"],
+    "solutionEn": "Test 1 has no assertion; test 2 computes the expected value with the production method (it can never fail); test 3 only asserts NotNull; none covers boundaries (0%, 100%, expired code). Use hard-coded expected values, Arrange-Act-Assert, [Theory] for boundaries, and a test that reproduces the production bug.",
+    "solutionAr": "الاختبار الأول بلا تحقق؛ والثاني يحسب القيمة المتوقعة بدالة الإنتاج نفسها (فلا يمكن أن يفشل أبدًا)؛ والثالث يتحقق فقط من NotNull؛ ولا يغطي أي منها الحدود (0% و100% والرمز المنتهي). استخدم قيمًا متوقعة ثابتة، ونمط Arrange-Act-Assert، و[Theory] للحدود، واختبارًا يعيد إنتاج خطأ الإنتاج."
+  },
+  {
+    "key": "rev-logging-secrets", "type": "CodeReview", "topic": "pro-logging-diagnostics", "difficulty": "Beginner", "minutes": 15,
+    "titleEn": "Review: login logging", "titleAr": "مراجعة: التسجيل في تسجيل الدخول",
+    "problemEn": "Review the logging in this login method for security and usefulness.",
+    "problemAr": "راجع التسجيل في دالة تسجيل الدخول هذه من حيث الأمان والفائدة.",
+    "expectedEn": "Identify sensitive data, poor log levels and missing context; rewrite the log statements.",
+    "expectedAr": "حدّد البيانات الحساسة ومستويات السجل السيئة والسياق الناقص، وأعد كتابة جمل التسجيل.",
+    "hintsEn": ["What ends up in the log file?", "Can you search these logs by user id?"],
+    "hintsAr": ["ماذا ينتهي به المطاف في ملف السجل؟", "هل يمكنك البحث في هذه السجلات بمعرف المستخدم؟"],
+    "solutionEn": "It logs the password and the JWT (secrets in logs), uses string interpolation (no structured properties), logs failures at Information and success at Error, and leaks whether an email exists in the response. Log only user id/email hash with templates, Warning for failed logins, never secrets, and return the same message for unknown user and wrong password.",
+    "solutionAr": "يسجل كلمة المرور ورمز JWT (أسرار في السجلات)، ويستخدم String interpolation (دون خصائص منظمة)، ويسجل الفشل بمستوى Information والنجاح بمستوى Error، ويكشف في الاستجابة ما إذا كان البريد موجودًا. سجّل فقط معرف المستخدم أو Hash البريد باستخدام القوالب، وبمستوى Warning لمحاولات الدخول الفاشلة، ولا تسجل الأسرار أبدًا، وأرجع الرسالة نفسها للمستخدم غير الموجود ولكلمة المرور الخاطئة."
+  }
+]

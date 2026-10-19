@@ -1,0 +1,11 @@
+### PUT replaces the whole resource (idempotent)
+PUT /api/products/42
+Content-Type: application/json
+
+{ "name": "Wireless Mouse", "price": 29.9, "categoryId": 3 }
+
+### PATCH changes only what you send
+PATCH /api/products/42
+Content-Type: application/json
+
+{ "price": 24.9 }

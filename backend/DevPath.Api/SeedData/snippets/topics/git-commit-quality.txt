@@ -1,0 +1,11 @@
+Bad                          Good
+---------------------------  ------------------------------------------------------
+fix                          Prevent negative stock when placing an order
+changes                      Return 409 when an order status transition is invalid
+wip                          Add pagination to GET /api/products
+update stuff                 Rename Qty to Quantity in OrderLine DTO (breaking: v2)
+
+Format:
+  <imperative summary, ~60 chars>
+
+  <why the change was needed; anything surprising>

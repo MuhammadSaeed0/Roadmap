@@ -1,0 +1,15 @@
+Portfolio checklist (per project)
+[ ] Clear README with a one-line summary
+[ ] Setup instructions that work on a clean machine
+[ ] Screenshots or a short GIF
+[ ] Feature list
+[ ] Architecture summary
+[ ] Database setup (migrations / seed)
+[ ] Example API requests (.http file or curl)
+[ ] Testing instructions — and the tests pass
+[ ] Known limitations (honesty builds trust)
+
+GitHub profile
+[ ] Pin your 4 best repositories
+[ ] Description + topics on each repository
+[ ] Archive or make private abandoned experiments

@@ -1,0 +1,164 @@
+@if (data.initialLoading() || (data.loading() && !data.value())) {
+  <div class="card"><app-skeleton [rows]="3" [height]="26" /></div>
+  <div class="card"><app-skeleton [rows]="8" /></div>
+} @else if (data.error()) {
+  <app-error-state [error]="data.error()" (retry)="data.reload()" />
+} @else if (data.value(); as d) {
+  <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | t">
+    <a routerLink="/projects">{{ 'projects.title' | t }}</a>
+    <app-icon name="chevron-right" [size]="13" />
+    <span>{{ d.summary | loc: 'title' }}</span>
+  </nav>
+
+  <section class="card project-hero">
+    <div class="grow">
+      <p class="eyebrow">{{ 'projects.title' | t }} {{ d.summary.order }} · <span dir="ltr">{{ d.summary.techStack }}</span></p>
+      <h1 id="page-title" tabindex="-1">{{ d.summary | loc: 'title' }}</h1>
+      <p class="hero-journey">{{ d.summary | loc: 'summary' }}</p>
+      <div class="chips">
+        <span class="badge" [attr.data-status]="d.summary.status">{{ 'projectStatus.' + d.summary.status | t }}</span>
+        <span class="chip chip-ghost">{{ 'projects.tasks' | t: { done: d.summary.completedTasks, total: d.summary.totalTasks } }}</span>
+        <span class="chip chip-ghost">{{ 'projects.startAfter' | t: { phase: (d.summary.startAfterPhase | loc: 'title') } }}</span>
+        @if (d.noteCount > 0) { <a class="chip chip-ghost" routerLink="/notes" [queryParams]="{ projectId: d.summary.id }"><app-icon name="note" [size]="12" /> {{ d.noteCount }}</a> }
+      </div>
+    </div>
+    <app-progress-ring [value]="d.summary.percent" [size]="128" [stroke]="11" [label]="'projects.overallProgress' | t" />
+  </section>
+
+  <div class="detail-layout">
+    <div class="detail-main">
+      <section class="card" aria-labelledby="ms-h">
+        <h2 id="ms-h" class="card-title"><app-icon name="layers" /> {{ 'projects.milestones' | t }}</h2>
+        <ol class="milestones" role="list">
+          @for (m of d.milestones; track m.id) {
+            <li class="milestone" [class.done]="m.completedTasks === m.totalTasks">
+              <button type="button" class="milestone-head" (click)="toggleMilestone(m.id)" [attr.aria-expanded]="openMilestones().has(m.id)">
+                <span class="grow">
+                  <span class="milestone-title">{{ m | loc: 'title' }}</span>
+                  <span class="muted small">{{ m | loc: 'description' }}</span>
+                </span>
+                <span class="small">{{ m.completedTasks }}/{{ m.totalTasks }}</span>
+                <app-icon name="chevron-down" class="chev" [class.open]="openMilestones().has(m.id)" />
+              </button>
+              <app-progress-bar [value]="m.totalTasks ? (m.completedTasks / m.totalTasks) * 100 : 0" [small]="true" [label]="m | loc: 'title'" />
+              @if (openMilestones().has(m.id)) {
+                <ul class="task-list" role="list">
+                  @for (task of m.tasks; track task.id) {
+                    <ng-container *ngTemplateOutlet="taskTpl; context: { $implicit: task }" />
+                  }
+                </ul>
+              }
+            </li>
+          }
+        </ol>
+      </section>
+
+      <section class="card" aria-labelledby="cr-h">
+        <h2 id="cr-h" class="card-title"><app-icon name="repeat" /> {{ 'projects.changeRequests' | t }}</h2>
+        <p class="muted small">{{ 'projects.crIntro' | t }}</p>
+        @if (d.changeRequests.length === 0) { <p class="muted">{{ 'projects.noCr' | t }}</p> }
+        <ul class="task-list" role="list">
+          @for (task of d.changeRequests; track task.id) {
+            <ng-container *ngTemplateOutlet="taskTpl; context: { $implicit: task }" />
+          }
+        </ul>
+      </section>
+    </div>
+
+    <aside class="detail-side">
+      <section class="card" aria-labelledby="req-h">
+        <h2 id="req-h" class="card-title"><app-icon name="target" /> {{ 'projects.requirements' | t }}</h2>
+        <ul class="check-list" role="list">
+          @for (r of requirements(); track $index) { <li><app-icon name="check" [size]="14" /> {{ r }}</li> }
+        </ul>
+      </section>
+
+      <section class="card" aria-labelledby="pf-h">
+        <h2 id="pf-h" class="card-title"><app-icon name="award" /> {{ 'projects.portfolio' | t }} <span class="muted small">{{ d.summary.portfolioDone }}/{{ d.summary.portfolioTotal }}</span></h2>
+        <ul class="checkbox-list" role="list">
+          @for (item of d.portfolio; track item.id) {
+            <li>
+              <label class="checkbox">
+                <input type="checkbox" [checked]="item.isDone" (change)="togglePortfolio(item)" />
+                <span><strong>{{ item | loc: 'title' }}</strong><br /><span class="muted small">{{ item | loc: 'description' }}</span></span>
+              </label>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section class="card" aria-labelledby="repo-h">
+        <h2 id="repo-h" class="card-title"><app-icon name="branch" /> {{ 'projects.repository' | t }}</h2>
+        <form class="stack" (submit)="$event.preventDefault(); saveRepo()" novalidate>
+          <label for="repo" class="sr-only">{{ 'projects.repository' | t }}</label>
+          <input id="repo" class="input" type="url" dir="ltr" [formControl]="repoUrl" [placeholder]="'projects.repoPlaceholder' | t"
+                 [attr.aria-invalid]="repoUrl.touched && repoUrl.invalid" />
+          @if (repoUrl.touched && repoUrl.hasError('pattern')) { <small class="field-error">{{ 'validation.url' | t }}</small> }
+          <div class="row-gap">
+            <button type="submit" class="btn btn-secondary btn-sm">{{ 'common.save' | t }}</button>
+            @if (repoUrl.value && repoUrl.valid) {
+              <a class="btn btn-ghost btn-sm" [href]="repoUrl.value" target="_blank" rel="noopener noreferrer">{{ 'common.openLink' | t }} <app-icon name="external" [size]="13" /></a>
+            }
+          </div>
+        </form>
+      </section>
+    </aside>
+  </div>
+
+  <ng-template #taskTpl let-task>
+    <li class="task" [id]="'task-' + task.id" [class.locked]="task.isLocked" [attr.data-status]="task.status">
+      <div class="task-head">
+        <button type="button" class="task-toggle" (click)="toggleTask(task.id)" [attr.aria-expanded]="expandedTask() === task.id">
+          <app-icon [name]="task.isLocked ? 'lock' : statusIcon(task.status)" class="status-icon" [attr.data-status]="task.status" />
+          <span class="task-title">{{ task | loc: 'title' }}</span>
+        </button>
+        <span class="chips">
+          <span class="chip chip-sm" [attr.data-task-priority]="task.priority">{{ 'taskPriority.' + task.priority | t }}</span>
+          <span class="chip chip-sm chip-ghost">{{ task.estimatedMinutes | duration }}</span>
+          @if (task.isLocked) { <span class="chip chip-sm chip-warn">{{ 'projects.locked' | t: { pct: task.unlockAtPercent } }}</span> }
+        </span>
+        @if (!task.isLocked) {
+          <label class="sr-only" [for]="'ts-' + task.id">{{ 'projects.setStatus' | t }}</label>
+          <select class="input input-sm status-select" [id]="'ts-' + task.id" [attr.data-status]="task.status"
+                  [disabled]="busyTask() === task.id" (change)="chooseStatus(task, $any($event.target).value)">
+            @for (s of statuses; track s) { <option [value]="s" [selected]="task.status === s">{{ 'taskStatus.' + s | t }}</option> }
+          </select>
+        }
+      </div>
+
+      @if (blockingTask() === task.id) {
+        <div class="blocked-form">
+          <label [for]="'br-' + task.id">{{ 'projects.blockedReason' | t }}</label>
+          <div class="row-gap">
+            <input class="input grow" [id]="'br-' + task.id" [formControl]="blockedReason" [placeholder]="'projects.blockedReasonPlaceholder' | t" maxlength="500" />
+            <button type="button" class="btn btn-primary btn-sm" (click)="confirmBlocked(task)">{{ 'common.save' | t }}</button>
+            <button type="button" class="btn btn-ghost btn-sm" (click)="blockingTask.set(null)">{{ 'common.cancel' | t }}</button>
+          </div>
+          @if (blockedReason.touched && blockedReason.invalid) { <small class="field-error">{{ 'validation.required' | t }}</small> }
+        </div>
+      } @else if (task.status === 'Blocked' && task.blockedReason) {
+        <p class="callout callout-warn small"><app-icon name="alert" [size]="14" /> {{ task.blockedReason }}</p>
+      }
+
+      @if (expandedTask() === task.id) {
+        <div class="task-body">
+          <p>{{ task | loc: 'description' }}</p>
+          <p class="label">{{ 'projects.acceptance' | t }}</p>
+          <ul class="check-list" role="list">
+            @for (c of criteria(task); track $index) { <li><app-icon name="check" [size]="13" /> {{ c }}</li> }
+          </ul>
+          @if (task.topics.length > 0) {
+            <p class="label">{{ 'projects.relatedTopics' | t }}</p>
+            <div class="chips">
+              @for (topic of task.topics; track topic.id) {
+                <a class="chip chip-link" [routerLink]="['/topics', topic.id]">
+                  <app-icon [name]="statusIcon(topic.status)" [size]="12" /> {{ topic | loc: 'title' }}
+                </a>
+              }
+            </div>
+          }
+        </div>
+      }
+    </li>
+  </ng-template>
+}
