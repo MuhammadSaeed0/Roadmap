@@ -42,6 +42,16 @@ export class SupabaseService {
     return id;
   }
 
+  /**
+   * Makes sure someone is signed in. With no session, creates an anonymous one, so
+   * the site works without a sign-in step. Needs "Anonymous sign-ins" enabled in Supabase.
+   */
+  async ensureSession(): Promise<void> {
+    if (this.user()) return;
+    const { error } = await this.client.auth.signInAnonymously();
+    if (error) throw error;
+  }
+
   /** Sends a one-time sign-in link to the email address. The link returns the user to this site. */
   async sendMagicLink(email: string): Promise<void> {
     const { error } = await this.client.auth.signInWithOtp({

@@ -118,7 +118,8 @@ export default class SettingsPage {
   protected async signOut(): Promise<void> {
     try {
       await this.supabase.signOut();
-      await this.router.navigateByUrl('/sign-in');
+      // Signing out starts a fresh anonymous session on the next page load.
+      await this.router.navigateByUrl('/');
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
     }

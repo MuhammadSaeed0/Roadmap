@@ -5,9 +5,10 @@ import { filter, firstValueFrom, take } from 'rxjs';
 import { SupabaseService } from './supabase.service';
 
 /**
- * Lets a route through only when someone is signed in. It waits for Supabase to
- * finish restoring the stored session first, so a refresh doesn't bounce a signed-in
- * user to the sign-in page.
+ * Lets every page open without an explicit sign-in. It waits for Supabase to restore
+ * the stored session, then makes sure there is one: an anonymous session is created
+ * on the first visit. Row-level security still keeps each browser's data private.
+ * If anonymous sign-in is turned off in Supabase, it falls back to the sign-in page.
  */
 export const authGuard: CanActivateFn = async () => {
   const supabase = inject(SupabaseService);
@@ -15,5 +16,10 @@ export const authGuard: CanActivateFn = async () => {
   if (!supabase.ready()) {
     await firstValueFrom(toObservable(supabase.ready).pipe(filter(Boolean), take(1)));
   }
-  return supabase.user() ? true : router.createUrlTree(['/sign-in']);
+  try {
+    await supabase.ensureSession();
+    return true;
+  } catch {
+    return router.createUrlTree(['/sign-in']);
+  }
 };
