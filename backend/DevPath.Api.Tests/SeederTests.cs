@@ -43,6 +43,10 @@ public class SeederTests : IAsyncLifetime
         Assert.True(await _db.InterviewQuestions.CountAsync() >= 50);
         // Every topic has bilingual content and a code sample.
         Assert.False(await _db.Topics.AnyAsync(t => t.TitleAr == "" || t.SummaryAr == "" || t.CodeSample == null));
+        // Every topic has at least two curated videos with valid YouTube ids.
+        var videosPerTopic = await _db.Topics.Select(t => _db.CuratedVideos.Count(v => v.TopicId == t.Id)).ToListAsync();
+        Assert.All(videosPerTopic, n => Assert.InRange(n, 2, 4));
+        Assert.All(await _db.CuratedVideos.Select(v => v.VideoId).ToListAsync(), id => Assert.True(DevPath.Api.Services.YouTubeIds.IsValid(id)));
     }
 
     [Fact]

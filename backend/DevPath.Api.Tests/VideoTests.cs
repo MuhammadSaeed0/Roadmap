@@ -1,8 +1,11 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json.Nodes;
+using DevPath.Api.Data;
 using DevPath.Api.Models;
 using DevPath.Api.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DevPath.Api.Tests;
 
@@ -61,8 +64,32 @@ public class VideoTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task Missing_api_key_and_quota_errors_are_reported_not_thrown()
+    public async Task Without_live_results_the_curated_videos_fill_the_topic()
     {
+        static List<string> Ids(JsonNode json) => json["videos"]!.AsArray().Select(v => v!["videoId"]!.GetValue<string>()).ToList();
+
+        _factory.YouTube.IsConfigured = false;
+        var noKey = await Json(await _client.GetAsync("/api/topics/3/videos"));
+        Assert.Equal("ok", noKey["status"]!.GetValue<string>());
+        var curated = Ids(noKey);
+        Assert.InRange(curated.Count, 2, 4);
+        Assert.All(curated, id => Assert.True(YouTubeIds.IsValid(id)));
+        Assert.All(noKey["videos"]!.AsArray(), v => Assert.Equal("suggested", v!["source"]!.GetValue<string>()));
+
+        _factory.YouTube.IsConfigured = true;
+        _factory.YouTube.Search = _ => throw new YouTubeQuotaException("quotaExceeded");
+        Assert.Equal(curated, Ids(await Json(await _client.GetAsync("/api/topics/3/videos"))));
+
+        _factory.YouTube.Search = _ => throw new HttpRequestException("boom");
+        Assert.Equal(curated, Ids(await Json(await _client.GetAsync("/api/topics/3/videos"))));
+    }
+
+    [Fact]
+    public async Task Missing_api_key_and_quota_errors_are_reported_when_a_topic_has_no_curated_videos()
+    {
+        using (var scope = _factory.Services.CreateScope())
+            await scope.ServiceProvider.GetRequiredService<AppDbContext>().CuratedVideos.Where(v => v.TopicId == 3).ExecuteDeleteAsync();
+
         _factory.YouTube.IsConfigured = false;
         var notConfigured = await Json(await _client.GetAsync("/api/topics/3/videos"));
         Assert.Equal("not_configured", notConfigured["status"]!.GetValue<string>());
@@ -113,7 +140,8 @@ public class VideoTests : IAsyncLifetime
         Assert.Contains(list["videos"]!.AsArray(), v => v!["videoId"]!.GetValue<string>() == "bbbbbbbbbb1");
 
         Assert.Equal(HttpStatusCode.NoContent, (await _client.DeleteAsync($"/api/topic-videos/{video["addedId"]}")).StatusCode);
-        Assert.Empty((await Json(await _client.GetAsync("/api/topics/4/videos")))["videos"]!.AsArray());
+        Assert.DoesNotContain((await Json(await _client.GetAsync("/api/topics/4/videos")))["videos"]!.AsArray(),
+            v => v!["videoId"]!.GetValue<string>() == "bbbbbbbbbb1");
     }
 
     [Fact]

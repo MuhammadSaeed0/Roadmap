@@ -11,9 +11,10 @@ namespace DevPath.Api.Services;
 public record CachedVideo(string VideoId, string Title, string ChannelTitle, DateTime? PublishedAt, int? DurationSeconds);
 
 /// <summary>
-/// Videos for a topic: shared YouTube suggestions (searched by topic title and skill,
-/// cached per topic) plus videos the user added by link, with the user's own
-/// watched/saved flags. Suggestions are shared; everything else is private per account.
+/// Videos for a topic: shared suggestions plus videos the user added by link, with the
+/// user's own watched/saved flags. Suggestions come from a live YouTube search (when an API
+/// key is set; cached per topic) or else from the curated list seeded with the content.
+/// Suggestions are shared; everything else is private per account.
 /// </summary>
 public class TopicVideoService(
     AppDbContext db, IYouTubeClient youtube, IOptions<YouTubeOptions> options, TimeProvider clock, ILogger<TopicVideoService> logger)
@@ -50,6 +51,14 @@ public class TopicVideoService(
             ?? throw new NotFoundException("Topic", topicId);
         var query = SearchQuery(topic.TitleEn, topic.Skill);
         var (status, suggestions) = await SuggestionsAsync(topic.Id, topic.TitleEn, topic.Skill, query, ct);
+        if (suggestions.Count == 0)
+        {
+            // No live results (no API key, quota reached, YouTube unreachable or nothing relevant):
+            // the curated, pre-verified videos for this topic stand in, so the topic is never empty.
+            var curated = await db.CuratedVideos.AsNoTracking().Where(v => v.TopicId == topicId).OrderBy(v => v.Order)
+                .Select(v => new CachedVideo(v.VideoId, v.Title, v.ChannelTitle, null, null)).ToListAsync(ct);
+            if (curated.Count > 0) (status, suggestions) = ("ok", curated);
+        }
 
         var added = await db.UserTopicVideos.AsNoTracking().Where(v => v.TopicId == topicId).OrderBy(v => v.CreatedAt).ToListAsync(ct);
         var videos = new List<TopicVideoDto>();

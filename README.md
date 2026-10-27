@@ -43,7 +43,7 @@ Angular 22 + TypeScript   →   ASP.NET Core 10 Web API (C#)   →   EF Core 10 
 ## Features
 
 - **Accounts**: sign-up, sign-in, sign-out, password reset and password change. Every account has its own private progress, notes, sessions, reviews, projects, practice answers, interview ratings, preferences and videos (see [Accounts and data privacy](#accounts-and-data-privacy)).
-- **Videos on every topic**: relevant YouTube tutorials found automatically from the topic title and skill, plus your own videos added by link, with an in-page player and per-account "watched" and "saved" flags (see [YouTube videos](#youtube-videos)).
+- **Videos on every topic**: 3–4 hand-picked YouTube tutorials per topic (575 in total, all checked to exist and allow embedding), optional live suggestions from the YouTube API, plus your own videos added by link, with an in-page player and per-account "watched" and "saved" flags (see [YouTube videos](#youtube-videos)).
 - **Dashboard**: weighted overall progress, completed and remaining topics, time remaining, current phase, a "continue learning" recommendation with its reasons, a 30/60/120-minute study plan, project progress, per-skill progress, recent activity, study streak and quick actions.
 - **Roadmap**: 13 phases and 144 topics, from C# fundamentals to full-stack projects. SQL Server topics focus on what a SQL developer needs for .NET work, and each can be marked "already known".
 - **Topic pages** cover: what it is, why it matters, how it works, a real-world example, a code example, a practice task, an independent challenge, verified resources, prerequisites, topics it unlocks, related projects, interview questions, exercises and notes. You can also set status, prior knowledge, confidence (0–5), add the topic to spaced review, and log study sessions.
@@ -258,13 +258,14 @@ The target account must have no data of its own yet, so nothing is overwritten. 
 
 Each topic page has a **Videos** section:
 
-- **Suggestions** are found with the **YouTube Data API v3**: the API searches for "*skill* + *topic title* tutorial" (for example "C# Loops tutorial"), confirms each result is public, processed and embeddable, and drops Shorts, very long streams, near-duplicate titles, videos for another stack (a C# topic won't show Python) and videos whose title doesn't mention the topic. Results are **cached per topic for 30 days** and shared by all accounts, so each topic costs about 101 quota units a month (the free daily quota is 10,000).
+- **Curated videos (no setup needed):** `SeedData/videos.json` lists 3–4 tutorials for every topic, 575 in total. They were found by searching the web for each topic and then checked one by one with YouTube (the video exists, is public and allows embedding); titles and channel names come from YouTube itself. The seeder loads them into the `CuratedVideos` table like any other content and keeps the table in sync with the file. They are shown whenever live suggestions aren't available.
+- **Live suggestions (optional)** are found with the **YouTube Data API v3** when you set an API key: the API searches for "*skill* + *topic title* tutorial" (for example "C# Loops tutorial"), confirms each result is public, processed and embeddable, and drops Shorts, very long streams, near-duplicate titles, videos for another stack (a C# topic won't show Python) and videos whose title doesn't mention the topic. Results are **cached per topic for 30 days** and shared by all accounts, so each topic costs about 101 quota units a month (the free daily quota is 10,000).
 - **Add your own** by pasting any YouTube link (watch, youtu.be, shorts or embed). The API checks it with YouTube's public oEmbed endpoint, so this works **without an API key**, and rejects missing, private and non-embeddable videos. Added videos are private to your account.
 - Videos play in the page with the privacy-enhanced player (`youtube-nocookie.com`), loaded only when you click; every card also links to YouTube.
 - **"Watched" and "Saved"** flags are stored per account.
-- Without an API key, the section explains that suggestions aren't set up and offers a YouTube search link and the add-by-link form. When the daily quota runs out, the cached suggestions keep showing.
+- Without an API key, or when YouTube is unreachable or the daily quota runs out, the curated videos are shown instead, so a topic is never empty.
 
-**To turn on suggestions**, create an API key in Google Cloud (enable *YouTube Data API v3*), then store it outside the repository:
+**To turn on live suggestions** (optional), create an API key in Google Cloud (enable *YouTube Data API v3*), then store it outside the repository:
 
 ```bash
 cd backend/DevPath.Api

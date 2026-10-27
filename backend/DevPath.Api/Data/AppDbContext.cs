@@ -30,6 +30,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<PortfolioChecklistItem> PortfolioChecklistItems => Set<PortfolioChecklistItem>();
     public DbSet<PracticeExercise> PracticeExercises => Set<PracticeExercise>();
     public DbSet<InterviewQuestion> InterviewQuestions => Set<InterviewQuestion>();
+    public DbSet<CuratedVideo> CuratedVideos => Set<CuratedVideo>();
 
     // User data
     public DbSet<TopicProgress> TopicProgress => Set<TopicProgress>();
@@ -181,6 +182,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.Property(x => x.QuestionEn).HasMaxLength(500);
             e.Property(x => x.QuestionAr).HasMaxLength(500);
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        b.Entity<CuratedVideo>(e =>
+        {
+            e.HasIndex(x => new { x.TopicId, x.VideoId }).IsUnique();
+            e.Property(x => x.VideoId).HasMaxLength(11);
+            e.Property(x => x.Title).HasMaxLength(300);
+            e.Property(x => x.ChannelTitle).HasMaxLength(200);
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
         });
 
         // ---------- User data ----------

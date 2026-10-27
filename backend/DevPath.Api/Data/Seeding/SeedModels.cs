@@ -42,6 +42,9 @@ public record TaskSeed(
     List<string> CriteriaEn, List<string> CriteriaAr, int Minutes, TaskPriority Priority,
     List<string> Topics, bool ChangeRequest = false, int UnlockAt = 0);
 
+/// <summary>One curated video in SeedData/videos.json ({ "topic-slug": [ ...videos ] }).</summary>
+public record VideoSeed(string VideoId, string Title, string Channel);
+
 public record ChecklistSeed(string Key, string TitleEn, string TitleAr, string DescriptionEn, string DescriptionAr);
 
 public record ExerciseSeed(

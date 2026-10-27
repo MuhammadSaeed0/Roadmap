@@ -1,0 +1,3165 @@
+{
+  "cs-project-structure": [
+    {
+      "videoId": "RQLzp2Z8-BE",
+      "title": "Intro To The .NET CLI - How To Use It, Why We Need It, And More",
+      "channel": "IAmTimCorey"
+    },
+    {
+      "videoId": "uzKqqWrALik",
+      "title": "C# Development for Beginners #5: Understanding Project Structure - Projects vs Solutions",
+      "channel": "Benjamin Day"
+    },
+    {
+      "videoId": "YiVqwoFMieg",
+      "title": "How to structure a .NET Solution (project separation & architecture)",
+      "channel": "Nick Chapsas"
+    },
+    {
+      "videoId": "jiGk0k6auIw",
+      "title": "Dotnet development setup in Visual studio, VS Code and dotnet CLI",
+      "channel": "Learning Software"
+    }
+  ],
+  "cs-variables-types": [
+    {
+      "videoId": "yquQ9mLtkN8",
+      "title": "C# Variables and Data Types (beginners programming tutorial)",
+      "channel": "CodeBeauty"
+    },
+    {
+      "videoId": "_D-HCF3jZKk",
+      "title": "3: How To Create Variables In C# | Data Types In C# | C# Tutorial For Beginners | C Sharp Tutorial",
+      "channel": "Dani Krossing"
+    },
+    {
+      "videoId": "ml-SJM08X9Y",
+      "title": "C# Tutorial For Beginners - 2. Variables & Data Types",
+      "channel": "Teddy Smith"
+    },
+    {
+      "videoId": "RWw26o_42cM",
+      "title": "C# Programming Tutorial 2 - Variables, constants and data types",
+      "channel": "Daniel Wood"
+    }
+  ],
+  "cs-operators": [
+    {
+      "videoId": "CBwWICdfM-M",
+      "title": "C# Operators and Expressions | C# tutorial",
+      "channel": "Extern Code"
+    },
+    {
+      "videoId": "OquJ_WMHafI",
+      "title": "C# for Beginners – Lesson 5: Operators and Expressions",
+      "channel": "Mike's Code"
+    },
+    {
+      "videoId": "U8VHCILYmvo",
+      "title": "Operators in C# - C# Tutorial 17 🚀",
+      "channel": "ChidresTechTutorials"
+    },
+    {
+      "videoId": "UPX98jpCHss",
+      "title": "C# Tutorial 7: Operators",
+      "channel": "Mikaelson"
+    }
+  ],
+  "cs-conditions": [
+    {
+      "videoId": "eVWTeoygvFA",
+      "title": "If else statement - C# programming tutorial for beginners",
+      "channel": "CodeBeauty"
+    },
+    {
+      "videoId": "3wTCv143hNI",
+      "title": "Switch case statement - C# programming tutorial for beginners",
+      "channel": "CodeBeauty"
+    },
+    {
+      "videoId": "dotDK_PBCF4",
+      "title": "Conditional (If/Else/Switch) Statements in C# and How to Use Them",
+      "channel": "Height Above Sea Level"
+    },
+    {
+      "videoId": "ifIZuVSGfbo",
+      "title": "If else Statement in C# | C# Tutorial for Beginners",
+      "channel": "WebGentle"
+    }
+  ],
+  "cs-loops": [
+    {
+      "videoId": "n5GJRVMPnew",
+      "title": "C# Loops for beginners in 40 min - While, Do-While, For (C# Programming tutorial)",
+      "channel": "CodeBeauty"
+    },
+    {
+      "videoId": "h4hY2hho73Q",
+      "title": "C# for loops 🔁",
+      "channel": "Bro Code"
+    },
+    {
+      "videoId": "ad38jqt7XDs",
+      "title": "For Loops | C# | Tutorial 20",
+      "channel": "Giraffe Academy"
+    },
+    {
+      "videoId": "aB-tQfpNWKU",
+      "title": "C# Tutorial for Beginners 12 : For Loops",
+      "channel": "JackedProgrammer"
+    }
+  ],
+  "cs-methods": [
+    {
+      "videoId": "pyOy7Tz4Ocw",
+      "title": "Methods in C# | Parameters, Arguments, Return Values & More",
+      "channel": "Code A Future"
+    },
+    {
+      "videoId": "BZUuKK_mBAk",
+      "title": "C# Methods and Return Types | Tutorial for Beginners",
+      "channel": "Coderversity"
+    },
+    {
+      "videoId": "I8BDhSTwacM",
+      "title": "C# Tutorial for Beginners 12 - Passing Parameters and Return from Method",
+      "channel": "ProgrammingKnowledge"
+    },
+    {
+      "videoId": "RoCZDY4SGNo",
+      "title": "C# Tutorial for Beginners #16 - Methods",
+      "channel": "Kampa Plays"
+    }
+  ],
+  "cs-collections": [
+    {
+      "videoId": "4Mi4OuSMo4A",
+      "title": "C# Collections Tutorial: Working with List, Hashset, Dictionary, and More!",
+      "channel": "Coderversity"
+    },
+    {
+      "videoId": "jzxqk-Fft9c",
+      "title": "Arrays and Collections (List, Hashset, Dictionary, Queue, and Stack) in C#",
+      "channel": "Coderversity"
+    },
+    {
+      "videoId": "G0bD3Af1DRc",
+      "title": "C# Data Structures - Arrays, Lists, Dictionaries, HashSets, Stacks, Queues",
+      "channel": "Mark Inman"
+    },
+    {
+      "videoId": "CxzDHzHFr5Y",
+      "title": "10 - Lists, Dictionaries & Hash Sets In C# | C# Crash Course For Beginners",
+      "channel": "Code Hub"
+    }
+  ],
+  "cs-exceptions": [
+    {
+      "videoId": "rofX_tAF7e4",
+      "title": "Handle Exceptions Like a BOSS - Try Catch Finally and Disposable in C#",
+      "channel": "Dev Leader"
+    },
+    {
+      "videoId": "QqWfw_CFR6Q",
+      "title": "C# exception handling ⚠️",
+      "channel": "Bro Code"
+    },
+    {
+      "videoId": "XZlXTD5OEPY",
+      "title": "C# Tutorial for Beginners 8 : Error handling (Try Catch Finally)",
+      "channel": "JackedProgrammer"
+    },
+    {
+      "videoId": "Lk2J4PbKexM",
+      "title": "C# Training - 12 - Exception Error Handling (try, catch)",
+      "channel": "Keyack Technology Solutions"
+    }
+  ],
+  "cs-generics": [
+    {
+      "videoId": "gyal6TbgmSU",
+      "title": "C# Generics Tutorial: Whats and Whys | Mosh",
+      "channel": "Programming with Mosh"
+    },
+    {
+      "videoId": "Ld5D6B2Ntjg",
+      "title": "How To Create Generics in C#, Including New Features",
+      "channel": "IAmTimCorey"
+    },
+    {
+      "videoId": "8bfaqFDJ3ME",
+      "title": "Generics in C# for Beginners: Easy Tutorial with Code Examples",
+      "channel": "CodeBeauty"
+    },
+    {
+      "videoId": "YEHbjy3JBtE",
+      "title": "C# Generics - The complete guide",
+      "channel": "Tarodev"
+    }
+  ],
+  "cs-delegates": [
+    {
+      "videoId": "3ZfwqWl-YI0",
+      "title": "What are Delegates? (C# Basics, Lambda, Action, Func)",
+      "channel": "Code Monkey"
+    },
+    {
+      "videoId": "T1nlAWCK114",
+      "title": "C# Tutorial For Beginners 2024 - 19. Delegates, Func, & Action",
+      "channel": "Teddy Smith"
+    },
+    {
+      "videoId": "tO9a8GfEYgc",
+      "title": "Delegates, Action, and Func in C#",
+      "channel": "Mo Pazooki"
+    },
+    {
+      "videoId": "p4mQ1Uq2gOM",
+      "title": "Generic Delegates in c# | Action, Func, Predicate in c# | c# tutorial #30",
+      "channel": "Ravindra Devrani"
+    }
+  ],
+  "cs-lambdas": [
+    {
+      "videoId": "4gNeU539a4M",
+      "title": "C# LAMBDA Expressions and ANONYMOUS Functions Tutorial | 2021",
+      "channel": "tutorialsEU"
+    },
+    {
+      "videoId": "GSr7BpoMKBg",
+      "title": "Understand C# LAMBDA Expressions in only 2 minutes!",
+      "channel": "tutorialsEU - C#"
+    },
+    {
+      "videoId": "HbE07Hk_h9s",
+      "title": "How To Use Lambda Expression in C#(CSharp) [Lambda Expression C# Examples]",
+      "channel": "Coding Droplets"
+    },
+    {
+      "videoId": "dqheDZH_mNc",
+      "title": "LINQ + Lambda expressions - C# tutorial",
+      "channel": "Tarodev"
+    }
+  ],
+  "oop-classes-objects": [
+    {
+      "videoId": "c7u3ZdQowgU",
+      "title": "Introduction, Classes and Objects (C# OOP - Practical Programming Tutorial) - part 1",
+      "channel": "CodeBeauty"
+    },
+    {
+      "videoId": "9V5B3dNoVIA",
+      "title": "C# classes 📦",
+      "channel": "Bro Code"
+    },
+    {
+      "videoId": "s2hHjpZaSyI",
+      "title": "10. How to program in C# - CLASSES - Beginner Tutorial",
+      "channel": "Brackeys"
+    },
+    {
+      "videoId": "-ETZ0nOCU14",
+      "title": "Classes & Objects | C# | Tutorial 25",
+      "channel": "Giraffe Academy"
+    }
+  ],
+  "oop-encapsulation": [
+    {
+      "videoId": "vQ6k1U6nADY",
+      "title": "Encapsulation explained (C# OOP - Practical Programming Tutorial) - part 4",
+      "channel": "CodeBeauty"
+    },
+    {
+      "videoId": "zJEp-dDhL9E",
+      "title": "OOP in C# #7 - Properties and Encapsulation in C#",
+      "channel": "A Coder's Journey"
+    },
+    {
+      "videoId": "cMdwBFgM9Hw",
+      "title": "Encapsulation in c# | Practical OOPs with c#",
+      "channel": "Ravindra Devrani"
+    },
+    {
+      "videoId": "OMPkykadmpc",
+      "title": "Encapsulation in C# using Properties | OOP Tutorial - Chapter 5",
+      "channel": "DevSkills Hub"
+    }
+  ],
+  "oop-inheritance": [
+    {
+      "videoId": "XubuY2i4ZQ4",
+      "title": "Inheritance, Base & Derived Classes | C# Tutorial",
+      "channel": "Code A Future"
+    },
+    {
+      "videoId": "EiBCF7rYRtI",
+      "title": "11. How to program in C# - INHERITANCE - Beginner Tutorial",
+      "channel": "Brackeys"
+    },
+    {
+      "videoId": "B7AoNRr1O60",
+      "title": "Inheritance explained (C# OOP - Practical Programming Tutorial) - part 5",
+      "channel": "CodeBeauty"
+    },
+    {
+      "videoId": "EvSyka9vJho",
+      "title": "C# inheritance 👪",
+      "channel": "Bro Code"
+    }
+  ],
+  "oop-polymorphism": [
+    {
+      "videoId": "4a_iTOtGhM8",
+      "title": "Part 23 - C# Tutorial - Polymorphism in c#.avi",
+      "channel": "kudvenkat"
+    },
+    {
+      "videoId": "qoC7IBDvFE8",
+      "title": "13 C# 12 Virtual & Override Explained – Real Polymorphism in Action!",
+      "channel": "Dev with Darwish – AI, Cloud, ML Simplified"
+    },
+    {
+      "videoId": "ToKbMa3xvMs",
+      "title": "C# method overriding 🙅",
+      "channel": "Bro Code"
+    },
+    {
+      "videoId": "QlWheJk4yNM",
+      "title": "C# Tutorial For Beginners & Basics - 13. Inheritance, Virtual, and Override",
+      "channel": "Teddy Smith"
+    }
+  ],
+  "oop-interfaces": [
+    {
+      "videoId": "aQ8YkJrAbzE",
+      "title": "C# Interfaces Explained in Simple Terms | Mosh",
+      "channel": "Programming with Mosh"
+    },
+    {
+      "videoId": "JeHNRQiA1-0",
+      "title": "Master C# Interfaces in 12 Minutes - Beginner Tutorial",
+      "channel": "tutorialsEU - C#"
+    },
+    {
+      "videoId": "IQpss9YAc4g",
+      "title": "14. How to program in C# - INTERFACES - Tutorial",
+      "channel": "Brackeys"
+    },
+    {
+      "videoId": "VT9ueWBqquU",
+      "title": "👨‍💻Interfaces in C# Explained - In-Depth guide on how to use interfaces",
+      "channel": "tutorialsEU"
+    }
+  ],
+  "oop-composition": [
+    {
+      "videoId": "_b_QiItg-9s",
+      "title": "Why Favor Object Composition Over Class Inheritance? A Deep Dive",
+      "channel": "Zoran on C#"
+    },
+    {
+      "videoId": "CjjzDbtzrzE",
+      "title": "C# Design Patterns: Composition and Inheritance",
+      "channel": "Iain McManus"
+    },
+    {
+      "videoId": "sPQ_jCc_eGE",
+      "title": "Inheritance vs Composition - OOP Concepts in C# (ep 8)",
+      "channel": "DoableDanny"
+    },
+    {
+      "videoId": "_hb_oRhASuw",
+      "title": "Composition Over Inheritance Explained",
+      "channel": "Awesome"
+    }
+  ],
+  "linq-advanced": [
+    {
+      "videoId": "AIWF5tbPmWw",
+      "title": "C# Development for Beginners #18: More LINQ Power - GroupBy, Join, and Performance Secrets",
+      "channel": "Benjamin Day"
+    },
+    {
+      "videoId": "ZPgqJvmzigc",
+      "title": "Part 4   LINQ Aggregate Functions",
+      "channel": "kudvenkat"
+    },
+    {
+      "videoId": "rmtWftXe6lc",
+      "title": "LINQ in C# 🔥 | Complete Tutorial for Beginners to Advanced 🎯 | Interview Questions & Real Examples",
+      "channel": "I am Software Developer"
+    },
+    {
+      "videoId": "iVQ7J1aCtiY",
+      "title": "Part 25   Cross Join in LINQ",
+      "channel": "kudvenkat"
+    }
+  ],
+  "linq-deferred-execution": [
+    {
+      "videoId": "_1xfD4j9J8g",
+      "title": "Deferred Execution vs Immediate Execution / C# LINQ",
+      "channel": "Code & Cris"
+    },
+    {
+      "videoId": "iAz0ZWofFtg",
+      "title": "Part 14   LINQ query deferred execution",
+      "channel": "kudvenkat"
+    },
+    {
+      "videoId": "-pvxE63qSQg",
+      "title": "07 - Mastering LINQ in C# (.NET 9) |  Deferred Execution",
+      "channel": "Spaghetti Code"
+    },
+    {
+      "videoId": "lId0zV7V_jY",
+      "title": "C# LINQ Deferred Execution Explained | Why Adding 4 Doesn’t Appear? | .NET Interview Question",
+      "channel": "Sudipto Kumar Mukherjee"
+    }
+  ],
+  "oop-solid": [
+    {
+      "videoId": "rylaiB2uH2A",
+      "title": "Master Design Patterns & SOLID Principles in C# - Full OOP Course for Beginners",
+      "channel": "freeCodeCamp.org"
+    },
+    {
+      "videoId": "qsIhlwfVF7o",
+      "title": "SOLID principles in C#: 5 rules every developer must know",
+      "channel": "Round The Code"
+    },
+    {
+      "videoId": "Wz9vSszTF_o",
+      "title": "Single Responsibility Principle | C# | SOLID Principles Tutorial",
+      "channel": "CodeGanesh"
+    },
+    {
+      "videoId": "9GsaLdJdVp0",
+      "title": "Open Closed Principle | C# | Part 1 | SOLID Principles Tutorial",
+      "channel": "CodeGanesh"
+    }
+  ],
+  "oop-object-modeling": [
+    {
+      "videoId": "EazrhHMySQw",
+      "title": "C# OOP Full Course: Master Object-Oriented Programming (OOP) with Practical Examples",
+      "channel": "CodeBeauty"
+    },
+    {
+      "videoId": "fS7m1MRFYBg",
+      "title": "Advanced C# Tutorial: Not the OOP You Know",
+      "channel": "Zoran on C#"
+    },
+    {
+      "videoId": "wK53ZwLDIF4",
+      "title": "Object-Oriented Programming Secrets: Real-World Case Study Inside! (in 2025)",
+      "channel": "Vikas Kerni's Software Architecture"
+    }
+  ],
+  "cs-nullable-reference-types": [
+    {
+      "videoId": "mLTD8DECCVQ",
+      "title": "Manage Nulls Like a Boss and Never Fail!",
+      "channel": "Zoran on C#"
+    },
+    {
+      "videoId": "xAsM-cEQwNA",
+      "title": "C# Nullable types – Beginner Friendly Tutorial –  Csharp programming 2026",
+      "channel": "CodeWithSalar"
+    },
+    {
+      "videoId": "cHA7Bt-GP6M",
+      "title": "Part 20 Nullable reference types || C#.Net Tutorials for Beginners & Experienced || @NehanthWorld",
+      "channel": "Nehanth World"
+    },
+    {
+      "videoId": "HuLJbiqpIM0",
+      "title": "Part 6 - C# Tutorial - Nullable Types.avi",
+      "channel": "kudvenkat"
+    }
+  ],
+  "cs-records": [
+    {
+      "videoId": "M_TQgNKAie8",
+      "title": "C# Tutorial. Records - What They are and How to Use Them",
+      "channel": "Nick Proud"
+    },
+    {
+      "videoId": "KFx9XHpoYV4",
+      "title": "The Ultimate Guide to C# Records",
+      "channel": "Zoran on C#"
+    },
+    {
+      "videoId": "NsLXQQAsYSk",
+      "title": "Master C# Records: How To Use Records And When To Use Them",
+      "channel": "Tural Suleymani"
+    },
+    {
+      "videoId": "xhCAy5Hi07I",
+      "title": "C# Tutorial For Beginners 2024 - 18. Records",
+      "channel": "Teddy Smith"
+    }
+  ],
+  "cs-pattern-matching": [
+    {
+      "videoId": "ySd_-h_Dapc",
+      "title": "C# Pattern Matching - Improve your C# skills in 6 minutes",
+      "channel": "tutorialsEU - C#"
+    },
+    {
+      "videoId": "lz-k6NacqrQ",
+      "title": "30 C#  Pattern Matching – Stop Writing Ugly If Statements!",
+      "channel": "Dev with Darwish – AI, Cloud, ML Simplified"
+    },
+    {
+      "videoId": "W-f9MHB-5TQ",
+      "title": "Advanced Pattern Matching in C#",
+      "channel": "dotnet"
+    },
+    {
+      "videoId": "gLIXax_Zsac",
+      "title": "There are 12 pattern matching techniques in .NET 7?",
+      "channel": "jondjones"
+    }
+  ],
+  "linq-fundamentals": [
+    {
+      "videoId": "Kf9YiRkj-m4",
+      "title": "LINQ Tutorial for Beginners 🚀 Full Course",
+      "channel": "Patrick God"
+    },
+    {
+      "videoId": "5l2qA3Pc83M",
+      "title": "Advanced C# – LINQ Tutorial",
+      "channel": "freeCodeCamp.org"
+    },
+    {
+      "videoId": "NEUmhJw2Ilc",
+      "title": "What Is Linq In C#? | FULL LINQ C# TUTORIAL",
+      "channel": "Israel Quiroz"
+    },
+    {
+      "videoId": "0TqFEh6XpCo",
+      "title": "LINQ Crash Course | Language Integrated Query in C#",
+      "channel": "Coderversity"
+    }
+  ],
+  "cs-async-await": [
+    {
+      "videoId": "2moh18sh5p4",
+      "title": "C# Async / Await - Make your app more responsive and faster with asynchronous programming",
+      "channel": "IAmTimCorey"
+    },
+    {
+      "videoId": "il9gl8MH17s",
+      "title": "C# Async/Await/Task Explained (Deep Dive)",
+      "channel": "Raw Coding"
+    },
+    {
+      "videoId": "u8Xr2e-Zvb4",
+      "title": "Quick Guide to Async Await in C# for Beginners",
+      "channel": "DotNetMastery"
+    },
+    {
+      "videoId": "3GhKdDCvtKE",
+      "title": "How to use Async/Await/Task in C#",
+      "channel": "Raw Coding"
+    }
+  ],
+  "cs-cancellation-tokens": [
+    {
+      "videoId": "rqCFxRtn8UA",
+      "title": "C# Tutorial - How to use Cancellation Tokens. Manage Long-Running Tasks in your Code Efficiently!",
+      "channel": "Nick Proud"
+    },
+    {
+      "videoId": "39gIPekzpjs",
+      "title": "Cancellation Token in .NET | Exploring C# and DOTNET",
+      "channel": "Rahul Nath"
+    },
+    {
+      "videoId": "Fx5VIXIV7ho",
+      "title": "Master C# Task Cancellation: A Deep Dive with C# CancellationToken and CancellationTokenSource",
+      "channel": "Tural Suleymani"
+    },
+    {
+      "videoId": "sWAk4YMK2go",
+      "title": "Are You Using Cancellation Token The Right Way? 5 Recommended Patterns | Exploring C# and DOTNET",
+      "channel": "Rahul Nath"
+    }
+  ],
+  "cs-value-reference-types": [
+    {
+      "videoId": "ldq7ZByB4p8",
+      "title": "Value & Reference types in C#. Write Better Code!",
+      "channel": "Tarodev"
+    },
+    {
+      "videoId": "95SkyJe3Fe0",
+      "title": "C# Value vs Reference Types Explained",
+      "channel": "Mark Inman"
+    },
+    {
+      "videoId": "XuC2_dyV7jE",
+      "title": "Memory Allocation in C# | Stack vs Heap (Value Types & Reference Types)",
+      "channel": "LogicUnboxed"
+    },
+    {
+      "videoId": "RiycNbn203k",
+      "title": "C# Heap vs Stack explained",
+      "channel": "Hubert Mijalski"
+    }
+  ],
+  "cs-modern-features": [
+    {
+      "videoId": "yIswUU7lKpk",
+      "title": "C# Features you need Habits you want",
+      "channel": "dotnet"
+    },
+    {
+      "videoId": "V_rMTk6uAKg",
+      "title": "5 Modern C# Features You're Not Using (but should be)",
+      "channel": "Ship Notes"
+    },
+    {
+      "videoId": "xZk8T-9kI3w",
+      "title": "Everyday C# - A blend of modern and time tested features | .NET Conf 2023",
+      "channel": "dotnet"
+    },
+    {
+      "videoId": "xy-HzFp0pbA",
+      "title": "What's New in C# 14",
+      "channel": "dotnet"
+    }
+  ],
+  "api-startup": [
+    {
+      "videoId": "QRgtcbxJlo0",
+      "title": ".NET Project Setup From Scratch Using These 6 Best Practices",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "W5tDM1TZNYU",
+      "title": "Build Your First ASP.NET Core Web API | .NET 10 Full Tutorial",
+      "channel": "Ripon Datta"
+    },
+    {
+      "videoId": "QtiM87MV27w",
+      "title": "How to Build an ASP.NET Core MVC Web App – Tutorial",
+      "channel": "freeCodeCamp.org"
+    },
+    {
+      "videoId": "_2_qksdQKCE",
+      "title": "Intro to AppSettings in .NET Core - Appsettings.json, secrets.json, and more",
+      "channel": "IAmTimCorey"
+    }
+  ],
+  "api-http-rest": [
+    {
+      "videoId": "LzOtbUw6f_o",
+      "title": "A Beginner's Guide to REST APIs in Under 10 Minutes!",
+      "channel": "cloudmancer"
+    },
+    {
+      "videoId": "KF-3jtGH6Yk",
+      "title": "Mastering HTTP Methods: A REST API Deep Dive",
+      "channel": "ByteMonk"
+    },
+    {
+      "videoId": "-HDsLMrIuFs",
+      "title": "HTTP Methods Explained: GET, POST, PUT & DELETE | REST API for Beginners",
+      "channel": "Gmcc"
+    },
+    {
+      "videoId": "Qf2BBZVaAg8",
+      "title": "HTTP Methods Explained with Real-Life Analogies 🤩",
+      "channel": "tapaScript by Tapas Adhikary"
+    }
+  ],
+  "api-controllers-routing": [
+    {
+      "videoId": "Y2DpFNHtjA8",
+      "title": "Tutorial - Create a Web API with ASP.NET Core Controllers",
+      "channel": "Evan Gudmestad"
+    },
+    {
+      "videoId": "8GJ5Velji7Y",
+      "title": "Routing in Asp.net Core Web API  | Asp.net core Web API 8.0",
+      "channel": "Just Pick and Learn"
+    },
+    {
+      "videoId": "W5tDM1TZNYU",
+      "title": "Build Your First ASP.NET Core Web API | .NET 10 Full Tutorial",
+      "channel": "Ripon Datta"
+    },
+    {
+      "videoId": "M1pvp2NvO1g",
+      "title": "Routing in ASP.NET Core MVC (Beginners Guide)",
+      "channel": "DigiDev"
+    }
+  ],
+  "api-dependency-injection": [
+    {
+      "videoId": "0ChyyqutCSM",
+      "title": "Dependency Injection In .Net Core in 6 Minutes! (Explained)",
+      "channel": "DigiDev"
+    },
+    {
+      "videoId": "tTJetZj3vg0",
+      "title": "Dependency Injection for Absolute Beginners with C# and .NET",
+      "channel": "Gerald Versluis"
+    },
+    {
+      "videoId": "wwzhReyKV2Y",
+      "title": "Learn Dependency Injection in less than 20 minutes! - C# DI - #csharp #dependencyinjection #net",
+      "channel": "tutorialsEU"
+    },
+    {
+      "videoId": "ey5hwL0a_I4",
+      "title": "Dependecy Injection in ASP .NET Core Web API Tutorial",
+      "channel": "Biswa Ranjan"
+    }
+  ],
+  "api-service-lifetimes": [
+    {
+      "videoId": "ToFqISWq4is",
+      "title": "Should my Services be Transient, Scoped, or Singleton?",
+      "channel": "Bald. Bearded. Builder."
+    },
+    {
+      "videoId": "V-8HlozCTOU",
+      "title": "Dependency Injection in ASP.NET Core: Singleton vs Scoped vs Transient Explained!",
+      "channel": "Poorna Soysa"
+    },
+    {
+      "videoId": "QloQ5H4i9yA",
+      "title": "How to use lifetimes in ASP.NET Core dependency injection",
+      "channel": "Round The Code"
+    },
+    {
+      "videoId": "RK7gmONMlVM",
+      "title": "How to use Scoped Services Lifetime in ASP.NET Core",
+      "channel": "Raw Coding"
+    }
+  ],
+  "api-configuration": [
+    {
+      "videoId": "ko1Ie9gDydY",
+      "title": "The Options Pattern in C# in 10 Minutes or Less",
+      "channel": "IAmTimCorey"
+    },
+    {
+      "videoId": "wxYt0motww0",
+      "title": "Managing .NET App Configuration With The Options Pattern In ASP.NET Core",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "wnZTyF_YnlM",
+      "title": "Options Pattern in ASP.NET Core - IOptions, IOptionsSnapshot and IOptionsMonitor (Practical Example)",
+      "channel": "Programming with Felipe Gavilan"
+    },
+    {
+      "videoId": "_2_qksdQKCE",
+      "title": "Intro to AppSettings in .NET Core - Appsettings.json, secrets.json, and more",
+      "channel": "IAmTimCorey"
+    }
+  ],
+  "api-dtos": [
+    {
+      "videoId": "Mxm81T7waO8",
+      "title": "ASP.NET Core Web API .NET 8 2024 - 5. DTOs",
+      "channel": "Teddy Smith"
+    },
+    {
+      "videoId": "ckMAEoBI2D4",
+      "title": "Part 12 Why & How to use DTOs in Web/REST API  || Asp.Net Core Web API Tutorials C#",
+      "channel": "Nehanth World"
+    },
+    {
+      "videoId": "LPlsbC4sGrg",
+      "title": "Data Transfer Object (DTO) in ASP .NET Core Web API Tutorial - EP-14",
+      "channel": "Biswa Ranjan"
+    },
+    {
+      "videoId": "H3b4B77HsAE",
+      "title": "How to Map DTOs Manually in .NET | No AutoMapper or External Libraries",
+      "channel": "Poorna Soysa"
+    }
+  ],
+  "api-validation": [
+    {
+      "videoId": "N3YzHALoh_4",
+      "title": "Data Annotations or FluentValidation for .NET validation?",
+      "channel": "Round The Code"
+    },
+    {
+      "videoId": "W3_nBdhycmU",
+      "title": "Data Annotations: Model validation in ASP.NET Core C#",
+      "channel": "Round The Code"
+    },
+    {
+      "videoId": "4BuuLlnRT8Q",
+      "title": "FluentValidation in ASP.NET Core .NET 9 – Data Validation Best Practices",
+      "channel": "CliffTech"
+    },
+    {
+      "videoId": "0-vOmnkdcn0",
+      "title": "Fluent validation in .NET",
+      "channel": "Ravindra Devrani"
+    }
+  ],
+  "api-status-codes": [
+    {
+      "videoId": "qmpUfWN7hh4",
+      "title": "HTTP Status Codes Explained In 5 Minutes",
+      "channel": "ByteByteGo"
+    },
+    {
+      "videoId": "x2d59rJ7vgo",
+      "title": "HTTP Status Codes Explained for REST APIs (200, 400, 404, 500)",
+      "channel": "Topictrick"
+    },
+    {
+      "videoId": "lzh1yEhX60Y",
+      "title": "🛑 HTTP Status Codes Explained in 7 Minutes | 30 Days of API Testing | Day 23",
+      "channel": "The Testing Academy"
+    },
+    {
+      "videoId": "9mMDcf_W2yU",
+      "title": "HTTP Status Codes Explained in One Video | 200, 404, 500, 401, 403, 301 | REST API Tutorial",
+      "channel": "CodeAxis"
+    }
+  ],
+  "api-error-handling": [
+    {
+      "videoId": "uOEDM0c9BNI",
+      "title": "The New Global Error Handling in ASP.NET Core 8",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "rXdsm9R5TR0",
+      "title": "Global Error Handling in .NET Just Got WAY Better",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "eN4GX5WW87s",
+      "title": "Your REST API Errors Are Wrong. Problem Details Will Fix This",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "wA4IOHbnays",
+      "title": "Error Handling in .NET Web APIs",
+      "channel": "Mukesh Murugan"
+    }
+  ],
+  "api-middleware": [
+    {
+      "videoId": "OIdEDnNa_x4",
+      "title": "Asp.net core middleware explained",
+      "channel": "Tural Suleymani"
+    },
+    {
+      "videoId": "XR_Nz-vf2Lo",
+      "title": "ASP.NET Core Request Pipeline Explained | Every Middleware in Order (Complete Guide)",
+      "channel": "Tutor Things"
+    },
+    {
+      "videoId": "cu4CUJAcJ-4",
+      "title": "Building Custom Middleware for ASP.NET Core",
+      "channel": "Bald. Bearded. Builder."
+    },
+    {
+      "videoId": "BDmTpMtn0cI",
+      "title": "Middleware in Asp.Net Core (Beginner Friendly)",
+      "channel": "DigiDev"
+    }
+  ],
+  "api-logging": [
+    {
+      "videoId": "0XFZ9e0ukww",
+      "title": "ASP.NET Core Logging Made Easy with Serilog",
+      "channel": "Digital TechJoint"
+    },
+    {
+      "videoId": "mKxeYseLAwA",
+      "title": "Structured Logging With Serilog in ASP.NET Core Web API",
+      "channel": "Code Maze"
+    },
+    {
+      "videoId": "hLeZwcaUq10",
+      "title": "Make .NET Logging EASY with Serilog | C# Microservice Course (Episode 3)",
+      "channel": "Roberts Dev Talk"
+    },
+    {
+      "videoId": "SsMqwuYJvKk",
+      "title": ".NET 8  💥  - Introduction to Serilog Integration",
+      "channel": "Mohamad Lawand"
+    }
+  ],
+  "api-authentication": [
+    {
+      "videoId": "6DWJIyipxzw",
+      "title": "Secure Your .NET API in 15 Minutes: JWT Authentication Tutorial",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "-feKtsYWMy0",
+      "title": "JWT Authentication with ASP.NET Core Identity Done Right",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "6EEltKS8AwA",
+      "title": "JWT Authentication with .NET 9 🚀 Full Course with Roles, JSON Web Tokens & Refresh Tokens",
+      "channel": "Patrick God"
+    },
+    {
+      "videoId": "1OymLsIC3ms",
+      "title": "ASP.NET Core API with JWT - Authentication & Authorization",
+      "channel": "CodAffection"
+    }
+  ],
+  "api-authorization": [
+    {
+      "videoId": "eEC85W0muU4",
+      "title": "🔐 ASP.NET Core Authorization: Policy Based Access Control",
+      "channel": "Saeed Esmaeelinejad"
+    },
+    {
+      "videoId": "AaZEWa0ZYN0",
+      "title": "Policy-Based Authorization in ASP.NET Core Identity | Step-by-Step Guide",
+      "channel": "Dot Net Tutorials"
+    },
+    {
+      "videoId": "2DH4bP80B94",
+      "title": "ASP.NET Core Identity Roles Tutorial: Role-Based Authorization",
+      "channel": "Evan Gudmestad"
+    },
+    {
+      "videoId": "R3H7EAg5aPE",
+      "title": "Claims-Based and Role-Based Authorization in ASP.NET Core Identity",
+      "channel": "Dot Net Tutorials"
+    }
+  ],
+  "api-versioning": [
+    {
+      "videoId": "yw5NS-FNvew",
+      "title": "The BEST Way to Implement API Versioning in ASP NET Core",
+      "channel": "Coding Droplets"
+    },
+    {
+      "videoId": "8Asq7ymF1R8",
+      "title": "Implementing Modern API Versioning in .NET",
+      "channel": "Nick Chapsas"
+    },
+    {
+      "videoId": "q1TMp1qpjeg",
+      "title": "How to implement API Versioning in ASP.NET Core Web API",
+      "channel": "Fox Learn"
+    },
+    {
+      "videoId": "u5hzruTH9go",
+      "title": "ASP.NET Core Web API Versioning | Dot Net Tutorials",
+      "channel": "Dot Net Tutorials"
+    }
+  ],
+  "api-pagination": [
+    {
+      "videoId": "F_b5wjkpg8M",
+      "title": "ASP.NET Core Web API .NET 8 2024 - 20. Pagination",
+      "channel": "Teddy Smith"
+    },
+    {
+      "videoId": "9Li37qiyiC8",
+      "title": "🔥 How to Implement Pagination in ASP NET Core Web API Step by Step Guide ||.NET 10 WEP API COMPLETE🎯",
+      "channel": "Macro Code"
+    },
+    {
+      "videoId": "serGD6MdoWE",
+      "title": "Implement Pagination in ASP.NET Core | Production-Ready Paging",
+      "channel": "Trevoir Williams"
+    },
+    {
+      "videoId": "cKj6U4qDmgQ",
+      "title": "Implementing pagination | ASP.NET Core 5 REST API Tutorial 26",
+      "channel": "Nick Chapsas"
+    }
+  ],
+  "api-filtering": [
+    {
+      "videoId": "X8zRvXbirMU",
+      "title": "Adding Filtering, Sorting And Pagination To a REST API | .NET 7",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "vszGxxxfp6s",
+      "title": "ASP.NET Core Web API .NET 8 2024 - 18. Filtering",
+      "channel": "Teddy Smith"
+    },
+    {
+      "videoId": "BBnsa-BUMME",
+      "title": "Improve Data Retrieval With Filtering in ASP.NET Core Web API",
+      "channel": "Code Maze"
+    },
+    {
+      "videoId": "DU0NS2Dd_HA",
+      "title": "Searching in ASP.NET Core Web API",
+      "channel": "Code Maze"
+    }
+  ],
+  "api-sorting": [
+    {
+      "videoId": "xGMhz_-QL8Q",
+      "title": "Sorting Implementation in ASP.NET Core Web API",
+      "channel": "Code Maze"
+    },
+    {
+      "videoId": "9a0ppipDOgI",
+      "title": "How to implement Filtering, Sorting, and Paging in ASP.NET Core REST API",
+      "channel": "Biswa Ranjan"
+    },
+    {
+      "videoId": "kL_zm6ZYeDs",
+      "title": "ASP.NET Core Filtering, Sorting & Pagination | Step-by-Step Web API Tutorial",
+      "channel": "Technical Insights by Dhilipan"
+    },
+    {
+      "videoId": "X8zRvXbirMU",
+      "title": "Adding Filtering, Sorting And Pagination To a REST API | .NET 7",
+      "channel": "Milan Jovanović"
+    }
+  ],
+  "ef-dbcontext": [
+    {
+      "videoId": "nN9jOORIFtc",
+      "title": "DbContext in entity framework core",
+      "channel": "kudvenkat"
+    },
+    {
+      "videoId": "I-Epp8vcSe0",
+      "title": "Create a DbContext class in Entity Framework Core",
+      "channel": "Round The Code"
+    },
+    {
+      "videoId": "TgAvIoCz3WY",
+      "title": "🎯 Entity Framework Core Crash Course 🔥 | Beginner to Pro in 26 Minutes (.NET Core Tutorial)",
+      "channel": "Macro Code"
+    },
+    {
+      "videoId": "Yhmg5VJlSwY",
+      "title": "(#44) How to setup DbContext class in entity framework core | Asp.Net Core tutorial",
+      "channel": "WebGentle"
+    }
+  ],
+  "ef-dbset": [
+    {
+      "videoId": "znS5smN7ZQQ",
+      "title": "Entity Framework Core Database Connectivity | DbContext, DbSet & Migrations #09",
+      "channel": "TayyabBits"
+    },
+    {
+      "videoId": "TgAvIoCz3WY",
+      "title": "🎯 Entity Framework Core Crash Course 🔥 | Beginner to Pro in 26 Minutes (.NET Core Tutorial)",
+      "channel": "Macro Code"
+    },
+    {
+      "videoId": "nN9jOORIFtc",
+      "title": "DbContext in entity framework core",
+      "channel": "kudvenkat"
+    },
+    {
+      "videoId": "I-Epp8vcSe0",
+      "title": "Create a DbContext class in Entity Framework Core",
+      "channel": "Round The Code"
+    }
+  ],
+  "ef-entities": [
+    {
+      "videoId": "OWN9e2FjO4k",
+      "title": "Fluent API with Entity Framework Core with Example",
+      "channel": "Rahul Pandey"
+    },
+    {
+      "videoId": "oEwSlvOEBk4",
+      "title": "Fluent API Configuration and Entity Framework Core Relationships - EF Core Day 9",
+      "channel": "Dot Net Tutorials"
+    },
+    {
+      "videoId": "0D_cGNBqsqs",
+      "title": "Create a MSSQL Database with Table Relationship using Entity Framework Core Fluent API in NET9 - 4/4",
+      "channel": "Think Like an Engineer"
+    },
+    {
+      "videoId": "QyGgTbSSSBs",
+      "title": "Fluent API Configurations in Entity Framework",
+      "channel": "Dot Net Tutorials"
+    }
+  ],
+  "ef-migrations": [
+    {
+      "videoId": "-uXY977vwEM",
+      "title": "Entity Framework Core migrations: Add a migration",
+      "channel": "Round The Code"
+    },
+    {
+      "videoId": "90_6J5tnwkw",
+      "title": "EF Core Migrations Deep Dive, Applying Migration, SQL Scripts",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "v6mneb01HBM",
+      "title": "Entity Framework Core Code First Migrations In Detail",
+      "channel": "Code Maze"
+    },
+    {
+      "videoId": "StBf3-M5WdM",
+      "title": "The Correct Way to Run Database Migrations in EF Core",
+      "channel": "Nick Chapsas"
+    }
+  ],
+  "ef-relationships": [
+    {
+      "videoId": "BfoK6R8OIR8",
+      "title": "Mastering EF Core Relationships: One-to-One, One-to-Many, and Many-to-Many in .NET",
+      "channel": "Remigiusz Zalewski"
+    },
+    {
+      "videoId": "1P_O7j6J-m0",
+      "title": "Master One-to-Many EF Core Relationships in 10 Minutes | ASP.NET Core Minimal API Tutorial",
+      "channel": "Poorna Soysa"
+    },
+    {
+      "videoId": "yAl50CNNAic",
+      "title": "Many-to-Many Relationship in Entity Framework Core 9 | Code-First Migrations",
+      "channel": "Code Unparalleled"
+    },
+    {
+      "videoId": "TmOzBdarqzQ",
+      "title": "Master Many to Many Relationships in Entity Framework Core | ASP.NET Core Minimal API Tutorial",
+      "channel": "Poorna Soysa"
+    }
+  ],
+  "ef-crud": [
+    {
+      "videoId": "lIXE0K3MNXQ",
+      "title": ".NET 10 Web API CRUD Tutorial with EF Core (30 Min Crash Course)",
+      "channel": "CodeGanesh"
+    },
+    {
+      "videoId": "6YIRKBsRWVI",
+      "title": "ASP.NET Web API CRUD Operations - .NET8 and Entity Framework Core Tutorial",
+      "channel": "Sameer Saini"
+    },
+    {
+      "videoId": "sWXbvkEiizw",
+      "title": "ASP.NET Core Web API CRUD Tutorial 🚀 | Create, Read, Update, Delete API with Database",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "nJXhhWuHHxA",
+      "title": "CRUD Operations in ASP.NET Core MVC using Entity Framework Core",
+      "channel": "Manoj Deshwal"
+    }
+  ],
+  "ef-tracking": [
+    {
+      "videoId": "UzFqhpL8dBw",
+      "title": "EF Core AsNoTracking Explained  Improve ASP NET Core API Performance",
+      "channel": "Technical Insights by Dhilipan"
+    },
+    {
+      "videoId": "iLSPJwjUmTs",
+      "title": "🚀EF Core Masterclass —EF Core Tracking vs AsNoTracking — When Should You Use Each? | Performance",
+      "channel": "Macro Code"
+    },
+    {
+      "videoId": "pC2XbknnOeY",
+      "title": "Change Tracker in Entity Framework Core",
+      "channel": "Rahul Pandey"
+    },
+    {
+      "videoId": "4zc09E_ZPRE",
+      "title": "Practically Explained working of AsNoTracking() in Entity Framework",
+      "channel": "Software Engineering"
+    }
+  ],
+  "ef-loading": [
+    {
+      "videoId": "LSL3Bgf_nno",
+      "title": "Eager, Explicit & Lazy Loading in EF Core",
+      "channel": "Remigiusz Zalewski"
+    },
+    {
+      "videoId": "qS3xQid_t5k",
+      "title": "EF Core Loading Explained (Lazy, Eager & Explicit) | Entity Framework Core Tutorial 2026",
+      "channel": "Harshit Agarwal"
+    },
+    {
+      "videoId": "23xJPoy0IxA",
+      "title": "4 Ways to Get Related Data in Entity Framework (Eager/Explicit/Lazy Loading/Navigational Properties)",
+      "channel": "WebGentle"
+    },
+    {
+      "videoId": "NZWVkTvYxTQ",
+      "title": "Lazy Loading vs Eager Loading in Entity Framework | What’s the Difference?",
+      "channel": "LogicUnboxed"
+    }
+  ],
+  "ef-iqueryable-ienumerable": [
+    {
+      "videoId": "ZokozXLYQUI",
+      "title": "IQueryable vs IEnumerable: Which Should You Use?",
+      "channel": "Israel Quiroz"
+    },
+    {
+      "videoId": "6V1MSItlqtw",
+      "title": "Understand your C# queries! IEnumerable & IQueryable in explained",
+      "channel": "tutorialsEU - C#"
+    },
+    {
+      "videoId": "J2u1DmnE9mU",
+      "title": "When to use IEnumerable vs IQueryable?",
+      "channel": "DotNetMastery"
+    },
+    {
+      "videoId": "6iLRVvO9wU8",
+      "title": "IQueryable vs IEnumerable vs List SIMPLY EXPLAINED in less than 7 Minutes (.Net C#)",
+      "channel": "Aura Theme"
+    }
+  ],
+  "ef-transactions": [
+    {
+      "videoId": "t_Jf0FJ8yIQ",
+      "title": "Entity Framework Core Transactions: From Basics to Production",
+      "channel": "Trevoir Williams"
+    },
+    {
+      "videoId": "a1uZTkeMtKw",
+      "title": "ASP.NET Core Transactions: Step-by-Step Guide with EF",
+      "channel": "Marko Code Academy"
+    },
+    {
+      "videoId": "8ZuZrO-jm-8",
+      "title": "The EF Core mistake that leaves your data out of sync",
+      "channel": "Round The Code"
+    },
+    {
+      "videoId": "etrCDVrBKQY",
+      "title": "Unit of Work & Repository Pattern in .NET 10/9/8: EF Core Transaction Management Tutorial",
+      "channel": "Frontend to Backend with Rohan"
+    }
+  ],
+  "ef-concurrency": [
+    {
+      "videoId": "Ms-c1L3b7E0",
+      "title": "Mastering Concurrency in EF Core (Optimistic & Pessimistic)",
+      "channel": "Hamed Fathi"
+    },
+    {
+      "videoId": "vdK2BqWVRO0",
+      "title": "Avoid This Common EF Core Mistake with Optimistic Concurrency",
+      "channel": "Rahul Pandey"
+    },
+    {
+      "videoId": "EXcCk9-cr3U",
+      "title": "Implementing Concurrency Control in ASP .NET Core (Step-by-Step)",
+      "channel": "Remigiusz Zalewski"
+    },
+    {
+      "videoId": "lLDBVMj5He8",
+      "title": "Optimistic Locking vs Pessimistic Locking With EF Core",
+      "channel": "Milan Jovanović"
+    }
+  ],
+  "ef-generated-sql": [
+    {
+      "videoId": "r7jebTnXUXg",
+      "title": "How to view the SQL generated by the Entity Framework Core? Enable Sensitive Data Logging",
+      "channel": "Yarkul - Software Developer Blog"
+    },
+    {
+      "videoId": "-lmzlcCYryk",
+      "title": "Debug Like a Pro: How to View Underlying SQL in EF Core Applications Part - 1",
+      "channel": "Beyond the Stack"
+    },
+    {
+      "videoId": "Gf3Tk1NF9mo",
+      "title": "EF Core SQL Debugging: See Actual Database Queries (Part 2)",
+      "channel": "Beyond the Stack"
+    },
+    {
+      "videoId": "xUL3YKKC5lI",
+      "title": "EF Core Query Tags and logging | Jernej \"JK\" Kavka",
+      "channel": "SSW TV | Videos for developers, by developers"
+    }
+  ],
+  "ef-n-plus-one": [
+    {
+      "videoId": "qgutYDDn0wI",
+      "title": "EF Core N+1 Query Problem Explained  ASP NET Core Performance Tip",
+      "channel": "Technical Insights by Dhilipan"
+    },
+    {
+      "videoId": "jlGLK0Y3Ghw",
+      "title": "This EF Core Mistake Is Wrecking Performance (Fix Inside)",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "iaZxzDmfTHU",
+      "title": "EF Core Performance: N+1, Cartesian Explosion and How to Fix Both",
+      "channel": "Remigiusz Zalewski"
+    },
+    {
+      "videoId": "Iv0FAFJoXbI",
+      "title": "Don't SUCK With Entity Framework - N + 1 Query Problem - Performance Tips Part 1",
+      "channel": "Code It Up by AMBITIONED"
+    }
+  ],
+  "ef-query-performance": [
+    {
+      "videoId": "uUWhU8H5uzg",
+      "title": "5 EF Performance Tips You NEED to Know + BENCHMARKS",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "rqGzFQeD-3Q",
+      "title": "Boosting EF Core Performance: 7 Essential Optimization Tips",
+      "channel": "Mohammad Negah"
+    },
+    {
+      "videoId": "TIt3rU9WW00",
+      "title": "🔥 Stop Making EF Core Slow! || EF Core Performance Optimization in .NET 10 | 9 Performance Fixes 🚀",
+      "channel": "Macro Code"
+    },
+    {
+      "videoId": "FMhhp56qCAQ",
+      "title": ".NET 🚀🔥 : Mastering EF Core Performance: Tips, Tricks, and Best Practices",
+      "channel": "Mohamad Lawand"
+    }
+  ],
+  "ef-schema-changes": [
+    {
+      "videoId": "3CFAwDRbHXM",
+      "title": "Deploying an EF Migration Zero Downtime? Watch Out!",
+      "channel": "Zoran on C#"
+    },
+    {
+      "videoId": "tDyS16KSTwE",
+      "title": "Adding an EF Property in a Zero Downtime Migration",
+      "channel": "Zoran on C#"
+    },
+    {
+      "videoId": "gBU9yLcBaIM",
+      "title": "EF Core Migrate Database to Production Step by Step",
+      "channel": "Rahul Pandey"
+    },
+    {
+      "videoId": "StBf3-M5WdM",
+      "title": "The Correct Way to Run Database Migrations in EF Core",
+      "channel": "Nick Chapsas"
+    }
+  ],
+  "sql-indexing": [
+    {
+      "videoId": "BxAj3bl00-o",
+      "title": "SQL Indexes (Visually Explained) | Clustered vs Nonclustered | #SQL Course 35",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "ITcOiLSfVJQ",
+      "title": "Clustered vs. Nonclustered Index Structures in SQL Server",
+      "channel": "Voluntary DBA"
+    },
+    {
+      "videoId": "NGslt99VOCw",
+      "title": "Clustered and nonclustered indexes in sql server   Part 36",
+      "channel": "kudvenkat"
+    },
+    {
+      "videoId": "1lHNw365ldc",
+      "title": "How to Choose the Right Index (Visually Explained) | #SQL Course 38",
+      "channel": "Data with Baraa"
+    }
+  ],
+  "sql-execution-plans": [
+    {
+      "videoId": "O7AzUDogXsw",
+      "title": "SQL Execution Plans (Visually Explained) | SQL Hints | #SQL Course 40",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "VcA92fe1Erw",
+      "title": "SQL Server Execution Plans - Part 1",
+      "channel": "Bert Wagner"
+    },
+    {
+      "videoId": "iP1Sqt_Vwbg",
+      "title": "How to Understand the SSMS Execution Plan",
+      "channel": "Database Star"
+    },
+    {
+      "videoId": "VYuNckGAAxw",
+      "title": "SQL Server Execution Plans for Beginners: Query Tuning with Jeff Iannucci",
+      "channel": "IDERA Data Tools"
+    }
+  ],
+  "sql-transactions": [
+    {
+      "videoId": "rnrXgTrPPn8",
+      "title": "How to implement Transactions (COMMIT / ROLLBACK) using SQL SERVER.",
+      "channel": "Software Nuggets"
+    },
+    {
+      "videoId": "E0gHz-SO-I0",
+      "title": "How to make a transaction in SQL Server that rolls back when an error occurs",
+      "channel": "Sean MacKenzie Data Engineering"
+    },
+    {
+      "videoId": "md99yOhaA-4",
+      "title": "How to Preview or Rollback Your Database Changes Using Transactions on SQL Server!",
+      "channel": "Tech Tips (Andrei)"
+    },
+    {
+      "videoId": "1TM5-cOmP34",
+      "title": "Introduction To SQL Transactions",
+      "channel": "Relational Databases and SQL for Beginners"
+    }
+  ],
+  "sql-isolation-levels": [
+    {
+      "videoId": "dMIyCmBWOZ4",
+      "title": "The Difference Between Read Committed And Read Committed Snapshot Isolation In SQL Server",
+      "channel": "Erik Darling (Erik Darling Data)"
+    },
+    {
+      "videoId": "S-z3uuhdUew",
+      "title": "Read committed snapshot isolation level in sql server",
+      "channel": "kudvenkat"
+    },
+    {
+      "videoId": "uFYyQTzW2cg",
+      "title": "Snapshot Isolation and Read Committed Snapshot Isolation: Two Important Differences in SQL Server",
+      "channel": "Erik Darling (Erik Darling Data)"
+    },
+    {
+      "videoId": "qzkH6Z3EI9w",
+      "title": "Everything You Know About Isolation Levels Is Wrong - RCSI vs Read Committed",
+      "channel": "Erik Darling (Erik Darling Data)"
+    }
+  ],
+  "sql-deadlocks": [
+    {
+      "videoId": "3EwDn9hqgkg",
+      "title": "Deadlocks: Lets Do One, Understand It, and Fix It",
+      "channel": "SQLBits"
+    },
+    {
+      "videoId": "9Zw3ay3_tCQ",
+      "title": "Database Deadlocks Easily Explained",
+      "channel": "Software Developer Diaries"
+    },
+    {
+      "videoId": "jllDFQnAtfk",
+      "title": "🎯 SQL Server Deadlocks Explained with Real Example | Detect & Resolve Deadlocks in SQL Server",
+      "channel": "Cloud BI Academy"
+    },
+    {
+      "videoId": "5tdsYQwj4mA",
+      "title": "In-detail: Understand and effectively troubleshoot deadlocks in SQL Server",
+      "channel": "ARSLANOV"
+    }
+  ],
+  "sql-concurrency": [
+    {
+      "videoId": "z2XFc-tGH8A",
+      "title": "Concurrency management using  row version",
+      "channel": "dotnetexplained"
+    },
+    {
+      "videoId": "vdK2BqWVRO0",
+      "title": "Avoid This Common EF Core Mistake with Optimistic Concurrency",
+      "channel": "Rahul Pandey"
+    },
+    {
+      "videoId": "EXcCk9-cr3U",
+      "title": "Implementing Concurrency Control in ASP .NET Core (Step-by-Step)",
+      "channel": "Remigiusz Zalewski"
+    },
+    {
+      "videoId": "Ms-c1L3b7E0",
+      "title": "Mastering Concurrency in EF Core (Optimistic & Pessimistic)",
+      "channel": "Hamed Fathi"
+    }
+  ],
+  "sql-parameterization": [
+    {
+      "videoId": "MfFVDQqN3Gc",
+      "title": "The Best Way To Troubleshoot Slow SQL Server Queries",
+      "channel": "Erik Darling (Erik Darling Data)"
+    },
+    {
+      "videoId": "yhieXs5k2dY",
+      "title": "Query Parameterization and Plan Forcing",
+      "channel": "Erik Darling (Erik Darling Data)"
+    },
+    {
+      "videoId": "7aFCgCVZslY",
+      "title": "How SQL Server 2022's Parameter Sensitive Plan Feature Can Make Query Store Confusing",
+      "channel": "Erik Darling (Erik Darling Data)"
+    },
+    {
+      "videoId": "ja_1VZb-FZg",
+      "title": "What is Parameter Sniffing in SQL Server",
+      "channel": "Steve (Stedman Solutions LLC)"
+    }
+  ],
+  "sql-injection": [
+    {
+      "videoId": "dHqHrFH5Txo",
+      "title": "What Is SQL Injection And How Do I Prevent It in C#?",
+      "channel": "IAmTimCorey"
+    },
+    {
+      "videoId": "QKhHkEmv3Kw",
+      "title": "Sql injection prevention   Part 6",
+      "channel": "kudvenkat"
+    },
+    {
+      "videoId": "xapb2qo7be8",
+      "title": "Entity Framework Core 8 SQL Injection Attacks",
+      "channel": "Coding Tutorials"
+    },
+    {
+      "videoId": "P86fm-TCqsM",
+      "title": "ADO.NET - SQL Injection",
+      "channel": "TutorialsPoint"
+    }
+  ],
+  "sql-ef-generated-sql": [
+    {
+      "videoId": "UREMqA0NPw0",
+      "title": "ORMs and the DBA: How to Keep Both Happy - Dan Mallott",
+      "channel": "PASS Data Community Summit"
+    },
+    {
+      "videoId": "ZyXWEvayTok",
+      "title": "Why (still) use SQL Server Profiler?",
+      "channel": "codekabinett.com/en"
+    },
+    {
+      "videoId": "r7jebTnXUXg",
+      "title": "How to view the SQL generated by the Entity Framework Core? Enable Sensitive Data Logging",
+      "channel": "Yarkul - Software Developer Blog"
+    },
+    {
+      "videoId": "Gf3Tk1NF9mo",
+      "title": "EF Core SQL Debugging: See Actual Database Queries (Part 2)",
+      "channel": "Beyond the Stack"
+    }
+  ],
+  "sql-connection-management": [
+    {
+      "videoId": "nwBBd9GrcqI",
+      "title": "ADO.NET Connection Pooling | ADO.NET Interview Questions | Connection Pooling in C#",
+      "channel": "Questpond"
+    },
+    {
+      "videoId": "zKim2DZw91k",
+      "title": "Top 5 PRO TIPS for Efficient DATABASE CONNECTIVITY in .NET: Boost Your App Performance Today!",
+      "channel": "tutorialsEU"
+    },
+    {
+      "videoId": "T-gJ556NBnU",
+      "title": "Understanding ADO.NET Connection Pooling in SQLServer: Boosting Performance and Efficiency",
+      "channel": "vlogize"
+    },
+    {
+      "videoId": "xMktEpPmadI",
+      "title": "Using sql server with entity framework core",
+      "channel": "kudvenkat"
+    }
+  ],
+  "sql-query-efficiency": [
+    {
+      "videoId": "p_FuKOfdBq8",
+      "title": "8 SQL Server Query Optimization Tips | SQL Interview Tips",
+      "channel": "Code Canvas With Touseef"
+    },
+    {
+      "videoId": "0G9xh1yxRXs",
+      "title": "9 Query Tuning Techniques | SQL Server Performance Tuning Made Easy",
+      "channel": "The SQL Guy"
+    },
+    {
+      "videoId": "GA8SaXDLdsY",
+      "title": "SQL Query Optimization - Tips for More Efficient Queries",
+      "channel": "Cody Baldwin"
+    },
+    {
+      "videoId": "V-4_PAMBSjY",
+      "title": "5 Ways to Improve Your SQL Queries",
+      "channel": "Kahan Data Solutions"
+    }
+  ],
+  "sql-pagination": [
+    {
+      "videoId": "QLdBJ4VBmC8",
+      "title": "SQL Pagination - Offset VS Seek",
+      "channel": "Philip Starritt"
+    },
+    {
+      "videoId": "mvlzhBgGS4s",
+      "title": "API Pagination - Offset and Cursor Pagination Explained - Backend Engineering",
+      "channel": "Caleb Curry"
+    },
+    {
+      "videoId": "wepqVpRjp64",
+      "title": "Cursor Pagination is the FASTEST - But you can't use it if...",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "XHQ8QhslXS0",
+      "title": "Pagination Optimization: Keyset vs Offset",
+      "channel": "ByteDistrict"
+    }
+  ],
+  "sql-data-access-design": [
+    {
+      "videoId": "R6GLX-SmiVc",
+      "title": "EF Core vs Dapper Debate? Waste of Time! Get 5000x Speed With Caching!",
+      "channel": "Ben Makes Games"
+    },
+    {
+      "videoId": "hXfHWvezBoA",
+      "title": "EF Core + Stored Procedures: The Right Way to Call Legacy SQL",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "ZDv87uV63HA",
+      "title": "Use DAPPER To Create a .Net 7 CRUD Api & Call Stored Procedures",
+      "channel": "Israel Quiroz"
+    },
+    {
+      "videoId": "uecoaWRqv_E",
+      "title": "Stored Procedures with Entity Framework Core in .NET",
+      "channel": "Remigiusz Zalewski"
+    }
+  ],
+  "ts-types-inference": [
+    {
+      "videoId": "M9HxVB1TpP8",
+      "title": "How TypeScript infers types automatically",
+      "channel": "Train To Code"
+    },
+    {
+      "videoId": "Q1b2bhSI5Es",
+      "title": "TypeScript Tutorial #15 - Type Inference | How TS Automatically Detects Types",
+      "channel": "Mohit Decodes"
+    },
+    {
+      "videoId": "f9I-lwxglU8",
+      "title": "Typescript Tutorial #20 TypeScript Type Inference",
+      "channel": "Technical Rajni"
+    },
+    {
+      "videoId": "vZvRd71a9go",
+      "title": "Typescript Tutorial for Beginners | Part 4: Type Inference and Type Annotations",
+      "channel": "OneCodeCamp"
+    }
+  ],
+  "ts-interfaces-aliases": [
+    {
+      "videoId": "PdReYwLPmtQ",
+      "title": "TypeScript Types vs Interfaces - Differences & Use cases",
+      "channel": "Przeprogramowani"
+    },
+    {
+      "videoId": "QYO-sieqLD4",
+      "title": "Interfaces vs Type Aliases: what's the difference?",
+      "channel": "Andrew Burgess"
+    },
+    {
+      "videoId": "r0rWCrBWO2A",
+      "title": "TypeScript Types: Interfaces vs Aliases Comparison",
+      "channel": "tapaScript by Tapas Adhikary"
+    },
+    {
+      "videoId": "GkhLnPbLbgI",
+      "title": "TypeScript Tutorial #8: Type Aliases vs. Interfaces in Just 2 Minutes",
+      "channel": "Mash School"
+    }
+  ],
+  "ts-functions": [
+    {
+      "videoId": "LTJ-6lUbsKk",
+      "title": "TypeScript Tutorial #10: Functions in Just 2 Minutes – Declaration, Expression, and Arrow Functions",
+      "channel": "Mash School"
+    },
+    {
+      "videoId": "x6dmFa1xxW4",
+      "title": "Arrow Functions | TypeScript Tutorial",
+      "channel": "Smartherd"
+    },
+    {
+      "videoId": "6ADpjpuOVEc",
+      "title": "18  Arrow Function  - TypeScript Tutorial For Beginners",
+      "channel": "Tony Xhepa"
+    },
+    {
+      "videoId": "WI8dU3Zezyk",
+      "title": "TypeScript Tutorial #29 - Arrow Functions",
+      "channel": "Mohit Decodes"
+    }
+  ],
+  "ts-generics": [
+    {
+      "videoId": "EcCTIExsqmI",
+      "title": "Learn TypeScript Generics In 13 Minutes",
+      "channel": "Web Dev Simplified"
+    },
+    {
+      "videoId": "RWG66gIo7PM",
+      "title": "Typescript Generics | Beginners Tutorial with Examples",
+      "channel": "Dave Gray"
+    },
+    {
+      "videoId": "nViEqpgwxHE",
+      "title": "Typescript Generics Tutorial",
+      "channel": "Ben Awad"
+    },
+    {
+      "videoId": "k81d26I8-sU",
+      "title": "#22 - Generics | TypeScript Tutorial",
+      "channel": "KoderHQ"
+    }
+  ],
+  "ts-classes": [
+    {
+      "videoId": "zQondDhCXDI",
+      "title": "TypeScript Classes Tutorial | TS for Beginners Lesson",
+      "channel": "Dave Gray"
+    },
+    {
+      "videoId": "OsFwOzr3_sE",
+      "title": "TypeScript Tutorial #12 - Classes",
+      "channel": "Net Ninja"
+    },
+    {
+      "videoId": "98g_Eke9DEs",
+      "title": "TypeScript Classes Explained: A Complete Beginner's Guide",
+      "channel": "DevCraft by Balram"
+    },
+    {
+      "videoId": "CcSz-Z7MtG4",
+      "title": "TypeScript Classes Tutorial for JavaScript Developers | #typescripttutorial",
+      "channel": "codeonedigest"
+    }
+  ],
+  "ts-access-modifiers": [
+    {
+      "videoId": "PgmUfUlVuKM",
+      "title": "Stop Using Public Everything! - TypeScript Access Modifiers Explained",
+      "channel": "Raheem's view"
+    },
+    {
+      "videoId": "HOYaZ98TWxE",
+      "title": "Additional access modifiers in Typescript classes: Learning Typescript by example #013",
+      "channel": "Lauro Müller"
+    },
+    {
+      "videoId": "XnYgJvgmhAM",
+      "title": "TypeScript Basics | 14 Access Modifiers",
+      "channel": "kodebot"
+    },
+    {
+      "videoId": "aLJsAWbjf6Q",
+      "title": "DevTips Daily: The TypeScript private access modifier",
+      "channel": "Code With Bubb"
+    }
+  ],
+  "ts-modules": [
+    {
+      "videoId": "EpOPR03z4Vw",
+      "title": "TypeScript Tutorial #14 - Modules",
+      "channel": "Net Ninja"
+    },
+    {
+      "videoId": "XoOgNRQEYws",
+      "title": "Mastering Modules in TypeScript [FULL COURSE]",
+      "channel": "TypeScript with Benny Code"
+    },
+    {
+      "videoId": "hEqmc-PQfpk",
+      "title": "TypeScript Modules Tutorial for Beginners (Full Guide)",
+      "channel": "Beshilo Coding Academy"
+    },
+    {
+      "videoId": "VPAvB5R6d5g",
+      "title": "Importing & Exporting Modules | TypeScript Tutorial",
+      "channel": "Smartherd"
+    }
+  ],
+  "ts-promises": [
+    {
+      "videoId": "DHvZLI7Db8E",
+      "title": "JavaScript Promises In 10 Minutes",
+      "channel": "Web Dev Simplified"
+    },
+    {
+      "videoId": "A5PiecCRnE0",
+      "title": "JavaScript Promises in 8 Minutes",
+      "channel": "Coding2GO"
+    },
+    {
+      "videoId": "rXfBXV8Jd_Y",
+      "title": "The ONLY JavaScript Promises Tutorial You’ll Ever Need",
+      "channel": "Conner Ardman"
+    },
+    {
+      "videoId": "TnhCX0KkPqs",
+      "title": "JavaScript Promises  -- Tutorial for Beginners",
+      "channel": "ColorCode"
+    }
+  ],
+  "ts-async-await": [
+    {
+      "videoId": "_zwNvruI6ds",
+      "title": "Async Await in Typescript",
+      "channel": "Train To Code"
+    },
+    {
+      "videoId": "VcOMq3LQtBU",
+      "title": "Mastering async code with Typescript and Javascript",
+      "channel": "Jack Herrington"
+    },
+    {
+      "videoId": "WQdCffdPPKI",
+      "title": "Day 24: Master JavaScript async/await & Simplify Promises Like a PRO  🤩",
+      "channel": "tapaScript by Tapas Adhikary"
+    },
+    {
+      "videoId": "9j1dZwFEJ-c",
+      "title": "JavaScript ASYNC/AWAIT is easy! ⏳",
+      "channel": "Bro Code"
+    }
+  ],
+  "ts-error-handling": [
+    {
+      "videoId": "-bmNkTqvYfQ",
+      "title": "Use ‘unknown’ instead of ‘any’ in TypeScript (Try / Catch error handling)",
+      "channel": "ByteGrad"
+    },
+    {
+      "videoId": "xdQkEn3mx1k",
+      "title": "Better error handling with unknown type in TypeScript",
+      "channel": "TypeScript with Benny Code"
+    },
+    {
+      "videoId": "Q1euMQFI35I",
+      "title": "Try Catch Error Handling With TypeScript",
+      "channel": "ByteGrad"
+    },
+    {
+      "videoId": "Ks-kkjMkp8o",
+      "title": "TypeScript & JavaScript error handling is pretty bad (and how to make it better)",
+      "channel": "Brett Codes"
+    }
+  ],
+  "ts-narrowing": [
+    {
+      "videoId": "EoPubc1u5IY",
+      "title": "What is a Type Guard - TypeScript Narrowing #1",
+      "channel": "Lucas Paganini"
+    },
+    {
+      "videoId": "rewRQA9rBvs",
+      "title": "TypeScript Fundamentals - #13 Type Narrowing Using Type Guards and Type Predicates",
+      "channel": "Joy of Code"
+    },
+    {
+      "videoId": "FvSaID3TjhI",
+      "title": "Custom Type Guards - TypeScript Narrowing #3",
+      "channel": "Lucas Paganini"
+    },
+    {
+      "videoId": "Pxqm6ScNDlM",
+      "title": "TypeScript Interview Question: Type Narrowing, Type Guards & Discriminated Unions Explained",
+      "channel": "AQ FastLearn"
+    }
+  ],
+  "ng-architecture": [
+    {
+      "videoId": "laicOZbQRMY",
+      "title": "Architecture of an Angular application",
+      "channel": "GeneXus Training"
+    },
+    {
+      "videoId": "3VEYEFm5vNQ",
+      "title": "How Angular Architecture Works – From index.html to Component Tree",
+      "channel": "DevCraft by Balram"
+    },
+    {
+      "videoId": "rhlbJ6UaoBA",
+      "title": "Angular Application Architecture & Bootstrapping Explained Step by Step",
+      "channel": "Dot Net Tutorials"
+    },
+    {
+      "videoId": "IEtWHmTMou4",
+      "title": "Angular - Architecture Overview",
+      "channel": "BestITCourses"
+    }
+  ],
+  "ng-standalone-components": [
+    {
+      "videoId": "x5PZwb4XurU",
+      "title": "Getting Started with Standalone Components in Angular",
+      "channel": "Angular"
+    },
+    {
+      "videoId": "2SubpkPOE7M",
+      "title": "Angular Standalone Components Explained: The Complete Guide (v17 & Higher)",
+      "channel": "procademy"
+    },
+    {
+      "videoId": "EZXg3ZabHzA",
+      "title": "Modern Angular Course 03: Your First Standalone Component",
+      "channel": "Loiane Groner"
+    },
+    {
+      "videoId": "ErOnd6NYLWI",
+      "title": "🌎 Lets Clear Whole Angular Confusion | Angular Standalone vs Modular Components | Angular Tutorial",
+      "channel": "Learn Code With Durgesh"
+    }
+  ],
+  "ng-templates-binding": [
+    {
+      "videoId": "WF8uGSEEaQo",
+      "title": "Data Bindings in Angular Explained: One-Way, Two-Way, and ngModel",
+      "channel": "Angular Training"
+    },
+    {
+      "videoId": "l0QlgYqwQZk",
+      "title": "Angular 17 Tutorial - New Control Flow @if @for and @switch #6",
+      "channel": "Programming with Umair"
+    },
+    {
+      "videoId": "5L7PjTpObnI",
+      "title": "Angular 22 Tutorial Part 7 | Control Flow @if & @for Explained",
+      "channel": "Tech Stack"
+    },
+    {
+      "videoId": "LBVzPjwWy5E",
+      "title": "Angular 21 Control Flow Statements Tutorial: @if, @for Explained",
+      "channel": "Tech Stack"
+    }
+  ],
+  "ng-inputs-outputs": [
+    {
+      "videoId": "5mA6u2EvbCQ",
+      "title": "Angular v18 Component Communication: Signal Inputs / Function-based Outputs",
+      "channel": "Code & Cris"
+    },
+    {
+      "videoId": "VlR_hnYNqNI",
+      "title": "Data transfer using angular signal input and output | angular 21 tutorial - part 11",
+      "channel": "Nihira Techiees"
+    },
+    {
+      "videoId": "QoYmgI1HHRE",
+      "title": "Unlocking Angular's Input & Output Signals for Better Components",
+      "channel": "Nihira Techiees"
+    },
+    {
+      "videoId": "P97YOncpC0Q",
+      "title": "Angular 19 - Model Input Signals – Goodbye @Input() & @Output()",
+      "channel": "DevCraft by Balram"
+    }
+  ],
+  "ng-services": [
+    {
+      "videoId": "-jRxG84AzCI",
+      "title": "Services in Angular - Learning Angular (Part 6)",
+      "channel": "Angular"
+    },
+    {
+      "videoId": "mOsCP1FT8EA",
+      "title": "#51 🚀 Angular 19 Tutorial: 🌟 What Are Services in Angular?",
+      "channel": "Technical Rajni"
+    },
+    {
+      "videoId": "Lp22AKajdpI",
+      "title": "Angular 20 Tutorial for Beginners | Service in Angular | #15",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "BMQS8m0JMuU",
+      "title": "Services explained | angular 21 tutorial for beginners",
+      "channel": "Nihira Techiees"
+    }
+  ],
+  "ng-dependency-injection": [
+    {
+      "videoId": "iELhZ1b895Y",
+      "title": "How Angular's Dependency Injection Works (And Why It Matters)",
+      "channel": "Hrom Maksym"
+    },
+    {
+      "videoId": "B0FVAoG5srQ",
+      "title": "Angular Dependency Injection - Explained in easy words",
+      "channel": "tutorialsEU"
+    },
+    {
+      "videoId": "C-UOmVfzBbw",
+      "title": "The inject function in Angular is not just a toy",
+      "channel": "Joshua Morony"
+    },
+    {
+      "videoId": "CDNyANaVUPs",
+      "title": "Angular DI: New Recommendation for inject() in the Angular Style Guide (2025)",
+      "channel": "Igor Sedov"
+    }
+  ],
+  "ng-routing": [
+    {
+      "videoId": "bI8HmaGS0qk",
+      "title": "Angular 21 Routing Tutorial for Beginners | Full Routing Concept | Part 3",
+      "channel": "Nihira Techiees"
+    },
+    {
+      "videoId": "Sp95tZHS-AM",
+      "title": "Routing In Angular | Angular 19 Tutorial | Part 9",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "GKHQ5YOaL3Q",
+      "title": "Angular 19 Tutorial #31 Basic Routing",
+      "channel": "Code Step By Step"
+    },
+    {
+      "videoId": "Xp0HryLc8hs",
+      "title": "Angular 20 Tutorial for Beginners | Routing in Angular | #6",
+      "channel": "LEARNING PARTNER"
+    }
+  ],
+  "ng-reactive-forms": [
+    {
+      "videoId": "cqfa6b8FruQ",
+      "title": "Angular 17 Tutorial - Build Reactive Forms #13",
+      "channel": "Programming with Umair"
+    },
+    {
+      "videoId": "wMX8Jn_GkA8",
+      "title": "Angular 18 Reactive Forms CRUD - Ultimate Guide for Beginners",
+      "channel": "Learn Smart Coding"
+    },
+    {
+      "videoId": "RBNa3hYTfzY",
+      "title": "Angular 19 Tutorial #36 Easy Angular Reactive Forms Tutorial",
+      "channel": "Code Step By Step"
+    },
+    {
+      "videoId": "D8JO8pTGbcI",
+      "title": "Angular 20 Tutorial for Beginners | Reactive Form in angular | #12",
+      "channel": "LEARNING PARTNER"
+    }
+  ],
+  "ng-http-client": [
+    {
+      "videoId": "PNChutdea6E",
+      "title": "MASTERING Angular HttpClient Made Easy!",
+      "channel": "Ripon Datta"
+    },
+    {
+      "videoId": "5RtIWBCbwL4",
+      "title": "How to Use HTTPClient in Angular || Master HTTPClient in Angular: Fetch Data Easily",
+      "channel": "CodingForBeginners"
+    },
+    {
+      "videoId": "VjB0XuZXtQQ",
+      "title": "Anguar 17 Tutorial - Dependency Injection and Services for API Calls with HttpClient #8",
+      "channel": "Programming with Umair"
+    },
+    {
+      "videoId": "6Owtoy0avA8",
+      "title": "148. 🚀 How to Use Angular’s HttpClient in Standalone Components for API Magic! 🔥 Beginner Guide!",
+      "channel": "Leela Web Dev"
+    }
+  ],
+  "ng-rxjs": [
+    {
+      "videoId": "NJ9Wwotjx_Y",
+      "title": "RxJs for Angular from scratch - April 2024",
+      "channel": "Angular Training"
+    },
+    {
+      "videoId": "dqY9bmvRVzc",
+      "title": "Master RxJS in Angular 🚀 | Complete Beginner to Pro Series | Part -1",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "EbemMoo3xzc",
+      "title": "RxJS Basics Explained | Observable, Observer, Subscription & Subject | Angular RxJS Tutorial",
+      "channel": "Web Tech Talk"
+    },
+    {
+      "videoId": "0NjhliVSuOM",
+      "title": "RxJS Operators in Angular 🚀 | Pipe, Map, Tap, Filter Explained with Examples | #2",
+      "channel": "LEARNING PARTNER"
+    }
+  ],
+  "ng-signals": [
+    {
+      "videoId": "j1diBkWLk1k",
+      "title": "Modern Angular Course 05: Introducing Signals",
+      "channel": "Loiane Groner"
+    },
+    {
+      "videoId": "n1a2eQ0Zyls",
+      "title": "Angular Signals: The Complete Guide",
+      "channel": "Web Tech Talk"
+    },
+    {
+      "videoId": "8cdtNWtjADM",
+      "title": "Angular Signals Crash Course | Build Full CRUD app (2025)",
+      "channel": "Zoaib Khan"
+    },
+    {
+      "videoId": "C_xXv27_gHg",
+      "title": "How to deeply understand Angular signals (...or anything)",
+      "channel": "Joshua Morony"
+    }
+  ],
+  "ng-loading-error-states": [
+    {
+      "videoId": "hNc4TEH1hSk",
+      "title": "Angular Loading Indicators Simplified | Step by Step Guide 2025",
+      "channel": "Zoaib Khan"
+    },
+    {
+      "videoId": "5K0Jr2ymQEs",
+      "title": "Signals in Action: Loading Indicator",
+      "channel": "Deborah Kurata"
+    },
+    {
+      "videoId": "kqHFDvnjbcw",
+      "title": "Mastering API Calls In Angular With A Reusable Service",
+      "channel": "Learn Smart Coding"
+    },
+    {
+      "videoId": "Xb9JMIS0FJo",
+      "title": "How to keep an Angular httpResource in a Service?",
+      "channel": "Zoaib Khan"
+    }
+  ],
+  "ng-component-communication": [
+    {
+      "videoId": "4WCEwG1RDWM",
+      "title": "Angular Component Communication: @Input/@Output vs. Services",
+      "channel": "CodingForBeginners"
+    },
+    {
+      "videoId": "Ur0oLcT_iN8",
+      "title": "5 Ways to Pass Data from Parent to Child Components In Angular",
+      "channel": "Adnan Halilovic"
+    },
+    {
+      "videoId": "CD92RBkZ2H4",
+      "title": "Why a service is the best pattern for Angular component communication   | @service | Step by Step",
+      "channel": "StackInstance"
+    },
+    {
+      "videoId": "fTejxZ6W-90",
+      "title": "How Angular components should communicate in 2025",
+      "channel": "Brian Treese"
+    }
+  ],
+  "ng-reusable-components": [
+    {
+      "videoId": "1uyOR8oWKeM",
+      "title": "The beginner's guide to content projection in Angular",
+      "channel": "Brian Treese"
+    },
+    {
+      "videoId": "N8S2mPuGkgg",
+      "title": "Content Projection in Angular - Complete Guide (Beginners/Advanced)",
+      "channel": "Decoded Frontend"
+    },
+    {
+      "videoId": "8SAfeno5nVU",
+      "title": "Angular Content Projection: Everything You Need to Know",
+      "channel": "BugArray"
+    },
+    {
+      "videoId": "xEi1N3lOGlA",
+      "title": "#28 🌟 Angular 19 Tutorial: Content Projection Made Easy with ng-content 🚀",
+      "channel": "Technical Rajni"
+    }
+  ],
+  "ng-tables-forms": [
+    {
+      "videoId": "yE50UKvzfaM",
+      "title": "Angular 19 CRUD Project - Add Edit Functionality | Angular 19 Tutorial For Beginners",
+      "channel": "ARCTutorials"
+    },
+    {
+      "videoId": "RIFguFwldM4",
+      "title": "Inline Table Editing In Angular | Angular CRUD with Table",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "-mZxusRAhGk",
+      "title": "Inline Table Editing Angular 18 | Angular Crud with API",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "tESwoSg9YLo",
+      "title": "Inline Table Editing with Validation In Angular | Angular Tutorial",
+      "channel": "LEARNING PARTNER"
+    }
+  ],
+  "ng-search-pagination": [
+    {
+      "videoId": "OV7EKkf5ink",
+      "title": "Server Side Pagination, Sorting and Filtering in Angular | Angular Tutorials",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "AQN6x4fTq48",
+      "title": "Angular Server Side Filter , Sorting & Pagination | Angular Tutorial",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "wlf7UNioH9E",
+      "title": "Server Side Pagination, Sorting and Filtering in Angular | angular tutorial for beginners | angular",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "VFUkbwPF1As",
+      "title": "Angular Material Table Pagination, Sorting, and Filtering (Searching)",
+      "channel": "DK Programming"
+    }
+  ],
+  "ng-app-organization": [
+    {
+      "videoId": "mJGg7LWmVeU",
+      "title": "Ultimate Project Structure in Angular",
+      "channel": "Sebastian Persson"
+    },
+    {
+      "videoId": "K6q8rrMRixc",
+      "title": "3. Angular 20 Project Structure Best Practices (2025) | Clean & Scalable Folder Setup",
+      "channel": "Tutorial Rays"
+    },
+    {
+      "videoId": "5DKMS_VnMC4",
+      "title": "Angular Project Structure Explained - What Each File and Folder Is For",
+      "channel": "Kalman Web Design"
+    },
+    {
+      "videoId": "PO_OdN6JTU4",
+      "title": "Angular 21 Project Setup Like a Pro 🚀 | Clean, Scalable & Production Ready",
+      "channel": "LEARNING PARTNER"
+    }
+  ],
+  "fs-connect-angular-api": [
+    {
+      "videoId": "0ulu-mPmHNw",
+      "title": "How to Connect Angular Application to .NET Web API",
+      "channel": "DK Programming"
+    },
+    {
+      "videoId": "ins00GC_dsw",
+      "title": "Connecting an Angular App with ASP.NET Core",
+      "channel": "Programming with Felipe Gavilan"
+    },
+    {
+      "videoId": "u_dPA-adMkk",
+      "title": "Angular CRUD with Asp.Net Core Web API | Angular 19 Project",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "fqR-WbmX8PM",
+      "title": "Angular 17 CRUD with ASP.NET Core Web API using Entity Framework Core - Full Course",
+      "channel": "Sameer Saini"
+    }
+  ],
+  "fs-cors": [
+    {
+      "videoId": "WAKsZwzXhf4",
+      "title": ".NET 8  .🚀🔥:  Understanding CORS with ASP.NET",
+      "channel": "Mohamad Lawand"
+    },
+    {
+      "videoId": "KAIqP2Y1YHE",
+      "title": ".NET Core Web API CORS Implementation with Angular Application - Part 10",
+      "channel": "BugArray"
+    },
+    {
+      "videoId": "-HQBXAoltME",
+      "title": "How to setup CORS in .NET Web API",
+      "channel": "Remigiusz Zalewski"
+    },
+    {
+      "videoId": "m8224OuxzuY",
+      "title": "How to fix CORS Errors EASILY in your .NET 9 API!",
+      "channel": "Israel Quiroz"
+    }
+  ],
+  "fs-api-contracts": [
+    {
+      "videoId": "3v7UN2LgILw",
+      "title": "API-First Development Design with ASP.NET Core & Swagger",
+      "channel": "Five Minute Tech"
+    },
+    {
+      "videoId": "KHegEB_exrg",
+      "title": "Designing APIs with Swagger and OpenAPI: A Conversation with Josh Ponelat and Lukas Rosenstock",
+      "channel": "Erik Wilde"
+    },
+    {
+      "videoId": "HdAtWkJALVY",
+      "title": "DTO-sharing Strategies in ASP.NET Core #4 - Generate Clients from API",
+      "channel": "A Coder's Journey"
+    },
+    {
+      "videoId": "yM_ljacoFPo",
+      "title": "Stop Calling It Swagger: OpenAPI 3.1 in .NET 10 - Sjoerd van der Meer | Update",
+      "channel": "Update Conference"
+    }
+  ],
+  "fs-dto-mapping": [
+    {
+      "videoId": "RsnEZdc3MrE",
+      "title": "Stop Using AutoMapper in .NET",
+      "channel": "Nick Chapsas"
+    },
+    {
+      "videoId": "EZ-MIf6-B64",
+      "title": "Stop Using AutoMapper — Map DTOs Manually in .NET the Right Way",
+      "channel": "Frontend to Backend with Rohan"
+    },
+    {
+      "videoId": "XSq1Q1Pmsi0",
+      "title": "Replacing AutoMapper in C# — Manual vs Mapster vs Mapperly",
+      "channel": "Code Exact"
+    },
+    {
+      "videoId": "H3b4B77HsAE",
+      "title": "How to Map DTOs Manually in .NET | No AutoMapper or External Libraries",
+      "channel": "Poorna Soysa"
+    }
+  ],
+  "fs-crud-workflows": [
+    {
+      "videoId": "PZ5L7lZA9_U",
+      "title": "Full Stack 2026: .NET 10 API & Angular 21 CRUD Tutorial | C# 14, Best Practices & Web Dev Roadmap",
+      "channel": "Rohan's Code Hub"
+    },
+    {
+      "videoId": "aeQm92HolQY",
+      "title": "🔥 Build a Powerful CRUD App with Angular 18 & ASP.NET Core 8 | Code First  MSSQL Full Stack Tutorial",
+      "channel": "Testy Codeiz"
+    },
+    {
+      "videoId": "vSZXdxXHaQQ",
+      "title": "Angular CRUD with ASP.NET Core Web API & SQL Server | Full Stack App from Scratch",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "hQfPqzgk-Pc",
+      "title": "Complete CRUD App with Angular & .NET Core API | Full Stack Project for Beginners (From Scratch)",
+      "channel": "LEARNING PARTNER"
+    }
+  ],
+  "fs-form-validation": [
+    {
+      "videoId": "Ne0LCIeqavU",
+      "title": "Adding Validations in Angular and ASP.NET Core | Showing the Back-End Validation Errors in the Front",
+      "channel": "Programming with Felipe Gavilan"
+    },
+    {
+      "videoId": "7_YCDDoBgzA",
+      "title": "Fixing ASP.NET Core API 400 Bad Request With Angular POST by Correctly Sending JSON request Body",
+      "channel": "vlogommentary"
+    },
+    {
+      "videoId": "N3YzHALoh_4",
+      "title": "Data Annotations or FluentValidation for .NET validation?",
+      "channel": "Round The Code"
+    },
+    {
+      "videoId": "W3_nBdhycmU",
+      "title": "Data Annotations: Model validation in ASP.NET Core C#",
+      "channel": "Round The Code"
+    }
+  ],
+  "fs-error-handling": [
+    {
+      "videoId": "BNM5203kxgs",
+      "title": "Angular Interceptors — Auth & Global HTTP Error Handling (Basics, 2025)",
+      "channel": "Decoded Frontend"
+    },
+    {
+      "videoId": "lN1yQWXGJ7E",
+      "title": "Handle 500 Errors Gracefully in Angular 🚀 | Global Exception Handling & Toastr Notifications",
+      "channel": "Learn Smart Coding"
+    },
+    {
+      "videoId": "PxltjRLrqTc",
+      "title": "Mastering GLOBAL Error Handling in Angular Made EASY",
+      "channel": "Learn Smart Coding"
+    },
+    {
+      "videoId": "UhJTxqDnRoU",
+      "title": "Interceptors in Angular #3 - Handling HTTP Responses and Errors Globally",
+      "channel": "A Coder's Journey"
+    }
+  ],
+  "fs-loading-states": [
+    {
+      "videoId": "n0aIRw3bN5c",
+      "title": "Adding a Spinner to Angular App on Outgoing HTTP Calls",
+      "channel": "Learn Smart Coding"
+    },
+    {
+      "videoId": "H9KLIbisVJ8",
+      "title": "Angular Loading Spinner Component for API calls | HTTP Requests Globally | CodeWithSrini",
+      "channel": "CodeWithSrini"
+    },
+    {
+      "videoId": "IUKRiKGzkD0",
+      "title": "Angular 21 Show Loading Spinner on API Calls (HTTP Interceptor Tutorial)",
+      "channel": "Nihira Techiees"
+    },
+    {
+      "videoId": "hCeE1_B5NoE",
+      "title": "WARNING Don't Make This HTTP Interceptor Mistake in Angular 18",
+      "channel": "Learn Smart Coding"
+    }
+  ],
+  "fs-pagination": [
+    {
+      "videoId": "mw78FtiTws8",
+      "title": "Server Side Pagination, Sorting, Filtering (searching) and Debouncing with Angular and .NET Web API",
+      "channel": "DK Programming"
+    },
+    {
+      "videoId": "xPKikiKv5p0",
+      "title": "Angular Pagination, Sorting and Filtering Records using ASP.NET Web API and SQL Server",
+      "channel": "Coding Knowledge"
+    },
+    {
+      "videoId": "OV7EKkf5ink",
+      "title": "Server Side Pagination, Sorting and Filtering in Angular | Angular Tutorials",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "AQN6x4fTq48",
+      "title": "Angular Server Side Filter , Sorting & Pagination | Angular Tutorial",
+      "channel": "LEARNING PARTNER"
+    }
+  ],
+  "fs-search-filtering": [
+    {
+      "videoId": "i_a7-6hzI8Y",
+      "title": "Debounce, Filter & API Calls in Angular  | Angular Interview Questions Explained 🚀",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "mw78FtiTws8",
+      "title": "Server Side Pagination, Sorting, Filtering (searching) and Debouncing with Angular and .NET Web API",
+      "channel": "DK Programming"
+    },
+    {
+      "videoId": "9OpiruhbqIE",
+      "title": "How to Build a Debounce Search in Angular using Signals & RxJS",
+      "channel": "CodeRaven"
+    },
+    {
+      "videoId": "Lgy-deh_ygg",
+      "title": "Debouncing in Angular and its use | debounceTime operator from Rxjs",
+      "channel": "Fun Of Heuristic"
+    }
+  ],
+  "fs-auth-flow": [
+    {
+      "videoId": "mT6qUQyvjKg",
+      "title": "Angular Login & Logout with Asp.Net Core Identity & JWT",
+      "channel": "CodAffection"
+    },
+    {
+      "videoId": "unjCkkpD6Xc",
+      "title": "ASP.NET Core Web API & Angular : Login Feature Tutorial",
+      "channel": "Code with Pushpa"
+    },
+    {
+      "videoId": "5oVFQU3Pb_g",
+      "title": "Angular Login with .net Core api | Complete Authentication",
+      "channel": "LEARNING PARTNER"
+    },
+    {
+      "videoId": "r7mIY8Incog",
+      "title": "Angular Authentication: Login, Register, Role-Based Auth & JWT Token Tutorial with .NET Core API",
+      "channel": "Nihira Techiees"
+    }
+  ],
+  "fs-concurrent-updates": [
+    {
+      "videoId": "EXcCk9-cr3U",
+      "title": "Implementing Concurrency Control in ASP .NET Core (Step-by-Step)",
+      "channel": "Remigiusz Zalewski"
+    },
+    {
+      "videoId": "DI9fTuH60To",
+      "title": "Handling Concurrency: Practical Tips for EF Core Developers",
+      "channel": "Trevoir Williams"
+    },
+    {
+      "videoId": "vdK2BqWVRO0",
+      "title": "Avoid This Common EF Core Mistake with Optimistic Concurrency",
+      "channel": "Rahul Pandey"
+    },
+    {
+      "videoId": "Ms-c1L3b7E0",
+      "title": "Mastering Concurrency in EF Core (Optimistic & Pessimistic)",
+      "channel": "Hamed Fathi"
+    }
+  ],
+  "test-unit-csharp": [
+    {
+      "videoId": "mOrNhbUjT8Y",
+      "title": "xUnit tutorial: How to run unit testing in C#",
+      "channel": "Round The Code"
+    },
+    {
+      "videoId": "2Wp8en1I9oQ",
+      "title": "Writing tests in .NET using xUnit -  xUnit Tutorial",
+      "channel": "Nick Chapsas"
+    },
+    {
+      "videoId": "rohq-Wqj0yI",
+      "title": "Master xUnit Like A Pro in Under 10 Minutes!",
+      "channel": "Dev Leader"
+    },
+    {
+      "videoId": "fVVNOkbLcPw",
+      "title": "xUnit Testing C# Asp.Net Core: A complete course for beginners",
+      "channel": "WebGentle"
+    }
+  ],
+  "test-business-logic": [
+    {
+      "videoId": "ikRPfoKl1SE",
+      "title": "Unit Testing Business Logic The Right Way | Full Tutorial",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "o_KVvUjwxIw",
+      "title": "C# Unit Testing Best Practices for Great Code Coverage",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "RZMBPcN3fPs",
+      "title": "Unit Testing Service Layer in ASP.NET Core Web API | Moq & InMemory Testing – Dot Net Tutorials",
+      "channel": "Dot Net Tutorials"
+    },
+    {
+      "videoId": "j6kwxciSAL0",
+      "title": "The RIGHT Way to Write Unit Tests for Domain-Driven Design!",
+      "channel": "Tural Suleymani"
+    }
+  ],
+  "test-api": [
+    {
+      "videoId": "RXSPCIrrjHc",
+      "title": "ASP.NET Core Integration Testing Tutorial",
+      "channel": "Julio Casal"
+    },
+    {
+      "videoId": "kQgA6H3wcdc",
+      "title": "Integration Testing ASP.NET Core with Web Application Factory: Demo 1",
+      "channel": "Benjamin Day"
+    },
+    {
+      "videoId": "ojCzZNg0zD8",
+      "title": "Let's Integration Test .NET Web API w/ WebApplicationFactory!",
+      "channel": "Alex's Dev Den 👨‍💻"
+    },
+    {
+      "videoId": "6mahPd5WZxA",
+      "title": "ASP.NET Core Integration Testing with Web Application Factory",
+      "channel": "Benjamin Day"
+    }
+  ],
+  "test-integration": [
+    {
+      "videoId": "tj5ZCtvgXKY",
+      "title": "The Best Way To Use Docker For Integration Testing In .NET",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "ssRE0pBNvpE",
+      "title": "Stop Mocking Your Database! Use Testcontainers in .NET",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "lGyYr42IluQ",
+      "title": "Running Integration Tests with Docker in .NET using Testcontainers",
+      "channel": "Mohamad Dbouk"
+    },
+    {
+      "videoId": "td9HE0vxsf4",
+      "title": "No More SQLite - How to Write Tests With EF Core Using TestContainers - Daniel Ward",
+      "channel": "NDC Conferences"
+    }
+  ],
+  "test-angular-components": [
+    {
+      "videoId": "ibatZSCgXLY",
+      "title": "Angular Unit Test Tutorial - Crash Course for Angular & Jasmine",
+      "channel": "Genka"
+    },
+    {
+      "videoId": "lbiOP-VLKGI",
+      "title": "Beyond Unit Tests: Modern Testing in Angular",
+      "channel": "Rainer Hahnekamp"
+    },
+    {
+      "videoId": "Vtitveu5H38",
+      "title": "Component | Angular Unit Testing Made Easy: A Comprehensive Guide to Component Testing",
+      "channel": "Web Tech Talk"
+    },
+    {
+      "videoId": "cIEF6FwSSjk",
+      "title": "18. Introduction to Angular TestBed. Create Component & dependencies with Test Bed - Angular testing",
+      "channel": "Leela Web Dev"
+    }
+  ],
+  "test-angular-services": [
+    {
+      "videoId": "vxUfNXB4db4",
+      "title": "193. Angular HTTP Testing with HttpTestingController and TestBed for Services - Angular 19",
+      "channel": "Leela Web Dev"
+    },
+    {
+      "videoId": "lTDeTX3Zckw",
+      "title": "162. 🧪 Mocking APIs in Angular Testing using HttpTestingController HTTP Mocking Angular Services",
+      "channel": "Leela Web Dev"
+    },
+    {
+      "videoId": "ezUTVccocEE",
+      "title": "191. Testing Angular HTTP Services with Jasmine Spies | Step-by-Step Tutorial Angular 19",
+      "channel": "Leela Web Dev"
+    },
+    {
+      "videoId": "bv9z_UfSqgM",
+      "title": "Angular Unit Testing Course - All That You Need to Know About Testing",
+      "channel": "Monsterlessons Academy"
+    }
+  ],
+  "test-mocking": [
+    {
+      "videoId": "cio7XzACOc0",
+      "title": "C# Unit Testing with Test Doubles: Dummy, Fake, Stub, Spy & Mock",
+      "channel": "Hamed Fathi"
+    },
+    {
+      "videoId": "KVKElaM-tDE",
+      "title": "Mock en .NET con Nsubstitute y FakeIteasy",
+      "channel": "NetMentor"
+    },
+    {
+      "videoId": "N6-iWpFoMa0",
+      "title": "Stub, Mock and Fake in Unit Testing",
+      "channel": "Dinesh Dialogues"
+    },
+    {
+      "videoId": "WoHeCH63Ee8",
+      "title": "In Memory Databases | Unit Testing With C# and XUnit",
+      "channel": "The Musings Of A Dev"
+    }
+  ],
+  "test-strategy": [
+    {
+      "videoId": "uk6YKeD1S1A",
+      "title": "Software Testing Pyramid",
+      "channel": "That Coding Guy"
+    },
+    {
+      "videoId": "oSqUybBlgHQ",
+      "title": "How to balance Unit, Integration, and E2E tests? (The Pyramid is NOT the answer)",
+      "channel": "ivelum"
+    },
+    {
+      "videoId": "IBvYFRSw4do",
+      "title": "It’s Time We Go Beyond The Test Pyramid (& Do This Instead)",
+      "channel": "Modern Software Engineering"
+    },
+    {
+      "videoId": "7KzEJenkB2Q",
+      "title": "ST 43 | Test Automation Pyramid | Software Testing Course | Uplatz",
+      "channel": "Uplatz"
+    }
+  ],
+  "git-fundamentals": [
+    {
+      "videoId": "8JJ101D3knE",
+      "title": "Git Tutorial for Beginners: Learn Git in 1 Hour",
+      "channel": "Programming with Mosh"
+    },
+    {
+      "videoId": "r8jQ9hVA2qs",
+      "title": "A brief introduction to Git for beginners | GitHub",
+      "channel": "GitHub"
+    },
+    {
+      "videoId": "CvUiKWv2-C0",
+      "title": "Git Tutorial for Absolute Beginners",
+      "channel": "Dave Gray"
+    },
+    {
+      "videoId": "tRZGeaHPoaw",
+      "title": "Git and GitHub Tutorial for Beginners",
+      "channel": "Kevin Stratvert"
+    }
+  ],
+  "git-branching": [
+    {
+      "videoId": "3rxZNlxD9_E",
+      "title": "Git Branches: The ONLY Tutorial You Need",
+      "channel": "Roger Perkin | Network Automation Consultant"
+    },
+    {
+      "videoId": "0vzYWyHmcY8",
+      "title": "GitHub Branches Tutorial (Beginner Friendly)",
+      "channel": "CodeWithChris"
+    },
+    {
+      "videoId": "_uKv_vxu398",
+      "title": "Branching and Merging in Git",
+      "channel": "Alex The Analyst"
+    },
+    {
+      "videoId": "YvBlJ0wLCKc",
+      "title": "Git Tutorial #9 - Importance of Git Branching | Git Branches Tutorial",
+      "channel": "Software Testing Mentor"
+    }
+  ],
+  "git-merging": [
+    {
+      "videoId": "zOnwgxiC0OA",
+      "title": "Git Merge vs Rebase: When to Use Each",
+      "channel": "The Modern Coder"
+    },
+    {
+      "videoId": "0chZFIZLR_0",
+      "title": "Git MERGE vs REBASE: Everything You Need to Know",
+      "channel": "ByteByteGo"
+    },
+    {
+      "videoId": "cjSjlHUmaBU",
+      "title": "Git Merge vs Rebase Explained Visually | Which One Should You Use?",
+      "channel": "ByteMonk"
+    },
+    {
+      "videoId": "a_msiOrYLgM",
+      "title": "Git Tutorial: Rebasing & Merging",
+      "channel": "GitKraken"
+    }
+  ],
+  "git-conflicts": [
+    {
+      "videoId": "DloR0BOGNU0",
+      "title": "Never fear merge conflicts again - git merge/pull tutorial",
+      "channel": "Philomatics"
+    },
+    {
+      "videoId": "Sqsz1-o7nXk",
+      "title": "The 2 Types of Git Merge Conflicts Explained & Fixed",
+      "channel": "The Modern Coder"
+    },
+    {
+      "videoId": "QI6TkeJrzKE",
+      "title": "Resolving Merge Conflicts (Git & GitHub for Beginners Course)",
+      "channel": "Pathfinder Analytics"
+    },
+    {
+      "videoId": "Mrpr83TLoZI",
+      "title": "How to Resolve Merge Conflicts - Tutorial in VSCode",
+      "channel": "Evan Gudmestad"
+    }
+  ],
+  "git-pull-requests": [
+    {
+      "videoId": "nCKdihvneS0",
+      "title": "How to create a pull request in 4 min | GitHub for Beginners",
+      "channel": "GitHub"
+    },
+    {
+      "videoId": "6EQN0gJL7y8",
+      "title": "How To Use GitHub Pull Requests",
+      "channel": "corbin"
+    },
+    {
+      "videoId": "rgbCcBNZcdQ",
+      "title": "Creating a Simple Github Pull Request",
+      "channel": "Jake Vanderplas"
+    },
+    {
+      "videoId": "FDXSgyDGmho",
+      "title": "How to merge a pull request | Introduction to GitHub",
+      "channel": "GitHub"
+    }
+  ],
+  "git-commit-quality": [
+    {
+      "videoId": "Dy5t_H2PRrk",
+      "title": "How to Make Actually Good Commits in Git",
+      "channel": "Eric Murphy"
+    },
+    {
+      "videoId": "OJqUWvmf4gg",
+      "title": "Write git commit messages like a PRO with Conventional Commits",
+      "channel": "Justin Brooks"
+    },
+    {
+      "videoId": "9ilpKtF0KGQ",
+      "title": "How to Write a Git Commit Message: Conventions & Best Practices #github #gitlab #bitbucket #python",
+      "channel": "Cameron McKenzie"
+    },
+    {
+      "videoId": "ZgUlLthxBp8",
+      "title": "Git Commit Best Practices | How to Write a Good Commit Message",
+      "channel": "Adnan Halilovic"
+    }
+  ],
+  "git-repo-organization": [
+    {
+      "videoId": "gerAMCtbONE",
+      "title": ".gitignore & Git Best Practices Explained | Write Clean Commits Like a Pro",
+      "channel": "DheerajTechInsight"
+    },
+    {
+      "videoId": "TlzJ6QjwEpE",
+      "title": "How GitIgnore and GitHub Repos Work",
+      "channel": "Cameron McKenzie"
+    },
+    {
+      "videoId": "a7l3x8vthBQ",
+      "title": "Create GitIgnore and ReadMe in Github  | Git & Source Control #12",
+      "channel": "Swiftful Thinking"
+    },
+    {
+      "videoId": "qSnjgEU6VwQ",
+      "title": "How to Ignore Git Folders and Directories .gitignore",
+      "channel": "Cameron McKenzie"
+    }
+  ],
+  "git-readme": [
+    {
+      "videoId": "E6NO0rgFub4",
+      "title": "How To Write a USEFUL README On Github",
+      "channel": "Learn Fast Make Things"
+    },
+    {
+      "videoId": "nN59j4TELcE",
+      "title": "How to Write an Effective README File for Github Projects in 2026 (Complete Guide + Free Tool)",
+      "channel": "Oladimeji Ipaye"
+    },
+    {
+      "videoId": "a8CwpGARAsQ",
+      "title": "How To Create Beautiful and Useful ReadMe Documents For GitHub",
+      "channel": "The Git Guild"
+    },
+    {
+      "videoId": "eVGEea7adDM",
+      "title": "ReadMe Template for Github Repos",
+      "channel": "James Q Quick"
+    }
+  ],
+  "git-portfolio-hygiene": [
+    {
+      "videoId": "-Sq9kI_XDUo",
+      "title": "How to Build a GitHub Portfolio That Actually Gets You Hired (Step-by-Step)",
+      "channel": "Data with Clarence"
+    },
+    {
+      "videoId": "nGomP2eCoyo",
+      "title": "GitHub Profile Reviewed by a Senior Developer (What Actually Matters)",
+      "channel": "Harry Ashton"
+    },
+    {
+      "videoId": "GMLCgiOzTyU",
+      "title": "How to create a Professional GitHub Portfolio: Full Guide",
+      "channel": "Mr. AI Lab"
+    },
+    {
+      "videoId": "z8UPAVTh2aE",
+      "title": "How To Make Your GitHub Stand Out (Gets You Hired!)",
+      "channel": "Miraya"
+    }
+  ],
+  "pro-reading-codebases": [
+    {
+      "videoId": "5sohKNjKF5k",
+      "title": "How I learn a new codebase",
+      "channel": "Web Dev Cody"
+    },
+    {
+      "videoId": "CLs2BNfcY_A",
+      "title": "How to ramp up to any new codebase quickly",
+      "channel": "Engineering with Utsav"
+    },
+    {
+      "videoId": "6qyx05KoCAw",
+      "title": "How To Understand a Large Codebase",
+      "channel": "Donald Dang"
+    },
+    {
+      "videoId": "4t8QcDdrL6Y",
+      "title": "How to Read Code in the AI Era (6 Techniques)",
+      "channel": "KodeKloud"
+    }
+  ],
+  "pro-debugging": [
+    {
+      "videoId": "Dr4Y58nqxVs",
+      "title": "Basics of Debugging",
+      "channel": "Microsoft Visual Studio"
+    },
+    {
+      "videoId": "u-HdLtqEOog",
+      "title": "Debugging C# Code in Visual Studio | Mosh",
+      "channel": "Programming with Mosh"
+    },
+    {
+      "videoId": "emvl_Yhr7tc",
+      "title": "5 essential C# debugging tips in Visual Studio - fast & beginner-friendly",
+      "channel": "Microsoft Visual Studio"
+    },
+    {
+      "videoId": "__3wlUxMXlA",
+      "title": "How to Debug in Visual Studio: A Beginner's Guide",
+      "channel": "Tech With Pat"
+    }
+  ],
+  "pro-breaking-down-features": [
+    {
+      "videoId": "AkUtIMfTK54",
+      "title": "Breaking Features Into Epics User Stories & Tasks | Why is it Important",
+      "channel": "dezkr"
+    },
+    {
+      "videoId": "k2PwtI6JyFM",
+      "title": "How to Split User Stories with SPIDR | 5 Story Splitting Techniques",
+      "channel": "Mountain Goat Software: Agile & Scrum Mastery"
+    },
+    {
+      "videoId": "hWPzcStqbeY",
+      "title": "Agile Epics, Features, and User Stories Explained | From Big Ideas to Sprint-Ready Work",
+      "channel": "PM Aspirant"
+    },
+    {
+      "videoId": "B_xQKX_x5Hs",
+      "title": "Stop Feeling Overwhelmed: Split User Stories in 2 Steps",
+      "channel": "Vibhor Chandel"
+    }
+  ],
+  "pro-requirements": [
+    {
+      "videoId": "siRgoRaj9lk",
+      "title": "How to Start Managing & Gathering Requirements with User Stories",
+      "channel": "Bridging the Gap - Resources for Business Analysts"
+    },
+    {
+      "videoId": "8VTw52j2LNY",
+      "title": "The Best Guide To Agile Requirements Gathering",
+      "channel": "XBOSoft"
+    },
+    {
+      "videoId": "chI_6h5z-fg",
+      "title": "Agile Requirements Gathering: Master User Stories & Evolving Requirements!",
+      "channel": "CodeLucky"
+    },
+    {
+      "videoId": "WaJ7aUPJnN4",
+      "title": "Requirements gathering and story writing",
+      "channel": "ServiceNow Community"
+    }
+  ],
+  "pro-code-review": [
+    {
+      "videoId": "d9_fweNDjKw",
+      "title": "Better Code Reviews in 6 SIMPLE STEPS",
+      "channel": "Modern Software Engineering"
+    },
+    {
+      "videoId": "a9_0UUUNt-Y",
+      "title": "Code Review Best Practices",
+      "channel": "JetBrains"
+    },
+    {
+      "videoId": "0t4_MfHgb_A",
+      "title": "How to Do Code Reviews Like a Human",
+      "channel": "PyGotham 2018"
+    },
+    {
+      "videoId": "lz32biXRwdM",
+      "title": "How to review a Pull Request effectively? 🚀",
+      "channel": "Ajitesh (Tough Tongue AI team)"
+    }
+  ],
+  "pro-refactoring": [
+    {
+      "videoId": "lkZ6Wo65ULA",
+      "title": "How to Safely Refactor Legacy Code Using Adapt Parameter",
+      "channel": "Emily Bache"
+    },
+    {
+      "videoId": "xgYozshgjV0",
+      "title": "Refactoring Legacy Code in C#",
+      "channel": "Roy Osherove"
+    },
+    {
+      "videoId": "NCjwUptCaLU",
+      "title": "Refactoring Legacy Code STEP BY STEP (Part 2)",
+      "channel": "Modern Software Engineering"
+    },
+    {
+      "videoId": "8OxH9Lz0Ckg",
+      "title": "Cutting Code Quickly: From 0% to Cleanly Refactored 100% Tested Code — Llewellyn Falco",
+      "channel": "ChariotSolutions"
+    }
+  ],
+  "pro-security": [
+    {
+      "videoId": "Jzr0Jdnq_EI",
+      "title": "OWASP Top 10 2025: Your complete guide to securing your applications",
+      "channel": "Aikido Security"
+    },
+    {
+      "videoId": "wUaeKEl1RCw",
+      "title": "OWASP Top 10 Web Application Security Risks",
+      "channel": "Telusko"
+    },
+    {
+      "videoId": "netNAeq-VX0",
+      "title": "Tutorial 09- OWASP Top 10 Vulnerabilities Explained with Example",
+      "channel": "SanQA Mastery"
+    },
+    {
+      "videoId": "hs6O9mSaoRc",
+      "title": "OWASP Top 10: Essential Web Application Security Risks to Know (2025)",
+      "channel": "StackHawk"
+    }
+  ],
+  "pro-performance": [
+    {
+      "videoId": "hc0_mwC0blU",
+      "title": "Performance Profiling | .NET Perf Counters Tool",
+      "channel": "Microsoft Visual Studio"
+    },
+    {
+      "videoId": "SqxvleC0L4g",
+      "title": "Monitoring Performance Counters using .NET Tools (dotnet-counters tool in .NET 5.0)",
+      "channel": "DotNet Core Central"
+    },
+    {
+      "videoId": "7llxR-rH-gM",
+      "title": "High CPU Usage with .NET Counters",
+      "channel": "dotnet"
+    },
+    {
+      "videoId": "y-O26ID61JY",
+      "title": "Memory Leak Debugging in .NET Like a Senior Developer | dotnet-counters & dotnet-dump",
+      "channel": "Frontend to Backend with Rohan"
+    }
+  ],
+  "pro-logging-diagnostics": [
+    {
+      "videoId": "F-Htbhf-63A",
+      "title": ".NET Observability Done Right: Traces, Metrics & Logs in ONE Setup",
+      "channel": "Mohamad Lawand"
+    },
+    {
+      "videoId": "HrRrJ5wTtdk",
+      "title": "A practical introduction to OpenTelemetry for .NET developers (+ Aspire Dashboard)",
+      "channel": "Milan Jovanović"
+    },
+    {
+      "videoId": "beyxILlWApY",
+      "title": "Logging With OpenTelemetry in ASP.NET Core Web API",
+      "channel": "Code Maze"
+    },
+    {
+      "videoId": "mKxeYseLAwA",
+      "title": "Structured Logging With Serilog in ASP.NET Core Web API",
+      "channel": "Code Maze"
+    }
+  ],
+  "pro-documentation": [
+    {
+      "videoId": "SrCucUMJAE8",
+      "title": "How to Write Software Documentation",
+      "channel": "Technical Writer HQ"
+    },
+    {
+      "videoId": "F1U0j3KprbA",
+      "title": "Technical documentation. How can I write them better and why should I care? | PlatformCon 2023",
+      "channel": "Platform Engineering"
+    },
+    {
+      "videoId": "GKN_X5w9J0k",
+      "title": "How to Structure Your Technical Documentation",
+      "channel": "Fanny N."
+    },
+    {
+      "videoId": "k4t3pmarF0Y",
+      "title": "How to Create Technical Documentation | The Simple 6-Step Method Anyone Can Follow",
+      "channel": "ClickUp"
+    }
+  ],
+  "pro-deployment": [
+    {
+      "videoId": "KL_1zk3LY84",
+      "title": "Deploy Angular + .NET Core Web API on IIS | JWT + OAuth 2.0 with Google Setup #IIS #Angular",
+      "channel": "Code Canvas With Touseef"
+    },
+    {
+      "videoId": "9c1qOwx1zg0",
+      "title": "How to Deploy ASP.NET Core Web API on IIS | Step-by-Step Guide using Visual Studio 2022",
+      "channel": "Code Canvas With Touseef"
+    },
+    {
+      "videoId": "kmmX7JaHRzU",
+      "title": "How to deploy a .NET Web API in IIS",
+      "channel": "Remigiusz Zalewski"
+    },
+    {
+      "videoId": "OlkpRoE2mYQ",
+      "title": "Deploy ASP.Net Core Web Application in IIS - Dot Net Core Hosting",
+      "channel": "Coding Droplets"
+    }
+  ],
+  "pro-incident-investigation": [
+    {
+      "videoId": "Fv0nwb1Qn6A",
+      "title": "Blameless Postmortem Culture In Software Engineering",
+      "channel": "Clément Mihailescu"
+    },
+    {
+      "videoId": "wTpzki6i_2I",
+      "title": "Incidents & postmortems — Explained in Detail",
+      "channel": "software-engineer-blog"
+    },
+    {
+      "videoId": "OAjGeykR8ik",
+      "title": "How to write an incident report postmortem",
+      "channel": "Sysadmincasts Videos"
+    },
+    {
+      "videoId": "eghHZvffilA",
+      "title": "Advanced Techniques for Production Debugging",
+      "channel": "Ozcode"
+    }
+  ]
+}

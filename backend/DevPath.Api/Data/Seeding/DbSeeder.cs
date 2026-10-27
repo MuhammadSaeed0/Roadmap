@@ -52,14 +52,15 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
             await SeedChecklistAsync(content.Checklist, ct);
             await SeedExercisesAsync(content.Exercises, topics, ct);
             await SeedInterviewsAsync(content.Interviews, topics, ct);
+            await SyncCuratedVideosAsync(content.Videos, topics, ct);
 
             await tx.CommitAsync(ct);
         });
 
         logger.LogInformation(
-            "Seed complete ({Environment}): {Phases} phases, {Topics} topics, {Resources} resources, {Projects} projects, {Exercises} exercises, {Questions} interview questions",
+            "Seed complete ({Environment}): {Phases} phases, {Topics} topics, {Resources} resources, {Projects} projects, {Exercises} exercises, {Questions} interview questions, {Videos} videos",
             env.EnvironmentName, content.Phases.Count, content.Phases.Sum(p => p.Topics.Count), content.Resources.Count,
-            content.Projects.Count, content.Exercises.Count, content.Interviews.Count);
+            content.Projects.Count, content.Exercises.Count, content.Interviews.Count, content.Videos.Sum(v => v.Value.Count));
     }
 
     private async Task<Dictionary<string, Phase>> SeedPhasesAsync(List<PhaseSeed> seeds, CancellationToken ct)
@@ -292,6 +293,32 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
         await db.SaveChangesAsync(ct);
     }
 
+    /// <summary>Curated videos are synchronised: entries removed from videos.json are removed from the database.</summary>
+    private async Task SyncCuratedVideosAsync(Dictionary<string, List<VideoSeed>> seeds, Dictionary<string, Topic> topics, CancellationToken ct)
+    {
+        var existing = await db.CuratedVideos.ToDictionaryAsync(v => (v.TopicId, v.VideoId), ct);
+        var wanted = new HashSet<(int, string)>();
+        foreach (var (slug, videos) in seeds)
+        {
+            var topicId = topics[slug].Id;
+            var order = 0;
+            foreach (var s in videos)
+            {
+                wanted.Add((topicId, s.VideoId));
+                if (!existing.TryGetValue((topicId, s.VideoId), out var v))
+                {
+                    v = new CuratedVideo { TopicId = topicId, VideoId = s.VideoId, Title = s.Title };
+                    db.CuratedVideos.Add(v);
+                }
+                v.Title = s.Title;
+                v.ChannelTitle = s.Channel;
+                v.Order = ++order;
+            }
+        }
+        db.CuratedVideos.RemoveRange(existing.Where(e => !wanted.Contains(e.Key)).Select(e => e.Value));
+        await db.SaveChangesAsync(ct);
+    }
+
     private async Task SeedInterviewsAsync(List<InterviewSeed> seeds, Dictionary<string, Topic> topics, CancellationToken ct)
     {
         var existing = await db.InterviewQuestions.ToDictionaryAsync(q => q.Key, ct);
@@ -326,6 +353,7 @@ public class SeedContent
     public List<ChecklistSeed> Checklist { get; private init; } = [];
     public List<ExerciseSeed> Exercises { get; private init; } = [];
     public List<InterviewSeed> Interviews { get; private init; } = [];
+    public Dictionary<string, List<VideoSeed>> Videos { get; private init; } = [];
 
     public static SeedContent Load(string dir, JsonSerializerOptions options)
     {
@@ -349,6 +377,10 @@ public class SeedContent
             Checklist = Read<List<ChecklistSeed>>(Path.Combine(dir, "portfolio-checklist.json")),
             Exercises = ReadAll<ExerciseSeed>("practice"),
             Interviews = ReadAll<InterviewSeed>("interviews"),
+            // Optional: without videos.json, topics simply have no curated videos.
+            Videos = File.Exists(Path.Combine(dir, "videos.json"))
+                ? Read<Dictionary<string, List<VideoSeed>>>(Path.Combine(dir, "videos.json"))
+                : [],
         };
     }
 
@@ -398,6 +430,13 @@ public class SeedContent
         }
         foreach (var e in Exercises) Ref(e.Topic, $"Exercise '{e.Key}'");
         foreach (var q in Interviews) Ref(q.Topic, $"Interview question '{q.Key}'");
+        foreach (var (slug, videos) in Videos)
+        {
+            Ref(slug, "videos.json");
+            Unique(videos.Select(v => v.VideoId), $"video in videos.json for '{slug}'");
+            foreach (var v in videos.Where(v => !Services.YouTubeIds.IsValid(v.VideoId) || string.IsNullOrWhiteSpace(v.Title)))
+                errors.Add($"videos.json entry for '{slug}' has an invalid video id or an empty title ('{v.VideoId}')");
+        }
 
         // A prerequisite cycle would make those topics impossible to recommend.
         var graph = Phases.SelectMany(p => p.Topics).ToDictionary(t => t.Slug, t => t.Prerequisites ?? []);
