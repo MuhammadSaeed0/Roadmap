@@ -50,7 +50,8 @@ public class SeederTests : IAsyncLifetime
     {
         await Seeder().SeedAsync();
         var topic = await _db.Topics.FirstAsync();
-        _db.TopicProgress.Add(new TopicProgress { TopicId = topic.Id, Status = TopicStatus.Completed, Confidence = 4, UpdatedAt = DateTime.UtcNow });
+        _db.Users.Add(new AppUser { Id = "learner", UserName = "learner@example.com", Email = "learner@example.com", FullName = "Learner" });
+        _db.TopicProgress.Add(new TopicProgress { UserId = "learner", TopicId = topic.Id, Status = TopicStatus.Completed, Confidence = 4, UpdatedAt = DateTime.UtcNow });
         await _db.SaveChangesAsync();
         var counts = await Counts();
 
@@ -58,7 +59,8 @@ public class SeederTests : IAsyncLifetime
         await Seeder().SeedAsync();
 
         Assert.Equal(counts, await Counts());
-        var progress = await _db.TopicProgress.SingleAsync();
+        // This context has no signed-in user, so the user-data filter would hide the row.
+        var progress = await _db.TopicProgress.IgnoreQueryFilters().SingleAsync();
         Assert.Equal(TopicStatus.Completed, progress.Status);
         Assert.Equal(4, progress.Confidence);
     }

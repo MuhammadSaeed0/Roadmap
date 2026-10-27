@@ -13,7 +13,7 @@ public class ResourceService(AppDbContext db, IHttpClientFactory httpFactory, Ti
     public async Task<IReadOnlyList<ResourceDto>> ListAsync(int? topicId, ResourceType? type, SkillArea? skill, string? q, CancellationToken ct)
     {
         var query = db.Resources.AsNoTracking()
-            .Include(r => r.TopicLinks).ThenInclude(l => l.Topic).ThenInclude(t => t.Progress)
+            .Include(r => r.TopicLinks).ThenInclude(l => l.Topic).ThenInclude(t => t.ProgressRows)
             .AsQueryable();
 
         if (topicId is { } id) query = query.Where(r => r.TopicLinks.Any(l => l.TopicId == id));
@@ -103,5 +103,5 @@ public class ResourceService(AppDbContext db, IHttpClientFactory httpFactory, Ti
         r.Id, r.Key, r.TitleEn, r.TitleAr, r.Url, r.SourceName, r.Type, r.Difficulty, r.IsFree,
         r.VerificationStatus, r.LastVerifiedAt, r.LastStatusCode,
         r.TopicLinks.Select(l => new TopicRefDto(l.Topic.Id, l.Topic.Slug, l.Topic.TitleEn, l.Topic.TitleAr, l.Topic.Skill,
-            l.Topic.Progress?.Status ?? TopicStatus.NotStarted)).ToList());
+            l.Topic.ProgressRows.FirstOrDefault()?.Status ?? TopicStatus.NotStarted)).ToList());
 }

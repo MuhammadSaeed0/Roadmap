@@ -59,24 +59,29 @@ public class LearningStateLoader(AppDbContext db)
             .Select(p => new PhaseState(p.Id, p.Slug, p.Order, p.TitleEn, p.TitleAr))
             .ToListAsync(ct);
 
+        // The signed-in user's progress (the query filter keeps other accounts' rows out).
+        var progress = await db.TopicProgress.AsNoTracking()
+            .Select(p => new { p.TopicId, p.Status, p.Knowledge, p.Confidence, p.CompletedAt })
+            .ToDictionaryAsync(p => p.TopicId, ct);
+
         var rows = await db.Topics.AsNoTracking()
             .OrderBy(t => t.Phase.Order).ThenBy(t => t.Order)
             .Select(t => new
             {
                 t.Id, t.Slug, t.PhaseId, PhaseOrder = t.Phase.Order, t.Order,
                 t.Skill, t.Priority, t.EstimatedMinutes, t.TitleEn, t.TitleAr,
-                Status = t.Progress != null ? t.Progress.Status : TopicStatus.NotStarted,
-                Knowledge = t.Progress != null ? t.Progress.Knowledge : KnowledgeLevel.Unassessed,
-                Confidence = t.Progress != null ? t.Progress.Confidence : null,
-                CompletedAt = t.Progress != null ? t.Progress.CompletedAt : null,
                 Prereqs = t.Prerequisites.Select(p => p.PrerequisiteTopicId).ToList()
             })
             .AsSplitQuery()
             .ToListAsync(ct);
 
-        var topics = rows.Select(r => new TopicState(
-            r.Id, r.Slug, r.PhaseId, r.PhaseOrder, r.Order, r.Skill, r.Priority, r.EstimatedMinutes,
-            r.TitleEn, r.TitleAr, r.Status, r.Knowledge, r.Confidence, r.CompletedAt, r.Prereqs)).ToList();
+        var topics = rows.Select(r =>
+        {
+            var p = progress.GetValueOrDefault(r.Id);
+            return new TopicState(
+                r.Id, r.Slug, r.PhaseId, r.PhaseOrder, r.Order, r.Skill, r.Priority, r.EstimatedMinutes, r.TitleEn, r.TitleAr,
+                p?.Status ?? TopicStatus.NotStarted, p?.Knowledge ?? KnowledgeLevel.Unassessed, p?.Confidence, p?.CompletedAt, r.Prereqs);
+        }).ToList();
 
         return new LearningState(phases, topics);
     }

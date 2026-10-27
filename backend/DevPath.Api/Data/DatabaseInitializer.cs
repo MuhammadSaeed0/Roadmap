@@ -30,6 +30,10 @@ public static class DatabaseInitializer
 
             if (config.GetValue("Database:SeedOnStartup", true))
                 await scope.ServiceProvider.GetRequiredService<DbSeeder>().SeedAsync();
+
+            // Explicit, one-time handover of data saved before accounts existed (see LegacyData).
+            if (config["LegacyData:AssignToEmail"] is { Length: > 0 } email)
+                await LegacyData.AssignAsync(db, email, logger);
         }
         catch (Exception ex) when (ex is Microsoft.Data.SqlClient.SqlException or InvalidOperationException)
         {

@@ -192,3 +192,13 @@ export type SearchCategory = 'topics' | 'projects' | 'tasks' | 'practice' | 'int
 export interface SearchResult { query: string; groups: { category: SearchCategory; items: SearchHit[] }[]; }
 
 export interface LinkCheckResult { checked: number; verified: number; broken: number; unreachable: number; checkedAt: string; }
+
+/** 'ok', or why suggestions couldn't be refreshed (cached ones may still be listed). */
+export type VideoSuggestionStatus = 'ok' | 'not_configured' | 'quota_exceeded' | 'unavailable';
+export interface TopicVideo {
+  videoId: string; title: string; channelTitle: string; publishedAt: string | null; durationSeconds: number | null;
+  /** 'suggested' comes from the shared YouTube search; 'added' was added by this user from a link. */
+  source: 'suggested' | 'added'; addedId: number | null;
+  isWatched: boolean; isBookmarked: boolean;
+}
+export interface TopicVideos { status: VideoSuggestionStatus; searchQuery: string; videos: TopicVideo[]; }

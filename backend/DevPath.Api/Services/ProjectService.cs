@@ -13,14 +13,15 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
             .Where(p => projectId == null || p.Id == projectId)
             .Include(p => p.StartAfterPhase)
             .Include(p => p.PortfolioChecks)
+            .Include(p => p.Repositories)
             .Include(p => p.Milestones.OrderBy(m => m.Order))
                 .ThenInclude(m => m.Tasks.OrderBy(t => t.Order))
-                    .ThenInclude(t => t.Progress)
+                    .ThenInclude(t => t.ProgressRows)
             .Include(p => p.Milestones)
                 .ThenInclude(m => m.Tasks)
                     .ThenInclude(t => t.TopicLinks)
                         .ThenInclude(l => l.Topic)
-                            .ThenInclude(t => t.Progress)
+                            .ThenInclude(t => t.ProgressRows)
             .AsSplitQuery()
             .OrderBy(p => p.Order)
             .ToListAsync(ct);
@@ -64,7 +65,7 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
             .ToList();
 
         return new ProjectDetailDto(summary, SplitLines(project.RequirementsEn), SplitLines(project.RequirementsAr),
-            project.RepositoryUrl, milestones, changeRequests, portfolio, noteCount);
+            project.Repositories.FirstOrDefault()?.RepositoryUrl, milestones, changeRequests, portfolio, noteCount);
     }
 
     public async Task<IReadOnlyList<ProjectTaskDto>> GetTasksAsync(int projectId, CancellationToken ct)
@@ -82,7 +83,7 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
     public async Task<ProjectTaskDto> UpdateTaskProgressAsync(int taskId, UpdateProjectTaskProgressRequest request, CancellationToken ct)
     {
         var task = await db.ProjectTasks
-            .Include(t => t.Progress)
+            .Include(t => t.ProgressRows)
             .Include(t => t.Milestone)
             .SingleOrDefaultAsync(t => t.Id == taskId, ct)
             ?? throw new NotFoundException("ProjectTask", taskId);
@@ -101,7 +102,13 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
             throw new RequestValidationException("blockedReason", "required", "Please describe what is blocking this task.");
 
         var now = clock.GetUtcNow().UtcDateTime;
-        var progress = task.Progress ??= new ProjectTaskProgress { ProjectTaskId = task.Id };
+        // ProgressRows was loaded with the query filter: at most the signed-in user's row.
+        var progress = task.ProgressRows.FirstOrDefault();
+        if (progress is null)
+        {
+            progress = new ProjectTaskProgress { ProjectTaskId = task.Id };
+            task.ProgressRows.Add(progress);
+        }
         progress.Status = status;
         progress.BlockedReason = status == ProjectTaskStatus.Blocked ? reason : null;
         if (status is ProjectTaskStatus.InProgress or ProjectTaskStatus.Completed) progress.StartedAt ??= now;
@@ -121,7 +128,7 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
         var item = await db.PortfolioChecklistItems.AsNoTracking().SingleOrDefaultAsync(i => i.Id == itemId, ct)
             ?? throw new NotFoundException("PortfolioChecklistItem", itemId);
 
-        var check = await db.PortfolioChecks.FindAsync([projectId, itemId], ct);
+        var check = await db.PortfolioChecks.SingleOrDefaultAsync(c => c.ProjectId == projectId && c.ChecklistItemId == itemId, ct);
         if (check is null)
         {
             check = new PortfolioCheck { ProjectId = projectId, ChecklistItemId = itemId };
@@ -136,8 +143,21 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
 
     public async Task SetRepositoryUrlAsync(int projectId, string? url, CancellationToken ct)
     {
-        var project = await db.Projects.FindAsync([projectId], ct) ?? throw new NotFoundException("Project", projectId);
-        project.RepositoryUrl = string.IsNullOrWhiteSpace(url) ? null : url.Trim();
+        if (!await db.Projects.AnyAsync(p => p.Id == projectId, ct)) throw new NotFoundException("Project", projectId);
+        var repository = await db.ProjectRepositories.SingleOrDefaultAsync(r => r.ProjectId == projectId, ct);
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            if (repository is not null) db.ProjectRepositories.Remove(repository);
+        }
+        else if (repository is null)
+        {
+            db.ProjectRepositories.Add(new ProjectRepository { ProjectId = projectId, RepositoryUrl = url.Trim(), UpdatedAt = clock.GetUtcNow().UtcDateTime });
+        }
+        else
+        {
+            repository.RepositoryUrl = url.Trim();
+            repository.UpdatedAt = clock.GetUtcNow().UtcDateTime;
+        }
         await db.SaveChangesAsync(ct);
     }
 
@@ -158,7 +178,7 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
         {
             var percent = summaries[p.Id].Percent;
             foreach (var task in p.Milestones.SelectMany(m => m.Tasks)
-                         .Where(t => (t.Progress?.Status ?? ProjectTaskStatus.NotStarted) != ProjectTaskStatus.Completed)
+                         .Where(t => (t.ProgressRows.FirstOrDefault()?.Status ?? ProjectTaskStatus.NotStarted) != ProjectTaskStatus.Completed)
                          .Where(t => !t.IsChangeRequest || percent >= t.UnlockAtPercent))
             {
                 foreach (var link in task.TopicLinks)
@@ -181,7 +201,7 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
         {
             var task = project.Milestones.OrderBy(m => m.Order).SelectMany(m => m.Tasks.OrderBy(t => t.Order))
                 .Where(t => !t.IsChangeRequest || summary.Percent >= t.UnlockAtPercent)
-                .FirstOrDefault(t => (t.Progress?.Status ?? ProjectTaskStatus.NotStarted)
+                .FirstOrDefault(t => (t.ProgressRows.FirstOrDefault()?.Status ?? ProjectTaskStatus.NotStarted)
                     is ProjectTaskStatus.NotStarted or ProjectTaskStatus.InProgress);
             if (task is not null) return (task, project);
         }
@@ -192,7 +212,7 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
     {
         var tasks = await db.ProjectTasks.AsNoTracking()
             .Where(t => t.Milestone.ProjectId == projectId && !t.IsChangeRequest)
-            .Select(t => t.Progress != null && t.Progress.Status == ProjectTaskStatus.Completed)
+            .Select(t => t.ProgressRows.Any(p => p.Status == ProjectTaskStatus.Completed))
             .ToListAsync(ct);
         return tasks.Count == 0 ? 0 : Math.Round(tasks.Count(done => done) * 100.0 / tasks.Count, 1);
     }
@@ -201,7 +221,7 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
     {
         var all = p.Milestones.SelectMany(m => m.Tasks).ToList();
         var core = all.Where(t => !t.IsChangeRequest).ToList();
-        ProjectTaskStatus StatusOf(ProjectTask t) => t.Progress?.Status ?? ProjectTaskStatus.NotStarted;
+        ProjectTaskStatus StatusOf(ProjectTask t) => t.ProgressRows.FirstOrDefault()?.Status ?? ProjectTaskStatus.NotStarted;
 
         var completed = core.Count(t => StatusOf(t) == ProjectTaskStatus.Completed);
         var percent = core.Count == 0 ? 0 : Math.Round(completed * 100.0 / core.Count, 1);
@@ -230,9 +250,9 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
         SplitLines(t.AcceptanceCriteriaEn), SplitLines(t.AcceptanceCriteriaAr),
         t.EstimatedMinutes, t.Priority, t.IsChangeRequest, t.UnlockAtPercent,
         IsLocked: t.IsChangeRequest && projectPercent < t.UnlockAtPercent,
-        t.Progress?.Status ?? ProjectTaskStatus.NotStarted, t.Progress?.BlockedReason, t.Progress?.CompletedAt,
+        t.ProgressRows.FirstOrDefault()?.Status ?? ProjectTaskStatus.NotStarted, t.ProgressRows.FirstOrDefault()?.BlockedReason, t.ProgressRows.FirstOrDefault()?.CompletedAt,
         t.TopicLinks.Select(l => new TopicRefDto(l.Topic.Id, l.Topic.Slug, l.Topic.TitleEn, l.Topic.TitleAr, l.Topic.Skill,
-            l.Topic.Progress?.Status ?? TopicStatus.NotStarted)).OrderBy(x => x.Id).ToList());
+            l.Topic.ProgressRows.FirstOrDefault()?.Status ?? TopicStatus.NotStarted)).OrderBy(x => x.Id).ToList());
 
     internal static IReadOnlyList<string> SplitLines(string text) =>
         text.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);

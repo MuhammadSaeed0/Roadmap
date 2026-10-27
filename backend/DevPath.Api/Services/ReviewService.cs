@@ -35,7 +35,7 @@ public class ReviewService(AppDbContext db, TimeProvider clock)
             .Select(r => new
             {
                 r.TopicId, r.Topic.Slug, r.Topic.TitleEn, r.Topic.TitleAr, r.Topic.Skill,
-                Confidence = r.Topic.Progress != null ? r.Topic.Progress.Confidence : null,
+                Confidence = r.Topic.ProgressRows.Select(p => p.Confidence).FirstOrDefault(),
                 r.IntervalDays, r.NextReviewOn, r.LastReviewedOn, r.ReviewCount
             })
             .ToListAsync(ct);
@@ -47,7 +47,7 @@ public class ReviewService(AppDbContext db, TimeProvider clock)
         // Suggestions: finished topics with low confidence that aren't in the queue yet.
         var suggested = await db.TopicProgress.AsNoTracking()
             .Where(p => p.Status == TopicStatus.Completed && p.Confidence != null && p.Confidence <= 2
-                        && p.Topic.ReviewSchedule == null)
+                        && !p.Topic.ReviewRows.Any())
             .OrderBy(p => p.Confidence).ThenBy(p => p.Topic.Phase.Order).ThenBy(p => p.Topic.Order)
             .Take(6)
             .Select(p => new TopicRefDto(p.TopicId, p.Topic.Slug, p.Topic.TitleEn, p.Topic.TitleAr, p.Topic.Skill, p.Status))
@@ -68,28 +68,31 @@ public class ReviewService(AppDbContext db, TimeProvider clock)
     /// <summary>Adds a topic to the review queue. Adding it twice is harmless (idempotent).</summary>
     public async Task<ReviewStateDto> AddAsync(int topicId, CancellationToken ct)
     {
-        var topic = await db.Topics.Include(t => t.Progress).Include(t => t.ReviewSchedule)
+        var topic = await db.Topics.Include(t => t.ProgressRows).Include(t => t.ReviewRows)
             .SingleOrDefaultAsync(t => t.Id == topicId, ct) ?? throw new NotFoundException("Topic", topicId);
 
-        if (topic.ReviewSchedule is null)
+        // Both collections were loaded with the query filter: at most the signed-in user's row each.
+        var schedule = topic.ReviewRows.FirstOrDefault();
+        if (schedule is null)
         {
-            var interval = ReviewRules.IntervalDays(topic.Progress?.Confidence);
-            topic.ReviewSchedule = new ReviewSchedule
+            var interval = ReviewRules.IntervalDays(topic.ProgressRows.FirstOrDefault()?.Confidence);
+            schedule = new ReviewSchedule
             {
                 TopicId = topicId,
                 IntervalDays = interval,
                 NextReviewOn = Today().AddDays(interval),
                 CreatedAt = clock.GetUtcNow().UtcDateTime
             };
+            topic.ReviewRows.Add(schedule);
             await db.SaveChangesAsync(ct);
         }
-        return ToState(topic.ReviewSchedule);
+        return ToState(schedule);
     }
 
     /// <summary>Records a finished review and reschedules it using the new confidence.</summary>
     public async Task<ReviewStateDto> CompleteAsync(int topicId, int confidence, CancellationToken ct)
     {
-        var schedule = await db.ReviewSchedules.Include(r => r.Topic).ThenInclude(t => t.Progress)
+        var schedule = await db.ReviewSchedules.Include(r => r.Topic).ThenInclude(t => t.ProgressRows)
             .SingleOrDefaultAsync(r => r.TopicId == topicId, ct) ?? throw new NotFoundException("ReviewSchedule", topicId);
 
         var now = clock.GetUtcNow().UtcDateTime;
@@ -100,7 +103,7 @@ public class ReviewService(AppDbContext db, TimeProvider clock)
         schedule.ReviewCount++;
 
         // Reviewing also updates the topic's confidence — one source of truth.
-        var progress = schedule.Topic.Progress;
+        var progress = schedule.Topic.ProgressRows.FirstOrDefault();
         if (progress is null)
         {
             progress = new TopicProgress { TopicId = topicId, Status = TopicStatus.InProgress, StartedAt = now };

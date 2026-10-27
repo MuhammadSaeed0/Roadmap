@@ -20,3 +20,10 @@ public class RequestValidationException(string field, string code, string messag
     public string Field { get; } = field;
     public string Code { get; } = code;
 }
+
+/// <summary>Any other failure with its own status and code, e.g. 401 "invalid_credentials" or 422 "video_not_embeddable".</summary>
+public class ApiProblemException(int status, string code, string message) : Exception(message)
+{
+    public int Status { get; } = status;
+    public string Code { get; } = code;
+}

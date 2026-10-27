@@ -50,7 +50,7 @@ public class StudySessionService(AppDbContext db, TimeProvider clock)
         // Logging a session on a topic you haven't started moves it to "In progress".
         if (request.TopicId is { } id)
         {
-            var progress = await db.TopicProgress.FindAsync([id], ct);
+            var progress = await db.TopicProgress.SingleOrDefaultAsync(p => p.TopicId == id, ct);
             if (progress is null)
                 db.TopicProgress.Add(new TopicProgress
                 {

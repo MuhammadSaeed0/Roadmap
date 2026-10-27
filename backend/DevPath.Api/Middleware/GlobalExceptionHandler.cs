@@ -37,6 +37,11 @@ public class GlobalExceptionHandler(IProblemDetailsService problemDetails, ILogg
                 problem.Extensions["code"] = ve.Code;
                 break;
 
+            case ApiProblemException ap:
+                problem = new ProblemDetails { Status = ap.Status, Title = ap.Message };
+                problem.Extensions["code"] = ap.Code;
+                break;
+
             case DbUpdateConcurrencyException:
                 problem = new ProblemDetails { Status = 409, Title = "The record was changed by someone else. Reload and try again." };
                 problem.Extensions["code"] = "concurrency_conflict";

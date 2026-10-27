@@ -162,3 +162,20 @@ public record SearchHitDto(int Id, string TitleEn, string TitleAr, string? Subti
 public record SearchGroupDto(string Category, IReadOnlyList<SearchHitDto> Items);
 
 public record SearchResultDto(string Query, IReadOnlyList<SearchGroupDto> Groups);
+
+// ---------- Topic videos ----------
+
+/// <param name="Source">"suggested" (shared YouTube search) or "added" (pasted by this user).</param>
+/// <param name="AddedId">Id of the user's own entry, for removing it; null for suggestions.</param>
+public record TopicVideoDto(
+    string VideoId, string Title, string ChannelTitle, DateTime? PublishedAt, int? DurationSeconds,
+    string Source, int? AddedId, bool IsWatched, bool IsBookmarked);
+
+/// <param name="Status">"ok", or why suggestions couldn't be refreshed: "not_configured", "quota_exceeded", "unavailable".</param>
+public record TopicVideosDto(string Status, string SearchQuery, IReadOnlyList<TopicVideoDto> Videos);
+
+public record AddTopicVideoRequest([Required, MaxLength(500)] string? Url);
+
+public record UpdateVideoProgressRequest([Required] int? TopicId, [Required] bool? IsWatched, [Required] bool? IsBookmarked);
+
+public record VideoProgressDto(string VideoId, bool IsWatched, bool IsBookmarked);

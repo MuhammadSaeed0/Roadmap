@@ -26,7 +26,7 @@ public class RecommendationService(
     {
         var ids = items.Select(i => i.Topic.Id).ToList();
         var extras = await db.Topics.AsNoTracking().Where(t => ids.Contains(t.Id))
-            .Select(t => new { t.Id, t.SummaryEn, t.SummaryAr, InReview = t.ReviewSchedule != null })
+            .Select(t => new { t.Id, t.SummaryEn, t.SummaryAr, InReview = t.ReviewRows.Any() })
             .ToDictionaryAsync(t => t.Id, ct);
         var phases = state.Phases.ToDictionary(p => p.Id);
 
@@ -99,7 +99,7 @@ public class StudyPlanService(
                 if (topic is null) return null;
                 // Prefer a coding exercise (enum order) — sorted in memory because enums are stored as strings.
                 var exercise = (await db.PracticeExercises.AsNoTracking()
-                    .Where(e => e.TopicId == topic.Id && (e.Progress == null || e.Progress.Status != PracticeStatus.Completed))
+                    .Where(e => e.TopicId == topic.Id && (!e.ProgressRows.Any(p => p.Status == PracticeStatus.Completed)))
                     .Select(e => new { e.Id, e.Type, e.TitleEn, e.TitleAr })
                     .ToListAsync(ct))
                     .OrderBy(e => e.Type).ThenBy(e => e.Id)

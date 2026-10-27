@@ -22,8 +22,87 @@ namespace DevPath.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DevPath.Api.Models.AppUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .IsUnique()
+                        .HasDatabaseName("EmailIndex")
+                        .HasFilter("[NormalizedEmail] IS NOT NULL");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.InterviewProgress", b =>
                 {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
@@ -38,7 +117,9 @@ namespace DevPath.Api.Migrations
                     b.Property<int>("TimesPracticed")
                         .HasColumnType("int");
 
-                    b.HasKey("QuestionId");
+                    b.HasKey("UserId", "QuestionId");
+
+                    b.HasIndex("QuestionId");
 
                     b.ToTable("InterviewProgress");
                 });
@@ -110,8 +191,9 @@ namespace DevPath.Api.Migrations
 
             modelBuilder.Entity("DevPath.Api.Models.LearningPreference", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("AllowSkippingPrerequisites")
                         .HasColumnType("bit");
@@ -131,7 +213,7 @@ namespace DevPath.Api.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("LearningPreferences", t =>
                         {
@@ -175,6 +257,11 @@ namespace DevPath.Api.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("InterviewQuestionId");
@@ -185,7 +272,7 @@ namespace DevPath.Api.Migrations
 
                     b.HasIndex("TopicId");
 
-                    b.HasIndex("UpdatedAt");
+                    b.HasIndex("UserId", "UpdatedAt");
 
                     b.ToTable("Notes", t =>
                         {
@@ -239,6 +326,10 @@ namespace DevPath.Api.Migrations
 
             modelBuilder.Entity("DevPath.Api.Models.PortfolioCheck", b =>
                 {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
@@ -251,9 +342,11 @@ namespace DevPath.Api.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ProjectId", "ChecklistItemId");
+                    b.HasKey("UserId", "ProjectId", "ChecklistItemId");
 
                     b.HasIndex("ChecklistItemId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("PortfolioChecks");
                 });
@@ -395,6 +488,10 @@ namespace DevPath.Api.Migrations
 
             modelBuilder.Entity("DevPath.Api.Models.PracticeProgress", b =>
                 {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ExerciseId")
                         .HasColumnType("int");
 
@@ -419,7 +516,9 @@ namespace DevPath.Api.Migrations
                         .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ExerciseId");
+                    b.HasKey("UserId", "ExerciseId");
+
+                    b.HasIndex("ExerciseId");
 
                     b.ToTable("PracticeProgress");
                 });
@@ -434,10 +533,6 @@ namespace DevPath.Api.Migrations
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
-
-                    b.Property<string>("RepositoryUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("RequirementsAr")
                         .IsRequired()
@@ -535,6 +630,30 @@ namespace DevPath.Api.Migrations
                     b.ToTable("ProjectMilestones");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.ProjectRepository", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RepositoryUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId", "ProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectRepositories");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.ProjectTask", b =>
                 {
                     b.Property<int>("Id")
@@ -609,6 +728,10 @@ namespace DevPath.Api.Migrations
 
             modelBuilder.Entity("DevPath.Api.Models.ProjectTaskProgress", b =>
                 {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ProjectTaskId")
                         .HasColumnType("int");
 
@@ -630,7 +753,9 @@ namespace DevPath.Api.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ProjectTaskId");
+                    b.HasKey("UserId", "ProjectTaskId");
+
+                    b.HasIndex("ProjectTaskId");
 
                     b.ToTable("ProjectTaskProgress");
                 });
@@ -734,6 +859,10 @@ namespace DevPath.Api.Migrations
 
             modelBuilder.Entity("DevPath.Api.Models.ReviewSchedule", b =>
                 {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("TopicId")
                         .HasColumnType("int");
 
@@ -752,9 +881,11 @@ namespace DevPath.Api.Migrations
                     b.Property<int>("ReviewCount")
                         .HasColumnType("int");
 
-                    b.HasKey("TopicId");
+                    b.HasKey("UserId", "TopicId");
 
-                    b.HasIndex("NextReviewOn");
+                    b.HasIndex("TopicId");
+
+                    b.HasIndex("UserId", "NextReviewOn");
 
                     b.ToTable("ReviewSchedules");
                 });
@@ -789,13 +920,18 @@ namespace DevPath.Api.Migrations
                     b.Property<int?>("TopicId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectTaskId");
 
-                    b.HasIndex("SessionDate");
-
                     b.HasIndex("TopicId");
+
+                    b.HasIndex("UserId", "SessionDate");
 
                     b.ToTable("StudySessions", t =>
                         {
@@ -934,6 +1070,10 @@ namespace DevPath.Api.Migrations
 
             modelBuilder.Entity("DevPath.Api.Models.TopicProgress", b =>
                 {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("TopicId")
                         .HasColumnType("int");
 
@@ -959,9 +1099,11 @@ namespace DevPath.Api.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("TopicId");
+                    b.HasKey("UserId", "TopicId");
 
-                    b.HasIndex("Status");
+                    b.HasIndex("TopicId");
+
+                    b.HasIndex("UserId", "Status");
 
                     b.ToTable("TopicProgress", t =>
                         {
@@ -969,11 +1111,247 @@ namespace DevPath.Api.Migrations
                         });
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.TopicVideoCache", b =>
+                {
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FetchedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Query")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("VideosJson")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TopicId");
+
+                    b.ToTable("TopicVideoCache");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.UserTopicVideo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ChannelTitle")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("VideoId")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.HasIndex("UserId", "TopicId", "VideoId")
+                        .IsUnique();
+
+                    b.ToTable("UserTopicVideos");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.VideoProgress", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("VideoId")
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.Property<bool>("IsBookmarked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWatched")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId", "VideoId");
+
+                    b.HasIndex("TopicId");
+
+                    b.HasIndex("UserId", "TopicId");
+
+                    b.ToTable("VideoProgress");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.InterviewProgress", b =>
                 {
                     b.HasOne("DevPath.Api.Models.InterviewQuestion", "Question")
-                        .WithOne("Progress")
-                        .HasForeignKey("DevPath.Api.Models.InterviewProgress", "QuestionId")
+                        .WithMany("ProgressRows")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -989,6 +1367,15 @@ namespace DevPath.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.LearningPreference", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.Note", b =>
@@ -1008,6 +1395,12 @@ namespace DevPath.Api.Migrations
                     b.HasOne("DevPath.Api.Models.Topic", "Topic")
                         .WithMany()
                         .HasForeignKey("TopicId");
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("InterviewQuestion");
 
@@ -1032,6 +1425,12 @@ namespace DevPath.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ChecklistItem");
 
                     b.Navigation("Project");
@@ -1051,8 +1450,14 @@ namespace DevPath.Api.Migrations
             modelBuilder.Entity("DevPath.Api.Models.PracticeProgress", b =>
                 {
                     b.HasOne("DevPath.Api.Models.PracticeExercise", "Exercise")
-                        .WithOne("Progress")
-                        .HasForeignKey("DevPath.Api.Models.PracticeProgress", "ExerciseId")
+                        .WithMany("ProgressRows")
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1081,6 +1486,23 @@ namespace DevPath.Api.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.ProjectRepository", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.Project", "Project")
+                        .WithMany("Repositories")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.ProjectTask", b =>
                 {
                     b.HasOne("DevPath.Api.Models.ProjectMilestone", "Milestone")
@@ -1095,8 +1517,14 @@ namespace DevPath.Api.Migrations
             modelBuilder.Entity("DevPath.Api.Models.ProjectTaskProgress", b =>
                 {
                     b.HasOne("DevPath.Api.Models.ProjectTask", "ProjectTask")
-                        .WithOne("Progress")
-                        .HasForeignKey("DevPath.Api.Models.ProjectTaskProgress", "ProjectTaskId")
+                        .WithMany("ProgressRows")
+                        .HasForeignKey("ProjectTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1144,8 +1572,14 @@ namespace DevPath.Api.Migrations
             modelBuilder.Entity("DevPath.Api.Models.ReviewSchedule", b =>
                 {
                     b.HasOne("DevPath.Api.Models.Topic", "Topic")
-                        .WithOne("ReviewSchedule")
-                        .HasForeignKey("DevPath.Api.Models.ReviewSchedule", "TopicId")
+                        .WithMany("ReviewRows")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1161,6 +1595,12 @@ namespace DevPath.Api.Migrations
                     b.HasOne("DevPath.Api.Models.Topic", "Topic")
                         .WithMany()
                         .HasForeignKey("TopicId");
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ProjectTask");
 
@@ -1200,17 +1640,119 @@ namespace DevPath.Api.Migrations
             modelBuilder.Entity("DevPath.Api.Models.TopicProgress", b =>
                 {
                     b.HasOne("DevPath.Api.Models.Topic", "Topic")
-                        .WithOne("Progress")
-                        .HasForeignKey("DevPath.Api.Models.TopicProgress", "TopicId")
+                        .WithMany("ProgressRows")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Topic");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.TopicVideoCache", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.Topic", "Topic")
+                        .WithOne()
+                        .HasForeignKey("DevPath.Api.Models.TopicVideoCache", "TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.UserTopicVideo", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.Topic", "Topic")
+                        .WithMany()
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.VideoProgress", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.Topic", "Topic")
+                        .WithMany()
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.InterviewQuestion", b =>
                 {
-                    b.Navigation("Progress");
+                    b.Navigation("ProgressRows");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.Phase", b =>
@@ -1220,7 +1762,7 @@ namespace DevPath.Api.Migrations
 
             modelBuilder.Entity("DevPath.Api.Models.PracticeExercise", b =>
                 {
-                    b.Navigation("Progress");
+                    b.Navigation("ProgressRows");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.Project", b =>
@@ -1228,6 +1770,8 @@ namespace DevPath.Api.Migrations
                     b.Navigation("Milestones");
 
                     b.Navigation("PortfolioChecks");
+
+                    b.Navigation("Repositories");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.ProjectMilestone", b =>
@@ -1237,7 +1781,7 @@ namespace DevPath.Api.Migrations
 
             modelBuilder.Entity("DevPath.Api.Models.ProjectTask", b =>
                 {
-                    b.Navigation("Progress");
+                    b.Navigation("ProgressRows");
 
                     b.Navigation("TopicLinks");
                 });
@@ -1251,7 +1795,7 @@ namespace DevPath.Api.Migrations
                 {
                     b.Navigation("Prerequisites");
 
-                    b.Navigation("Progress");
+                    b.Navigation("ProgressRows");
 
                     b.Navigation("ProjectTaskLinks");
 
@@ -1259,7 +1803,7 @@ namespace DevPath.Api.Migrations
 
                     b.Navigation("ResourceLinks");
 
-                    b.Navigation("ReviewSchedule");
+                    b.Navigation("ReviewRows");
                 });
 #pragma warning restore 612, 618
         }

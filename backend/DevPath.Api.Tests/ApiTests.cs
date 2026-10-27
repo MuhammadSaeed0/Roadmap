@@ -6,9 +6,13 @@ using System.Text.Json.Nodes;
 namespace DevPath.Api.Tests;
 
 /// <summary>End-to-end HTTP tests: routing, validation, status codes, JSON and business rules.</summary>
-public class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>
+public class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>, IAsyncLifetime
 {
-    private readonly HttpClient _client = factory.CreateClient();
+    // Each test runs as a brand-new account, so tests can't see each other's progress.
+    private HttpClient _client = null!;
+
+    public async Task InitializeAsync() => _client = await factory.CreateUserClientAsync();
+    public Task DisposeAsync() => Task.CompletedTask;
 
     private async Task<JsonNode> Json(HttpResponseMessage response) =>
         JsonNode.Parse(await response.Content.ReadAsStringAsync())!;

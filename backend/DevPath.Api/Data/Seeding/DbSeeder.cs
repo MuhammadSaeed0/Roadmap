@@ -53,12 +53,6 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
             await SeedExercisesAsync(content.Exercises, topics, ct);
             await SeedInterviewsAsync(content.Interviews, topics, ct);
 
-            if (!await db.LearningPreferences.AnyAsync(ct))
-            {
-                db.LearningPreferences.Add(new LearningPreference { Id = 1, UpdatedAt = DateTime.UtcNow });
-                await db.SaveChangesAsync(ct);
-            }
-
             await tx.CommitAsync(ct);
         });
 

@@ -26,11 +26,10 @@ public class Project
     public int StartAfterPhaseId { get; set; }
     public Phase StartAfterPhase { get; set; } = null!;
 
-    /// <summary>User-editable: link to the learner's own repository.</summary>
-    public string? RepositoryUrl { get; set; }
-
     public List<ProjectMilestone> Milestones { get; set; } = [];
+    /// <summary>Per-user rows, filtered to the signed-in user.</summary>
     public List<PortfolioCheck> PortfolioChecks { get; set; } = [];
+    public List<ProjectRepository> Repositories { get; set; } = [];
 }
 
 public class ProjectMilestone
@@ -75,7 +74,8 @@ public class ProjectTask
     public int UnlockAtPercent { get; set; }
 
     public List<ProjectTaskTopic> TopicLinks { get; set; } = [];
-    public ProjectTaskProgress? Progress { get; set; }
+    /// <summary>Per-user rows, filtered to the signed-in user (at most one).</summary>
+    public List<ProjectTaskProgress> ProgressRows { get; set; } = [];
 }
 
 public class ProjectTaskTopic
