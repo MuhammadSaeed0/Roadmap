@@ -113,6 +113,8 @@ export const ar: Translations = {
   interviewCategory: {
     CSharp: 'C#', DotNet: '.NET', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server',
     TypeScript: 'TypeScript', Angular: 'Angular', RestApi: 'واجهات REST', Testing: 'الاختبار', Git: 'Git', FullStackDesign: 'تصميم Full-Stack',
+    DataStructures: 'هياكل البيانات', Algorithms: 'الخوارزميات', ObjectOrientedDesign: 'التصميم كائني التوجه',
+    SystemDesign: 'تصميم الأنظمة', Concurrency: 'التزامن', Behavioral: 'أسئلة سلوكية',
   },
   rating: { NeedReview: 'يحتاج مراجعة', Partial: 'فهمته جزئيًا', Confident: 'واثق', unrated: 'لم أتدرب عليه' },
   confidence: {
@@ -222,7 +224,8 @@ export const ar: Translations = {
     followUp: 'سؤال متابعة', example: 'مثال', rateYourself: 'ما مدى جودة إجابتك؟', questionOf: 'السؤال {n} من {total}',
     allCategories: 'كل الفئات', anyRating: 'أي تقييم', empty: 'لا توجد أسئلة تطابق هذه المرشحات.', practiced: 'مرات التدريب: {n}',
     finished: 'مررت على كل الأسئلة في هذه المجموعة.', restart: 'ابدأ من جديد', thinkFirst: 'أجب بصوت مرتفع أولًا، ثم اكشف الإجابة المتوقعة.',
-    relatedTopic: 'الموضوع',
+    relatedTopic: 'الموضوع', searchPlaceholder: 'ابحث في الأسئلة…', anyDifficulty: 'أي مستوى صعوبة',
+    count: '{n} سؤال', showMore: 'عرض المزيد (متبقٍ {n})',
   },
   resources: {
     title: 'المصادر', subtitle: 'توثيق مجاني مختار ومعظمه رسمي. تُفتح الروابط في تبويب جديد.',

@@ -16,12 +16,14 @@ export type ExerciseType = 'Coding' | 'Debugging' | 'Scenario' | 'CodeReview';
 export type PracticeStatus = 'NotStarted' | 'Attempted' | 'Completed';
 export type InterviewCategory =
   | 'CSharp' | 'DotNet' | 'AspNetCore' | 'EfCore' | 'SqlServer' | 'TypeScript'
-  | 'Angular' | 'RestApi' | 'Testing' | 'Git' | 'FullStackDesign';
+  | 'Angular' | 'RestApi' | 'Testing' | 'Git' | 'FullStackDesign'
+  | 'DataStructures' | 'Algorithms' | 'ObjectOrientedDesign' | 'SystemDesign' | 'Concurrency' | 'Behavioral';
 export type InterviewRating = 'NeedReview' | 'Partial' | 'Confident';
 export type DayOfWeek = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
 
 export const SKILLS: SkillArea[] = ['CSharp', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'FullStack', 'Testing', 'Git', 'Professional'];
-export const INTERVIEW_CATEGORIES: InterviewCategory[] = ['CSharp', 'DotNet', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'RestApi', 'Testing', 'Git', 'FullStackDesign'];
+export const INTERVIEW_CATEGORIES: InterviewCategory[] = ['CSharp', 'DotNet', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'RestApi', 'Testing', 'Git', 'FullStackDesign',
+  'DataStructures', 'Algorithms', 'ObjectOrientedDesign', 'SystemDesign', 'Concurrency', 'Behavioral'];
 export const EXERCISE_TYPES: ExerciseType[] = ['Coding', 'Debugging', 'Scenario', 'CodeReview'];
 
 export interface PagedResult<T> { items: T[]; page: number; pageSize: number; totalCount: number; totalPages: number; }

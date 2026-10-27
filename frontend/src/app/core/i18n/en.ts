@@ -111,6 +111,8 @@ export const en = {
   interviewCategory: {
     CSharp: 'C#', DotNet: '.NET', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server',
     TypeScript: 'TypeScript', Angular: 'Angular', RestApi: 'REST APIs', Testing: 'Testing', Git: 'Git', FullStackDesign: 'Full-stack design',
+    DataStructures: 'Data structures', Algorithms: 'Algorithms', ObjectOrientedDesign: 'Object-oriented design',
+    SystemDesign: 'System design', Concurrency: 'Concurrency', Behavioral: 'Behavioral',
   },
   rating: { NeedReview: 'Need to review', Partial: 'Partially understood', Confident: 'Confident', unrated: 'Not practised' },
   confidence: {
@@ -220,7 +222,8 @@ export const en = {
     followUp: 'Follow-up question', example: 'Example', rateYourself: 'How well did you answer?', questionOf: 'Question {n} of {total}',
     allCategories: 'All categories', anyRating: 'Any rating', empty: 'No questions match these filters.', practiced: 'Practised {n}×',
     finished: 'You went through all questions in this set.', restart: 'Start again', thinkFirst: 'Answer out loud first, then reveal the expected answer.',
-    relatedTopic: 'Topic',
+    relatedTopic: 'Topic', searchPlaceholder: 'Search questions…', anyDifficulty: 'Any difficulty',
+    count: '{n} questions', showMore: 'Show more ({n} left)',
   },
   resources: {
     title: 'Resources', subtitle: 'Curated, mostly official, free documentation. Links open in a new tab.',
