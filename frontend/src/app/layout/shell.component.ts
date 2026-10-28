@@ -27,6 +27,7 @@ interface NavItem { path: string; key: string; icon: string; }
       @if (!authLayout()) {
       <aside class="sidebar" id="sidebar" [attr.aria-label]="'common.menu' | t">
         <div class="brand">
+          <a class="brand-link" routerLink="/" (click)="navOpen.set(false)" [attr.aria-label]="'nav.dashboard' | t" [title]="'nav.dashboard' | t">
           <span class="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 32 32" width="30" height="30"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stop-color="var(--accent)" /><stop offset="1" stop-color="var(--accent-2)" /></linearGradient></defs>
@@ -38,6 +39,7 @@ interface NavItem { path: string; key: string; icon: string; }
             <strong>{{ 'app.name' | t }}</strong>
             <small>{{ 'app.tagline' | t }}</small>
           </span>
+          </a>
           <button type="button" class="icon-btn nav-close" (click)="navOpen.set(false)" [attr.aria-label]="'common.closeMenu' | t">
             <app-icon name="x" />
           </button>
