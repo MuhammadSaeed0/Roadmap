@@ -46,7 +46,7 @@ interface NavItem { path: string; key: string; icon: string; }
         </div>
 
         <nav class="nav">
-          @for (group of groups; track group.key) {
+          @for (group of groups(); track group.key) {
             <p class="nav-group">{{ group.key | t }}</p>
             <ul role="list">
               @for (item of group.items; track item.path) {
@@ -116,6 +116,9 @@ interface NavItem { path: string; key: string; icon: string; }
                     <strong>{{ auth.displayName() }}</strong>
                     <span class="muted small">{{ auth.account()?.email }}</span>
                   </div>
+                  @if (auth.isAdmin()) {
+                    <button type="button" role="menuitem" (click)="go('/admin')"><app-icon name="shield" [size]="16" /> {{ 'nav.admin' | t }}</button>
+                  }
                   <button type="button" role="menuitem" (click)="go('/settings')"><app-icon name="settings" [size]="16" /> {{ 'nav.settings' | t }}</button>
                   <button type="button" role="menuitem" (click)="signOut()"><app-icon name="log-out" [size]="16" /> {{ 'auth.signOut' | t }}</button>
                 </div>
@@ -174,7 +177,7 @@ export class ShellComponent {
   protected readonly accountOpen = signal(false);
   /** Account pages (sign-in, sign-up…) hide the sidebar and the app's top bar. */
   // Set from the URL before the first navigation finishes, so neither layout flashes on load.
-  protected readonly authLayout = signal(/^\/(sign-in|sign-up|forgot-password|reset-password)\b/.test(inject(Location).path()));
+  protected readonly authLayout = signal(/^\/(sign-in|sign-up|forgot-password|reset-password|verify-email|account-status|change-password)\b/.test(inject(Location).path()));
   protected readonly initials = computed(() => {
     const words = this.auth.displayName().split(/[\s@._-]+/).filter(Boolean);
     return ((words[0]?.[0] ?? '') + (words.length > 1 ? words[1][0] : '')).toUpperCase() || '?';
@@ -182,7 +185,7 @@ export class ShellComponent {
   protected readonly apiOffline = signal(false);
   protected readonly titleKey = signal('nav.dashboard');
 
-  protected readonly groups: { key: string; items: NavItem[] }[] = [
+  private readonly baseGroups: { key: string; items: NavItem[] }[] = [
     { key: 'nav.learn', items: [
       { path: '/', key: 'nav.dashboard', icon: 'dashboard' },
       { path: '/roadmap', key: 'nav.roadmap', icon: 'map' },
@@ -201,6 +204,10 @@ export class ShellComponent {
       { path: '/settings', key: 'nav.settings', icon: 'settings' },
     ] },
   ];
+  /** Administrators also see the admin area (the API checks the role on every admin request). */
+  protected readonly groups = computed(() => this.auth.isAdmin()
+    ? [...this.baseGroups, { key: 'nav.manage', items: [{ path: '/admin', key: 'nav.admin', icon: 'shield' }] }]
+    : this.baseGroups);
 
   constructor() {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntilDestroyed(inject(DestroyRef))).subscribe(() => {
@@ -222,6 +229,16 @@ export class ShellComponent {
         if (this.authLayout() || !this.router.navigated) return;
         const url = this.router.url;
         void this.router.navigate(['/sign-in'], { queryParams: url !== '/' ? { returnUrl: url } : {} });
+      });
+    });
+
+    // The account was suspended (or otherwise blocked) while an app page was open: show its status page.
+    effect(() => {
+      const account = this.auth.account();
+      if (!account || this.auth.approved()) return;
+      untracked(() => {
+        if (this.authLayout() || !this.router.navigated) return;
+        void this.router.navigateByUrl('/account-status');
       });
     });
   }

@@ -1,5 +1,6 @@
 using DevPath.Api.Models;
 using DevPath.Api.Services;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,7 +13,7 @@ namespace DevPath.Api.Data;
 /// service forgets a Where clause, and an id in a URL can only reach the caller's own data.
 /// </summary>
 public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? currentUser = null)
-    : IdentityDbContext<AppUser>(options)
+    : IdentityDbContext<AppUser>(options), IDataProtectionKeyContext
 {
     /// <summary>The signed-in user's id, or null outside a request (start-up, seeding): user tables then read as empty.</summary>
     public string? CurrentUserId => currentUser?.Id;
@@ -49,6 +50,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<VideoProgress> VideoProgress => Set<VideoProgress>();
     public DbSet<QuizAttempt> QuizAttempts => Set<QuizAttempt>();
 
+    // Accounts and administration (not filtered per user: only auth and admin code reads them)
+    public DbSet<AccountToken> AccountTokens => Set<AccountToken>();
+    public DbSet<AdminAuditEntry> AdminAudit => Set<AdminAuditEntry>();
+    /// <summary>ASP.NET Core data-protection keys (they sign the auth cookie), kept in the database so they survive app restarts on shared hosting.</summary>
+    public DbSet<Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey> DataProtectionKeys => Set<Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey>();
+
     // Shared caches
     public DbSet<TopicVideoCache> TopicVideoCache => Set<TopicVideoCache>();
 
@@ -61,6 +68,37 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     protected override void OnModelCreating(ModelBuilder b)
     {
         base.OnModelCreating(b);   // Identity tables (AspNetUsers, AspNetRoles…)
+
+        // ---------- Accounts ----------
+        b.Entity<AppUser>(e =>
+        {
+            e.Property(x => x.FullName).HasMaxLength(100);
+            e.Property(x => x.StatusReason).HasMaxLength(500);
+            e.Property(x => x.StatusChangedById).HasMaxLength(450);
+            e.Property(x => x.ApprovedById).HasMaxLength(450);
+            e.HasIndex(x => x.Status);
+            // Only one account can ever be the main administrator.
+            e.HasIndex(x => x.IsOwner).IsUnique().HasFilter("[IsOwner] = 1");
+        });
+        b.Entity<AccountToken>(e =>
+        {
+            e.Property(x => x.UserId).HasMaxLength(450);
+            e.Property(x => x.TokenHash).HasMaxLength(64);
+            e.HasIndex(x => x.TokenHash).IsUnique();
+            e.HasIndex(x => new { x.UserId, x.Purpose });
+            e.HasOne<AppUser>().WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+        });
+        b.Entity<AdminAuditEntry>(e =>
+        {
+            e.Property(x => x.ActorId).HasMaxLength(450);
+            e.Property(x => x.ActorEmail).HasMaxLength(256);
+            e.Property(x => x.Action).HasMaxLength(64);
+            e.Property(x => x.TargetUserId).HasMaxLength(450);
+            e.Property(x => x.TargetEmail).HasMaxLength(256);
+            e.Property(x => x.Details).HasMaxLength(1000);
+            e.HasIndex(x => x.CreatedAt);
+            e.HasIndex(x => x.TargetUserId);
+        });
 
         // ---------- Content ----------
         b.Entity<Phase>(e =>

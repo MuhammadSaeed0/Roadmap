@@ -9,16 +9,16 @@ import { IconComponent } from '../../shared/icon.component';
 import { AuthCardComponent, authErrorKey, matchingPasswords, PasswordInputComponent, passwordStrength } from './auth-ui';
 
 /**
- * Opened from a password-reset link (/reset-password?email=…&token=…). The token is
- * single-use and expires; the API checks it, this page only collects the new password.
+ * Opened from a password-reset link (/reset-password?token=…). The token is single-use,
+ * expires after an hour and identifies the account; the API checks it, this page only collects the new password.
  */
 @Component({
   selector: 'app-reset-password-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, RouterLink, IconComponent, TranslatePipe, AuthCardComponent, PasswordInputComponent],
   template: `
-    <app-auth-card [heading]="'auth.resetTitle' | t" [subtitle]="email ? ('auth.resetBody' | t: { email }) : ''">
-      @if (!email || !token) {
+    <app-auth-card [heading]="'auth.resetTitle' | t" [subtitle]="token ? ('auth.resetBodyGeneric' | t) : ''">
+      @if (!token) {
         <div class="callout callout-danger" role="alert"><app-icon name="alert" /><p>{{ 'auth.errors.invalid_token' | t }}</p></div>
         <a routerLink="/forgot-password" class="btn btn-primary btn-block">{{ 'auth.sendReset' | t }}</a>
       } @else {
@@ -27,7 +27,7 @@ import { AuthCardComponent, authErrorKey, matchingPasswords, PasswordInputCompon
             <app-icon name="alert" />
             <div>
               <p>{{ 'auth.errors.' + code | t }}</p>
-              @if (code === 'invalid_token') { <a routerLink="/forgot-password">{{ 'auth.sendReset' | t }}</a> }
+              @if (code === 'invalid_token' || code === 'token_used' || code === 'token_expired') { <a routerLink="/forgot-password">{{ 'auth.sendReset' | t }}</a> }
             </div>
           </div>
         }
@@ -67,7 +67,6 @@ export default class ResetPasswordPage {
   private readonly toast = inject(ToastService);
 
   private readonly query = inject(ActivatedRoute).snapshot.queryParamMap;
-  protected readonly email = this.query.get('email') ?? '';
   protected readonly token = this.query.get('token') ?? '';
 
   protected readonly busy = signal(false);
@@ -94,7 +93,7 @@ export default class ResetPasswordPage {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     this.busy.set(true);
     try {
-      await this.auth.resetPassword(this.email, this.token, this.form.controls.password.value);
+      await this.auth.resetPassword(this.token, this.form.controls.password.value);
       this.toast.success(this.i18n.t('auth.passwordReset'));
       await this.router.navigateByUrl('/sign-in');
     } catch (e) {

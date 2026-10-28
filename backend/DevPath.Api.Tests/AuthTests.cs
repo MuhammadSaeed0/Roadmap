@@ -64,6 +64,8 @@ public class AuthTests(ApiFactory factory) : IClassFixture<ApiFactory>
         var me = await Json(await client.GetAsync("/api/auth/me"));
         Assert.Equal(email, me["email"]!.GetValue<string>());
         Assert.Equal("Sara Ali", me["fullName"]!.GetValue<string>());
+        Assert.Equal("PendingEmailVerification", me["status"]!.GetValue<string>());
+        Assert.False(me["isAdmin"]!.GetValue<bool>());
 
         using var scope = factory.Services.CreateScope();
         var user = await scope.ServiceProvider.GetRequiredService<AppDbContext>().Users.SingleAsync(u => u.Email == email);
@@ -106,6 +108,7 @@ public class AuthTests(ApiFactory factory) : IClassFixture<ApiFactory>
     {
         var email = NewEmail();
         await Register(factory.CreateClient(), email);
+        await factory.ApproveInDatabaseAsync(email);
 
         var client = factory.CreateClient();
         Assert.Equal(HttpStatusCode.OK, (await Login(client, email)).StatusCode);
@@ -167,18 +170,24 @@ public class AuthTests(ApiFactory factory) : IClassFixture<ApiFactory>
         Assert.Equal(HttpStatusCode.Accepted, (await anon.PostAsJsonAsync("/api/auth/forgot-password", new { email = NewEmail() })).StatusCode);
         Assert.Equal(HttpStatusCode.Accepted, (await anon.PostAsJsonAsync("/api/auth/forgot-password", new { email })).StatusCode);
 
-        var link = new Uri(factory.Emails.ResetLinks[email]);
-        Assert.Equal("/reset-password", link.AbsolutePath);
-        var token = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(link.Query)["token"].ToString();
+        var link = new Uri(factory.Emails.To(email, "password-reset").Single().Link!);
+        Assert.Equal("https://devpath.test/reset-password", link.GetLeftPart(UriPartial.Path));
+        var token = factory.Emails.LastToken(email, "password-reset");
 
-        var reset = await anon.PostAsJsonAsync("/api/auth/reset-password", new { email, token, newPassword = "NewSecret456" });
+        var weak = await anon.PostAsJsonAsync("/api/auth/reset-password", new { token, newPassword = "onlyletters" });
+        Assert.Equal(HttpStatusCode.BadRequest, weak.StatusCode);   // a weak choice doesn't use up the link
+
+        var reset = await anon.PostAsJsonAsync("/api/auth/reset-password", new { token, newPassword = "NewSecret456" });
         Assert.Equal(HttpStatusCode.NoContent, reset.StatusCode);
         Assert.Equal(HttpStatusCode.Unauthorized, (await Login(factory.CreateClient(), email)).StatusCode);
         Assert.Equal(HttpStatusCode.OK, (await Login(factory.CreateClient(), email, "NewSecret456")).StatusCode);
 
-        var reused = await anon.PostAsJsonAsync("/api/auth/reset-password", new { email, token, newPassword = "Another789" });
+        var reused = await anon.PostAsJsonAsync("/api/auth/reset-password", new { token, newPassword = "Another789" });
         Assert.Equal(HttpStatusCode.BadRequest, reused.StatusCode);
-        Assert.Equal("invalid_token", (await Json(reused))["code"]!.GetValue<string>());
+        Assert.Equal("token_used", (await Json(reused))["code"]!.GetValue<string>());
+
+        var forged = await anon.PostAsJsonAsync("/api/auth/reset-password", new { token = "not-a-real-token", newPassword = "Another789" });
+        Assert.Equal("invalid_token", (await Json(forged))["code"]!.GetValue<string>());
     }
 
     [Fact]

@@ -2,9 +2,12 @@ using System.Collections.Concurrent;
 using System.Net.Http.Json;
 using DevPath.Api.Data;
 using DevPath.Api.Data.Seeding;
+using DevPath.Api.Models;
 using DevPath.Api.Services;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -23,7 +26,10 @@ namespace DevPath.Api.Tests;
 public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     public const string Password = "Secret123";
+    /// <summary>The configured main administrator for tests (Admin:OwnerEmail).</summary>
+    public const string OwnerEmail = "main-admin@example.com";
     private readonly SqliteConnection _connection = new("DataSource=:memory:");
+    private readonly SemaphoreSlim _ownerLock = new(1, 1);
     private int _userCount;
 
     public FakeYouTubeClient YouTube { get; } = new();
@@ -36,6 +42,8 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         {
             ["Database:SkipInitialization"] = "true",   // we create the schema and seed below
             ["Auth:AttemptsPerMinute"] = "100000",       // every test signs up; the limit itself is tested separately
+            ["Admin:OwnerEmail"] = OwnerEmail,
+            ["Frontend:BaseUrl"] = "https://devpath.test",
         }));
         builder.ConfigureServices(services =>
         {
@@ -56,15 +64,79 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         await db.Database.EnsureCreatedAsync();
         await scope.ServiceProvider.GetRequiredService<DbSeeder>().SeedAsync();
+        await scope.ServiceProvider.GetRequiredService<AccountWorkflow>().EnsureOwnerAsync(CancellationToken.None);
     }
 
-    /// <summary>A new account, signed in. The client keeps the auth cookie like a browser would.</summary>
+    public string NewEmail() => $"user{Interlocked.Increment(ref _userCount)}-{Guid.NewGuid():N}@example.com";
+
+    /// <summary>
+    /// A new, approved account, signed in. The client keeps the auth cookie like a browser would.
+    /// Verification and approval are done directly in the database; their own tests use the real flow.
+    /// </summary>
     public async Task<HttpClient> CreateUserClientAsync(string? email = null)
     {
-        email ??= $"user{Interlocked.Increment(ref _userCount)}-{Guid.NewGuid():N}@example.com";
+        email ??= NewEmail();
+        var client = await RegisterAsync(email);
+        await ApproveInDatabaseAsync(email);
+        return client;
+    }
+
+    /// <summary>A freshly registered account (waiting for email verification), signed in.</summary>
+    public async Task<HttpClient> RegisterAsync(string email, string password = Password)
+    {
         var client = CreateClient();
-        var response = await client.PostAsJsonAsync("/api/auth/register", new { fullName = "Test User", email, password = Password });
+        var response = await client.PostAsJsonAsync("/api/auth/register", new { fullName = "Test User", email, password });
         response.EnsureSuccessStatusCode();
+        return client;
+    }
+
+    public async Task ApproveInDatabaseAsync(string email)
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var user = await db.Users.SingleAsync(u => u.Email == email);
+        user.EmailConfirmed = true;
+        user.EmailVerifiedAt ??= DateTime.UtcNow;
+        user.Status = AccountStatus.Approved;
+        user.ApprovedAt = DateTime.UtcNow;
+        await db.SaveChangesAsync();
+    }
+
+    /// <summary>An approved account that an administrator role was given to (as the owner would).</summary>
+    public async Task<(HttpClient Client, string Email)> CreateAdminClientAsync()
+    {
+        var email = NewEmail();
+        var client = await CreateUserClientAsync(email);
+        using var scope = Services.CreateScope();
+        var users = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+        await users.AddToRoleAsync((await users.FindByEmailAsync(email))!, Roles.Admin);
+        return (client, email);
+    }
+
+    /// <summary>
+    /// Signed in as the main administrator. The first call creates that account the real way:
+    /// registering the configured address, then taking it over through a password-reset link.
+    /// </summary>
+    public async Task<HttpClient> CreateOwnerClientAsync()
+    {
+        await _ownerLock.WaitAsync();
+        try
+        {
+            using var scope = Services.CreateScope();
+            if (!await scope.ServiceProvider.GetRequiredService<AppDbContext>().Users.AnyAsync(u => u.Email == OwnerEmail))
+            {
+                var registered = await RegisterAsync(OwnerEmail);
+                (await registered.PostAsJsonAsync("/api/auth/forgot-password", new { email = OwnerEmail })).EnsureSuccessStatusCode();
+                var token = Emails.LastToken(OwnerEmail, "password-reset");
+                (await registered.PostAsJsonAsync("/api/auth/reset-password", new { token, newPassword = Password })).EnsureSuccessStatusCode();
+            }
+        }
+        finally
+        {
+            _ownerLock.Release();
+        }
+        var client = CreateClient();
+        (await client.PostAsJsonAsync("/api/auth/login", new { email = OwnerEmail, password = Password })).EnsureSuccessStatusCode();
         return client;
     }
 
@@ -93,14 +165,26 @@ public class FakeYouTubeClient : IYouTubeClient
         Task.FromResult(Lookups.GetValueOrDefault(videoId, new VideoLookupResult(VideoLookupStatus.NotFound)));
 }
 
-/// <summary>Keeps password-reset links so tests can follow them.</summary>
+/// <summary>Keeps every email so tests can read them and follow their links.</summary>
 public class CapturingEmailSender : IAccountEmailSender
 {
-    public ConcurrentDictionary<string, string> ResetLinks { get; } = new(StringComparer.OrdinalIgnoreCase);
+    public ConcurrentQueue<EmailMessage> Sent { get; } = new();
+    /// <summary>When set, sending fails like an unreachable provider would.</summary>
+    public bool Fail { get; set; }
 
-    public Task SendPasswordResetAsync(string email, string resetLink, CancellationToken ct)
+    public Task SendAsync(EmailMessage message, CancellationToken ct)
     {
-        ResetLinks[email] = resetLink;
+        if (Fail) throw new EmailDeliveryException("The email provider answered 503.");
+        Sent.Enqueue(message);
         return Task.CompletedTask;
+    }
+
+    public IReadOnlyList<EmailMessage> To(string email, string? kind = null) =>
+        Sent.Where(m => string.Equals(m.To, email, StringComparison.OrdinalIgnoreCase) && (kind is null || m.Kind == kind)).ToList();
+
+    public string LastToken(string email, string kind)
+    {
+        var link = new Uri(To(email, kind).Last().Link!);
+        return QueryHelpers.ParseQuery(link.Query)["token"].ToString();
     }
 }

@@ -1,0 +1,75 @@
+# Publishes DevPath to MonsterASP.NET with Web Deploy. Runs only when started by hand
+# (Actions -> Deploy to MonsterASP.NET -> Run workflow), after tests pass.
+# Every value comes from repository secrets (Settings -> Secrets and variables -> Actions); see docs/DEPLOYMENT.md.
+name: Deploy to MonsterASP.NET
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install tools (Web Deploy, EF Core CLI)
+        shell: pwsh
+        run: |
+          choco install webdeploy -y --no-progress
+          dotnet tool install --global dotnet-ef --version 10.0.13
+      - name: Install frontend packages
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+
+      - name: Write deploy/production.env from secrets
+        shell: pwsh
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          OWNER_PASSWORD: ${{ secrets.OWNER_PASSWORD }}
+          DEPLOY_SITE: ${{ secrets.MONSTERASP_SITE }}
+          DEPLOY_SERVER: ${{ secrets.MONSTERASP_SERVER }}
+          DEPLOY_USERNAME: ${{ secrets.MONSTERASP_USERNAME }}
+          DEPLOY_PASSWORD: ${{ secrets.MONSTERASP_PASSWORD }}
+        run: |
+          $lines = @(
+            "Frontend__BaseUrl=$env:SITE_URL",
+            "ConnectionStrings__DevPath=$env:DB_CONNECTION_STRING",
+            "Email__Provider=Brevo",
+            "Email__SenderEmail=$env:EMAIL_SENDER",
+            "Email__Brevo__ApiKey=$env:BREVO_API_KEY",
+            "DEPLOY_SITE=$env:DEPLOY_SITE",
+            "DEPLOY_SERVER=$env:DEPLOY_SERVER",
+            "DEPLOY_USERNAME=$env:DEPLOY_USERNAME",
+            "DEPLOY_PASSWORD=$env:DEPLOY_PASSWORD"
+          )
+          if ($env:OWNER_EMAIL) { $lines += "Admin__OwnerEmail=$env:OWNER_EMAIL" }
+          if ($env:OWNER_PASSWORD) { $lines += "Admin__OwnerPassword=$env:OWNER_PASSWORD" }
+          Set-Content -Path deploy/production.env -Value $lines -Encoding utf8
+
+      - name: Test, build, check and deploy
+        shell: pwsh
+        run: ./deploy/publish.ps1 -Deploy
+
+      - name: Remove the secrets file
+        if: always()
+        shell: pwsh
+        run: Remove-Item -Force -ErrorAction SilentlyContinue deploy/production.env, deploy/out/publish/web.config

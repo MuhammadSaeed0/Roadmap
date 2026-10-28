@@ -1,7 +1,8 @@
 # DevPath — Full-Stack Developer Academy
 
 A bilingual (English / العربية) learning platform with private accounts for growing from SQL Server developer to **full-stack .NET + Angular developer**.
-It combines a personalised roadmap, four practical projects, a practice lab, interview preparation, notes, spaced review, analytics and a career-readiness view, all running locally.
+It combines a personalised roadmap, four practical projects, a practice lab, interview preparation, notes, spaced review, analytics and a career-readiness view.
+New accounts confirm their email and are approved by an administrator before they can use the app. It runs locally for development and can be published as a single site to MonsterASP.NET ([deployment guide](docs/DEPLOYMENT.md)).
 
 ```text
 Angular 22 + TypeScript   →   ASP.NET Core 10 Web API (C#)   →   EF Core 10   →   Local SQL Server (LocalDB)
@@ -29,14 +30,16 @@ Angular 22 + TypeScript   →   ASP.NET Core 10 Web API (C#)   →   EF Core 10 
 7. [Data model](#data-model)
 8. [API endpoints](#api-endpoints)
 9. [Accounts and data privacy](#accounts-and-data-privacy)
-10. [YouTube videos](#youtube-videos)
-11. [Bilingual UI and right-to-left support](#bilingual-ui-and-right-to-left-support)
-12. [How progress, recommendations and reviews are calculated](#how-progress-recommendations-and-reviews-are-calculated)
-13. [Editing the learning content](#editing-the-learning-content)
-14. [Tests](#tests)
-15. [Troubleshooting](#troubleshooting)
-16. [Known limitations](#known-limitations)
-17. [Ideas for future improvements](#ideas-for-future-improvements)
+10. [Email verification, approval and administration](#email-verification-approval-and-administration)
+11. [Deployment](#deployment)
+12. [YouTube videos](#youtube-videos)
+13. [Bilingual UI and right-to-left support](#bilingual-ui-and-right-to-left-support)
+14. [How progress, recommendations and reviews are calculated](#how-progress-recommendations-and-reviews-are-calculated)
+15. [Editing the learning content](#editing-the-learning-content)
+16. [Tests](#tests)
+17. [Troubleshooting](#troubleshooting)
+18. [Known limitations](#known-limitations)
+19. [Ideas for future improvements](#ideas-for-future-improvements)
 
 ---
 
@@ -221,29 +224,33 @@ Content tables have foreign keys, unique indexes on every slug/key, check constr
 | GET/PUT/POST/DELETE | `/api/reviews`, `/api/reviews/{topicId}`, `/api/reviews/{topicId}/complete` | Spaced-review queue |
 | GET | `/api/progress`, `/api/progress/weekly?weekOf` | Analytics, weekly review |
 | POST | `/api/auth/register`, `/api/auth/login`, `/api/auth/logout` | Create an account, sign in, sign out (sets or clears the HttpOnly cookie) |
-| GET | `/api/auth/me` | The signed-in account (401 when signed out) |
+| GET | `/api/auth/me` | The signed-in account with its status and role (401 when signed out) |
+| POST | `/api/auth/verify-email`, `/api/auth/resend-verification` | Confirm the email with the emailed token; send a new link (once a minute) |
 | POST | `/api/auth/forgot-password`, `/api/auth/reset-password`, `/api/auth/change-password` | Password recovery and change |
+| GET | `/api/admin/overview`, `/api/admin/users?q&status&page&pageSize`, `/api/admin/users/{id}`, `/api/admin/audit` | Admin statistics, account list and details, activity log (administrators) |
+| POST | `/api/admin/users/{id}/approve`, `/reject`, `/suspend`, `/reactivate`, `/resend-verification` | Account approval actions (administrators) |
+| POST/DELETE | `/api/admin/admins`, `/api/admin/admins/{id}`; POST `/api/admin/test-email` | Grant or revoke administrator rights, test email (main administrator only) |
 | GET/POST | `/api/topics/{id}/videos` | Suggested + your own videos for a topic; add a video by YouTube link |
 | GET | `/api/project-tasks/{id}/videos` | Videos showing how to build a project task |
 | GET/POST | `/api/topics/{id}/quiz?level=1-3` | Quiz questions (without answers); submit answers to be graded |
 | DELETE | `/api/topic-videos/{id}` | Remove a video you added |
 | PUT | `/api/videos/{videoId}/progress` | Your "watched" / "saved" flags for a video |
-
-Every endpoint except `/api/health` and the sign-up, sign-in and password-recovery endpoints requires a signed-in account and answers **401** with code `unauthenticated` otherwise.
 | GET | `/api/career-readiness` | Readiness areas and portfolio checklist |
 | GET | `/api/search?q` | Global search (min. 2 characters) |
 | GET/PUT | `/api/preferences` | Learning preferences |
+
+Every endpoint except `/api/health` and the sign-up, sign-in, verification and password-recovery endpoints requires a signed-in account and answers **401** with code `unauthenticated` otherwise. The learning endpoints also require an **approved** account and answer **403** with `account_pending_verification`, `account_pending_approval`, `account_rejected` or `account_suspended`; admin endpoints answer 403 `admin_required` / `owner_required`.
 
 The full OpenAPI document is at `http://localhost:5080/openapi/v1.json` (Development only). Example requests are in [`DevPath.Api.http`](backend/DevPath.Api/DevPath.Api.http).
 
 ## Accounts and data privacy
 
 - **Authentication** uses **ASP.NET Core Identity** with the same SQL Server database (`AspNetUsers`…). Passwords are stored as salted PBKDF2 hashes, never as text. Rules: at least 8 characters with a letter and a digit; emails are unique (case-insensitive, also enforced by a unique index); 5 wrong passwords lock the account for 5 minutes; sign-up, sign-in and password-reset requests are rate-limited per client address (`Auth:AttemptsPerMinute`).
-- **Sessions** are an **HttpOnly, SameSite=Strict cookie** (`devpath.auth`, 14 days, sliding). JavaScript can't read it, it survives page refreshes, and the browser won't send it from other sites. Changing or resetting the password signs out your other devices within 5 minutes. When a session ends, the next API call answers 401 and the app returns to the sign-in page, then back to where you were.
+- **Sessions** are an **HttpOnly, SameSite=Strict cookie** (`devpath.auth`, 14 days, sliding; `Secure` in production). JavaScript can't read it, it survives page refreshes, and the browser won't send it from other sites. Changing or resetting the password signs out your other devices immediately. When a session ends, the next API call answers 401 and the app returns to the sign-in page, then back to where you were.
 - **Every endpoint is protected on the server** by a fallback authorization policy; the Angular guards only decide navigation.
 - **Data isolation is enforced in the database layer.** Every user table has a `UserId` column (foreign key to `AspNetUsers`, cascade delete) and is part of the key (for example `TopicProgress (UserId, TopicId)`). `AppDbContext` adds a **global query filter** `UserId == current user` to every user table, and fills in `UserId` itself when a row is saved, refusing to change or delete another account's row. So a service can't return someone else's data even if it forgets a `Where`, and putting another account's id in a URL or body simply returns **404**.
 - **Shared content** (phases, topics, resources, projects, exercises, interview questions, quiz questions, curated videos and the cached YouTube suggestions) is the same for everyone and read-only.
-- **Password reset**: the app runs locally without a mail server, so the reset link is written to the **API console** (log level Warning). Register another `IAccountEmailSender` in `Program.cs` to send real email. Links expire after 1 hour and work once.
+- **Password reset**: the emailed link expires after 1 hour and works once; the token alone identifies the account and only its hash is stored. Locally (`Email:Provider` = `Log`) emails are written to the **API console** instead of being sent; production sends them through Brevo ([docs/EMAIL.md](docs/EMAIL.md)).
 
 ### Data from before accounts existed
 
@@ -257,6 +264,40 @@ dotnet user-secrets remove "LegacyData:AssignToEmail"
 ```
 
 The target account must have no data of its own yet, so nothing is overwritten. A fresh database has no legacy data and no placeholder account.
+
+## Email verification, approval and administration
+
+1. **Sign up** → the account is `PendingEmailVerification` and a confirmation link is emailed (valid 24 hours, single use).
+   The user is signed in but only sees the **account status** page (resend the email, check again, sign out).
+2. **Confirm the email** (`/verify-email?token=…`, works signed in or not) → `PendingApproval`.
+3. An **administrator approves** the account in **Administration** (`/admin`) → `Approved`, and the user gets an email.
+   Administrators can also reject (with an optional note), suspend, reactivate and resend the confirmation email.
+   Every action is confirmed in a dialog and recorded in the activity log.
+
+The **main administrator** is the address in `Admin:OwnerEmail` (server configuration, `muhammadssaeed0@gmail.com` by default). That account
+becomes the owner only with the deployment secret `Admin:OwnerPassword` or after a password reset through that inbox, so
+registering the address isn't enough. The owner grants and revokes administrator rights and can't be suspended or
+demoted. Accounts created before this feature keep working (they were migrated as approved). Details and the
+security review: [docs/SECURITY.md](docs/SECURITY.md).
+
+**Locally:** emails appear in the API console. To try the admin area, either set a first owner password
+(`dotnet user-secrets set "Admin:OwnerPassword" "<a strong password>"` in `backend/DevPath.Api`, then restart; it's only
+used when no account has that address), or register with the owner address and use **Forgot password**, following
+the link from the console.
+
+## Deployment
+
+DevPath publishes as one site (the API serves the Angular app) to **MonsterASP.NET** or any IIS host with Web Deploy:
+
+```powershell
+copy deploy\production.env.example deploy\production.env   # fill in; git-ignored
+./deploy/publish.ps1             # tests, build, configuration check, migration script
+./deploy/publish.ps1 -Deploy     # publish with Web Deploy and smoke-test the live site
+```
+
+A manual GitHub Actions workflow does the same from repository secrets. Everything, including the MonsterASP.NET
+set-up, the settings, HTTPS and troubleshooting, is in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md); email set-up is in
+[docs/EMAIL.md](docs/EMAIL.md).
 
 ## YouTube videos
 
@@ -316,22 +357,24 @@ Edit a file and restart the API. The seeder **inserts or updates rows by slug or
 ## Tests
 
 ```bash
-dotnet test DevPath.slnx          # 112 backend tests
-cd frontend && npm test           # 26 frontend tests (Vitest), add -- --watch=false for one run
+dotnet test DevPath.slnx          # 160 backend tests
+cd frontend && npm test           # 36 frontend tests (Vitest), add -- --watch=false for one run
 ```
 
 - **Backend (xUnit):** progress weighting (including "SQL knowledge doesn't inflate progress"), recommendation rules, review intervals, week boundaries and streaks; the seeder (full content, idempotent re-seeding that keeps user progress, rejection of invalid data); and HTTP tests through `WebApplicationFactory` (status codes, ProblemDetails codes, validation, notes CRUD, practice gating, locked change requests, Arabic search…).
 - **Accounts and isolation:** sign-up (password hashing, HttpOnly cookie, duplicate emails, password rules), sign-in errors, lockout, rate limiting, sign-out, session reuse and tampered cookies, password reset (single use) and change; two accounts where B can't read, edit or delete A's notes, progress, reviews, sessions, project data, practice answers, preferences or videos by id, while shared content stays identical; the legacy-data handover.
+- **Verification, approval and administration:** verification links (valid, expired, reused, forged, wrong purpose, resend throttling, failed delivery), every blocked state on every request, approve / reject / suspend / reactivate with emails and audit entries, regular users kept out of the admin area, admin limits (self, owner, other admins, role changes), the owner hierarchy, owner takeover by pre-registration, immediate session revocation after a reset, idempotent owner set-up, the production configuration check, and the single-site hosting (SPA fallback, security headers, foreign-origin requests).
 - **Videos:** relevance filtering, shared cache, missing key, quota and network failures, link validation, duplicates and per-account flags. YouTube is replaced by a fake, so tests never use the internet.
 - The API tests use **in-memory SQLite** so they never touch your LocalDB database. SQLite can't verify SQL Server-specific behaviour (for example `rowversion` or exact collation), so that was checked separately against LocalDB.
-- **Frontend (Vitest):** password rules, safe return URLs, auth error messages, YouTube link parsing and URL building; language switching, RTL, persistence and fallback; bidi marks; HTML escaping in the highlighter; the loader states; the progress ring.
+- **Frontend (Vitest):** route guards for every account state and the admin area, translation parity for the new screens, password rules, safe return URLs, auth error messages, YouTube link parsing and URL building; language switching, RTL, persistence and fallback; bidi marks; HTML escaping in the highlighter; the loader states; the progress ring.
 
 ## Troubleshooting
 
 | Problem | Fix |
 |---|---|
 | Sent back to the sign-in page | Your session ended (expired, or the password was changed elsewhere). Sign in again. |
-| Can't find the password-reset email | There's no mail server locally: the link is in the API console window. |
+| Can't find the verification or password-reset email | Locally there's no mail server: the link is in the API console window. In production, check spam, then the admin area's **Send a test email** and the Brevo dashboard. |
+| Stuck on the "account status" page | The account still needs its email confirmed or an administrator's approval. Click **Check my status again** after either. |
 | Videos say suggestions aren't set up | Set `YouTube:ApiKey` with `dotnet user-secrets` (see [YouTube videos](#youtube-videos)) and restart the API. |
 | Red banner "The API is offline" | Start the backend (`dotnet run` in `backend/DevPath.Api`) and click **Check again**. |
 | `Cannot open database "DevPath"` / network error 26 at start-up | LocalDB isn't running: `sqllocaldb start MSSQLLocalDB`. If you use a full instance, check the service and the user-secret connection string. |
@@ -344,8 +387,8 @@ cd frontend && npm test           # 26 frontend tests (Vitest), add -- --watch=f
 
 ## Known limitations
 
-- Password-reset links are logged to the API console instead of emailed until you plug in a real `IAccountEmailSender`.
-- There are no roles or admin screens: every account is an ordinary learner, and learning content is edited through `SeedData`.
+- Learning content is edited through `SeedData`, not from the admin area (which manages accounts only).
+- Real email delivery and the live MonsterASP.NET deployment need your Brevo and hosting credentials; they were tested locally only (see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)).
 - Automatic video suggestions need a YouTube Data API key; relevance filtering is rule-based, so an occasional off-target video can slip through (add your own instead).
 - Practice exercises are **not executed** in the browser: you write and run code in your own editor, then compare.
 - Link verification needs internet access. Some sites block automated requests, so they can show as "Not verified" even though they work in a browser.

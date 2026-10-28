@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, InjectionToken, inject } from '@angular/core';
+import { Injectable, InjectionToken, inject, isDevMode } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
 import { ApiError } from './api-error';
 import * as M from './models';
 
 /** Base URL of the ASP.NET Core API. Override in app.config.ts if you change the port. */
+// Development: the API runs separately on port 5080. Production: the API serves this app, so calls stay on the same origin.
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL', {
-  factory: () => 'http://localhost:5080/api',
+  factory: () => (isDevMode() ? 'http://localhost:5080/api' : '/api'),
 });
 
 type Query = Record<string, string | number | boolean | null | undefined>;

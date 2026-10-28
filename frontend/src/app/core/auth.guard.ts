@@ -11,8 +11,27 @@ export const authGuard: CanActivateFn = async (_route, state) => {
   const auth = inject(AuthService);
   const router = inject(Router);
   await auth.restore();
-  if (auth.account()) return true;
+  if (auth.approved()) return true;
+  // Signed in but not verified or approved yet (or blocked): show what's going on.
+  if (auth.account()) return router.createUrlTree(['/account-status']);
   return router.createUrlTree(['/sign-in'], { queryParams: state.url !== '/' ? { returnUrl: state.url } : {} });
+};
+
+/** The account status page: for signed-in accounts that can't use the app yet. */
+export const accountStatusGuard: CanActivateFn = async () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  await auth.restore();
+  if (!auth.account()) return router.createUrlTree(['/sign-in']);
+  return auth.approved() ? router.createUrlTree(['/']) : true;
+};
+
+/** The admin area. Only decides navigation: every admin API call is authorized on the server. */
+export const adminGuard: CanActivateFn = async () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  await auth.restore();
+  return auth.isAdmin() ? true : router.createUrlTree(['/']);
 };
 
 /** Sign-in, sign-up and password recovery: a signed-in user goes straight to the app. */
@@ -20,7 +39,8 @@ export const guestGuard: CanActivateFn = async () => {
   const auth = inject(AuthService);
   const router = inject(Router);
   await auth.restore();
-  return auth.account() ? router.createUrlTree(['/']) : true;
+  if (!auth.account()) return true;
+  return router.createUrlTree([auth.approved() ? '/' : '/account-status']);
 };
 
 /**
@@ -29,6 +49,6 @@ export const guestGuard: CanActivateFn = async () => {
  */
 export function safeReturnUrl(value: string | null | undefined): string {
   if (!value || !value.startsWith('/') || value.startsWith('//') || value.startsWith('/\\')) return '/';
-  if (/^\/(sign-in|sign-up|forgot-password|reset-password)\b/.test(value)) return '/';
+  if (/^\/(sign-in|sign-up|forgot-password|reset-password|verify-email|account-status)\b/.test(value)) return '/';
   return value;
 }

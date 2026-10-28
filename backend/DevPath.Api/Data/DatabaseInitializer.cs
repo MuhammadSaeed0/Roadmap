@@ -1,4 +1,5 @@
 using DevPath.Api.Data.Seeding;
+using DevPath.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevPath.Api.Data;
@@ -30,6 +31,9 @@ public static class DatabaseInitializer
 
             if (config.GetValue("Database:SeedOnStartup", true))
                 await scope.ServiceProvider.GetRequiredService<DbSeeder>().SeedAsync();
+
+            // The main administrator (Admin:OwnerEmail) and the Admin role. Idempotent.
+            await scope.ServiceProvider.GetRequiredService<AccountWorkflow>().EnsureOwnerAsync(CancellationToken.None);
 
             // Explicit, one-time handover of data saved before accounts existed (see LegacyData).
             if (config["LegacyData:AssignToEmail"] is { Length: > 0 } email)

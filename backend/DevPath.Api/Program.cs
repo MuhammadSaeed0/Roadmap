@@ -10,11 +10,27 @@ using DevPath.Api.Validation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureKestrel(o => o.AddServerHeader = false);   // don't advertise the server software
+
+// `dotnet DevPath.Api.dll --check-config` (used by deploy/publish.ps1) lists missing production settings and exits.
+if (args.Contains("--check-config"))
+{
+    var missing = ProductionSettings.Problems(builder.Configuration);
+    Console.WriteLine(missing.Count == 0 ? "Production configuration looks complete." : "Production configuration is incomplete:");
+    foreach (var problem in missing) Console.WriteLine("- " + problem);
+    Environment.Exit(missing.Count == 0 ? 0 : 1);
+}
+
+// A live deployment refuses to start with development settings (LocalDB, console-only email, localhost links).
+if (builder.Environment.IsProduction() && ProductionSettings.Problems(builder.Configuration) is { Count: > 0 } problems)
+    throw new InvalidOperationException("Production configuration is incomplete:" + Environment.NewLine + "- " +
+        string.Join(Environment.NewLine + "- ", problems) + Environment.NewLine + "See docs/DEPLOYMENT.md.");
 
 // ---------- Database ----------
 // The connection string lives in appsettings.json (LocalDB, Windows authentication, no password).
@@ -48,6 +64,7 @@ builder.Services.AddIdentityCore<AppUser>(o =>
         o.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
         o.Lockout.AllowedForNewUsers = true;
     })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders()
@@ -61,16 +78,40 @@ builder.Services.ConfigureApplicationCookie(o =>
     o.Cookie.HttpOnly = true;
     // localhost:4200 and localhost:5080 are the same site, so Strict still works and blocks cross-site requests (CSRF).
     o.Cookie.SameSite = SameSiteMode.Strict;
-    o.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    // The live site is HTTPS only, so the cookie is never sent over plain HTTP there.
+    o.Cookie.SecurePolicy = builder.Environment.IsProduction() ? CookieSecurePolicy.Always : CookieSecurePolicy.SameAsRequest;
     o.ExpireTimeSpan = TimeSpan.FromDays(14);
     o.SlidingExpiration = true;
     o.Events.OnRedirectToLogin = ctx => WriteAuthProblem(ctx, StatusCodes.Status401Unauthorized, "unauthenticated", "Sign in to continue.");
     o.Events.OnRedirectToAccessDenied = ctx => WriteAuthProblem(ctx, StatusCodes.Status403Forbidden, "forbidden", "You are not allowed to do that.");
 });
-// Every endpoint needs a signed-in account unless it says [AllowAnonymous].
+// Every endpoint needs a signed-in, verified and approved account unless it says otherwise.
+// The account's status and roles are read from the database on each request, so approving,
+// suspending or demoting someone takes effect immediately.
 builder.Services.AddAuthorizationBuilder()
-    .SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
-builder.Services.AddScoped<IAccountEmailSender, LoggingAccountEmailSender>();
+    .SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser()
+        .AddRequirements(new ActiveSessionRequirement(), new ApprovedAccountRequirement()).Build())
+    .AddPolicy(Policies.SignedIn, p => p.RequireAuthenticatedUser().AddRequirements(new ActiveSessionRequirement()))
+    .AddPolicy(Policies.Admin, p => p.RequireAuthenticatedUser().AddRequirements(new ActiveSessionRequirement(), new AdminRequirement()));
+builder.Services.AddScoped<IAuthorizationHandler, AccountRequirementsHandler>();
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, ProblemAuthorizationResultHandler>();
+builder.Services.AddScoped<AccountAccess>();
+builder.Services.AddScoped<AccountTokenService>();
+builder.Services.AddScoped<AccountEmails>();
+builder.Services.AddScoped<AccountWorkflow>();
+builder.Services.AddScoped<AdminService>();
+
+// Keys that protect the auth cookie live in the database, so sign-ins survive app restarts and
+// redeploys on hosts where the app can't keep files between deployments.
+builder.Services.AddDataProtection().PersistKeysToDbContext<AppDbContext>().SetApplicationName("DevPath");
+
+// Email: "Log" writes messages to the console (development); "Brevo" delivers them. The API key is a secret
+// (environment variable Email__Brevo__ApiKey) — see docs/EMAIL.md.
+builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection(EmailOptions.SectionName));
+if (string.Equals(builder.Configuration["Email:Provider"], "Brevo", StringComparison.OrdinalIgnoreCase))
+    builder.Services.AddHttpClient<IAccountEmailSender, BrevoEmailSender>(client => client.Timeout = TimeSpan.FromSeconds(15));
+else
+    builder.Services.AddScoped<IAccountEmailSender, LoggingAccountEmailSender>();
 
 // Slows down password guessing and sign-up spam: N attempts per minute per client address.
 builder.Services.AddRateLimiter(o =>
@@ -100,7 +141,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddOpenApi();
 
-// The Angular dev server runs on another port, so the browser needs CORS permission.
+// The Angular dev server runs on another port, so the browser needs CORS permission. In production the
+// API serves the app itself (same origin), so CORS isn't enabled there at all.
 const string FrontendCors = "frontend";
 builder.Services.AddCors(options => options.AddPolicy(FrontendCors, policy =>
     policy.WithOrigins(builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? ["http://localhost:4200"])
@@ -155,9 +197,18 @@ app.UseStatusCodePages();
 if (app.Environment.IsDevelopment())
     app.MapOpenApi().AllowAnonymous(); // http://localhost:5080/openapi/v1.json
 else
+{
+    app.UseHsts();
     app.UseHttpsRedirection();
+}
 
-app.UseCors(FrontendCors);
+app.UseMiddleware<SecurityHeadersMiddleware>();
+// In production the built Angular app is served from wwwroot by this same site (see docs/DEPLOYMENT.md).
+var hasFrontend = app.Environment.WebRootFileProvider.GetFileInfo("index.html").Exists;
+if (hasFrontend) app.UseStaticFiles();
+
+if (app.Environment.IsDevelopment()) app.UseCors(FrontendCors);
+app.UseMiddleware<OriginCheckMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseRateLimiter();
@@ -169,6 +220,13 @@ app.MapGet("/api/health", async (AppDbContext db, CancellationToken ct) =>
         ? Results.Ok(new { status = "ok", database = "connected" })
         : Results.Json(new { status = "degraded", database = "unreachable" }, statusCode: 503))
     .AllowAnonymous();
+
+if (hasFrontend)
+{
+    // Unknown /api paths stay JSON 404s; every other path is an Angular route, so it gets index.html.
+    app.MapFallback("api/{**rest}", () => Results.Problem(statusCode: StatusCodes.Status404NotFound, title: "Not found.")).AllowAnonymous();
+    app.MapFallbackToFile("index.html").AllowAnonymous();
+}
 
 if (!app.Configuration.GetValue("Database:SkipInitialization", false))
     await app.InitializeDatabaseAsync();

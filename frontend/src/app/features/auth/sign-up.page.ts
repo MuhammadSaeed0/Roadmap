@@ -125,7 +125,8 @@ export default class SignUpPage {
     try {
       await this.auth.signUp(fullName.trim(), normaliseEmail(email), password);
       this.toast.success(this.i18n.t('auth.welcome', { name: this.auth.displayName() }));
-      await this.router.navigateByUrl(this.returnUrl);
+      // New accounts confirm their email and wait for approval first; the status page explains that.
+      await this.router.navigateByUrl(this.auth.approved() ? this.returnUrl : '/account-status');
     } catch (e) {
       this.errorCode.set(authErrorKey(this.i18n, e));
     } finally {

@@ -23,8 +23,12 @@ public class RequestTimingMiddleware(RequestDelegate next, ILogger<RequestTiming
             sw.Stop();
             var level = sw.ElapsedMilliseconds > SlowRequestMs ? LogLevel.Warning : LogLevel.Information;
             logger.Log(level, "{Method} {Path}{Query} responded {StatusCode} in {ElapsedMs} ms",
-                context.Request.Method, context.Request.Path, context.Request.QueryString,
+                context.Request.Method, context.Request.Path, SafeQuery(context.Request),
                 context.Response.StatusCode, sw.ElapsedMilliseconds);
         }
     }
+
+    // Verification and reset links carry one-time tokens in the query string; keep them out of the logs.
+    private static string SafeQuery(HttpRequest request) =>
+        request.Query.ContainsKey("token") ? "?token=[redacted]" : request.QueryString.Value ?? "";
 }

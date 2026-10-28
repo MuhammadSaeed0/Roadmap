@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using DevPath.Api.Models;
 
 namespace DevPath.Api.DTOs;
 
@@ -17,13 +18,20 @@ public record LoginRequest(
 
 public record ForgotPasswordRequest([Required, EmailAddress, MaxLength(254)] string? Email);
 
+/// <summary>The token alone identifies the account; Email is accepted for older links and ignored.</summary>
 public record ResetPasswordRequest(
-    [Required, EmailAddress, MaxLength(254)] string? Email,
-    [Required, MaxLength(2000)] string? Token,
+    [EmailAddress, MaxLength(254)] string? Email,
+    [Required, MaxLength(200)] string? Token,
     [Required, MinLength(8), MaxLength(128)] string? NewPassword);
 
 public record ChangePasswordRequest(
     [Required, MaxLength(128)] string? CurrentPassword,
     [Required, MinLength(8), MaxLength(128)] string? NewPassword);
 
-public record AccountDto(string Id, string Email, string FullName, DateTime CreatedAt);
+public record VerifyEmailRequest([Required, MaxLength(200)] string? Token);
+
+public record VerifyEmailResultDto(AccountStatus Status);
+
+/// <summary>IsAdmin is only true for approved administrators; the admin area is still checked on the server.</summary>
+public record AccountDto(string Id, string Email, string FullName, DateTime CreatedAt, AccountStatus Status, bool EmailVerified,
+    bool IsAdmin, bool IsOwner, string? StatusReason);

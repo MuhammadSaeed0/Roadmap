@@ -21,3 +21,9 @@ appsettings.*.local.json
 .DS_Store
 Thumbs.db
 *.log
+
+# Built Angular app copied in at publish time, and deployment output
+backend/DevPath.Api/wwwroot/
+deploy/out/
+# Deployment secrets (see deploy/production.env.example)
+deploy/production.env
