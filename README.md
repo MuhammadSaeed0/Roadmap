@@ -44,11 +44,12 @@ Angular 22 + TypeScript   →   ASP.NET Core 10 Web API (C#)   →   EF Core 10 
 
 - **Accounts**: sign-up, sign-in, sign-out, password reset and password change. Every account has its own private progress, notes, sessions, reviews, projects, practice answers, interview ratings, preferences and videos (see [Accounts and data privacy](#accounts-and-data-privacy)).
 - **Videos on every topic**: 3–4 hand-picked YouTube tutorials per topic (575 in total, all checked to exist and allow embedding), optional live suggestions from the YouTube API, plus your own videos added by link, with an in-page player and per-account "watched" and "saved" flags (see [YouTube videos](#youtube-videos)).
+- **A quiz on every topic**, right under the videos: 576 bilingual multiple-choice questions (4 per topic) in three levels that open one after another: the topic itself, the topic mixed with the topics just before it, and a wider review of the topics leading up to it. You need 75% to open the next level. The API grades answers, so the correct options never reach the browser before you answer, and each answer comes with a short explanation. The questions test each topic's ideas (what the videos teach); they weren't written from individual video transcripts.
 - **Dashboard**: weighted overall progress, completed and remaining topics, time remaining, current phase, a "continue learning" recommendation with its reasons, a 30/60/120-minute study plan, project progress, per-skill progress, recent activity, study streak and quick actions.
 - **Roadmap**: 13 phases and 144 topics, from C# fundamentals to full-stack projects. SQL Server topics focus on what a SQL developer needs for .NET work, and each can be marked "already known".
 - **Topic pages** cover: what it is, why it matters, how it works, a real-world example, a code example, a practice task, an independent challenge, verified resources, prerequisites, topics it unlocks, related projects, interview questions, exercises and notes. You can also set status, prior knowledge, confidence (0–5), add the topic to spaced review, and log study sessions.
 - **Learning Library**: server-side search, filters (skill, phase, status, priority, knowledge) and pagination. The filters are kept in the URL.
-- **Four projects**: Employee Management (C# console), Inventory API, Project Dashboard (Angular) and Sales and Order Management (full stack). They have 16 milestones, 62 tasks with acceptance criteria and topic links, 15 realistic **change requests** that unlock as a project progresses, a portfolio checklist and a repository link.
+- **Four projects**: Employee Management (C# console), Inventory API, Project Dashboard (Angular) and Sales and Order Management (full stack). They have 16 milestones, 62 tasks with acceptance criteria and topic links, 15 realistic **change requests** that unlock as a project progresses, a portfolio checklist and a repository link. Every task and change request has 3–4 YouTube videos on how to build that part (280 hand-picked videos in `SeedData/project-videos.json`, each checked with YouTube; tasks with fewer are topped up from their related topics' videos).
 - **Practice Lab**: 39 coding, debugging, real-world scenario and code-review exercises. The API enforces the flow *attempt → hints → solution*, so the solution is never sent before you've saved your own attempt.
 - **Interview preparation**: 855 bilingual questions in 17 categories (at least 50 each), each linked to a topic. Besides the stack (C#, .NET, ASP.NET Core, EF Core, SQL Server, TypeScript, Angular, REST, testing, Git, full-stack design) it covers the classic coding-interview themes: data structures, algorithms, object-oriented design, system design, concurrency and behavioral questions. These are written for this project, not copied from any book. Study mode shows question and answer, with search, difficulty and rating filters; practice mode shows one question at a time and you rate yourself (need review / partial / confident).
 - **Resources**: 145 free, mostly official links. Each one was checked over HTTP when it was seeded, and a **"Check all links"** button re-verifies them on demand.
@@ -190,6 +191,7 @@ AppUser (AspNetUsers) 1──* every user table below; each row is (UserId, …)
   ProjectRepository (UserId, ProjectId)     LearningPreference (UserId)
   StudySession, Note (Id + UserId)          Note → at most one of Topic / Project / ProjectTask / InterviewQuestion
   UserTopicVideo (Id + UserId)              VideoProgress (UserId, VideoId): watched / saved
+  QuizAttempt (Id + UserId): topic, level, score
 ```
 
 Content tables have foreign keys, unique indexes on every slug/key, check constraints (confidence 0–5, minutes 1–1440, a note linked to at most one item, no self-prerequisite) and delete rules chosen to avoid SQL Server's multiple-cascade-path error. Deleting an account deletes its rows. Derived values such as percentages and achievements are **calculated, not stored**.
@@ -222,6 +224,8 @@ Content tables have foreign keys, unique indexes on every slug/key, check constr
 | GET | `/api/auth/me` | The signed-in account (401 when signed out) |
 | POST | `/api/auth/forgot-password`, `/api/auth/reset-password`, `/api/auth/change-password` | Password recovery and change |
 | GET/POST | `/api/topics/{id}/videos` | Suggested + your own videos for a topic; add a video by YouTube link |
+| GET | `/api/project-tasks/{id}/videos` | Videos showing how to build a project task |
+| GET/POST | `/api/topics/{id}/quiz?level=1-3` | Quiz questions (without answers); submit answers to be graded |
 | DELETE | `/api/topic-videos/{id}` | Remove a video you added |
 | PUT | `/api/videos/{videoId}/progress` | Your "watched" / "saved" flags for a video |
 
@@ -238,7 +242,7 @@ The full OpenAPI document is at `http://localhost:5080/openapi/v1.json` (Develop
 - **Sessions** are an **HttpOnly, SameSite=Strict cookie** (`devpath.auth`, 14 days, sliding). JavaScript can't read it, it survives page refreshes, and the browser won't send it from other sites. Changing or resetting the password signs out your other devices within 5 minutes. When a session ends, the next API call answers 401 and the app returns to the sign-in page, then back to where you were.
 - **Every endpoint is protected on the server** by a fallback authorization policy; the Angular guards only decide navigation.
 - **Data isolation is enforced in the database layer.** Every user table has a `UserId` column (foreign key to `AspNetUsers`, cascade delete) and is part of the key (for example `TopicProgress (UserId, TopicId)`). `AppDbContext` adds a **global query filter** `UserId == current user` to every user table, and fills in `UserId` itself when a row is saved, refusing to change or delete another account's row. So a service can't return someone else's data even if it forgets a `Where`, and putting another account's id in a URL or body simply returns **404**.
-- **Shared content** (phases, topics, resources, projects, exercises, interview questions, and the cached YouTube suggestions) is the same for everyone and read-only.
+- **Shared content** (phases, topics, resources, projects, exercises, interview questions, quiz questions, curated videos and the cached YouTube suggestions) is the same for everyone and read-only.
 - **Password reset**: the app runs locally without a mail server, so the reset link is written to the **API console** (log level Warning). Register another `IAccountEmailSender` in `Program.cs` to send real email. Links expire after 1 hour and work once.
 
 ### Data from before accounts existed
@@ -304,7 +308,7 @@ SQL Server's low weight means that marking your existing SQL knowledge as known 
 All content lives in `backend/DevPath.Api/SeedData/`:
 
 - `roadmap/NN-*.json`: one file per phase (topics, explanations, tasks, prerequisites)
-- `projects.json`, `portfolio-checklist.json`, `resources.json`, `practice/*.json`, `interviews/*.json`
+- `projects.json`, `portfolio-checklist.json`, `resources.json`, `practice/*.json`, `interviews/*.json`, `quizzes/*.json`, `videos.json`, `project-videos.json`
 - `snippets/{topics|practice|interviews}/{key}.{cs|ts|sql|html|sh|http|txt}`: code samples as real files. The extension sets the language, and `*.solution.*` holds exercise solutions.
 
 Edit a file and restart the API. The seeder **inserts or updates rows by slug or key** and keeps link tables in sync. Before touching the database it validates the content (duplicate keys, unknown topic references, prerequisite cycles) and fails with a clear message if something is wrong. Your progress is never affected.

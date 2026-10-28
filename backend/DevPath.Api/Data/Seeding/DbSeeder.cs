@@ -53,14 +53,17 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
             await SeedExercisesAsync(content.Exercises, topics, ct);
             await SeedInterviewsAsync(content.Interviews, topics, ct);
             await SyncCuratedVideosAsync(content.Videos, topics, ct);
+            await SyncProjectTaskVideosAsync(content.TaskVideos, ct);
+            await SyncQuizzesAsync(content.Quizzes, topics, ct);
 
             await tx.CommitAsync(ct);
         });
 
         logger.LogInformation(
-            "Seed complete ({Environment}): {Phases} phases, {Topics} topics, {Resources} resources, {Projects} projects, {Exercises} exercises, {Questions} interview questions, {Videos} videos",
+            "Seed complete ({Environment}): {Phases} phases, {Topics} topics, {Resources} resources, {Projects} projects, {Exercises} exercises, {Questions} interview questions, {Videos} videos, {TaskVideos} project videos, {Quiz} quiz questions",
             env.EnvironmentName, content.Phases.Count, content.Phases.Sum(p => p.Topics.Count), content.Resources.Count,
-            content.Projects.Count, content.Exercises.Count, content.Interviews.Count, content.Videos.Sum(v => v.Value.Count));
+            content.Projects.Count, content.Exercises.Count, content.Interviews.Count, content.Videos.Sum(v => v.Value.Count),
+            content.TaskVideos.Sum(v => v.Value.Count), content.Quizzes.Count);
     }
 
     private async Task<Dictionary<string, Phase>> SeedPhasesAsync(List<PhaseSeed> seeds, CancellationToken ct)
@@ -319,6 +322,63 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
         await db.SaveChangesAsync(ct);
     }
 
+    /// <summary>Project task videos are synchronised like curated topic videos.</summary>
+    private async Task SyncProjectTaskVideosAsync(Dictionary<string, List<VideoSeed>> seeds, CancellationToken ct)
+    {
+        var taskIds = await db.ProjectTasks.ToDictionaryAsync(t => t.Key, t => t.Id, ct);
+        var existing = await db.ProjectTaskVideos.ToDictionaryAsync(v => (v.ProjectTaskId, v.VideoId), ct);
+        var wanted = new HashSet<(int, string)>();
+        foreach (var (key, videos) in seeds)
+        {
+            var taskId = taskIds[key];
+            var order = 0;
+            foreach (var s in videos)
+            {
+                wanted.Add((taskId, s.VideoId));
+                if (!existing.TryGetValue((taskId, s.VideoId), out var v))
+                {
+                    v = new ProjectTaskVideo { ProjectTaskId = taskId, VideoId = s.VideoId, Title = s.Title };
+                    db.ProjectTaskVideos.Add(v);
+                }
+                v.Title = s.Title;
+                v.ChannelTitle = s.Channel;
+                v.Order = ++order;
+            }
+        }
+        db.ProjectTaskVideos.RemoveRange(existing.Where(e => !wanted.Contains(e.Key)).Select(e => e.Value));
+        await db.SaveChangesAsync(ct);
+    }
+
+    /// <summary>
+    /// Quiz questions are synchronised by key. Users' attempts only store scores, so
+    /// editing or removing a question never breaks someone's history.
+    /// </summary>
+    private async Task SyncQuizzesAsync(List<QuizSeed> seeds, Dictionary<string, Topic> topics, CancellationToken ct)
+    {
+        var existing = await db.QuizQuestions.ToDictionaryAsync(q => q.Key, ct);
+        var order = new Dictionary<string, int>();
+        foreach (var s in seeds)
+        {
+            if (!existing.TryGetValue(s.Key, out var q))
+            {
+                q = new QuizQuestion { Key = s.Key, QuestionEn = s.QuestionEn, QuestionAr = s.QuestionAr };
+                db.QuizQuestions.Add(q);
+            }
+            q.TopicId = topics[s.Topic].Id;
+            q.Order = order[s.Topic] = order.GetValueOrDefault(s.Topic) + 1;
+            q.QuestionEn = s.QuestionEn;
+            q.QuestionAr = s.QuestionAr;
+            q.OptionsEn = s.OptionsEn;
+            q.OptionsAr = s.OptionsAr;
+            q.AnswerIndex = s.Answer;
+            q.ExplanationEn = s.ExplanationEn;
+            q.ExplanationAr = s.ExplanationAr;
+        }
+        var keys = seeds.Select(s => s.Key).ToHashSet();
+        db.QuizQuestions.RemoveRange(existing.Values.Where(q => !keys.Contains(q.Key)));
+        await db.SaveChangesAsync(ct);
+    }
+
     private async Task SeedInterviewsAsync(List<InterviewSeed> seeds, Dictionary<string, Topic> topics, CancellationToken ct)
     {
         var existing = await db.InterviewQuestions.ToDictionaryAsync(q => q.Key, ct);
@@ -354,6 +414,8 @@ public class SeedContent
     public List<ExerciseSeed> Exercises { get; private init; } = [];
     public List<InterviewSeed> Interviews { get; private init; } = [];
     public Dictionary<string, List<VideoSeed>> Videos { get; private init; } = [];
+    public Dictionary<string, List<VideoSeed>> TaskVideos { get; private init; } = [];
+    public List<QuizSeed> Quizzes { get; private init; } = [];
 
     public static SeedContent Load(string dir, JsonSerializerOptions options)
     {
@@ -381,6 +443,11 @@ public class SeedContent
             Videos = File.Exists(Path.Combine(dir, "videos.json"))
                 ? Read<Dictionary<string, List<VideoSeed>>>(Path.Combine(dir, "videos.json"))
                 : [],
+            // Optional as well: project-videos.json is keyed by task key, quizzes/ holds one file per phase.
+            TaskVideos = File.Exists(Path.Combine(dir, "project-videos.json"))
+                ? Read<Dictionary<string, List<VideoSeed>>>(Path.Combine(dir, "project-videos.json"))
+                : [],
+            Quizzes = Directory.Exists(Path.Combine(dir, "quizzes")) ? ReadAll<QuizSeed>("quizzes") : [],
         };
     }
 
@@ -436,6 +503,25 @@ public class SeedContent
             Unique(videos.Select(v => v.VideoId), $"video in videos.json for '{slug}'");
             foreach (var v in videos.Where(v => !Services.YouTubeIds.IsValid(v.VideoId) || string.IsNullOrWhiteSpace(v.Title)))
                 errors.Add($"videos.json entry for '{slug}' has an invalid video id or an empty title ('{v.VideoId}')");
+        }
+
+        var taskKeys = Projects.SelectMany(p => p.Milestones).SelectMany(m => m.Tasks).Select(t => t.Key).ToHashSet();
+        foreach (var (key, videos) in TaskVideos)
+        {
+            if (!taskKeys.Contains(key)) errors.Add($"project-videos.json references unknown task '{key}'");
+            Unique(videos.Select(v => v.VideoId), $"video in project-videos.json for '{key}'");
+            foreach (var v in videos.Where(v => !Services.YouTubeIds.IsValid(v.VideoId) || string.IsNullOrWhiteSpace(v.Title)))
+                errors.Add($"project-videos.json entry for '{key}' has an invalid video id or an empty title ('{v.VideoId}')");
+        }
+
+        Unique(Quizzes.Select(q => q.Key), "quiz key");
+        foreach (var q in Quizzes)
+        {
+            Ref(q.Topic, $"Quiz question '{q.Key}'");
+            if (q.OptionsEn.Count < 2 || q.OptionsEn.Count != q.OptionsAr.Count)
+                errors.Add($"Quiz question '{q.Key}' needs at least two options, with an Arabic text for each");
+            if (q.Answer < 0 || q.Answer >= q.OptionsEn.Count)
+                errors.Add($"Quiz question '{q.Key}' has an answer index outside its options");
         }
 
         // A prerequisite cycle would make those topics impossible to recommend.

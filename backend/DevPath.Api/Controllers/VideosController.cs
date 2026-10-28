@@ -12,6 +12,9 @@ public class VideosController(TopicVideoService videos) : ControllerBase
     [HttpGet("topics/{topicId:int}/videos")]
     public Task<TopicVideosDto> List(int topicId, CancellationToken ct) => videos.GetAsync(topicId, ct);
 
+    [HttpGet("project-tasks/{taskId:int}/videos")]
+    public Task<TaskVideosDto> ListForTask(int taskId, CancellationToken ct) => videos.GetForTaskAsync(taskId, ct);
+
     [HttpPost("topics/{topicId:int}/videos")]
     public async Task<ActionResult<TopicVideoDto>> Add(int topicId, AddTopicVideoRequest request, CancellationToken ct)
     {

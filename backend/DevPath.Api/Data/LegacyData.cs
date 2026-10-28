@@ -55,6 +55,7 @@ public static class LegacyData
             count += await Move(db.LearningPreferences, target.Id, ct);
             count += await Move(db.UserTopicVideos, target.Id, ct);
             count += await Move(db.VideoProgress, target.Id, ct);
+            count += await Move(db.QuizAttempts, target.Id, ct);
             await db.Users.Where(u => u.Id == UserId).ExecuteDeleteAsync(ct);
             await tx.CommitAsync(ct);
             return count;
@@ -79,5 +80,6 @@ public static class LegacyData
         || await db.ReviewSchedules.IgnoreQueryFilters().AnyAsync(x => x.UserId == userId, ct)
         || await db.LearningPreferences.IgnoreQueryFilters().AnyAsync(x => x.UserId == userId, ct)
         || await db.UserTopicVideos.IgnoreQueryFilters().AnyAsync(x => x.UserId == userId, ct)
-        || await db.VideoProgress.IgnoreQueryFilters().AnyAsync(x => x.UserId == userId, ct);
+        || await db.VideoProgress.IgnoreQueryFilters().AnyAsync(x => x.UserId == userId, ct)
+        || await db.QuizAttempts.IgnoreQueryFilters().AnyAsync(x => x.UserId == userId, ct);
 }

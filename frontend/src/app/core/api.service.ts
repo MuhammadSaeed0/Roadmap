@@ -92,6 +92,14 @@ export class ApiService {
   /** The API checks the link with YouTube before saving it. */
   addTopicVideo(topicId: number, url: string) { return this.post<M.TopicVideo>(`/topics/${topicId}/videos`, { url }); }
   removeTopicVideo(id: number) { return this.delete(`/topic-videos/${id}`); }
+  taskVideos(taskId: number) { return this.get<M.TopicVideos>(`/project-tasks/${taskId}/videos`); }
+
+  // ----- Topic quizzes -----
+  /** Questions come without their answers; the API grades the submission. */
+  quiz(topicId: number, level: M.QuizLevel) { return this.get<M.Quiz>(`/topics/${topicId}/quiz`, { level }); }
+  submitQuiz(topicId: number, level: M.QuizLevel, answers: { questionId: number; choice: number }[]) {
+    return this.post<M.QuizResult>(`/topics/${topicId}/quiz`, { level, answers });
+  }
   setVideoProgress(topicId: number, videoId: string, flags: { isWatched: boolean; isBookmarked: boolean }) {
     return this.put<void>(`/videos/${encodeURIComponent(videoId)}/progress`, { topicId, ...flags });
   }

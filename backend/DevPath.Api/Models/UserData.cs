@@ -170,6 +170,20 @@ public class UserTopicVideo : IUserOwned
     public DateTime CreatedAt { get; set; }
 }
 
+/// <summary>One submitted topic quiz. Levels unlock in order: the next one opens once a level is passed.</summary>
+public class QuizAttempt : IUserOwned
+{
+    public int Id { get; set; }
+    public string UserId { get; set; } = "";
+    public int TopicId { get; set; }
+    public Topic Topic { get; set; } = null!;
+    /// <summary>1 = this topic, 2 = this topic with the topics before it, 3 = review of the phase so far.</summary>
+    public int Level { get; set; }
+    public int Score { get; set; }
+    public int Total { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
 /// <summary>The user's watched / saved flags for a video. Key: (UserId, VideoId).</summary>
 public class VideoProgress : IUserOwned
 {

@@ -73,6 +73,39 @@ public class TopicVideoService(
             ? v with { IsWatched = f.IsWatched, IsBookmarked = f.IsBookmarked } : v).ToList());
     }
 
+    /// <summary>
+    /// Videos showing how to build a project task: the ones picked for it, topped up from its linked
+    /// topics' curated videos so every task has at least <see cref="MinTaskVideos"/>.
+    /// </summary>
+    public async Task<TaskVideosDto> GetForTaskAsync(int taskId, CancellationToken ct)
+    {
+        var task = await db.ProjectTasks.AsNoTracking().Where(t => t.Id == taskId)
+            .Select(t => new { t.TitleEn, TopicIds = t.TopicLinks.OrderBy(l => l.Topic.Phase.Order).ThenBy(l => l.Topic.Order).Select(l => l.TopicId).ToList() })
+            .SingleOrDefaultAsync(ct) ?? throw new NotFoundException("Project task", taskId);
+
+        var picked = await db.ProjectTaskVideos.AsNoTracking().Where(v => v.ProjectTaskId == taskId).OrderBy(v => v.Order)
+            .Select(v => new { v.VideoId, v.Title, v.ChannelTitle }).ToListAsync(ct);
+        var videos = picked.Select(v => new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, null, "task", null, false, false)).ToList();
+        if (videos.Count < MinTaskVideos && task.TopicIds.Count > 0)
+        {
+            var fromTopics = await db.CuratedVideos.AsNoTracking().Where(v => task.TopicIds.Contains(v.TopicId))
+                .Select(v => new { v.TopicId, v.Order, v.VideoId, v.Title, v.ChannelTitle }).ToListAsync(ct);
+            // Take each linked topic's best video first, then the second ones, and so on.
+            var extra = fromTopics.OrderBy(v => v.Order).ThenBy(v => task.TopicIds.IndexOf(v.TopicId))
+                .Where(v => videos.All(x => x.VideoId != v.VideoId)).DistinctBy(v => v.VideoId)
+                .Take(MinTaskVideos + 1 - videos.Count);
+            videos.AddRange(extra.Select(v => new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, null, "topic", null, false, false)));
+        }
+
+        var ids = videos.Select(v => v.VideoId).ToList();
+        var flags = await db.VideoProgress.AsNoTracking().Where(p => ids.Contains(p.VideoId)).ToDictionaryAsync(p => p.VideoId, ct);
+        videos = videos.Select(v => flags.TryGetValue(v.VideoId, out var f) ? v with { IsWatched = f.IsWatched, IsBookmarked = f.IsBookmarked } : v).ToList();
+        // Watched/saved flags are stored against a topic; the task's first linked topic stands in for it.
+        return new TaskVideosDto("ok", $"{task.TitleEn} tutorial", videos, task.TopicIds.FirstOrDefault());
+    }
+
+    private const int MinTaskVideos = 3;
+
     /// <summary>Checks a pasted YouTube link (it must exist, be public and allow embedding) and adds it to the topic for this user.</summary>
     public async Task<TopicVideoDto> AddAsync(int topicId, string url, CancellationToken ct)
     {

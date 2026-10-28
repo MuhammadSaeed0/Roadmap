@@ -31,6 +31,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<PracticeExercise> PracticeExercises => Set<PracticeExercise>();
     public DbSet<InterviewQuestion> InterviewQuestions => Set<InterviewQuestion>();
     public DbSet<CuratedVideo> CuratedVideos => Set<CuratedVideo>();
+    public DbSet<ProjectTaskVideo> ProjectTaskVideos => Set<ProjectTaskVideo>();
+    public DbSet<QuizQuestion> QuizQuestions => Set<QuizQuestion>();
 
     // User data
     public DbSet<TopicProgress> TopicProgress => Set<TopicProgress>();
@@ -45,6 +47,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<ProjectRepository> ProjectRepositories => Set<ProjectRepository>();
     public DbSet<UserTopicVideo> UserTopicVideos => Set<UserTopicVideo>();
     public DbSet<VideoProgress> VideoProgress => Set<VideoProgress>();
+    public DbSet<QuizAttempt> QuizAttempts => Set<QuizAttempt>();
 
     // Shared caches
     public DbSet<TopicVideoCache> TopicVideoCache => Set<TopicVideoCache>();
@@ -308,12 +311,38 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
         });
 
+        b.Entity<ProjectTaskVideo>(e =>
+        {
+            e.HasIndex(x => new { x.ProjectTaskId, x.VideoId }).IsUnique();
+            e.Property(x => x.VideoId).HasMaxLength(11);
+            e.Property(x => x.Title).HasMaxLength(300);
+            e.Property(x => x.ChannelTitle).HasMaxLength(200);
+            e.HasOne(x => x.ProjectTask).WithMany().HasForeignKey(x => x.ProjectTaskId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<QuizQuestion>(e =>
+        {
+            e.HasIndex(x => x.Key).IsUnique();
+            e.HasIndex(x => x.TopicId);
+            e.Property(x => x.Key).HasMaxLength(80);
+            e.Property(x => x.QuestionEn).HasMaxLength(500);
+            e.Property(x => x.QuestionAr).HasMaxLength(500);
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
         b.Entity<VideoProgress>(e =>
         {
             OwnedByUser(e);
             e.HasKey(x => new { x.UserId, x.VideoId });
             e.HasIndex(x => new { x.UserId, x.TopicId });
             e.Property(x => x.VideoId).HasMaxLength(11);
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<QuizAttempt>(e =>
+        {
+            OwnedByUser(e);
+            e.HasIndex(x => new { x.UserId, x.TopicId, x.Level });
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
         });
 

@@ -199,8 +199,29 @@ export interface LinkCheckResult { checked: number; verified: number; broken: nu
 export type VideoSuggestionStatus = 'ok' | 'not_configured' | 'quota_exceeded' | 'unavailable';
 export interface TopicVideo {
   videoId: string; title: string; channelTitle: string; publishedAt: string | null; durationSeconds: number | null;
-  /** 'suggested' comes from the shared YouTube search; 'added' was added by this user from a link. */
-  source: 'suggested' | 'added'; addedId: number | null;
+  /**
+   * 'suggested' comes from the shared YouTube search; 'added' was added by this user from a link.
+   * For project tasks: 'task' was picked for the task, 'topic' comes from one of its linked topics.
+   */
+  source: 'suggested' | 'added' | 'task' | 'topic'; addedId: number | null;
   isWatched: boolean; isBookmarked: boolean;
 }
-export interface TopicVideos { status: VideoSuggestionStatus; searchQuery: string; videos: TopicVideo[]; }
+export interface TopicVideos {
+  status: VideoSuggestionStatus; searchQuery: string; videos: TopicVideo[];
+  /** Task videos only: the topic that watched/saved flags are stored against. */
+  progressTopicId?: number;
+}
+
+/** 1 = this topic, 2 = with the topics just before it, 3 = wider review. */
+export type QuizLevel = 1 | 2 | 3;
+export interface QuizLevelInfo {
+  level: QuizLevel; available: boolean; unlocked: boolean; questionCount: number;
+  bestScore: number | null; bestTotal: number | null; passed: boolean; attempts: number;
+}
+export interface QuizQuestion {
+  id: number; topicId: number; topicTitleEn: string; topicTitleAr: string;
+  questionEn: string; questionAr: string; optionsEn: string[]; optionsAr: string[];
+}
+export interface Quiz { topicId: number; level: QuizLevel; passPercent: number; levels: QuizLevelInfo[]; questions: QuizQuestion[]; }
+export interface QuizResultItem { questionId: number; choice: number; correctIndex: number; isCorrect: boolean; explanationEn: string; explanationAr: string; }
+export interface QuizResult { level: QuizLevel; score: number; total: number; passed: boolean; results: QuizResultItem[]; levels: QuizLevelInfo[]; }

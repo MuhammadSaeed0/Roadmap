@@ -47,6 +47,14 @@ public class SeederTests : IAsyncLifetime
         var videosPerTopic = await _db.Topics.Select(t => _db.CuratedVideos.Count(v => v.TopicId == t.Id)).ToListAsync();
         Assert.All(videosPerTopic, n => Assert.InRange(n, 2, 4));
         Assert.All(await _db.CuratedVideos.Select(v => v.VideoId).ToListAsync(), id => Assert.True(DevPath.Api.Services.YouTubeIds.IsValid(id)));
+        // Every project task has videos, and every topic has a quiz with a valid answer for each question.
+        Assert.False(await _db.ProjectTasks.AnyAsync(t => !_db.ProjectTaskVideos.Any(v => v.ProjectTaskId == t.Id)));
+        Assert.False(await _db.Topics.AnyAsync(t => _db.QuizQuestions.Count(q => q.TopicId == t.Id) < 3));
+        Assert.All(await _db.QuizQuestions.ToListAsync(), q =>
+        {
+            Assert.Equal(q.OptionsEn.Count, q.OptionsAr.Count);
+            Assert.InRange(q.AnswerIndex, 0, q.OptionsEn.Count - 1);
+        });
     }
 
     [Fact]

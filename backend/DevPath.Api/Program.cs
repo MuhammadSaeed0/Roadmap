@@ -143,6 +143,7 @@ builder.Services.AddScoped<AnalyticsService>();
 builder.Services.AddScoped<CareerReadinessService>();
 builder.Services.AddScoped<SearchService>();
 builder.Services.AddScoped<TopicVideoService>();
+builder.Services.AddScoped<QuizService>();
 
 var app = builder.Build();
 

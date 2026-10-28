@@ -13,7 +13,8 @@ import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.components';
 
 /**
- * Videos for one topic: shared YouTube suggestions plus videos the user added by link.
+ * Videos for one topic (shared YouTube suggestions plus videos the user added by link), or for one
+ * project task when taskId is set (videos picked for the task, topped up from its linked topics).
  * A video plays inside the page only after the user picks it (no YouTube requests
  * before that), and every card also links to YouTube in case embedding fails.
  */
@@ -22,9 +23,9 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, IconComponent, TranslatePipe, SkeletonComponent, ErrorStateComponent],
   template: `
-    <section class="card content-section" id="videos" aria-labelledby="videos-h">
+    <section class="card content-section" [id]="taskId() ? null : 'videos'" [attr.aria-labelledby]="headingId()">
       <div class="card-head">
-        <h2 id="videos-h" class="section-title"><app-icon name="video" /> {{ 'videos.title' | t }}</h2>
+        <h2 [id]="headingId()" class="section-title"><app-icon name="video" /> {{ (taskId() ? 'videos.taskTitle' : 'videos.title') | t }}</h2>
         <a class="btn btn-ghost btn-sm" [href]="youtubeSearch()" target="_blank" rel="noopener noreferrer">
           <app-icon name="search" [size]="14" /> {{ 'videos.searchYoutube' | t }}
         </a>
@@ -85,6 +86,7 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
                   <p class="video-title" [title]="video.title">{{ video.title }}</p>
                   <p class="muted small video-channel">
                     {{ video.channelTitle }}@if (video.source === 'added') { <span class="chip chip-sm">{{ 'videos.addedByYou' | t }}</span> }
+                    @if (video.source === 'topic') { <span class="chip chip-sm chip-ghost">{{ 'videos.fromTopic' | t }}</span> }
                   </p>
                   <div class="video-actions">
                     <button type="button" class="icon-btn" [class.is-on]="video.isWatched" [attr.aria-pressed]="video.isWatched"
@@ -116,6 +118,9 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
           </ul>
         }
 
+        @if (taskId()) {
+          <p class="muted small">{{ 'videos.taskAddHint' | t }}</p>
+        } @else {
         <form class="video-add" (submit)="$event.preventDefault(); add()" novalidate>
           <label for="video-url" class="label">{{ 'videos.addLabel' | t }}</label>
           <div class="video-add-row">
@@ -128,6 +133,7 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
           </div>
           @if (addError(); as err) { <small id="video-url-err" class="field-error" role="alert">{{ err }}</small> }
         </form>
+        }
       }
     </section>
   `,
@@ -139,10 +145,15 @@ export class TopicVideosComponent {
   private readonly confirm = inject(ConfirmService);
   private readonly sanitizer = inject(DomSanitizer);
 
-  readonly topicId = input.required<number>();
+  readonly topicId = input<number | null>(null);
+  readonly taskId = input<number | null>(null);
   readonly topicTitle = input.required<string>();
 
-  protected readonly data = createLoader(() => this.api.topicVideos(this.topicId()), { immediate: false });
+  protected readonly data = createLoader(() => {
+    const taskId = this.taskId();
+    return taskId ? this.api.taskVideos(taskId) : this.api.topicVideos(this.topicId()!);
+  }, { immediate: false });
+  protected readonly headingId = computed(() => (this.taskId() ? `videos-h-task-${this.taskId()}` : 'videos-h'));
   protected readonly playing = signal<TopicVideo | null>(null);
   protected readonly busy = signal<string | null>(null);
   protected readonly adding = signal(false);
@@ -165,6 +176,7 @@ export class TopicVideosComponent {
   constructor() {
     effect(() => {
       this.topicId();
+      this.taskId();
       untracked(() => {
         this.playing.set(null);
         this.addError.set(null);
@@ -182,7 +194,10 @@ export class TopicVideosComponent {
     const next = { isWatched: video.isWatched, isBookmarked: video.isBookmarked, [flag]: !video[flag] };
     this.busy.set(video.videoId);
     try {
-      await this.api.setVideoProgress(this.topicId(), video.videoId, next);
+      // Task videos store their flags against the task's first linked topic.
+      const topicId = this.taskId() ? this.data.value()?.progressTopicId : this.topicId();
+      if (!topicId) return;
+      await this.api.setVideoProgress(topicId, video.videoId, next);
       this.data.update((v) => ({ ...v, videos: v.videos.map((x) => (x.videoId === video.videoId ? { ...x, ...next } : x)) }));
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
@@ -205,7 +220,7 @@ export class TopicVideosComponent {
     }
     this.adding.set(true);
     try {
-      const video = await this.api.addTopicVideo(this.topicId(), value);
+      const video = await this.api.addTopicVideo(this.topicId()!, value);
       this.data.update((v) => ({ ...v, videos: [...v.videos, video] }));
       this.url.reset();
       this.toast.success(this.i18n.t('videos.added'));

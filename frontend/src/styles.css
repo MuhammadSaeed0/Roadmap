@@ -957,3 +957,29 @@ button.stat-card:hover { border-color: var(--accent); }
   .sidebar, .topbar, .toasts { display: none !important; }
   .shell { display: block; }
 }
+
+/* ---------- Topic quiz ---------- */
+.quiz-levels { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; margin: 12px 0 16px; }
+.quiz-level { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); color: var(--text); text-align: start; cursor: pointer; }
+.quiz-level:hover:not(:disabled) { border-color: var(--accent); }
+.quiz-level.active { border-color: var(--accent); background: var(--accent-soft); }
+.quiz-level.passed .quiz-level-name .icon { color: var(--success); }
+.quiz-level:disabled { opacity: 0.6; cursor: not-allowed; }
+.quiz-level-name { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+.quiz-questions { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 14px; }
+.quiz-question fieldset { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin: 0; min-width: 0; }
+.quiz-question[data-result='correct'] fieldset { border-color: var(--success); }
+.quiz-question[data-result='wrong'] fieldset { border-color: var(--danger); }
+.quiz-question legend { display: flex; flex-direction: column; gap: 2px; padding: 0 4px; }
+.quiz-q { font-weight: 600; }
+.quiz-options { display: grid; gap: 6px; margin-top: 8px; }
+.quiz-option { display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; }
+.quiz-option input { margin-top: 3px; }
+.quiz-option.chosen { border-color: var(--accent); background: var(--accent-soft); }
+.quiz-option.is-correct { border-color: var(--success); background: var(--success-soft); }
+.quiz-option.is-wrong { border-color: var(--danger); background: var(--danger-soft); }
+fieldset:disabled .quiz-option { cursor: default; }
+.quiz-feedback { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 10px 0 0; font-size: 0.9rem; }
+.quiz-question[data-result='correct'] .quiz-feedback > .icon { color: var(--success); }
+.quiz-question[data-result='wrong'] .quiz-feedback > .icon { color: var(--danger); }
+.task-videos .content-section { margin-top: 12px; box-shadow: none; }

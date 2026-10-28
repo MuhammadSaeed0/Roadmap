@@ -179,3 +179,30 @@ public record AddTopicVideoRequest([Required, MaxLength(500)] string? Url);
 public record UpdateVideoProgressRequest([Required] int? TopicId, [Required] bool? IsWatched, [Required] bool? IsBookmarked);
 
 public record VideoProgressDto(string VideoId, bool IsWatched, bool IsBookmarked);
+
+/// <summary>
+/// Videos for a project task: ones picked for the task ("task"), topped up with videos of its
+/// linked topics ("topic"). ProgressTopicId is the topic to send with watched/saved updates.
+/// </summary>
+public record TaskVideosDto(string Status, string SearchQuery, IReadOnlyList<TopicVideoDto> Videos, int ProgressTopicId);
+
+// ---------- Topic quizzes ----------
+
+/// <param name="Available">False when there aren't enough earlier topics for this level (e.g. the first topic of the roadmap).</param>
+/// <param name="Unlocked">Level 1 is always open; each next level opens once the previous one is passed.</param>
+public record QuizLevelDto(int Level, bool Available, bool Unlocked, int QuestionCount, int? BestScore, int? BestTotal, bool Passed, int Attempts);
+
+/// <summary>A question as shown before answering: no correct option and no explanation.</summary>
+public record QuizQuestionDto(
+    int Id, int TopicId, string TopicTitleEn, string TopicTitleAr,
+    string QuestionEn, string QuestionAr, IReadOnlyList<string> OptionsEn, IReadOnlyList<string> OptionsAr);
+
+public record QuizDto(int TopicId, int Level, int PassPercent, IReadOnlyList<QuizLevelDto> Levels, IReadOnlyList<QuizQuestionDto> Questions);
+
+public record QuizAnswerRequest([Required] int? QuestionId, [Required] int? Choice);
+
+public record SubmitQuizRequest([Required, Range(1, 3)] int? Level, [Required, MinLength(1), MaxLength(20)] List<QuizAnswerRequest>? Answers);
+
+public record QuizResultItemDto(int QuestionId, int Choice, int CorrectIndex, bool IsCorrect, string ExplanationEn, string ExplanationAr);
+
+public record QuizResultDto(int Level, int Score, int Total, bool Passed, IReadOnlyList<QuizResultItemDto> Results, IReadOnlyList<QuizLevelDto> Levels);
