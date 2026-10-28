@@ -18,7 +18,7 @@ public class TopicService(
     {
         var state = await stateLoader.LoadAsync(ct);
         var topicExtras = await db.Topics.AsNoTracking()
-            .Select(t => new { t.Id, t.SummaryEn, t.SummaryAr, InReview = t.ReviewSchedule != null })
+            .Select(t => new { t.Id, t.SummaryEn, t.SummaryAr, InReview = t.ReviewRows.Any() })
             .ToDictionaryAsync(t => t.Id, ct);
         var phaseInfo = await db.Phases.AsNoTracking().ToDictionaryAsync(p => p.Id, ct);
         var projectSummaries = await projects.GetSummariesAsync(ct);
@@ -65,18 +65,18 @@ public class TopicService(
         if (query.Priority is { } priority) q = q.Where(t => t.Priority == priority);
         if (query.Status is { } status)
             q = status == TopicStatus.NotStarted
-                ? q.Where(t => t.Progress == null || t.Progress.Status == TopicStatus.NotStarted)
-                : q.Where(t => t.Progress != null && t.Progress.Status == status);
+                ? q.Where(t => !t.ProgressRows.Any(p => p.Status != TopicStatus.NotStarted))
+                : q.Where(t => t.ProgressRows.Any(p => p.Status == status));
         if (query.Knowledge is { } knowledge)
             q = knowledge == KnowledgeLevel.Unassessed
-                ? q.Where(t => t.Progress == null || t.Progress.Knowledge == KnowledgeLevel.Unassessed)
-                : q.Where(t => t.Progress != null && t.Progress.Knowledge == knowledge);
+                ? q.Where(t => !t.ProgressRows.Any(p => p.Knowledge != KnowledgeLevel.Unassessed))
+                : q.Where(t => t.ProgressRows.Any(p => p.Knowledge == knowledge));
 
         var total = await q.CountAsync(ct);
         var rows = await q
             .OrderBy(t => t.Phase.Order).ThenBy(t => t.Order)
             .Skip((page - 1) * size).Take(size)
-            .Select(t => new { t.Id, t.SummaryEn, t.SummaryAr, InReview = t.ReviewSchedule != null })
+            .Select(t => new { t.Id, t.SummaryEn, t.SummaryAr, InReview = t.ReviewRows.Any() })
             .ToListAsync(ct);
 
         var state = await stateLoader.LoadAsync(ct);
@@ -88,8 +88,8 @@ public class TopicService(
     {
         var topic = await db.Topics.AsNoTracking()
             .Include(t => t.Phase)
-            .Include(t => t.Progress)
-            .Include(t => t.ReviewSchedule)
+            .Include(t => t.ProgressRows)
+            .Include(t => t.ReviewRows)
             .SingleOrDefaultAsync(t => t.Id == id, ct)
             ?? throw new NotFoundException("Topic", id);
 
@@ -111,14 +111,14 @@ public class TopicService(
         var questions = (await db.InterviewQuestions.AsNoTracking()
             .Where(q => q.TopicId == id)
             .Select(q => new InterviewRefDto(q.Id, q.QuestionEn, q.QuestionAr, q.Difficulty,
-                q.Progress != null ? q.Progress.Rating : null))
+                q.ProgressRows.Select(p => (InterviewRating?)p.Rating).FirstOrDefault()))
             .ToListAsync(ct))
             .OrderBy(q => q.Difficulty).ThenBy(q => q.Id).ToList();
 
         var exercises = (await db.PracticeExercises.AsNoTracking()
             .Where(e => e.TopicId == id)
             .Select(e => new ExerciseRefDto(e.Id, e.Type, e.TitleEn, e.TitleAr, e.Difficulty,
-                e.Progress != null ? e.Progress.Status : PracticeStatus.NotStarted))
+                e.ProgressRows.Select(p => (PracticeStatus?)p.Status).FirstOrDefault() ?? PracticeStatus.NotStarted))
             .ToListAsync(ct))
             .OrderBy(e => e.Type).ThenBy(e => e.Id).ToList();
 
@@ -145,7 +145,7 @@ public class TopicService(
             resourceList.OrderBy(r => r.Type).ThenBy(r => r.Id).ToList(),
             projectLinks, questions, exercises,
             sessions.Take(10).ToList(), sessions.Sum(s => s.ActualMinutes), noteCount,
-            topic.ReviewSchedule is { } r
+            topic.ReviewRows.FirstOrDefault() is { } r
                 ? new ReviewStateDto(r.IntervalDays, r.NextReviewOn, r.LastReviewedOn, r.ReviewCount, r.NextReviewOn <= today)
                 : null);
     }
@@ -154,7 +154,7 @@ public class TopicService(
     {
         if (!await db.Topics.AnyAsync(t => t.Id == id, ct)) throw new NotFoundException("Topic", id);
 
-        var progress = await db.TopicProgress.FindAsync([id], ct);
+        var progress = await db.TopicProgress.SingleOrDefaultAsync(p => p.TopicId == id, ct);
         if (progress is null)
         {
             progress = new TopicProgress { TopicId = id };

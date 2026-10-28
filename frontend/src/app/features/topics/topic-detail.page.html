@@ -43,6 +43,10 @@
         </section>
       }
 
+      <app-topic-videos [topicId]="t.id" [topicTitle]="t.titleEn" />
+
+      <app-topic-quiz [topicId]="t.id" />
+
       <div class="two-col">
         <section class="card content-section task-card" id="practice">
           <h2 class="section-title"><app-icon name="edit" /> {{ 'topic.practiceTask' | t }}</h2>

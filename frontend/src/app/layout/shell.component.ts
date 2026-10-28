@@ -1,11 +1,13 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, HostListener, inject, signal } from '@angular/core';
+import { Location, NgTemplateOutlet } from '@angular/common';
+import { ChangeDetectionStrategy, Component, DestroyRef, HostListener, computed, effect, inject, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { ApiService } from '../core/api.service';
 import { I18nService } from '../core/i18n/i18n.service';
 import { TranslatePipe } from '../core/i18n/pipes';
-import { ThemeService } from '../core/ui-services';
+import { AuthService } from '../core/auth.service';
+import { ThemeService, ToastService } from '../core/ui-services';
 import { IconComponent } from '../shared/icon.component';
 import { ConfirmDialogComponent, ToastHostComponent } from '../shared/ui.components';
 import { GlobalSearchComponent } from './global-search.component';
@@ -16,14 +18,16 @@ interface NavItem { path: string; key: string; icon: string; }
 @Component({
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, IconComponent, TranslatePipe, GlobalSearchComponent,
+  imports: [NgTemplateOutlet, RouterOutlet, RouterLink, RouterLinkActive, IconComponent, TranslatePipe, GlobalSearchComponent,
     ToastHostComponent, ConfirmDialogComponent, SessionDialogComponent],
   template: `
     <a class="skip-link" href="#main">{{ 'common.skipToContent' | t }}</a>
 
-    <div class="shell" [class.nav-open]="navOpen()">
+    <div class="shell" [class.nav-open]="navOpen()" [class.auth-layout]="authLayout()">
+      @if (!authLayout()) {
       <aside class="sidebar" id="sidebar" [attr.aria-label]="'common.menu' | t">
         <div class="brand">
+          <a class="brand-link" routerLink="/" (click)="navOpen.set(false)" [attr.aria-label]="'nav.dashboard' | t" [title]="'nav.dashboard' | t">
           <span class="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 32 32" width="30" height="30"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stop-color="var(--accent)" /><stop offset="1" stop-color="var(--accent-2)" /></linearGradient></defs>
@@ -35,13 +39,14 @@ interface NavItem { path: string; key: string; icon: string; }
             <strong>{{ 'app.name' | t }}</strong>
             <small>{{ 'app.tagline' | t }}</small>
           </span>
+          </a>
           <button type="button" class="icon-btn nav-close" (click)="navOpen.set(false)" [attr.aria-label]="'common.closeMenu' | t">
             <app-icon name="x" />
           </button>
         </div>
 
         <nav class="nav">
-          @for (group of groups; track group.key) {
+          @for (group of groups(); track group.key) {
             <p class="nav-group">{{ group.key | t }}</p>
             <ul role="list">
               @for (item of group.items; track item.path) {
@@ -58,8 +63,19 @@ interface NavItem { path: string; key: string; icon: string; }
         </nav>
       </aside>
       <div class="scrim" (click)="navOpen.set(false)" aria-hidden="true"></div>
+      }
 
       <div class="main-col">
+        @if (authLayout()) {
+          <header class="topbar auth-topbar">
+            <span class="brand auth-brand">
+              <span class="brand-text"><strong>{{ 'app.name' | t }}</strong><small>{{ 'app.tagline' | t }}</small></span>
+            </span>
+            <div class="topbar-actions">
+              <ng-container *ngTemplateOutlet="prefs" />
+            </div>
+          </header>
+        } @else {
         <header class="topbar">
           <button type="button" class="icon-btn menu-btn" (click)="navOpen.set(true)" [attr.aria-label]="'common.menu' | t"
                   aria-controls="sidebar" [attr.aria-expanded]="navOpen()">
@@ -87,20 +103,45 @@ interface NavItem { path: string; key: string; icon: string; }
               }
             </div>
 
-            <div class="lang-switch" role="group" [attr.aria-label]="'common.language' | t">
-              <button type="button" [class.active]="i18n.lang() === 'en'" [attr.aria-pressed]="i18n.lang() === 'en'"
-                      (click)="i18n.setLang('en')" lang="en">EN</button>
-              <button type="button" [class.active]="i18n.lang() === 'ar'" [attr.aria-pressed]="i18n.lang() === 'ar'"
-                      (click)="i18n.setLang('ar')" lang="ar">العربية</button>
-            </div>
+            <ng-container *ngTemplateOutlet="prefs" />
 
-            <button type="button" class="icon-btn" (click)="theme.toggle()"
-                    [attr.aria-label]="(theme.resolved() === 'dark' ? 'common.light' : 'common.dark') | t"
-                    [title]="(theme.resolved() === 'dark' ? 'common.light' : 'common.dark') | t">
-              <app-icon [name]="theme.resolved() === 'dark' ? 'sun' : 'moon'" />
-            </button>
+            <div class="menu-wrap account-wrap">
+              <button type="button" class="avatar-btn" (click)="accountOpen.set(!accountOpen())" aria-haspopup="menu"
+                      [attr.aria-expanded]="accountOpen()" [attr.aria-label]="'auth.account' | t" [title]="auth.displayName()">
+                <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+              </button>
+              @if (accountOpen()) {
+                <div class="menu account-menu" role="menu">
+                  <div class="account-id">
+                    <strong>{{ auth.displayName() }}</strong>
+                    <span class="muted small">{{ auth.account()?.email }}</span>
+                  </div>
+                  @if (auth.isAdmin()) {
+                    <button type="button" role="menuitem" (click)="go('/admin')"><app-icon name="shield" [size]="16" /> {{ 'nav.admin' | t }}</button>
+                  }
+                  <button type="button" role="menuitem" (click)="go('/settings')"><app-icon name="settings" [size]="16" /> {{ 'nav.settings' | t }}</button>
+                  <button type="button" role="menuitem" (click)="signOut()"><app-icon name="log-out" [size]="16" /> {{ 'auth.signOut' | t }}</button>
+                </div>
+              }
+            </div>
           </div>
         </header>
+        }
+
+        <ng-template #prefs>
+          <div class="lang-switch" role="group" [attr.aria-label]="'common.language' | t">
+            <button type="button" [class.active]="i18n.lang() === 'en'" [attr.aria-pressed]="i18n.lang() === 'en'"
+                    (click)="i18n.setLang('en')" lang="en">EN</button>
+            <button type="button" [class.active]="i18n.lang() === 'ar'" [attr.aria-pressed]="i18n.lang() === 'ar'"
+                    (click)="i18n.setLang('ar')" lang="ar">العربية</button>
+          </div>
+
+          <button type="button" class="icon-btn" (click)="theme.toggle()"
+                  [attr.aria-label]="(theme.resolved() === 'dark' ? 'common.light' : 'common.dark') | t"
+                  [title]="(theme.resolved() === 'dark' ? 'common.light' : 'common.dark') | t">
+            <app-icon [name]="theme.resolved() === 'dark' ? 'sun' : 'moon'" />
+          </button>
+        </ng-template>
 
         @if (apiOffline()) {
           <div class="offline-banner" role="alert">
@@ -128,13 +169,23 @@ export class ShellComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly sessions = inject(SessionDialogService);
+  protected readonly auth = inject(AuthService);
+  private readonly toast = inject(ToastService);
 
   protected readonly navOpen = signal(false);
   protected readonly quickOpen = signal(false);
+  protected readonly accountOpen = signal(false);
+  /** Account pages (sign-in, sign-up…) hide the sidebar and the app's top bar. */
+  // Set from the URL before the first navigation finishes, so neither layout flashes on load.
+  protected readonly authLayout = signal(/^\/(sign-in|sign-up|forgot-password|reset-password|verify-email|account-status|change-password)\b/.test(inject(Location).path()));
+  protected readonly initials = computed(() => {
+    const words = this.auth.displayName().split(/[\s@._-]+/).filter(Boolean);
+    return ((words[0]?.[0] ?? '') + (words.length > 1 ? words[1][0] : '')).toUpperCase() || '?';
+  });
   protected readonly apiOffline = signal(false);
   protected readonly titleKey = signal('nav.dashboard');
 
-  protected readonly groups: { key: string; items: NavItem[] }[] = [
+  private readonly baseGroups: { key: string; items: NavItem[] }[] = [
     { key: 'nav.learn', items: [
       { path: '/', key: 'nav.dashboard', icon: 'dashboard' },
       { path: '/roadmap', key: 'nav.roadmap', icon: 'map' },
@@ -153,15 +204,60 @@ export class ShellComponent {
       { path: '/settings', key: 'nav.settings', icon: 'settings' },
     ] },
   ];
+  /** Administrators also see the admin area (the API checks the role on every admin request). */
+  protected readonly groups = computed(() => this.auth.isAdmin()
+    ? [...this.baseGroups, { key: 'nav.manage', items: [{ path: '/admin', key: 'nav.admin', icon: 'shield' }] }]
+    : this.baseGroups);
 
   constructor() {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntilDestroyed(inject(DestroyRef))).subscribe(() => {
       let r = this.route;
       while (r.firstChild) r = r.firstChild;
       this.titleKey.set((r.snapshot.data['titleKey'] as string) ?? 'app.name');
+      this.authLayout.set(r.snapshot.data['layout'] === 'auth');
       this.quickOpen.set(false);
+      this.accountOpen.set(false);
     });
+
     void this.checkHealth();
+
+    // The session ended while an app page was open (the cookie expired, or the password was
+    // changed or reset on another device): go to sign-in, and come back afterwards.
+    effect(() => {
+      if (!this.auth.ready() || this.auth.account()) return;
+      untracked(() => {
+        if (this.authLayout() || !this.router.navigated) return;
+        const url = this.router.url;
+        void this.router.navigate(['/sign-in'], { queryParams: url !== '/' ? { returnUrl: url } : {} });
+      });
+    });
+
+    // The account was suspended (or otherwise blocked) while an app page was open: show its status page.
+    effect(() => {
+      const account = this.auth.account();
+      if (!account || this.auth.approved()) return;
+      untracked(() => {
+        if (this.authLayout() || !this.router.navigated) return;
+        void this.router.navigateByUrl('/account-status');
+      });
+    });
+  }
+
+  protected go(path: string): void {
+    this.accountOpen.set(false);
+    void this.router.navigateByUrl(path);
+  }
+
+  protected async signOut(): Promise<void> {
+    this.accountOpen.set(false);
+    try {
+      await this.auth.signOut();
+      this.apiOffline.set(false);
+      await this.router.navigateByUrl('/sign-in');
+      this.toast.info(this.i18n.t('auth.signedOut'));
+    } catch {
+      this.toast.error(this.i18n.t('auth.errors.generic'));
+    }
   }
 
   protected async checkHealth(): Promise<void> {
@@ -185,12 +281,15 @@ export class ShellComponent {
 
   @HostListener('document:click', ['$event'])
   protected onDocumentClick(event: MouseEvent): void {
-    if (!(event.target as HTMLElement).closest?.('.menu-wrap')) this.quickOpen.set(false);
+    const target = event.target as HTMLElement;
+    if (!target.closest?.('.menu-wrap:not(.account-wrap)')) this.quickOpen.set(false);
+    if (!target.closest?.('.account-wrap')) this.accountOpen.set(false);
   }
 
   @HostListener('document:keydown.escape')
   protected onEscape(): void {
     this.quickOpen.set(false);
+    this.accountOpen.set(false);
     this.navOpen.set(false);
   }
 }

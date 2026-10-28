@@ -43,6 +43,18 @@ public class SeederTests : IAsyncLifetime
         Assert.True(await _db.InterviewQuestions.CountAsync() >= 50);
         // Every topic has bilingual content and a code sample.
         Assert.False(await _db.Topics.AnyAsync(t => t.TitleAr == "" || t.SummaryAr == "" || t.CodeSample == null));
+        // Every topic has at least two curated videos with valid YouTube ids.
+        var videosPerTopic = await _db.Topics.Select(t => _db.CuratedVideos.Count(v => v.TopicId == t.Id)).ToListAsync();
+        Assert.All(videosPerTopic, n => Assert.InRange(n, 2, 4));
+        Assert.All(await _db.CuratedVideos.Select(v => v.VideoId).ToListAsync(), id => Assert.True(DevPath.Api.Services.YouTubeIds.IsValid(id)));
+        // Every project task has videos, and every topic has a quiz with a valid answer for each question.
+        Assert.False(await _db.ProjectTasks.AnyAsync(t => !_db.ProjectTaskVideos.Any(v => v.ProjectTaskId == t.Id)));
+        Assert.False(await _db.Topics.AnyAsync(t => _db.QuizQuestions.Count(q => q.TopicId == t.Id) < 3));
+        Assert.All(await _db.QuizQuestions.ToListAsync(), q =>
+        {
+            Assert.Equal(q.OptionsEn.Count, q.OptionsAr.Count);
+            Assert.InRange(q.AnswerIndex, 0, q.OptionsEn.Count - 1);
+        });
     }
 
     [Fact]
@@ -50,7 +62,8 @@ public class SeederTests : IAsyncLifetime
     {
         await Seeder().SeedAsync();
         var topic = await _db.Topics.FirstAsync();
-        _db.TopicProgress.Add(new TopicProgress { TopicId = topic.Id, Status = TopicStatus.Completed, Confidence = 4, UpdatedAt = DateTime.UtcNow });
+        _db.Users.Add(new AppUser { Id = "learner", UserName = "learner@example.com", Email = "learner@example.com", FullName = "Learner" });
+        _db.TopicProgress.Add(new TopicProgress { UserId = "learner", TopicId = topic.Id, Status = TopicStatus.Completed, Confidence = 4, UpdatedAt = DateTime.UtcNow });
         await _db.SaveChangesAsync();
         var counts = await Counts();
 
@@ -58,7 +71,8 @@ public class SeederTests : IAsyncLifetime
         await Seeder().SeedAsync();
 
         Assert.Equal(counts, await Counts());
-        var progress = await _db.TopicProgress.SingleAsync();
+        // This context has no signed-in user, so the user-data filter would hide the row.
+        var progress = await _db.TopicProgress.IgnoreQueryFilters().SingleAsync();
         Assert.Equal(TopicStatus.Completed, progress.Status);
         Assert.Equal(4, progress.Confidence);
     }

@@ -103,7 +103,14 @@ public enum InterviewCategory
     RestApi,
     Testing,
     Git,
-    FullStackDesign
+    FullStackDesign,
+    // Classic interview topics (the chapters of a typical coding-interview book).
+    DataStructures,
+    Algorithms,
+    ObjectOrientedDesign,
+    SystemDesign,
+    Concurrency,
+    Behavioral
 }
 
 public enum InterviewRating

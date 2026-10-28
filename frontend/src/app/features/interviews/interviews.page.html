@@ -20,6 +20,18 @@
   </div>
 }
 <div class="toolbar">
+  <div class="field grow">
+    <label for="iq-q" class="sr-only">{{ 'interviews.searchPlaceholder' | t }}</label>
+    <div class="input-icon">
+      <app-icon name="search" [size]="16" />
+      <input id="iq-q" type="search" class="input input-sm" [placeholder]="'interviews.searchPlaceholder' | t" (input)="onSearch($any($event.target).value)" />
+    </div>
+  </div>
+  <label class="sr-only" for="iq-difficulty">{{ 'interviews.anyDifficulty' | t }}</label>
+  <select id="iq-difficulty" class="input input-sm" (change)="setDifficulty($any($event.target).value)">
+    <option value="">{{ 'interviews.anyDifficulty' | t }}</option>
+    @for (d of difficulties; track d) { <option [value]="d">{{ 'difficulty.' + d | t }}</option> }
+  </select>
   <label class="sr-only" for="iq-rating">{{ 'interviews.anyRating' | t }}</label>
   <select id="iq-rating" class="input input-sm" (change)="setRating($any($event.target).value)">
     <option value="">{{ 'interviews.anyRating' | t }}</option>
@@ -35,8 +47,9 @@
 } @else if (questions().length === 0) {
   <app-empty-state icon="chat" [title]="'interviews.empty' | t" />
 } @else if (mode() === 'study') {
+  <p class="small muted">{{ 'interviews.count' | t: { n: questions().length } }}</p>
   <ul class="qa-list" role="list">
-    @for (q of questions(); track q.id) {
+    @for (q of visible(); track q.id) {
       <li class="card qa" [id]="'q-' + q.id">
         <button type="button" class="qa-head" (click)="toggle(q.id)" [attr.aria-expanded]="isRevealed(q.id)" [attr.aria-controls]="'qa-' + q.id">
           <span class="qa-q">{{ q | loc: 'question' }}</span>
@@ -67,6 +80,13 @@
       </li>
     }
   </ul>
+  @if (visible().length < questions().length) {
+    <div class="row-gap">
+      <button type="button" class="btn btn-secondary" (click)="showMore()">
+        {{ 'interviews.showMore' | t: { n: questions().length - visible().length } }}
+      </button>
+    </div>
+  }
 } @else {
   <!-- Practice mode: one question at a time -->
   @if (finished()) {

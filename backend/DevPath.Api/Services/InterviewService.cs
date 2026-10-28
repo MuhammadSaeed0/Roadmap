@@ -11,9 +11,10 @@ public class InterviewService(AppDbContext db, TimeProvider clock)
     private static readonly Expression<Func<InterviewQuestion, InterviewQuestionDto>> Projection = q => new InterviewQuestionDto(
         q.Id, q.Key, q.Category, q.TopicId, q.Topic.TitleEn, q.Topic.TitleAr, q.Difficulty,
         q.QuestionEn, q.QuestionAr, q.AnswerEn, q.AnswerAr, q.ExampleCode, q.FollowUpEn, q.FollowUpAr,
-        q.Progress != null ? q.Progress.Rating : null,
-        q.Progress != null ? q.Progress.TimesPracticed : 0,
-        q.Progress != null ? q.Progress.LastPracticedAt : null);
+        // ProgressRows holds at most the signed-in user's row (query filter).
+        q.ProgressRows.Select(p => (InterviewRating?)p.Rating).FirstOrDefault(),
+        q.ProgressRows.Select(p => p.TimesPracticed).FirstOrDefault(),
+        q.ProgressRows.Select(p => (DateTime?)p.LastPracticedAt).FirstOrDefault());
 
     public async Task<InterviewListDto> ListAsync(InterviewCategory? category, int? topicId, string? rating, CancellationToken ct)
     {
@@ -54,7 +55,7 @@ public class InterviewService(AppDbContext db, TimeProvider clock)
     {
         if (!await db.InterviewQuestions.AnyAsync(q => q.Id == id, ct)) throw new NotFoundException("InterviewQuestion", id);
 
-        var progress = await db.InterviewProgress.FindAsync([id], ct);
+        var progress = await db.InterviewProgress.SingleOrDefaultAsync(p => p.QuestionId == id, ct);
         if (progress is null)
         {
             progress = new InterviewProgress { QuestionId = id };

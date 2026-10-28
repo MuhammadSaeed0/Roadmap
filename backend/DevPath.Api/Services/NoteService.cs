@@ -57,7 +57,7 @@ public class NoteService(AppDbContext db, TimeProvider clock)
 
     public async Task<NoteDto> UpdateAsync(int id, NoteRequest request, CancellationToken ct)
     {
-        var note = await db.Notes.FindAsync([id], ct) ?? throw new NotFoundException("Note", id);
+        var note = await db.Notes.SingleOrDefaultAsync(n => n.Id == id, ct) ?? throw new NotFoundException("Note", id);
         await ValidateLinksAsync(request, ct);
         Apply(note, request, clock.GetUtcNow().UtcDateTime);
         await db.SaveChangesAsync(ct);

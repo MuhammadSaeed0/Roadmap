@@ -5,13 +5,16 @@ import { ApiError } from '../../core/api-error';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
-import { INTERVIEW_CATEGORIES, InterviewCategory, InterviewQuestion, InterviewRating } from '../../core/models';
+import { Difficulty, INTERVIEW_CATEGORIES, InterviewCategory, InterviewQuestion, InterviewRating } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
 import { CodeBlockComponent } from '../../shared/code-block.component';
 import { IconComponent } from '../../shared/icon.component';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
 
 type Mode = 'study' | 'practice';
+
+/** Study mode renders questions in batches of this size; there are hundreds of them. */
+const PAGE_SIZE = 40;
 
 @Component({
   selector: 'app-interviews-page',
@@ -29,18 +32,30 @@ export default class InterviewsPage {
 
   protected readonly categories = INTERVIEW_CATEGORIES;
   protected readonly ratings: InterviewRating[] = ['NeedReview', 'Partial', 'Confident'];
+  protected readonly difficulties: Difficulty[] = ['Beginner', 'Intermediate', 'Advanced'];
   private readonly query = this.route.snapshot.queryParamMap;
 
   protected readonly mode = signal<Mode>(this.query.get('mode') === 'practice' ? 'practice' : 'study');
   protected readonly category = signal<InterviewCategory | ''>((this.query.get('category') ?? '') as InterviewCategory | '');
   protected readonly rating = signal<string>('');
+  protected readonly difficulty = signal<Difficulty | ''>('');
+  protected readonly search = signal('');
+  protected readonly limit = signal(PAGE_SIZE);
   protected readonly focusId = signal<number | null>(Number(this.query.get('question')) || null);
   protected readonly revealed = signal(new Set<number>());
   protected readonly index = signal(0);
   protected readonly busy = signal(false);
 
   protected readonly data = createLoader(() => this.api.interviews({ category: this.category(), rating: this.rating() }));
-  protected readonly questions = computed(() => this.data.value()?.questions ?? []);
+  /** Category and rating are filtered by the API; difficulty and text search in the browser. */
+  protected readonly questions = computed(() => {
+    const level = this.difficulty();
+    const term = this.search().trim().toLowerCase();
+    return (this.data.value()?.questions ?? []).filter(q =>
+      (!level || q.difficulty === level) &&
+      (!term || [q.questionEn, q.questionAr, q.topicTitleEn, q.topicTitleAr].some(text => text.toLowerCase().includes(term))));
+  });
+  protected readonly visible = computed(() => this.questions().slice(0, this.limit()));
   protected readonly current = computed<InterviewQuestion | undefined>(() => this.questions()[this.index()]);
   protected readonly finished = computed(() => this.mode() === 'practice' && this.questions().length > 0 && this.index() >= this.questions().length);
 
@@ -48,8 +63,10 @@ export default class InterviewsPage {
     // Deep link from a topic page: open and scroll to the question.
     effect(() => {
       const id = this.focusId();
-      if (id && this.questions().some(q => q.id === id)) {
+      const position = this.questions().findIndex(q => q.id === id);
+      if (id && position >= 0) {
         untracked(() => {
+          if (position >= this.limit()) this.limit.set(position + 1);
           this.reveal(id);
           setTimeout(() => document.getElementById(`q-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
           this.focusId.set(null);
@@ -68,6 +85,7 @@ export default class InterviewsPage {
   protected setCategory(category: InterviewCategory | ''): void {
     this.category.set(category);
     this.index.set(0);
+    this.limit.set(PAGE_SIZE);
     this.syncUrl();
     void this.data.reload();
   }
@@ -75,7 +93,24 @@ export default class InterviewsPage {
   protected setRating(rating: string): void {
     this.rating.set(rating);
     this.index.set(0);
+    this.limit.set(PAGE_SIZE);
     void this.data.reload();
+  }
+
+  protected setDifficulty(difficulty: Difficulty | ''): void {
+    this.difficulty.set(difficulty);
+    this.index.set(0);
+    this.limit.set(PAGE_SIZE);
+  }
+
+  protected onSearch(term: string): void {
+    this.search.set(term);
+    this.index.set(0);
+    this.limit.set(PAGE_SIZE);
+  }
+
+  protected showMore(): void {
+    this.limit.update(n => n + PAGE_SIZE);
   }
 
   protected isRevealed(id: number): boolean { return this.revealed().has(id); }

@@ -1,10 +1,23 @@
 using DevPath.Api.Models;
+using DevPath.Api.Services;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DevPath.Api.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+/// <summary>
+/// Content tables are shared by everyone. User tables are private: each one is filtered to
+/// <see cref="CurrentUserId"/>, so a query can't return another account's rows even if a
+/// service forgets a Where clause, and an id in a URL can only reach the caller's own data.
+/// </summary>
+public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? currentUser = null)
+    : IdentityDbContext<AppUser>(options), IDataProtectionKeyContext
 {
+    /// <summary>The signed-in user's id, or null outside a request (start-up, seeding): user tables then read as empty.</summary>
+    public string? CurrentUserId => currentUser?.Id;
+
     // Content (seeded)
     public DbSet<Phase> Phases => Set<Phase>();
     public DbSet<Topic> Topics => Set<Topic>();
@@ -18,6 +31,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<PortfolioChecklistItem> PortfolioChecklistItems => Set<PortfolioChecklistItem>();
     public DbSet<PracticeExercise> PracticeExercises => Set<PracticeExercise>();
     public DbSet<InterviewQuestion> InterviewQuestions => Set<InterviewQuestion>();
+    public DbSet<CuratedVideo> CuratedVideos => Set<CuratedVideo>();
+    public DbSet<ProjectTaskVideo> ProjectTaskVideos => Set<ProjectTaskVideo>();
+    public DbSet<QuizQuestion> QuizQuestions => Set<QuizQuestion>();
 
     // User data
     public DbSet<TopicProgress> TopicProgress => Set<TopicProgress>();
@@ -29,6 +45,19 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<InterviewProgress> InterviewProgress => Set<InterviewProgress>();
     public DbSet<ReviewSchedule> ReviewSchedules => Set<ReviewSchedule>();
     public DbSet<LearningPreference> LearningPreferences => Set<LearningPreference>();
+    public DbSet<ProjectRepository> ProjectRepositories => Set<ProjectRepository>();
+    public DbSet<UserTopicVideo> UserTopicVideos => Set<UserTopicVideo>();
+    public DbSet<VideoProgress> VideoProgress => Set<VideoProgress>();
+    public DbSet<QuizAttempt> QuizAttempts => Set<QuizAttempt>();
+
+    // Accounts and administration (not filtered per user: only auth and admin code reads them)
+    public DbSet<AccountToken> AccountTokens => Set<AccountToken>();
+    public DbSet<AdminAuditEntry> AdminAudit => Set<AdminAuditEntry>();
+    /// <summary>ASP.NET Core data-protection keys (they sign the auth cookie), kept in the database so they survive app restarts on shared hosting.</summary>
+    public DbSet<Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey> DataProtectionKeys => Set<Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey>();
+
+    // Shared caches
+    public DbSet<TopicVideoCache> TopicVideoCache => Set<TopicVideoCache>();
 
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)
     {
@@ -38,6 +67,39 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder b)
     {
+        base.OnModelCreating(b);   // Identity tables (AspNetUsers, AspNetRoles…)
+
+        // ---------- Accounts ----------
+        b.Entity<AppUser>(e =>
+        {
+            e.Property(x => x.FullName).HasMaxLength(100);
+            e.Property(x => x.StatusReason).HasMaxLength(500);
+            e.Property(x => x.StatusChangedById).HasMaxLength(450);
+            e.Property(x => x.ApprovedById).HasMaxLength(450);
+            e.HasIndex(x => x.Status);
+            // Only one account can ever be the main administrator.
+            e.HasIndex(x => x.IsOwner).IsUnique().HasFilter("[IsOwner] = 1");
+        });
+        b.Entity<AccountToken>(e =>
+        {
+            e.Property(x => x.UserId).HasMaxLength(450);
+            e.Property(x => x.TokenHash).HasMaxLength(64);
+            e.HasIndex(x => x.TokenHash).IsUnique();
+            e.HasIndex(x => new { x.UserId, x.Purpose });
+            e.HasOne<AppUser>().WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+        });
+        b.Entity<AdminAuditEntry>(e =>
+        {
+            e.Property(x => x.ActorId).HasMaxLength(450);
+            e.Property(x => x.ActorEmail).HasMaxLength(256);
+            e.Property(x => x.Action).HasMaxLength(64);
+            e.Property(x => x.TargetUserId).HasMaxLength(450);
+            e.Property(x => x.TargetEmail).HasMaxLength(256);
+            e.Property(x => x.Details).HasMaxLength(1000);
+            e.HasIndex(x => x.CreatedAt);
+            e.HasIndex(x => x.TargetUserId);
+        });
+
         // ---------- Content ----------
         b.Entity<Phase>(e =>
         {
@@ -99,7 +161,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             e.Property(x => x.TitleEn).HasMaxLength(200);
             e.Property(x => x.TitleAr).HasMaxLength(200);
             e.Property(x => x.TechStack).HasMaxLength(200);
-            e.Property(x => x.RepositoryUrl).HasMaxLength(500);
             e.HasOne(x => x.StartAfterPhase).WithMany()
                 .HasForeignKey(x => x.StartAfterPhaseId).OnDelete(DeleteBehavior.Restrict);
         });
@@ -164,19 +225,32 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Restrict);
         });
 
+        b.Entity<CuratedVideo>(e =>
+        {
+            e.HasIndex(x => new { x.TopicId, x.VideoId }).IsUnique();
+            e.Property(x => x.VideoId).HasMaxLength(11);
+            e.Property(x => x.Title).HasMaxLength(300);
+            e.Property(x => x.ChannelTitle).HasMaxLength(200);
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
         // ---------- User data ----------
+        // Every user-owned table gets: a UserId foreign key to AspNetUsers (deleting an
+        // account deletes its data) and a query filter on the signed-in user's id.
         b.Entity<TopicProgress>(e =>
         {
-            e.HasKey(x => x.TopicId);
-            e.HasIndex(x => x.Status);
-            e.HasOne(x => x.Topic).WithOne(t => t.Progress)
-                .HasForeignKey<TopicProgress>(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+            OwnedByUser(e);
+            e.HasKey(x => new { x.UserId, x.TopicId });
+            e.HasIndex(x => new { x.UserId, x.Status });
+            e.HasOne(x => x.Topic).WithMany(t => t.ProgressRows)
+                .HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
             e.ToTable(t => t.HasCheckConstraint("CK_TopicProgress_Confidence", "Confidence IS NULL OR (Confidence >= 0 AND Confidence <= 5)"));
         });
 
         b.Entity<StudySession>(e =>
         {
-            e.HasIndex(x => x.SessionDate);
+            OwnedByUser(e);
+            e.HasIndex(x => new { x.UserId, x.SessionDate });
             e.HasIndex(x => x.TopicId);
             e.Property(x => x.Note).HasMaxLength(1000);
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.ClientSetNull);
@@ -190,9 +264,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         b.Entity<Note>(e =>
         {
+            OwnedByUser(e);
             e.Property(x => x.Title).HasMaxLength(200);
             e.Property(x => x.Content).HasMaxLength(20000);
-            e.HasIndex(x => x.UpdatedAt);
+            e.HasIndex(x => new { x.UserId, x.UpdatedAt });
             e.HasIndex(x => x.TopicId);
             e.HasIndex(x => x.ProjectId);
             e.HasIndex(x => x.ProjectTaskId);
@@ -208,46 +283,164 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         b.Entity<ProjectTaskProgress>(e =>
         {
-            e.HasKey(x => x.ProjectTaskId);
+            OwnedByUser(e);
+            e.HasKey(x => new { x.UserId, x.ProjectTaskId });
             e.Property(x => x.BlockedReason).HasMaxLength(500);
-            e.HasOne(x => x.ProjectTask).WithOne(t => t.Progress)
-                .HasForeignKey<ProjectTaskProgress>(x => x.ProjectTaskId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.ProjectTask).WithMany(t => t.ProgressRows)
+                .HasForeignKey(x => x.ProjectTaskId).OnDelete(DeleteBehavior.Cascade);
         });
 
         b.Entity<PortfolioCheck>(e =>
         {
-            e.HasKey(x => new { x.ProjectId, x.ChecklistItemId });
+            OwnedByUser(e);
+            e.HasKey(x => new { x.UserId, x.ProjectId, x.ChecklistItemId });
             e.HasOne(x => x.Project).WithMany(p => p.PortfolioChecks).HasForeignKey(x => x.ProjectId);
             e.HasOne(x => x.ChecklistItem).WithMany().HasForeignKey(x => x.ChecklistItemId);
         });
 
+        b.Entity<ProjectRepository>(e =>
+        {
+            OwnedByUser(e);
+            e.HasKey(x => new { x.UserId, x.ProjectId });
+            e.Property(x => x.RepositoryUrl).HasMaxLength(500);
+            e.HasOne(x => x.Project).WithMany(p => p.Repositories).HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+
         b.Entity<PracticeProgress>(e =>
         {
-            e.HasKey(x => x.ExerciseId);
+            OwnedByUser(e);
+            e.HasKey(x => new { x.UserId, x.ExerciseId });
             e.Property(x => x.UserAnswer).HasMaxLength(10000);
-            e.HasOne(x => x.Exercise).WithOne(x => x.Progress)
-                .HasForeignKey<PracticeProgress>(x => x.ExerciseId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.Exercise).WithMany(x => x.ProgressRows)
+                .HasForeignKey(x => x.ExerciseId).OnDelete(DeleteBehavior.Cascade);
         });
 
         b.Entity<InterviewProgress>(e =>
         {
-            e.HasKey(x => x.QuestionId);
-            e.HasOne(x => x.Question).WithOne(x => x.Progress)
-                .HasForeignKey<InterviewProgress>(x => x.QuestionId).OnDelete(DeleteBehavior.Cascade);
+            OwnedByUser(e);
+            e.HasKey(x => new { x.UserId, x.QuestionId });
+            e.HasOne(x => x.Question).WithMany(x => x.ProgressRows)
+                .HasForeignKey(x => x.QuestionId).OnDelete(DeleteBehavior.Cascade);
         });
 
         b.Entity<ReviewSchedule>(e =>
         {
-            e.HasKey(x => x.TopicId);
-            e.HasIndex(x => x.NextReviewOn);
-            e.HasOne(x => x.Topic).WithOne(t => t.ReviewSchedule)
-                .HasForeignKey<ReviewSchedule>(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+            OwnedByUser(e);
+            e.HasKey(x => new { x.UserId, x.TopicId });
+            e.HasIndex(x => new { x.UserId, x.NextReviewOn });
+            e.HasOne(x => x.Topic).WithMany(t => t.ReviewRows)
+                .HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
         });
 
         b.Entity<LearningPreference>(e =>
         {
-            e.Property(x => x.Id).ValueGeneratedNever();
+            OwnedByUser(e);
+            e.HasKey(x => x.UserId);
             e.ToTable(t => t.HasCheckConstraint("CK_LearningPreference_Goal", "DailyGoalMinutes BETWEEN 10 AND 600"));
         });
+
+        b.Entity<UserTopicVideo>(e =>
+        {
+            OwnedByUser(e);
+            e.HasIndex(x => new { x.UserId, x.TopicId, x.VideoId }).IsUnique();
+            e.Property(x => x.VideoId).HasMaxLength(11);
+            e.Property(x => x.Title).HasMaxLength(300);
+            e.Property(x => x.ChannelTitle).HasMaxLength(200);
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<ProjectTaskVideo>(e =>
+        {
+            e.HasIndex(x => new { x.ProjectTaskId, x.VideoId }).IsUnique();
+            e.Property(x => x.VideoId).HasMaxLength(11);
+            e.Property(x => x.Title).HasMaxLength(300);
+            e.Property(x => x.ChannelTitle).HasMaxLength(200);
+            e.HasOne(x => x.ProjectTask).WithMany().HasForeignKey(x => x.ProjectTaskId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<QuizQuestion>(e =>
+        {
+            e.HasIndex(x => x.Key).IsUnique();
+            e.HasIndex(x => x.TopicId);
+            e.Property(x => x.Key).HasMaxLength(80);
+            e.Property(x => x.QuestionEn).HasMaxLength(500);
+            e.Property(x => x.QuestionAr).HasMaxLength(500);
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<VideoProgress>(e =>
+        {
+            OwnedByUser(e);
+            e.HasKey(x => new { x.UserId, x.VideoId });
+            e.HasIndex(x => new { x.UserId, x.TopicId });
+            e.Property(x => x.VideoId).HasMaxLength(11);
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<QuizAttempt>(e =>
+        {
+            OwnedByUser(e);
+            e.HasIndex(x => new { x.UserId, x.TopicId, x.Level });
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ---------- Shared caches ----------
+        b.Entity<TopicVideoCache>(e =>
+        {
+            e.HasKey(x => x.TopicId);
+            e.Property(x => x.Query).HasMaxLength(300);
+            e.HasOne(x => x.Topic).WithOne().HasForeignKey<TopicVideoCache>(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ---------- Accounts ----------
+        b.Entity<AppUser>(e =>
+        {
+            e.Property(x => x.FullName).HasMaxLength(100);
+            // Identity checks that emails are unique; the index makes the database guarantee it too.
+            e.HasIndex(x => x.NormalizedEmail).IsUnique().HasFilter("[NormalizedEmail] IS NOT NULL");
+        });
+    }
+
+    private void OwnedByUser<T>(EntityTypeBuilder<T> e) where T : class, IUserOwned
+    {
+        e.Property(x => x.UserId).HasMaxLength(450);
+        e.HasOne<AppUser>().WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+        // EF re-reads CurrentUserId for every query, so each request sees only its own rows.
+        e.HasQueryFilter(x => x.UserId == CurrentUserId);
+    }
+
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        StampOwnership();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+    {
+        StampOwnership();
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+
+    /// <summary>
+    /// New user-owned rows get the signed-in user's id; changing or deleting a row that
+    /// belongs to someone else throws. Services never set UserId themselves.
+    /// </summary>
+    private void StampOwnership()
+    {
+        ChangeTracker.DetectChanges();
+        foreach (var entry in ChangeTracker.Entries<IUserOwned>())
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added when string.IsNullOrEmpty(entry.Entity.UserId):
+                    entry.Entity.UserId = CurrentUserId
+                        ?? throw new InvalidOperationException($"{entry.Metadata.ClrType.Name} can only be created during a signed-in request.");
+                    break;
+                case EntityState.Added when CurrentUserId is not null && entry.Entity.UserId != CurrentUserId:
+                case EntityState.Modified or EntityState.Deleted
+                    when CurrentUserId is not null && (string?)entry.OriginalValues[nameof(IUserOwned.UserId)] != CurrentUserId:
+                    throw new InvalidOperationException($"{entry.Metadata.ClrType.Name} belongs to another account.");
+            }
+        }
     }
 }

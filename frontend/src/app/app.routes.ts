@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/auth.guard';
+import { accountStatusGuard, adminGuard, authGuard, guestGuard } from './core/auth.guard';
 
 const appRoutes: Routes = [
   { path: '', loadComponent: () => import('./features/dashboard/dashboard.page'), data: { titleKey: 'nav.dashboard' } },
@@ -17,13 +17,28 @@ const appRoutes: Routes = [
   { path: 'career', loadComponent: () => import('./features/career/career.page'), data: { titleKey: 'nav.career' } },
   { path: 'settings', loadComponent: () => import('./features/settings/settings.page'), data: { titleKey: 'nav.settings' } },
   { path: 'search', loadComponent: () => import('./features/search/search.page'), data: { titleKey: 'nav.search' } },
+  { path: 'admin', loadComponent: () => import('./features/admin/admin.page'), canActivate: [adminGuard], data: { titleKey: 'nav.admin' } },
   { path: '**', loadComponent: () => import('./features/not-found.page'), data: { titleKey: 'notFound.title' } },
 ];
 
-// Every page needs a signed-in user, except the sign-in page itself.
+// Account pages use the minimal `auth` layout (no sidebar). guestGuard sends signed-in users to the app.
+const authRoutes: Routes = [
+  { path: 'sign-in', loadComponent: () => import('./features/auth/sign-in.page'), data: { titleKey: 'auth.signInTitle' } },
+  { path: 'sign-up', loadComponent: () => import('./features/auth/sign-up.page'), data: { titleKey: 'auth.signUpTitle' } },
+  { path: 'forgot-password', loadComponent: () => import('./features/auth/forgot-password.page'), data: { titleKey: 'auth.forgotTitle' } },
+  // Opened from the reset link (it carries a one-time token).
+  { path: 'reset-password', loadComponent: () => import('./features/auth/reset-password.page'), data: { titleKey: 'auth.resetTitle' } },
+];
+
+// Every other page needs a signed-in account; the API enforces the same rule on every request.
 // Every feature page is lazy-loaded, so the initial bundle stays small.
 // `titleKey` is the translation key shown in the top bar breadcrumb.
 export const routes: Routes = [
-  { path: 'sign-in', loadComponent: () => import('./features/sign-in/sign-in.page'), data: { titleKey: 'auth.title' } },
-  ...appRoutes.map((route) => ({ ...route, canActivate: [authGuard] })),
+  ...authRoutes.map((route) => ({ ...route, canActivate: [guestGuard], data: { ...route.data, layout: 'auth' } })),
+  // Opened from the verification email; works whether or not this browser is signed in.
+  { path: 'verify-email', loadComponent: () => import('./features/auth/verify-email.page'), data: { titleKey: 'verify.title', layout: 'auth' } },
+  // Where signed-in accounts wait for verification or approval, or learn that they were rejected or suspended.
+  { path: 'account-status', loadComponent: () => import('./features/auth/account-status.page'), canActivate: [accountStatusGuard], data: { titleKey: 'status.title', layout: 'auth' } },
+  { path: 'change-password', loadComponent: () => import('./features/auth/change-password.page'), canActivate: [authGuard], data: { titleKey: 'auth.changePassword', layout: 'auth' } },
+  ...appRoutes.map((route) => ({ ...route, canActivate: [authGuard, ...(route.canActivate ?? [])] })),
 ];

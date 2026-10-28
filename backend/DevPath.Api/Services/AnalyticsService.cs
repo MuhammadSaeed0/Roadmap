@@ -36,7 +36,7 @@ public class AnalyticsService(
         var practiceStats = (await practice.ListAsync(null, null, null, ct)).Stats;
 
         var interviewRatings = await db.InterviewQuestions.AsNoTracking()
-            .Select(q => q.Progress != null ? (InterviewRating?)q.Progress.Rating : null)
+            .Select(q => q.ProgressRows.Select(p => (InterviewRating?)p.Rating).FirstOrDefault())
             .ToListAsync(ct);
         var interview = new InterviewStatsDto(interviewRatings.Count,
             interviewRatings.Count(r => r == InterviewRating.Confident),
@@ -80,8 +80,8 @@ public class AnalyticsService(
             {
                 m.TitleEn, m.TitleAr, ProjectEn = m.Project.TitleEn, ProjectAr = m.Project.TitleAr,
                 Total = m.Tasks.Count(t => !t.IsChangeRequest),
-                Done = m.Tasks.Count(t => !t.IsChangeRequest && t.Progress != null && t.Progress.Status == ProjectTaskStatus.Completed),
-                Last = m.Tasks.Max(t => t.Progress != null ? t.Progress.CompletedAt : null)
+                Done = m.Tasks.Count(t => !t.IsChangeRequest && t.ProgressRows.Any(p => p.Status == ProjectTaskStatus.Completed)),
+                Last = m.Tasks.SelectMany(t => t.ProgressRows).Max(p => p.CompletedAt)
             })
             .ToListAsync(ct);
         foreach (var m in milestones.Where(m => m.Total > 0 && m.Done == m.Total))

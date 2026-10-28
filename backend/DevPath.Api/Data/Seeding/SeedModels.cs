@@ -42,6 +42,15 @@ public record TaskSeed(
     List<string> CriteriaEn, List<string> CriteriaAr, int Minutes, TaskPriority Priority,
     List<string> Topics, bool ChangeRequest = false, int UnlockAt = 0);
 
+/// <summary>One curated video in SeedData/videos.json ({ "topic-slug": [ ...videos ] }).</summary>
+public record VideoSeed(string VideoId, string Title, string Channel);
+
+/// <summary>One quiz question in SeedData/quizzes/*.json. Answer is the index of the correct option.</summary>
+public record QuizSeed(
+    string Key, string Topic, string QuestionEn, string QuestionAr,
+    List<string> OptionsEn, List<string> OptionsAr, int Answer,
+    string ExplanationEn, string ExplanationAr);
+
 public record ChecklistSeed(string Key, string TitleEn, string TitleAr, string DescriptionEn, string DescriptionAr);
 
 public record ExerciseSeed(

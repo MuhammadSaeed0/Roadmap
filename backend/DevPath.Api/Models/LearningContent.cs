@@ -63,8 +63,10 @@ public class Topic
     public List<TopicPrerequisite> RequiredBy { get; set; } = [];
     public List<ResourceTopic> ResourceLinks { get; set; } = [];
     public List<ProjectTaskTopic> ProjectTaskLinks { get; set; } = [];
-    public TopicProgress? Progress { get; set; }
-    public ReviewSchedule? ReviewSchedule { get; set; }
+    // Per-user rows. AppDbContext's query filter limits them to the signed-in user,
+    // so each holds at most one row (or none) whenever it is queried.
+    public List<TopicProgress> ProgressRows { get; set; } = [];
+    public List<ReviewSchedule> ReviewRows { get; set; } = [];
 }
 
 /// <summary>Explicit many-to-many: Topic requires PrerequisiteTopic.</summary>
@@ -130,7 +132,8 @@ public class PracticeExercise
     public string SolutionAr { get; set; } = "";
     public string? SolutionCode { get; set; }
 
-    public PracticeProgress? Progress { get; set; }
+    /// <summary>Per-user rows, filtered to the signed-in user (at most one).</summary>
+    public List<PracticeProgress> ProgressRows { get; set; } = [];
 }
 
 public class InterviewQuestion
@@ -150,5 +153,6 @@ public class InterviewQuestion
     public string? FollowUpEn { get; set; }
     public string? FollowUpAr { get; set; }
 
-    public InterviewProgress? Progress { get; set; }
+    /// <summary>Per-user rows, filtered to the signed-in user (at most one).</summary>
+    public List<InterviewProgress> ProgressRows { get; set; } = [];
 }

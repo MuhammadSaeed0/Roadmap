@@ -13,12 +13,14 @@ import { CodeBlockComponent } from '../../shared/code-block.component';
 import { IconComponent } from '../../shared/icon.component';
 import { statusIcon } from '../../shared/status';
 import { ConfidencePickerComponent, ErrorStateComponent, SkeletonComponent } from '../../shared/ui.components';
+import { TopicQuizComponent } from './topic-quiz.component';
+import { TopicVideosComponent } from './topic-videos.component';
 
 @Component({
   selector: 'app-topic-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, ReactiveFormsModule, IconComponent, TranslatePipe, LocalizePipe, DurationPipe, FormatDatePipe,
-    CodeBlockComponent, ConfidencePickerComponent, SkeletonComponent, ErrorStateComponent],
+    CodeBlockComponent, ConfidencePickerComponent, SkeletonComponent, ErrorStateComponent, TopicVideosComponent, TopicQuizComponent],
   templateUrl: './topic-detail.page.html',
 })
 export default class TopicDetailPage {

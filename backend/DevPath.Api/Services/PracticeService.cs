@@ -21,7 +21,7 @@ public class PracticeService(AppDbContext db, TimeProvider clock)
                 e.Topic.Skill,
                 Dto = new ExerciseSummaryDto(e.Id, e.Key, e.Type, e.TopicId, e.Topic.TitleEn, e.Topic.TitleAr,
                     e.Difficulty, e.EstimatedMinutes, e.TitleEn, e.TitleAr,
-                    e.Progress != null ? e.Progress.Status : PracticeStatus.NotStarted)
+                    e.ProgressRows.Select(p => (PracticeStatus?)p.Status).FirstOrDefault() ?? PracticeStatus.NotStarted)
             })
             .ToListAsync(ct);
 
@@ -74,7 +74,7 @@ public class PracticeService(AppDbContext db, TimeProvider clock)
     public async Task<ExerciseDetailDto> RevealSolutionAsync(int id, CancellationToken ct)
     {
         var e = await LoadAsync(id, ct);
-        if (string.IsNullOrWhiteSpace(e.Progress?.UserAnswer))
+        if (string.IsNullOrWhiteSpace(e.ProgressRows.FirstOrDefault()?.UserAnswer))
             throw new BusinessRuleException("attempt_required",
                 "Write and save your own attempt or explanation before revealing the solution.");
         var p = EnsureProgress(e);
@@ -112,36 +112,39 @@ public class PracticeService(AppDbContext db, TimeProvider clock)
 
     private async Task<PracticeExercise> LoadAsync(int id, CancellationToken ct, bool tracking = true)
     {
-        var q = db.PracticeExercises.Include(e => e.Topic).Include(e => e.Progress).AsQueryable();
+        var q = db.PracticeExercises.Include(e => e.Topic).Include(e => e.ProgressRows).AsQueryable();
         if (!tracking) q = q.AsNoTracking();
         return await q.SingleOrDefaultAsync(e => e.Id == id, ct) ?? throw new NotFoundException("PracticeExercise", id);
     }
 
     private PracticeProgress EnsureProgress(PracticeExercise e)
     {
-        if (e.Progress is null)
+        // ProgressRows was loaded with the query filter, so it holds only the signed-in user's row.
+        var progress = e.ProgressRows.FirstOrDefault();
+        if (progress is null)
         {
-            e.Progress = new PracticeProgress { ExerciseId = e.Id, Status = PracticeStatus.NotStarted };
-            db.PracticeProgress.Add(e.Progress);
+            progress = new PracticeProgress { ExerciseId = e.Id, Status = PracticeStatus.NotStarted };
+            e.ProgressRows.Add(progress);
+            db.PracticeProgress.Add(progress);
         }
-        e.Progress.UpdatedAt = clock.GetUtcNow().UtcDateTime;
-        return e.Progress;
+        progress.UpdatedAt = clock.GetUtcNow().UtcDateTime;
+        return progress;
     }
 
     private static ExerciseDetailDto ToDetail(PracticeExercise e)
     {
         var hintsEn = ProjectService.SplitLines(e.HintsEn);
         var hintsAr = ProjectService.SplitLines(e.HintsAr);
-        var revealed = Math.Min(e.Progress?.HintsRevealed ?? 0, hintsEn.Count);
-        var showSolution = e.Progress?.SolutionRevealed == true;
+        var revealed = Math.Min(e.ProgressRows.FirstOrDefault()?.HintsRevealed ?? 0, hintsEn.Count);
+        var showSolution = e.ProgressRows.FirstOrDefault()?.SolutionRevealed == true;
 
         return new ExerciseDetailDto(
             new ExerciseSummaryDto(e.Id, e.Key, e.Type, e.TopicId, e.Topic.TitleEn, e.Topic.TitleAr, e.Difficulty,
-                e.EstimatedMinutes, e.TitleEn, e.TitleAr, e.Progress?.Status ?? PracticeStatus.NotStarted),
+                e.EstimatedMinutes, e.TitleEn, e.TitleAr, e.ProgressRows.FirstOrDefault()?.Status ?? PracticeStatus.NotStarted),
             e.ProblemEn, e.ProblemAr, e.Code, e.CodeLanguage, e.ExpectedOutcomeEn, e.ExpectedOutcomeAr,
             hintsEn.Count, hintsEn.Take(revealed).ToList(), hintsAr.Take(revealed).ToList(),
-            e.Progress?.UserAnswer, showSolution,
+            e.ProgressRows.FirstOrDefault()?.UserAnswer, showSolution,
             showSolution ? e.SolutionEn : null, showSolution ? e.SolutionAr : null, showSolution ? e.SolutionCode : null,
-            e.Progress?.CompletedAt);
+            e.ProgressRows.FirstOrDefault()?.CompletedAt);
     }
 }

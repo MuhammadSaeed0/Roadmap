@@ -16,12 +16,14 @@ export type ExerciseType = 'Coding' | 'Debugging' | 'Scenario' | 'CodeReview';
 export type PracticeStatus = 'NotStarted' | 'Attempted' | 'Completed';
 export type InterviewCategory =
   | 'CSharp' | 'DotNet' | 'AspNetCore' | 'EfCore' | 'SqlServer' | 'TypeScript'
-  | 'Angular' | 'RestApi' | 'Testing' | 'Git' | 'FullStackDesign';
+  | 'Angular' | 'RestApi' | 'Testing' | 'Git' | 'FullStackDesign'
+  | 'DataStructures' | 'Algorithms' | 'ObjectOrientedDesign' | 'SystemDesign' | 'Concurrency' | 'Behavioral';
 export type InterviewRating = 'NeedReview' | 'Partial' | 'Confident';
 export type DayOfWeek = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
 
 export const SKILLS: SkillArea[] = ['CSharp', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'FullStack', 'Testing', 'Git', 'Professional'];
-export const INTERVIEW_CATEGORIES: InterviewCategory[] = ['CSharp', 'DotNet', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'RestApi', 'Testing', 'Git', 'FullStackDesign'];
+export const INTERVIEW_CATEGORIES: InterviewCategory[] = ['CSharp', 'DotNet', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'RestApi', 'Testing', 'Git', 'FullStackDesign',
+  'DataStructures', 'Algorithms', 'ObjectOrientedDesign', 'SystemDesign', 'Concurrency', 'Behavioral'];
 export const EXERCISE_TYPES: ExerciseType[] = ['Coding', 'Debugging', 'Scenario', 'CodeReview'];
 
 export interface PagedResult<T> { items: T[]; page: number; pageSize: number; totalCount: number; totalPages: number; }
@@ -192,3 +194,34 @@ export type SearchCategory = 'topics' | 'projects' | 'tasks' | 'practice' | 'int
 export interface SearchResult { query: string; groups: { category: SearchCategory; items: SearchHit[] }[]; }
 
 export interface LinkCheckResult { checked: number; verified: number; broken: number; unreachable: number; checkedAt: string; }
+
+/** 'ok', or why suggestions couldn't be refreshed (cached ones may still be listed). */
+export type VideoSuggestionStatus = 'ok' | 'not_configured' | 'quota_exceeded' | 'unavailable';
+export interface TopicVideo {
+  videoId: string; title: string; channelTitle: string; publishedAt: string | null; durationSeconds: number | null;
+  /**
+   * 'suggested' comes from the shared YouTube search; 'added' was added by this user from a link.
+   * For project tasks: 'task' was picked for the task, 'topic' comes from one of its linked topics.
+   */
+  source: 'suggested' | 'added' | 'task' | 'topic'; addedId: number | null;
+  isWatched: boolean; isBookmarked: boolean;
+}
+export interface TopicVideos {
+  status: VideoSuggestionStatus; searchQuery: string; videos: TopicVideo[];
+  /** Task videos only: the topic that watched/saved flags are stored against. */
+  progressTopicId?: number;
+}
+
+/** 1 = this topic, 2 = with the topics just before it, 3 = wider review. */
+export type QuizLevel = 1 | 2 | 3;
+export interface QuizLevelInfo {
+  level: QuizLevel; available: boolean; unlocked: boolean; questionCount: number;
+  bestScore: number | null; bestTotal: number | null; passed: boolean; attempts: number;
+}
+export interface QuizQuestion {
+  id: number; topicId: number; topicTitleEn: string; topicTitleAr: string;
+  questionEn: string; questionAr: string; optionsEn: string[]; optionsAr: string[];
+}
+export interface Quiz { topicId: number; level: QuizLevel; passPercent: number; levels: QuizLevelInfo[]; questions: QuizQuestion[]; }
+export interface QuizResultItem { questionId: number; choice: number; correctIndex: number; isCorrect: boolean; explanationEn: string; explanationAr: string; }
+export interface QuizResult { level: QuizLevel; score: number; total: number; passed: boolean; results: QuizResultItem[]; levels: QuizLevelInfo[]; }
