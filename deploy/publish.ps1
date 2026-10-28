@@ -23,8 +23,9 @@ param(
     [string]$EnvFile = (Join-Path $PSScriptRoot 'production.env'),
     [switch]$Deploy,
     [switch]$SkipTests,
-    # Self-contained (default) carries its own .NET runtime, so it works whatever runtime the host has installed.
-    [switch]$FrameworkDependent
+    # Default: framework-dependent, using the host's .NET 10 runtime; works whether the IIS app pool is 32- or 64-bit
+    # (MonsterASP.NET's free sites run 32-bit). -SelfContained bundles a 64-bit runtime for hosts without .NET 10.
+    [switch]$SelfContained
 )
 
 $ErrorActionPreference = 'Stop'
@@ -98,7 +99,7 @@ if (-not (Test-Path (Join-Path $browserDir 'index.html'))) { throw "The Angular 
 Step 'Publishing the API'
 if (Test-Path $publishDir) { Get-ChildItem -LiteralPath $publishDir -Force | Remove-Item -Recurse -Force }
 $publishArgs = @('publish', $api, '-c', 'Release', '-o', $publishDir, '--nologo')
-if ($FrameworkDependent) { $publishArgs += @('--no-self-contained') } else { $publishArgs += @('-r', 'win-x64', '--self-contained', 'true') }
+if ($SelfContained) { $publishArgs += @('-r', 'win-x64', '--self-contained', 'true') } else { $publishArgs += @('--no-self-contained') }
 Invoke-Checked 'dotnet publish' { dotnet @publishArgs }
 
 $wwwroot = Join-Path $publishDir 'wwwroot'
@@ -117,7 +118,7 @@ try {
     Push-Location $publishDir
     try {
         Invoke-Checked 'The configuration check (fix the settings listed above in production.env)' {
-            if ($FrameworkDependent) { & dotnet '.\DevPath.Api.dll' --check-config } else { & '.\DevPath.Api.exe' --check-config }
+            if ($SelfContained) { & '.\DevPath.Api.exe' --check-config } else { & dotnet '.\DevPath.Api.dll' --check-config }
         }
     } finally { Pop-Location }
 } finally {
@@ -130,7 +131,7 @@ $webConfigPath = Join-Path $publishDir 'web.config'
 [xml]$webConfig = Get-Content -LiteralPath $webConfigPath -Raw
 $aspNetCore = $webConfig.SelectSingleNode('//aspNetCore')
 # A self-contained app starts from DevPath.Api.exe directly and takes no DLL argument.
-if (-not $FrameworkDependent) { $aspNetCore.SetAttribute('arguments', '') }
+if ($SelfContained) { $aspNetCore.SetAttribute('arguments', '') }
 $variables = $aspNetCore.SelectSingleNode('environmentVariables')
 if (-not $variables) { $variables = $aspNetCore.AppendChild($webConfig.CreateElement('environmentVariables')) }
 foreach ($key in $appSettings.Keys) {

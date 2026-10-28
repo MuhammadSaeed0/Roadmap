@@ -42,9 +42,9 @@ Free plan (at the time of writing): one website, 5 GB disk, 256 MB RAM, one MSSQ
    applies its own migrations when it starts.
 3. **Websites → your site → Deploy → WebDeploy:** enable Web Deploy and note the server, user name and password.
 
-Framework: the publish script builds a **self-contained** app (it carries the .NET 10 runtime, about 130 MB), so it
-works whatever runtime the server has. If MonsterASP.NET offers .NET 10 for your site, `-FrameworkDependent` makes a
-much smaller package.
+Framework: the publish script builds a **framework-dependent** app that runs on the server's .NET 10 runtime
+(MonsterASP.NET provides .NET 10). It works whether the site's app pool is 32-bit (the free plan) or 64-bit.
+`-SelfContained` bundles a 64-bit runtime instead (about 130 MB); use it only on a 64-bit host without .NET 10.
 
 ## 2. Settings and secrets
 
@@ -142,7 +142,8 @@ environment lets you require an approval before each deployment.
 | Problem | Fix |
 |---|---|
 | HTTP 500.30 on start | Usually a missing setting: the log line starts with "Production configuration is incomplete". Run `--check-config` locally with the same values. |
-| HTTP 500.31 | The framework-dependent build needs a runtime the server lacks. Publish self-contained (the default). |
+| HTTP 500.31 | The server lacks the .NET 10 runtime. Choose .NET 10 in the site's settings, or publish with `-SelfContained` on a 64-bit site. |
+| HTTP 500.32 | A self-contained (64-bit) build on a 32-bit app pool. Publish framework-dependent (the default). |
 | Signed out after every page | The site isn't served over https, so the secure cookie is dropped. |
 | Every form answers `bad_origin` | `Frontend__BaseUrl` doesn't match the address in the browser (scheme, host and port must be identical). |
 | No emails arrive | Admin area → Send a test email. Then check the Brevo dashboard (sender verified? daily limit?) and the site log. |
