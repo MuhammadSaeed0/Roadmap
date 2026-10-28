@@ -112,9 +112,10 @@ panel before deploying a new version.
 
 - **CI** (`.github/workflows/ci.yml`) runs the backend and frontend tests and the production build on every push and
   pull request. It needs no secrets.
-- **Deploy** (`.github/workflows/deploy.yml`) runs only when started by hand (**Actions → Deploy to MonsterASP.NET →
-  Run workflow**) on a Windows runner: it installs Web Deploy, writes `production.env` from secrets, runs
-  `publish.ps1 -Deploy`, and deletes the secrets file afterwards.
+- **Deploy** (`.github/workflows/deploy.yml`) runs on **every push to `main`** (documentation-only changes are
+  skipped) and can also be started by hand (**Actions → Deploy to MonsterASP.NET → Run workflow**). On a Windows
+  runner it installs Web Deploy, writes `production.env` from secrets, runs the tests and `publish.ps1 -Deploy`, and
+  deletes the secrets file afterwards. A failing test stops the deployment, so the live site keeps the last good version.
 
 Add these repository secrets (**Settings → Secrets and variables → Actions**). Putting them in a `production`
 environment lets you require an approval before each deployment.

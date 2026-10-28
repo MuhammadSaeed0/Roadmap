@@ -1,9 +1,15 @@
-# Publishes DevPath to MonsterASP.NET with Web Deploy. Runs only when started by hand
-# (Actions -> Deploy to MonsterASP.NET -> Run workflow), after tests pass.
+# Publishes DevPath to MonsterASP.NET with Web Deploy on every push to main (and by hand from
+# Actions -> Deploy to MonsterASP.NET -> Run workflow). The tests run first; a failing test stops the deployment.
+# Changes to documentation alone don't redeploy.
 # Every value comes from repository secrets (Settings -> Secrets and variables -> Actions); see docs/DEPLOYMENT.md.
 name: Deploy to MonsterASP.NET
 
 on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   workflow_dispatch:
 
 permissions:
