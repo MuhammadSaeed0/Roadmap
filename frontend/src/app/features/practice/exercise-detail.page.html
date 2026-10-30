@@ -32,7 +32,7 @@
 
   <div class="detail-layout">
     <article class="detail-main">
-      <section class="card content-section">
+      <section class="card content-section" data-tour="exercise-problem">
         <h2 class="section-title"><app-icon name="info" /> {{ 'practice.problem' | t }}</h2>
         <p class="prose">{{ d | loc: 'problem' }}</p>
         @if (d.code) { <app-code-block [code]="d.code" [language]="d.codeLanguage" /> }
@@ -40,7 +40,7 @@
         <p class="prose">{{ d | loc: 'expectedOutcome' }}</p>
       </section>
 
-      <section class="card content-section">
+      <section class="card content-section" data-tour="exercise-attempt">
         <h2 class="section-title"><app-icon name="edit" /> {{ 'practice.yourAttempt' | t }}</h2>
         <label for="attempt" class="sr-only">{{ 'practice.yourAttempt' | t }}</label>
         <textarea id="attempt" class="input mono-ok" rows="8" [formControl]="answer" [placeholder]="'practice.attemptPlaceholder' | t"
@@ -61,7 +61,7 @@
     </article>
 
     <aside class="detail-side">
-      <section class="card" aria-labelledby="hints-h">
+      <section class="card" aria-labelledby="hints-h" data-tour="exercise-hints">
         <h2 id="hints-h" class="card-title"><app-icon name="bulb" /> {{ 'practice.hints' | t }}</h2>
         <p class="small muted">{{ 'practice.hintsCount' | t: { n: hints().length, total: d.hintCount } }}</p>
         <ol class="hint-list" aria-live="polite">
@@ -72,7 +72,7 @@
         }
       </section>
 
-      <section class="card" aria-labelledby="sol-h">
+      <section class="card" aria-labelledby="sol-h" data-tour="exercise-solution">
         <h2 id="sol-h" class="card-title"><app-icon name="eye" /> {{ 'practice.solution' | t }}</h2>
         @if (!d.solutionRevealed) {
           @if (!d.userAnswer) {

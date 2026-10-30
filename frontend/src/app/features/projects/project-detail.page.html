@@ -10,7 +10,7 @@
     <span>{{ d.summary | loc: 'title' }}</span>
   </nav>
 
-  <section class="card project-hero">
+  <section class="card project-hero" data-tour="project-hero">
     <div class="grow">
       <p class="eyebrow">{{ 'projects.title' | t }} {{ d.summary.order }} · <span dir="ltr">{{ d.summary.techStack }}</span></p>
       <h1 id="page-title" tabindex="-1">{{ d.summary | loc: 'title' }}</h1>
@@ -27,7 +27,7 @@
 
   <div class="detail-layout">
     <div class="detail-main">
-      <section class="card" aria-labelledby="ms-h">
+      <section class="card" aria-labelledby="ms-h" data-tour="project-milestones">
         <h2 id="ms-h" class="card-title"><app-icon name="layers" /> {{ 'projects.milestones' | t }}</h2>
         <ol class="milestones" role="list">
           @for (m of d.milestones; track m.id) {
@@ -53,7 +53,7 @@
         </ol>
       </section>
 
-      <section class="card" aria-labelledby="cr-h">
+      <section class="card" aria-labelledby="cr-h" data-tour="project-changes">
         <h2 id="cr-h" class="card-title"><app-icon name="repeat" /> {{ 'projects.changeRequests' | t }}</h2>
         <p class="muted small">{{ 'projects.crIntro' | t }}</p>
         @if (d.changeRequests.length === 0) { <p class="muted">{{ 'projects.noCr' | t }}</p> }
@@ -73,7 +73,7 @@
         </ul>
       </section>
 
-      <section class="card" aria-labelledby="pf-h">
+      <section class="card" aria-labelledby="pf-h" data-tour="project-portfolio">
         <h2 id="pf-h" class="card-title"><app-icon name="award" /> {{ 'projects.portfolio' | t }} <span class="muted small">{{ d.summary.portfolioDone }}/{{ d.summary.portfolioTotal }}</span></h2>
         <ul class="checkbox-list" role="list">
           @for (item of d.portfolio; track item.id) {
@@ -87,7 +87,7 @@
         </ul>
       </section>
 
-      <section class="card" aria-labelledby="repo-h">
+      <section class="card" aria-labelledby="repo-h" data-tour="project-repo">
         <h2 id="repo-h" class="card-title"><app-icon name="branch" /> {{ 'projects.repository' | t }}</h2>
         <form class="stack" (submit)="$event.preventDefault(); saveRepo()" novalidate>
           <label for="repo" class="sr-only">{{ 'projects.repository' | t }}</label>

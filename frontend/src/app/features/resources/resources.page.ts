@@ -17,12 +17,12 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
     SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
   template: `
     <app-page-header [title]="'resources.title' | t" [subtitle]="'resources.subtitle' | t">
-      <button type="button" class="btn btn-secondary btn-sm" [disabled]="verifying()" (click)="verify()" [title]="'resources.verifyHelp' | t">
+      <button type="button" class="btn btn-secondary btn-sm" data-tour="resources-verify" [disabled]="verifying()" (click)="verify()" [title]="'resources.verifyHelp' | t">
         <app-icon name="refresh" [size]="15" [class.spin]="verifying()" /> {{ (verifying() ? 'resources.verifying' : 'resources.verify') | t }}
       </button>
     </app-page-header>
 
-    <section class="card filter-bar" [attr.aria-label]="'common.filters' | t">
+    <section class="card filter-bar" [attr.aria-label]="'common.filters' | t" data-tour="resources-filters">
       <div class="field grow">
         <label for="res-q" class="sr-only">{{ 'resources.searchPlaceholder' | t }}</label>
         <div class="input-icon">
@@ -50,7 +50,7 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
       @if (list.length === 0) {
         <app-empty-state icon="link" [title]="'resources.empty' | t" />
       } @else {
-        <div class="grid grid-2" [class.is-loading]="data.loading()">
+        <div class="grid grid-2" [class.is-loading]="data.loading()" data-tour="resources-list">
           @for (r of list; track r.id) {
             <article class="card resource-card">
               <div class="resource-card-head">

@@ -24,7 +24,7 @@ function escapeHtml(text: string): string {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IconComponent, TranslatePipe, LocalizePipe, SkeletonComponent, ErrorStateComponent],
   template: `
-    <section class="card content-section quiz" id="quiz" aria-labelledby="quiz-h">
+    <section class="card content-section quiz" id="quiz" aria-labelledby="quiz-h" data-tour="topic-quiz">
       <div class="card-head">
         <h2 id="quiz-h" class="section-title"><app-icon name="target" /> {{ 'quiz.title' | t }}</h2>
       </div>

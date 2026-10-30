@@ -36,7 +36,7 @@ public class SeederTests : IAsyncLifetime
         await Seeder().SeedAsync();
 
         Assert.Equal(13, await _db.Phases.CountAsync());
-        Assert.Equal(144, await _db.Topics.CountAsync());
+        Assert.Equal(150, await _db.Topics.CountAsync());
         Assert.Equal(4, await _db.Projects.CountAsync());
         Assert.True(await _db.Resources.CountAsync() > 100);
         Assert.True(await _db.PracticeExercises.CountAsync() >= 30);

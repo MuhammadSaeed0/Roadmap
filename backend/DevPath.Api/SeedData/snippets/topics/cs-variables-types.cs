@@ -1,5 +1,5 @@
 string productName = "Keyboard";
-decimal unitPrice = 49.99m;      // decimal for money (like DECIMAL(18,2))
+decimal unitPrice = 49.99m;      // decimal for money: exact, no rounding errors
 int stock = 120;
 bool isActive = true;
 DateTime createdAt = DateTime.UtcNow;

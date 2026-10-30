@@ -29,7 +29,7 @@ const AREA_ICONS: Record<string, string> = {
     } @else if (data.error()) {
       <app-error-state [error]="data.error()" (retry)="data.reload()" />
     } @else if (data.value(); as r) {
-      <section class="card focus-card" aria-labelledby="gaps-h">
+      <section class="card focus-card" aria-labelledby="gaps-h" data-tour="career-gaps">
         <h2 id="gaps-h" class="card-title"><app-icon name="target" /> {{ 'career.topGaps' | t }}</h2>
         @if (r.topGaps.length === 0) {
           <p>{{ 'career.noGaps' | t }}</p>
@@ -40,7 +40,7 @@ const AREA_ICONS: Record<string, string> = {
         }
       </section>
 
-      <div class="grid grid-2">
+      <div class="grid grid-2" data-tour="career-areas">
         @for (a of r.areas; track a.key) {
           <article class="card area-card" [id]="'area-' + a.key" [attr.data-level]="a.level">
             <div class="area-head">
@@ -64,7 +64,7 @@ const AREA_ICONS: Record<string, string> = {
         }
       </div>
 
-      <section class="card" id="portfolio" aria-labelledby="port-h">
+      <section class="card" id="portfolio" aria-labelledby="port-h" data-tour="career-portfolio">
         <h2 id="port-h" class="card-title"><app-icon name="award" /> {{ 'career.portfolio' | t }}</h2>
         <p class="muted small">{{ 'career.portfolioIntro' | t }}</p>
         <div class="table-scroll">

@@ -9,9 +9,9 @@ namespace DevPath.Api.Services;
 ///   topic weight = PriorityWeights[topic.Priority] × SkillWeights[topic.Skill]
 ///   overall %    = Σ weight(done topics) ÷ Σ weight(all topics) × 100
 ///
-/// SQL Server has a low skill weight on purpose: four years of SQL experience should
-/// not make the overall number look like you are ready in C# or Angular.
-/// Per-skill progress is always reported separately so nothing is hidden.
+/// Lower skill weights are for supporting areas (Git, professional skills); the core
+/// stack, SQL Server included, counts fully. Per-skill progress is always reported
+/// separately so nothing is hidden.
 /// </summary>
 public class ProgressOptions
 {
@@ -22,7 +22,7 @@ public class ProgressOptions
         [SkillArea.CSharp] = 1.0,
         [SkillArea.AspNetCore] = 1.0,
         [SkillArea.EfCore] = 1.0,
-        [SkillArea.SqlServer] = 0.4,
+        [SkillArea.SqlServer] = 1.0,
         [SkillArea.TypeScript] = 0.8,
         [SkillArea.Angular] = 1.0,
         [SkillArea.FullStack] = 1.0,

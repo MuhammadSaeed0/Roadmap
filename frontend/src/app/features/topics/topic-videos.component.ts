@@ -23,7 +23,7 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, IconComponent, TranslatePipe, SkeletonComponent, ErrorStateComponent],
   template: `
-    <section class="card content-section" [id]="taskId() ? null : 'videos'" [attr.aria-labelledby]="headingId()">
+    <section class="card content-section" [id]="taskId() ? null : 'videos'" [attr.data-tour]="taskId() ? null : 'topic-videos'" [attr.aria-labelledby]="headingId()">
       <div class="card-head">
         <h2 [id]="headingId()" class="section-title"><app-icon name="video" /> {{ (taskId() ? 'videos.taskTitle' : 'videos.title') | t }}</h2>
         <a class="btn btn-ghost btn-sm" [href]="youtubeSearch()" target="_blank" rel="noopener noreferrer">

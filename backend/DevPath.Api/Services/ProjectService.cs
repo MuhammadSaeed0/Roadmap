@@ -17,11 +17,12 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
             .Include(p => p.Milestones.OrderBy(m => m.Order))
                 .ThenInclude(m => m.Tasks.OrderBy(t => t.Order))
                     .ThenInclude(t => t.ProgressRows)
+            // Only the link rows: the linked topics are loaded separately as small references (see TopicRefsAsync).
+            // Including whole Topic rows made SQL Server sort their long text columns, and the memory grant
+            // for that sort could wait ~25 s on a busy or memory-limited server.
             .Include(p => p.Milestones)
                 .ThenInclude(m => m.Tasks)
                     .ThenInclude(t => t.TopicLinks)
-                        .ThenInclude(l => l.Topic)
-                            .ThenInclude(t => t.ProgressRows)
             .AsSplitQuery()
             .OrderBy(p => p.Order)
             .ToListAsync(ct);
@@ -40,13 +41,14 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
 
         var checklist = await db.PortfolioChecklistItems.AsNoTracking().OrderBy(i => i.Order).ToListAsync(ct);
         var summary = Summarize(project, checklist.Count);
+        var topics = await TopicRefsAsync(project, ct);
         var noteCount = await db.Notes.CountAsync(n => n.ProjectId == id ||
             (n.ProjectTask != null && n.ProjectTask.Milestone.ProjectId == id), ct);
 
         var milestones = project.Milestones
             .Select(m =>
             {
-                var tasks = m.Tasks.Where(t => !t.IsChangeRequest).Select(t => ToDto(t, summary.Percent)).ToList();
+                var tasks = m.Tasks.Where(t => !t.IsChangeRequest).Select(t => ToDto(t, summary.Percent, topics)).ToList();
                 return new MilestoneDto(m.Id, m.Order, m.TitleEn, m.TitleAr, m.DescriptionEn, m.DescriptionAr,
                     tasks.Count, tasks.Count(t => t.Status == ProjectTaskStatus.Completed), tasks);
             })
@@ -56,7 +58,7 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
         var changeRequests = project.Milestones.SelectMany(m => m.Tasks)
             .Where(t => t.IsChangeRequest)
             .OrderBy(t => t.UnlockAtPercent).ThenBy(t => t.Order)
-            .Select(t => ToDto(t, summary.Percent))
+            .Select(t => ToDto(t, summary.Percent, topics))
             .ToList();
 
         var done = project.PortfolioChecks.Where(c => c.IsDone).Select(c => c.ChecklistItemId).ToHashSet();
@@ -245,14 +247,24 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
             p.PortfolioChecks.Count(c => c.IsDone), checklistTotal);
     }
 
-    private static ProjectTaskDto ToDto(ProjectTask t, double projectPercent) => new(
+    /// <summary>The topics linked to a project's tasks, with the current account's status for each.</summary>
+    private async Task<Dictionary<int, TopicRefDto>> TopicRefsAsync(Project project, CancellationToken ct)
+    {
+        var ids = project.Milestones.SelectMany(m => m.Tasks).SelectMany(t => t.TopicLinks).Select(l => l.TopicId).Distinct().ToList();
+        return await db.Topics.AsNoTracking()
+            .Where(t => ids.Contains(t.Id))
+            .Select(t => new TopicRefDto(t.Id, t.Slug, t.TitleEn, t.TitleAr, t.Skill,
+                t.ProgressRows.Select(p => (TopicStatus?)p.Status).FirstOrDefault() ?? TopicStatus.NotStarted))
+            .ToDictionaryAsync(t => t.Id, ct);
+    }
+
+    private static ProjectTaskDto ToDto(ProjectTask t, double projectPercent, IReadOnlyDictionary<int, TopicRefDto> topics) => new(
         t.Id, t.Key, t.MilestoneId, t.Order, t.TitleEn, t.TitleAr, t.DescriptionEn, t.DescriptionAr,
         SplitLines(t.AcceptanceCriteriaEn), SplitLines(t.AcceptanceCriteriaAr),
         t.EstimatedMinutes, t.Priority, t.IsChangeRequest, t.UnlockAtPercent,
         IsLocked: t.IsChangeRequest && projectPercent < t.UnlockAtPercent,
         t.ProgressRows.FirstOrDefault()?.Status ?? ProjectTaskStatus.NotStarted, t.ProgressRows.FirstOrDefault()?.BlockedReason, t.ProgressRows.FirstOrDefault()?.CompletedAt,
-        t.TopicLinks.Select(l => new TopicRefDto(l.Topic.Id, l.Topic.Slug, l.Topic.TitleEn, l.Topic.TitleAr, l.Topic.Skill,
-            l.Topic.ProgressRows.FirstOrDefault()?.Status ?? TopicStatus.NotStarted)).OrderBy(x => x.Id).ToList());
+        t.TopicLinks.Where(l => topics.ContainsKey(l.TopicId)).Select(l => topics[l.TopicId]).OrderBy(x => x.Id).ToList());
 
     internal static IReadOnlyList<string> SplitLines(string text) =>
         text.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);

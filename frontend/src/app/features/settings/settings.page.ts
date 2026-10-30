@@ -18,7 +18,7 @@ import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../
   template: `
     <app-page-header [title]="'settings.title' | t" />
     <div class="grid grid-2">
-      <section class="card stack" aria-labelledby="ap-h">
+      <section class="card stack" aria-labelledby="ap-h" data-tour="settings-appearance">
         <h2 id="ap-h" class="card-title"><app-icon name="sun" /> {{ 'settings.appearance' | t }}</h2>
         <fieldset class="fieldset">
           <legend>{{ 'common.language' | t }}</legend>
@@ -39,7 +39,7 @@ import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../
         </fieldset>
       </section>
 
-      <section class="card" aria-labelledby="lp-h">
+      <section class="card" aria-labelledby="lp-h" data-tour="settings-learning">
         <h2 id="lp-h" class="card-title"><app-icon name="target" /> {{ 'settings.learning' | t }}</h2>
         @if (loading()) {
           <app-skeleton [rows]="4" />
@@ -78,7 +78,7 @@ import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../
         }
       </section>
 
-      <section class="card stack" aria-labelledby="ac-h">
+      <section class="card stack" aria-labelledby="ac-h" data-tour="settings-account">
         <h2 id="ac-h" class="card-title"><app-icon name="user" /> {{ 'auth.account' | t }}</h2>
         <dl class="account-details">
           <dt>{{ 'auth.fullName' | t }}</dt><dd>{{ auth.displayName() }}</dd>
@@ -90,7 +90,7 @@ import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../
         </div>
       </section>
 
-      <section class="card" aria-labelledby="ab-h">
+      <section class="card" aria-labelledby="ab-h" data-tour="settings-about">
         <h2 id="ab-h" class="card-title"><app-icon name="database" /> {{ 'settings.about' | t }}</h2>
         <p>{{ 'settings.aboutText' | t }}</p>
       </section>

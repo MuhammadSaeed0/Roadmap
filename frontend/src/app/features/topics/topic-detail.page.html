@@ -10,7 +10,7 @@
     <a routerLink="/roadmap" [fragment]="'phase-' + t.phase.id">{{ t.phase | loc: 'title' }}</a>
   </nav>
 
-  <header class="topic-header">
+  <header class="topic-header" data-tour="topic-header">
     <div>
       <div class="chips">
         <span class="chip">{{ 'skills.' + t.skill | t }}</span>
@@ -30,7 +30,7 @@
   <div class="detail-layout">
     <article class="detail-main">
       @for (s of sections(); track s.id) {
-        <section class="card content-section" [id]="s.id">
+        <section class="card content-section" [id]="s.id" data-tour="topic-content">
           <h2 class="section-title"><app-icon [name]="s.icon" /> {{ s.title | t }}</h2>
           <p class="prose">{{ s.text }}</p>
         </section>
@@ -80,7 +80,7 @@
         }
       </section>
 
-      <section class="card content-section" id="notes">
+      <section class="card content-section" id="notes" data-tour="topic-notes">
         <div class="card-head">
           <h2 class="section-title"><app-icon name="note" /> {{ 'topic.notes' | t }}</h2>
           @if (!showNoteForm()) {
@@ -120,7 +120,7 @@
     </article>
 
     <aside class="detail-side">
-      <section class="card progress-panel" aria-labelledby="yp-h">
+      <section class="card progress-panel" aria-labelledby="yp-h" data-tour="topic-progress">
         <h2 id="yp-h" class="card-title">{{ 'topic.yourProgress' | t }}</h2>
         <div class="btn-stack">
           @if (t.status === 'Completed' || t.status === 'Skipped') {
@@ -190,7 +190,7 @@
         </div>
       </section>
 
-      <section class="card" aria-labelledby="rel-h">
+      <section class="card" aria-labelledby="rel-h" data-tour="topic-related">
         <h2 id="rel-h" class="card-title">{{ 'topic.prerequisites' | t }}</h2>
         @if (t.prerequisites.length === 0) { <p class="muted small">{{ 'topic.none' | t }}</p> }
         <ul class="link-list" role="list">

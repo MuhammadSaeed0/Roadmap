@@ -68,7 +68,7 @@ export const en = {
     resetSent: 'If an account exists for {email}, we’ve emailed a link to choose a new password. It works once and expires in an hour. Check your spam folder if it doesn’t arrive.',
     savePassword: 'Save new password', passwordSaved: 'Your password was changed. Other devices have been signed out.',
     passwordReset: 'Your password was reset. Sign in with the new one.',
-    welcome: 'Welcome, {name}! Check your inbox to confirm your email.', signedOut: 'You have been signed out.',
+    welcome: 'Welcome, {name}!', welcomeNew: 'Welcome, {name}! Check your inbox to confirm your email.', signedOut: 'You have been signed out.',
     signOut: 'Sign out', account: 'Account', changePassword: 'Change password',
     errors: {
       invalid_credentials: 'Email or password is incorrect.',
@@ -255,9 +255,9 @@ export const en = {
   },
   dashboard: {
     morning: 'Good morning', afternoon: 'Good afternoon', evening: 'Good evening',
-    journey: 'Your path from SQL Server expert to full-stack .NET + Angular developer.',
+    journey: 'Your path from your first line of code to full-stack .NET + Angular developer.',
     completed: 'You have completed {pct}% of your roadmap.',
-    weightedNote: 'Weighted: core topics count more, and SQL Server counts less so existing experience doesn’t inflate the number.',
+    weightedNote: 'Weighted: core topics count more than optional ones, and supporting skills such as Git count a little less.',
     overall: 'Overall progress', completedTopics: 'Completed topics', remainingTopics: 'Remaining topics',
     remainingTime: 'Estimated time remaining', currentPhase: 'Current phase', noPhase: 'All phases done',
     continueLearning: 'Continue learning', whyThis: 'Why this topic?', estimated: 'Estimated time',
@@ -282,10 +282,9 @@ export const en = {
     interview: 'Practise interview questions', go: 'Go',
   },
   roadmap: {
-    title: 'My Roadmap', subtitle: '13 phases from C# fundamentals to full-stack projects. Your SQL Server experience is already an advantage.',
+    title: 'My Roadmap', subtitle: '13 phases from your first C# program to full-stack projects, one step at a time.',
     current: 'Current phase', topicsDone: '{done} of {total} topics', remaining: '{n} min left', projectsIntro: 'Apply what you learned in four projects.',
-    expandAll: 'Expand all', collapseAll: 'Collapse all', locked: 'Prerequisites not finished', markKnown: 'Mark as known',
-    sqlHint: 'You have strong SQL Server experience: mark what you already know to personalise your roadmap.',
+    expandAll: 'Expand all', collapseAll: 'Collapse all', locked: 'Prerequisites not finished',
     phase: 'Phase {n}',
   },
   library: {
@@ -396,7 +395,7 @@ export const en = {
     topGaps: 'Focus next on', noGaps: 'No major gaps — keep practising and polishing your portfolio.',
     nextStep: 'Next step', why: 'Why it matters', evidenceTitle: 'Evidence',
     areas: {
-      coreTopics: { title: 'Core topics completed', why: 'Teams expect you to know the fundamentals of C#, ASP.NET Core, EF Core, TypeScript and Angular without looking everything up. SQL Server topics are excluded here so your existing expertise doesn’t hide gaps.' },
+      coreTopics: { title: 'Core topics completed', why: 'Teams expect you to know the fundamentals of C#, ASP.NET Core, EF Core, TypeScript and Angular without looking everything up, and to write everyday SQL queries.' },
       confidence: { title: 'Confidence in key skills', why: 'Completing a topic isn’t the same as being able to use it. Interviews and real tickets test whether you can apply and explain it independently (level 4+).' },
       projects: { title: 'Projects completed', why: 'Projects are proof you can build working software end to end. Project 4 counts the most because it combines every layer.' },
       features: { title: 'Features implemented', why: 'Delivering API and full-stack features — including change requests to existing code — is most of a junior developer’s daily work.' },

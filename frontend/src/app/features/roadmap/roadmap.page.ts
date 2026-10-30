@@ -54,7 +54,6 @@ export default class RoadmapPage {
     this.expanded.set(open ? new Set(this.data.value()?.phases.map(p => p.id)) : new Set());
   }
 
-  protected isSqlPhase(phase: Phase): boolean { return phase.slug === 'sql-server-for-dotnet'; }
 
   /** Quick status change from the roadmap; keeps the existing knowledge and confidence. */
   protected async setStatus(topic: TopicSummary, status: TopicStatus): Promise<void> {

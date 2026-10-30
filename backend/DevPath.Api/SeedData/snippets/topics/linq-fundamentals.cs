@@ -1,4 +1,5 @@
-// SQL: SELECT TOP 5 Name, Salary FROM Employees
+// The same query in SQL (you will learn it in phase 5):
+//      SELECT TOP 5 Name, Salary FROM Employees
 //      WHERE Department = 'IT' ORDER BY Salary DESC
 var top = employees
     .Where(e => e.Department == "IT")

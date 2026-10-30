@@ -1,6 +1,8 @@
 <app-page-header [title]="'roadmap.title' | t" [subtitle]="'roadmap.subtitle' | t">
-  <button type="button" class="btn btn-secondary btn-sm" (click)="setAll(true)">{{ 'roadmap.expandAll' | t }}</button>
-  <button type="button" class="btn btn-ghost btn-sm" (click)="setAll(false)">{{ 'roadmap.collapseAll' | t }}</button>
+  <div class="row-gap" data-tour="roadmap-header">
+    <button type="button" class="btn btn-secondary btn-sm" (click)="setAll(true)">{{ 'roadmap.expandAll' | t }}</button>
+    <button type="button" class="btn btn-ghost btn-sm" (click)="setAll(false)">{{ 'roadmap.collapseAll' | t }}</button>
+  </div>
 </app-page-header>
 
 @if (data.initialLoading()) {
@@ -8,7 +10,7 @@
 } @else if (data.error()) {
   <app-error-state [error]="data.error()" (retry)="data.reload()" />
 } @else if (data.value(); as roadmap) {
-  <ol class="timeline" role="list">
+  <ol class="timeline" role="list" data-tour="roadmap-phases">
     @for (phase of roadmap.phases; track phase.id) {
       @let current = phase.id === roadmap.currentPhaseId;
       <li class="phase card" [id]="'phase-' + phase.id" [class.current]="current" [class.done]="phase.percent >= 100">
@@ -35,10 +37,6 @@
 
         @if (isOpen(phase.id)) {
           <div class="phase-body" [id]="'phase-body-' + phase.id">
-            @if (isSqlPhase(phase)) {
-              <p class="callout"><app-icon name="database" /> {{ 'roadmap.sqlHint' | t }}</p>
-            }
-
             @if (phase.topics.length > 0) {
               <ul class="topic-list" role="list">
                 @for (topic of phase.topics; track topic.id) {
@@ -68,12 +66,6 @@
                                 [attr.aria-label]="('topic.markComplete' | t) + ': ' + (topic | loc: 'title')">
                           <app-icon name="check" [size]="14" /><span class="hide-sm">{{ 'topic.markComplete' | t }}</span>
                         </button>
-                        @if (isSqlPhase(phase)) {
-                          <button type="button" class="btn btn-ghost btn-xs" [disabled]="busy() === topic.id" (click)="setStatus(topic, 'Skipped')"
-                                  [attr.aria-label]="('roadmap.markKnown' | t) + ': ' + (topic | loc: 'title')">
-                            <app-icon name="skip" [size]="14" /><span class="hide-sm">{{ 'roadmap.markKnown' | t }}</span>
-                          </button>
-                        }
                       }
                     </div>
                   </li>
