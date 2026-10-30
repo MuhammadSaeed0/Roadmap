@@ -83,7 +83,10 @@ if (-not $SkipTests) {
     Invoke-Checked 'Backend tests' { dotnet test (Join-Path $root 'backend\DevPath.Api.Tests') --nologo --verbosity quiet }
     Step 'Running frontend tests'
     Push-Location $frontend
-    try { Invoke-Checked 'Frontend tests' { npx ng test --watch=false } } finally { Pop-Location }
+    try {
+        Invoke-Checked 'Frontend tests' { npx ng test --watch=false }
+        Invoke-Checked 'Practice Lab exercises' { npm run verify:exercises }
+    } finally { Pop-Location }
 }
 
 # ---------- 3. Build ----------
@@ -91,7 +94,10 @@ Step 'Building the Angular app'
 Push-Location $frontend
 try {
     if (-not (Test-Path 'node_modules')) { Invoke-Checked 'npm ci' { npm ci --no-audit --no-fund } }
+    # The in-browser code runners (C# on WebAssembly, the Angular preview's packages) are generated, not committed.
+    Invoke-Checked 'Code runners' { npm run build:runners }
     Invoke-Checked 'Angular build' { npx ng build --configuration production }
+    Invoke-Checked 'Brotli copies' { npm run precompress }
 } finally { Pop-Location }
 $browserDir = Join-Path $frontend 'dist\frontend\browser'
 if (-not (Test-Path (Join-Path $browserDir 'index.html'))) { throw "The Angular build output wasn't found in $browserDir." }

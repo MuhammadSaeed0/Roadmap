@@ -1,0 +1,58 @@
+{
+  "checks": [
+    {
+      "nameEn": "Your query returns the expected rows in the right order",
+      "nameAr": "يُرجع استعلامك الصفوف المتوقعة بالترتيب الصحيح",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "Title",
+          "Students",
+          "AverageGrade"
+        ],
+        "rows": [
+          [
+            "Calculus I",
+            4,
+            65.5
+          ],
+          [
+            "Computer Networks",
+            3,
+            69
+          ],
+          [
+            "Databases",
+            5,
+            79.6
+          ],
+          [
+            "Discrete Mathematics",
+            3,
+            79.7
+          ],
+          [
+            "Intro to Programming",
+            6,
+            76.5
+          ],
+          [
+            "Object-Oriented Programming",
+            4,
+            85.7
+          ],
+          [
+            "Technical Writing",
+            3,
+            81.3
+          ],
+          [
+            "Web Development",
+            0,
+            null
+          ]
+        ]
+      }
+    }
+  ]
+}

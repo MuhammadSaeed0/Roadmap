@@ -1,0 +1,1 @@
+-- One transaction: order + line + stock

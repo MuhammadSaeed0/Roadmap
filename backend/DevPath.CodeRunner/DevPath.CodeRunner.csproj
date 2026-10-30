@@ -30,7 +30,7 @@
     next to the runtime (refs/) together with a manifest listing them.
   -->
   <ItemGroup>
-    <RunnerReference Include="System.Runtime;System.Console;System.Collections;System.Collections.Concurrent;System.Collections.Immutable;System.Linq;System.Linq.Expressions;System.Text.RegularExpressions;System.Threading;System.Threading.Tasks;System.Runtime.Extensions;System.ComponentModel.Annotations;System.ComponentModel.Primitives;System.ComponentModel;System.ObjectModel;System.Text.Json;System.Memory;System.Runtime.Numerics;System.Text.Encoding.Extensions;System.Diagnostics.Debug;netstandard" />
+    <RunnerReference Include="System.Runtime;System.Console;System.Collections;System.Collections.Concurrent;System.Collections.Immutable;System.Linq;System.Linq.Expressions;System.Linq.Queryable;System.Text.RegularExpressions;System.Threading;System.Threading.Tasks;System.Runtime.Extensions;System.ComponentModel.Annotations;System.ComponentModel.Primitives;System.ComponentModel;System.ObjectModel;System.Text.Json;System.Memory;System.Runtime.Numerics;System.Text.Encoding.Extensions;System.Diagnostics.Debug;netstandard" />
   </ItemGroup>
 
   <Target Name="CopyRunnerReferences" AfterTargets="Publish">

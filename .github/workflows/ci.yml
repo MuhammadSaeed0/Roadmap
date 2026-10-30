@@ -35,4 +35,6 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci --no-audit --no-fund
       - run: npx ng test --watch=false
+      - name: Check the Practice Lab exercises (model solutions pass, starters do not)
+        run: npm run verify:exercises
       - run: npx ng build --configuration production

@@ -1,0 +1,37 @@
+{
+  "checks": [
+    {
+      "nameEn": "Your query returns the expected rows in the right order",
+      "nameAr": "يُرجع استعلامك الصفوف المتوقعة بالترتيب الصحيح",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "Id",
+          "Name"
+        ],
+        "rows": [
+          [
+            18,
+            "DisplayPort Cable"
+          ],
+          [
+            20,
+            "Docking Station"
+          ],
+          [
+            4,
+            "Gaming Mouse"
+          ],
+          [
+            16,
+            "HDMI Cable"
+          ],
+          [
+            10,
+            "Headset"
+          ]
+        ]
+      }
+    }
+  ]
+}

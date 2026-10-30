@@ -1,0 +1,48 @@
+{
+  "checks": [
+    {
+      "nameEn": "Your query returns the expected rows in the right order",
+      "nameAr": "يُرجع استعلامك الصفوف المتوقعة بالترتيب الصحيح",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "Category",
+          "Products",
+          "AveragePrice"
+        ],
+        "rows": [
+          [
+            "Audio",
+            4,
+            73
+          ],
+          [
+            "Cables",
+            4,
+            55.12
+          ],
+          [
+            "Displays",
+            3,
+            205.67
+          ],
+          [
+            "Keyboards",
+            3,
+            59.5
+          ],
+          [
+            "Mice",
+            3,
+            39.66
+          ],
+          [
+            "Storage",
+            3,
+            57.17
+          ]
+        ]
+      }
+    }
+  ]
+}

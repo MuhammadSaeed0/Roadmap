@@ -1,0 +1,34 @@
+{
+  "checks": [
+    {
+      "nameEn": "Your query returns the expected rows in the right order",
+      "nameAr": "يُرجع استعلامك الصفوف المتوقعة بالترتيب الصحيح",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "City"
+        ],
+        "rows": [
+          [
+            "Alexandria"
+          ],
+          [
+            "Aswan"
+          ],
+          [
+            "Cairo"
+          ],
+          [
+            "Giza"
+          ],
+          [
+            "Mansoura"
+          ],
+          [
+            "Tanta"
+          ]
+        ]
+      }
+    }
+  ]
+}

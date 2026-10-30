@@ -1,0 +1,1 @@
+-- +10% for the Mice category only

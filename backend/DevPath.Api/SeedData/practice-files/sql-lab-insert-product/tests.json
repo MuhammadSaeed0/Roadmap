@@ -1,0 +1,40 @@
+{
+  "checks": [
+    {
+      "nameEn": "The product exists with the right values",
+      "nameAr": "المنتج موجود بالقيم الصحيحة",
+      "sql": "SELECT p.Name, p.Price, p.Stock, c.Name FROM Products p JOIN Categories c ON c.Id = p.CategoryId WHERE p.Name = 'Laptop Stand'",
+      "expected": {
+        "columns": [
+          "Name",
+          "Price",
+          "Stock",
+          "Name"
+        ],
+        "rows": [
+          [
+            "Laptop Stand",
+            39.99,
+            10,
+            "Displays"
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "Exactly one product was added",
+      "nameAr": "أُضيف منتج واحد بالضبط",
+      "sql": "SELECT COUNT(*) FROM Products",
+      "expected": {
+        "columns": [
+          "COUNT(*)"
+        ],
+        "rows": [
+          [
+            21
+          ]
+        ]
+      }
+    }
+  ]
+}

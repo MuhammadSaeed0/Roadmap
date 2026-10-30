@@ -1,0 +1,1 @@
+-- Add "Laptop Stand": 39.99, 10 in stock, Displays category

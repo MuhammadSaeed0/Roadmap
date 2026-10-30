@@ -1,0 +1,91 @@
+{
+  "checks": [
+    {
+      "nameEn": "Your query returns the expected rows in the right order",
+      "nameAr": "يُرجع استعلامك الصفوف المتوقعة بالترتيب الصحيح",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "Student",
+          "Courses",
+          "Average",
+          "Status"
+        ],
+        "rows": [
+          [
+            "Doaa Fathi",
+            3,
+            92.3,
+            "Honors"
+          ],
+          [
+            "Jana Lotfi",
+            3,
+            91.3,
+            "Honors"
+          ],
+          [
+            "Ahmed Samy",
+            3,
+            84.7,
+            "On track"
+          ],
+          [
+            "Farah Moussa",
+            3,
+            82.7,
+            "On track"
+          ],
+          [
+            "Hoda Kamel",
+            2,
+            81.5,
+            "On track"
+          ],
+          [
+            "Basma Adel",
+            3,
+            74.7,
+            "On track"
+          ],
+          [
+            "Islam Wahba",
+            1,
+            73,
+            "On track"
+          ],
+          [
+            "Kareem Sabry",
+            1,
+            66,
+            "On track"
+          ],
+          [
+            "Gamal Rizk",
+            2,
+            63.5,
+            "On track"
+          ],
+          [
+            "Essam Hany",
+            2,
+            58.5,
+            "At risk"
+          ],
+          [
+            "Chadi Nour",
+            2,
+            58,
+            "At risk"
+          ],
+          [
+            "Lina Zidan",
+            1,
+            58,
+            "At risk"
+          ]
+        ]
+      }
+    }
+  ]
+}

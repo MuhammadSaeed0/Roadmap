@@ -1,4 +1,4 @@
-import { SqlResultSet } from './runner-host.service';
+import type { SqlResultSet } from './runner-host.service';
 
 /**
  * Automatic checks of a SQL exercise (practice-files/{key}/tests.json). Each check compares a result set with

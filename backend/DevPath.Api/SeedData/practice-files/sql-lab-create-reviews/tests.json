@@ -1,0 +1,92 @@
+{
+  "checks": [
+    {
+      "nameEn": "The columns, their order and NOT NULL rules",
+      "nameAr": "الأعمدة وترتيبها وقواعد NOT NULL",
+      "sql": "SELECT name, \"notnull\" FROM pragma_table_info('Reviews') ORDER BY cid",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "name",
+          "notnull"
+        ],
+        "rows": [
+          [
+            "Id",
+            0
+          ],
+          [
+            "ProductId",
+            1
+          ],
+          [
+            "Rating",
+            1
+          ],
+          [
+            "Comment",
+            0
+          ],
+          [
+            "CreatedOn",
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "ProductId is a foreign key to Products",
+      "nameAr": "العمود ProductId مفتاح أجنبي إلى Products",
+      "sql": "SELECT \"from\", \"table\" FROM pragma_foreign_key_list('Reviews')",
+      "expected": {
+        "columns": [
+          "from",
+          "table"
+        ],
+        "rows": [
+          [
+            "ProductId",
+            "Products"
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "Rating only accepts 1 to 5",
+      "nameAr": "لا يقبل Rating إلا القيم من 1 إلى 5",
+      "sql": "SELECT CASE WHEN sql LIKE '%CHECK%' THEN 1 ELSE 0 END FROM sqlite_schema WHERE name = 'Reviews'",
+      "expected": {
+        "columns": [
+          "CASE WHEN sql LIKE '%CHECK%' THEN 1 ELSE 0 END"
+        ],
+        "rows": [
+          [
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "Two reviews for product 1",
+      "nameAr": "تقييمان للمنتج 1",
+      "sql": "SELECT ProductId, Rating FROM Reviews ORDER BY Id",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "ProductId",
+          "Rating"
+        ],
+        "rows": [
+          [
+            1,
+            5
+          ],
+          [
+            1,
+            4
+          ]
+        ]
+      }
+    }
+  ]
+}

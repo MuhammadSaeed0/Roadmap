@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "nameEn": "Your query returns the expected rows in the right order",
+      "nameAr": "يُرجع استعلامك الصفوف المتوقعة بالترتيب الصحيح",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "Name",
+          "Price"
+        ],
+        "rows": [
+          [
+            "27\" Monitor",
+            249
+          ],
+          [
+            "Docking Station",
+            189
+          ],
+          [
+            "24\" Monitor",
+            169
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "nameEn": "Mice cost 10% more",
+      "nameAr": "ارتفعت أسعار الماوس بنسبة 10%",
+      "sql": "SELECT Name, ROUND(Price, 2) FROM Products WHERE CategoryId = 2 ORDER BY Id",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "Name",
+          "ROUND(Price, 2)"
+        ],
+        "rows": [
+          [
+            "Gaming Mouse",
+            64.9
+          ],
+          [
+            "Office Mouse",
+            17.59
+          ],
+          [
+            "Vertical Mouse",
+            48.4
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "No other price changed",
+      "nameAr": "لم يتغير أي سعر آخر",
+      "sql": "SELECT ROUND(SUM(Price), 2) FROM Products WHERE CategoryId <> 2",
+      "expected": {
+        "columns": [
+          "ROUND(SUM(Price), 2)"
+        ],
+        "rows": [
+          [
+            1479.48
+          ]
+        ]
+      }
+    }
+  ]
+}
