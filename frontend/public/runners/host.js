@@ -18,6 +18,8 @@ const engines = {
 
 const state = {};   // engine -> { worker, ready: Promise, pending: Map<id, {resolve, reject, timer}> }
 
+const FRESH_WORKER_PER_RUN = new Set(['javascript']);
+
 function post(message) {
   parent.postMessage({ channel: CHANNEL, ...message }, '*');
 }
@@ -88,6 +90,10 @@ addEventListener('message', async (event) => {
     post({ id, engine, type: 'result', result });
   } catch (error) {
     post({ id, engine, type: 'error', message: String(error && error.message || error) });
+  } finally {
+    // JavaScript runs as classic scripts sharing one global scope: a second run in the same worker would
+    // redeclare the first run's classes and constants (and see its leftovers), so each run gets a new worker.
+    if (FRESH_WORKER_PER_RUN.has(engine) && action === 'run') stop(engine);
   }
 });
 

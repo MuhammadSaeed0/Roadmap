@@ -63,19 +63,24 @@ async function run(data) {
   const started = performance.now();
   let error = null;
   const results = data.tests ? [] : null;
-  try {
-    // One classic script, so the tests can see the learner's top-level functions and classes.
-    const source = (data.code || '') + '\n;\n' + (data.tests || '');
+  const describe = (e) => String((e && e.name) || 'Error') + ': ' + String(e && e.message || e);
+  const load = (source) => {
     const url = URL.createObjectURL(new Blob([source], { type: 'text/javascript' }));
     try { importScripts(url); } finally { URL.revokeObjectURL(url); }
+  };
+  try {
+    // The code and the tests are two classic scripts in one global scope, so the tests see the learner's
+    // top-level functions and classes, and still run (and fail) when the learner's code throws.
+    try { load(data.code || ''); } catch (e) { error = describe(e); }
+    if (data.tests) load(data.tests);
     for (const t of tests) {
       try { await t.fn(); results?.push({ name: t.name, passed: true, message: null }); }
-      catch (e) { results?.push({ name: t.name, passed: false, message: e && e.assertion ? e.message : String((e && e.name) || 'Error') + ': ' + String(e && e.message) }); }
+      catch (e) { results?.push({ name: t.name, passed: false, message: e && e.assertion ? e.message : describe(e) }); }
     }
     // Give promises and timers started by the program a moment to log their results.
     await new Promise((resolve) => setTimeout(resolve, 30));
   } catch (e) {
-    error = String((e && e.name) || 'Error') + ': ' + String(e && e.message || e);
+    error ??= describe(e);
   } finally {
     Object.assign(console, original);
   }

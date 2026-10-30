@@ -1,4 +1,4 @@
-import { inlineComponentResources, joinScripts } from './ts-compile';
+import { addSignalMetadata, inlineComponentResources, joinScripts } from './ts-compile';
 
 describe('inlineComponentResources', () => {
   const files = [
@@ -32,3 +32,37 @@ describe('joinScripts', () => {
     expect(code.indexOf('function add')).toBeLessThan(code.indexOf('console.log'));
   });
 });
+
+describe('addSignalMetadata', () => {
+  const source = [
+    "import { Component, ElementRef, booleanAttribute, input, model, output, viewChild } from '@angular/core';",
+    "@Component({ selector: 'app-x', template: '' })",
+    'export class X {',
+    '  readonly value = input(0);',
+    "  readonly name = input.required<string>({ alias: 'label' });",
+    '  disabled = input(false, { transform: booleanAttribute });',
+    '  readonly checked = model<boolean>(false);',
+    '  readonly rated = output<number>();',
+    "  private readonly box = viewChild<ElementRef>('box', { read: ElementRef });",
+    '  readonly plain = 5;',
+    '}',
+  ].join('\n');
+  const out = addSignalMetadata(source);
+
+  it('adds the JIT metadata the Angular CLI would add for signal inputs, models, outputs and queries', () => {
+    expect(out).toContain('@__dpInput({ isSignal: true, alias: "value", required: false, transform: undefined }) readonly value = input(0);');
+    expect(out).toContain('@__dpInput({ isSignal: true, alias: "label", required: true, transform: undefined }) readonly name');
+    expect(out).toContain('@__dpInput({ isSignal: true, alias: "disabled", required: false, transform: booleanAttribute }) disabled = input(false');
+    expect(out).toContain('@__dpInput({ isSignal: true, alias: "checked", required: false, transform: undefined }) @__dpOutput("checkedChange") readonly checked');
+    expect(out).toContain('@__dpOutput("rated") readonly rated');
+    expect(out).toContain("@__dpViewChild('box', { isSignal: true, read: ElementRef }) private readonly box");
+    expect(out).toContain('\n  readonly plain = 5;');
+    expect(out.split('\n')[0]).toBe("import { Input as __dpInput, Output as __dpOutput, ViewChild as __dpViewChild } from '@angular/core';");
+  });
+
+  it('leaves files that don’t use Angular untouched', () => {
+    const plain = 'const value = input(1);';
+    expect(addSignalMetadata(plain)).toBe(plain);
+  });
+});
+
