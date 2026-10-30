@@ -68,7 +68,7 @@ export const en = {
     resetSent: 'If an account exists for {email}, we’ve emailed a link to choose a new password. It works once and expires in an hour. Check your spam folder if it doesn’t arrive.',
     savePassword: 'Save new password', passwordSaved: 'Your password was changed. Other devices have been signed out.',
     passwordReset: 'Your password was reset. Sign in with the new one.',
-    welcome: 'Welcome, {name}! Check your inbox to confirm your email.', signedOut: 'You have been signed out.',
+    welcome: 'Welcome, {name}!', welcomeNew: 'Welcome, {name}! Check your inbox to confirm your email.', signedOut: 'You have been signed out.',
     signOut: 'Sign out', account: 'Account', changePassword: 'Change password',
     errors: {
       invalid_credentials: 'Email or password is incorrect.',
