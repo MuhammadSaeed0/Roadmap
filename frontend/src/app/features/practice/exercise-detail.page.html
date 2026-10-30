@@ -13,12 +13,18 @@
     <div>
       <div class="chips">
         <span class="type-pill" [attr.data-type]="d.summary.type"><app-icon [name]="typeIcons[d.summary.type]" [size]="14" /> {{ 'exerciseType.' + d.summary.type | t }}</span>
-        <span class="chip">{{ 'difficulty.' + d.summary.difficulty | t }}</span>
+        <span class="chip" [attr.data-difficulty]="d.summary.difficulty">{{ 'difficulty.' + d.summary.difficulty | t }}</span>
         <span class="chip chip-ghost"><app-icon name="clock" [size]="13" /> {{ d.summary.estimatedMinutes | duration }}</span>
         <span class="chip" [attr.data-practice]="d.summary.status">{{ 'practiceStatus.' + d.summary.status | t }}</span>
+        @if (d.summary.bestScore !== null) { <span class="chip chip-ghost">{{ 'practice.bestScore' | t: { score: d.summary.bestScore } }}</span> }
       </div>
       <h1 id="page-title" tabindex="-1">{{ d.summary | loc: 'title' }}</h1>
-      <p class="muted small">{{ 'practice.relatedTopic' | t }}: <a [routerLink]="['/topics', d.summary.topicId]">{{ d.summary | loc: 'topicTitle' }}</a></p>
+      <p class="muted small">
+        {{ 'practice.relatedTopic' | t }}: <a [routerLink]="['/topics', d.summary.topicId]">{{ d.summary | loc: 'topicTitle' }}</a>
+        @if (d.summary.technologies.length) {
+          · {{ 'practice.technologies' | t }}: @for (s of d.summary.technologies; track s; let last = $last) { <span class="chip chip-sm chip-ghost">{{ 'skills.' + s | t }}</span> }
+        }
+      </p>
     </div>
   </header>
 
@@ -30,37 +36,57 @@
     }
   </ol>
 
-  <div class="detail-layout">
-    <article class="detail-main">
+  <div class="exercise-layout" [class.with-workspace]="hasWorkspace()">
+    <article class="exercise-brief">
       <section class="card content-section" data-tour="exercise-problem">
+        @if (d.scenarioEn) {
+          <h2 class="section-title"><app-icon name="briefcase" /> {{ 'practice.scenario' | t }}</h2>
+          <p class="prose">{{ d | loc: 'scenario' }}</p>
+        }
         <h2 class="section-title"><app-icon name="info" /> {{ 'practice.problem' | t }}</h2>
-        <p class="prose">{{ d | loc: 'problem' }}</p>
-        @if (d.code) { <app-code-block [code]="d.code" [language]="d.codeLanguage" /> }
+        <p class="prose pre-line">{{ d | loc: 'problem' }}</p>
+        @if (d.code && !hasWorkspace()) { <app-code-block [code]="d.code" [language]="d.codeLanguage" /> }
+        @if (requirements().length) {
+          <h3 class="sub-title">{{ 'practice.requirements' | t }}</h3>
+          <ol class="requirement-list">@for (r of requirements(); track $index) { <li>{{ r }}</li> }</ol>
+        }
         <h3 class="sub-title">{{ 'practice.expected' | t }}</h3>
-        <p class="prose">{{ d | loc: 'expectedOutcome' }}</p>
+        <p class="prose pre-line">{{ d | loc: 'expectedOutcome' }}</p>
+        @if (acceptance().length) {
+          <h3 class="sub-title">{{ 'practice.acceptance' | t }}</h3>
+          <p class="small muted">{{ 'practice.acceptanceHint' | t }}</p>
+          <ul class="criteria-list">
+            @for (c of acceptance(); track $index; let i = $index) {
+              <li><label class="check-label">
+                <input type="checkbox" [checked]="d.checkedCriteria.includes(i)" [disabled]="busy()" (change)="toggleCriterion(i, $any($event.target).checked)">
+                <span>{{ c }}</span>
+              </label></li>
+            }
+          </ul>
+        }
+        @if (bonus().length) {
+          <details class="bonus">
+            <summary class="sub-title">{{ 'practice.bonus' | t }}</summary>
+            <ul>@for (b of bonus(); track $index) { <li>{{ b }}</li> }</ul>
+          </details>
+        }
+        @if (hasWorkspace() && d.summary.runner === 'None') {
+          <p class="callout small"><app-icon name="info" [size]="14" /> {{ 'practice.buildLocally' | t }}</p>
+        }
       </section>
 
       <section class="card content-section" data-tour="exercise-attempt">
-        <h2 class="section-title"><app-icon name="edit" /> {{ 'practice.yourAttempt' | t }}</h2>
+        <h2 class="section-title"><app-icon name="edit" /> {{ (hasWorkspace() ? 'practice.yourNotes' : 'practice.yourAttempt') | t }}</h2>
+        @if (hasWorkspace()) { <p class="small muted">{{ 'practice.notesHint' | t }}</p> }
         <label for="attempt" class="sr-only">{{ 'practice.yourAttempt' | t }}</label>
-        <textarea id="attempt" class="input mono-ok" rows="8" [formControl]="answer" [placeholder]="'practice.attemptPlaceholder' | t"
+        <textarea id="attempt" class="input mono-ok" [rows]="hasWorkspace() ? 4 : 8" [formControl]="answer" [placeholder]="'practice.attemptPlaceholder' | t"
                   [attr.aria-invalid]="answer.touched && answer.invalid"></textarea>
         @if (answer.touched && answer.hasError('required')) { <small class="field-error">{{ 'validation.required' | t }}</small> }
         <div class="row-gap">
-          <button type="button" class="btn btn-primary" [disabled]="busy()" (click)="saveAttempt()"><app-icon name="check" [size]="15" /> {{ 'practice.saveAttempt' | t }}</button>
+          <button type="button" class="btn btn-secondary" [disabled]="busy()" (click)="saveAttempt()"><app-icon name="check" [size]="15" /> {{ 'practice.saveAttempt' | t }}</button>
         </div>
       </section>
 
-      @if (d.solutionRevealed) {
-        <section class="card content-section solution" aria-live="polite">
-          <h2 class="section-title"><app-icon name="bulb" /> {{ 'practice.solution' | t }}</h2>
-          <p class="prose">{{ d | loc: 'solution' }}</p>
-          @if (d.solutionCode) { <app-code-block [code]="d.solutionCode" [language]="d.codeLanguage" /> }
-        </section>
-      }
-    </article>
-
-    <aside class="detail-side">
       <section class="card" aria-labelledby="hints-h" data-tour="exercise-hints">
         <h2 id="hints-h" class="card-title"><app-icon name="bulb" /> {{ 'practice.hints' | t }}</h2>
         <p class="small muted">{{ 'practice.hintsCount' | t: { n: hints().length, total: d.hintCount } }}</p>
@@ -75,23 +101,47 @@
       <section class="card" aria-labelledby="sol-h" data-tour="exercise-solution">
         <h2 id="sol-h" class="card-title"><app-icon name="eye" /> {{ 'practice.solution' | t }}</h2>
         @if (!d.solutionRevealed) {
-          @if (!d.userAnswer) {
-            <p class="small muted"><app-icon name="lock" [size]="13" /> {{ 'practice.solutionLocked' | t }}</p>
+          @if (!tried()) {
+            <p class="small muted"><app-icon name="lock" [size]="13" /> {{ (hasWorkspace() ? 'practice.solutionLockedCode' : 'practice.solutionLocked') | t }}</p>
           }
-          <button type="button" class="btn btn-secondary btn-block" [disabled]="busy() || !d.userAnswer" (click)="revealSolution()">{{ 'practice.revealSolution' | t }}</button>
+          <button type="button" class="btn btn-secondary btn-block" [disabled]="busy() || !tried()" (click)="revealSolution()">{{ 'practice.revealSolution' | t }}</button>
         } @else {
-          <p class="small muted"><app-icon name="check" [size]="13" /> {{ 'practice.solution' | t }} ✓</p>
+          <div aria-live="polite">
+            <p class="prose pre-line">{{ d | loc: 'solution' }}</p>
+            @if (d.solutionCode) { <app-code-block [code]="d.solutionCode" [language]="d.codeLanguage" /> }
+            @for (f of d.solutionFiles ?? []; track f.path) {
+              <p class="small muted mono">{{ f.path }}</p>
+              <app-code-block [code]="f.content" [language]="languageOf(f.path)" />
+            }
+          </div>
         }
       </section>
 
       <section class="card">
+        @if (d.submissions > 0) {
+          <p class="small">{{ 'practice.submissions' | t: { n: d.submissions, score: d.lastScore ?? 0 } }}</p>
+          <p class="small muted">{{ 'practice.scoreNote' | t }}</p>
+        }
         @if (d.summary.status !== 'Completed') {
           <button type="button" class="btn btn-primary btn-block" [disabled]="busy()" (click)="complete()"><app-icon name="check-circle" [size]="15" /> {{ 'practice.markCompleted' | t }}</button>
         } @else {
           <p class="success-text"><app-icon name="check-circle" /> {{ 'practice.completed' | t }} · {{ d.completedAt | fmtDate }}</p>
         }
+        @if (hasWorkspace()) {
+          <button type="button" class="btn btn-ghost btn-block" [disabled]="busy()" (click)="resetCode()"><app-icon name="refresh" [size]="15" /> {{ 'practice.resetCode' | t }}</button>
+        }
         <button type="button" class="btn btn-ghost btn-block" [disabled]="busy()" (click)="reset()"><app-icon name="refresh" [size]="15" /> {{ 'practice.resetExercise' | t }}</button>
       </section>
-    </aside>
+    </article>
+
+    @if (hasWorkspace()) {
+      <div class="exercise-workspace" data-tour="exercise-workspace">
+        <app-ide #ide [kind]="kind()" [files]="workspaceFiles()" [entry]="entry()" [mode]="'exercise'" [dataset]="d.dataset ?? ''"
+                 [tests]="d.tests" [runnable]="d.summary.runner !== 'None'" [name]="d.summary.key" [saveLabel]="saveLabel()"
+                 (changed)="onFilesChanged($event)" (saveRequested)="onFilesChanged($event)"
+                 (testsFinished)="onTestsFinished($event, ide.currentFiles())" />
+        @if (d.tests && d.summary.runner !== 'None') { <p class="small muted">{{ 'practice.checksNote' | t }}</p> }
+      </div>
+    }
   </div>
 }

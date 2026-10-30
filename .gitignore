@@ -30,3 +30,5 @@ deploy/production.env
 
 # In-browser C# runner, published by frontend/scripts/build-runners.mjs
 frontend/public/runners/csharp/
+frontend/public/runners/angular/vendor/
+frontend/public/runners/angular/types/

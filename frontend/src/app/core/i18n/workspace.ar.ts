@@ -1,0 +1,87 @@
+import { Widen } from './en';
+import { workspaceEn } from './workspace.en';
+
+// النصوص العربية لساحة البرمجة ومحرر الكود ومكتبة الفيديوهات. يفرض النوع أن تطابق مفاتيحها ملف workspace.en.ts.
+
+export const workspaceAr: Widen<typeof workspaceEn> = {
+  playground: {
+    title: 'ساحة البرمجة', subtitle: 'بيئات برمجة داخل المتصفح لكل تقنية في خارطة الطريق. اكتب مشروعات متعددة الملفات وشغّلها واحفظها.',
+    securityNote: 'يعمل كودك داخل متصفحك أنت في بيئة معزولة، ولا يعمل أبدًا على الخادم ولا يستطيع الوصول إلى حسابك. يُحمَّل مترجم C# مرة واحدة (نحو 9 ميجابايت) عند أول تشغيل لكود C#.',
+    environments: 'البيئات', myProjects: 'مشروعاتي', noProjects: 'لا توجد مشروعات محفوظة بعد',
+    noProjectsHint: 'افتح إحدى البيئات بالأعلى واختر «حفظ المشروع» لتحتفظ بعملك في حسابك.',
+    files: '{n} ملفات', updated: 'آخر تحديث {date}', deleteProject: 'حذف {name}', deleteConfirm: 'هل تريد حذف المشروع «{name}»؟ لا يمكن التراجع عن ذلك.',
+    deleted: 'تم حذف المشروع', projectName: 'اسم المشروع', saveProject: 'حفظ المشروع', rename: 'إعادة تسمية المشروع',
+    resetTemplate: 'إعادة إلى القالب', resetConfirm: 'هل تريد استبدال ملفاتك بالقالب الأصلي؟ ستضيع تعديلاتك.',
+    notFound: 'هذا المشروع غير موجود أو القالب غير معروف.', saved: 'تم حفظ المشروع في حسابك', saveFailed: 'تعذّر حفظ المشروع. حاول مرة أخرى.',
+    draftNote: 'هذه مسودة محفوظة في هذا المتصفح فقط. احفظها كمشروع لتبقى في حسابك وتفتحها من أي مكان.',
+    saveState: { draft: 'مسودة (في هذا المتصفح فقط)', saving: 'جارٍ الحفظ…', saved: 'تم حفظ كل التغييرات', error: 'لم يُحفظ: تحقّق من اتصالك' },
+    kind: { CSharp: 'C#', Sql: 'SQL', JavaScript: 'JavaScript', TypeScript: 'TypeScript', Web: 'HTML وCSS وJavaScript', Angular: 'Angular' },
+    kindInfo: {
+      CSharp: 'كود C# متعدد الملفات مع المترجم الحقيقي (Roslyn) و.NET، يعمل في متصفحك. يدعم الإدخال من الـ Console والاستثناءات ودوال [Test].',
+      Sql: 'محرر SQL مع قواعد بيانات نموذجية ومستعرض للجداول وجداول للنتائج. يعمل على SQLite في متصفحك، وتُحوَّل صيغ SQL Server الشائعة تلقائيًا.',
+      JavaScript: 'JavaScript عادي مع Console.',
+      TypeScript: 'TypeScript مع فحص فوري للأنواع واقتراحات ذكية، ويُترجَم في متصفحك.',
+      Web: 'صفحة ويب بملفات HTML وCSS وJavaScript مع معاينة مباشرة.',
+      Angular: 'مساحة عمل Angular متعددة الملفات (مكونات وخدمات وتوجيه ونماذج) مع معاينة مباشرة، تُترجَم في متصفحك.',
+    },
+  },
+  ide: {
+    toolbar: 'أدوات المحرر', explorer: 'الملفات', run: 'تشغيل', preview: 'تشغيل المعاينة', stop: 'إيقاف', runTests: 'تشغيل الفحوص',
+    runShortcut: 'تشغيل (Ctrl+Enter)', testsShortcut: 'تشغيل الفحوص التلقائية (Ctrl+Shift+Enter)', running: 'جارٍ التشغيل…',
+    engineLoading: {
+      CSharp: 'جارٍ تحميل مترجم C# (في المرة الأولى فقط)…', Sql: 'جارٍ تحميل محرك SQL…', JavaScript: 'جارٍ تشغيل JavaScript…',
+      TypeScript: 'جارٍ تشغيل JavaScript…', Web: 'جارٍ التحميل…', Angular: 'جارٍ التحميل…',
+    },
+    engineFailed: 'تعذّر تشغيل المنفِّذ. أعد تحميل الصفحة وحاول مرة أخرى.', lastRunOk: 'انتهى في {ms} مللي ثانية', lastRunFailed: 'انتهى مع أخطاء ({ms} مللي ثانية)',
+    format: 'تنسيق الملف (Shift+Alt+F)', download: 'تنزيل كملف ‎.zip', import: 'استيراد ملف ‎.zip أو ملف واحد', fullscreen: 'ملء الشاشة', exitFullscreen: 'الخروج من ملء الشاشة',
+    files: 'الملفات', database: 'قاعدة البيانات', tables: 'الجداول', newFile: 'ملف جديد', newFolder: 'مجلد جديد', rename: 'إعادة تسمية',
+    newFileIn: 'ملف جديد في {folder}', renameItem: 'إعادة تسمية {name}', deleteItem: 'حذف {name}', deleteConfirm: 'هل تريد حذف «{name}»؟',
+    naming: { newFile: 'اسم الملف', newFolder: 'اسم المجلد', rename: 'الاسم الجديد' },
+    errors: {
+      invalidPath: 'استخدم الحروف الإنجليزية والأرقام و«.» و«_» و«-» فقط (بدون مسافات).', exists: 'يوجد ملف أو مجلد بهذا الاسم بالفعل.',
+      tooManyFiles: 'لا تتسع مساحة العمل لأكثر من 80 ملفًا.',
+    },
+    resetDatabase: 'إعادة قاعدة البيانات إلى بياناتها النموذجية', databaseReset: 'أُعيدت قاعدة البيانات إلى بياناتها النموذجية.', insertName: 'إدراج الاسم في المحرر',
+    noTables: 'لا توجد جداول بعد. أنشئ جدولًا بالأمر CREATE TABLE.',
+    sqlEngineNote: 'يعمل على SQLite في متصفحك. تُحوَّل صيغ SQL Server الشائعة (TOP وIDENTITY وGETDATE()…) تلقائيًا، ويظهر ما تحوّل في المخرجات.',
+    resizeExplorer: 'تغيير عرض مستعرض الملفات', resizePanel: 'تغيير ارتفاع لوحة المخرجات', resizePreview: 'تغيير عرض المعاينة',
+    openFiles: 'الملفات المفتوحة', closeFile: 'إغلاق {name}', loadingEditor: 'جارٍ تحميل المحرر…', editorFailed: 'تعذّر تحميل المحرر. تحقّق من اتصالك وأعد تحميل الصفحة.',
+    noFileOpen: 'افتح ملفًا من مستعرض الملفات.', editorLabel: 'محرر الكود', panel: 'لوحة المخرجات',
+    output: 'المخرجات', problems: 'المشكلات', results: 'النتائج', tests: 'الفحوص', input: 'الإدخال', clearOutput: 'مسح المخرجات',
+    inputLabel: 'النص الذي يقرؤه برنامجك بـ Console.ReadLine()، سطر لكل استدعاء', previewPane: 'المعاينة', refreshPreview: 'تحديث المعاينة',
+    previewEmpty: 'اضغط «تشغيل المعاينة» لترى صفحتك هنا.', previewHint: 'تظهر هنا مخرجات console.log والأخطاء القادمة من المعاينة.',
+    outputHint: 'اضغط «تشغيل» (Ctrl+Enter) لترى المخرجات هنا.', noProblems: 'لا توجد مشكلات.', noResults: 'نفّذ استعلام SELECT لترى النتائج هنا.',
+    resultSet: 'النتيجة {n} · {rows} صفوف', truncatedRows: 'يُعرض أول 1000 صف', noRows: '(لا توجد صفوف)',
+    testsPassed: 'نجح {passed} من {total} فحوص', noTestResults: 'لم يُعثر على فحوص.', testsHint: 'اضغط «تشغيل الفحوص» لاختبار حلّك.',
+    sqlConverted: 'تم تحويل {n} من خصائص SQL Server لتعمل على محرك المتصفح',
+    sqlNotes: {
+      top: 'TOP', identity: 'مفتاح IDENTITY', identityOther: 'IDENTITY', now: 'التاريخ الحالي', isnull: 'ISNULL', len: 'LEN', newid: 'NEWID',
+      stringAgg: 'STRING_AGG', datePart: 'جزء من التاريخ', max: '(MAX)', dbo: 'بادئة المخطط', tran: 'المعاملة', offsetFetch: 'تقسيم الصفحات',
+      database: 'تم التخطي (قاعدة بيانات واحدة لكل مساحة عمل)', print: 'PRINT', unicode: 'نص Unicode',
+    },
+    sqlHints: {
+      top: 'يعمل TOP هنا في بداية الأمر فقط. داخل الاستعلام الفرعي استخدم LIMIT بدلًا منه.',
+      function: 'هذه دالة خاصة بـ SQL Server، ومحرك التدريب هذا هو SQLite. استخدم المقابل في SQLite (للتواريخ: date() وstrftime()).',
+      concat: 'لدمج النصوص يستخدم SQL Server العلامة + بينما يستخدم هذا المحرك || (مثل FirstName || \' \' || LastName).',
+      foreignKey: 'رفض المفتاح الأجنبي التغيير: الصف الذي تشير إليه غير موجود (أو ما زالت صفوف أخرى تشير إلى هذا الصف).',
+      unique: 'رفضت قاعدة UNIQUE التغيير: هذه القيمة موجودة بالفعل.', notNull: 'لم يحصل عمود مطلوب (NOT NULL) على قيمة.',
+      table: 'هذا الجدول غير موجود. راجع أسماء الجداول في لوحة قاعدة البيانات.', column: 'هذا العمود غير موجود. راجع الأسماء في لوحة قاعدة البيانات.',
+    },
+    sqlCheck: {
+      error: 'توقّف كود SQL بخطأ.', noResult: 'لا توجد نتيجة: اختم بأمر SELECT.', columnCount: 'عدد الأعمدة غير صحيح.',
+      rowCount: 'عدد الصفوف غير صحيح.', values: 'بعض القيم مختلفة.', order: 'الصفوف صحيحة لكن ترتيبها خاطئ: راجع ORDER BY.',
+    },
+    stopped: 'تم الإيقاف.', noCode: 'لا يوجد كود لتشغيله بعد.', loadingCompiler: 'جارٍ تحميل مترجم C# (نحو 9 ميجابايت، في المرة الأولى فقط)…',
+    compileFailed: 'فشل البناء مع {n} من الأخطاء. راجع «المشكلات».', outputTruncated: 'قُطعت المخرجات عند 100,000 حرف.',
+    finishedIn: 'انتهى في {ms} مللي ثانية.', typeErrors: 'يوجد {n} من أخطاء الأنواع: راجع «المشكلات». تعمل المعاينة رغم ذلك.', previewUpdated: 'تم تحديث المعاينة.',
+    timeout: 'تم الإيقاف: استغرق التشغيل وقتًا طويلًا (هل توجد حلقة لا تنتهي؟). أُعيد تشغيل المنفِّذ.',
+    runnerUnavailable: 'تعذّر تشغيل منفِّذ الكود. أعد تحميل الصفحة وحاول مرة أخرى.',
+    importEmpty: 'لا يحتوي ملف ‎.zip على ملفات نصية للاستيراد.', importReplace: 'هل تريد استبدال مساحة العمل بالملفات الـ{n} الموجودة في ‎.zip؟',
+    importTooLarge: 'هذا الملف أكبر من أن يُستورد.', importFailed: 'تعذّر استيراد هذا الملف.',
+    notRunnable: 'تحرير وحفظ فقط', notRunnableHint: 'يحتاج هذا الكود إلى خادم ASP.NET Core أو قاعدة بيانات حقيقية: نفّذه في بيئتك (VS Code)، واستخدم هذا المحرر لكتابة مسودته وحفظها.',
+  },
+  videoLibrary: {
+    title: 'مكتبة الفيديوهات', subtitle: 'فيديوهات عربية وإنجليزية مختارة بعناية لكل جزء من خارطة الطريق، مرتبة حسب المرحلة والموضوع.',
+    watched: 'شاهدتها', search: 'ابحث في الموضوعات أو الفيديوهات أو القنوات…', unwatchedOnly: 'لم أشاهدها بعد', empty: 'لا توجد فيديوهات تطابق هذه المرشحات.', count: '{n} فيديو',
+  },
+};

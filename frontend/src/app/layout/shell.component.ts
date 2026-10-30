@@ -204,11 +204,13 @@ export class ShellComponent {
       { path: '/', key: 'nav.dashboard', icon: 'dashboard' },
       { path: '/roadmap', key: 'nav.roadmap', icon: 'map' },
       { path: '/library', key: 'nav.library', icon: 'book' },
+      { path: '/videos', key: 'nav.videos', icon: 'video' },
       { path: '/resources', key: 'nav.resources', icon: 'link' },
     ] },
     { key: 'nav.build', items: [
       { path: '/projects', key: 'nav.projects', icon: 'folder' },
       { path: '/practice', key: 'nav.practice', icon: 'code' },
+      { path: '/playground', key: 'nav.playground', icon: 'terminal' },
       { path: '/interviews', key: 'nav.interviews', icon: 'chat' },
       { path: '/notes', key: 'nav.notes', icon: 'note' },
     ] },

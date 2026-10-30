@@ -97,6 +97,38 @@ public sealed class CSharpRunner(IReadOnlyList<MetadataReference> references)
         }
         """;
 
+    /// <summary>
+    /// Console.SetIn isn't supported by .NET in the browser, so Console.ReadLine() and Console.Read() in learner code
+    /// are redirected (see <see cref="ConsoleInputRewriter"/>) to this class, which reads the "Input" box.
+    /// </summary>
+    private const string InputSource = """
+        namespace DevPath.Runtime
+        {
+            public static class LearnerInput
+            {
+                public static System.IO.TextReader Reader = System.IO.TextReader.Null;
+                public static string? ReadLine() => Reader.ReadLine();
+                public static int Read() => Reader.Read();
+            }
+        }
+        """;
+
+    private sealed class ConsoleInputRewriter : CSharpSyntaxRewriter
+    {
+        public override SyntaxNode? VisitInvocationExpression(InvocationExpressionSyntax node)
+        {
+            var visited = (InvocationExpressionSyntax)base.VisitInvocationExpression(node)!;
+            if (visited.Expression is MemberAccessExpressionSyntax { Name.Identifier.Text: "ReadLine" or "Read" } access &&
+                access.Expression.ToString() is "Console" or "System.Console" or "global::System.Console" &&
+                visited.ArgumentList.Arguments.Count == 0)
+            {
+                var target = SyntaxFactory.ParseExpression($"global::DevPath.Runtime.LearnerInput.{access.Name.Identifier.Text}");
+                return visited.WithExpression(target.WithTriviaFrom(visited.Expression));
+            }
+            return visited;
+        }
+    }
+
     public async Task<RunResult> RunAsync(RunRequest request)
     {
         var compileWatch = Stopwatch.StartNew();
@@ -104,8 +136,10 @@ public sealed class CSharpRunner(IReadOnlyList<MetadataReference> references)
         var userTrees = request.Files
             .Where(f => f.Path.EndsWith(".cs", StringComparison.OrdinalIgnoreCase))
             .Select(f => Parse(f.Content, f.Path))
+            .Select(t => t.WithRootAndOptions(new ConsoleInputRewriter().Visit(t.GetRoot()), t.Options))
             .ToList();
         trees.AddRange(userTrees);
+        trees.Add(Parse(InputSource, "LearnerInput.cs"));
         var testing = !string.IsNullOrWhiteSpace(request.Tests);
         if (testing)
         {
@@ -127,7 +161,7 @@ public sealed class CSharpRunner(IReadOnlyList<MetadataReference> references)
         var emit = compilation.Emit(image);
         var diagnostics = emit.Diagnostics
             .Where(d => d.Severity is DiagnosticSeverity.Error or DiagnosticSeverity.Warning)
-            .Where(d => d.Location.IsInSource && d.Location.SourceTree?.FilePath is not ("GlobalUsings.cs" or "TestFramework.cs"))
+            .Where(d => d.Location.IsInSource && d.Location.SourceTree?.FilePath is not ("GlobalUsings.cs" or "TestFramework.cs" or "LearnerInput.cs"))
             .Select(ToDiagnostic)
             .ToList();
         var compileMs = compileWatch.ElapsedMilliseconds;
@@ -138,10 +172,9 @@ public sealed class CSharpRunner(IReadOnlyList<MetadataReference> references)
         var output = new LimitedWriter(MaxOutputChars);
         var originalOut = Console.Out;
         var originalError = Console.Error;
-        var originalIn = Console.In;
         Console.SetOut(output);
         Console.SetError(output);
-        Console.SetIn(new StringReader(request.Stdin ?? ""));
+        assembly.GetType("DevPath.Runtime.LearnerInput")!.GetField("Reader")!.SetValue(null, new StringReader(request.Stdin ?? ""));
         var runWatch = Stopwatch.StartNew();
         string? exception = null;
         List<TestResult>? tests = null;
@@ -154,7 +187,6 @@ public sealed class CSharpRunner(IReadOnlyList<MetadataReference> references)
         {
             Console.SetOut(originalOut);
             Console.SetError(originalError);
-            Console.SetIn(originalIn);
         }
         return new RunResult(true, diagnostics, output.ToString(), output.Truncated, exception, tests, compileMs, runWatch.ElapsedMilliseconds);
     }

@@ -75,6 +75,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "headers": { "Access-Control-Allow-Origin": "*" }
+          },
           "configurations": {
             "production": {
               "buildTarget": "frontend:build:production"

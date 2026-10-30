@@ -9,6 +9,21 @@ type Params = Record<string, string | number | null | undefined>;
 
 const STORAGE_KEY = 'devpath.lang';
 const dictionaries: Record<Lang, Translations> = { en, ar };
+/** Sections registered by lazily loaded pages (see registerTranslations). */
+const extensions: Record<Lang, Record<string, unknown>> = { en: {}, ar: {} };
+
+/**
+ * Adds translation sections that ship with a lazily loaded part of the app (the code editor, the playground)
+ * instead of with the first download. Call it at the top of the module that uses them.
+ */
+export function registerTranslations(enSections: object, arSections: object): void {
+  Object.assign(extensions.en, enSections);
+  Object.assign(extensions.ar, arSections);
+}
+
+function find(lang: Lang, key: string): unknown {
+  return lookup(dictionaries[lang], key) ?? lookup(extensions[lang], key);
+}
 
 /**
  * Lightweight translation service.
@@ -48,14 +63,14 @@ export class I18nService {
 
   /** Translate a dotted key such as "nav.dashboard", replacing {placeholders}. */
   t(key: string, params?: Params): string {
-    const value = lookup(dictionaries[this.lang()], key) ?? lookup(dictionaries.en, key);
+    const value = find(this.lang(), key) ?? find('en', key);
     if (typeof value !== 'string') return key;
     return this.bidi(params ? interpolate(value, params) : value);
   }
 
   /** Whether a key exists (used for optional translations such as API error codes). */
   has(key: string): boolean {
-    return typeof lookup(dictionaries[this.lang()], key) === 'string';
+    return typeof find(this.lang(), key) === 'string';
   }
 
   /** Pick the English or Arabic version of a field; falls back to English when Arabic is empty. */

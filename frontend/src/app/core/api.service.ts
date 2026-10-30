@@ -62,6 +62,22 @@ export class ApiService {
   revealHint(id: number) { return this.post<M.ExerciseDetail>(`/practice/${id}/hints`, {}); }
   revealSolution(id: number) { return this.post<M.ExerciseDetail>(`/practice/${id}/solution`, {}); }
   setExerciseStatus(id: number, status: M.PracticeStatus) { return this.put<M.ExerciseDetail>(`/practice/${id}/status`, { status }); }
+  saveExerciseFiles(id: number, files: M.WorkspaceFile[]) { return this.put<M.ExerciseDetail>(`/practice/${id}/files`, { files }); }
+  submitExercise(id: number, files: M.WorkspaceFile[], passed: number, total: number) {
+    return this.post<M.ExerciseDetail>(`/practice/${id}/submissions`, { files, passed, total });
+  }
+  saveExerciseCriteria(id: number, checked: number[]) { return this.put<M.ExerciseDetail>(`/practice/${id}/criteria`, { checked }); }
+
+  // ----- Code Playground -----
+  playgroundProjects() { return this.get<M.PlaygroundProjectSummary[]>('/playground/projects'); }
+  playgroundProject(id: number) { return this.get<M.PlaygroundProject>(`/playground/projects/${id}`); }
+  createPlaygroundProject(body: { name: string; kind: M.WorkspaceKind; template: string | null; files: M.WorkspaceFile[] }) {
+    return this.post<M.PlaygroundProject>('/playground/projects', body);
+  }
+  updatePlaygroundProject(id: number, body: { name?: string; files?: M.WorkspaceFile[] }) {
+    return this.put<M.PlaygroundProject>(`/playground/projects/${id}`, body);
+  }
+  deletePlaygroundProject(id: number) { return this.delete(`/playground/projects/${id}`); }
 
   // ----- Interviews -----
   interviews(query: Query = {}) { return this.get<M.InterviewList>('/interviews', query); }
@@ -90,6 +106,7 @@ export class ApiService {
 
   // ----- Topic videos -----
   topicVideos(topicId: number) { return this.get<M.TopicVideos>(`/topics/${topicId}/videos`); }
+  videoLibrary(language: M.VideoLanguage | null = null) { return this.get<M.VideoLibrary>(`/videos/library`, { language }); }
   /** The API checks the link with YouTube before saving it. */
   addTopicVideo(topicId: number, url: string) { return this.post<M.TopicVideo>(`/topics/${topicId}/videos`, { url }); }
   removeTopicVideo(id: number) { return this.delete(`/topic-videos/${id}`); }
