@@ -11,7 +11,7 @@
   <div class="grid grid-dashboard">
 
     <!-- A. Welcome + B. overall progress -->
-    <section class="card hero span-8" aria-labelledby="page-title">
+    <section class="card hero span-8" aria-labelledby="page-title" data-tour="dashboard-hero">
       <div class="hero-text">
         <p class="eyebrow">{{ greetingKey() | t }} 👋</p>
         <h1 id="page-title" tabindex="-1">{{ 'app.fullName' | t }}</h1>
@@ -36,7 +36,7 @@
     </section>
 
     <!-- Today -->
-    <section class="card span-4 today-card" aria-labelledby="today-h">
+    <section class="card span-4 today-card" aria-labelledby="today-h" data-tour="dashboard-today">
       <h2 id="today-h" class="card-title"><app-icon name="flame" /> {{ 'common.today' | t }}</h2>
       <p class="streak">{{ d.streakDays > 0 ? ('dashboard.streak' | t: { n: d.streakDays }) : ('dashboard.noStreak' | t) }}</p>
       <p class="small">{{ 'dashboard.todayGoal' | t: { done: d.minutesToday, goal: d.dailyGoalMinutes } }}</p>
@@ -56,7 +56,7 @@
     </section>
 
     <!-- C. Continue learning -->
-    <section class="card span-6 accent-card" aria-labelledby="continue-h">
+    <section class="card span-6 accent-card" aria-labelledby="continue-h" data-tour="dashboard-continue">
       <h2 id="continue-h" class="card-title"><app-icon name="sparkle" /> {{ 'dashboard.continueLearning' | t }}</h2>
       @if (d.recommendation; as rec) {
         <div class="rec">
@@ -83,7 +83,7 @@
     </section>
 
     <!-- D. Today's plan -->
-    <section class="card span-6" aria-labelledby="plan-h">
+    <section class="card span-6" aria-labelledby="plan-h" data-tour="dashboard-plan">
       <div class="card-head">
         <h2 id="plan-h" class="card-title"><app-icon name="calendar" /> {{ 'dashboard.todayPlan' | t }}</h2>
         <div class="segmented" role="radiogroup" [attr.aria-label]="'dashboard.planIntro' | t">
@@ -121,7 +121,7 @@
     </section>
 
     <!-- F. Skills overview -->
-    <section class="card span-6" aria-labelledby="skills-h">
+    <section class="card span-6" aria-labelledby="skills-h" data-tour="dashboard-skills">
       <div class="card-head">
         <h2 id="skills-h" class="card-title"><app-icon name="layers" /> {{ 'dashboard.skills' | t }}</h2>
         <a routerLink="/progress" class="link-sm">{{ 'common.viewAll' | t }}</a>
@@ -141,7 +141,7 @@
     </section>
 
     <!-- E. Projects -->
-    <section class="card span-6" aria-labelledby="projects-h">
+    <section class="card span-6" aria-labelledby="projects-h" data-tour="dashboard-projects">
       <div class="card-head">
         <h2 id="projects-h" class="card-title"><app-icon name="folder" /> {{ 'dashboard.projects' | t }}</h2>
         <a routerLink="/projects" class="link-sm">{{ 'common.viewAll' | t }}</a>
@@ -164,7 +164,7 @@
     </section>
 
     <!-- G. Recent activity -->
-    <section class="card span-7" aria-labelledby="activity-h">
+    <section class="card span-7" aria-labelledby="activity-h" data-tour="dashboard-activity">
       <h2 id="activity-h" class="card-title"><app-icon name="clock" /> {{ 'dashboard.recentActivity' | t }}</h2>
       @if (d.recentActivity.length === 0) {
         <p class="muted">{{ 'dashboard.noActivity' | t }}</p>
@@ -187,7 +187,7 @@
     </section>
 
     <!-- H. Quick actions -->
-    <section class="card span-5" aria-labelledby="actions-h">
+    <section class="card span-5" aria-labelledby="actions-h" data-tour="dashboard-actions">
       <h2 id="actions-h" class="card-title"><app-icon name="target" /> {{ 'dashboard.quickActions' | t }}</h2>
       <div class="quick-grid">
         @if (d.recommendation; as rec) {

@@ -23,7 +23,7 @@ export const TYPE_ICONS: Record<ExerciseType, string> = { Coding: 'code', Debugg
     } @else if (data.error()) {
       <app-error-state [error]="data.error()" (retry)="data.reload()" />
     } @else if (data.value(); as overview) {
-      <div class="grid grid-4 stat-cards">
+      <div class="grid grid-4 stat-cards" data-tour="practice-types">
         @for (s of overview.stats; track s.type) {
           <button type="button" class="card stat-card" [class.selected]="type() === s.type" (click)="setType(type() === s.type ? '' : s.type)"
                   [attr.aria-pressed]="type() === s.type">
@@ -35,7 +35,7 @@ export const TYPE_ICONS: Record<ExerciseType, string> = { Coding: 'code', Debugg
         }
       </div>
 
-      <div class="toolbar">
+      <div class="toolbar" data-tour="practice-filters">
         <div class="segmented" role="radiogroup" [attr.aria-label]="'common.filters' | t">
           <button type="button" role="radio" [attr.aria-checked]="type() === ''" [class.active]="type() === ''" (click)="setType('')">{{ 'common.all' | t }}</button>
           @for (t of types; track t) {
@@ -53,7 +53,7 @@ export const TYPE_ICONS: Record<ExerciseType, string> = { Coding: 'code', Debugg
       @if (visible().length === 0) {
         <app-empty-state icon="code" [title]="'practice.empty' | t" />
       } @else {
-        <div class="grid grid-3">
+        <div class="grid grid-3" data-tour="practice-list">
           @for (e of visible(); track e.id) {
             <a class="card exercise-card" [routerLink]="['/practice', e.id]" [attr.data-status]="e.status">
               <div class="exercise-card-head">

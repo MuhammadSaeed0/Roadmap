@@ -1,6 +1,8 @@
 <app-page-header [title]="'roadmap.title' | t" [subtitle]="'roadmap.subtitle' | t">
-  <button type="button" class="btn btn-secondary btn-sm" (click)="setAll(true)">{{ 'roadmap.expandAll' | t }}</button>
-  <button type="button" class="btn btn-ghost btn-sm" (click)="setAll(false)">{{ 'roadmap.collapseAll' | t }}</button>
+  <div class="row-gap" data-tour="roadmap-header">
+    <button type="button" class="btn btn-secondary btn-sm" (click)="setAll(true)">{{ 'roadmap.expandAll' | t }}</button>
+    <button type="button" class="btn btn-ghost btn-sm" (click)="setAll(false)">{{ 'roadmap.collapseAll' | t }}</button>
+  </div>
 </app-page-header>
 
 @if (data.initialLoading()) {
@@ -8,7 +10,7 @@
 } @else if (data.error()) {
   <app-error-state [error]="data.error()" (retry)="data.reload()" />
 } @else if (data.value(); as roadmap) {
-  <ol class="timeline" role="list">
+  <ol class="timeline" role="list" data-tour="roadmap-phases">
     @for (phase of roadmap.phases; track phase.id) {
       @let current = phase.id === roadmap.currentPhaseId;
       <li class="phase card" [id]="'phase-' + phase.id" [class.current]="current" [class.done]="phase.percent >= 100">

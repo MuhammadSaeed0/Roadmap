@@ -42,7 +42,7 @@ const PAGE_SIZE = 20;
       <section class="card"><app-skeleton [rows]="3" [height]="40" /></section>
     } @else {
       @let s = overview()!.stats;
-      <section class="card admin-stats" aria-labelledby="admin-stats-h">
+      <section class="card admin-stats" aria-labelledby="admin-stats-h" data-tour="admin-stats">
         <h2 id="admin-stats-h" class="sr-only">{{ 'admin.statsTitle' | t }}</h2>
         <dl class="stat-row admin-stat-row">
           <div><dt>{{ 'admin.stats.total' | t }}</dt><dd>{{ s.total | fmtNum }}</dd></div>
@@ -64,7 +64,7 @@ const PAGE_SIZE = 20;
       </section>
     }
 
-    <div class="tabs admin-tabs" role="tablist" [attr.aria-label]="'admin.title' | t">
+    <div class="tabs admin-tabs" data-tour="admin-tabs" role="tablist" [attr.aria-label]="'admin.title' | t">
       @for (t of tabs; track t) {
         <button type="button" role="tab" [id]="'tab-' + t" [attr.aria-selected]="tab() === t" [attr.aria-controls]="'panel-' + t"
                 [class.active]="tab() === t" (click)="selectTab(t)">{{ 'admin.tabs.' + t | t }}</button>
@@ -73,7 +73,7 @@ const PAGE_SIZE = 20;
 
     @switch (tab()) {
       @case ('users') {
-        <section class="card" id="panel-users" role="tabpanel" aria-labelledby="tab-users">
+        <section class="card" id="panel-users" role="tabpanel" aria-labelledby="tab-users" data-tour="admin-users">
           <form class="toolbar" role="search" (ngSubmit)="search()">
             <div class="input-icon admin-search">
               <app-icon name="search" [size]="16" />

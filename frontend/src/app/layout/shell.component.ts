@@ -7,11 +7,16 @@ import { ApiService } from '../core/api.service';
 import { I18nService } from '../core/i18n/i18n.service';
 import { TranslatePipe } from '../core/i18n/pipes';
 import { AuthService } from '../core/auth.service';
+import { isHelpId } from '../core/tour/tour.config';
+import { TourService } from '../core/tour/tour.service';
 import { ThemeService, ToastService } from '../core/ui-services';
 import { IconComponent } from '../shared/icon.component';
 import { ConfirmDialogComponent, ToastHostComponent } from '../shared/ui.components';
 import { GlobalSearchComponent } from './global-search.component';
 import { SessionDialogComponent, SessionDialogService } from './session-dialog.component';
+import { HelpMenuComponent } from './tour/help-menu.component';
+import { TourOverlayComponent } from './tour/tour-overlay.component';
+import { TourWelcomeComponent } from './tour/tour-welcome.component';
 
 interface NavItem { path: string; key: string; icon: string; }
 
@@ -19,7 +24,7 @@ interface NavItem { path: string; key: string; icon: string; }
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, RouterOutlet, RouterLink, RouterLinkActive, IconComponent, TranslatePipe, GlobalSearchComponent,
-    ToastHostComponent, ConfirmDialogComponent, SessionDialogComponent],
+    ToastHostComponent, ConfirmDialogComponent, SessionDialogComponent, HelpMenuComponent, TourOverlayComponent, TourWelcomeComponent],
   template: `
     <a class="skip-link" href="#main">{{ 'common.skipToContent' | t }}</a>
 
@@ -45,7 +50,7 @@ interface NavItem { path: string; key: string; icon: string; }
           </button>
         </div>
 
-        <nav class="nav">
+        <nav class="nav" data-tour="nav">
           @for (group of groups(); track group.key) {
             <p class="nav-group">{{ group.key | t }}</p>
             <ul role="list">
@@ -77,7 +82,7 @@ interface NavItem { path: string; key: string; icon: string; }
           </header>
         } @else {
         <header class="topbar">
-          <button type="button" class="icon-btn menu-btn" (click)="navOpen.set(true)" [attr.aria-label]="'common.menu' | t"
+          <button type="button" class="icon-btn menu-btn" data-tour="menu" (click)="navOpen.set(true)" [attr.aria-label]="'common.menu' | t"
                   aria-controls="sidebar" [attr.aria-expanded]="navOpen()">
             <app-icon name="menu" />
           </button>
@@ -87,10 +92,10 @@ interface NavItem { path: string; key: string; icon: string; }
             <span class="crumb-current">{{ titleKey() | t }}</span>
           </div>
 
-          <app-global-search class="topbar-search" />
+          <app-global-search class="topbar-search" data-tour="search" />
 
           <div class="topbar-actions">
-            <div class="menu-wrap">
+            <div class="menu-wrap" data-tour="quick-add">
               <button type="button" class="btn btn-primary btn-sm quick-add" (click)="quickOpen.set(!quickOpen())"
                       aria-haspopup="menu" [attr.aria-expanded]="quickOpen()">
                 <app-icon name="plus" [size]="16" /><span class="hide-sm">{{ 'quickAdd.title' | t }}</span>
@@ -105,7 +110,9 @@ interface NavItem { path: string; key: string; icon: string; }
 
             <ng-container *ngTemplateOutlet="prefs" />
 
-            <div class="menu-wrap account-wrap">
+            <app-help-menu class="help-in-topbar" />
+
+            <div class="menu-wrap account-wrap" data-tour="account">
               <button type="button" class="avatar-btn" (click)="accountOpen.set(!accountOpen())" aria-haspopup="menu"
                       [attr.aria-expanded]="accountOpen()" [attr.aria-label]="'auth.account' | t" [title]="auth.displayName()">
                 <span class="avatar" aria-hidden="true">{{ initials() }}</span>
@@ -129,6 +136,7 @@ interface NavItem { path: string; key: string; icon: string; }
         }
 
         <ng-template #prefs>
+          <div class="topbar-prefs" data-tour="prefs">
           <div class="lang-switch" role="group" [attr.aria-label]="'common.language' | t">
             <button type="button" [class.active]="i18n.lang() === 'en'" [attr.aria-pressed]="i18n.lang() === 'en'"
                     (click)="i18n.setLang('en')" lang="en">EN</button>
@@ -141,6 +149,7 @@ interface NavItem { path: string; key: string; icon: string; }
                   [title]="(theme.resolved() === 'dark' ? 'common.light' : 'common.dark') | t">
             <app-icon [name]="theme.resolved() === 'dark' ? 'sun' : 'moon'" />
           </button>
+          </div>
         </ng-template>
 
         @if (apiOffline()) {
@@ -160,6 +169,10 @@ interface NavItem { path: string; key: string; icon: string; }
     <app-toast-host />
     <app-confirm-dialog />
     <app-session-dialog />
+    @if (!authLayout()) { <app-help-menu [floating]="true" /> }
+    <!-- The tour's overlay and welcome load on first use, so they don't add to the app's first download. -->
+    @defer (when tour.run() || tour.picking()) { <app-tour-overlay /> }
+    @defer (when tour.showWelcome()) { <app-tour-welcome [enabled]="!authLayout()" /> }
   `,
 })
 export class ShellComponent {
@@ -171,6 +184,7 @@ export class ShellComponent {
   private readonly sessions = inject(SessionDialogService);
   protected readonly auth = inject(AuthService);
   private readonly toast = inject(ToastService);
+  protected readonly tour = inject(TourService);
 
   protected readonly navOpen = signal(false);
   protected readonly quickOpen = signal(false);
@@ -215,6 +229,10 @@ export class ShellComponent {
       while (r.firstChild) r = r.firstChild;
       this.titleKey.set((r.snapshot.data['titleKey'] as string) ?? 'app.name');
       this.authLayout.set(r.snapshot.data['layout'] === 'auth');
+      // The help menu explains the page the route names; a page guide ends when the page changes.
+      const helpId = r.snapshot.data['helpId'];
+      if (this.tour.helpId() !== (isHelpId(helpId) ? helpId : null)) this.tour.endIfNotTour();
+      this.tour.helpId.set(isHelpId(helpId) ? helpId : null);
       this.quickOpen.set(false);
       this.accountOpen.set(false);
     });
@@ -282,7 +300,7 @@ export class ShellComponent {
   @HostListener('document:click', ['$event'])
   protected onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    if (!target.closest?.('.menu-wrap:not(.account-wrap)')) this.quickOpen.set(false);
+    if (!target.closest?.('.menu-wrap:not(.account-wrap):not(.help-wrap)')) this.quickOpen.set(false);
     if (!target.closest?.('.account-wrap')) this.accountOpen.set(false);
   }
 

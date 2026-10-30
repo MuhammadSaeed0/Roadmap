@@ -1,6 +1,6 @@
 <app-page-header [title]="'progress.title' | t" />
 
-<div class="tabs" role="tablist" [attr.aria-label]="'progress.title' | t">
+<div class="tabs" data-tour="progress-tabs" role="tablist" [attr.aria-label]="'progress.title' | t">
   @for (t of tabs; track t) {
     <button type="button" role="tab" [id]="'tab-' + t" [attr.aria-selected]="tab() === t" [attr.aria-controls]="'panel-' + t"
             [class.active]="tab() === t" (click)="setTab(t)">{{ 'progress.tabs.' + t | t }}</button>
@@ -9,7 +9,7 @@
 
 <!-- ========== Overview ========== -->
 @if (tab() === 'overview') {
-  <div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview">
+  <div role="tabpanel" data-tour="progress-panel" id="panel-overview" aria-labelledby="tab-overview">
     @if (report.initialLoading()) {
       <div class="grid grid-2"><div class="card"><app-skeleton [rows]="6" /></div><div class="card"><app-skeleton [rows]="6" /></div></div>
     } @else if (report.error()) {
@@ -160,7 +160,7 @@
 
 <!-- ========== Weekly review ========== -->
 @if (tab() === 'weekly') {
-  <div role="tabpanel" id="panel-weekly" aria-labelledby="tab-weekly">
+  <div role="tabpanel" data-tour="progress-panel" id="panel-weekly" aria-labelledby="tab-weekly">
     @if (weekly.initialLoading()) {
       <div class="card"><app-skeleton [rows]="6" /></div>
     } @else if (weekly.error()) {
@@ -237,7 +237,7 @@
 
 <!-- ========== Review queue ========== -->
 @if (tab() === 'review') {
-  <div role="tabpanel" id="panel-review" aria-labelledby="tab-review">
+  <div role="tabpanel" data-tour="progress-panel" id="panel-review" aria-labelledby="tab-review">
     @if (reviews.initialLoading()) {
       <div class="card"><app-skeleton [rows]="5" /></div>
     } @else if (reviews.error()) {

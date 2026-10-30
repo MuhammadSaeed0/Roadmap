@@ -24,7 +24,7 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
       @if (r.groups.length === 0) {
         <app-empty-state icon="search" [title]="'search.noResults' | t: { q: query() }" />
       } @else {
-        <div class="grid grid-2">
+        <div class="grid grid-2" data-tour="search-results">
           @for (g of r.groups; track g.category) {
             <section class="card" [attr.aria-labelledby]="'sg-' + g.category">
               <h2 class="card-title" [id]="'sg-' + g.category">{{ 'search.categories.' + g.category | t }} <span class="muted small">{{ g.items.length }}</span></h2>

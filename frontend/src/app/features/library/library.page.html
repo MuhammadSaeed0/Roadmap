@@ -1,6 +1,6 @@
 <app-page-header [title]="'library.title' | t" [subtitle]="'library.subtitle' | t" />
 
-<section class="card filter-bar" [attr.aria-label]="'common.filters' | t">
+<section class="card filter-bar" [attr.aria-label]="'common.filters' | t" data-tour="library-filters">
   <div class="field grow">
     <label for="lib-q" class="sr-only">{{ 'library.searchPlaceholder' | t }}</label>
     <div class="input-icon">
@@ -49,7 +49,7 @@
       <button type="button" class="btn btn-secondary" (click)="clear()">{{ 'common.clear' | t }}</button>
     </app-empty-state>
   } @else {
-    <div class="card table-card" [class.is-loading]="data.loading()">
+    <div class="card table-card" [class.is-loading]="data.loading()" data-tour="library-list">
       <ul class="topic-list" role="list">
         @for (topic of result.items; track topic.id) {
           <li class="topic-row" [attr.data-status]="topic.status">

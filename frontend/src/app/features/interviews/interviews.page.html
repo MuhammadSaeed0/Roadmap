@@ -1,5 +1,5 @@
 <app-page-header [title]="'interviews.title' | t" [subtitle]="'interviews.subtitle' | t">
-  <div class="segmented" role="radiogroup" [attr.aria-label]="'common.mode' | t">
+  <div class="segmented" role="radiogroup" [attr.aria-label]="'common.mode' | t" data-tour="interviews-modes">
     <button type="button" role="radio" [attr.aria-checked]="mode() === 'study'" [class.active]="mode() === 'study'" (click)="setMode('study')">
       <app-icon name="book" [size]="15" /> {{ 'interviews.studyMode' | t }}
     </button>
@@ -10,7 +10,7 @@
 </app-page-header>
 
 @if (data.value(); as list) {
-  <div class="category-chips" role="group" [attr.aria-label]="'interviews.allCategories' | t">
+  <div class="category-chips" data-tour="interviews-categories" role="group" [attr.aria-label]="'interviews.allCategories' | t">
     <button type="button" class="chip chip-btn" [class.active]="category() === ''" (click)="setCategory('')">{{ 'interviews.allCategories' | t }}</button>
     @for (c of list.categories; track c.category) {
       <button type="button" class="chip chip-btn" [class.active]="category() === c.category" (click)="setCategory(c.category)">
@@ -19,7 +19,7 @@
     }
   </div>
 }
-<div class="toolbar">
+<div class="toolbar" data-tour="interviews-filters">
   <div class="field grow">
     <label for="iq-q" class="sr-only">{{ 'interviews.searchPlaceholder' | t }}</label>
     <div class="input-icon">
@@ -48,7 +48,7 @@
   <app-empty-state icon="chat" [title]="'interviews.empty' | t" />
 } @else if (mode() === 'study') {
   <p class="small muted">{{ 'interviews.count' | t: { n: questions().length } }}</p>
-  <ul class="qa-list" role="list">
+  <ul class="qa-list" role="list" data-tour="interviews-list">
     @for (q of visible(); track q.id) {
       <li class="card qa" [id]="'q-' + q.id">
         <button type="button" class="qa-head" (click)="toggle(q.id)" [attr.aria-expanded]="isRevealed(q.id)" [attr.aria-controls]="'qa-' + q.id">
@@ -94,7 +94,7 @@
       <button type="button" class="btn btn-primary" (click)="restart()"><app-icon name="refresh" [size]="15" /> {{ 'interviews.restart' | t }}</button>
     </app-empty-state>
   } @else if (current(); as q) {
-    <section class="card practice-card" aria-live="polite">
+    <section class="card practice-card" aria-live="polite" data-tour="interviews-list">
       <div class="card-head">
         <span class="small muted">{{ 'interviews.questionOf' | t: { n: index() + 1, total: questions().length } }}</span>
         <span class="chips">

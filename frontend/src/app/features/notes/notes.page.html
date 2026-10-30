@@ -1,9 +1,9 @@
 <app-page-header [title]="'notes.title' | t" [subtitle]="'notes.subtitle' | t">
-  <button type="button" class="btn btn-primary btn-sm" (click)="createNew()"><app-icon name="plus" [size]="15" /> {{ 'notes.new' | t }}</button>
+  <button type="button" class="btn btn-primary btn-sm" data-tour="notes-new" (click)="createNew()"><app-icon name="plus" [size]="15" /> {{ 'notes.new' | t }}</button>
 </app-page-header>
 
 <div class="notes-layout">
-  <section class="card notes-list" [attr.aria-label]="'notes.title' | t">
+  <section class="card notes-list" data-tour="notes-list" [attr.aria-label]="'notes.title' | t">
     <div class="input-icon">
       <app-icon name="search" [size]="16" />
       <label for="notes-q" class="sr-only">{{ 'notes.searchPlaceholder' | t }}</label>
@@ -41,7 +41,7 @@
     }
   </section>
 
-  <section class="card note-editor" aria-labelledby="editor-h">
+  <section class="card note-editor" aria-labelledby="editor-h" data-tour="notes-editor">
     @if (selectedId() === null) {
       <app-empty-state icon="edit" [title]="'notes.selectNote' | t" />
     } @else {

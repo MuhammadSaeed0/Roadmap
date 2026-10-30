@@ -33,13 +33,14 @@ Angular 22 + TypeScript   →   ASP.NET Core 10 Web API (C#)   →   EF Core 10 
 10. [Email verification, approval and administration](#email-verification-approval-and-administration)
 11. [Deployment](#deployment)
 12. [YouTube videos](#youtube-videos)
-13. [Bilingual UI and right-to-left support](#bilingual-ui-and-right-to-left-support)
-14. [How progress, recommendations and reviews are calculated](#how-progress-recommendations-and-reviews-are-calculated)
-15. [Editing the learning content](#editing-the-learning-content)
-16. [Tests](#tests)
-17. [Troubleshooting](#troubleshooting)
-18. [Known limitations](#known-limitations)
-19. [Ideas for future improvements](#ideas-for-future-improvements)
+13. [Onboarding tour and help](#onboarding-tour-and-help)
+14. [Bilingual UI and right-to-left support](#bilingual-ui-and-right-to-left-support)
+15. [How progress, recommendations and reviews are calculated](#how-progress-recommendations-and-reviews-are-calculated)
+16. [Editing the learning content](#editing-the-learning-content)
+17. [Tests](#tests)
+18. [Troubleshooting](#troubleshooting)
+19. [Known limitations](#known-limitations)
+20. [Ideas for future improvements](#ideas-for-future-improvements)
 
 ---
 
@@ -319,6 +320,26 @@ dotnet user-secrets set "YouTube:ApiKey" "YOUR_KEY"
 
 The key is used only by the API; it is never sent to the browser.
 
+## Onboarding tour and help
+
+- **First visit:** an approved account is greeted once with a short welcome and the choice to take the tour or skip it.
+  Nothing is forced; the app is usable underneath, and closing the welcome counts as "seen".
+- **Guided tour:** 20 steps (21 for administrators) across the menu, search, quick add, language and theme, the
+  dashboard and every main page, moving between pages by itself. Each step highlights the real element and explains
+  it, with Back / Next / Skip / Close, a "Step 3 of 21" indicator, arrow keys and Esc. Closing part-way remembers
+  the step; **Help → Continue the tour** picks it up again, even after a refresh.
+- **Help, any time:** the **?** button in the top bar (a round button in the corner on phones) offers:
+  explore the website (restart the tour), learn about this page (a walk through each part of the current page),
+  explore a specific section (click any highlighted part to see what it does), and quick help (the page at a glance
+  with tips; also on the **?** key).
+- **Where things live:** `core/tour/tour.config.ts` lists what can be explained and in which order, keyed by
+  `data-tour="…"` attributes on the elements; `tour-content.en.ts` / `.ar.ts` hold the texts (loaded only when needed,
+  and a missing translation fails the build); `layout/tour/` has the overlay, the welcome and the help menu. Routes
+  name their page guide in `data.helpId`. To explain something new: add an id to `SECTION_IDS`, put `data-tour` on
+  the element, list it under its page in `PAGE_HELP`, and write its text in both languages.
+- **Progress** is stored per account in the browser (`localStorage`): it only decides whether to greet someone, so it
+  doesn't need a database change, and a new device simply offers the tour again.
+
 ## Bilingual UI and right-to-left support
 
 - **UI strings** are in `frontend/src/app/core/i18n/en.ts` and `ar.ts`. The `Translations` type makes `ar.ts` match `en.ts` key for key, so a missing Arabic string is a **compile error**. Components use the `t` pipe: `{{ 'nav.dashboard' | t }}`.
@@ -358,7 +379,7 @@ Edit a file and restart the API. The seeder **inserts or updates rows by slug or
 
 ```bash
 dotnet test DevPath.slnx          # 160 backend tests
-cd frontend && npm test           # 36 frontend tests (Vitest), add -- --watch=false for one run
+cd frontend && npm test           # 47 frontend tests (Vitest), add -- --watch=false for one run
 ```
 
 - **Backend (xUnit):** progress weighting (including "SQL knowledge doesn't inflate progress"), recommendation rules, review intervals, week boundaries and streaks; the seeder (full content, idempotent re-seeding that keeps user progress, rejection of invalid data); and HTTP tests through `WebApplicationFactory` (status codes, ProblemDetails codes, validation, notes CRUD, practice gating, locked change requests, Arabic search…).
@@ -366,7 +387,7 @@ cd frontend && npm test           # 36 frontend tests (Vitest), add -- --watch=f
 - **Verification, approval and administration:** verification links (valid, expired, reused, forged, wrong purpose, resend throttling, failed delivery), every blocked state on every request, approve / reject / suspend / reactivate with emails and audit entries, regular users kept out of the admin area, admin limits (self, owner, other admins, role changes), the owner hierarchy, owner takeover by pre-registration, immediate session revocation after a reset, idempotent owner set-up, the production configuration check, and the single-site hosting (SPA fallback, security headers, foreign-origin requests).
 - **Videos:** relevance filtering, shared cache, missing key, quota and network failures, link validation, duplicates and per-account flags. YouTube is replaced by a fake, so tests never use the internet.
 - The API tests use **in-memory SQLite** so they never touch your LocalDB database. SQLite can't verify SQL Server-specific behaviour (for example `rowversion` or exact collation), so that was checked separately against LocalDB.
-- **Frontend (Vitest):** route guards for every account state and the admin area, translation parity for the new screens, password rules, safe return URLs, auth error messages, YouTube link parsing and URL building; language switching, RTL, persistence and fallback; bidi marks; HTML escaping in the highlighter; the loader states; the progress ring.
+- **Frontend (Vitest):** the onboarding tour (greeting once per account, progress and resume after a refresh, skip and completion, the admin-only step, page guides limited to what's on screen, every page having a guide and every section a text in both languages), route guards for every account state and the admin area, translation parity for the new screens, password rules, safe return URLs, auth error messages, YouTube link parsing and URL building; language switching, RTL, persistence and fallback; bidi marks; HTML escaping in the highlighter; the loader states; the progress ring.
 
 ## Troubleshooting
 

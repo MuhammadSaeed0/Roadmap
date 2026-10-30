@@ -18,7 +18,7 @@ import { ErrorStateComponent, PageHeaderComponent, ProgressRingComponent, Skelet
     } @else if (data.error()) {
       <app-error-state [error]="data.error()" (retry)="data.reload()" />
     } @else if (data.value(); as projects) {
-      <div class="grid grid-2">
+      <div class="grid grid-2" data-tour="projects-list">
         @for (p of projects; track p.id) {
           <article class="card project-card" [attr.data-status]="p.status">
             <div class="project-card-head">
