@@ -90,8 +90,8 @@ start-up re-applies the owner's administrator role if it was ever removed.
 The script:
 
 1. reads `deploy/production.env` and refuses placeholder values;
-2. runs the backend and Angular tests (`-SkipTests` to skip);
-3. builds the Angular app and publishes the API with it in `wwwroot` (`deploy/out/publish`);
+2. runs the backend and Angular tests and checks every Practice Lab exercise (`npm run verify:exercises`) (`-SkipTests` to skip);
+3. builds the in-browser code runners (`npm run build:runners`: the C# compiler on .NET WebAssembly and the Angular preview packages, which need the .NET 10 SDK and Node 24), builds the Angular app, writes Brotli copies of its files (`npm run precompress`) and publishes the API with it in `wwwroot` (`deploy/out/publish`);
 4. runs `--check-config` against the published app with your settings;
 5. writes the settings into the published `web.config`;
 6. writes `deploy/out/migrations.sql`, an idempotent script of every migration (for running by hand if you prefer);

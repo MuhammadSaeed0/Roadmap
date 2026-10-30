@@ -10,12 +10,12 @@ public static class Tests
         Assert.Equal(15.99m, prices["mouse"]);
     }
 
-    [Test("Runs the requests in parallel (well under 900 ms)")]
+    [Test("Runs the three requests at the same time, not one after another")]
     public static async Task Parallel()
     {
-        var watch = System.Diagnostics.Stopwatch.StartNew();
-        await new PriceLoader(new PriceClient()).LoadAllAsync(Three);
-        Assert.True(watch.ElapsedMilliseconds < 750, $"took {watch.ElapsedMilliseconds} ms");
+        var client = new PriceClient();
+        await new PriceLoader(client).LoadAllAsync(Three);
+        Assert.Equal(3, client.MostAtOnce, "requests in flight at the same time");
     }
 
     [Test("Times out")]
