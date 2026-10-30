@@ -1028,6 +1028,133 @@
       "channel": "Milan Jovanović"
     }
   ],
+  "db-relational-basics": [
+    {
+      "videoId": "RBXZrPVjPyo",
+      "title": "What is SQL (Visually Explained) | #SQL Course 2",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "OqjJjpjDRLc",
+      "title": "What is a Relational Database?",
+      "channel": "IBM Technology"
+    },
+    {
+      "videoId": "Cr58jAj_YAc",
+      "title": "Install SQL Server & SSMS 2026 | Create Your First Database (Beginner Guide) | #SQL Course 3",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "oWTtxgERvo4",
+      "title": "How Databases Organize Data? - SQL Tutorial #3",
+      "channel": "Data with Baraa"
+    }
+  ],
+  "sql-select-basics": [
+    {
+      "videoId": "TDKoTItCVMU",
+      "title": "SQL SELECT Queries (Visually Explained) for Beginners | All Essential Clauses | #SQL Course 4",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "cMUJFau5Wvg",
+      "title": "SQL WHERE Conditions (Visually Explained) | AND, OR, NOT, LIKE, BETWEEN, IN | #SQL Course 7",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "q_zD7vmNDZw",
+      "title": "SQL ORDER BY - Sort your Results - SQL Tutorial #13",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "yg4ZhrjqYf8",
+      "title": "The Big 6 of SQL: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY",
+      "channel": "Maven Analytics"
+    }
+  ],
+  "sql-modify-data": [
+    {
+      "videoId": "ku3vMAP0h0s",
+      "title": "SQL DML Commands (Visually Explained) | INSERT, UPDATE, DELETE | #SQL Course 6",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "QX1eOjAZzws",
+      "title": "SQL Query Basics: Insert, Select, Update, and Delete",
+      "channel": "Engineer Man"
+    },
+    {
+      "videoId": "bhnrIforc7s",
+      "title": "Intermediate SQL Tutorial | Updating/Deleting Data",
+      "channel": "Alex The Analyst"
+    }
+  ],
+  "sql-tables-keys": [
+    {
+      "videoId": "3Qbq61A_sNs",
+      "title": "SQL DDL Commands (Visually Explained) | CREATE, ALTER, DROP | #SQL Course 5",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "MR0PK0qkCD8",
+      "title": "Primary Key and Foreign Key Constraints in SQL",
+      "channel": "Neso Academy"
+    },
+    {
+      "videoId": "DqnqHB60moY",
+      "title": "How to create table, primary key, foreign key, subquery using Microsoft SQL Server Management Studio",
+      "channel": "Sonya Zhang"
+    },
+    {
+      "videoId": "hwDa6R7G9sA",
+      "title": "SQL NULL vs Empty String vs Blank Space (Visually Explained) | #SQL Course 19",
+      "channel": "Data with Baraa"
+    }
+  ],
+  "sql-joins": [
+    {
+      "videoId": "aY7z4HcHm5M",
+      "title": "SQL Joins Basics (Visually Explained) | INNER, LEFT, RIGHT, FULL | #SQL Course 8",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "Yh4CrPHVBdE",
+      "title": "6 SQL Joins you MUST know! (Animated + Practice)",
+      "channel": "Anton Putra"
+    },
+    {
+      "videoId": "FjxtntY5sO0",
+      "title": "How to Join Tables in SQL | Clearly Explained | Beginners Start Here!",
+      "channel": "Maven Analytics"
+    },
+    {
+      "videoId": "pPvZQPE-j7A",
+      "title": "Joining Multiple Tables in SQL (Visually Explained) | 3+ Table Joins | #SQL Course 10",
+      "channel": "Data with Baraa"
+    }
+  ],
+  "sql-aggregates": [
+    {
+      "videoId": "AsuPVZ_EjEw",
+      "title": "SQL Aggregate Functions | COUNT, SUM, AVG, MAX, MIN  | #SQL Course 21",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "Y4GH8oNPTjY",
+      "title": "SQL GROUP BY Clause - SQL Tutorial #29",
+      "channel": "Data with Baraa"
+    },
+    {
+      "videoId": "nNrgRVIzeHg",
+      "title": "Advanced Aggregate Functions in SQL (GROUP BY, HAVING vs. WHERE)",
+      "channel": "Becoming a Data Scientist"
+    },
+    {
+      "videoId": "VQf0V6Wwbf4",
+      "title": "GROUP BY and HAVING Clause in SQL",
+      "channel": "Neso Academy"
+    }
+  ],
   "ef-dbcontext": [
     {
       "videoId": "nN9jOORIFtc",

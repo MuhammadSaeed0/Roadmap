@@ -1,6 +1,6 @@
 # DevPath — Full-Stack Developer Academy
 
-A bilingual (English / العربية) learning platform with private accounts for growing from SQL Server developer to **full-stack .NET + Angular developer**.
+A bilingual (English / العربية) learning platform with private accounts that takes beginners from their first line of code to **full-stack .NET + Angular developer**.
 It combines a personalised roadmap, four practical projects, a practice lab, interview preparation, notes, spaced review, analytics and a career-readiness view.
 New accounts confirm their email and are approved by an administrator before they can use the app. It runs locally for development and can be published as a single site to MonsterASP.NET ([deployment guide](docs/DEPLOYMENT.md)).
 
@@ -47,16 +47,16 @@ Angular 22 + TypeScript   →   ASP.NET Core 10 Web API (C#)   →   EF Core 10 
 ## Features
 
 - **Accounts**: sign-up, sign-in, sign-out, password reset and password change. Every account has its own private progress, notes, sessions, reviews, projects, practice answers, interview ratings, preferences and videos (see [Accounts and data privacy](#accounts-and-data-privacy)).
-- **Videos on every topic**: 3–4 hand-picked YouTube tutorials per topic (575 in total, all checked to exist and allow embedding), optional live suggestions from the YouTube API, plus your own videos added by link, with an in-page player and per-account "watched" and "saved" flags (see [YouTube videos](#youtube-videos)).
-- **A quiz on every topic**, right under the videos: 576 bilingual multiple-choice questions (4 per topic) in three levels that open one after another: the topic itself, the topic mixed with the topics just before it, and a wider review of the topics leading up to it. You need 75% to open the next level. The API grades answers, so the correct options never reach the browser before you answer, and each answer comes with a short explanation. The questions test each topic's ideas (what the videos teach); they weren't written from individual video transcripts.
+- **Videos on every topic**: 3–4 hand-picked YouTube tutorials per topic (598 in total, all checked to exist and allow embedding), optional live suggestions from the YouTube API, plus your own videos added by link, with an in-page player and per-account "watched" and "saved" flags (see [YouTube videos](#youtube-videos)).
+- **A quiz on every topic**, right under the videos: 600 bilingual multiple-choice questions (4 per topic) in three levels that open one after another: the topic itself, the topic mixed with the topics just before it, and a wider review of the topics leading up to it. You need 75% to open the next level. The API grades answers, so the correct options never reach the browser before you answer, and each answer comes with a short explanation. The questions test each topic's ideas (what the videos teach); they weren't written from individual video transcripts.
 - **Dashboard**: weighted overall progress, completed and remaining topics, time remaining, current phase, a "continue learning" recommendation with its reasons, a 30/60/120-minute study plan, project progress, per-skill progress, recent activity, study streak and quick actions.
-- **Roadmap**: 13 phases and 144 topics, from C# fundamentals to full-stack projects. SQL Server topics focus on what a SQL developer needs for .NET work, and each can be marked "already known".
+- **Roadmap**: 13 phases and 150 topics, from C# fundamentals to full-stack projects. No prior experience is assumed: phase 5 starts with databases and SQL from zero (tables, `SELECT`, `INSERT`/`UPDATE`/`DELETE`, keys, `JOIN`, `GROUP BY`) before EF Core, and phase 6 applies SQL Server in real applications. Any topic can still be marked "already known" from its page.
 - **Topic pages** cover: what it is, why it matters, how it works, a real-world example, a code example, a practice task, an independent challenge, verified resources, prerequisites, topics it unlocks, related projects, interview questions, exercises and notes. You can also set status, prior knowledge, confidence (0–5), add the topic to spaced review, and log study sessions.
 - **Learning Library**: server-side search, filters (skill, phase, status, priority, knowledge) and pagination. The filters are kept in the URL.
 - **Four projects**: Employee Management (C# console), Inventory API, Project Dashboard (Angular) and Sales and Order Management (full stack). They have 16 milestones, 62 tasks with acceptance criteria and topic links, 15 realistic **change requests** that unlock as a project progresses, a portfolio checklist and a repository link. Every task and change request has 3–4 YouTube videos on how to build that part (280 hand-picked videos in `SeedData/project-videos.json`, each checked with YouTube; tasks with fewer are topped up from their related topics' videos).
 - **Practice Lab**: 39 coding, debugging, real-world scenario and code-review exercises. The API enforces the flow *attempt → hints → solution*, so the solution is never sent before you've saved your own attempt.
 - **Interview preparation**: 855 bilingual questions in 17 categories (at least 50 each), each linked to a topic. Besides the stack (C#, .NET, ASP.NET Core, EF Core, SQL Server, TypeScript, Angular, REST, testing, Git, full-stack design) it covers the classic coding-interview themes: data structures, algorithms, object-oriented design, system design, concurrency and behavioral questions. These are written for this project, not copied from any book. Study mode shows question and answer, with search, difficulty and rating filters; practice mode shows one question at a time and you rate yourself (need review / partial / confident).
-- **Resources**: 145 free, mostly official links. Each one was checked over HTTP when it was seeded, and a **"Check all links"** button re-verifies them on demand.
+- **Resources**: 157 free, mostly official links. Each one was checked over HTTP when it was seeded, and a **"Check all links"** button re-verifies them on demand.
 - **Notes**: a searchable knowledge base. A note can be linked to a topic, project, task or interview question. Deleting asks for confirmation, and you're warned about unsaved changes.
 - **Progress and analytics**: separate progress per technology and per phase, a confidence distribution, project and practice completion, interview stats, study time per week, achievements, weak areas, a **weekly review** with suggested priorities, and the **spaced-review queue**.
 - **Career readiness**: eight evidence-based areas, each with an explanation, the evidence behind it and a next step, plus the portfolio checklist for every project. There is deliberately no single "job-ready %".
@@ -304,7 +304,7 @@ set-up, the settings, HTTPS and troubleshooting, is in [docs/DEPLOYMENT.md](docs
 
 Each topic page has a **Videos** section:
 
-- **Curated videos (no setup needed):** `SeedData/videos.json` lists 3–4 tutorials for every topic, 575 in total. They were found by searching the web for each topic and then checked one by one with YouTube (the video exists, is public and allows embedding); titles and channel names come from YouTube itself. The seeder loads them into the `CuratedVideos` table like any other content and keeps the table in sync with the file. They are shown whenever live suggestions aren't available.
+- **Curated videos (no setup needed):** `SeedData/videos.json` lists 3–4 tutorials for every topic, 598 in total. They were found by searching the web for each topic and then checked one by one with YouTube (the video exists, is public and allows embedding); titles and channel names come from YouTube itself. The seeder loads them into the `CuratedVideos` table like any other content and keeps the table in sync with the file. They are shown whenever live suggestions aren't available.
 - **Live suggestions (optional)** are found with the **YouTube Data API v3** when you set an API key: the API searches for "*skill* + *topic title* tutorial" (for example "C# Loops tutorial"), confirms each result is public, processed and embeddable, and drops Shorts, very long streams, near-duplicate titles, videos for another stack (a C# topic won't show Python) and videos whose title doesn't mention the topic. Results are **cached per topic for 30 days** and shared by all accounts, so each topic costs about 101 quota units a month (the free daily quota is 10,000).
 - **Add your own** by pasting any YouTube link (watch, youtu.be, shorts or embed). The API checks it with YouTube's public oEmbed endpoint, so this works **without an API key**, and rejects missing, private and non-embeddable videos. Added videos are private to your account.
 - Videos play in the page with the privacy-enhanced player (`youtube-nocookie.com`), loaded only when you click; every card also links to YouTube.
@@ -355,11 +355,11 @@ The key is used only by the API; it is never sent to the browser.
 **Weighted progress** (`Services/ProgressOptions.cs`, configurable in `appsettings.json` → `Progress`):
 
 ```text
-topic weight = priority weight (Core 3, Important 2, Optional 1) × skill weight (SQL Server 0.4, Git 0.6, C# 1.0 …)
+topic weight = priority weight (Core 3, Important 2, Optional 1) × skill weight (C# 1.0, SQL Server 1.0, Professional 0.7, Git 0.6 …)
 progress %   = Σ weight of finished topics ÷ Σ weight of all topics
 ```
 
-SQL Server's low weight means that marking your existing SQL knowledge as known doesn't make you look ready in C# or Angular. Per-skill and per-phase progress, confidence, projects and interview practice are always shown **separately**.
+Supporting skills (Git, professional skills) weigh a little less than the core stack. Per-skill and per-phase progress, confidence, projects and interview practice are always shown **separately**.
 
 **"What should I study next?"** (`Services/RecommendationEngine.cs`) is a deterministic score with **no AI**. A topic is a candidate only if it isn't finished and its prerequisites are done (unless you allow skipping them in Settings). Points are given for being in progress, being in the current phase, core priority, a "need to learn" mark, low confidence, being needed by your active project, unlocking other topics, matching your focus skill and fitting the time you have. Each bonus comes with a reason code that the UI shows you.
 

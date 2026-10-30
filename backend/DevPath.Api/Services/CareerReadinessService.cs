@@ -25,8 +25,8 @@ public class CareerReadinessService(AppDbContext db, LearningStateLoader stateLo
         var summaries = await projects.GetSummariesAsync(ct);
         var areas = new List<ReadinessAreaDto>();
 
-        // 1. Core topics (SQL Server excluded: existing expertise shouldn't mask gaps).
-        var core = state.Topics.Where(t => t.Priority == TopicPriority.Core && t.Skill != SkillArea.SqlServer).ToList();
+        // 1. Core topics.
+        var core = state.Topics.Where(t => t.Priority == TopicPriority.Core).ToList();
         var coreDone = core.Count(t => t.IsDone);
         var firstCoreGap = core.FirstOrDefault(t => !t.IsDone);
         areas.Add(Area("coreTopics", Pct(coreDone, core.Count),

@@ -1,4 +1,5 @@
-// SQL: SELECT c.Name AS Category, MONTH(o.Date) AS Month, SUM(l.Qty * l.Price) AS Total
+// The same query in SQL (you will learn it in phase 5):
+//      SELECT c.Name AS Category, MONTH(o.Date) AS Month, SUM(l.Qty * l.Price) AS Total
 //      ... GROUP BY c.Name, MONTH(o.Date)
 var monthly = orders
     .SelectMany(o => o.Lines, (o, l) => new { o.Date, l.Product.Category, Amount = l.Quantity * l.UnitPrice })

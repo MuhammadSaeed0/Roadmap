@@ -28,15 +28,13 @@ public class ProgressCalculatorTests
     }
 
     [Fact]
-    public void Existing_sql_knowledge_does_not_inflate_overall_progress()
+    public void Sql_server_topics_count_as_much_as_csharp_topics()
     {
-        // Ten SQL topics already known, ten C# topics not started.
-        var sql = Enumerable.Range(1, 10).Select(i => Topic(i, skill: SkillArea.SqlServer, status: TopicStatus.Skipped));
+        // Ten SQL topics finished, ten C# topics not started.
+        var sql = Enumerable.Range(1, 10).Select(i => Topic(i, skill: SkillArea.SqlServer, status: TopicStatus.Completed));
         var csharp = Enumerable.Range(11, 10).Select(i => Topic(i, skill: SkillArea.CSharp));
-        var percent = ProgressCalculator.WeightedPercent(sql.Concat(csharp), _options);
 
-        // With equal weights this would be 50%; SQL Server's 0.4 weight keeps it well below.
-        Assert.True(percent < 30, $"Expected < 30% but was {percent}%");
+        Assert.Equal(50, ProgressCalculator.WeightedPercent(sql.Concat(csharp), _options));
     }
 
     [Fact]
