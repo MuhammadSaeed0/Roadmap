@@ -20,7 +20,31 @@ public class InterviewService(AppDbContext db, TimeProvider clock)
     {
         // Enums are stored as strings, so ORDER BY in SQL would sort them alphabetically
         // ("Advanced" before "Beginner"). Sorting in memory uses the enum's declared order.
-        var all = (await db.InterviewQuestions.AsNoTracking().Select(Projection).ToListAsync(ct))
+        // The questions, their topic titles and the account's ratings are read separately and joined here.
+        // Joining them in SQL made the server request a memory grant sized for the long answer texts, which
+        // on a memory-limited server (shared hosting) waited ~25 s; a plain scan of the questions needs none.
+        var topics = await db.Topics.AsNoTracking()
+            .Select(t => new { t.Id, t.TitleEn, t.TitleAr })
+            .ToDictionaryAsync(t => t.Id, ct);
+        var progress = await db.InterviewProgress.AsNoTracking()
+            .Select(p => new { p.QuestionId, p.Rating, p.TimesPracticed, p.LastPracticedAt })
+            .ToDictionaryAsync(p => p.QuestionId, ct);
+        var questions = await db.InterviewQuestions.AsNoTracking()
+            .Select(q => new
+            {
+                q.Id, q.Key, q.Category, q.TopicId, q.Difficulty, q.QuestionEn, q.QuestionAr, q.AnswerEn, q.AnswerAr,
+                q.ExampleCode, q.FollowUpEn, q.FollowUpAr,
+            })
+            .ToListAsync(ct);
+        var all = questions
+            .Select(q =>
+            {
+                var topic = topics.GetValueOrDefault(q.TopicId);
+                var p = progress.GetValueOrDefault(q.Id);
+                return new InterviewQuestionDto(q.Id, q.Key, q.Category, q.TopicId, topic?.TitleEn ?? "", topic?.TitleAr ?? "", q.Difficulty,
+                    q.QuestionEn, q.QuestionAr, q.AnswerEn, q.AnswerAr, q.ExampleCode, q.FollowUpEn, q.FollowUpAr,
+                    p?.Rating, p?.TimesPracticed ?? 0, p?.LastPracticedAt);
+            })
             .OrderBy(q => q.Category).ThenBy(q => q.Difficulty).ThenBy(q => q.Id)
             .ToList();
 

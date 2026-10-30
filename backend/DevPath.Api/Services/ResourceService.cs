@@ -12,9 +12,7 @@ public class ResourceService(AppDbContext db, IHttpClientFactory httpFactory, Ti
 
     public async Task<IReadOnlyList<ResourceDto>> ListAsync(int? topicId, ResourceType? type, SkillArea? skill, string? q, CancellationToken ct)
     {
-        var query = db.Resources.AsNoTracking()
-            .Include(r => r.TopicLinks).ThenInclude(l => l.Topic).ThenInclude(t => t.ProgressRows)
-            .AsQueryable();
+        var query = db.Resources.AsNoTracking().AsQueryable();
 
         if (topicId is { } id) query = query.Where(r => r.TopicLinks.Any(l => l.TopicId == id));
         if (skill is { } s) query = query.Where(r => r.TopicLinks.Any(l => l.Topic.Skill == s));
@@ -26,8 +24,16 @@ public class ResourceService(AppDbContext db, IHttpClientFactory httpFactory, Ti
                                   || EF.Functions.Like(r.SourceName, pattern));
         }
 
-        var list = await query.AsSplitQuery().OrderBy(r => r.Id).ToListAsync(ct);
-        return list.Select(ToDto).ToList();
+        // Projected rather than Include-d: loading whole Topic rows (long texts) for every link made SQL Server
+        // wait ~25 s for a sort memory grant. Only the topic reference fields are needed.
+        return await query.OrderBy(r => r.Id)
+            .Select(r => new ResourceDto(
+                r.Id, r.Key, r.TitleEn, r.TitleAr, r.Url, r.SourceName, r.Type, r.Difficulty, r.IsFree,
+                r.VerificationStatus, r.LastVerifiedAt, r.LastStatusCode,
+                r.TopicLinks.Select(l => new TopicRefDto(l.Topic.Id, l.Topic.Slug, l.Topic.TitleEn, l.Topic.TitleAr, l.Topic.Skill,
+                    l.Topic.ProgressRows.Select(p => (TopicStatus?)p.Status).FirstOrDefault() ?? TopicStatus.NotStarted)).ToList()))
+            .AsSplitQuery()
+            .ToListAsync(ct);
     }
 
     /// <summary>
@@ -98,10 +104,4 @@ public class ResourceService(AppDbContext db, IHttpClientFactory httpFactory, Ti
             return null;
         }
     }
-
-    public static ResourceDto ToDto(Resource r) => new(
-        r.Id, r.Key, r.TitleEn, r.TitleAr, r.Url, r.SourceName, r.Type, r.Difficulty, r.IsFree,
-        r.VerificationStatus, r.LastVerifiedAt, r.LastStatusCode,
-        r.TopicLinks.Select(l => new TopicRefDto(l.Topic.Id, l.Topic.Slug, l.Topic.TitleEn, l.Topic.TitleAr, l.Topic.Skill,
-            l.Topic.ProgressRows.FirstOrDefault()?.Status ?? TopicStatus.NotStarted)).ToList());
 }
