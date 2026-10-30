@@ -45,7 +45,8 @@ public record LinkCheckResultDto(int Checked, int Verified, int Broken, int Unre
 
 public record ExerciseSummaryDto(
     int Id, string Key, ExerciseType Type, int TopicId, string TopicTitleEn, string TopicTitleAr,
-    Difficulty Difficulty, int EstimatedMinutes, string TitleEn, string TitleAr, PracticeStatus Status);
+    Difficulty Difficulty, int EstimatedMinutes, string TitleEn, string TitleAr, PracticeStatus Status,
+    SkillArea Skill, ExerciseRunner Runner, IReadOnlyList<SkillArea> Technologies, int? BestScore);
 
 /// <summary>
 /// Hints and the solution are only included once revealed, so the API — not just the
@@ -56,15 +57,52 @@ public record ExerciseDetailDto(
     string ExpectedOutcomeEn, string ExpectedOutcomeAr, int HintCount,
     IReadOnlyList<string> RevealedHintsEn, IReadOnlyList<string> RevealedHintsAr,
     string? UserAnswer, bool SolutionRevealed, string? SolutionEn, string? SolutionAr, string? SolutionCode,
-    DateTime? CompletedAt);
+    DateTime? CompletedAt,
+    IReadOnlyList<WorkspaceFileDto> StarterFiles, string? Tests, string? Dataset,
+    string ScenarioEn, string ScenarioAr,
+    IReadOnlyList<string> RequirementsEn, IReadOnlyList<string> RequirementsAr,
+    IReadOnlyList<string> AcceptanceEn, IReadOnlyList<string> AcceptanceAr,
+    IReadOnlyList<string> BonusEn, IReadOnlyList<string> BonusAr,
+    IReadOnlyList<WorkspaceFileDto>? SavedFiles, int Submissions, int? LastScore, DateTime? LastSubmittedAt,
+    IReadOnlyList<int> CheckedCriteria, IReadOnlyList<WorkspaceFileDto>? SolutionFiles);
 
-public record PracticeOverviewDto(IReadOnlyList<ExerciseSummaryDto> Exercises, IReadOnlyList<PracticeTypeStatsDto> Stats);
+public record PracticeOverviewDto(
+    IReadOnlyList<ExerciseSummaryDto> Exercises, IReadOnlyList<PracticeTypeStatsDto> Stats,
+    IReadOnlyList<PracticeSkillStatsDto> Skills, int Total, int Completed, int Attempted);
 
 public record PracticeTypeStatsDto(ExerciseType Type, int Total, int Completed, int Attempted);
+
+/// <summary>Progress in one technology. Level: the difficulty the learner is working at now (see PracticeService).</summary>
+public record PracticeSkillStatsDto(SkillArea Skill, int Total, int Completed, int Attempted, Difficulty Level,
+    IReadOnlyList<PracticeDifficultyStatsDto> ByDifficulty);
+
+public record PracticeDifficultyStatsDto(Difficulty Difficulty, int Total, int Completed);
 
 public record SaveAttemptRequest([Required, MinLength(1), MaxLength(10000)] string? Answer);
 
 public record UpdatePracticeStatusRequest([Required] PracticeStatus? Status);
+
+public record WorkspaceFileDto(string Path, string Content);
+
+public record SavePracticeFilesRequest([Required] List<WorkspaceFileDto>? Files);
+
+/// <summary>The result of running the exercise's checks in the learner's browser.</summary>
+public record SubmitPracticeRequest([Required] List<WorkspaceFileDto>? Files, [Range(0, 500)] int Passed, [Range(1, 500)] int Total);
+
+public record SavePracticeCriteriaRequest([Required] List<int>? Checked);
+
+// ---------- Code Playground ----------
+
+public record PlaygroundProjectSummaryDto(int Id, string Name, WorkspaceKind Kind, string? Template,
+    int FileCount, int SizeBytes, DateTime CreatedAt, DateTime UpdatedAt);
+
+public record PlaygroundProjectDto(PlaygroundProjectSummaryDto Summary, IReadOnlyList<WorkspaceFileDto> Files);
+
+public record CreatePlaygroundProjectRequest(
+    [Required, MinLength(1), MaxLength(100)] string? Name, [Required] WorkspaceKind? Kind,
+    [MaxLength(60)] string? Template, [Required] List<WorkspaceFileDto>? Files);
+
+public record UpdatePlaygroundProjectRequest([MinLength(1), MaxLength(100)] string? Name, List<WorkspaceFileDto>? Files);
 
 // ---------- Interviews ----------
 
@@ -167,9 +205,17 @@ public record SearchResultDto(string Query, IReadOnlyList<SearchGroupDto> Groups
 
 /// <param name="Source">"suggested" (shared YouTube search) or "added" (pasted by this user).</param>
 /// <param name="AddedId">Id of the user's own entry, for removing it; null for suggestions.</param>
+/// <param name="Language">The spoken language of a curated video; null for live suggestions and videos added by link.</param>
 public record TopicVideoDto(
     string VideoId, string Title, string ChannelTitle, DateTime? PublishedAt, int? DurationSeconds,
-    string Source, int? AddedId, bool IsWatched, bool IsBookmarked);
+    string Source, int? AddedId, bool IsWatched, bool IsBookmarked,
+    VideoLanguage? Language = null, string? Description = null);
+
+public record VideoLibraryDto(IReadOnlyList<VideoLibraryPhaseDto> Phases, int EnglishCount, int ArabicCount, int WatchedCount);
+
+public record VideoLibraryPhaseDto(int Id, int Order, string TitleEn, string TitleAr, IReadOnlyList<VideoLibraryTopicDto> Topics);
+
+public record VideoLibraryTopicDto(int Id, string Slug, string TitleEn, string TitleAr, SkillArea Skill, IReadOnlyList<TopicVideoDto> Videos);
 
 /// <param name="Status">"ok", or why suggestions couldn't be refreshed: "not_configured", "quota_exceeded", "unavailable".</param>
 public record TopicVideosDto(string Status, string SearchQuery, IReadOnlyList<TopicVideoDto> Videos);

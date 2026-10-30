@@ -66,7 +66,9 @@ public enum Difficulty
 {
     Beginner,
     Intermediate,
-    Advanced
+    Advanced,
+    /// <summary>Practice Lab only: open-ended problems that need research and design decisions.</summary>
+    Expert
 }
 
 public enum VerificationStatus
@@ -81,7 +83,49 @@ public enum ExerciseType
     Coding,
     Debugging,
     Scenario,
-    CodeReview
+    CodeReview,
+    /// <summary>Explain, compare or choose between concepts in your own words.</summary>
+    Conceptual,
+    /// <summary>A realistic development task: CRUD, validation, authentication, pagination ...</summary>
+    Practical,
+    /// <summary>A small project that combines several concepts of one technology.</summary>
+    MiniProject,
+    /// <summary>An integrated challenge that combines several technologies of the roadmap.</summary>
+    FullStack,
+    /// <summary>An advanced, open-ended problem.</summary>
+    Challenge
+}
+
+/// <summary>Where an exercise's code can run. Everything runs in the learner's browser, never on the server.</summary>
+public enum ExerciseRunner
+{
+    /// <summary>No code runner: written answer, design or a project you build in your own environment.</summary>
+    None,
+    CSharp,
+    Sql,
+    JavaScript,
+    TypeScript,
+    /// <summary>HTML, CSS and JavaScript with a live preview.</summary>
+    Web,
+    /// <summary>A multi-file Angular app with a live preview.</summary>
+    Angular
+}
+
+/// <summary>The kinds of Code Playground workspace.</summary>
+public enum WorkspaceKind
+{
+    CSharp,
+    Sql,
+    JavaScript,
+    TypeScript,
+    Web,
+    Angular
+}
+
+public enum VideoLanguage
+{
+    English,
+    Arabic
 }
 
 public enum PracticeStatus

@@ -237,6 +237,19 @@ namespace DevPath.Api.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("DurationSeconds")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
@@ -488,6 +501,56 @@ namespace DevPath.Api.Migrations
                     b.ToTable("Phases");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.PlaygroundProject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FileCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Files")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("SizeBytes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Template")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "UpdatedAt");
+
+                    b.ToTable("PlaygroundProjects");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.PortfolioCheck", b =>
                 {
                     b.Property<string>("UserId")
@@ -565,12 +628,32 @@ namespace DevPath.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AcceptanceAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AcceptanceEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BonusAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BonusEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CodeLanguage")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Dataset")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Difficulty")
                         .IsRequired()
@@ -609,6 +692,27 @@ namespace DevPath.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RequirementsAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequirementsEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Runner")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("ScenarioAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ScenarioEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SolutionAr")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -618,6 +722,19 @@ namespace DevPath.Api.Migrations
 
                     b.Property<string>("SolutionEn")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SolutionFiles")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StarterFiles")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Technologies")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Tests")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TitleAr")
@@ -659,11 +776,27 @@ namespace DevPath.Api.Migrations
                     b.Property<int>("ExerciseId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BestScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CheckedCriteria")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("HintsRevealed")
                         .HasColumnType("int");
+
+                    b.Property<int?>("LastScore")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastSubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SavedFiles")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("SolutionRevealed")
                         .HasColumnType("bit");
@@ -672,6 +805,9 @@ namespace DevPath.Api.Migrations
                         .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
+
+                    b.Property<int>("Submissions")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -684,7 +820,10 @@ namespace DevPath.Api.Migrations
 
                     b.HasIndex("ExerciseId");
 
-                    b.ToTable("PracticeProgress");
+                    b.ToTable("PracticeProgress", t =>
+                        {
+                            t.HasCheckConstraint("CK_PracticeProgress_Scores", "(LastScore IS NULL OR LastScore BETWEEN 0 AND 100) AND (BestScore IS NULL OR BestScore BETWEEN 0 AND 100)");
+                        });
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.Project", b =>
@@ -1744,6 +1883,15 @@ namespace DevPath.Api.Migrations
                     b.Navigation("ProjectTask");
 
                     b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.PlaygroundProject", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.PortfolioCheck", b =>

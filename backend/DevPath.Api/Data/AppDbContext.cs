@@ -49,6 +49,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<UserTopicVideo> UserTopicVideos => Set<UserTopicVideo>();
     public DbSet<VideoProgress> VideoProgress => Set<VideoProgress>();
     public DbSet<QuizAttempt> QuizAttempts => Set<QuizAttempt>();
+    public DbSet<PlaygroundProject> PlaygroundProjects => Set<PlaygroundProject>();
 
     // Accounts and administration (not filtered per user: only auth and admin code reads them)
     public DbSet<AccountToken> AccountTokens => Set<AccountToken>();
@@ -212,6 +213,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.Property(x => x.TitleEn).HasMaxLength(250);
             e.Property(x => x.TitleAr).HasMaxLength(250);
             e.Property(x => x.CodeLanguage).HasMaxLength(20);
+            e.Property(x => x.Dataset).HasMaxLength(40);
+            e.Property(x => x.Technologies).HasMaxLength(200);
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Restrict);
         });
 
@@ -231,6 +234,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.Property(x => x.VideoId).HasMaxLength(11);
             e.Property(x => x.Title).HasMaxLength(300);
             e.Property(x => x.ChannelTitle).HasMaxLength(200);
+            e.Property(x => x.Description).HasMaxLength(500);
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
         });
 
@@ -311,8 +315,19 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             OwnedByUser(e);
             e.HasKey(x => new { x.UserId, x.ExerciseId });
             e.Property(x => x.UserAnswer).HasMaxLength(10000);
+            e.Property(x => x.CheckedCriteria).HasMaxLength(200);
+            e.ToTable(t => t.HasCheckConstraint("CK_PracticeProgress_Scores",
+                "(LastScore IS NULL OR LastScore BETWEEN 0 AND 100) AND (BestScore IS NULL OR BestScore BETWEEN 0 AND 100)"));
             e.HasOne(x => x.Exercise).WithMany(x => x.ProgressRows)
                 .HasForeignKey(x => x.ExerciseId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<PlaygroundProject>(e =>
+        {
+            OwnedByUser(e);
+            e.Property(x => x.Name).HasMaxLength(100);
+            e.Property(x => x.Template).HasMaxLength(60);
+            e.HasIndex(x => new { x.UserId, x.UpdatedAt });
         });
 
         b.Entity<InterviewProgress>(e =>

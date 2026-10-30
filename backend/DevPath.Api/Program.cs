@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -186,6 +187,7 @@ builder.Services.AddScoped<CareerReadinessService>();
 builder.Services.AddScoped<SearchService>();
 builder.Services.AddScoped<TopicVideoService>();
 builder.Services.AddScoped<QuizService>();
+builder.Services.AddScoped<PlaygroundService>();
 
 var app = builder.Build();
 
@@ -205,7 +207,14 @@ else
 app.UseMiddleware<SecurityHeadersMiddleware>();
 // In production the built Angular app is served from wwwroot by this same site (see docs/DEPLOYMENT.md).
 var hasFrontend = app.Environment.WebRootFileProvider.GetFileInfo("index.html").Exists;
-if (hasFrontend) app.UseStaticFiles();
+if (hasFrontend)
+{
+    // The in-browser C# runner compiles learner code against reference assemblies (.dll), served as plain data.
+    var contentTypes = new FileExtensionContentTypeProvider();
+    contentTypes.Mappings[".dll"] = "application/octet-stream";
+    app.UseMiddleware<PrecompressedStaticFiles>(contentTypes);
+    app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = contentTypes });
+}
 
 if (app.Environment.IsDevelopment()) app.UseCors(FrontendCors);
 app.UseMiddleware<OriginCheckMiddleware>();

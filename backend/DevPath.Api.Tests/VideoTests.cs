@@ -52,14 +52,18 @@ public class VideoTests : IAsyncLifetime
         Assert.Equal("ok", json["status"]!.GetValue<string>());
         Assert.Contains(topic["titleEn"]!.GetValue<string>(), searched);
         Assert.StartsWith("C# ", searched);
-        var ids = json["videos"]!.AsArray().Select(v => v!["videoId"]!.GetValue<string>()).ToList();
+        // The curated (language-tagged) videos come first; the relevant live results follow them.
+        var videos = json["videos"]!.AsArray();
+        var curatedCount = videos.TakeWhile(v => v!["language"] is not null).Count();
+        Assert.True(curatedCount >= 2, "the topic's curated videos are listed first");
+        var ids = videos.Skip(curatedCount).Select(v => v!["videoId"]!.GetValue<string>()).ToList();
         Assert.Equal(["aaaaaaaaaa1", "aaaaaaaaaa5"], ids);
-        Assert.All(json["videos"]!.AsArray(), v => Assert.Equal("suggested", v!["source"]!.GetValue<string>()));
+        Assert.All(videos, v => Assert.Equal("suggested", v!["source"]!.GetValue<string>()));
 
         // A second account gets the cached list without another YouTube search.
         var other = await _factory.CreateUserClientAsync();
         var again = await Json(await other.GetAsync("/api/topics/2/videos"));
-        Assert.Equal(ids, again["videos"]!.AsArray().Select(v => v!["videoId"]!.GetValue<string>()).ToList());
+        Assert.Equal(ids, again["videos"]!.AsArray().Skip(curatedCount).Select(v => v!["videoId"]!.GetValue<string>()).ToList());
         Assert.Equal(1, _factory.YouTube.SearchCount);
     }
 
