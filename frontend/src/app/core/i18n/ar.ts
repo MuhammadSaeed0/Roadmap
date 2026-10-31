@@ -20,7 +20,7 @@ export const ar: Translations = {
     showing: '{from}–{to} من {total}', noResults: 'لا توجد نتائج', optional: 'اختياري', today: 'اليوم',
     total: 'الإجمالي', details: 'التفاصيل', openLink: 'فتح الرابط', copy: 'نسخ', copied: 'تم النسخ',
     language: 'اللغة', theme: 'المظهر', light: 'فاتح', dark: 'داكن', system: 'حسب النظام',
-    skipToContent: 'انتقل إلى المحتوى الرئيسي', menu: 'القائمة', closeMenu: 'إغلاق القائمة', perPage: 'لكل صفحة',
+    skipToContent: 'انتقل إلى المحتوى الرئيسي', menu: 'القائمة', closeMenu: 'إغلاق القائمة', collapseMenu: 'طي القائمة', expandMenu: 'فرد القائمة', perPage: 'لكل صفحة',
     lastUpdated: 'آخر تحديث {date}', filters: 'المرشحات', yes: 'نعم', no: 'لا', percent: '{n}%', breadcrumb: 'مسار التنقل', mode: 'الوضع',
   },
   errors: {
@@ -327,7 +327,7 @@ export const ar: Translations = {
   },
   practice: {
     title: 'مختبر التدريب', subtitle: 'مفاهيم، وتحديات برمجة وتصحيح أخطاء، ومهام عملية، ومشروعات صغيرة، وتحديات Full-Stack، مع محرر كود يعمل في متصفحك. حاول أولًا ثم اكشف التلميحات والحل.',
-    problem: 'المشكلة', expected: 'النتيجة المتوقعة', starterCode: 'الكود', yourAttempt: 'محاولتك أو شرحك',
+    task: 'المهمة', showTask: 'إظهار المهمة', hideTask: 'إخفاء المهمة', problem: 'المشكلة', expected: 'النتيجة المتوقعة', starterCode: 'الكود', yourAttempt: 'محاولتك أو شرحك',
     attemptPlaceholder: 'صِف طريقتك، أو الصق كودك، أو اذكر المشكلات التي وجدتها…',
     saveAttempt: 'حفظ المحاولة', attemptSaved: 'تم حفظ المحاولة', hints: 'التلميحات', hintsCount: 'التلميحات المكشوفة: {n} من {total}',
     revealHint: 'اكشف التلميح التالي', revealSolution: 'اكشف الحل', solutionLocked: 'احفظ محاولتك أولًا لفتح الحل.',

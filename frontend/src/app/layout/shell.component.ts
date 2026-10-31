@@ -20,6 +20,14 @@ import { TourWelcomeComponent } from './tour/tour-welcome.component';
 
 interface NavItem { path: string; key: string; icon: string; }
 
+/** Up to this width the sidebar is a drawer (keep in step with the max-width: 960px rules in styles.css). */
+const NARROW_MAX = 960;
+const NAV_COLLAPSED_KEY = 'devpath.navCollapsed';
+
+function readNavCollapsed(): boolean {
+  try { return localStorage.getItem(NAV_COLLAPSED_KEY) === 'true'; } catch { return false; }
+}
+
 @Component({
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,7 +36,7 @@ interface NavItem { path: string; key: string; icon: string; }
   template: `
     <a class="skip-link" href="#main">{{ 'common.skipToContent' | t }}</a>
 
-    <div class="shell" [class.nav-open]="navOpen()" [class.auth-layout]="authLayout()">
+    <div class="shell" [class.nav-open]="navOpen()" [class.nav-collapsed]="navCollapsed() && !narrow()" [class.auth-layout]="authLayout()">
       @if (!authLayout()) {
       <aside class="sidebar" id="sidebar" [attr.aria-label]="'common.menu' | t">
         <div class="brand">
@@ -57,7 +65,8 @@ interface NavItem { path: string; key: string; icon: string; }
               @for (item of group.items; track item.path) {
                 <li>
                   <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/' }"
-                     (click)="navOpen.set(false)" #rla="routerLinkActive" [attr.aria-current]="rla.isActive ? 'page' : null">
+                     (click)="navOpen.set(false)" #rla="routerLinkActive" [attr.aria-current]="rla.isActive ? 'page' : null"
+                     [attr.title]="navCollapsed() && !narrow() ? (item.key | t) : null">
                     <app-icon [name]="item.icon" />
                     <span>{{ item.key | t }}</span>
                   </a>
@@ -82,9 +91,12 @@ interface NavItem { path: string; key: string; icon: string; }
           </header>
         } @else {
         <header class="topbar">
-          <button type="button" class="icon-btn menu-btn" data-tour="menu" (click)="navOpen.set(true)" [attr.aria-label]="'common.menu' | t"
-                  aria-controls="sidebar" [attr.aria-expanded]="navOpen()">
-            <app-icon name="menu" />
+          <!-- On a wide screen this folds the sidebar to icons (and back); on a narrow one it opens it as a drawer. -->
+          <button type="button" class="icon-btn menu-btn" data-tour="menu" (click)="toggleNav()" aria-controls="sidebar"
+                  [attr.aria-expanded]="narrow() ? navOpen() : !navCollapsed()"
+                  [attr.aria-label]="(narrow() ? 'common.menu' : navCollapsed() ? 'common.expandMenu' : 'common.collapseMenu') | t"
+                  [title]="(narrow() ? 'common.menu' : navCollapsed() ? 'common.expandMenu' : 'common.collapseMenu') | t">
+            <app-icon [name]="narrow() ? 'menu' : 'sidebar'" />
           </button>
           <div class="crumb">
             <span class="crumb-root">{{ 'app.name' | t }}</span>
@@ -187,6 +199,10 @@ export class ShellComponent {
   protected readonly tour = inject(TourService);
 
   protected readonly navOpen = signal(false);
+  /** Wide screens: the sidebar folded to an icon rail for more room (remembered). Narrow screens use the drawer instead. */
+  protected readonly navCollapsed = signal(readNavCollapsed());
+  private readonly narrowQuery = typeof matchMedia === 'function' ? matchMedia(`(max-width: ${NARROW_MAX}px)`) : null;
+  protected readonly narrow = signal(this.narrowQuery?.matches ?? false);
   protected readonly quickOpen = signal(false);
   protected readonly accountOpen = signal(false);
   /** Account pages (sign-in, sign-up…) hide the sidebar and the app's top bar. */
@@ -226,6 +242,10 @@ export class ShellComponent {
     : this.baseGroups);
 
   constructor() {
+    const onWidth = (e: MediaQueryListEvent) => { this.narrow.set(e.matches); if (!e.matches) this.navOpen.set(false); };
+    this.narrowQuery?.addEventListener('change', onWidth);
+    inject(DestroyRef).onDestroy(() => this.narrowQuery?.removeEventListener('change', onWidth));
+
     this.router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntilDestroyed(inject(DestroyRef))).subscribe(() => {
       let r = this.route;
       while (r.firstChild) r = r.firstChild;
@@ -261,6 +281,15 @@ export class ShellComponent {
         void this.router.navigateByUrl('/account-status');
       });
     });
+  }
+
+  protected toggleNav(): void {
+    if (this.narrow()) {
+      this.navOpen.update(open => !open);
+      return;
+    }
+    this.navCollapsed.update(collapsed => !collapsed);
+    try { localStorage.setItem(NAV_COLLAPSED_KEY, String(this.navCollapsed())); } catch { /* not remembered */ }
   }
 
   protected go(path: string): void {

@@ -42,6 +42,7 @@
   --radius-sm: 10px;
   --radius-xs: 7px;
   --sidebar-w: 264px;
+  --sidebar-rail: 68px;
   --topbar-h: 64px;
   --focus: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
   --dir: 1;
@@ -167,6 +168,17 @@ html[lang='ar'] .nav-group { text-transform: none; letter-spacing: 0; font-size:
   box-shadow: inset calc(var(--dir) * 3px) 0 0 var(--accent);
 }
 .scrim { display: none; }
+
+/* Wide screens: the sidebar folds to an icon rail (the names stay available to screen readers and as tooltips). */
+@media (min-width: 961px) {
+  .shell.nav-collapsed { grid-template-columns: var(--sidebar-rail) minmax(0, 1fr); }
+  .nav-collapsed .sidebar { padding-inline: 10px; overflow-x: hidden; }
+  .nav-collapsed .brand { justify-content: center; padding-inline: 0; }
+  .nav-collapsed .brand-text { display: none; }
+  .nav-collapsed .nav-group { height: 1px; margin: 12px 6px; overflow: hidden; color: transparent; background: var(--border); }
+  .nav-collapsed .nav a { justify-content: center; padding: 10px 0; }
+  .nav-collapsed .nav a > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
 .main-col { min-width: 0; display: flex; flex-direction: column; }
 
 .topbar {
@@ -174,7 +186,7 @@ html[lang='ar'] .nav-group { text-transform: none; letter-spacing: 0; font-size:
   padding-inline: 28px; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
 }
-.icon-btn.menu-btn { display: none; }
+.icon-btn.menu-btn { display: inline-grid; }
 .crumb { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 0.88rem; white-space: nowrap; min-width: 0; }
 .crumb-current { color: var(--text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
 .topbar-search { flex: 1 1 auto; max-width: 520px; margin-inline: auto; }
@@ -1239,9 +1251,16 @@ fieldset:disabled .quiz-option { cursor: default; }
 .skill-progress-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .practice-filters .input-sm { width: auto; }
 .exercise-layout { display: grid; gap: 16px; }
-.exercise-layout.with-workspace { grid-template-columns: minmax(300px, 0.85fr) minmax(0, 1.6fr); align-items: start; }
-.exercise-brief { display: grid; gap: 14px; min-width: 0; }
-.exercise-workspace { position: sticky; top: calc(var(--topbar-h) + 12px); min-width: 0; display: grid; gap: 6px; }
+.exercise-layout > * { min-width: 0; }
+.exercise-extras { display: grid; gap: 14px; min-width: 0; }
+/* With an editor: the task, then the editor at full width, then the rest side by side underneath. */
+.exercise-layout.with-workspace .exercise-extras { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); align-items: start; }
+.exercise-workspace { min-width: 0; display: grid; gap: 6px; }
+.exercise-task-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.exercise-task-head .card-title { margin: 0; }
+.exercise-task-head + #exercise-task-body { margin-top: 12px; }
+/* Folded away, the task is a single slim row. */
+.exercise-task:not(:has(#exercise-task-body)) { padding-block: 8px; }
 .requirement-list, .criteria-list { margin: 0 0 12px; padding-inline-start: 20px; display: grid; gap: 6px; }
 .criteria-list { list-style: none; padding: 0; }
 .bonus summary { cursor: pointer; }
@@ -1268,11 +1287,6 @@ fieldset:disabled .quiz-option { cursor: default; }
 .video-phase .phase-num { color: var(--muted); font-size: 0.85rem; font-weight: 650; }
 .video-topic { margin-top: 16px; }
 .video-topic h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 1rem; margin: 0 0 10px; }
-
-@media (max-width: 1100px) {
-  .exercise-layout.with-workspace { grid-template-columns: 1fr; }
-  .exercise-workspace { position: static; }
-}
 
 @media (max-width: 900px) {
   .ide { height: auto; min-height: 0; }

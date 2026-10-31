@@ -30,6 +30,12 @@ export function workspaceKindFor(runner: ExerciseRunner, files: WorkspaceFile[])
   return 'JavaScript';
 }
 
+const TASK_HIDDEN_KEY = 'devpath.practice.taskHidden';
+
+function readFlag(key: string): boolean {
+  try { return localStorage.getItem(key) === 'true'; } catch { return false; }
+}
+
 const CODE_LANGUAGE: Record<string, string> = { cs: 'csharp', ts: 'typescript', js: 'javascript', sql: 'sql', html: 'html', css: 'css', json: 'json' };
 
 @Component({
@@ -54,6 +60,14 @@ export default class ExerciseDetailPage {
   protected readonly workspaceFiles = signal<WorkspaceFile[]>([]);
   protected readonly saveState = signal<'idle' | 'saving' | 'saved' | 'error'>('idle');
   private latestFiles: WorkspaceFile[] = [];
+
+  /** Whether the task above the editor is folded away to give the code more room (remembered for every exercise). */
+  protected readonly taskHidden = signal(readFlag(TASK_HIDDEN_KEY));
+
+  protected toggleTask(): void {
+    this.taskHidden.update(hidden => !hidden);
+    try { localStorage.setItem(TASK_HIDDEN_KEY, String(this.taskHidden())); } catch { /* not remembered */ }
+  }
 
   protected readonly hasWorkspace = computed(() => {
     const d = this.data.value();

@@ -59,7 +59,7 @@ export const content: TourContent = {
     videos: { title: 'Video Library', summary: 'Every hand-picked video of the roadmap in one place, in Arabic and English, organised by phase and topic.' },
   },
   sections: {
-    nav: { title: 'Main menu', body: 'Every page of DevPath is here, grouped into Learn, Build & practise, and Track. The page you’re on is highlighted.' },
+    nav: { title: 'Main menu', body: 'Every page of DevPath is here, grouped into Learn, Build & practise, and Track. The page you’re on is highlighted. The button at the top folds it to icons when you need more room, and opens it again.' },
     menu: { title: 'Main menu', body: 'Open the menu to reach every page of DevPath: Learn, Build & practise, and Track.' },
     search: { title: 'Search everything', body: 'Find topics, projects, tasks, exercises, interview questions, resources and your notes from one box. Press / anywhere to jump here.' },
     'quick-add': { title: 'Quick add', body: 'Write a new note or log a study session without leaving the page you’re on. Logged sessions count toward your daily goal and streak.' },

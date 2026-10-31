@@ -18,7 +18,7 @@ export const en = {
     showing: '{from}–{to} of {total}', noResults: 'No results', optional: 'optional', today: 'Today',
     total: 'Total', details: 'Details', openLink: 'Open link', copy: 'Copy', copied: 'Copied',
     language: 'Language', theme: 'Theme', light: 'Light', dark: 'Dark', system: 'System',
-    skipToContent: 'Skip to main content', menu: 'Menu', closeMenu: 'Close menu', perPage: 'Per page',
+    skipToContent: 'Skip to main content', menu: 'Menu', closeMenu: 'Close menu', collapseMenu: 'Collapse the menu', expandMenu: 'Expand the menu', perPage: 'Per page',
     lastUpdated: 'Updated {date}', filters: 'Filters', yes: 'Yes', no: 'No', percent: '{n}%', breadcrumb: 'Breadcrumb', mode: 'Mode',
   },
   errors: {
@@ -325,7 +325,7 @@ export const en = {
   },
   practice: {
     title: 'Practice Lab', subtitle: 'Concepts, coding and debugging challenges, practical tasks, mini projects and full-stack challenges, with a code editor that runs in your browser. Try first — then reveal hints and the solution.',
-    problem: 'Problem', expected: 'Expected outcome', starterCode: 'Code', yourAttempt: 'Your attempt or explanation',
+    task: 'The task', showTask: 'Show the task', hideTask: 'Hide the task', problem: 'Problem', expected: 'Expected outcome', starterCode: 'Code', yourAttempt: 'Your attempt or explanation',
     attemptPlaceholder: 'Describe your approach, paste your code, or list the problems you found…',
     saveAttempt: 'Save attempt', attemptSaved: 'Attempt saved', hints: 'Hints', hintsCount: '{n} of {total} hints revealed',
     revealHint: 'Reveal next hint', revealSolution: 'Reveal solution', solutionLocked: 'Save your own attempt first to unlock the solution.',

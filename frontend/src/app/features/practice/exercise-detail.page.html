@@ -36,9 +36,19 @@
     }
   </ol>
 
+  <!-- With an editor, the task sits above the code (not beside it) so the editor gets the full width. -->
   <div class="exercise-layout" [class.with-workspace]="hasWorkspace()">
-    <article class="exercise-brief">
-      <section class="card content-section" data-tour="exercise-problem">
+      <section class="card content-section exercise-task" data-tour="exercise-problem">
+        @if (hasWorkspace()) {
+          <div class="exercise-task-head">
+            <h2 class="card-title"><app-icon name="info" /> {{ 'practice.task' | t }}</h2>
+            <button type="button" class="btn btn-ghost btn-sm" (click)="toggleTask()" aria-controls="exercise-task-body" [attr.aria-expanded]="!taskHidden()">
+              <app-icon [name]="taskHidden() ? 'chevron-down' : 'chevron-up'" [size]="15" /> {{ (taskHidden() ? 'practice.showTask' : 'practice.hideTask') | t }}
+            </button>
+          </div>
+        }
+        @if (!hasWorkspace() || !taskHidden()) {
+        <div id="exercise-task-body">
         @if (d.scenarioEn) {
           <h2 class="section-title"><app-icon name="briefcase" /> {{ 'practice.scenario' | t }}</h2>
           <p class="prose">{{ d | loc: 'scenario' }}</p>
@@ -73,8 +83,21 @@
         @if (hasWorkspace() && d.summary.runner === 'None') {
           <p class="callout small"><app-icon name="info" [size]="14" /> {{ 'practice.buildLocally' | t }}</p>
         }
+        </div>
+        }
       </section>
 
+    @if (hasWorkspace()) {
+      <div class="exercise-workspace" data-tour="exercise-workspace">
+        <app-ide #ide [kind]="kind()" [files]="workspaceFiles()" [entry]="entry()" [mode]="'exercise'" [dataset]="d.dataset ?? ''"
+                 [tests]="d.tests" [runnable]="d.summary.runner !== 'None'" [name]="d.summary.key" [saveLabel]="saveLabel()"
+                 (changed)="onFilesChanged($event)" (saveRequested)="onFilesChanged($event)"
+                 (testsFinished)="onTestsFinished($event, ide.currentFiles())" />
+        @if (d.tests && d.summary.runner !== 'None') { <p class="small muted">{{ 'practice.checksNote' | t }}</p> }
+      </div>
+    }
+
+    <div class="exercise-extras">
       <section class="card content-section" data-tour="exercise-attempt">
         <h2 class="section-title"><app-icon name="edit" /> {{ (hasWorkspace() ? 'practice.yourNotes' : 'practice.yourAttempt') | t }}</h2>
         @if (hasWorkspace()) { <p class="small muted">{{ 'practice.notesHint' | t }}</p> }
@@ -132,16 +155,6 @@
         }
         <button type="button" class="btn btn-ghost btn-block" [disabled]="busy()" (click)="reset()"><app-icon name="refresh" [size]="15" /> {{ 'practice.resetExercise' | t }}</button>
       </section>
-    </article>
-
-    @if (hasWorkspace()) {
-      <div class="exercise-workspace" data-tour="exercise-workspace">
-        <app-ide #ide [kind]="kind()" [files]="workspaceFiles()" [entry]="entry()" [mode]="'exercise'" [dataset]="d.dataset ?? ''"
-                 [tests]="d.tests" [runnable]="d.summary.runner !== 'None'" [name]="d.summary.key" [saveLabel]="saveLabel()"
-                 (changed)="onFilesChanged($event)" (saveRequested)="onFilesChanged($event)"
-                 (testsFinished)="onTestsFinished($event, ide.currentFiles())" />
-        @if (d.tests && d.summary.runner !== 'None') { <p class="small muted">{{ 'practice.checksNote' | t }}</p> }
-      </div>
-    }
+    </div>
   </div>
 }

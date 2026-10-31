@@ -28,6 +28,8 @@ const PATHS: Record<string, string> = {
   pointer: 'm3 3 7.07 16.97 2.51-7.39 7.39-2.51z M13 13l6 6',
   'chevron-left': 'm15 18-6-6 6-6',
   'chevron-down': 'm6 9 6 6 6-6',
+  'chevron-up': 'm18 15-6-6-6 6',
+  sidebar: 'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z M9 3v18',
   'arrow-right': 'M5 12h14 M12 5l7 7-7 7',
   x: 'M18 6 6 18 M6 6l12 12',
   menu: 'M4 6h16 M4 12h16 M4 18h16',
