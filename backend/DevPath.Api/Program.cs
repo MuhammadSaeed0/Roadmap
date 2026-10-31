@@ -35,6 +35,10 @@ if (builder.Environment.IsProduction() && ProductionSettings.Problems(builder.Co
     throw new InvalidOperationException("Production configuration is incomplete:" + Environment.NewLine + "- " +
         string.Join(Environment.NewLine + "- ", problems) + Environment.NewLine + "See docs/DEPLOYMENT.md.");
 
+// Optional features: say in the log when they are off, but don't stop the site.
+if (builder.Environment.IsProduction() && string.IsNullOrWhiteSpace(builder.Configuration["Anthropic:ApiKey"]))
+    Console.WriteLine("Anthropic:ApiKey is not set: the CV builder's AI assistant is switched off (environment variable Anthropic__ApiKey).");
+
 // ---------- Database ----------
 // The connection string lives in appsettings.json (LocalDB, Windows authentication, no password).
 // To use a different server or credentials, override it with user secrets — see README.

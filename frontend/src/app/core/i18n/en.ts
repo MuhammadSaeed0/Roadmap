@@ -8,7 +8,7 @@ export const en = {
     practice: 'Practice Lab', interviews: 'Interview Preparation', resources: 'Resources', notes: 'My Notes',
     progress: 'Progress & Analytics', career: 'Career Readiness', settings: 'Settings', search: 'Search',
     learn: 'Learn', build: 'Build & practise', track: 'Track', manage: 'Manage', admin: 'Administration',
-    playground: 'Code Playground', videos: 'Video Library',
+    playground: 'Code Playground', videos: 'Video Library', cv: 'CV Builder',
   },
   common: {
     loading: 'Loading…', retry: 'Try again', save: 'Save', saving: 'Saving…', cancel: 'Cancel', delete: 'Delete',

@@ -34,14 +34,15 @@ Angular 22 + TypeScript   →   ASP.NET Core 10 Web API (C#)   →   EF Core 10 
 11. [Deployment](#deployment)
 12. [YouTube videos](#youtube-videos)
 13. [Code runners](#code-runners)
-14. [Onboarding tour and help](#onboarding-tour-and-help)
-15. [Bilingual UI and right-to-left support](#bilingual-ui-and-right-to-left-support)
-16. [How progress, recommendations and reviews are calculated](#how-progress-recommendations-and-reviews-are-calculated)
-17. [Editing the learning content](#editing-the-learning-content)
-18. [Tests](#tests)
-19. [Troubleshooting](#troubleshooting)
-20. [Known limitations](#known-limitations)
-21. [Ideas for future improvements](#ideas-for-future-improvements)
+14. [CV Builder](#cv-builder)
+15. [Onboarding tour and help](#onboarding-tour-and-help)
+16. [Bilingual UI and right-to-left support](#bilingual-ui-and-right-to-left-support)
+17. [How progress, recommendations and reviews are calculated](#how-progress-recommendations-and-reviews-are-calculated)
+18. [Editing the learning content](#editing-the-learning-content)
+19. [Tests](#tests)
+20. [Troubleshooting](#troubleshooting)
+21. [Known limitations](#known-limitations)
+22. [Ideas for future improvements](#ideas-for-future-improvements)
 
 ---
 
@@ -57,6 +58,7 @@ Angular 22 + TypeScript   →   ASP.NET Core 10 Web API (C#)   →   EF Core 10 
 - **Four projects**: Employee Management (C# console), Inventory API, Project Dashboard (Angular) and Sales and Order Management (full stack). They have 16 milestones, 62 tasks with acceptance criteria and topic links, 15 realistic **change requests** that unlock as a project progresses, a portfolio checklist and a repository link. Every task and change request has 3–4 YouTube videos on how to build that part (280 hand-picked videos in `SeedData/project-videos.json`, each checked with YouTube; tasks with fewer are topped up from their related topics' videos).
 - **Practice Lab**: 140 exercises across the whole roadmap (C#, OOP, LINQ, ASP.NET Core, EF Core, SQL, TypeScript, Angular, testing, Git and professional skills): coding, debugging, conceptual, practical, mini projects, advanced challenges and 10 **full-stack challenges** with a scenario, technologies, requirements, acceptance criteria, hints and bonus tasks. Four levels (Beginner → Expert); filters by technology, topic, level, type and status, plus search; progress per technology from what you actually solved. Exercises open in an editor: C#, SQL, TypeScript and JavaScript exercises run **automatic checks** in your browser (submitting records your score, and passing every check completes the exercise), Angular exercises run a live preview, and project-style tasks (controllers, EF Core, tests, Git) are edited here and built locally. The API still enforces *attempt → hints → solution*.
 - **Code Playground**: an in-browser IDE (Monaco, the editor of VS Code) for C#, SQL, TypeScript, JavaScript, HTML/CSS and multi-file Angular projects, with a file explorer, tabs, console, problems panel, tests, live preview, save/autosave/restore, import and download as .zip, and full screen. **All code runs in your browser**, never on the server: C# with the Roslyn compiler on .NET WebAssembly, SQL on SQLite (sql.js) with the common T-SQL syntax translated, JavaScript in a worker, and previews in a sandboxed frame without access to your session (see [Code runners](#code-runners)).
+- **CV Builder**: create several private CVs from six genuinely different templates (Modern, ATS-friendly, Minimalist, Technical two-column, Executive, Creative), edit them section by section beside a live preview of the real PDF, and download a **PDF with selectable text** or an **editable Word (.docx)** file. Suggestions come from your real activity, labelled *verified / built / practiced / studied*; an optional **AI assistant** (Claude) improves wording and tailors a CV to a job description without inventing anything; a rule-based **ATS check** and job-description match need no AI (see [CV Builder](#cv-builder)).
 - **Video library**: every topic's videos in one place, organised by the roadmap, with a language filter (English / Arabic), durations and short descriptions.
 - **Interview preparation**: 855 bilingual questions in 17 categories (at least 50 each), each linked to a topic. Besides the stack (C#, .NET, ASP.NET Core, EF Core, SQL Server, TypeScript, Angular, REST, testing, Git, full-stack design) it covers the classic coding-interview themes: data structures, algorithms, object-oriented design, system design, concurrency and behavioral questions. These are written for this project, not copied from any book. Study mode shows question and answer, with search, difficulty and rating filters; practice mode shows one question at a time and you rate yourself (need review / partial / confident).
 - **Resources**: 157 free, mostly official links. Each one was checked over HTTP when it was seeded, and a **"Check all links"** button re-verifies them on demand.
@@ -226,6 +228,12 @@ Content tables have foreign keys, unique indexes on every slug/key, check constr
 | PUT/POST | `/api/practice/{id}/attempt`, `/hints`, `/solution`, `/status` | Practice workflow |
 | PUT/POST | `/api/practice/{id}/files`, `/api/practice/{id}/submissions`, `/api/practice/{id}/criteria` | Save your exercise files, record a checked submission (score), tick acceptance criteria |
 | GET/POST/PUT/DELETE | `/api/playground/projects`, `/api/playground/projects/{id}` | Your saved Code Playground projects (up to 100) |
+| GET/POST/PUT/DELETE | `/api/cv`, `/api/cv/{id}`, `/api/cv/{id}/duplicate` | Your CVs (up to 30); a copy or tailored version never changes the original |
+| GET/PUT/DELETE | `/api/cv/{id}/photo` | Optional photo (JPEG/PNG, checked by content, ≤ 300 KB) |
+| POST, GET | `/api/cv/{id}/preview`, `/api/cv/{id}/pdf`, `/api/cv/{id}/docx` | Preview pages of the on-screen state; PDF and Word downloads of the saved CV |
+| GET | `/api/cv/templates`, `/api/cv/templates/{key}/thumbnail`, `/api/cv/suggestions?lang=en\|ar` | Templates; suggestions from your activity with their evidence |
+| POST | `/api/cv/ats-check`, `/api/cv/{id}/job-match` | Rule-based ATS check and job-description keyword match |
+| GET, POST | `/api/cv/ai/status`, `/api/cv/{id}/ai` | AI assistant (only when `Anthropic:ApiKey` is set; 40 requests per account per day) |
 | GET | `/api/videos/library?language=English\|Arabic` | Every topic's curated videos, by phase (all languages without `language`) |
 | GET | `/api/videos/saved` | The videos you saved, newest first, with the topic each was saved from |
 | GET/PUT | `/api/interviews?category&topicId&rating`, `/api/interviews/{id}/progress` | Interview questions and self-rating |
@@ -345,6 +353,51 @@ The Practice Lab and the Code Playground run code **in the learner's browser onl
 **Build.** The C# runner and the Angular preview packages are generated (`npm run build:runners`, not committed). The deploy script builds them before `ng build` and then writes Brotli copies of the build (`npm run precompress`), which the API serves to browsers that accept them: the C# runtime is about 66 MB raw and 9 MB compressed, and the browser caches it.
 
 **Checks.** `npm run verify:exercises` (frontend) and `PracticeExerciseTests` (backend) run every exercise through the same code the browser uses and fail if a model solution doesn't pass all its checks or a starter already does.
+
+## CV Builder
+
+**CV Builder** in the sidebar (`/cv`). Each CV is private to its account (the same per-user query filter as notes and
+progress); there is no public link.
+
+- **Templates.** Six layouts drawn differently, not recoloured: *Modern Professional*, *ATS-Friendly* (plain, black,
+  no graphics or photo), *Minimalist*, *Technical Developer* (sidebar with skills and links, projects first),
+  *Executive / Corporate* (serif) and *Creative Modern* (full-height coloured sidebar with photo). The content is
+  stored separately from the look, so switching templates never loses anything. Colour, font, spacing (comfortable /
+  compact), section order and visibility, and an English (LTR) or Arabic (RTL) CV are set per CV.
+- **One renderer.** QuestPDF draws the CV; the live preview shows images of the same pages the PDF will have, so
+  page breaks are exactly what you download. The PDF has real, selectable text (ATS can read it) with embedded Noto
+  fonts that cover Arabic (`Resources/Fonts`, SIL Open Font License). The Word export is a real OpenXML document
+  (headings, bullet lists, tab-aligned dates, links) in one editable column, validated in the tests with the OpenXML
+  validator. QuestPDF is used under its free **Community licence** (free for individuals, non-profits and companies
+  under 1M USD annual revenue; see questpdf.com/license).
+- **Suggestions from your progress** never overstate: *verified* = an exercise that passed every automatic check,
+  *built* = a platform project with a repository link where you finished tasks that use the skill, *practiced* =
+  exercises or project tasks you marked done, *studied* = completed topics. Unfinished projects are offered as
+  *in progress*, coursework only for phases whose core topics are all completed, and roadmap progress is never
+  offered as a certification. Nothing is added until you click **Add**.
+- **AI assistant (optional).** With an Anthropic API key the editor can write a summary from your CV and evidence,
+  improve wording, turn notes into bullet points, make text shorter or ATS-friendly, suggest and group skills, list
+  what is missing, and tailor the CV to a pasted job description. The prompt forbids inventing employers, dates,
+  numbers, certificates or skills; the job description is treated as data, not instructions; answers use structured
+  output and are only proposals that you apply or discard. Refusals, rate limits and errors are shown as clear
+  messages. Without a key the assistant says it is not set up and everything else works.
+- **Job match and ATS check** are rule-based (no AI, no cost): keywords from the job description that your CV
+  already shows, ones on your learning path, and missing ones; projects to highlight; a suggested section order; and
+  an ATS-readiness score with concrete issues (missing contact details, two-column layout, no dates, long bullets,
+  more than two pages…). The score is a guide, not a promise about any real ATS. **Create tailored copy** saves a
+  separate CV for that job and leaves the original untouched.
+
+**To turn on the AI assistant**, create a key at [console.anthropic.com](https://console.anthropic.com) and store it
+outside the repository (it is used only by the API and never sent to the browser):
+
+```bash
+cd backend/DevPath.Api
+dotnet user-secrets set "Anthropic:ApiKey" "YOUR_KEY"
+# optional: dotnet user-secrets set "Anthropic:Model" "claude-opus-5-5"   (the default)
+```
+
+In production set the environment variable `Anthropic__ApiKey` (GitHub secret `ANTHROPIC_API_KEY` for the automated
+deployment). Each account may make 40 AI requests a day (`Anthropic:RequestsPerDay`).
 
 ## Onboarding tour and help
 

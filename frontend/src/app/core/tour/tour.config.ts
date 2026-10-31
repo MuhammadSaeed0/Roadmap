@@ -30,6 +30,8 @@ export const SECTION_IDS = [
   'resources-verify', 'resources-filters', 'resources-list', 'notes-new', 'notes-list', 'notes-editor',
   // Progress, career, settings, search, admin
   'progress-tabs', 'progress-panel', 'career-gaps', 'career-areas', 'career-portfolio',
+  // CV builder
+  'cv-new', 'cv-list', 'cv-templates', 'cv-download', 'cv-editor', 'cv-suggestions', 'cv-assistant', 'cv-preview',
   'settings-appearance', 'settings-learning', 'settings-account', 'settings-about', 'search-results',
   'admin-stats', 'admin-tabs', 'admin-users',
 ] as const;
@@ -38,7 +40,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 /** Pages with a guide. Routes name theirs in `data.helpId` (see app.routes.ts), so /topics/:id etc. work. */
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'library', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
-  'resources', 'notes', 'progress', 'career', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos',
+  'resources', 'notes', 'progress', 'career', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
 
@@ -61,6 +63,8 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   notes: ['notes-new', 'notes-list', 'notes-editor'],
   progress: ['progress-tabs', 'progress-panel'],
   career: ['career-gaps', 'career-areas', 'career-portfolio'],
+  cv: ['cv-new', 'cv-list', 'cv-templates'],
+  'cv-editor': ['cv-download', 'cv-editor', 'cv-suggestions', 'cv-assistant', 'cv-preview'],
   settings: ['settings-appearance', 'settings-learning', 'settings-account', 'settings-about'],
   search: ['search-results'],
   admin: ['admin-stats', 'admin-tabs', 'admin-users'],
@@ -97,6 +101,7 @@ export const MAIN_TOUR: readonly MainStep[] = [
   { id: 'notes-list', route: '/notes', targets: ['notes-list'] },
   { id: 'progress-tabs', route: '/progress', targets: ['progress-tabs'] },
   { id: 'career-gaps', route: '/career', targets: ['career-gaps'] },
+  { id: 'cv-templates', route: '/cv', targets: ['cv-templates', 'cv-new'] },
   { id: 'settings-learning', route: '/settings', targets: ['settings-learning'] },
   { id: 'admin-stats', route: '/admin', targets: ['admin-stats'], when: ctx => ctx.isAdmin },
   { id: 'help', targets: ['help'] },

@@ -51,6 +51,7 @@ jobs:
           EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           OWNER_PASSWORD: ${{ secrets.OWNER_PASSWORD }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           DEPLOY_SITE: ${{ secrets.MONSTERASP_SITE }}
           DEPLOY_SERVER: ${{ secrets.MONSTERASP_SERVER }}
           DEPLOY_USERNAME: ${{ secrets.MONSTERASP_USERNAME }}
@@ -69,6 +70,8 @@ jobs:
           )
           if ($env:OWNER_EMAIL) { $lines += "Admin__OwnerEmail=$env:OWNER_EMAIL" }
           if ($env:OWNER_PASSWORD) { $lines += "Admin__OwnerPassword=$env:OWNER_PASSWORD" }
+          # Optional: without it the CV builder works and its AI assistant says it is not set up.
+          if ($env:ANTHROPIC_API_KEY) { $lines += "Anthropic__ApiKey=$env:ANTHROPIC_API_KEY" }
           Set-Content -Path deploy/production.env -Value $lines -Encoding utf8
 
       - name: Test, build, check and deploy
