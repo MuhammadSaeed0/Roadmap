@@ -198,25 +198,24 @@ public class AccountApprovalTests(ApiFactory factory) : IClassFixture<ApiFactory
     }
 
     [Fact]
-    public async Task Registering_or_verifying_the_owner_address_grants_nothing_and_a_reset_takes_it_over()
+    public async Task The_owner_address_needs_confirmation_and_a_reset_takes_the_password_over()
     {
         var isolated = new ApiFactory();
         await isolated.InitializeAsync();
         try
         {
-            // Someone else registers the main administrator's address first, with their own password, and keeps the session.
+            // Someone registers the main administrator's address with their own password: unconfirmed, it gets no rights.
             var squatter = await isolated.RegisterAsync(ApiFactory.OwnerEmail, "Squatter123");
             Assert.Equal("account_pending_verification", await Code(await squatter.GetAsync("/api/admin/overview")));
-
-            // The real owner follows the verification link from their inbox: still nobody becomes owner.
-            Assert.Equal(HttpStatusCode.OK, (await Verify(isolated.CreateClient(), isolated.Emails.LastToken(ApiFactory.OwnerEmail, "verification"))).StatusCode);
-            Assert.Equal(HttpStatusCode.Forbidden, (await squatter.GetAsync("/api/admin/overview")).StatusCode);
-            var me = await Json(await squatter.GetAsync("/api/auth/me"));
-            Assert.False(me["isOwner"]!.GetValue<bool>());
-            Assert.False(me["isAdmin"]!.GetValue<bool>());
             var relogin = isolated.CreateClient();
             await relogin.PostAsJsonAsync("/api/auth/login", new { email = ApiFactory.OwnerEmail, password = "Squatter123" });
-            Assert.Equal(HttpStatusCode.Forbidden, (await relogin.GetAsync("/api/admin/overview")).StatusCode);
+            Assert.Equal("account_pending_verification", await Code(await relogin.GetAsync("/api/admin/overview")));
+
+            // Confirming the address from its inbox makes the account the main administrator (the configured address
+            // is always the owner); whoever chose its password still knows it, which the reset below fixes.
+            Assert.Equal(HttpStatusCode.OK, (await Verify(isolated.CreateClient(), isolated.Emails.LastToken(ApiFactory.OwnerEmail, "verification"))).StatusCode);
+            var me = await Json(await squatter.GetAsync("/api/auth/me"));
+            Assert.True(me["isOwner"]!.GetValue<bool>());
 
             // The real owner resets the password from their inbox: they become owner, and the old sessions end at once.
             var owner = isolated.CreateClient();

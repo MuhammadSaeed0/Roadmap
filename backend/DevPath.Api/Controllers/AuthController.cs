@@ -51,7 +51,7 @@ public class AuthController(
 
     [HttpPost("login")]
     [AllowAnonymous, EnableRateLimiting(AuthRateLimit.Policy)]
-    public async Task<ActionResult<AccountDto>> Login(LoginRequest request)
+    public async Task<ActionResult<AccountDto>> Login(LoginRequest request, CancellationToken ct)
     {
         var user = await users.FindByEmailAsync(request.Email!.Trim());
         // Same answer for "no such account" and "wrong password", so the response doesn't reveal who has an account.
@@ -61,6 +61,9 @@ public class AuthController(
         if (result.IsLockedOut)
             throw new ApiProblemException(423, "locked_out", "Too many failed attempts. Try again in a few minutes.");
         if (!result.Succeeded) throw InvalidCredentials();
+
+        // The configured main administrator is put back in place on every sign-in, whatever happened to the account.
+        await workflow.EnforceOwnerAsync(user, ct);
 
         // Only after the password is proven do we say why a blocked account can't come in.
         if (user.Status == AccountStatus.Rejected)

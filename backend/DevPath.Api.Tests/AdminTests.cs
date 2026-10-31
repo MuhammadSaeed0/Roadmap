@@ -251,16 +251,19 @@ public class OwnerInitializationTests
     }
 
     [Fact]
-    public async Task Without_the_secret_nobody_becomes_owner_at_start_up()
+    public async Task An_unconfirmed_registration_of_the_owner_address_gets_no_rights()
     {
         var factory = await StartAsync([]);
         try
         {
-            await factory.RegisterAsync(ApiFactory.OwnerEmail);
-            await factory.ApproveInDatabaseAsync(ApiFactory.OwnerEmail);   // even verified and approved
+            var client = await factory.RegisterAsync(ApiFactory.OwnerEmail);
             await RunEnsureOwnerAsync(factory);
+            var login = await factory.CreateClient().PostAsJsonAsync("/api/auth/login", new { email = ApiFactory.OwnerEmail, password = ApiFactory.Password });
+            Assert.Equal(HttpStatusCode.OK, login.StatusCode);
+
             using var scope = factory.Services.CreateScope();
             Assert.False(await scope.ServiceProvider.GetRequiredService<AppDbContext>().Users.AnyAsync(u => u.IsOwner));
+            Assert.Equal(HttpStatusCode.Forbidden, (await client.GetAsync("/api/admin/overview")).StatusCode);
         }
         finally
         {
@@ -269,7 +272,76 @@ public class OwnerInitializationTests
     }
 
     [Fact]
-    public async Task Ownership_is_not_moved_when_the_configured_address_changes()
+    public async Task The_owner_address_is_the_owner_as_soon_as_it_is_confirmed()
+    {
+        var factory = await StartAsync([]);
+        try
+        {
+            // Sign up with the owner address and confirm it: no approval needed, straight to owner.
+            var client = await factory.RegisterAsync(ApiFactory.OwnerEmail);
+            var token = factory.Emails.LastToken(ApiFactory.OwnerEmail, "verification");
+            var verified = await client.PostAsJsonAsync("/api/auth/verify-email", new { token });
+            Assert.Equal(HttpStatusCode.OK, verified.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/api/admin/overview")).StatusCode);
+            var me = await client.GetFromJsonAsync<System.Text.Json.Nodes.JsonObject>("/api/auth/me");
+            Assert.True(me!["isOwner"]!.GetValue<bool>());
+            Assert.Equal("Approved", me["status"]!.GetValue<string>());
+        }
+        finally
+        {
+            await ((IAsyncLifetime)factory).DisposeAsync();
+        }
+    }
+
+    [Fact]
+    public async Task The_owner_is_restored_at_sign_in_and_start_up_whatever_happened_to_the_account()
+    {
+        var factory = await StartAsync([]);
+        try
+        {
+            // A confirmed account for the owner address that lost everything: not owner, no role, waiting for approval.
+            await factory.RegisterAsync(ApiFactory.OwnerEmail);
+            using (var scope = factory.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var user = await db.Users.SingleAsync(u => u.Email == ApiFactory.OwnerEmail);
+                user.EmailConfirmed = true;
+                user.EmailVerifiedAt = DateTime.UtcNow;
+                user.Status = AccountStatus.PendingApproval;
+                await db.SaveChangesAsync();
+            }
+
+            var client = factory.CreateClient();
+            var login = await client.PostAsJsonAsync("/api/auth/login", new { email = ApiFactory.OwnerEmail, password = ApiFactory.Password });
+            Assert.Equal(HttpStatusCode.OK, login.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/api/admin/overview")).StatusCode);
+
+            // Suspended and demoted behind the API's back (for example by editing the database): the next start-up restores it.
+            using (var scope = factory.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var user = await db.Users.SingleAsync(u => u.Email == ApiFactory.OwnerEmail);
+                user.Status = AccountStatus.Suspended;
+                user.IsOwner = false;
+                await db.SaveChangesAsync();
+            }
+            await RunEnsureOwnerAsync(factory);
+            using (var scope = factory.Services.CreateScope())
+            {
+                var user = await scope.ServiceProvider.GetRequiredService<AppDbContext>().Users.SingleAsync(u => u.Email == ApiFactory.OwnerEmail);
+                Assert.True(user.IsOwner);
+                Assert.Equal(AccountStatus.Approved, user.Status);
+                Assert.True(await scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>().IsInRoleAsync(user, Roles.Admin));
+            }
+        }
+        finally
+        {
+            await ((IAsyncLifetime)factory).DisposeAsync();
+        }
+    }
+
+    [Fact]
+    public async Task Ownership_moves_to_the_configured_address()
     {
         var factory = await StartAsync(new() { ["Admin:OwnerPassword"] = "Bootstrap123" });
         try
@@ -289,9 +361,12 @@ public class OwnerInitializationTests
                 await workflow.EnsureOwnerAsync(CancellationToken.None);
             }
 
+            // The newly configured (and confirmed) address is now the only owner; the previous owner stays an administrator.
             using var check = factory.Services.CreateScope();
             var owner = await check.ServiceProvider.GetRequiredService<AppDbContext>().Users.SingleAsync(u => u.IsOwner);
-            Assert.Equal(ApiFactory.OwnerEmail, owner.Email);
+            Assert.Equal(other, owner.Email);
+            var previous = await check.ServiceProvider.GetRequiredService<AppDbContext>().Users.SingleAsync(u => u.Email == ApiFactory.OwnerEmail);
+            Assert.True(await check.ServiceProvider.GetRequiredService<UserManager<AppUser>>().IsInRoleAsync(previous, Roles.Admin));
         }
         finally
         {
