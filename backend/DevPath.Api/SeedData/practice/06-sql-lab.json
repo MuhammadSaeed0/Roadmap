@@ -1,0 +1,575 @@
+[
+  {
+    "key": "sql-lab-cheap-products",
+    "type": "Coding",
+    "topic": "sql-select-basics",
+    "difficulty": "Beginner",
+    "minutes": 10,
+    "titleEn": "Products under 20",
+    "titleAr": "المنتجات الأرخص من 20",
+    "problemEn": "In the shop database, list the Name and Price of every product that costs less than 20, from the cheapest to the most expensive.",
+    "problemAr": "في قاعدة بيانات المتجر اعرض الاسم Name والسعر Price لكل منتج سعره أقل من 20، من الأرخص إلى الأغلى.",
+    "expectedEn": "Two columns, Name and Price, sorted by price ascending.",
+    "expectedAr": "عمودان هما Name وPrice، مرتبان حسب السعر تصاعديًا.",
+    "hintsEn": [
+      "WHERE Price < 20 keeps the cheap ones.",
+      "ORDER BY Price sorts ascending by default."
+    ],
+    "hintsAr": [
+      "الشرط WHERE Price < 20 يُبقي المنتجات الرخيصة.",
+      "ORDER BY Price يرتّب تصاعديًا افتراضيًا."
+    ],
+    "solutionEn": "SELECT Name, Price FROM Products WHERE Price < 20 ORDER BY Price; — choose columns with SELECT, filter rows with WHERE, sort with ORDER BY.",
+    "solutionAr": "SELECT Name, Price FROM Products WHERE Price < 20 ORDER BY Price; — اختر الأعمدة بـ SELECT، وصفِّ الصفوف بـ WHERE، ورتّب بـ ORDER BY.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-like-search",
+    "type": "Coding",
+    "topic": "sql-select-basics",
+    "difficulty": "Beginner",
+    "minutes": 10,
+    "titleEn": "Search products by name",
+    "titleAr": "البحث عن المنتجات بالاسم",
+    "problemEn": "A customer searches for \"mouse\". Return the Name and Stock of every active product (IsActive = 1) whose name contains the word Mouse.",
+    "problemAr": "يبحث عميل عن \"mouse\". أرجِع الاسم Name والمخزون Stock لكل منتج نشط (IsActive = 1) يحتوي اسمه على الكلمة Mouse.",
+    "expectedEn": "Name and Stock of the three mice.",
+    "expectedAr": "الاسم والمخزون لمنتجات الماوس الثلاثة.",
+    "hintsEn": [
+      "LIKE with % on both sides matches text anywhere in the name.",
+      "Combine conditions with AND."
+    ],
+    "hintsAr": [
+      "LIKE مع % على الجانبين يطابق النص في أي مكان من الاسم.",
+      "اجمع الشروط بـ AND."
+    ],
+    "solutionEn": "SELECT Name, Stock FROM Products WHERE Name LIKE '%Mouse%' AND IsActive = 1; — % matches any number of characters.",
+    "solutionAr": "SELECT Name, Stock FROM Products WHERE Name LIKE '%Mouse%' AND IsActive = 1; — يطابق % أي عدد من الحروف.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-top-expensive",
+    "type": "Coding",
+    "topic": "sql-select-basics",
+    "difficulty": "Beginner",
+    "minutes": 10,
+    "titleEn": "The three most expensive products",
+    "titleAr": "أغلى ثلاثة منتجات",
+    "problemEn": "Show the Name and Price of the 3 most expensive active products, most expensive first. Use SQL Server’s TOP (the editor shows how it runs on the practice engine).",
+    "problemAr": "اعرض الاسم Name والسعر Price لأغلى 3 منتجات نشطة، الأغلى أولًا. استخدم TOP من SQL Server (ويوضح المحرر كيف يعمل على محرك التدريب).",
+    "expectedEn": "Exactly 3 rows, highest price first.",
+    "expectedAr": "3 صفوف بالضبط، الأعلى سعرًا أولًا.",
+    "hintsEn": [
+      "SELECT TOP 3 … takes the first 3 rows of the result.",
+      "TOP only makes sense with an ORDER BY."
+    ],
+    "hintsAr": [
+      "SELECT TOP 3 … يأخذ أول 3 صفوف من النتيجة.",
+      "لا معنى لـ TOP إلا مع ORDER BY."
+    ],
+    "solutionEn": "SELECT TOP 3 Name, Price FROM Products WHERE IsActive = 1 ORDER BY Price DESC; — sort descending, then keep the first three.",
+    "solutionAr": "SELECT TOP 3 Name, Price FROM Products WHERE IsActive = 1 ORDER BY Price DESC; — رتّب تنازليًا ثم احتفظ بأول ثلاثة.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-distinct-cities",
+    "type": "Coding",
+    "topic": "sql-select-basics",
+    "difficulty": "Beginner",
+    "minutes": 10,
+    "titleEn": "Cities we deliver to",
+    "titleAr": "المدن التي نوصّل إليها",
+    "problemEn": "List each city the shop has customers in, once, in alphabetical order. The column must be called City.",
+    "problemAr": "اعرض كل مدينة فيها عملاء للمتجر مرة واحدة، بترتيب أبجدي. يجب أن يكون اسم العمود City.",
+    "expectedEn": "One row per city, no duplicates, A→Z.",
+    "expectedAr": "صف لكل مدينة بلا تكرار، من A إلى Z.",
+    "hintsEn": [
+      "DISTINCT removes duplicate rows."
+    ],
+    "hintsAr": [
+      "DISTINCT يحذف الصفوف المكررة."
+    ],
+    "solutionEn": "SELECT DISTINCT City FROM Customers ORDER BY City;",
+    "solutionAr": "SELECT DISTINCT City FROM Customers ORDER BY City;",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-debug-null",
+    "type": "Debugging",
+    "topic": "sql-select-basics",
+    "difficulty": "Beginner",
+    "minutes": 10,
+    "titleEn": "Debug: students without an email",
+    "titleAr": "تصحيح: طلاب بلا بريد إلكتروني",
+    "problemEn": "This query should list the students who have no email address so the school can contact them, but it returns nothing. Fix it.",
+    "problemAr": "يجب أن يعرض هذا الاستعلام الطلاب الذين ليس لهم بريد إلكتروني لتتواصل المدرسة معهم، لكنه لا يُرجع شيئًا. أصلحه.",
+    "expectedEn": "The names of the 3 students whose Email is NULL.",
+    "expectedAr": "أسماء الطلاب الثلاثة الذين قيمة Email لهم NULL.",
+    "hintsEn": [
+      "NULL means \"unknown\": is unknown equal to unknown?",
+      "SQL has a special operator for testing NULL."
+    ],
+    "hintsAr": [
+      "NULL تعني «غير معروف»: هل المجهول يساوي المجهول؟",
+      "في SQL معامل خاص لاختبار NULL."
+    ],
+    "solutionEn": "Any comparison with NULL using = is unknown, never true, so no rows match. Use IS NULL: WHERE Email IS NULL.",
+    "solutionAr": "أي مقارنة مع NULL باستخدام = نتيجتها «غير معروف» وليست صحيحة أبدًا، فلا يطابق أي صف. استخدم IS NULL: WHERE Email IS NULL.",
+    "runner": "Sql",
+    "dataset": "school"
+  },
+  {
+    "key": "sql-lab-insert-product",
+    "type": "Practical",
+    "topic": "sql-modify-data",
+    "difficulty": "Beginner",
+    "minutes": 10,
+    "titleEn": "Add a new product",
+    "titleAr": "إضافة منتج جديد",
+    "problemEn": "Add the product \"Laptop Stand\" priced 39.99 with 10 in stock to the Displays category (look up its Id in the Categories table first). Don’t supply an Id: the database generates it.",
+    "problemAr": "أضف المنتج \"Laptop Stand\" بسعر 39.99 ومخزون 10 إلى تصنيف Displays (ابحث عن رقمه Id في جدول Categories أولًا). لا تحدد Id: قاعدة البيانات تولّده.",
+    "expectedEn": "A new row in Products with those values and the Displays category.",
+    "expectedAr": "صف جديد في Products بهذه القيم وبتصنيف Displays.",
+    "hintsEn": [
+      "INSERT INTO Products (Name, Price, Stock, CategoryId) VALUES (…);",
+      "You can look up the category Id with a subquery: (SELECT Id FROM Categories WHERE Name = 'Displays')."
+    ],
+    "hintsAr": [
+      "INSERT INTO Products (Name, Price, Stock, CategoryId) VALUES (…);",
+      "يمكنك إيجاد رقم التصنيف باستعلام فرعي: (SELECT Id FROM Categories WHERE Name = 'Displays')."
+    ],
+    "solutionEn": "INSERT INTO Products (Name, Price, Stock, CategoryId) VALUES ('Laptop Stand', 39.99, 10, (SELECT Id FROM Categories WHERE Name = 'Displays')); — list the columns explicitly and let the identity column fill the Id.",
+    "solutionAr": "INSERT INTO Products (Name, Price, Stock, CategoryId) VALUES ('Laptop Stand', 39.99, 10, (SELECT Id FROM Categories WHERE Name = 'Displays')); — اذكر الأعمدة صراحةً واترك عمود الهوية يملأ Id.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-raise-prices",
+    "type": "Practical",
+    "topic": "sql-modify-data",
+    "difficulty": "Beginner",
+    "minutes": 10,
+    "titleEn": "Raise the prices of one category",
+    "titleAr": "رفع أسعار تصنيف واحد",
+    "problemEn": "Suppliers raised their prices: increase the price of every product in the Mice category by 10%. No other product may change.",
+    "problemAr": "رفع الموردون أسعارهم: زِد سعر كل منتج في تصنيف Mice بنسبة 10%. ولا يجوز أن يتغير أي منتج آخر.",
+    "expectedEn": "The three mice cost 10% more; everything else keeps its price.",
+    "expectedAr": "تصبح أسعار منتجات الماوس الثلاثة أعلى بنسبة 10%، ويبقى غيرها كما هو.",
+    "hintsEn": [
+      "UPDATE Products SET Price = Price * 1.10 WHERE …",
+      "Run a SELECT with the same WHERE first to see which rows will change."
+    ],
+    "hintsAr": [
+      "UPDATE Products SET Price = Price * 1.10 WHERE …",
+      "نفّذ SELECT بنفس شرط WHERE أولًا لترى الصفوف التي ستتغير."
+    ],
+    "solutionEn": "UPDATE Products SET Price = Price * 1.10 WHERE CategoryId = (SELECT Id FROM Categories WHERE Name = 'Mice'); — the WHERE clause decides which rows change; without it every price would go up.",
+    "solutionAr": "UPDATE Products SET Price = Price * 1.10 WHERE CategoryId = (SELECT Id FROM Categories WHERE Name = 'Mice'); — يحدد شرط WHERE الصفوف التي تتغير، وبدونه سترتفع كل الأسعار.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-delete-cancelled",
+    "type": "Debugging",
+    "topic": "sql-tables-keys",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "Delete cancelled orders (and their lines)",
+    "titleAr": "حذف الطلبات الملغاة (وأسطرها)",
+    "problemEn": "Remove every cancelled order. The obvious DELETE fails with \"FOREIGN KEY constraint failed\". Read the error, understand why, and delete in the right order.",
+    "problemAr": "احذف كل طلب ملغى. أمر DELETE المباشر يفشل برسالة \"FOREIGN KEY constraint failed\". اقرأ الخطأ وافهم سببه واحذف بالترتيب الصحيح.",
+    "expectedEn": "No cancelled orders remain, their order lines are gone too, and every other order is untouched.",
+    "expectedAr": "لا تبقى طلبات ملغاة، وتُحذف أسطرها أيضًا، ولا يتغير أي طلب آخر.",
+    "hintsEn": [
+      "OrderLines.OrderId references Orders.Id: a line can’t point to an order that no longer exists.",
+      "Delete the child rows (lines) first, then the parent rows (orders)."
+    ],
+    "hintsAr": [
+      "العمود OrderLines.OrderId يشير إلى Orders.Id: لا يمكن أن يشير سطر إلى طلب لم يعد موجودًا.",
+      "احذف الصفوف الفرعية (الأسطر) أولًا ثم الصفوف الأساسية (الطلبات)."
+    ],
+    "solutionEn": "DELETE FROM OrderLines WHERE OrderId IN (SELECT Id FROM Orders WHERE Status = 'Cancelled'); DELETE FROM Orders WHERE Status = 'Cancelled'; — the foreign key protects referential integrity, so children go before parents (or the key is declared ON DELETE CASCADE).",
+    "solutionAr": "DELETE FROM OrderLines WHERE OrderId IN (SELECT Id FROM Orders WHERE Status = 'Cancelled'); DELETE FROM Orders WHERE Status = 'Cancelled'; — يحمي المفتاح الأجنبي سلامة الارتباطات، لذا تُحذف الصفوف الفرعية قبل الأساسية (أو يُعرَّف المفتاح بـ ON DELETE CASCADE).",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-join-out-of-stock",
+    "type": "Coding",
+    "topic": "sql-joins",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "Out-of-stock products with their category",
+    "titleAr": "المنتجات النافدة مع تصنيفها",
+    "problemEn": "Show the products that are out of stock (Stock = 0) with the name of their category. Columns: Product, Category.",
+    "problemAr": "اعرض المنتجات النافدة (Stock = 0) مع اسم تصنيفها. الأعمدة: Product وCategory.",
+    "expectedEn": "One row per out-of-stock product, with its category name instead of the CategoryId number.",
+    "expectedAr": "صف لكل منتج نافد، مع اسم تصنيفه بدلًا من رقم CategoryId.",
+    "hintsEn": [
+      "JOIN Categories c ON c.Id = p.CategoryId",
+      "Rename columns with AS: p.Name AS Product."
+    ],
+    "hintsAr": [
+      "JOIN Categories c ON c.Id = p.CategoryId",
+      "أعد تسمية الأعمدة بـ AS: p.Name AS Product."
+    ],
+    "solutionEn": "SELECT p.Name AS Product, c.Name AS Category FROM Products p JOIN Categories c ON c.Id = p.CategoryId WHERE p.Stock = 0; — the JOIN matches each product to its category through the foreign key.",
+    "solutionAr": "SELECT p.Name AS Product, c.Name AS Category FROM Products p JOIN Categories c ON c.Id = p.CategoryId WHERE p.Stock = 0; — يطابق JOIN كل منتج مع تصنيفه عبر المفتاح الأجنبي.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-never-ordered",
+    "type": "Coding",
+    "topic": "sql-joins",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "Products nobody ordered",
+    "titleAr": "منتجات لم يطلبها أحد",
+    "problemEn": "Marketing wants to promote products that have never been ordered. Return their names, sorted A→Z.",
+    "problemAr": "يريد التسويق الترويج للمنتجات التي لم تُطلب أبدًا. أرجِع أسماءها مرتبة أبجديًا.",
+    "expectedEn": "Names of the products that don’t appear in any order line.",
+    "expectedAr": "أسماء المنتجات التي لا تظهر في أي سطر طلب.",
+    "hintsEn": [
+      "A LEFT JOIN keeps every product, with NULLs where there is no matching order line.",
+      "Then keep only the rows where the order line is NULL."
+    ],
+    "hintsAr": [
+      "يُبقي LEFT JOIN كل المنتجات، مع NULL حيث لا يوجد سطر طلب مطابق.",
+      "ثم احتفظ فقط بالصفوف التي سطر الطلب فيها NULL."
+    ],
+    "solutionEn": "SELECT p.Name FROM Products p LEFT JOIN OrderLines l ON l.ProductId = p.Id WHERE l.Id IS NULL ORDER BY p.Name; — the \"anti-join\" pattern. NOT EXISTS (SELECT 1 FROM OrderLines WHERE ProductId = p.Id) works too.",
+    "solutionAr": "SELECT p.Name FROM Products p LEFT JOIN OrderLines l ON l.ProductId = p.Id WHERE l.Id IS NULL ORDER BY p.Name; — هذا نمط Anti-join، ويعمل أيضًا NOT EXISTS (SELECT 1 FROM OrderLines WHERE ProductId = p.Id).",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-category-stats",
+    "type": "Coding",
+    "topic": "sql-aggregates",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "Category statistics with HAVING",
+    "titleAr": "إحصاءات التصنيفات مع HAVING",
+    "problemEn": "For each category with at least 3 products, return Category, Products (how many) and AveragePrice rounded to 2 decimals, the largest category first (ties: A→Z).",
+    "problemAr": "لكل تصنيف فيه 3 منتجات على الأقل أرجِع Category وProducts (عددها) وAveragePrice مقربًا لرقمين عشريين، الأكبر أولًا (وعند التساوي أبجديًا).",
+    "expectedEn": "Only categories with 3 or more products, with their count and average price.",
+    "expectedAr": "التصنيفات التي فيها 3 منتجات أو أكثر فقط، مع العدد ومتوسط السعر.",
+    "hintsEn": [
+      "GROUP BY the category name, then filter groups with HAVING COUNT(*) >= 3.",
+      "ROUND(AVG(p.Price), 2) rounds the average."
+    ],
+    "hintsAr": [
+      "جمّع حسب اسم التصنيف بـ GROUP BY ثم صفِّ المجموعات بـ HAVING COUNT(*) >= 3.",
+      "ROUND(AVG(p.Price), 2) يقرّب المتوسط."
+    ],
+    "solutionEn": "SELECT c.Name AS Category, COUNT(*) AS Products, ROUND(AVG(p.Price), 2) AS AveragePrice FROM Categories c JOIN Products p ON p.CategoryId = c.Id GROUP BY c.Name HAVING COUNT(*) >= 3 ORDER BY Products DESC, Category; — WHERE filters rows before grouping, HAVING filters the groups.",
+    "solutionAr": "SELECT c.Name AS Category, COUNT(*) AS Products, ROUND(AVG(p.Price), 2) AS AveragePrice FROM Categories c JOIN Products p ON p.CategoryId = c.Id GROUP BY c.Name HAVING COUNT(*) >= 3 ORDER BY Products DESC, Category; — يصفّي WHERE الصفوف قبل التجميع، ويصفّي HAVING المجموعات.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-customer-totals",
+    "type": "Practical",
+    "topic": "sql-aggregates",
+    "difficulty": "Advanced",
+    "minutes": 20,
+    "titleEn": "Top customers by money spent",
+    "titleAr": "أفضل العملاء حسب الإنفاق",
+    "problemEn": "Return the 5 customers who spent the most on orders that were not cancelled. Columns: Customer (name) and Spent (sum of Quantity × UnitPrice, rounded to 2 decimals), highest first.",
+    "problemAr": "أرجِع أكثر 5 عملاء إنفاقًا على الطلبات غير الملغاة. الأعمدة: Customer (الاسم) وSpent (مجموع Quantity × UnitPrice مقربًا لرقمين عشريين)، الأعلى أولًا.",
+    "expectedEn": "Five rows, highest spender first; cancelled orders don’t count.",
+    "expectedAr": "خمسة صفوف، الأكثر إنفاقًا أولًا، ولا تُحتسب الطلبات الملغاة.",
+    "hintsEn": [
+      "Join Customers → Orders → OrderLines.",
+      "Filter out the cancelled orders in WHERE, before grouping."
+    ],
+    "hintsAr": [
+      "اربط Customers ثم Orders ثم OrderLines.",
+      "استبعد الطلبات الملغاة في WHERE قبل التجميع."
+    ],
+    "solutionEn": "SELECT TOP 5 c.Name AS Customer, ROUND(SUM(l.Quantity * l.UnitPrice), 2) AS Spent FROM Customers c JOIN Orders o ON o.CustomerId = c.Id JOIN OrderLines l ON l.OrderId = o.Id WHERE o.Status <> 'Cancelled' GROUP BY c.Id, c.Name ORDER BY Spent DESC; — group by the customer’s Id (names aren’t unique) and aggregate the line totals.",
+    "solutionAr": "SELECT TOP 5 c.Name AS Customer, ROUND(SUM(l.Quantity * l.UnitPrice), 2) AS Spent FROM Customers c JOIN Orders o ON o.CustomerId = c.Id JOIN OrderLines l ON l.OrderId = o.Id WHERE o.Status <> 'Cancelled' GROUP BY c.Id, c.Name ORDER BY Spent DESC; — جمّع حسب Id العميل (فالأسماء قد تتكرر) واجمع إجماليات الأسطر.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-monthly-revenue",
+    "type": "Practical",
+    "topic": "sql-aggregates",
+    "difficulty": "Advanced",
+    "minutes": 20,
+    "titleEn": "Monthly revenue report",
+    "titleAr": "تقرير الإيراد الشهري",
+    "problemEn": "Build the 2025 revenue report: one row per month that had sales, with Month (1–12), Orders (number of orders) and Revenue (rounded to 2 decimals), excluding cancelled orders, in month order.",
+    "problemAr": "ابنِ تقرير إيرادات 2025: صف لكل شهر فيه مبيعات، مع Month (من 1 إلى 12) وOrders (عدد الطلبات) وRevenue (مقربًا لرقمين عشريين)، مع استبعاد الطلبات الملغاة، بترتيب الشهور.",
+    "expectedEn": "Months in order with their order count and revenue.",
+    "expectedAr": "الشهور بالترتيب مع عدد الطلبات والإيراد.",
+    "hintsEn": [
+      "MONTH(o.OrderDate) and YEAR(o.OrderDate) extract parts of a date (converted for the practice engine).",
+      "COUNT(DISTINCT o.Id) counts orders, not lines."
+    ],
+    "hintsAr": [
+      "MONTH(o.OrderDate) وYEAR(o.OrderDate) تستخرجان أجزاء التاريخ (وتُحوَّلان لمحرك التدريب).",
+      "COUNT(DISTINCT o.Id) يعدّ الطلبات لا الأسطر."
+    ],
+    "solutionEn": "SELECT MONTH(o.OrderDate) AS Month, COUNT(DISTINCT o.Id) AS Orders, ROUND(SUM(l.Quantity * l.UnitPrice), 2) AS Revenue FROM Orders o JOIN OrderLines l ON l.OrderId = o.Id WHERE YEAR(o.OrderDate) = 2025 AND o.Status <> 'Cancelled' GROUP BY MONTH(o.OrderDate) ORDER BY Month; — COUNT(*) here would count lines; DISTINCT counts each order once.",
+    "solutionAr": "SELECT MONTH(o.OrderDate) AS Month, COUNT(DISTINCT o.Id) AS Orders, ROUND(SUM(l.Quantity * l.UnitPrice), 2) AS Revenue FROM Orders o JOIN OrderLines l ON l.OrderId = o.Id WHERE YEAR(o.OrderDate) = 2025 AND o.Status <> 'Cancelled' GROUP BY MONTH(o.OrderDate) ORDER BY Month; — يعدّ COUNT(*) هنا الأسطر، أما DISTINCT فيعدّ كل طلب مرة واحدة.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-above-average",
+    "type": "Coding",
+    "topic": "sql-aggregates",
+    "difficulty": "Advanced",
+    "minutes": 15,
+    "titleEn": "Products above the average price",
+    "titleAr": "المنتجات الأعلى من متوسط السعر",
+    "problemEn": "List the Name and Price of the products that cost more than the average price of all products, most expensive first.",
+    "problemAr": "اعرض الاسم Name والسعر Price للمنتجات التي سعرها أعلى من متوسط أسعار كل المنتجات، الأغلى أولًا.",
+    "expectedEn": "Products priced above the overall average, highest first.",
+    "expectedAr": "المنتجات التي سعرها أعلى من المتوسط العام، الأعلى أولًا.",
+    "hintsEn": [
+      "You can’t write WHERE Price > AVG(Price): aggregates aren’t allowed in WHERE.",
+      "Compute the average in a subquery: WHERE Price > (SELECT AVG(Price) FROM Products)."
+    ],
+    "hintsAr": [
+      "لا يمكنك كتابة WHERE Price > AVG(Price): الدوال التجميعية غير مسموحة في WHERE.",
+      "احسب المتوسط في استعلام فرعي: WHERE Price > (SELECT AVG(Price) FROM Products)."
+    ],
+    "solutionEn": "SELECT Name, Price FROM Products WHERE Price > (SELECT AVG(Price) FROM Products) ORDER BY Price DESC; — the scalar subquery runs once and returns a single value to compare against.",
+    "solutionAr": "SELECT Name, Price FROM Products WHERE Price > (SELECT AVG(Price) FROM Products) ORDER BY Price DESC; — يُنفَّذ الاستعلام الفرعي مرة واحدة ويُرجع قيمة واحدة للمقارنة بها.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-pagination",
+    "type": "Practical",
+    "topic": "sql-pagination",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "Page 2 of the product list",
+    "titleAr": "الصفحة الثانية من قائمة المنتجات",
+    "problemEn": "An API shows products 5 per page, sorted by name. Write the query for page 2 (items 6–10) with Id and Name, using SQL Server’s OFFSET … FETCH.",
+    "problemAr": "تعرض واجهة برمجية المنتجات 5 في كل صفحة مرتبة بالاسم. اكتب استعلام الصفحة الثانية (العناصر من 6 إلى 10) بالأعمدة Id وName باستخدام OFFSET … FETCH من SQL Server.",
+    "expectedEn": "The 6th to 10th products in name order.",
+    "expectedAr": "المنتجات من السادس إلى العاشر بترتيب الاسم.",
+    "hintsEn": [
+      "ORDER BY Name OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY",
+      "OFFSET = (page - 1) × pageSize."
+    ],
+    "hintsAr": [
+      "ORDER BY Name OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY",
+      "قيمة OFFSET = (page - 1) × pageSize."
+    ],
+    "solutionEn": "SELECT Id, Name FROM Products ORDER BY Name OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY; — paging needs a stable ORDER BY; add a tie-breaker such as Id when names can repeat.",
+    "solutionAr": "SELECT Id, Name FROM Products ORDER BY Name OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY; — يحتاج التقسيم إلى صفحات ترتيبًا ثابتًا، فأضف عمودًا حاسمًا مثل Id إذا كانت الأسماء قد تتكرر.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-create-reviews",
+    "type": "Practical",
+    "topic": "sql-tables-keys",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Design a Reviews table",
+    "titleAr": "تصميم جدول Reviews",
+    "problemEn": "Create a table Reviews with exactly these columns: Id (INT IDENTITY primary key), ProductId (INT NOT NULL, a foreign key to Products), Rating (INT NOT NULL, only 1 to 5 allowed by a CHECK constraint), Comment (NVARCHAR(500), optional) and CreatedOn (DATE NOT NULL). Then add two reviews for product 1: rating 5 and rating 4.",
+    "problemAr": "أنشئ جدول Reviews بهذه الأعمدة بالضبط: Id (مفتاح أساسي INT IDENTITY)، وProductId (INT NOT NULL، مفتاح أجنبي إلى Products)، وRating (INT NOT NULL، ولا يُسمح إلا بالقيم من 1 إلى 5 بقيد CHECK)، وComment (NVARCHAR(500) اختياري)، وCreatedOn (DATE NOT NULL). ثم أضف تقييمين للمنتج 1: تقييم 5 وتقييم 4.",
+    "expectedEn": "The table exists with those columns, keys and rules, and holds the two reviews.",
+    "expectedAr": "الجدول موجود بهذه الأعمدة والمفاتيح والقواعد، وفيه التقييمان.",
+    "hintsEn": [
+      "Rating INT NOT NULL CHECK (Rating BETWEEN 1 AND 5)",
+      "ProductId INT NOT NULL REFERENCES Products(Id) declares the foreign key."
+    ],
+    "hintsAr": [
+      "Rating INT NOT NULL CHECK (Rating BETWEEN 1 AND 5)",
+      "ProductId INT NOT NULL REFERENCES Products(Id) يعرّف المفتاح الأجنبي."
+    ],
+    "solutionEn": "CREATE TABLE Reviews (Id INT IDENTITY(1,1) PRIMARY KEY, ProductId INT NOT NULL REFERENCES Products(Id), Rating INT NOT NULL CHECK (Rating BETWEEN 1 AND 5), Comment NVARCHAR(500) NULL, CreatedOn DATE NOT NULL); then INSERT the two rows. Constraints keep bad data out at the database level, whatever the application does.",
+    "solutionAr": "CREATE TABLE Reviews (Id INT IDENTITY(1,1) PRIMARY KEY, ProductId INT NOT NULL REFERENCES Products(Id), Rating INT NOT NULL CHECK (Rating BETWEEN 1 AND 5), Comment NVARCHAR(500) NULL, CreatedOn DATE NOT NULL); ثم أضف الصفين بـ INSERT. تمنع القيود البيانات الخاطئة على مستوى قاعدة البيانات مهما فعل التطبيق.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-index",
+    "type": "Practical",
+    "topic": "sql-indexing",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "Index for a \"my orders\" page",
+    "titleAr": "فهرس لصفحة «طلباتي»",
+    "problemEn": "The \"My orders\" page runs WHERE CustomerId = @id ORDER BY OrderDate DESC on every visit. Create the index that serves it, named IX_Orders_Customer_Date, with the columns in the right order.",
+    "problemAr": "تنفّذ صفحة «طلباتي» الشرط WHERE CustomerId = @id ORDER BY OrderDate DESC في كل زيارة. أنشئ الفهرس المناسب لها باسم IX_Orders_Customer_Date مع ترتيب الأعمدة الصحيح.",
+    "expectedEn": "An index IX_Orders_Customer_Date on Orders(CustomerId, OrderDate).",
+    "expectedAr": "فهرس IX_Orders_Customer_Date على Orders(CustomerId, OrderDate).",
+    "hintsEn": [
+      "Equality columns (CustomerId) go first, the sort column (OrderDate) after.",
+      "CREATE INDEX IX_Orders_Customer_Date ON Orders (CustomerId, OrderDate);"
+    ],
+    "hintsAr": [
+      "أعمدة المساواة (CustomerId) أولًا، ثم عمود الترتيب (OrderDate).",
+      "CREATE INDEX IX_Orders_Customer_Date ON Orders (CustomerId, OrderDate);"
+    ],
+    "solutionEn": "CREATE INDEX IX_Orders_Customer_Date ON Orders (CustomerId, OrderDate); — the index finds one customer’s rows directly and keeps them sorted by date, so no table scan and no separate sort.",
+    "solutionAr": "CREATE INDEX IX_Orders_Customer_Date ON Orders (CustomerId, OrderDate); — يجد الفهرس صفوف العميل مباشرة ويبقيها مرتبة بالتاريخ، فلا مسح للجدول ولا ترتيب منفصل.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-transaction-order",
+    "type": "Practical",
+    "topic": "sql-transactions",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Place an order in one transaction",
+    "titleAr": "إنشاء طلب في معاملة واحدة",
+    "problemEn": "Customer 3 orders 2 × \"Headset\" today (2025-10-10). In one transaction: create a Pending order, add the order line with the current price, and reduce the Headset stock by 2. Either everything happens or nothing does.",
+    "problemAr": "يطلب العميل 3 قطعتين من \"Headset\" اليوم (2025-10-10). في معاملة واحدة: أنشئ طلبًا بحالة Pending، وأضف سطر الطلب بالسعر الحالي، وأنقص مخزون Headset بمقدار 2. إما أن يحدث كل ذلك أو لا يحدث شيء.",
+    "expectedEn": "A new Pending order for customer 3 with one line (2 × Headset at its price), and Headset stock 2 lower.",
+    "expectedAr": "طلب جديد بحالة Pending للعميل 3 فيه سطر واحد (قطعتان من Headset بسعرها)، ومخزون Headset أقل بمقدار 2.",
+    "hintsEn": [
+      "BEGIN TRANSACTION; … COMMIT;",
+      "last_insert_rowid() (SQL Server: SCOPE_IDENTITY()) gives the new order’s Id; or look it up with MAX(Id)."
+    ],
+    "hintsAr": [
+      "BEGIN TRANSACTION; … COMMIT;",
+      "last_insert_rowid() (وفي SQL Server: SCOPE_IDENTITY()) يعطي رقم الطلب الجديد، أو ابحث عنه بـ MAX(Id)."
+    ],
+    "solutionEn": "BEGIN TRANSACTION; INSERT the order; INSERT the line using the new order Id and (SELECT Price FROM Products WHERE Name = 'Headset'); UPDATE Products SET Stock = Stock - 2 WHERE Name = 'Headset'; COMMIT; — a transaction makes the three changes atomic: an error before COMMIT rolls them all back.",
+    "solutionAr": "BEGIN TRANSACTION؛ أضف الطلب؛ ثم أضف السطر برقم الطلب الجديد و(SELECT Price FROM Products WHERE Name = 'Headset')؛ ثم UPDATE Products SET Stock = Stock - 2 WHERE Name = 'Headset'؛ ثم COMMIT. تجعل المعاملة التغييرات الثلاثة ذرية: أي خطأ قبل COMMIT يتراجع عنها كلها.",
+    "runner": "Sql",
+    "dataset": "shop"
+  },
+  {
+    "key": "sql-lab-managers",
+    "type": "Coding",
+    "topic": "sql-joins",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "Who reports to whom (self-join)",
+    "titleAr": "من يتبع من (ربط الجدول بنفسه)",
+    "problemEn": "List every active employee with their manager. Columns: FirstName, LastName and Manager (the manager’s first name, or NULL for people without a manager), sorted by LastName.",
+    "problemAr": "اعرض كل موظف نشط مع مديره. الأعمدة: FirstName وLastName وManager (الاسم الأول للمدير، أو NULL لمن ليس له مدير)، مرتبة حسب LastName.",
+    "expectedEn": "All active employees; department heads have a NULL manager.",
+    "expectedAr": "كل الموظفين النشطين، ومديرو الأقسام قيمة المدير لهم NULL.",
+    "hintsEn": [
+      "Join Employees to itself with two aliases: e (employee) and m (manager).",
+      "Use LEFT JOIN so people without a manager stay in the list."
+    ],
+    "hintsAr": [
+      "اربط Employees بنفسه باسمين مستعارين: e للموظف وm للمدير.",
+      "استخدم LEFT JOIN ليبقى من ليس له مدير في القائمة."
+    ],
+    "solutionEn": "SELECT e.FirstName, e.LastName, m.FirstName AS Manager FROM Employees e LEFT JOIN Employees m ON m.Id = e.ManagerId WHERE e.IsActive = 1 ORDER BY e.LastName; — a self-join treats the same table as two roles.",
+    "solutionAr": "SELECT e.FirstName, e.LastName, m.FirstName AS Manager FROM Employees e LEFT JOIN Employees m ON m.Id = e.ManagerId WHERE e.IsActive = 1 ORDER BY e.LastName; — يعامل الربط الذاتي الجدول نفسه كدورين مختلفين.",
+    "runner": "Sql",
+    "dataset": "hr"
+  },
+  {
+    "key": "sql-lab-top-earner-per-department",
+    "type": "Challenge",
+    "topic": "sql-query-efficiency",
+    "difficulty": "Expert",
+    "minutes": 25,
+    "titleEn": "Expert: the top earner of each department (window functions)",
+    "titleAr": "مستوى الخبراء: الأعلى أجرًا في كل قسم (دوال النوافذ)",
+    "problemEn": "For each department return its highest-paid active employee: Department, Employee (first and last name with a space) and Salary, ordered by Department. Use a window function (ROW_NUMBER or RANK) in a CTE rather than a correlated subquery.",
+    "problemAr": "لكل قسم أرجِع موظفه النشط الأعلى أجرًا: Department وEmployee (الاسم الأول والأخير بينهما مسافة) وSalary، مرتبة حسب Department. استخدم دالة نافذة (ROW_NUMBER أو RANK) داخل CTE بدلًا من استعلام فرعي مترابط.",
+    "expectedEn": "One row per department that has active employees.",
+    "expectedAr": "صف لكل قسم فيه موظفون نشطون.",
+    "hintsEn": [
+      "WITH ranked AS (SELECT …, ROW_NUMBER() OVER (PARTITION BY DepartmentId ORDER BY Salary DESC) AS rn FROM Employees WHERE IsActive = 1)",
+      "Then select WHERE rn = 1 and join Departments for the name. This engine joins text with || (SQL Server uses + or CONCAT)."
+    ],
+    "hintsAr": [
+      "WITH ranked AS (SELECT …, ROW_NUMBER() OVER (PARTITION BY DepartmentId ORDER BY Salary DESC) AS rn FROM Employees WHERE IsActive = 1)",
+      "ثم اختر WHERE rn = 1 واربط Departments للحصول على الاسم. يدمج هذا المحرك النصوص بـ || (ويستخدم SQL Server العلامة + أو CONCAT)."
+    ],
+    "solutionEn": "WITH ranked AS (SELECT e.*, ROW_NUMBER() OVER (PARTITION BY e.DepartmentId ORDER BY e.Salary DESC) AS rn FROM Employees e WHERE e.IsActive = 1) SELECT d.Name AS Department, r.FirstName || ' ' || r.LastName AS Employee, r.Salary FROM ranked r JOIN Departments d ON d.Id = r.DepartmentId WHERE r.rn = 1 ORDER BY d.Name; — PARTITION BY restarts the numbering in each department; the CTE keeps the query readable.",
+    "solutionAr": "WITH ranked AS (SELECT e.*, ROW_NUMBER() OVER (PARTITION BY e.DepartmentId ORDER BY e.Salary DESC) AS rn FROM Employees e WHERE e.IsActive = 1) SELECT d.Name AS Department, r.FirstName || ' ' || r.LastName AS Employee, r.Salary FROM ranked r JOIN Departments d ON d.Id = r.DepartmentId WHERE r.rn = 1 ORDER BY d.Name; — يعيد PARTITION BY الترقيم في كل قسم، ويجعل الـ CTE الاستعلام سهل القراءة.",
+    "runner": "Sql",
+    "dataset": "hr"
+  },
+  {
+    "key": "sql-lab-debug-course-stats",
+    "type": "Debugging",
+    "topic": "sql-aggregates",
+    "difficulty": "Advanced",
+    "minutes": 20,
+    "titleEn": "Debug: misleading course statistics",
+    "titleAr": "تصحيح: إحصاءات مقررات مضللة",
+    "problemEn": "This report of students per course and average grade has two bugs: a course with no enrollments disappears, and students who haven’t been graded yet are averaged as 0. Fix both. Columns: Title, Students, AverageGrade (rounded to 1 decimal), ordered by Title.",
+    "problemAr": "في هذا التقرير لعدد الطلاب ومتوسط الدرجات لكل مقرر خطآن: المقرر الذي لا تسجيلات فيه يختفي، والطلاب الذين لم تُرصد درجاتهم بعد يُحسب متوسطهم كأنهم حصلوا على 0. أصلح الخطأين. الأعمدة: Title وStudents وAverageGrade (مقرب لرقم عشري واحد)، مرتبة حسب Title.",
+    "expectedEn": "Every course appears (0 students and a NULL average when nobody enrolled), and ungraded enrollments don’t lower the average.",
+    "expectedAr": "تظهر كل المقررات (بعدد 0 ومتوسط NULL إذا لم يسجّل أحد)، ولا تخفض التسجيلات غير المقيّمة المتوسط.",
+    "hintsEn": [
+      "An inner JOIN drops courses without enrollments; which join keeps them?",
+      "COUNT(*) counts rows (also the NULL row of an outer join); COUNT(column) skips NULLs. AVG already ignores NULLs, unless you turn them into 0."
+    ],
+    "hintsAr": [
+      "يحذف INNER JOIN المقررات التي بلا تسجيلات؛ فأي ربط يُبقيها؟",
+      "يعدّ COUNT(*) الصفوف (ومنها صف NULL في الربط الخارجي)، بينما يتجاهل COUNT(column) قيم NULL. وAVG يتجاهل NULL أصلًا إلا إذا حوّلتها إلى 0."
+    ],
+    "solutionEn": "Use LEFT JOIN Enrollments, COUNT(e.StudentId) instead of COUNT(*), and AVG(e.Grade) instead of AVG(IFNULL(e.Grade, 0)). NULL means \"unknown\", and aggregate functions skip unknown values by design.",
+    "solutionAr": "استخدم LEFT JOIN Enrollments، وCOUNT(e.StudentId) بدلًا من COUNT(*)، وAVG(e.Grade) بدلًا من AVG(IFNULL(e.Grade, 0)). تعني NULL «غير معروف»، والدوال التجميعية تتجاهل القيم غير المعروفة عن قصد.",
+    "runner": "Sql",
+    "dataset": "school"
+  },
+  {
+    "key": "sql-lab-student-report",
+    "type": "MiniProject",
+    "topic": "sql-aggregates",
+    "difficulty": "Advanced",
+    "minutes": 30,
+    "titleEn": "Mini project: student progress report",
+    "titleAr": "مشروع صغير: تقرير تقدّم الطلاب",
+    "problemEn": "Build the end-of-term report: for every student with at least one graded course return Student (name), Courses (graded courses), Average (rounded to 1 decimal) and Status: \"Honors\" for an average of 85 or more, \"At risk\" below 60, otherwise \"On track\". Order by Average descending, then by name.",
+    "problemAr": "ابنِ تقرير نهاية الفصل: لكل طالب له مقرر مُقيَّم واحد على الأقل أرجِع Student (الاسم) وCourses (عدد المقررات المقيّمة) وAverage (مقرب لرقم عشري واحد) وStatus: \"Honors\" لمتوسط 85 فأكثر، و\"At risk\" لما دون 60، وإلا \"On track\". رتّب حسب Average تنازليًا ثم حسب الاسم.",
+    "expectedEn": "One row per student with grades, with the right status label.",
+    "expectedAr": "صف لكل طالب له درجات مع الحالة الصحيحة.",
+    "hintsEn": [
+      "Filter WHERE Grade IS NOT NULL before grouping.",
+      "CASE WHEN AVG(Grade) >= 85 THEN 'Honors' WHEN AVG(Grade) < 60 THEN 'At risk' ELSE 'On track' END"
+    ],
+    "hintsAr": [
+      "صفِّ بـ WHERE Grade IS NOT NULL قبل التجميع.",
+      "CASE WHEN AVG(Grade) >= 85 THEN 'Honors' WHEN AVG(Grade) < 60 THEN 'At risk' ELSE 'On track' END"
+    ],
+    "solutionEn": "SELECT s.Name AS Student, COUNT(*) AS Courses, ROUND(AVG(e.Grade), 1) AS Average, CASE WHEN AVG(e.Grade) >= 85 THEN 'Honors' WHEN AVG(e.Grade) < 60 THEN 'At risk' ELSE 'On track' END AS Status FROM Students s JOIN Enrollments e ON e.StudentId = s.Id WHERE e.Grade IS NOT NULL GROUP BY s.Id, s.Name ORDER BY Average DESC, Student; — CASE turns numbers into labels inside the query.",
+    "solutionAr": "SELECT s.Name AS Student, COUNT(*) AS Courses, ROUND(AVG(e.Grade), 1) AS Average, CASE WHEN AVG(e.Grade) >= 85 THEN 'Honors' WHEN AVG(e.Grade) < 60 THEN 'At risk' ELSE 'On track' END AS Status FROM Students s JOIN Enrollments e ON e.StudentId = s.Id WHERE e.Grade IS NOT NULL GROUP BY s.Id, s.Name ORDER BY Average DESC, Student; — يحوّل CASE الأرقام إلى تسميات داخل الاستعلام.",
+    "runner": "Sql",
+    "dataset": "school"
+  },
+  {
+    "key": "sql-lab-same-basket",
+    "type": "Challenge",
+    "topic": "sql-query-efficiency",
+    "difficulty": "Expert",
+    "minutes": 30,
+    "titleEn": "Expert: customers who bought everything Ali bought",
+    "titleAr": "مستوى الخبراء: عملاء اشتروا كل ما اشتراه علي",
+    "problemEn": "For a \"customers like you\" feature, find the other customers (not Ali, customer 9) who bought every product Ali has bought (in any order, ignoring cancelled orders). Return their Name, A→Z. This is relational division: there is no single SQL keyword for it.",
+    "problemAr": "لميزة «عملاء يشبهونك»، ابحث عن العملاء الآخرين (غير علي، العميل 9) الذين اشتروا كل منتج اشتراه علي (بأي ترتيب، مع تجاهل الطلبات الملغاة). أرجِع Name مرتبًا أبجديًا. هذه «قسمة علائقية»: لا توجد كلمة واحدة في SQL تؤديها.",
+    "expectedEn": "The names of customers whose purchases include all of Ali’s products.",
+    "expectedAr": "أسماء العملاء الذين تشمل مشترياتهم كل منتجات علي.",
+    "hintsEn": [
+      "Count how many of Ali’s distinct products each customer bought, and compare with how many distinct products Ali bought.",
+      "Or the double negation: there is no product of Ali’s that this customer did NOT buy (NOT EXISTS … NOT EXISTS)."
+    ],
+    "hintsAr": [
+      "احسب عدد منتجات علي المختلفة التي اشتراها كل عميل، وقارنه بعدد المنتجات المختلفة التي اشتراها علي.",
+      "أو النفي المزدوج: لا يوجد منتج لعلي لم يشترِه هذا العميل (NOT EXISTS … NOT EXISTS)."
+    ],
+    "solutionEn": "Build Ali’s product set in a CTE, join every other customer’s purchased products to it, GROUP BY customer and keep HAVING COUNT(DISTINCT ProductId) = (SELECT COUNT(*) FROM ali). The count comparison is the usual way to express \"for all\" in SQL.",
+    "solutionAr": "ابنِ مجموعة منتجات علي في CTE، واربط منتجات كل عميل آخر بها، ثم GROUP BY العميل واحتفظ بـ HAVING COUNT(DISTINCT ProductId) = (SELECT COUNT(*) FROM ali). مقارنة العدد هي الطريقة المعتادة للتعبير عن «لكل» في SQL.",
+    "runner": "Sql",
+    "dataset": "shop"
+  }
+]

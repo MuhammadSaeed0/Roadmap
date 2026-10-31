@@ -1,0 +1,768 @@
+[
+  {
+    "key": "ts-lab-format-price",
+    "type": "Coding",
+    "topic": "ts-types-inference",
+    "difficulty": "Beginner",
+    "minutes": 15,
+    "titleEn": "Format a price",
+    "titleAr": "تنسيق السعر",
+    "problemEn": "Write formatPrice(amount: number, currency: string = \"EGP\"): string. It shows the currency code, a space, then the amount with thousands separators and exactly 2 decimals. Negative amounts start with \"-\" before the currency.",
+    "problemAr": "اكتب formatPrice(amount: number, currency: string = \"EGP\"): string. تعرض رمز العملة ثم مسافة ثم المبلغ بفواصل الآلاف ورقمين عشريين بالضبط. المبالغ السالبة تبدأ بـ \"-\" قبل العملة.",
+    "expectedEn": "formatPrice(1234.5) is \"EGP 1,234.50\", formatPrice(9.99, \"USD\") is \"USD 9.99\" and formatPrice(-5) is \"-EGP 5.00\".",
+    "expectedAr": "formatPrice(1234.5) تساوي \"EGP 1,234.50\"، وformatPrice(9.99, \"USD\") تساوي \"USD 9.99\"، وformatPrice(-5) تساوي \"-EGP 5.00\".",
+    "hintsEn": [
+      "amount.toLocaleString(\"en-US\", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) formats the number.",
+      "Format Math.abs(amount) and add the \"-\" yourself."
+    ],
+    "hintsAr": [
+      "amount.toLocaleString(\"en-US\", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ينسّق الرقم.",
+      "نسّق Math.abs(amount) وأضف \"-\" بنفسك."
+    ],
+    "solutionEn": "Give the parameter a default value and a return type, format Math.abs(amount) with toLocaleString and the en-US locale (fixed separators), and prefix \"-\" for negatives. The types make wrong calls (formatPrice(\"10\")) a compile error.",
+    "solutionAr": "أعطِ المعامل قيمة افتراضية ونوع إرجاع، ونسّق Math.abs(amount) بـ toLocaleString مع اللغة en-US (فواصل ثابتة)، وأضف \"-\" للسالب. تجعل الأنواع الاستدعاء الخاطئ (formatPrice(\"10\")) خطأ ترجمة.",
+    "runner": "TypeScript"
+  },
+  {
+    "key": "ts-lab-active-users",
+    "type": "Coding",
+    "topic": "ts-interfaces-aliases",
+    "difficulty": "Beginner",
+    "minutes": 15,
+    "titleEn": "Typed users: filter and sort",
+    "titleAr": "مستخدمون بأنواع: التصفية والترتيب",
+    "problemEn": "Define an interface User { id: number; name: string; email: string; active: boolean; lastLogin?: string }. Then write activeUserNames(users: User[]): string[] — the names of active users sorted A→Z — and neverLoggedIn(users: User[]): User[] — users without a lastLogin.",
+    "problemAr": "عرّف الواجهة User { id: number; name: string; email: string; active: boolean; lastLogin?: string }. ثم اكتب activeUserNames(users: User[]): string[] — أسماء المستخدمين النشطين مرتبة أبجديًا — وneverLoggedIn(users: User[]): User[] — المستخدمون الذين ليس لهم lastLogin.",
+    "expectedEn": "With the sample users, activeUserNames returns [\"Mona\", \"Sara\"] and neverLoggedIn returns Omar.",
+    "expectedAr": "مع المستخدمين النموذجيين تُرجع activeUserNames القيمة [\"Mona\", \"Sara\"] وتُرجع neverLoggedIn المستخدم Omar.",
+    "hintsEn": [
+      "users.filter(u => u.active).map(u => u.name).sort()",
+      "An optional property (lastLogin?) is undefined when missing."
+    ],
+    "hintsAr": [
+      "users.filter(u => u.active).map(u => u.name).sort()",
+      "الخاصية الاختيارية (lastLogin?) قيمتها undefined عند غيابها."
+    ],
+    "solutionEn": "An interface documents the shape of the data and lets the editor catch typos (u.nam). filter + map + sort builds the first list; filter(u => !u.lastLogin) the second. Optional properties model data that may be missing.",
+    "solutionAr": "توثّق الواجهة شكل البيانات وتسمح للمحرر باكتشاف الأخطاء الإملائية (u.nam). تبني filter ثم map ثم sort القائمة الأولى، وfilter(u => !u.lastLogin) الثانية. وتمثّل الخصائص الاختيارية البيانات التي قد تغيب.",
+    "runner": "TypeScript"
+  },
+  {
+    "key": "ts-lab-group-by",
+    "type": "Coding",
+    "topic": "ts-generics",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "A generic groupBy",
+    "titleAr": "دالة groupBy عامة",
+    "problemEn": "Write groupBy<T, K extends string | number>(items: T[], key: (item: T) => K): Record<K, T[]>. It must work for any item type and keep the original order inside each group. Then use it to count products per category.",
+    "problemAr": "اكتب groupBy<T, K extends string | number>(items: T[], key: (item: T) => K): Record<K, T[]>. يجب أن تعمل مع أي نوع عناصر وأن تحافظ على الترتيب الأصلي داخل كل مجموعة. ثم استخدمها لعدّ المنتجات في كل تصنيف.",
+    "expectedEn": "groupBy(products, p => p.category) has a key per category with the matching products; groupBy([1, 2, 3, 4], n => n % 2 === 0 ? \"even\" : \"odd\") gives { odd: [1, 3], even: [2, 4] }.",
+    "expectedAr": "groupBy(products, p => p.category) فيها مفتاح لكل تصنيف مع منتجاته، وgroupBy([1, 2, 3, 4], n => n % 2 === 0 ? \"even\" : \"odd\") تعطي { odd: [1, 3], even: [2, 4] }.",
+    "hintsEn": [
+      "Start with const groups = {} as Record<K, T[]>.",
+      "(groups[k] ??= []).push(item) creates the array the first time."
+    ],
+    "hintsAr": [
+      "ابدأ بـ const groups = {} as Record<K, T[]>.",
+      "التعبير (groups[k] ??= []).push(item) ينشئ المصفوفة في أول مرة."
+    ],
+    "solutionEn": "Generics keep the types flowing: the result knows it holds T[] for keys of type K, so groups.Audio is typed as Product[]. Build the record with ??= and push to keep the order.",
+    "solutionAr": "تحافظ الأنواع العامة على تدفق الأنواع: تعرف النتيجة أنها تحمل T[] لمفاتيح من النوع K، فيكون groups.Audio من النوع Product[]. ابنِ الكائن بـ ??= وpush لتحافظ على الترتيب.",
+    "runner": "TypeScript"
+  },
+  {
+    "key": "ts-lab-shapes-union",
+    "type": "Coding",
+    "topic": "ts-narrowing",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Discriminated unions and narrowing",
+    "titleAr": "الاتحادات المميَّزة والتضييق",
+    "problemEn": "Model shapes as a discriminated union: { kind: \"circle\"; radius: number } | { kind: \"rect\"; width: number; height: number } | { kind: \"square\"; side: number }. Write area(shape) and describe(shape) with a switch on shape.kind. Add a default branch that makes TypeScript complain if a new kind is added and not handled (an exhaustiveness check with never).",
+    "problemAr": "مثّل الأشكال كاتحاد مميَّز: { kind: \"circle\"; radius: number } | { kind: \"rect\"; width: number; height: number } | { kind: \"square\"; side: number }. اكتب area(shape) وdescribe(shape) باستخدام switch على shape.kind. وأضف فرعًا default يجعل TypeScript يعترض إذا أُضيف نوع جديد دون معالجته (فحص الشمول بـ never).",
+    "expectedEn": "area({ kind: \"rect\", width: 2, height: 3 }) is 6; describe({ kind: \"circle\", radius: 1 }) is \"circle with radius 1\".",
+    "expectedAr": "area({ kind: \"rect\", width: 2, height: 3 }) تساوي 6، وdescribe({ kind: \"circle\", radius: 1 }) تساوي \"circle with radius 1\".",
+    "hintsEn": [
+      "Inside case \"circle\": TypeScript knows shape.radius exists.",
+      "default: const unreachable: never = shape; throw new Error(...)"
+    ],
+    "hintsAr": [
+      "داخل case \"circle\" يعرف TypeScript أن shape.radius موجودة.",
+      "default: const unreachable: never = shape; throw new Error(...)"
+    ],
+    "solutionEn": "The kind field narrows the union in each case, so you can only read properties that exist for that shape. Assigning the leftover to never turns a forgotten case into a compile-time error.",
+    "solutionAr": "يضيّق الحقل kind الاتحاد في كل case، فلا تقرأ إلا الخصائص الموجودة لذلك الشكل. وإسناد البقية إلى never يحوّل الحالة المنسية إلى خطأ وقت الترجمة.",
+    "runner": "TypeScript"
+  },
+  {
+    "key": "ts-lab-cart-class",
+    "type": "Practical",
+    "topic": "ts-classes",
+    "difficulty": "Intermediate",
+    "minutes": 25,
+    "titleEn": "A shopping cart class",
+    "titleAr": "صنف لسلة التسوق",
+    "problemEn": "Write class Cart with a private list of lines { product: string; price: number; quantity: number }. Methods: add(product, price, quantity = 1) — adding the same product increases its quantity; remove(product); total() — rounded to 2 decimals; count() — the number of items. Quantities must be whole numbers ≥ 1 and prices ≥ 0, otherwise throw an Error.",
+    "problemAr": "اكتب الصنف Cart بقائمة خاصة من الأسطر { product: string; price: number; quantity: number }. الدوال: add(product, price, quantity = 1) — إضافة المنتج نفسه تزيد كميته؛ وremove(product)؛ وtotal() — مقربًا لرقمين عشريين؛ وcount() — عدد القطع. يجب أن تكون الكميات أعدادًا صحيحة ≥ 1 والأسعار ≥ 0، وإلا يُرمى Error.",
+    "expectedEn": "After add(\"Mouse\", 15.99, 2) and add(\"Mouse\", 15.99), count() is 3 and total() is 47.97. cart.lines isn’t reachable from outside.",
+    "expectedAr": "بعد add(\"Mouse\", 15.99, 2) ثم add(\"Mouse\", 15.99) تكون count() هي 3 وtotal() هي 47.97، ولا يمكن الوصول إلى cart.lines من الخارج.",
+    "hintsEn": [
+      "private readonly lines: Line[] = [];",
+      "Number.isInteger(quantity) checks for whole numbers."
+    ],
+    "hintsAr": [
+      "private readonly lines: Line[] = [];",
+      "Number.isInteger(quantity) يتحقق من الأعداد الصحيحة."
+    ],
+    "solutionEn": "private hides the array so only the class’s methods change it; add looks up an existing line before pushing; total reduces price × quantity and rounds with Math.round(x * 100) / 100.",
+    "solutionAr": "تُخفي private المصفوفة فلا يغيّرها إلا دوال الصنف؛ وتبحث add عن سطر موجود قبل الإضافة؛ وتجمع total حاصل price × quantity وتقرّب بـ Math.round(x * 100) / 100.",
+    "runner": "TypeScript"
+  },
+  {
+    "key": "ts-lab-safe-json",
+    "type": "Coding",
+    "topic": "ts-error-handling",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Parse JSON without throwing",
+    "titleAr": "تحليل JSON دون رمي استثناءات",
+    "problemEn": "Write parseJson<T>(text: string): Result<T>, where type Result<T> = { ok: true; value: T } | { ok: false; error: string }. It never throws: invalid JSON or an empty string returns ok: false with a readable message.",
+    "problemAr": "اكتب parseJson<T>(text: string): Result<T>، حيث type Result<T> = { ok: true; value: T } | { ok: false; error: string }. لا ترمي أبدًا: الـ JSON غير الصحيح أو النص الفارغ يُرجع ok: false مع رسالة مفهومة.",
+    "expectedEn": "parseJson<number[]>(\"[1,2]\") is { ok: true, value: [1, 2] }; parseJson(\"{oops\") is { ok: false, error: … }.",
+    "expectedAr": "parseJson<number[]>(\"[1,2]\") تساوي { ok: true, value: [1, 2] }، وparseJson(\"{oops\") تساوي { ok: false, error: … }.",
+    "hintsEn": [
+      "Wrap JSON.parse in try/catch.",
+      "In catch (e), e is unknown: use e instanceof Error ? e.message : String(e)."
+    ],
+    "hintsAr": [
+      "ضع JSON.parse داخل try/catch.",
+      "في catch (e) نوع e هو unknown: استخدم e instanceof Error ? e.message : String(e)."
+    ],
+    "solutionEn": "Returning a Result instead of throwing makes the failure part of the type: callers must check result.ok before reading value (TypeScript narrows it). The catch block converts the unknown error into a message.",
+    "solutionAr": "إرجاع Result بدلًا من رمي استثناء يجعل الفشل جزءًا من النوع: يجب على المستدعي فحص result.ok قبل قراءة value (ويضيّق TypeScript النوع). ويحوّل catch الخطأ المجهول إلى رسالة.",
+    "runner": "TypeScript"
+  },
+  {
+    "key": "js-lab-debug-this",
+    "type": "Debugging",
+    "topic": "ts-functions",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "Debug: \"this\" is lost in a callback",
+    "titleAr": "تصحيح: ضياع this داخل Callback",
+    "problemEn": "The counter works when called directly, but when its increment method is passed as a callback (like a click handler) the count never changes and an error appears. Fix the Counter so increment works however it is called.",
+    "problemAr": "يعمل العدّاد عند استدعائه مباشرة، لكن عند تمرير الدالة increment كـ Callback (مثل معالج النقر) لا يتغير العدد ويظهر خطأ. أصلح Counter لتعمل increment مهما كانت طريقة استدعائها.",
+    "expectedEn": "After [1, 2, 3].forEach(counter.increment), counter.value is 3.",
+    "expectedAr": "بعد [1, 2, 3].forEach(counter.increment) تصبح counter.value تساوي 3.",
+    "hintsEn": [
+      "Passing counter.increment hands over the function without its object: inside, this is undefined.",
+      "An arrow function stored as a property captures this from the class."
+    ],
+    "hintsAr": [
+      "تمرير counter.increment يسلّم الدالة دون كائنها: فتكون this بداخلها undefined.",
+      "دالة السهم المخزنة كخاصية تلتقط this من الصنف."
+    ],
+    "solutionEn": "Methods don’t remember their object; this is decided by how a function is called. Defining increment = () => { this.value++; } (a class field) or binding it in the constructor fixes it. The same issue appears with event handlers in plain DOM code.",
+    "solutionAr": "لا تتذكر الدوال كائنها؛ فقيمة this تتحدد بطريقة الاستدعاء. تعريف increment = () => { this.value++; } (كحقل في الصنف) أو ربطها بـ bind في الـ Constructor يحل المشكلة. وتظهر المشكلة نفسها مع معالجات الأحداث في كود DOM العادي.",
+    "runner": "JavaScript"
+  },
+  {
+    "key": "js-lab-debug-async-foreach",
+    "type": "Debugging",
+    "topic": "ts-promises",
+    "difficulty": "Advanced",
+    "minutes": 20,
+    "titleEn": "Debug: forEach doesn’t wait for async work",
+    "titleAr": "تصحيح: forEach لا تنتظر العمل غير المتزامن",
+    "problemEn": "cartTotal(ids) should fetch each product’s price (async) and add them up, but it always returns 0. Fix it, and fetch the prices in parallel rather than one by one.",
+    "problemAr": "يجب أن تجلب cartTotal(ids) سعر كل منتج (بشكل غير متزامن) وتجمعها، لكنها تُرجع 0 دائمًا. أصلحها، واجلب الأسعار بالتوازي لا واحدًا تلو الآخر.",
+    "expectedEn": "await cartTotal([1, 2, 3]) is 89.97 and takes about one request’s time, not three.",
+    "expectedAr": "await cartTotal([1, 2, 3]) تساوي 89.97 وتستغرق زمن طلب واحد تقريبًا لا ثلاثة.",
+    "hintsEn": [
+      "forEach ignores the promises returned by an async callback, so the function returns before any price arrives.",
+      "await Promise.all(ids.map(getPrice)) waits for every price together."
+    ],
+    "hintsAr": [
+      "تتجاهل forEach الـ Promises التي يُرجعها Callback غير متزامن، فتنتهي الدالة قبل وصول أي سعر.",
+      "await Promise.all(ids.map(getPrice)) ينتظر كل الأسعار معًا."
+    ],
+    "solutionEn": "Array.forEach doesn’t await. Map the ids to promises and await Promise.all, then sum. A for…of loop with await would also be correct but sequential (slower).",
+    "solutionAr": "لا تنتظر Array.forEach. حوّل الأرقام إلى Promises بـ map وانتظر Promise.all ثم اجمع. تعمل أيضًا حلقة for…of مع await لكنها تسلسلية (أبطأ).",
+    "runner": "JavaScript"
+  },
+  {
+    "key": "ts-lab-retry",
+    "type": "Practical",
+    "topic": "ts-async-await",
+    "difficulty": "Advanced",
+    "minutes": 30,
+    "titleEn": "Retry a failing request",
+    "titleAr": "إعادة محاولة طلب يفشل",
+    "problemEn": "Network calls fail sometimes. Write retry<T>(work: () => Promise<T>, attempts: number, delayMs: number): Promise<T>. It calls work; if it rejects, waits delayMs and tries again, up to attempts calls in total. If every attempt fails it rejects with the last error. attempts must be ≥ 1.",
+    "problemAr": "تفشل طلبات الشبكة أحيانًا. اكتب retry<T>(work: () => Promise<T>, attempts: number, delayMs: number): Promise<T>. تستدعي work، وإن رُفض تنتظر delayMs وتحاول مجددًا حتى attempts استدعاءً إجمالًا. وإن فشلت كل المحاولات تُرفض بآخر خطأ. ويجب أن تكون attempts ≥ 1.",
+    "expectedEn": "A function that fails twice then succeeds resolves on the 3rd attempt with retry(fn, 3, 10); with retry(fn, 2, 10) it rejects with the last error.",
+    "expectedAr": "دالة تفشل مرتين ثم تنجح تنجح في المحاولة الثالثة مع retry(fn, 3, 10)، ومع retry(fn, 2, 10) تُرفض بآخر خطأ.",
+    "hintsEn": [
+      "A for loop with try { return await work(); } catch (e) { last = e; }",
+      "const wait = (ms: number) => new Promise(r => setTimeout(r, ms));"
+    ],
+    "hintsAr": [
+      "حلقة for مع try { return await work(); } catch (e) { last = e; }",
+      "const wait = (ms: number) => new Promise(r => setTimeout(r, ms));"
+    ],
+    "solutionEn": "Loop over the attempts, return on the first success, remember the error otherwise, and wait between attempts (not after the last one). Real code often doubles the delay each time (exponential backoff).",
+    "solutionAr": "كرّر على المحاولات، وأرجع عند أول نجاح، واحفظ الخطأ في غير ذلك، وانتظر بين المحاولات (لا بعد الأخيرة). وغالبًا يضاعف الكود الحقيقي التأخير في كل مرة (Exponential backoff).",
+    "runner": "TypeScript"
+  },
+  {
+    "key": "ts-lab-debounce",
+    "type": "Coding",
+    "topic": "ts-functions",
+    "difficulty": "Advanced",
+    "minutes": 25,
+    "titleEn": "Write debounce",
+    "titleAr": "اكتب debounce",
+    "problemEn": "Search boxes shouldn’t call the API on every key press. Write debounce<A extends unknown[]>(fn: (...args: A) => void, ms: number): (...args: A) => void. The returned function waits until it hasn’t been called for ms milliseconds, then calls fn once with the latest arguments.",
+    "problemAr": "لا يجب أن يستدعي مربع البحث الـ API مع كل ضغطة زر. اكتب debounce<A extends unknown[]>(fn: (...args: A) => void, ms: number): (...args: A) => void. تنتظر الدالة المُرجَعة حتى تمر ms مللي ثانية دون استدعائها، ثم تستدعي fn مرة واحدة بآخر معاملات.",
+    "expectedEn": "Calling the debounced function 5 times quickly calls fn once, with the arguments of the 5th call.",
+    "expectedAr": "استدعاء الدالة 5 مرات بسرعة يستدعي fn مرة واحدة بمعاملات الاستدعاء الخامس.",
+    "hintsEn": [
+      "Keep the timer id in a closure: let timer: ReturnType<typeof setTimeout> | undefined;",
+      "Each call clears the previous timer and starts a new one."
+    ],
+    "hintsAr": [
+      "احفظ رقم المؤقت في Closure: let timer: ReturnType<typeof setTimeout> | undefined;",
+      "كل استدعاء يلغي المؤقت السابق ويبدأ مؤقتًا جديدًا."
+    ],
+    "solutionEn": "The closure keeps the pending timer between calls; clearTimeout cancels the previous call and setTimeout schedules the latest. RxJS’s debounceTime does the same for streams (you’ll use it in Angular).",
+    "solutionAr": "يحتفظ الـ Closure بالمؤقت المعلّق بين الاستدعاءات؛ يلغي clearTimeout الاستدعاء السابق ويجدول setTimeout الأحدث. وتفعل debounceTime في RxJS الشيء نفسه مع الـ Streams (وستستخدمها في Angular).",
+    "runner": "TypeScript"
+  },
+  {
+    "key": "ts-lab-paginate",
+    "type": "Practical",
+    "topic": "ts-generics",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Client-side pagination helper",
+    "titleAr": "أداة تقسيم الصفحات في الواجهة",
+    "problemEn": "Write paginate<T>(items: T[], page: number, pageSize: number): Page<T> with interface Page<T> { items: T[]; page: number; pageSize: number; total: number; totalPages: number; hasNext: boolean; hasPrevious: boolean }. Pages start at 1. A page below 1 becomes 1 and a page after the last becomes the last page; pageSize must be ≥ 1.",
+    "problemAr": "اكتب paginate<T>(items: T[], page: number, pageSize: number): Page<T> مع الواجهة Page<T> { items: T[]; page: number; pageSize: number; total: number; totalPages: number; hasNext: boolean; hasPrevious: boolean }. تبدأ الصفحات من 1. الصفحة الأقل من 1 تصبح 1، والصفحة بعد الأخيرة تصبح الأخيرة، ويجب أن تكون pageSize ≥ 1.",
+    "expectedEn": "paginate(25 items, 3, 10) returns items 21–25, totalPages 3, hasNext false, hasPrevious true.",
+    "expectedAr": "paginate(25 عنصرًا, 3, 10) تُرجع العناصر من 21 إلى 25، وtotalPages تساوي 3، وhasNext تساوي false، وhasPrevious تساوي true.",
+    "hintsEn": [
+      "totalPages = Math.max(1, Math.ceil(total / pageSize))",
+      "items.slice((page - 1) * pageSize, page * pageSize)"
+    ],
+    "hintsAr": [
+      "totalPages = Math.max(1, Math.ceil(total / pageSize))",
+      "items.slice((page - 1) * pageSize, page * pageSize)"
+    ],
+    "solutionEn": "Clamp the page into 1..totalPages, slice the array, and compute the flags from the clamped page. The same Page shape is what a server-side paged API returns, so the UI code doesn’t change when paging moves to the server.",
+    "solutionAr": "اضبط الصفحة داخل النطاق من 1 إلى totalPages، واقطع المصفوفة، واحسب القيم المنطقية من الصفحة بعد الضبط. وشكل Page هذا هو ما تُرجعه واجهة برمجية مقسمة الصفحات من الخادم، فلا يتغير كود الواجهة عند نقل التقسيم إلى الخادم.",
+    "runner": "TypeScript"
+  },
+  {
+    "key": "ts-lab-event-emitter",
+    "type": "Challenge",
+    "topic": "ts-generics",
+    "difficulty": "Expert",
+    "minutes": 40,
+    "titleEn": "Expert: a type-safe event emitter",
+    "titleAr": "مستوى الخبراء: Event emitter آمن الأنواع",
+    "problemEn": "Write class Emitter<Events extends Record<string, unknown>> with on(event, handler) returning an unsubscribe function, once(event, handler), off(event, handler) and emit(event, payload). The types must reject wrong event names and wrong payloads: with Emitter<{ saved: { id: number }; deleted: number }>, emit(\"saved\", { id: 1 }) compiles but emit(\"saved\", 5) and emit(\"removed\", 1) don’t. Handlers run in the order they were added; a handler that throws must not stop the others.",
+    "problemAr": "اكتب الصنف Emitter<Events extends Record<string, unknown>> بالدوال on(event, handler) التي تُرجع دالة لإلغاء الاشتراك، وonce(event, handler)، وoff(event, handler)، وemit(event, payload). يجب أن ترفض الأنواع أسماء الأحداث والبيانات الخاطئة: مع Emitter<{ saved: { id: number }; deleted: number }> يُترجم emit(\"saved\", { id: 1 }) لكن لا يُترجم emit(\"saved\", 5) ولا emit(\"removed\", 1). تُنفَّذ المعالجات بترتيب إضافتها، ولا يجوز لمعالج يرمي خطأً أن يوقف البقية.",
+    "expectedEn": "once handlers run a single time, the unsubscribe function works, and an error in one handler is reported (console.error) while the rest still run.",
+    "expectedAr": "تُنفَّذ معالجات once مرة واحدة، وتعمل دالة إلغاء الاشتراك، ويُبلَّغ عن خطأ المعالج (console.error) مع استمرار البقية.",
+    "hintsEn": [
+      "on<K extends keyof Events>(event: K, handler: (payload: Events[K]) => void)",
+      "Store handlers in a Map<keyof Events, Set<(payload: any) => void>>.",
+      "once can wrap the handler in a function that removes itself before calling it."
+    ],
+    "hintsAr": [
+      "on<K extends keyof Events>(event: K, handler: (payload: Events[K]) => void)",
+      "خزّن المعالجات في Map<keyof Events, Set<(payload: any) => void>>.",
+      "يمكن لـ once أن تغلّف المعالج بدالة تزيل نفسها قبل استدعائه."
+    ],
+    "solutionEn": "Indexed access types (Events[K]) tie each event name to its payload, so the compiler checks every emit and on. A Map of Sets keeps insertion order; emit iterates over a copy so handlers can unsubscribe during emit, and try/catch isolates failures.",
+    "solutionAr": "تربط أنواع الوصول بالفهرس (Events[K]) كل اسم حدث ببياناته، فيتحقق المترجم من كل emit وon. ويحافظ Map من Sets على ترتيب الإضافة؛ وتكرّر emit على نسخة حتى يمكن إلغاء الاشتراك أثناء الإطلاق، ويعزل try/catch الأخطاء.",
+    "runner": "TypeScript"
+  },
+  {
+    "key": "ng-lab-profile-card",
+    "type": "Coding",
+    "topic": "ng-standalone-components",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Your first component: a profile card",
+    "titleAr": "أول مكون لك: بطاقة تعريف",
+    "problemEn": "Create a standalone ProfileCardComponent (selector app-profile-card) with three required signal inputs: name, role and email. It shows the person’s initials in a circle (computed from the name), the name, the role and a mailto link. Show three cards from AppComponent.",
+    "problemAr": "أنشئ مكونًا مستقلًا ProfileCardComponent (المحدِّد app-profile-card) بثلاثة مدخلات Signal مطلوبة: name وrole وemail. يعرض الحروف الأولى من الاسم داخل دائرة (محسوبة من الاسم)، والاسم، والوظيفة، ورابط mailto. اعرض ثلاث بطاقات من AppComponent.",
+    "expectedEn": "Three cards appear in the preview, each with the right initials (e.g. \"SA\" for Sara Ahmed).",
+    "expectedAr": "تظهر ثلاث بطاقات في المعاينة، لكل منها الحروف الأولى الصحيحة (مثل \"SA\" لـ Sara Ahmed).",
+    "hintsEn": [
+      "readonly name = input.required<string>();",
+      "readonly initials = computed(() => this.name().split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase());"
+    ],
+    "hintsAr": [
+      "readonly name = input.required<string>();",
+      "readonly initials = computed(() => this.name().split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase());"
+    ],
+    "solutionEn": "A standalone component declares what it needs in its own imports. Signal inputs (input.required) are read like functions in the template, and computed() derives the initials whenever the name changes.",
+    "solutionAr": "يصرّح المكون المستقل بما يحتاجه في imports الخاصة به. وتُقرأ مدخلات الـ Signal (input.required) كدوال في القالب، وتشتق computed() الحروف الأولى كلما تغيّر الاسم.",
+    "runner": "Angular",
+    "requirementsEn": [
+      "ProfileCardComponent is standalone and lives in its own folder (components/profile-card).",
+      "name, role and email are input.required<string>().",
+      "initials is a computed() signal built from the name.",
+      "AppComponent imports the card and shows three people."
+    ],
+    "requirementsAr": [
+      "ProfileCardComponent مكون مستقل في مجلده الخاص (components/profile-card).",
+      "المدخلات name وrole وemail من النوع input.required<string>().",
+      "initials هي Signal محسوبة computed() من الاسم.",
+      "يستورد AppComponent البطاقة ويعرض ثلاثة أشخاص."
+    ],
+    "acceptanceEn": [
+      "The preview shows three cards.",
+      "Each card shows the correct initials, name and role.",
+      "The email is a working mailto: link.",
+      "No errors in the Output panel."
+    ],
+    "acceptanceAr": [
+      "تعرض المعاينة ثلاث بطاقات.",
+      "تعرض كل بطاقة الحروف الأولى والاسم والوظيفة بشكل صحيح.",
+      "البريد رابط mailto: يعمل.",
+      "لا توجد أخطاء في لوحة المخرجات."
+    ]
+  },
+  {
+    "key": "ng-lab-product-list",
+    "type": "Coding",
+    "topic": "ng-templates-binding",
+    "difficulty": "Beginner",
+    "minutes": 25,
+    "titleEn": "Templates: list, conditions and bindings",
+    "titleAr": "القوالب: القوائم والشروط والربط",
+    "problemEn": "AppComponent has a products signal. In the template: show the number of products; render each product with @for (track by id) with its name and price formatted with the currency pipe; add an \"Out of stock\" badge with @if when stock is 0; give sale items a CSS class with [class.sale]; show \"No products\" with @empty. A \"Hide out of stock\" checkbox filters the list (use a signal and computed()).",
+    "problemAr": "في AppComponent توجد Signal باسم products. في القالب: اعرض عدد المنتجات؛ واعرض كل منتج بـ @for (مع track بالـ id) باسمه وسعره منسقًا بأنبوب currency؛ وأضف شارة \"Out of stock\" بـ @if عندما يكون المخزون 0؛ وأعطِ منتجات التخفيض فئة CSS بـ [class.sale]؛ واعرض \"No products\" بـ @empty. ومربع اختيار \"Hide out of stock\" يصفّي القائمة (استخدم Signal وcomputed()).",
+    "expectedEn": "The list shows 5 products with badges and highlighted sale items; ticking the checkbox hides the 2 out-of-stock products and the count updates.",
+    "expectedAr": "تعرض القائمة 5 منتجات مع الشارات وتمييز منتجات التخفيض، واختيار المربع يخفي المنتجين النافدين ويتحدث العدد.",
+    "hintsEn": [
+      "@for (product of visible(); track product.id) { … } @empty { <p>No products</p> }",
+      "Use (change)=\"hideOutOfStock.set($any($event.target).checked)\" on the checkbox."
+    ],
+    "hintsAr": [
+      "@for (product of visible(); track product.id) { … } @empty { <p>No products</p> }",
+      "استخدم (change)=\"hideOutOfStock.set($any($event.target).checked)\" على المربع."
+    ],
+    "solutionEn": "Angular’s control flow (@for/@if/@empty) replaces *ngFor/*ngIf. Keep state in signals and derive the visible list with computed(), so the template simply renders it.",
+    "solutionAr": "تحل بنى التحكم في Angular (@for و@if و@empty) محل *ngFor و*ngIf. احتفظ بالحالة في Signals واشتق القائمة المعروضة بـ computed()، فيكتفي القالب بعرضها.",
+    "runner": "Angular",
+    "requirementsEn": [
+      "@for with track product.id and an @empty block.",
+      "@if for the out-of-stock badge.",
+      "Property binding [class.sale] and the currency pipe.",
+      "A hideOutOfStock signal and a visible computed() list."
+    ],
+    "requirementsAr": [
+      "@for مع track product.id وكتلة @empty.",
+      "@if لشارة نفاد المخزون.",
+      "ربط الخاصية [class.sale] وأنبوب currency.",
+      "Signal باسم hideOutOfStock وقائمة visible محسوبة بـ computed()."
+    ],
+    "acceptanceEn": [
+      "5 products are listed with prices like $49.99.",
+      "Out-of-stock products show a badge.",
+      "Sale products are highlighted.",
+      "The checkbox hides out-of-stock products and the count changes.",
+      "Removing every product shows \"No products\"."
+    ],
+    "acceptanceAr": [
+      "تُعرض 5 منتجات بأسعار مثل $49.99.",
+      "تظهر شارة على المنتجات النافدة.",
+      "منتجات التخفيض مميَّزة.",
+      "المربع يخفي المنتجات النافدة ويتغير العدد.",
+      "حذف كل المنتجات يعرض \"No products\"."
+    ]
+  },
+  {
+    "key": "ng-lab-star-rating",
+    "type": "Coding",
+    "topic": "ng-inputs-outputs",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Inputs and outputs: a star rating",
+    "titleAr": "المدخلات والمخرجات: تقييم بالنجوم",
+    "problemEn": "Build StarRatingComponent: input value (0–5) and max (default 5), output rated that emits the chosen star. It renders max buttons (★ filled up to value, ☆ after), each with an aria-label like \"3 of 5 stars\". In AppComponent keep the rating in a signal, pass it down, update it from the output, and show \"You rated 3/5\".",
+    "problemAr": "ابنِ StarRatingComponent: مدخل value (من 0 إلى 5) ومدخل max (افتراضيًا 5)، ومخرج rated يُطلق النجمة المختارة. يعرض max من الأزرار (★ ممتلئة حتى value و☆ بعدها)، لكل منها aria-label مثل \"3 of 5 stars\". في AppComponent احتفظ بالتقييم في Signal، ومرّره للأسفل، وحدّثه من المخرج، واعرض \"You rated 3/5\".",
+    "expectedEn": "Clicking the 4th star fills four stars and the text says \"You rated 4/5\".",
+    "expectedAr": "النقر على النجمة الرابعة يملأ أربع نجوم ويقول النص \"You rated 4/5\".",
+    "hintsEn": [
+      "readonly stars = computed(() => Array.from({ length: this.max() }, (_, i) => i + 1));",
+      "<app-star-rating [value]=\"rating()\" (rated)=\"rating.set($event)\" />"
+    ],
+    "hintsAr": [
+      "readonly stars = computed(() => Array.from({ length: this.max() }, (_, i) => i + 1));",
+      "<app-star-rating [value]=\"rating()\" (rated)=\"rating.set($event)\" />"
+    ],
+    "solutionEn": "Data flows down through inputs and events flow up through outputs, so the parent stays the single owner of the rating. The child is reusable anywhere because it doesn’t store the value itself.",
+    "solutionAr": "تتدفق البيانات للأسفل عبر المدخلات والأحداث للأعلى عبر المخرجات، فيبقى الأب المالك الوحيد للتقييم. والابن قابل لإعادة الاستخدام في أي مكان لأنه لا يخزّن القيمة بنفسه.",
+    "runner": "Angular",
+    "requirementsEn": [
+      "value = input(0), max = input(5), rated = output<number>().",
+      "Buttons are created with @for over a computed list of star numbers.",
+      "Each button has an accessible label.",
+      "The parent owns the state; the child only reports clicks."
+    ],
+    "requirementsAr": [
+      "value = input(0)، وmax = input(5)، وrated = output<number>().",
+      "تُنشأ الأزرار بـ @for على قائمة محسوبة لأرقام النجوم.",
+      "لكل زر اسم وصفي يمكن الوصول إليه.",
+      "يملك الأب الحالة، ويكتفي الابن بالإبلاغ عن النقرات."
+    ],
+    "acceptanceEn": [
+      "Five stars are shown.",
+      "Clicking a star updates both the stars and the text.",
+      "Every star button has an aria-label.",
+      "No errors in the Output panel."
+    ],
+    "acceptanceAr": [
+      "تظهر خمس نجوم.",
+      "النقر على نجمة يحدّث النجوم والنص معًا.",
+      "لكل زر نجمة aria-label.",
+      "لا توجد أخطاء في لوحة المخرجات."
+    ]
+  },
+  {
+    "key": "ng-lab-cart-service",
+    "type": "Practical",
+    "topic": "ng-services",
+    "difficulty": "Intermediate",
+    "minutes": 35,
+    "titleEn": "Share state with a service",
+    "titleAr": "مشاركة الحالة عبر خدمة",
+    "problemEn": "Two components need the same cart: ProductListComponent (with \"Add to cart\" buttons) and CartSummaryComponent (item count, total and a \"Clear\" button). Create CartService (providedIn: root) that keeps the lines in a private signal and exposes read-only computed count and total, plus add(product) and clear(). Inject it with inject() in both components.",
+    "problemAr": "يحتاج مكونان إلى السلة نفسها: ProductListComponent (بأزرار \"Add to cart\") وCartSummaryComponent (عدد القطع والإجمالي وزر \"Clear\"). أنشئ CartService (providedIn: root) تحتفظ بالأسطر في Signal خاصة وتعرض count وtotal محسوبتين للقراءة فقط، مع add(product) وclear(). احقنها بـ inject() في المكونين.",
+    "expectedEn": "Adding products updates the summary immediately; Clear empties it.",
+    "expectedAr": "إضافة المنتجات تحدّث الملخص فورًا، وClear يفرغه.",
+    "hintsEn": [
+      "private readonly lines = signal<CartLine[]>([]);",
+      "readonly total = computed(() => this.lines().reduce((s, l) => s + l.price * l.quantity, 0));",
+      "Update immutably: this.lines.update(lines => …new array…)."
+    ],
+    "hintsAr": [
+      "private readonly lines = signal<CartLine[]>([]);",
+      "readonly total = computed(() => this.lines().reduce((s, l) => s + l.price * l.quantity, 0));",
+      "حدّث دون تعديل: this.lines.update(lines => …مصفوفة جديدة…)."
+    ],
+    "solutionEn": "A root service is a single shared instance, so both components see the same signals. Keeping the writable signal private and exposing computed values means only the service’s methods can change the cart.",
+    "solutionAr": "الخدمة على مستوى root نسخة واحدة مشتركة، فيرى المكونان الـ Signals نفسها. وإبقاء الـ Signal القابلة للكتابة خاصة مع عرض قيم محسوبة يعني أن دوال الخدمة وحدها تغيّر السلة.",
+    "runner": "Angular",
+    "requirementsEn": [
+      "CartService is @Injectable({ providedIn: \"root\" }) in services/cart.service.ts.",
+      "The lines signal is private; components read count() and total().",
+      "Both components use inject(CartService).",
+      "Adding the same product twice increases its quantity."
+    ],
+    "requirementsAr": [
+      "CartService هي @Injectable({ providedIn: \"root\" }) في services/cart.service.ts.",
+      "Signal الأسطر خاصة، وتقرأ المكونات count() وtotal().",
+      "يستخدم المكونان inject(CartService).",
+      "إضافة المنتج نفسه مرتين تزيد كميته."
+    ],
+    "acceptanceEn": [
+      "The summary updates when products are added.",
+      "The total is correct (e.g. 2 × 15.99 + 49.99 = 81.97).",
+      "Clear empties the cart.",
+      "No component changes the cart’s array directly."
+    ],
+    "acceptanceAr": [
+      "يتحدث الملخص عند إضافة المنتجات.",
+      "الإجمالي صحيح (مثلًا 2 × 15.99 + 49.99 = 81.97).",
+      "Clear يفرغ السلة.",
+      "لا يغيّر أي مكون مصفوفة السلة مباشرة."
+    ]
+  },
+  {
+    "key": "ng-lab-routing",
+    "type": "Practical",
+    "topic": "ng-routing",
+    "difficulty": "Intermediate",
+    "minutes": 35,
+    "titleEn": "Routing: list, detail and not found",
+    "titleAr": "التوجيه: قائمة وتفاصيل وصفحة غير موجودة",
+    "problemEn": "Set up three routes: \"\" shows CourseListComponent, \"courses/:id\" shows CourseDetailComponent, and \"**\" shows NotFoundComponent. The list links to each course with routerLink. The detail page reads the id as a component input (withComponentInputBinding is already configured), finds the course, and shows \"Course not found\" for an unknown id, with a link back to the list.",
+    "problemAr": "جهّز ثلاثة مسارات: \"\" يعرض CourseListComponent، و\"courses/:id\" يعرض CourseDetailComponent، و\"**\" يعرض NotFoundComponent. ترتبط القائمة بكل مقرر عبر routerLink. وتقرأ صفحة التفاصيل الـ id كمدخل للمكون (withComponentInputBinding مُعدّ بالفعل)، وتجد المقرر، وتعرض \"Course not found\" لرقم غير معروف مع رابط للعودة إلى القائمة.",
+    "expectedEn": "Clicking a course opens its detail page; the back link returns to the list; #/nothing shows the not-found page.",
+    "expectedAr": "النقر على مقرر يفتح صفحة تفاصيله، ورابط العودة يرجع إلى القائمة، و#/nothing يعرض صفحة «غير موجود».",
+    "hintsEn": [
+      "{ path: 'courses/:id', component: CourseDetailComponent }",
+      "readonly course = computed(() => COURSES.find(c => c.id === Number(this.id())));"
+    ],
+    "hintsAr": [
+      "{ path: 'courses/:id', component: CourseDetailComponent }",
+      "readonly course = computed(() => COURSES.find(c => c.id === Number(this.id())));"
+    ],
+    "solutionEn": "The router maps URLs to components; withComponentInputBinding passes route parameters straight into input() signals, so the detail page needs no ActivatedRoute subscription. The wildcard route must be last.",
+    "solutionAr": "يربط الموجّه الروابط بالمكونات، ويمرّر withComponentInputBinding معاملات المسار مباشرة إلى Signals من نوع input()، فلا تحتاج صفحة التفاصيل إلى الاشتراك في ActivatedRoute. ويجب أن يكون مسار ** الأخير.",
+    "runner": "Angular",
+    "requirementsEn": [
+      "app.routes.ts declares the three routes.",
+      "AppComponent contains <router-outlet />.",
+      "The detail component uses id = input<string>() and computed() to find the course.",
+      "Links use routerLink, not href."
+    ],
+    "requirementsAr": [
+      "يعرّف app.routes.ts المسارات الثلاثة.",
+      "يحتوي AppComponent على <router-outlet />.",
+      "يستخدم مكون التفاصيل id = input<string>() وcomputed() لإيجاد المقرر.",
+      "تستخدم الروابط routerLink لا href."
+    ],
+    "acceptanceEn": [
+      "The list shows all courses as links.",
+      "Opening a course shows its title and description.",
+      "An unknown id shows \"Course not found\".",
+      "An unknown URL shows the not-found page."
+    ],
+    "acceptanceAr": [
+      "تعرض القائمة كل المقررات كروابط.",
+      "فتح مقرر يعرض عنوانه ووصفه.",
+      "الرقم غير المعروف يعرض \"Course not found\".",
+      "الرابط غير المعروف يعرض صفحة «غير موجود»."
+    ]
+  },
+  {
+    "key": "ng-lab-signup-form",
+    "type": "Practical",
+    "topic": "ng-reactive-forms",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "Reactive form with validation",
+    "titleAr": "نموذج تفاعلي مع التحقق",
+    "problemEn": "Build a sign-up form with ReactiveFormsModule: name (required, at least 2 characters), email (required, valid email), password (required, at least 8 characters, must contain a digit) and confirm (must equal password — a group-level custom validator). Show each error under its field only after the field was touched; disable Submit while the form is invalid; on submit show \"Welcome, <name>!\" and reset the form.",
+    "problemAr": "ابنِ نموذج تسجيل بـ ReactiveFormsModule: الاسم name (مطلوب، حرفان على الأقل)، والبريد email (مطلوب وصحيح)، وكلمة المرور password (مطلوبة، 8 أحرف على الأقل، وتحتوي رقمًا) والتأكيد confirm (يجب أن يساوي كلمة المرور — بمتحقق مخصص على مستوى المجموعة). اعرض كل خطأ تحت حقله فقط بعد لمس الحقل، وعطّل زر الإرسال ما دام النموذج غير صحيح، وعند الإرسال اعرض \"Welcome, <name>!\" وأعد تعيين النموذج.",
+    "expectedEn": "Typing invalid values shows specific messages; Submit stays disabled until everything is valid; a valid submit shows the welcome text.",
+    "expectedAr": "كتابة قيم غير صحيحة تُظهر رسائل محددة، ويبقى زر الإرسال معطلًا حتى يصبح كل شيء صحيحًا، والإرسال الصحيح يعرض رسالة الترحيب.",
+    "hintsEn": [
+      "const matching: ValidatorFn = g => g.get('password')?.value === g.get('confirm')?.value ? null : { mismatch: true };",
+      "@if (form.controls.email.touched && form.controls.email.hasError('email')) { … }"
+    ],
+    "hintsAr": [
+      "const matching: ValidatorFn = g => g.get('password')?.value === g.get('confirm')?.value ? null : { mismatch: true };",
+      "@if (form.controls.email.touched && form.controls.email.hasError('email')) { … }"
+    ],
+    "solutionEn": "Reactive forms keep the form model in the component, so validation rules are plain functions you can test. Cross-field rules belong on the group. Showing errors only after touch avoids shouting at the user before they type.",
+    "solutionAr": "تحتفظ النماذج التفاعلية بنموذج البيانات داخل المكون، فتصبح قواعد التحقق دوالًا عادية قابلة للاختبار. وتُوضع القواعد التي تشمل عدة حقول على المجموعة. وإظهار الأخطاء بعد اللمس فقط يتجنب مفاجأة المستخدم قبل أن يكتب.",
+    "runner": "Angular",
+    "requirementsEn": [
+      "FormGroup built with inject(FormBuilder).nonNullable.group(...).",
+      "Validators.required, minLength, email and pattern(/\\d/).",
+      "A custom validator on the group compares password and confirm.",
+      "Error messages appear only for touched fields."
+    ],
+    "requirementsAr": [
+      "FormGroup مبني بـ inject(FormBuilder).nonNullable.group(...).",
+      "Validators.required وminLength وemail وpattern(/\\d/).",
+      "متحقق مخصص على المجموعة يقارن password وconfirm.",
+      "تظهر رسائل الخطأ للحقول التي لُمست فقط."
+    ],
+    "acceptanceEn": [
+      "Each field shows the right message for each rule.",
+      "\"Passwords don’t match\" appears when they differ.",
+      "Submit is disabled until the form is valid.",
+      "Submitting shows the welcome message and clears the form."
+    ],
+    "acceptanceAr": [
+      "يعرض كل حقل الرسالة الصحيحة لكل قاعدة.",
+      "تظهر \"Passwords don’t match\" عند اختلافهما.",
+      "يبقى زر الإرسال معطلًا حتى يصبح النموذج صحيحًا.",
+      "الإرسال يعرض رسالة الترحيب ويفرغ النموذج."
+    ]
+  },
+  {
+    "key": "ng-lab-users-http",
+    "type": "Practical",
+    "topic": "ng-http-client",
+    "difficulty": "Advanced",
+    "minutes": 45,
+    "titleEn": "Load data with HttpClient: loading, error and empty states",
+    "titleAr": "تحميل البيانات بـ HttpClient: حالات التحميل والخطأ والفراغ",
+    "problemEn": "Create UserService that loads users from the public test API https://jsonplaceholder.typicode.com/users with HttpClient (already provided in app.config.ts). UsersComponent shows a loading message, then a table (name, email, city); an error message with a Retry button if the request fails; and a search box that filters by name, with an empty state when nothing matches. Test the error state by changing the URL to a wrong one.",
+    "problemAr": "أنشئ UserService تحمّل المستخدمين من الواجهة التجريبية العامة https://jsonplaceholder.typicode.com/users باستخدام HttpClient (مُعدّ بالفعل في app.config.ts). يعرض UsersComponent رسالة تحميل ثم جدولًا (الاسم والبريد والمدينة)؛ ورسالة خطأ مع زر Retry إذا فشل الطلب؛ ومربع بحث يصفّي بالاسم مع حالة فارغة عند عدم وجود نتائج. اختبر حالة الخطأ بتغيير الرابط إلى رابط خاطئ.",
+    "expectedEn": "The table appears after a short loading message; a wrong URL shows the error and Retry; searching \"xyz\" shows \"No users match\".",
+    "expectedAr": "يظهر الجدول بعد رسالة تحميل قصيرة، والرابط الخاطئ يعرض الخطأ وزر Retry، والبحث عن \"xyz\" يعرض \"No users match\".",
+    "hintsEn": [
+      "this.users.list().subscribe({ next: u => …, error: () => … })",
+      "Set loading to true before the request and false in both next and error.",
+      "Network requests from the preview reach public APIs that allow CORS, like jsonplaceholder."
+    ],
+    "hintsAr": [
+      "this.users.list().subscribe({ next: u => …, error: () => … })",
+      "اجعل loading تساوي true قبل الطلب وfalse في next وerror كليهما.",
+      "تصل طلبات الشبكة من المعاينة إلى الواجهات العامة التي تسمح بـ CORS مثل jsonplaceholder."
+    ],
+    "solutionEn": "Keep three pieces of state (loading, error, data) and render one of them; a request can succeed, fail or return nothing, and the UI must handle each. Putting HTTP in a service keeps components simple and makes the data source easy to swap for your own ASP.NET Core API later.",
+    "solutionAr": "احتفظ بثلاث حالات (التحميل والخطأ والبيانات) واعرض واحدة منها؛ فالطلب قد ينجح أو يفشل أو يُرجع لا شيء، ويجب أن تعالج الواجهة كل حالة. ووضع HTTP في خدمة يبقي المكونات بسيطة ويسهّل استبدال مصدر البيانات بواجهة ASP.NET Core الخاصة بك لاحقًا.",
+    "runner": "Angular",
+    "requirementsEn": [
+      "UserService returns Observable<User[]> from http.get<User[]>(…).",
+      "The component tracks state: loading, error and data (signals).",
+      "Retry repeats the request.",
+      "Search filters with a computed() over the loaded users."
+    ],
+    "requirementsAr": [
+      "تُرجع UserService القيمة Observable<User[]> من http.get<User[]>(…).",
+      "يتتبع المكون الحالة: التحميل والخطأ والبيانات (Signals).",
+      "يعيد زر Retry الطلب.",
+      "يصفّي البحث بـ computed() على المستخدمين المحمّلين."
+    ],
+    "acceptanceEn": [
+      "A loading message is shown while waiting.",
+      "Ten users appear in a table.",
+      "A failed request shows a friendly error and a working Retry button.",
+      "The search filters by name and shows an empty state."
+    ],
+    "acceptanceAr": [
+      "تظهر رسالة تحميل أثناء الانتظار.",
+      "يظهر عشرة مستخدمين في جدول.",
+      "الطلب الفاشل يعرض خطأً واضحًا وزر Retry يعمل.",
+      "يصفّي البحث بالاسم ويعرض حالة فارغة."
+    ]
+  },
+  {
+    "key": "ng-lab-search-rxjs",
+    "type": "Coding",
+    "topic": "ng-rxjs",
+    "difficulty": "Advanced",
+    "minutes": 40,
+    "titleEn": "RxJS: a search box that doesn’t flood the server",
+    "titleAr": "RxJS: مربع بحث لا يُغرق الخادم بالطلبات",
+    "problemEn": "SearchService.search(term) simulates an API (300 ms delay). Build a search box whose results update as you type, but: wait 300 ms after the last key press (debounceTime), skip identical consecutive terms (distinctUntilChanged), ignore terms shorter than 2 characters, and cancel stale requests when a new term arrives (switchMap). Show \"Searching…\" while a request is running and count how many requests were made.",
+    "problemAr": "تحاكي SearchService.search(term) واجهة برمجية (بتأخير 300 مللي ثانية). ابنِ مربع بحث تتحدث نتائجه أثناء الكتابة، بشرط: الانتظار 300 مللي ثانية بعد آخر ضغطة (debounceTime)، وتجاهل الكلمات المتطابقة المتتالية (distinctUntilChanged)، وتجاهل الكلمات الأقصر من حرفين، وإلغاء الطلبات القديمة عند وصول كلمة جديدة (switchMap). اعرض \"Searching…\" أثناء الطلب واحسب عدد الطلبات المنفذة.",
+    "expectedEn": "Typing \"angular\" quickly makes 1 request, not 7; results for an old term never replace newer ones.",
+    "expectedAr": "كتابة \"angular\" بسرعة تنفّذ طلبًا واحدًا لا سبعة، ولا تحل نتائج كلمة قديمة محل الأحدث.",
+    "hintsEn": [
+      "private readonly terms = new Subject<string>();",
+      "readonly results = toSignal(this.terms.pipe(debounceTime(300), distinctUntilChanged(), filter(t => t.length >= 2), switchMap(t => this.search.search(t))), { initialValue: [] });"
+    ],
+    "hintsAr": [
+      "private readonly terms = new Subject<string>();",
+      "readonly results = toSignal(this.terms.pipe(debounceTime(300), distinctUntilChanged(), filter(t => t.length >= 2), switchMap(t => this.search.search(t))), { initialValue: [] });"
+    ],
+    "solutionEn": "Each operator removes one kind of waste: debounceTime waits for a pause, distinctUntilChanged drops repeats, filter drops tiny terms and switchMap unsubscribes from the previous request so out-of-order responses can’t win. toSignal bridges the stream to the template.",
+    "solutionAr": "كل عامل يزيل نوعًا من الهدر: ينتظر debounceTime توقفًا، ويحذف distinctUntilChanged التكرار، ويحذف filter الكلمات القصيرة، ويلغي switchMap الاشتراك في الطلب السابق فلا تفوز الاستجابات المتأخرة. ويربط toSignal الـ Stream بالقالب.",
+    "runner": "Angular",
+    "requirementsEn": [
+      "A Subject (or a form control’s valueChanges) feeds the pipeline.",
+      "debounceTime, distinctUntilChanged, filter and switchMap are used.",
+      "The results are read in the template with toSignal or the async pipe.",
+      "A requests counter shows how many searches actually ran."
+    ],
+    "requirementsAr": [
+      "يغذّي Subject (أو valueChanges لعنصر نموذج) سلسلة العمليات.",
+      "تُستخدم debounceTime وdistinctUntilChanged وfilter وswitchMap.",
+      "تُقرأ النتائج في القالب بـ toSignal أو أنبوب async.",
+      "يعرض عدّاد الطلبات عدد عمليات البحث التي نُفذت فعلًا."
+    ],
+    "acceptanceEn": [
+      "Typing a word quickly results in one request.",
+      "Results match the latest term.",
+      "\"Searching…\" appears while waiting.",
+      "Terms of 1 character don’t search."
+    ],
+    "acceptanceAr": [
+      "كتابة كلمة بسرعة تنتج طلبًا واحدًا.",
+      "تطابق النتائج آخر كلمة.",
+      "تظهر \"Searching…\" أثناء الانتظار.",
+      "الكلمات المكونة من حرف واحد لا تبحث."
+    ]
+  },
+  {
+    "key": "ng-lab-debug-signal-list",
+    "type": "Debugging",
+    "topic": "ng-signals",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Debug: the list doesn’t update",
+    "titleAr": "تصحيح: القائمة لا تتحدث",
+    "problemEn": "In this to-do app, clicking \"Add\" logs the new task in the console but the list on screen and the \"remaining\" count don’t change, and toggling a task doesn’t update the count either. Find out why and fix it without removing signals.",
+    "problemAr": "في تطبيق المهام هذا، يطبع النقر على \"Add\" المهمة الجديدة في الـ Console، لكن القائمة على الشاشة وعدد المهام المتبقية لا يتغيران، وتبديل حالة مهمة لا يحدّث العدد أيضًا. اكتشف السبب وأصلحه دون إزالة الـ Signals.",
+    "expectedEn": "Adding and toggling tasks updates the list and the remaining count immediately.",
+    "expectedAr": "إضافة المهام وتبديلها يحدّثان القائمة والعدد المتبقي فورًا.",
+    "hintsEn": [
+      "A signal only notifies when you call set() or update() with a new value.",
+      "tasks().push(…) changes the array inside the signal, but the signal’s value is still the same array object."
+    ],
+    "hintsAr": [
+      "لا تُبلغ الـ Signal بالتغيير إلا عند استدعاء set() أو update() بقيمة جديدة.",
+      "التعبير tasks().push(…) يغيّر المصفوفة داخل الـ Signal، لكن قيمة الـ Signal تبقى كائن المصفوفة نفسه."
+    ],
+    "solutionEn": "Signals compare by reference: mutating the array (push, or changing task.done) doesn’t tell Angular anything changed, and computed() keeps its cached value. Replace the array: this.tasks.update(list => [...list, newTask]) and map to a new object for the toggled task.",
+    "solutionAr": "تقارن الـ Signals بالمرجع: تعديل المصفوفة (بـ push أو بتغيير task.done) لا يخبر Angular بأي تغيير، فتحتفظ computed() بقيمتها المخزنة. استبدل المصفوفة: this.tasks.update(list => [...list, newTask]) وأنشئ كائنًا جديدًا للمهمة التي تغيّرت حالتها بـ map.",
+    "runner": "Angular"
+  },
+  {
+    "key": "ng-lab-expense-tracker",
+    "type": "MiniProject",
+    "topic": "ng-app-organization",
+    "difficulty": "Advanced",
+    "minutes": 90,
+    "titleEn": "Mini project: an expense tracker",
+    "titleAr": "مشروع صغير: متتبع المصروفات",
+    "problemEn": "Build a small expense tracker with a clear folder structure (components, services, models). Users add expenses (description, amount, category, date) with a reactive form; see them in a list sorted by date (newest first) with a delete button; filter by category; and see totals per category and an overall total. Keep the state in an ExpenseService with signals. Organise it into at least three components.",
+    "problemAr": "ابنِ متتبعًا صغيرًا للمصروفات ببنية مجلدات واضحة (components وservices وmodels). يضيف المستخدمون المصروفات (الوصف والمبلغ والتصنيف والتاريخ) بنموذج تفاعلي، ويرونها في قائمة مرتبة بالتاريخ (الأحدث أولًا) مع زر حذف، ويصفّونها حسب التصنيف، ويرون الإجمالي لكل تصنيف والإجمالي العام. احتفظ بالحالة في ExpenseService باستخدام Signals، ونظّمه في ثلاثة مكونات على الأقل.",
+    "expectedEn": "A working tracker: adding, deleting and filtering update the list and the totals immediately.",
+    "expectedAr": "متتبع يعمل: الإضافة والحذف والتصفية تحدّث القائمة والإجماليات فورًا.",
+    "hintsEn": [
+      "Start from the model and the service; the components are thin views over the service.",
+      "readonly byCategory = computed(() => groupBy + sum …) keeps the summary in sync automatically."
+    ],
+    "hintsAr": [
+      "ابدأ بالنموذج والخدمة؛ فالمكونات مجرد واجهات رفيعة فوق الخدمة.",
+      "readonly byCategory = computed(() => تجميع + مجموع …) يبقي الملخص متزامنًا تلقائيًا."
+    ],
+    "solutionEn": "Put state and rules in the service (one source of truth), and let components only display and forward user actions. Computed signals keep totals and filtered lists consistent without manual updates. This is the same structure you’ll use with a real API: replace the in-memory list with HTTP calls in the service.",
+    "solutionAr": "ضع الحالة والقواعد في الخدمة (مصدر حقيقة واحد)، ودع المكونات تعرض وتمرّر أفعال المستخدم فقط. وتبقي الـ Signals المحسوبة الإجماليات والقوائم المصفّاة متسقة دون تحديث يدوي. وهذه البنية نفسها التي ستستخدمها مع API حقيقية: استبدل القائمة في الذاكرة باستدعاءات HTTP داخل الخدمة.",
+    "runner": "Angular",
+    "requirementsEn": [
+      "models/expense.ts defines the Expense type and the categories.",
+      "services/expense.service.ts holds the expenses in a signal with add, remove and computed totals.",
+      "Separate components for the form, the list and the summary.",
+      "The form validates: description required, amount > 0, a category chosen.",
+      "Amounts are shown with the currency pipe."
+    ],
+    "requirementsAr": [
+      "يعرّف models/expense.ts النوع Expense والتصنيفات.",
+      "تحتفظ services/expense.service.ts بالمصروفات في Signal مع add وremove والإجماليات المحسوبة.",
+      "مكونات منفصلة للنموذج والقائمة والملخص.",
+      "يتحقق النموذج: الوصف مطلوب، والمبلغ > 0، واختيار تصنيف.",
+      "تُعرض المبالغ بأنبوب currency."
+    ],
+    "acceptanceEn": [
+      "Adding an expense shows it at the top of the list.",
+      "Deleting removes it and updates the totals.",
+      "Filtering by category shows only matching expenses.",
+      "Totals per category and the overall total are correct.",
+      "Invalid input can’t be submitted."
+    ],
+    "acceptanceAr": [
+      "إضافة مصروف تُظهره أعلى القائمة.",
+      "الحذف يزيله ويحدّث الإجماليات.",
+      "التصفية حسب التصنيف تعرض المصروفات المطابقة فقط.",
+      "الإجماليات لكل تصنيف والإجمالي العام صحيحة.",
+      "لا يمكن إرسال مدخلات غير صحيحة."
+    ],
+    "bonusEn": [
+      "Show each category’s share as a CSS bar chart.",
+      "Add an edit mode for an existing expense.",
+      "Add a monthly view with previous/next month buttons."
+    ],
+    "bonusAr": [
+      "اعرض نصيب كل تصنيف كرسم أعمدة بـ CSS.",
+      "أضف وضع تعديل لمصروف موجود.",
+      "أضف عرضًا شهريًا بزرّي الشهر السابق والتالي."
+    ]
+  }
+]

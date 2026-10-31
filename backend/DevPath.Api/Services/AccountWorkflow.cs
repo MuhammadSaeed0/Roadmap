@@ -7,11 +7,12 @@ namespace DevPath.Api.Services;
 
 /// <summary>
 /// Sign-up steps after the account exists: email verification, then administrator approval.
-/// Also sets up the main administrator, who is named in trusted configuration (Admin:OwnerEmail).
-/// Ownership only goes to someone who controls both the address and the password: either the account is
-/// created from the deployment secret Admin:OwnerPassword, or the address's owner sets a new password through
-/// a reset link. Registering (or even verifying) that address is not enough, because whoever registered it
-/// chose the password and may still hold a session.
+/// Also keeps the main administrator, named in trusted configuration (Admin:OwnerEmail), in place at all times:
+/// the account with that address is the owner, approved and an administrator whenever the address is verified.
+/// This is enforced at start-up, at every sign-in and when the address is confirmed, so a database reset, a new
+/// registration or an edit to the account can never leave it waiting for approval. Verification (or the deployment
+/// secret Admin:OwnerPassword) is the one requirement: without it, anyone could type the owner's address into the
+/// sign-up form and become the administrator.
 /// </summary>
 public class AccountWorkflow(
     AppDbContext db, UserManager<AppUser> users, AccountTokenService tokens, AccountEmails emails,
@@ -62,7 +63,29 @@ public class AccountWorkflow(
             user.StatusChangedById = null;
         }
         await users.UpdateAsync(user);
+        await EnforceOwnerAsync(user, ct);
         return user;
+    }
+
+    /// <summary>
+    /// Makes the configured main administrator's account the owner, approved and an administrator, if this is that
+    /// account and its address is verified. Safe to call any number of times; returns whether the account is the owner.
+    /// </summary>
+    public async Task<bool> EnforceOwnerAsync(AppUser user, CancellationToken ct)
+    {
+        if (!IsOwnerEmail(user.Email) || user.EmailVerifiedAt is null) return false;
+        if (!user.IsOwner)
+        {
+            await ClaimOwnerAsync(user, ct);
+            return true;
+        }
+        if (user.Status != AccountStatus.Approved || !user.EmailConfirmed)
+        {
+            user.EmailConfirmed = true;
+            await SetApprovedAsync(user);
+        }
+        await EnsureAdminRoleAsync(user);
+        return true;
     }
 
     /// <summary>
@@ -84,13 +107,14 @@ public class AccountWorkflow(
             }
             await users.UpdateAsync(user);
         }
-        if (IsOwnerEmail(user.Email) && !user.IsOwner) await ClaimOwnerAsync(user, ct);
+        await EnforceOwnerAsync(user, ct);
     }
 
     /// <summary>
-    /// Start-up: make sure the Admin role exists and the main administrator is set up. Safe to run on every start.
+    /// Start-up: make sure the Admin role exists and the main administrator is in place. Safe to run on every start.
     /// With Admin:OwnerPassword (a deployment secret) and no account for the owner address yet, the owner account is
-    /// created ready to use. Otherwise an existing account becomes owner once its address has been verified.
+    /// created ready to use. An existing account with that address becomes the owner once its address is verified
+    /// (or its password matches the secret); ownership moves to it from any other account.
     /// </summary>
     public async Task EnsureOwnerAsync(CancellationToken ct)
     {
@@ -106,22 +130,14 @@ public class AccountWorkflow(
             return;
         }
 
-        var current = await db.Users.FirstOrDefaultAsync(u => u.IsOwner, ct);
-        if (current is not null && !IsOwnerEmail(current.Email))
-        {
-            // Ownership isn't moved automatically when the setting changes; that would let a config edit hand it to an unproven address.
-            logger.LogWarning("The main administrator is {Current}, not the configured {Configured}. Ownership is not transferred automatically.", current.Email, email);
-            await EnsureAdminRoleAsync(current);
-            return;
-        }
-
         var user = await users.FindByEmailAsync(email);
         if (user is null)
         {
             var password = config["Admin:OwnerPassword"];
             if (string.IsNullOrEmpty(password))
             {
-                logger.LogInformation("The main administrator {Email} has no account yet. Set Admin:OwnerPassword, or register with that address and then use Forgot password to take it over.", email);
+                logger.LogInformation("The main administrator {Email} has no account yet. Sign up with that address and confirm it (or set Admin:OwnerPassword) and it becomes the main administrator.", email);
+                if (await db.Users.FirstOrDefaultAsync(u => u.IsOwner, ct) is { } current) await EnsureAdminRoleAsync(current);
                 return;
             }
             var now = clock.GetUtcNow().UtcDateTime;
@@ -139,31 +155,34 @@ public class AccountWorkflow(
             logger.LogInformation("Created the main administrator account {Email}.", email);
         }
 
-        if (user.IsOwner)
-        {
-            await EnsureAdminRoleAsync(user);
-            if (user.Status != AccountStatus.Approved) await SetApprovedAsync(user);
-            return;
-        }
-        // An account someone registered with this address: only the deployment secret proves it is the owner's.
-        var secret = config["Admin:OwnerPassword"];
-        if (string.IsNullOrEmpty(secret) || !await users.CheckPasswordAsync(user, secret))
-        {
-            logger.LogWarning("An account for the main administrator address {Email} exists but is not the owner yet. Use Forgot password with that address (or set Admin:OwnerPassword to its password) to take it over.", email);
-            return;
-        }
         if (user.EmailVerifiedAt is null)
         {
+            // Not confirmed yet: the deployment secret is the other proof that the account is the owner's.
+            var secret = config["Admin:OwnerPassword"];
+            if (string.IsNullOrEmpty(secret) || !await users.CheckPasswordAsync(user, secret))
+            {
+                logger.LogWarning("The account for the main administrator address {Email} hasn't confirmed its address yet; it becomes the main administrator as soon as it does.", email);
+                return;
+            }
             user.EmailConfirmed = true;
             user.EmailVerifiedAt = clock.GetUtcNow().UtcDateTime;
         }
-        await ClaimOwnerAsync(user, ct);
+        await EnforceOwnerAsync(user, ct);
     }
 
     private async Task ClaimOwnerAsync(AppUser user, CancellationToken ct)
     {
-        if (await db.Users.AnyAsync(u => u.IsOwner && u.Id != user.Id, ct)) return;
+        // The configured address always wins: any other owner (from an earlier setting) steps down to administrator.
+        // The flag is cleared and saved first because only one account may have it (filtered unique index).
+        var previous = await db.Users.Where(u => u.IsOwner && u.Id != user.Id).ToListAsync(ct);
+        foreach (var p in previous) p.IsOwner = false;
+        if (previous.Count > 0)
+        {
+            await db.SaveChangesAsync(ct);
+            logger.LogWarning("Ownership moved from {Previous} to the configured main administrator {Email}.", string.Join(", ", previous.Select(p => p.Email)), user.Email);
+        }
         user.IsOwner = true;
+        user.EmailConfirmed = true;
         await SetApprovedAsync(user);
         await EnsureAdminRoleAsync(user);
         db.AdminAudit.Add(new AdminAuditEntry

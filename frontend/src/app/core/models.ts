@@ -10,9 +10,13 @@ export type KnowledgeLevel = 'Unassessed' | 'AlreadyKnow' | 'NeedReview' | 'Need
 export type ProjectTaskStatus = 'NotStarted' | 'InProgress' | 'Completed' | 'Blocked';
 export type TaskPriority = 'High' | 'Medium' | 'Low';
 export type ResourceType = 'Documentation' | 'Tutorial' | 'Course' | 'Video' | 'Article' | 'Reference' | 'Tool';
-export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
+export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
 export type VerificationStatus = 'Unverified' | 'Verified' | 'Broken';
-export type ExerciseType = 'Coding' | 'Debugging' | 'Scenario' | 'CodeReview';
+export type ExerciseType = 'Coding' | 'Debugging' | 'Scenario' | 'CodeReview' | 'Conceptual' | 'Practical' | 'MiniProject' | 'FullStack' | 'Challenge';
+/** Where an exercise's code runs. Everything runs in the learner's browser. */
+export type ExerciseRunner = 'None' | 'CSharp' | 'Sql' | 'JavaScript' | 'TypeScript' | 'Web' | 'Angular';
+export type WorkspaceKind = 'CSharp' | 'Sql' | 'JavaScript' | 'TypeScript' | 'Web' | 'Angular';
+export type VideoLanguage = 'English' | 'Arabic';
 export type PracticeStatus = 'NotStarted' | 'Attempted' | 'Completed';
 export type InterviewCategory =
   | 'CSharp' | 'DotNet' | 'AspNetCore' | 'EfCore' | 'SqlServer' | 'TypeScript'
@@ -24,7 +28,8 @@ export type DayOfWeek = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursda
 export const SKILLS: SkillArea[] = ['CSharp', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'FullStack', 'Testing', 'Git', 'Professional'];
 export const INTERVIEW_CATEGORIES: InterviewCategory[] = ['CSharp', 'DotNet', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'RestApi', 'Testing', 'Git', 'FullStackDesign',
   'DataStructures', 'Algorithms', 'ObjectOrientedDesign', 'SystemDesign', 'Concurrency', 'Behavioral'];
-export const EXERCISE_TYPES: ExerciseType[] = ['Coding', 'Debugging', 'Scenario', 'CodeReview'];
+export const EXERCISE_TYPES: ExerciseType[] = ['Conceptual', 'Coding', 'Debugging', 'Practical', 'MiniProject', 'FullStack', 'Challenge', 'Scenario', 'CodeReview'];
+export const DIFFICULTIES: Difficulty[] = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
 
 export interface PagedResult<T> { items: T[]; page: number; pageSize: number; totalCount: number; totalPages: number; }
 
@@ -50,6 +55,8 @@ export interface Resource {
   id: number; key: string; titleEn: string; titleAr: string | null; url: string; sourceName: string;
   type: ResourceType; difficulty: Difficulty; isFree: boolean; verificationStatus: VerificationStatus;
   lastVerifiedAt: string | null; lastStatusCode: number | null; topics: TopicRef[];
+  /** The phase of its earliest roadmap topic; null when the resource isn't linked to a topic. */
+  phase?: PhaseRef | null;
 }
 
 export interface StudySession {
@@ -114,15 +121,35 @@ export interface ProjectDetail {
 export interface ExerciseSummary {
   id: number; key: string; type: ExerciseType; topicId: number; topicTitleEn: string; topicTitleAr: string;
   difficulty: Difficulty; estimatedMinutes: number; titleEn: string; titleAr: string; status: PracticeStatus;
+  skill: SkillArea; runner: ExerciseRunner; technologies: SkillArea[]; bestScore: number | null;
 }
 export interface PracticeTypeStats { type: ExerciseType; total: number; completed: number; attempted: number; }
-export interface PracticeOverview { exercises: ExerciseSummary[]; stats: PracticeTypeStats[]; }
+export interface PracticeSkillStats {
+  skill: SkillArea; total: number; completed: number; attempted: number; level: Difficulty;
+  byDifficulty: { difficulty: Difficulty; total: number; completed: number }[];
+}
+export interface PracticeOverview {
+  exercises: ExerciseSummary[]; stats: PracticeTypeStats[]; skills: PracticeSkillStats[];
+  total: number; completed: number; attempted: number;
+}
+export interface WorkspaceFile { path: string; content: string; }
 export interface ExerciseDetail {
   summary: ExerciseSummary; problemEn: string; problemAr: string; code: string | null; codeLanguage: string | null;
   expectedOutcomeEn: string; expectedOutcomeAr: string; hintCount: number;
   revealedHintsEn: string[]; revealedHintsAr: string[]; userAnswer: string | null; solutionRevealed: boolean;
   solutionEn: string | null; solutionAr: string | null; solutionCode: string | null; completedAt: string | null;
+  starterFiles: WorkspaceFile[]; tests: string | null; dataset: string | null;
+  scenarioEn: string; scenarioAr: string; requirementsEn: string[]; requirementsAr: string[];
+  acceptanceEn: string[]; acceptanceAr: string[]; bonusEn: string[]; bonusAr: string[];
+  savedFiles: WorkspaceFile[] | null; submissions: number; lastScore: number | null; lastSubmittedAt: string | null;
+  checkedCriteria: number[]; solutionFiles: WorkspaceFile[] | null;
 }
+
+export interface PlaygroundProjectSummary {
+  id: number; name: string; kind: WorkspaceKind; template: string | null; fileCount: number; sizeBytes: number;
+  createdAt: string; updatedAt: string;
+}
+export interface PlaygroundProject { summary: PlaygroundProjectSummary; files: WorkspaceFile[]; }
 
 export interface InterviewQuestion {
   id: number; key: string; category: InterviewCategory; topicId: number; topicTitleEn: string; topicTitleAr: string;
@@ -205,7 +232,16 @@ export interface TopicVideo {
    */
   source: 'suggested' | 'added' | 'task' | 'topic'; addedId: number | null;
   isWatched: boolean; isBookmarked: boolean;
+  /** The spoken language of a curated video; null for live suggestions and videos added by link. */
+  language?: VideoLanguage | null; description?: string | null;
 }
+export interface VideoLibrary {
+  phases: { id: number; order: number; titleEn: string; titleAr: string;
+    topics: { id: number; slug: string; titleEn: string; titleAr: string; skill: SkillArea; videos: TopicVideo[] }[] }[];
+  englishCount: number; arabicCount: number; watchedCount: number;
+}
+/** A video the user saved, with the topic it was saved from. */
+export interface SavedVideo { topicId: number; topicTitleEn: string; topicTitleAr: string; skill: SkillArea; savedAt: string; video: TopicVideo; }
 export interface TopicVideos {
   status: VideoSuggestionStatus; searchQuery: string; videos: TopicVideo[];
   /** Task videos only: the topic that watched/saved flags are stored against. */

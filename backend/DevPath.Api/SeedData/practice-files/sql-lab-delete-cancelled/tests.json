@@ -1,0 +1,51 @@
+{
+  "checks": [
+    {
+      "nameEn": "No cancelled orders remain",
+      "nameAr": "لم تبقَ طلبات ملغاة",
+      "sql": "SELECT COUNT(*) FROM Orders WHERE Status = 'Cancelled'",
+      "expected": {
+        "columns": [
+          "COUNT(*)"
+        ],
+        "rows": [
+          [
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "Their lines were deleted too",
+      "nameAr": "حُذفت أسطرها أيضًا",
+      "sql": "SELECT COUNT(*) FROM OrderLines WHERE OrderId NOT IN (SELECT Id FROM Orders)",
+      "expected": {
+        "columns": [
+          "COUNT(*)"
+        ],
+        "rows": [
+          [
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "Other orders are untouched",
+      "nameAr": "لم تتغير الطلبات الأخرى",
+      "sql": "SELECT COUNT(*), COUNT(DISTINCT CustomerId) FROM Orders",
+      "expected": {
+        "columns": [
+          "COUNT(*)",
+          "COUNT(DISTINCT CustomerId)"
+        ],
+        "rows": [
+          [
+            19,
+            10
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,536 @@
+[
+  {
+    "key": "cs-lab-temperature",
+    "type": "Coding",
+    "topic": "cs-variables-types",
+    "difficulty": "Beginner",
+    "minutes": 15,
+    "titleEn": "Temperature converter",
+    "titleAr": "محوّل درجات الحرارة",
+    "problemEn": "Implement Celsius → Fahrenheit and Fahrenheit → Celsius in Solution.cs. Use double, and round the result to one decimal place.\nFormula: F = C × 9 / 5 + 32.",
+    "problemAr": "نفّذ التحويل من Celsius إلى Fahrenheit والعكس في الملف Solution.cs. استخدم double وقرّب الناتج لرقم عشري واحد.\nالمعادلة: F = C × 9 / 5 + 32.",
+    "expectedEn": "ToFahrenheit(100) returns 212, ToCelsius(32) returns 0 and ToFahrenheit(36.6) returns 97.9.",
+    "expectedAr": "تُرجع ToFahrenheit(100) القيمة 212، وتُرجع ToCelsius(32) القيمة 0، وتُرجع ToFahrenheit(36.6) القيمة 97.9.",
+    "hintsEn": [
+      "Math.Round(value, 1) rounds to one decimal place.",
+      "Write the integer division carefully: 9 / 5 is 1 for ints; use 9.0 / 5."
+    ],
+    "hintsAr": [
+      "الدالة Math.Round(value, 1) تقرّب لرقم عشري واحد.",
+      "انتبه للقسمة الصحيحة: 9 / 5 تساوي 1 مع int، فاستخدم 9.0 / 5."
+    ],
+    "solutionEn": "Multiply by 9.0 / 5 and add 32 for Fahrenheit; subtract 32 and multiply by 5.0 / 9 for Celsius. Writing 9.0 (a double) avoids integer division, a classic bug.",
+    "solutionAr": "اضرب في 9.0 / 5 وأضف 32 للحصول على Fahrenheit، واطرح 32 ثم اضرب في 5.0 / 9 للحصول على Celsius. كتابة 9.0 (من نوع double) تتجنب خطأ القسمة الصحيحة الشائع.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-grade",
+    "type": "Coding",
+    "topic": "cs-conditions",
+    "difficulty": "Beginner",
+    "minutes": 15,
+    "titleEn": "Score to grade",
+    "titleAr": "من الدرجة إلى التقدير",
+    "problemEn": "Write Grades.Letter(int score) that returns \"A\" for 90–100, \"B\" for 80–89, \"C\" for 70–79, \"D\" for 60–69 and \"F\" below 60. A score below 0 or above 100 must throw ArgumentOutOfRangeException.",
+    "problemAr": "اكتب Grades.Letter(int score) التي تُرجع \"A\" للدرجات 90–100، و\"B\" للدرجات 80–89، و\"C\" للدرجات 70–79، و\"D\" للدرجات 60–69، و\"F\" لما دون 60. الدرجة الأقل من 0 أو الأكبر من 100 يجب أن ترمي ArgumentOutOfRangeException.",
+    "expectedEn": "Letter(95) is \"A\", Letter(80) is \"B\", Letter(59) is \"F\", and Letter(101) throws ArgumentOutOfRangeException.",
+    "expectedAr": "Letter(95) تساوي \"A\"، وLetter(80) تساوي \"B\"، وLetter(59) تساوي \"F\"، وLetter(101) ترمي ArgumentOutOfRangeException.",
+    "hintsEn": [
+      "Check the invalid range first, then the grades from highest to lowest.",
+      "A switch expression with relational patterns reads nicely: score switch { >= 90 => \"A\", ... }."
+    ],
+    "hintsAr": [
+      "افحص النطاق غير الصحيح أولًا، ثم التقديرات من الأعلى إلى الأدنى.",
+      "تعبير switch مع أنماط المقارنة واضح هنا: score switch { >= 90 => \"A\", ... }."
+    ],
+    "solutionEn": "Validate first (guard clause), then use a switch expression with relational patterns ordered from the highest band down, so each band only needs its lower bound.",
+    "solutionAr": "تحقّق من صحة القيمة أولًا (Guard clause)، ثم استخدم تعبير switch بأنماط المقارنة مرتبًا من الأعلى للأدنى، فيكفي لكل نطاق حدّه الأدنى.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-fizzbuzz",
+    "type": "Coding",
+    "topic": "cs-loops",
+    "difficulty": "Beginner",
+    "minutes": 15,
+    "titleEn": "FizzBuzz list",
+    "titleAr": "قائمة FizzBuzz",
+    "problemEn": "Return a List<string> with the numbers 1..n, except multiples of 3 become \"Fizz\", multiples of 5 become \"Buzz\" and multiples of both become \"FizzBuzz\". n = 0 returns an empty list; a negative n throws ArgumentException.",
+    "problemAr": "أرجِع List<string> بالأرقام من 1 إلى n، عدا مضاعفات 3 فتصبح \"Fizz\"، ومضاعفات 5 فتصبح \"Buzz\"، ومضاعفات العددين معًا فتصبح \"FizzBuzz\". إذا كانت n تساوي 0 تُرجَع قائمة فارغة، وإذا كانت سالبة يُرمى ArgumentException.",
+    "expectedEn": "FizzBuzz(5) returns [\"1\", \"2\", \"Fizz\", \"4\", \"Buzz\"] and FizzBuzz(15)[14] is \"FizzBuzz\".",
+    "expectedAr": "FizzBuzz(5) تُرجع [\"1\", \"2\", \"Fizz\", \"4\", \"Buzz\"]، والعنصر FizzBuzz(15)[14] يساوي \"FizzBuzz\".",
+    "hintsEn": [
+      "Check “multiple of 15” (both) before 3 and 5.",
+      "i % 3 == 0 means i is a multiple of 3."
+    ],
+    "hintsAr": [
+      "افحص «مضاعف 15» (كلا العددين) قبل 3 و5.",
+      "التعبير i % 3 == 0 يعني أن i من مضاعفات 3."
+    ],
+    "solutionEn": "Loop from 1 to n inclusive and test divisibility by 15 first; the order of the if/else branches is the whole trick of FizzBuzz.",
+    "solutionAr": "كرّر من 1 إلى n شاملًا، وافحص القسمة على 15 أولًا؛ ترتيب فروع if/else هو جوهر FizzBuzz.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-word-stats",
+    "type": "Coding",
+    "topic": "cs-methods",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Word statistics",
+    "titleAr": "إحصاءات الكلمات",
+    "problemEn": "Implement three small methods in TextStats: CountWords(text) counts words separated by any whitespace; LongestWord(text) returns the longest word (the first one on a tie, \"\" for empty text); Capitalize(text) upper-cases the first letter of every word.",
+    "problemAr": "نفّذ ثلاث دوال صغيرة في TextStats: الدالة CountWords(text) تعدّ الكلمات المفصولة بأي مسافات؛ والدالة LongestWord(text) تُرجع أطول كلمة (الأولى عند التساوي، و\"\" للنص الفارغ)؛ والدالة Capitalize(text) تجعل الحرف الأول من كل كلمة كبيرًا.",
+    "expectedEn": "CountWords(\"  hello   big world \") is 3, LongestWord(\"a bb ccc dd\") is \"ccc\", Capitalize(\"learn c# today\") is \"Learn C# Today\".",
+    "expectedAr": "CountWords(\"  hello   big world \") تساوي 3، وLongestWord(\"a bb ccc dd\") تساوي \"ccc\"، وCapitalize(\"learn c# today\") تساوي \"Learn C# Today\".",
+    "hintsEn": [
+      "text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries) splits on any whitespace and drops empty parts.",
+      "char.ToUpper(word[0]) + word[1..] capitalizes a word."
+    ],
+    "hintsAr": [
+      "التعبير text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries) يقسّم على أي مسافة ويحذف الأجزاء الفارغة.",
+      "التعبير char.ToUpper(word[0]) + word[1..] يجعل أول حرف كبيرًا."
+    ],
+    "solutionEn": "Split once with RemoveEmptyEntries and reuse it: Length for the count, a loop (or MaxBy) for the longest word, and string.Join(\" \", words.Select(Capitalize)) for capitalizing. Small methods with clear names are easy to test one by one.",
+    "solutionAr": "قسّم النص مرة واحدة مع RemoveEmptyEntries وأعد استخدام النتيجة: Length للعدد، وحلقة (أو MaxBy) لأطول كلمة، وstring.Join(\" \", words.Select(Capitalize)) لتكبير الحروف. الدوال الصغيرة ذات الأسماء الواضحة سهلة الاختبار كلًّا على حدة.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-word-count",
+    "type": "Coding",
+    "topic": "cs-collections",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Count orders with a Dictionary",
+    "titleAr": "عدّ الطلبات باستخدام Dictionary",
+    "problemEn": "Given a list of product names (one per item sold), return a Dictionary<string, int> with how many times each product appears. Names are case-insensitive (\"Mouse\" and \"mouse\" are the same product); keep the spelling of the first occurrence as the key. Then implement TopProduct, which returns the most sold product (null for an empty list).",
+    "problemAr": "لديك قائمة بأسماء المنتجات (اسم لكل قطعة مباعة). أرجِع Dictionary<string, int> بعدد مرات ظهور كل منتج. لا تفرّق الأسماء بين الحروف الكبيرة والصغيرة (\"Mouse\" و\"mouse\" منتج واحد)، واحتفظ بكتابة أول ظهور كمفتاح. ثم نفّذ TopProduct التي تُرجع المنتج الأكثر مبيعًا (و null للقائمة الفارغة).",
+    "expectedEn": "Count([\"Mouse\", \"Keyboard\", \"mouse\"]) has Mouse = 2 and Keyboard = 1; TopProduct of the same list is \"Mouse\".",
+    "expectedAr": "Count([\"Mouse\", \"Keyboard\", \"mouse\"]) فيها Mouse = 2 وKeyboard = 1، وTopProduct لنفس القائمة تساوي \"Mouse\".",
+    "hintsEn": [
+      "new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) compares keys without case.",
+      "TryGetValue avoids looking up the key twice."
+    ],
+    "hintsAr": [
+      "new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) يقارن المفاتيح دون اعتبار لحالة الحروف.",
+      "الدالة TryGetValue تتجنب البحث عن المفتاح مرتين."
+    ],
+    "solutionEn": "Create the dictionary with StringComparer.OrdinalIgnoreCase, then add 1 for each name (TryGetValue or CollectionsMarshal). The first spelling becomes the key because later lookups match it case-insensitively.",
+    "solutionAr": "أنشئ القاموس مع StringComparer.OrdinalIgnoreCase، ثم أضف 1 لكل اسم (باستخدام TryGetValue). تصبح أول كتابة هي المفتاح لأن عمليات البحث اللاحقة تطابقها دون اعتبار لحالة الحروف.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-debug-average",
+    "type": "Debugging",
+    "topic": "cs-operators",
+    "difficulty": "Beginner",
+    "minutes": 15,
+    "titleEn": "Debug: the average is wrong",
+    "titleAr": "تصحيح: المتوسط خاطئ",
+    "problemEn": "Statistics.Average and Statistics.SumTo were written quickly and the checks fail. Find and fix the bugs without rewriting the methods from scratch. Run the checks to see which cases fail.",
+    "problemAr": "كُتبت الدالتان Statistics.Average وStatistics.SumTo على عجل، والفحوص تفشل. اعثر على الأخطاء وأصلحها دون إعادة كتابة الدوال من الصفر. شغّل الفحوص لترى الحالات التي تفشل.",
+    "expectedEn": "Average([1, 2]) is 1.5, Average([]) throws InvalidOperationException, and SumTo(4) is 1 + 2 + 3 + 4 = 10.",
+    "expectedAr": "Average([1, 2]) تساوي 1.5، وAverage([]) ترمي InvalidOperationException، وSumTo(4) تساوي 1 + 2 + 3 + 4 = 10.",
+    "hintsEn": [
+      "What type is the result of int / int in C#?",
+      "Does the loop in SumTo include n itself?"
+    ],
+    "hintsAr": [
+      "ما نوع ناتج int / int في C#؟",
+      "هل تشمل الحلقة في SumTo العدد n نفسه؟"
+    ],
+    "solutionEn": "Two classic bugs: int / int is integer division (cast the sum to double), and the loop condition i < n stops one step early (use i <= n). An empty list should be rejected instead of dividing by zero.",
+    "solutionAr": "خطآن شائعان: int / int قسمة صحيحة (حوّل المجموع إلى double)، وشرط الحلقة i < n يتوقف قبل خطوة (استخدم i <= n). كما يجب رفض القائمة الفارغة بدلًا من القسمة على صفر.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-bank-account",
+    "type": "Coding",
+    "topic": "oop-encapsulation",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "A bank account that protects its balance",
+    "titleAr": "حساب بنكي يحمي رصيده",
+    "problemEn": "Complete the BankAccount class. The balance can only change through Deposit and Withdraw: amounts must be positive (ArgumentOutOfRangeException otherwise) and a withdrawal larger than the balance throws InvalidOperationException. Every successful operation is added to a read-only History list as text, e.g. \"Deposit 100\" or \"Withdraw 30\".",
+    "problemAr": "أكمل الصنف BankAccount. لا يتغير الرصيد إلا عبر Deposit وWithdraw: يجب أن تكون المبالغ موجبة (وإلا يُرمى ArgumentOutOfRangeException)، والسحب الأكبر من الرصيد يرمي InvalidOperationException. تُضاف كل عملية ناجحة إلى قائمة History للقراءة فقط كنص، مثل \"Deposit 100\" أو \"Withdraw 30\".",
+    "expectedEn": "After Deposit(100) and Withdraw(30) the balance is 70 and History is [\"Deposit 100\", \"Withdraw 30\"]. Code outside the class can’t set Balance or add to History.",
+    "expectedAr": "بعد Deposit(100) ثم Withdraw(30) يصبح الرصيد 70 وتكون History هي [\"Deposit 100\", \"Withdraw 30\"]. ولا يستطيع الكود خارج الصنف تعديل Balance أو الإضافة إلى History.",
+    "hintsEn": [
+      "public decimal Balance { get; private set; } lets everyone read but only the class write.",
+      "Expose the history as IReadOnlyList<string> and keep the List<string> private."
+    ],
+    "hintsAr": [
+      "التعريف public decimal Balance { get; private set; } يسمح للجميع بالقراءة وللصنف وحده بالكتابة.",
+      "اعرض السجل كـ IReadOnlyList<string> واحتفظ بالـ List<string> خاصة."
+    ],
+    "solutionEn": "Encapsulation means the object guards its own rules: Balance has a private setter, History is exposed as IReadOnlyList over a private list, and Deposit/Withdraw validate before changing state, so the account can never become invalid.",
+    "solutionAr": "التغليف يعني أن الكائن يحرس قواعده بنفسه: للرصيد Setter خاص، والسجل معروض كـ IReadOnlyList فوق قائمة خاصة، وتتحقق Deposit وWithdraw من المدخلات قبل تغيير الحالة، فلا يصبح الحساب في حالة غير صحيحة أبدًا.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-shapes",
+    "type": "Coding",
+    "topic": "oop-polymorphism",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Shapes: inheritance and polymorphism",
+    "titleAr": "الأشكال: الوراثة وتعدد الأشكال",
+    "problemEn": "Create an abstract class Shape with an abstract Area() and a virtual Name that returns the class name. Add Circle(radius), Rectangle(width, height) and Square(side) — Square should reuse Rectangle. Finally write Geometry.TotalArea(IEnumerable<Shape>) without checking the type of any shape (no \"is\" or switch on types).",
+    "problemAr": "أنشئ صنفًا مجردًا Shape فيه دالة مجردة Area() وخاصية افتراضية Name تُرجع اسم الصنف. أضف Circle(radius) وRectangle(width, height) وSquare(side)، ويجب أن يعيد Square استخدام Rectangle. ثم اكتب Geometry.TotalArea(IEnumerable<Shape>) دون فحص نوع أي شكل (بدون is أو switch على الأنواع).",
+    "expectedEn": "A Circle with radius 1 has area π, a Rectangle 2×3 has area 6, a Square 3 has area 9 and is also a Rectangle; TotalArea adds them up. Negative sizes throw ArgumentOutOfRangeException.",
+    "expectedAr": "مساحة Circle نصف قطرها 1 هي π، ومساحة Rectangle بأبعاد 2×3 هي 6، ومساحة Square طول ضلعه 3 هي 9 وهو أيضًا Rectangle؛ وتجمع TotalArea هذه المساحات. الأبعاد السالبة ترمي ArgumentOutOfRangeException.",
+    "hintsEn": [
+      "public class Square(double side) : Rectangle(side, side) reuses Rectangle.",
+      "TotalArea only needs shapes.Sum(s => s.Area()): each shape knows its own area."
+    ],
+    "hintsAr": [
+      "التعريف public class Square(double side) : Rectangle(side, side) يعيد استخدام Rectangle.",
+      "تحتاج TotalArea فقط إلى shapes.Sum(s => s.Area()): كل شكل يعرف مساحته."
+    ],
+    "solutionEn": "Polymorphism lets TotalArea call Area() on any Shape and get the right formula at run time. New shapes can be added without changing TotalArea (the open/closed principle). Square inherits from Rectangle, passing the side twice.",
+    "solutionAr": "يسمح تعدد الأشكال لـ TotalArea باستدعاء Area() على أي Shape والحصول على المعادلة الصحيحة وقت التشغيل. ويمكن إضافة أشكال جديدة دون تعديل TotalArea (مبدأ Open/Closed). ويرث Square من Rectangle بتمرير الضلع مرتين.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-discount-strategy",
+    "type": "Practical",
+    "topic": "oop-interfaces",
+    "difficulty": "Intermediate",
+    "minutes": 35,
+    "titleEn": "Discount rules with interfaces (strategy pattern)",
+    "titleAr": "قواعد الخصم باستخدام الواجهات (نمط Strategy)",
+    "problemEn": "A shop has several discount rules. Define IDiscount with decimal Apply(decimal total). Implement PercentageDiscount(percent), FixedDiscount(amount) and NoDiscount. Then complete Checkout.Total(decimal subtotal, IDiscount discount): it applies the discount but never returns less than 0, and rounds to 2 decimals. Percent must be 0–100.",
+    "problemAr": "لدى المتجر عدة قواعد للخصم. عرّف الواجهة IDiscount بالدالة decimal Apply(decimal total). نفّذ PercentageDiscount(percent) وFixedDiscount(amount) وNoDiscount. ثم أكمل Checkout.Total(decimal subtotal, IDiscount discount): تطبّق الخصم دون أن تُرجع أبدًا قيمة أقل من 0، وتقرّب لرقمين عشريين. يجب أن تكون النسبة بين 0 و100.",
+    "expectedEn": "Total(200, new PercentageDiscount(10)) is 180, Total(30, new FixedDiscount(50)) is 0, and new PercentageDiscount(120) throws ArgumentOutOfRangeException.",
+    "expectedAr": "Total(200, new PercentageDiscount(10)) تساوي 180، وTotal(30, new FixedDiscount(50)) تساوي 0، وnew PercentageDiscount(120) يرمي ArgumentOutOfRangeException.",
+    "hintsEn": [
+      "An interface describes what a discount can do; each class decides how.",
+      "Math.Max(0, value) keeps the total from going negative; Math.Round(value, 2) rounds it."
+    ],
+    "hintsAr": [
+      "تصف الواجهة ما يستطيع الخصم فعله، وكل صنف يقرر كيف يفعله.",
+      "Math.Max(0, value) يمنع المجموع من أن يصبح سالبًا، وMath.Round(value, 2) يقرّبه."
+    ],
+    "solutionEn": "This is the strategy pattern: Checkout depends on the IDiscount interface, not on concrete classes, so a new rule (for example BuyTwoGetOne) can be added without touching Checkout. Validation lives in each rule’s constructor.",
+    "solutionAr": "هذا هو نمط Strategy: تعتمد Checkout على الواجهة IDiscount لا على أصناف محددة، فيمكن إضافة قاعدة جديدة (مثل اشترِ قطعتين واحصل على الثالثة مجانًا) دون تعديل Checkout. ويقع التحقق من المدخلات في Constructor كل قاعدة.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-safe-parse",
+    "type": "Coding",
+    "topic": "cs-exceptions",
+    "difficulty": "Intermediate",
+    "minutes": 25,
+    "titleEn": "Parsing input safely with exceptions",
+    "titleAr": "قراءة المدخلات بأمان باستخدام الاستثناءات",
+    "problemEn": "Write a custom exception InvalidAgeException (it derives from Exception and keeps the rejected text in a property Input). Then AgeParser.Parse(string text) returns the age for \"0\"–\"130\" (surrounding spaces allowed) and throws InvalidAgeException for anything else; AgeParser.TryParse(string text, out int age) never throws and returns false instead.",
+    "problemAr": "اكتب استثناءً مخصصًا InvalidAgeException (يرث من Exception ويحتفظ بالنص المرفوض في الخاصية Input). ثم تُرجع AgeParser.Parse(string text) العمر للقيم من \"0\" إلى \"130\" (مع السماح بمسافات حولها) وترمي InvalidAgeException لأي قيمة أخرى؛ أما AgeParser.TryParse(string text, out int age) فلا ترمي أبدًا وتُرجع false بدلًا من ذلك.",
+    "expectedEn": "Parse(\" 42 \") is 42; Parse(\"abc\") and Parse(\"200\") throw InvalidAgeException whose Input is the original text; TryParse(\"x\", out _) returns false.",
+    "expectedAr": "Parse(\" 42 \") تساوي 42؛ وParse(\"abc\") وParse(\"200\") ترميان InvalidAgeException وقيمة Input فيه هي النص الأصلي؛ وTryParse(\"x\", out _) تُرجع false.",
+    "hintsEn": [
+      "int.TryParse(text.Trim(), out var value) does the number part without exceptions.",
+      "TryParse can call Parse inside try/catch, or both can share a private helper (better: no exceptions for normal flow)."
+    ],
+    "hintsAr": [
+      "int.TryParse(text.Trim(), out var value) يتولى تحويل الرقم دون استثناءات.",
+      "يمكن لـ TryParse استدعاء Parse داخل try/catch، أو تتشارك الدالتان دالة مساعدة خاصة (والأفضل ألا تُستخدم الاستثناءات في المسار العادي)."
+    ],
+    "solutionEn": "Use exceptions for exceptional situations and Try-pattern methods for expected bad input. A custom exception with an Input property gives callers useful context. A private Validate helper avoids throwing and catching inside TryParse.",
+    "solutionAr": "استخدم الاستثناءات للحالات الاستثنائية، ودوال نمط Try للمدخلات الخاطئة المتوقعة. الاستثناء المخصص بخاصية Input يعطي المستدعي سياقًا مفيدًا. والدالة المساعدة الخاصة Validate تتجنب الرمي والالتقاط داخل TryParse.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-result-type",
+    "type": "Coding",
+    "topic": "cs-generics",
+    "difficulty": "Intermediate",
+    "minutes": 35,
+    "titleEn": "A generic Result<T>",
+    "titleAr": "نوع عام Result<T>",
+    "problemEn": "Write a generic class Result<T> that holds either a value or an error message: static Success(T value) and Failure(string error) create it; IsSuccess, Value and Error read it (reading Value of a failure throws InvalidOperationException). Add Map<TOut>(Func<T, TOut>) that transforms a success and passes a failure through unchanged.",
+    "problemAr": "اكتب صنفًا عامًا Result<T> يحمل إما قيمة وإما رسالة خطأ: الدالتان الثابتتان Success(T value) وFailure(string error) تنشئانه، والخصائص IsSuccess وValue وError تقرؤه (قراءة Value لنتيجة فاشلة ترمي InvalidOperationException). أضف Map<TOut>(Func<T, TOut>) التي تحوّل النتيجة الناجحة وتمرّر الفاشلة كما هي.",
+    "expectedEn": "Result<int>.Success(2).Map(x => x * 10).Value is 20; Result<int>.Failure(\"missing\").Map(x => x * 10) is still a failure with Error \"missing\".",
+    "expectedAr": "Result<int>.Success(2).Map(x => x * 10).Value تساوي 20، وResult<int>.Failure(\"missing\").Map(x => x * 10) تبقى فاشلة وقيمة Error فيها \"missing\".",
+    "hintsEn": [
+      "A private constructor plus static factory methods keeps invalid combinations impossible.",
+      "Map returns Result<TOut>: Success(mapper(Value)) or Failure(Error)."
+    ],
+    "hintsAr": [
+      "Constructor خاص مع دوال إنشاء ثابتة يجعل الحالات غير الصحيحة مستحيلة.",
+      "تُرجع Map النوع Result<TOut>: إما Success(mapper(Value)) وإما Failure(Error)."
+    ],
+    "solutionEn": "Generics let one Result type work for any value type with full type safety. Factories and a private constructor make \"both value and error\" impossible. Map is how you chain steps without if-checks after every call (the idea behind LINQ’s Select).",
+    "solutionAr": "تسمح الأنواع العامة لصنف Result واحد بالعمل مع أي نوع قيمة بأمان كامل للأنواع. ودوال الإنشاء مع Constructor خاص تجعل «قيمة وخطأ معًا» مستحيلًا. وMap تتيح ربط الخطوات دون فحص if بعد كل استدعاء (وهي فكرة Select في LINQ).",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-stock-events",
+    "type": "Coding",
+    "topic": "cs-delegates",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Events: notify when a price changes",
+    "titleAr": "الأحداث: إشعار عند تغيّر السعر",
+    "problemEn": "Complete Stock: it has a Symbol and a Price. Add an event PriceChanged of type EventHandler<PriceChangedEventArgs> that fires when the price is set to a different value (not when it’s set to the same value). PriceChangedEventArgs carries OldPrice and NewPrice. Negative prices throw ArgumentOutOfRangeException.",
+    "problemAr": "أكمل الصنف Stock: له Symbol وPrice. أضف حدثًا PriceChanged من النوع EventHandler<PriceChangedEventArgs> ينطلق عند تعيين سعر مختلف (وليس عند تعيين القيمة نفسها). يحمل PriceChangedEventArgs القيمتين OldPrice وNewPrice. والأسعار السالبة ترمي ArgumentOutOfRangeException.",
+    "expectedEn": "Subscribing a handler and setting the price from 10 to 12 calls it once with OldPrice 10 and NewPrice 12; setting 12 again doesn’t call it.",
+    "expectedAr": "عند الاشتراك بمعالج وتغيير السعر من 10 إلى 12 يُستدعى المعالج مرة واحدة بـ OldPrice = 10 وNewPrice = 12، وتعيين 12 مرة أخرى لا يستدعيه.",
+    "hintsEn": [
+      "public event EventHandler<PriceChangedEventArgs>? PriceChanged;",
+      "PriceChanged?.Invoke(this, new PriceChangedEventArgs(old, value)) fires it safely even with no subscribers."
+    ],
+    "hintsAr": [
+      "public event EventHandler<PriceChangedEventArgs>? PriceChanged;",
+      "الاستدعاء PriceChanged?.Invoke(this, new PriceChangedEventArgs(old, value)) يطلق الحدث بأمان حتى بدون مشتركين."
+    ],
+    "solutionEn": "Events are delegates that only the owning class can raise. The setter compares the old and new price, updates the field, then raises the event with ?.Invoke so having no subscribers is fine. This is the observer pattern built into C#.",
+    "solutionAr": "الأحداث Delegates لا يستطيع إطلاقها إلا الصنف المالك لها. يقارن الـ Setter السعر القديم بالجديد، ويحدّث الحقل، ثم يطلق الحدث بـ ?.Invoke فلا مشكلة إن لم يوجد مشتركون. وهذا نمط Observer المدمج في C#.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-linq-employees",
+    "type": "Coding",
+    "topic": "linq-fundamentals",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "LINQ queries on employees",
+    "titleAr": "استعلامات LINQ على الموظفين",
+    "problemEn": "Data.cs has a list of employees. In Queries.cs, implement with LINQ (no loops): NamesInDepartment(list, department) — names sorted A→Z; HighestPaid(list) — the employee with the highest salary; AverageSalaryByDepartment(list) — a dictionary department → average salary rounded to 2 decimals; HiredAfter(list, year) — how many were hired after that year.",
+    "problemAr": "يحتوي Data.cs على قائمة موظفين. في Queries.cs نفّذ باستخدام LINQ (دون حلقات): NamesInDepartment(list, department) — الأسماء مرتبة أبجديًا؛ وHighestPaid(list) — الموظف صاحب أعلى راتب؛ وAverageSalaryByDepartment(list) — قاموس من القسم إلى متوسط الراتب مقربًا لرقمين عشريين؛ وHiredAfter(list, year) — عدد من عُيّنوا بعد تلك السنة.",
+    "expectedEn": "NamesInDepartment(employees, \"Engineering\") is [\"Khaled\", \"Mahmoud\", \"Salma\"]; HighestPaid is Salma; the Sales average is 23750.",
+    "expectedAr": "NamesInDepartment(employees, \"Engineering\") تساوي [\"Khaled\", \"Mahmoud\", \"Salma\"]، وHighestPaid هي Salma، ومتوسط قسم Sales هو 23750.",
+    "hintsEn": [
+      "Where + OrderBy + Select builds the first query.",
+      "MaxBy(e => e.Salary) returns the whole employee; GroupBy + ToDictionary builds the averages."
+    ],
+    "hintsAr": [
+      "Where ثم OrderBy ثم Select تبني الاستعلام الأول.",
+      "MaxBy(e => e.Salary) تُرجع الموظف كاملًا، وGroupBy مع ToDictionary تبني المتوسطات."
+    ],
+    "solutionEn": "LINQ describes what you want instead of how to loop: filter with Where, sort with OrderBy, project with Select, aggregate with Max/Average/Count, and GroupBy(e => e.Department).ToDictionary(g => g.Key, g => Math.Round(g.Average(e => e.Salary), 2)) for per-group values.",
+    "solutionAr": "تصف LINQ ما تريده بدلًا من كيفية التكرار: صفِّ بـ Where، ورتّب بـ OrderBy، واختر الحقول بـ Select، واحسب بـ Max وAverage وCount، واستخدم GroupBy(e => e.Department).ToDictionary(g => g.Key, g => Math.Round(g.Average(e => e.Salary), 2)) للقيم لكل مجموعة.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-linq-report",
+    "type": "Practical",
+    "topic": "linq-advanced",
+    "difficulty": "Advanced",
+    "minutes": 40,
+    "titleEn": "Sales report with GroupBy and Join",
+    "titleAr": "تقرير مبيعات باستخدام GroupBy وJoin",
+    "problemEn": "Build a monthly sales report from two lists: products (Id, Name, Category) and order lines (ProductId, Month, Quantity, UnitPrice). Implement Report.RevenueByCategory — category → total revenue (Quantity × UnitPrice), sorted by revenue descending; Report.TopProductPerCategory — category → name of its best-selling product by quantity; Report.MonthlyTotals — a list of (Month, Revenue) for every month 1..12 including months with no sales (revenue 0).",
+    "problemAr": "ابنِ تقرير مبيعات شهريًا من قائمتين: المنتجات (Id وName وCategory) وأسطر الطلبات (ProductId وMonth وQuantity وUnitPrice). نفّذ Report.RevenueByCategory — من التصنيف إلى إجمالي الإيراد (Quantity × UnitPrice) مرتبًا تنازليًا حسب الإيراد؛ وReport.TopProductPerCategory — من التصنيف إلى اسم المنتج الأكثر مبيعًا بالكمية؛ وReport.MonthlyTotals — قائمة (Month, Revenue) لكل شهر من 1 إلى 12 بما فيها الشهور التي بلا مبيعات (إيرادها 0).",
+    "expectedEn": "With the sample data, Audio leads the revenue ranking, and MonthlyTotals always has 12 entries in month order.",
+    "expectedAr": "مع البيانات النموذجية يتصدر تصنيف Audio ترتيب الإيراد، وتحتوي MonthlyTotals دائمًا على 12 عنصرًا بترتيب الشهور.",
+    "hintsEn": [
+      "Join lines to products on ProductId first, then GroupBy the category.",
+      "For the months, start from Enumerable.Range(1, 12) and look up each month’s total (a GroupJoin or a dictionary)."
+    ],
+    "hintsAr": [
+      "اربط الأسطر بالمنتجات على ProductId أولًا، ثم جمّع حسب التصنيف.",
+      "للشهور ابدأ من Enumerable.Range(1, 12) وابحث عن إجمالي كل شهر (بـ GroupJoin أو قاموس)."
+    ],
+    "solutionEn": "Join gives each line its product; GroupBy(category) with Sum(Quantity × UnitPrice) gives revenue; within each category group by product and take MaxBy of the summed quantity. Missing months are filled by projecting Enumerable.Range(1, 12) over a dictionary of month totals (GetValueOrDefault).",
+    "solutionAr": "يعطي Join كل سطر منتجه؛ ثم GroupBy(category) مع Sum(Quantity × UnitPrice) يعطي الإيراد؛ وداخل كل تصنيف جمّع حسب المنتج وخذ MaxBy لمجموع الكمية. وتُملأ الشهور الناقصة بإسقاط Enumerable.Range(1, 12) على قاموس إجماليات الشهور (GetValueOrDefault).",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-debug-collection-modified",
+    "type": "Debugging",
+    "topic": "cs-collections",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Debug: “Collection was modified”",
+    "titleAr": "تصحيح: «Collection was modified»",
+    "problemEn": "Inventory.RemoveOutOfStock crashes with InvalidOperationException: Collection was modified, and Inventory.Restock changes the wrong items. Fix both bugs. Read the exception in the Output panel first.",
+    "problemAr": "تنهار Inventory.RemoveOutOfStock بالاستثناء InvalidOperationException: Collection was modified، وتعدّل Inventory.Restock العناصر الخطأ. أصلح الخطأين. اقرأ الاستثناء في لوحة المخرجات أولًا.",
+    "expectedEn": "RemoveOutOfStock removes every item with Stock 0 and returns how many it removed; Restock(threshold, amount) adds amount only to items below the threshold.",
+    "expectedAr": "تحذف RemoveOutOfStock كل عنصر مخزونه 0 وتُرجع عدد ما حذفته، وتضيف Restock(threshold, amount) الكمية amount فقط للعناصر التي مخزونها أقل من الحد.",
+    "hintsEn": [
+      "You can’t remove items from a List while a foreach is going through it. List<T>.RemoveAll does it safely.",
+      "Records are immutable; \"item with { Stock = … }\" creates a new record that must be stored back."
+    ],
+    "hintsAr": [
+      "لا يمكنك حذف عناصر من List أثناء مرور foreach عليها. الدالة List<T>.RemoveAll تفعل ذلك بأمان.",
+      "الـ Records غير قابلة للتعديل؛ فالتعبير \"item with { Stock = … }\" ينشئ Record جديدًا يجب حفظه مكان القديم."
+    ],
+    "solutionEn": "Use items.RemoveAll(i => i.Stock == 0), which returns the number removed. In Restock, a record is a value: assigning to the loop variable changes nothing in the list, so replace the element by index: items[i] = items[i] with { Stock = items[i].Stock + amount }.",
+    "solutionAr": "استخدم items.RemoveAll(i => i.Stock == 0) التي تُرجع عدد المحذوف. وفي Restock يُعامل الـ Record كقيمة: الإسناد إلى متغير الحلقة لا يغيّر شيئًا في القائمة، لذا استبدل العنصر بالفهرس: items[i] = items[i] with { Stock = items[i].Stock + amount }.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-binary-search",
+    "type": "Coding",
+    "topic": "cs-loops",
+    "difficulty": "Intermediate",
+    "minutes": 25,
+    "titleEn": "Binary search",
+    "titleAr": "البحث الثنائي",
+    "problemEn": "Implement Search.IndexOf(int[] sorted, int target) with binary search: return the index of target in the sorted array, or -1 if it isn’t there. Don’t use Array.BinarySearch or IndexOf. Also count the comparisons in Search.LastComparisons so the checks can confirm it’s O(log n).",
+    "problemAr": "نفّذ Search.IndexOf(int[] sorted, int target) بالبحث الثنائي: أرجِع فهرس target في المصفوفة المرتبة، أو -1 إن لم يوجد. لا تستخدم Array.BinarySearch أو IndexOf. وعُدّ المقارنات في Search.LastComparisons لتتأكد الفحوص أن التعقيد O(log n).",
+    "expectedEn": "IndexOf([1, 3, 5, 7, 9], 7) is 3, IndexOf([1, 3, 5], 4) is -1, and searching 1,000,000 items needs at most 21 comparisons.",
+    "expectedAr": "IndexOf([1, 3, 5, 7, 9], 7) تساوي 3، وIndexOf([1, 3, 5], 4) تساوي -1، والبحث في مليون عنصر يحتاج 21 مقارنة على الأكثر.",
+    "hintsEn": [
+      "Keep two bounds, low and high, and look at the middle element each time.",
+      "Compute the middle as low + (high - low) / 2 to avoid overflow."
+    ],
+    "hintsAr": [
+      "احتفظ بحدّين low وhigh، وانظر إلى العنصر الأوسط في كل مرة.",
+      "احسب المنتصف بـ low + (high - low) / 2 لتجنب تجاوز الحد."
+    ],
+    "solutionEn": "Each step halves the range: if the middle is the target, return it; if it’s smaller, move low past it; otherwise move high before it. The loop runs about log₂(n) times — 20 steps for a million items — compared with up to a million for a linear search.",
+    "solutionAr": "كل خطوة تقسم النطاق إلى النصف: إن كان العنصر الأوسط هو المطلوب فأرجعه، وإن كان أصغر فانقل low بعده، وإلا فانقل high قبله. تدور الحلقة نحو log₂(n) مرة — 20 خطوة لمليون عنصر — مقابل مليون خطوة في البحث الخطي.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-async-parallel",
+    "type": "Coding",
+    "topic": "cs-async-await",
+    "difficulty": "Advanced",
+    "minutes": 35,
+    "titleEn": "Async: load prices in parallel with a timeout",
+    "titleAr": "البرمجة غير المتزامنة: تحميل الأسعار بالتوازي مع مهلة",
+    "problemEn": "PriceClient.GetPriceAsync(product) simulates a 300 ms web call. Implement PriceLoader.LoadAllAsync(products): start all calls at once and await them together (not one after another), returning a Dictionary product → price. Then implement LoadWithTimeoutAsync(products, timeout): if loading takes longer than the timeout, throw TimeoutException.",
+    "problemAr": "تحاكي PriceClient.GetPriceAsync(product) طلب ويب يستغرق 300 مللي ثانية. نفّذ PriceLoader.LoadAllAsync(products): ابدأ كل الطلبات مرة واحدة وانتظرها معًا (لا واحدًا تلو الآخر)، وأرجِع Dictionary من المنتج إلى السعر. ثم نفّذ LoadWithTimeoutAsync(products, timeout): إن استغرق التحميل أكثر من المهلة فارمِ TimeoutException.",
+    "expectedEn": "Loading 3 products takes about 300 ms, not 900 ms; with a 100 ms timeout LoadWithTimeoutAsync throws TimeoutException.",
+    "expectedAr": "تحميل 3 منتجات يستغرق نحو 300 مللي ثانية لا 900، ومع مهلة 100 مللي ثانية ترمي LoadWithTimeoutAsync الاستثناء TimeoutException.",
+    "hintsEn": [
+      "Create the tasks first (products.Select(p => client.GetPriceAsync(p))), then await Task.WhenAll(tasks).",
+      "Task.WhenAny(work, Task.Delay(timeout)) tells you which finished first; or use work.WaitAsync(timeout)."
+    ],
+    "hintsAr": [
+      "أنشئ المهام أولًا (products.Select(p => client.GetPriceAsync(p)))، ثم انتظر Task.WhenAll(tasks).",
+      "Task.WhenAny(work, Task.Delay(timeout)) يخبرك أيهما انتهى أولًا، أو استخدم work.WaitAsync(timeout)."
+    ],
+    "solutionEn": "Starting every task before awaiting lets the waits overlap: total time ≈ the slowest call. Task.WhenAll gives the results in order, so zip them with the products. For the timeout, await work.WaitAsync(timeout), which throws TimeoutException when time runs out.",
+    "solutionAr": "بدء كل المهام قبل الانتظار يجعل فترات الانتظار تتداخل، فيصبح الوقت الكلي ≈ أبطأ طلب. ويُرجع Task.WhenAll النتائج بالترتيب، فاربطها بالمنتجات. وللمهلة انتظر work.WaitAsync(timeout) الذي يرمي TimeoutException عند انتهاء الوقت.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-order-states",
+    "type": "Coding",
+    "topic": "cs-pattern-matching",
+    "difficulty": "Advanced",
+    "minutes": 35,
+    "titleEn": "Order workflow with records and pattern matching",
+    "titleAr": "مسار الطلب باستخدام Records ومطابقة الأنماط",
+    "problemEn": "Orders move through states: Pending → Paid → Shipped → Delivered, and Pending or Paid can be Cancelled. Implement OrderWorkflow.Next(OrderState state, OrderAction action) with a switch expression on the tuple (state, action) that returns the new state, and throws InvalidOperationException for an action that isn’t allowed in that state. Also implement Describe(Order order) using property patterns: \"Free shipping\" for Paid orders of 500 or more, \"Express\" for Shipped orders marked IsExpress, otherwise the state name.",
+    "problemAr": "تنتقل الطلبات بين الحالات: Pending ثم Paid ثم Shipped ثم Delivered، ويمكن إلغاء الطلب Cancelled وهو Pending أو Paid. نفّذ OrderWorkflow.Next(OrderState state, OrderAction action) بتعبير switch على الثنائي (state, action) يُرجع الحالة الجديدة، ويرمي InvalidOperationException للإجراء غير المسموح في تلك الحالة. ونفّذ أيضًا Describe(Order order) بأنماط الخصائص: \"Free shipping\" للطلبات Paid بقيمة 500 أو أكثر، و\"Express\" للطلبات Shipped التي فيها IsExpress، وإلا اسم الحالة.",
+    "expectedEn": "Next(Pending, Pay) is Paid; Next(Shipped, Cancel) throws; Describe of a Paid order worth 600 is \"Free shipping\".",
+    "expectedAr": "Next(Pending, Pay) تساوي Paid، وNext(Shipped, Cancel) ترمي استثناءً، وDescribe لطلب Paid قيمته 600 تساوي \"Free shipping\".",
+    "hintsEn": [
+      "(state, action) switch { (OrderState.Pending, OrderAction.Pay) => OrderState.Paid, ... , _ => throw ... }",
+      "Property patterns look like: order switch { { State: OrderState.Paid, Total: >= 500 } => \"Free shipping\", ... }"
+    ],
+    "hintsAr": [
+      "(state, action) switch { (OrderState.Pending, OrderAction.Pay) => OrderState.Paid, ... , _ => throw ... }",
+      "أنماط الخصائص تُكتب هكذا: order switch { { State: OrderState.Paid, Total: >= 500 } => \"Free shipping\", ... }"
+    ],
+    "solutionEn": "A switch expression on a tuple lists every allowed transition in one readable table; the discard arm rejects everything else. Property patterns test several properties at once without nested ifs. Records give value equality and immutability for free.",
+    "solutionAr": "تعبير switch على Tuple يسرد كل انتقال مسموح في جدول واحد واضح، والفرع _ يرفض كل ما عداه. وتختبر أنماط الخصائص عدة خصائص معًا دون if متداخلة. وتمنحك الـ Records المساواة بالقيمة وعدم القابلية للتعديل مجانًا.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-lru-cache",
+    "type": "Challenge",
+    "topic": "cs-generics",
+    "difficulty": "Advanced",
+    "minutes": 45,
+    "titleEn": "Build an LRU cache",
+    "titleAr": "ابنِ ذاكرة مؤقتة LRU",
+    "problemEn": "Implement LruCache<TKey, TValue>(int capacity): TryGet(key, out value) and Put(key, value). When the cache is full, Put removes the least recently used entry (reading or writing an entry makes it \"recently used\"). Both operations must be O(1) — no scanning the whole cache. Capacity below 1 throws ArgumentOutOfRangeException.",
+    "problemAr": "نفّذ LruCache<TKey, TValue>(int capacity): الدالتين TryGet(key, out value) وPut(key, value). عندما تمتلئ الذاكرة المؤقتة، تحذف Put العنصر الأقدم استخدامًا (قراءة العنصر أو كتابته تجعله «مستخدمًا حديثًا»). يجب أن تكون العمليتان O(1) — دون المرور على كل العناصر. والسعة الأقل من 1 ترمي ArgumentOutOfRangeException.",
+    "expectedEn": "With capacity 2: Put(a), Put(b), TryGet(a), Put(c) evicts b (a was used more recently). Count never exceeds the capacity.",
+    "expectedAr": "بسعة 2: Put(a) ثم Put(b) ثم TryGet(a) ثم Put(c) يحذف b (لأن a استُخدم أحدث). ولا يتجاوز Count السعة أبدًا.",
+    "hintsEn": [
+      "Combine a Dictionary<TKey, LinkedListNode<…>> (fast lookup) with a LinkedList (order of use).",
+      "On every use, move the node to the front; evict from the back."
+    ],
+    "hintsAr": [
+      "اجمع بين Dictionary<TKey, LinkedListNode<…>> (للبحث السريع) وLinkedList (لترتيب الاستخدام).",
+      "عند كل استخدام انقل العقدة إلى المقدمة، واحذف من النهاية."
+    ],
+    "solutionEn": "The dictionary finds a node in O(1); LinkedList can remove and re-add a known node in O(1). Keep the most recently used at the front and evict LinkedList.Last when the count reaches the capacity. This is how real caches (and ASP.NET MemoryCache size limits) reason about eviction.",
+    "solutionAr": "يجد القاموس العقدة في O(1)، وتستطيع LinkedList حذف عقدة معروفة وإعادة إضافتها في O(1). أبقِ الأحدث استخدامًا في المقدمة واحذف LinkedList.Last عندما يصل العدد إلى السعة. هكذا تعمل الذاكرات المؤقتة الحقيقية في قرارات الحذف.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-expression-evaluator",
+    "type": "Challenge",
+    "topic": "cs-pattern-matching",
+    "difficulty": "Expert",
+    "minutes": 75,
+    "titleEn": "Expert: evaluate arithmetic expressions",
+    "titleAr": "مستوى الخبراء: تقييم التعبيرات الحسابية",
+    "problemEn": "Write Calculator.Evaluate(string expression) that computes expressions with + - * /, parentheses, unary minus and decimal numbers, respecting precedence (\"2 + 3 * 4\" is 14). Invalid input (unknown characters, unbalanced parentheses, a missing number) throws FormatException with a useful message; division by zero throws DivideByZeroException. Don’t use DataTable.Compute or any library: design the parser yourself.",
+    "problemAr": "اكتب Calculator.Evaluate(string expression) التي تحسب التعبيرات التي فيها + - * / والأقواس وإشارة السالب والأعداد العشرية مع احترام أولوية العمليات (\"2 + 3 * 4\" تساوي 14). المدخلات غير الصحيحة (حروف غير معروفة، أو أقواس غير متوازنة، أو عدد ناقص) ترمي FormatException برسالة مفيدة، والقسمة على صفر ترمي DivideByZeroException. لا تستخدم DataTable.Compute أو أي مكتبة: صمّم المحلل بنفسك.",
+    "expectedEn": "Evaluate(\"2 + 3 * 4\") is 14, Evaluate(\"(2 + 3) * 4\") is 20, Evaluate(\"-3 + 10 / 4\") is -0.5 and Evaluate(\"2 * (3\") throws FormatException.",
+    "expectedAr": "Evaluate(\"2 + 3 * 4\") تساوي 14، وEvaluate(\"(2 + 3) * 4\") تساوي 20، وEvaluate(\"-3 + 10 / 4\") تساوي -0.5، وEvaluate(\"2 * (3\") ترمي FormatException.",
+    "hintsEn": [
+      "A recursive-descent parser has one method per precedence level: Expression (+ -), Term (* /), Factor (numbers, parentheses, unary minus).",
+      "Keep a position index into the string and skip whitespace before reading each token.",
+      "After parsing the whole Expression, check that you reached the end of the input."
+    ],
+    "hintsAr": [
+      "المحلل التنازلي (Recursive descent) فيه دالة لكل مستوى أولوية: Expression للجمع والطرح، وTerm للضرب والقسمة، وFactor للأعداد والأقواس والسالب.",
+      "احتفظ بموضع حالي داخل النص وتجاوز المسافات قبل قراءة كل رمز.",
+      "بعد تحليل الـ Expression كاملًا تأكد أنك وصلت إلى نهاية النص."
+    ],
+    "solutionEn": "Grammar: Expression = Term { (+|-) Term }; Term = Factor { (*|/) Factor }; Factor = number | \"(\" Expression \")\" | \"-\" Factor. Each method consumes characters and calls the next level, so precedence and associativity come from the structure. Parse numbers with decimal.Parse(…, CultureInfo.InvariantCulture). Reject leftovers after the top-level Expression.",
+    "solutionAr": "القواعد: Expression = Term { (+|-) Term }، وTerm = Factor { (*|/) Factor }، وFactor = عدد | \"(\" Expression \")\" | \"-\" Factor. كل دالة تستهلك حروفًا وتستدعي المستوى التالي، فتأتي الأولوية والترابط من البنية نفسها. حلّل الأعداد بـ decimal.Parse(…, CultureInfo.InvariantCulture)، وارفض أي بقية بعد الـ Expression الأعلى.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-library-system",
+    "type": "MiniProject",
+    "topic": "oop-object-modeling",
+    "difficulty": "Advanced",
+    "minutes": 90,
+    "titleEn": "Mini project: a library loan system",
+    "titleAr": "مشروع صغير: نظام إعارة مكتبة",
+    "problemEn": "Model a small library in several files. Books have an ISBN, title and number of copies; members have an id, a name and a type (Student: 3 books at a time, Staff: 5). LibraryService.Borrow(memberId, isbn, today) creates a loan due in 14 days; Return(memberId, isbn, today) closes it and returns the late fee (1.50 per day late, maximum 30). Enforce the rules: no copies left, limit reached, or the member already has this book → InvalidOperationException; unknown member or book → KeyNotFoundException. AvailableCopies(isbn) reports how many copies are on the shelf.",
+    "problemAr": "صمّم مكتبة صغيرة في عدة ملفات. للكتب ISBN وعنوان وعدد نسخ، وللأعضاء رقم واسم ونوع (Student: ثلاثة كتب في وقت واحد، وStaff: خمسة). تُنشئ LibraryService.Borrow(memberId, isbn, today) إعارة تستحق بعد 14 يومًا، وتُغلق Return(memberId, isbn, today) الإعارة وتُرجع غرامة التأخير (1.50 لكل يوم تأخير، وبحد أقصى 30). طبّق القواعد: لا نسخ متاحة، أو الوصول للحد، أو أن العضو استعار هذا الكتاب بالفعل → InvalidOperationException؛ وعضو أو كتاب غير معروف → KeyNotFoundException. وتُرجع AvailableCopies(isbn) عدد النسخ الموجودة على الرف.",
+    "expectedEn": "A student can borrow 3 different books but not a 4th; returning 5 days late costs 7.50; a book with 1 copy can’t be borrowed twice at the same time.",
+    "expectedAr": "يستطيع الطالب استعارة 3 كتب مختلفة لا رابعًا، والإرجاع متأخرًا 5 أيام يكلّف 7.50، والكتاب ذو النسخة الواحدة لا يُعار مرتين في الوقت نفسه.",
+    "hintsEn": [
+      "Put each concept in its own file: Book, Member, Loan, LibraryService.",
+      "A Loan knows its DueDate; the fee is a calculation on (returnDate - DueDate).Days.",
+      "Keep rules in the service (or in the entities), not in Program.cs."
+    ],
+    "hintsAr": [
+      "ضع كل مفهوم في ملفه: Book وMember وLoan وLibraryService.",
+      "تعرف الـ Loan تاريخ استحقاقها DueDate، والغرامة حساب على (returnDate - DueDate).Days.",
+      "ضع القواعد في الخدمة (أو في الكيانات) وليس في Program.cs."
+    ],
+    "solutionEn": "Model the nouns as classes and the rules as methods that validate before changing state. The service looks up the member and the book (KeyNotFoundException if missing), checks availability, the member’s limit and duplicates, then records a Loan. Return finds the open loan, closes it and computes Math.Min(30, lateDays × 1.50m).",
+    "solutionAr": "مثّل الأسماء بأصناف والقواعد بدوال تتحقق قبل تغيير الحالة. تبحث الخدمة عن العضو والكتاب (KeyNotFoundException إن لم يوجدا)، وتتحقق من التوفر وحد العضو والتكرار، ثم تسجّل Loan. وتجد Return الإعارة المفتوحة وتغلقها وتحسب Math.Min(30, lateDays × 1.50m).",
+    "runner": "CSharp"
+  },
+  {
+    "key": "cs-lab-rate-limiter",
+    "type": "Challenge",
+    "topic": "oop-solid",
+    "difficulty": "Expert",
+    "minutes": 60,
+    "titleEn": "Expert: a testable token-bucket rate limiter",
+    "titleAr": "مستوى الخبراء: محدِّد معدّل بنظام Token bucket قابل للاختبار",
+    "problemEn": "APIs limit how often a client can call them. Implement TokenBucket(capacity, refillPerSecond, IClock clock): TryTake() returns true and uses a token if one is available, false otherwise. Tokens refill continuously over time (fractional refills count) up to the capacity. The clock is injected so the checks can control time — never call DateTime.Now inside TokenBucket. Then write RateLimiter, which keeps one bucket per client key.",
+    "problemAr": "تحدّ الواجهات البرمجية عدد المرات التي يستدعيها فيها العميل. نفّذ TokenBucket(capacity, refillPerSecond, IClock clock): تُرجع TryTake() القيمة true وتستهلك رمزًا إن وُجد، وإلا تُرجع false. تتجدد الرموز باستمرار مع الوقت (والأجزاء تُحتسب) حتى السعة. تُحقن الساعة حتى تتحكم الفحوص في الوقت — لا تستدعِ DateTime.Now داخل TokenBucket أبدًا. ثم اكتب RateLimiter الذي يحتفظ بـ Bucket لكل عميل.",
+    "expectedEn": "A bucket with capacity 3 and 1 token/second allows 3 calls immediately, refuses the 4th, and allows another after 1 second; after an hour it still holds at most 3 tokens. Two clients don’t share tokens.",
+    "expectedAr": "الـ Bucket بسعة 3 ومعدل رمز واحد في الثانية يسمح بـ 3 استدعاءات فورًا ويرفض الرابع، ثم يسمح بآخر بعد ثانية واحدة؛ وبعد ساعة يبقى فيه 3 رموز على الأكثر. ولا يتشارك عميلان الرموز.",
+    "hintsEn": [
+      "Store the token count as a double and the time of the last refill.",
+      "Before each TryTake, add (now - lastRefill).TotalSeconds × refillPerSecond, capped at capacity.",
+      "Depending on IClock instead of DateTime.Now is dependency inversion: it makes time testable."
+    ],
+    "hintsAr": [
+      "احفظ عدد الرموز كـ double ووقت آخر تجديد.",
+      "قبل كل TryTake أضف (now - lastRefill).TotalSeconds × refillPerSecond بحد أقصى السعة.",
+      "الاعتماد على IClock بدلًا من DateTime.Now هو مبدأ عكس الاعتماديات (Dependency inversion)، ويجعل الوقت قابلًا للاختبار."
+    ],
+    "solutionEn": "Refill lazily: compute elapsed time since the last refill on each call, add tokens, cap at capacity, then take one if ≥ 1. Injecting IClock follows the dependency inversion principle and makes the behaviour deterministic in tests. RateLimiter keeps a Dictionary<string, TokenBucket> created on first use.",
+    "solutionAr": "جدّد الرموز عند الحاجة فقط: احسب الوقت المنقضي منذ آخر تجديد في كل استدعاء، وأضف الرموز بحد أقصى السعة، ثم استهلك رمزًا إن كان العدد ≥ 1. حقن IClock يطبّق مبدأ Dependency inversion ويجعل السلوك محددًا في الاختبارات. ويحتفظ RateLimiter بـ Dictionary<string, TokenBucket> يُنشأ فيه الـ Bucket عند أول استخدام.",
+    "runner": "CSharp"
+  }
+]

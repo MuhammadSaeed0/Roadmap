@@ -1,0 +1,215 @@
+<div class="ide-toolbar" role="toolbar" [attr.aria-label]="'ide.toolbar' | t">
+  <button type="button" class="icon-btn ide-explorer-toggle" (click)="explorerOpen.set(!explorerOpen())"
+          [attr.aria-expanded]="explorerOpen()" [attr.aria-controls]="'ide-sidebar-' + id" [title]="'ide.explorer' | t" [attr.aria-label]="'ide.explorer' | t">
+    <app-icon name="folder" [size]="16" />
+  </button>
+  @if (!runnable()) {
+    <span class="chip chip-sm chip-ghost" [title]="'ide.notRunnableHint' | t"><app-icon name="info" [size]="13" /> {{ 'ide.notRunnable' | t }}</span>
+  } @else if (running()) {
+    <button type="button" class="btn btn-sm btn-danger" (click)="stop()"><app-icon name="stop" [size]="14" /> {{ 'ide.stop' | t }}</button>
+  } @else {
+    <button type="button" class="btn btn-sm btn-primary" (click)="run()" [disabled]="editorState() !== 'ready'" [title]="'ide.runShortcut' | t">
+      <app-icon name="play" [size]="14" /> {{ (hasPreview() ? 'ide.preview' : 'ide.run') | t }}
+    </button>
+  }
+  @if (hasTests()) {
+    <button type="button" class="btn btn-sm btn-secondary" (click)="runTests()" [disabled]="running() || editorState() !== 'ready'" [title]="'ide.testsShortcut' | t">
+      <app-icon name="flask" [size]="14" /> {{ 'ide.runTests' | t }}
+    </button>
+  }
+  <span class="ide-status small muted" aria-live="polite">
+    @switch (engineStatus()) {
+      @case ('loading') { <app-icon name="refresh" class="spin" [size]="13" /> {{ ('ide.engineLoading.' + kind()) | t }} }
+      @case ('running') { <app-icon name="refresh" class="spin" [size]="13" /> {{ 'ide.running' | t }} }
+      @case ('failed') { <span class="text-danger">{{ 'ide.engineFailed' | t }}</span> }
+      @default {
+        @if (lastRun(); as r) { {{ (r.ok ? 'ide.lastRunOk' : 'ide.lastRunFailed') | t: { ms: r.ms } }} }
+      }
+    }
+  </span>
+  <span class="grow"></span>
+  @if (saveLabel()) { <span class="ide-save small muted" aria-live="polite">{{ saveLabel() }}</span> }
+  @if (canFormat()) {
+    <button type="button" class="icon-btn" (click)="format()" [title]="'ide.format' | t" [attr.aria-label]="'ide.format' | t"><app-icon name="format" [size]="16" /></button>
+  }
+  <button type="button" class="icon-btn" (click)="download()" [title]="'ide.download' | t" [attr.aria-label]="'ide.download' | t"><app-icon name="download" [size]="16" /></button>
+  @if (!readonly()) {
+    <button type="button" class="icon-btn" (click)="chooseImport()" [title]="'ide.import' | t" [attr.aria-label]="'ide.import' | t"><app-icon name="upload" [size]="16" /></button>
+  }
+  <button type="button" class="icon-btn" (click)="toggleFullscreen()" [title]="(fullscreen() ? 'ide.exitFullscreen' : 'ide.fullscreen') | t"
+          [attr.aria-label]="(fullscreen() ? 'ide.exitFullscreen' : 'ide.fullscreen') | t" [attr.aria-pressed]="fullscreen()">
+    <app-icon [name]="fullscreen() ? 'minimize' : 'maximize'" [size]="16" />
+  </button>
+  <input #importInput type="file" hidden accept=".zip,.cs,.sql,.ts,.js,.html,.css,.scss,.json,.md,.txt" (change)="importFiles($event)">
+</div>
+
+<div class="ide-body">
+  <aside class="ide-sidebar" [id]="'ide-sidebar-' + id" [class.open]="explorerOpen()" [attr.aria-label]="'ide.explorer' | t">
+    @if (kind() === 'Sql') {
+      <div class="segmented ide-sidebar-tabs" role="tablist">
+        <button type="button" role="tab" [class.active]="sidebar() === 'files'" [attr.aria-selected]="sidebar() === 'files'" (click)="sidebar.set('files')">{{ 'ide.files' | t }}</button>
+        <button type="button" role="tab" [class.active]="sidebar() === 'database'" [attr.aria-selected]="sidebar() === 'database'" (click)="sidebar.set('database')">{{ 'ide.database' | t }}</button>
+      </div>
+    }
+    @if (sidebar() === 'files' || kind() !== 'Sql') {
+      <div class="ide-sidebar-head">
+        <span class="small muted">{{ 'ide.files' | t }}</span>
+        @if (!readonly()) {
+          <button type="button" class="icon-btn" (click)="startNaming('newFile', '')" [title]="'ide.newFile' | t" [attr.aria-label]="'ide.newFile' | t"><app-icon name="file-plus" [size]="15" /></button>
+          <button type="button" class="icon-btn" (click)="startNaming('newFolder', '')" [title]="'ide.newFolder' | t" [attr.aria-label]="'ide.newFolder' | t"><app-icon name="folder-plus" [size]="15" /></button>
+        }
+      </div>
+      @if (naming(); as n) {
+        <form class="ide-naming" (ngSubmit)="commitName()">
+          <label class="small" [for]="'ide-name-' + id">
+            {{ ('ide.naming.' + n.action) | t }}@if (n.parent) { <span class="muted"> · {{ n.parent }}/</span> }
+          </label>
+          <input class="input ide-name-input" [id]="'ide-name-' + id" name="name" [ngModel]="nameDraft()" (ngModelChange)="nameDraft.set($event); nameError.set(null)"
+                 (keydown.escape)="cancelNaming()" autocomplete="off" spellcheck="false" dir="ltr"
+                 [attr.aria-invalid]="!!nameError()" [attr.aria-describedby]="nameError() ? 'ide-name-error-' + id : null">
+          @if (nameError(); as err) { <p class="field-error small" [id]="'ide-name-error-' + id">{{ err | t }}</p> }
+          <div class="row-gap">
+            <button type="submit" class="btn btn-primary btn-xs">{{ 'common.save' | t }}</button>
+            <button type="button" class="btn btn-ghost btn-xs" (click)="cancelNaming()">{{ 'common.cancel' | t }}</button>
+          </div>
+        </form>
+      }
+      <div class="ide-tree-wrap">
+        <app-file-tree [nodes]="tree()" [active]="active()" [expanded]="expanded()" [readonly]="readonly()" (act)="onTree($event)" />
+      </div>
+    } @else {
+      <div class="ide-sidebar-head">
+        <span class="small muted">{{ 'ide.tables' | t }}</span>
+        <button type="button" class="icon-btn" (click)="resetDatabase()" [title]="'ide.resetDatabase' | t" [attr.aria-label]="'ide.resetDatabase' | t"><app-icon name="refresh" [size]="15" /></button>
+      </div>
+      <div class="ide-schema">
+        @for (table of schema(); track table.name) {
+          <details open>
+            <summary><button type="button" class="link-btn" (click)="insertTable(table.name)" [title]="'ide.insertName' | t"><app-icon name="database" [size]="13" /> {{ table.name }}</button> <span class="muted small">({{ table.rowCount }})</span></summary>
+            <ul>
+              @for (col of table.columns; track col.name) {
+                <li><button type="button" class="link-btn" (click)="insertTable(col.name)">{{ col.name }}</button>
+                  <span class="muted small">{{ col.type }}@if (col.primaryKey) { · PK }@if (col.notNull && !col.primaryKey) { · NOT NULL }</span></li>
+              }
+              @for (fk of table.foreignKeys; track fk.column) { <li class="muted small">FK {{ fk.column }} → {{ fk.references }}</li> }
+            </ul>
+          </details>
+        } @empty {
+          <p class="small muted">{{ 'ide.noTables' | t }}</p>
+        }
+      </div>
+      <p class="small muted ide-engine-note">{{ 'ide.sqlEngineNote' | t }}</p>
+    }
+  </aside>
+  <div class="ide-splitter ide-splitter-v" role="separator" tabindex="0" aria-orientation="vertical" [attr.aria-label]="'ide.resizeExplorer' | t"
+       (pointerdown)="startResize($event, 'explorer')" (keydown)="resizeWithKeys($event, 'explorer')"></div>
+
+  <div class="ide-main">
+    <div class="ide-tabs" role="tablist" [attr.aria-label]="'ide.openFiles' | t">
+      @for (path of tabs(); track path) {
+        <div class="ide-tab" [class.active]="path === active()">
+          <button type="button" role="tab" [attr.aria-selected]="path === active()" (click)="open(path)" [title]="path">{{ tabName(path) }}</button>
+          <button type="button" class="icon-btn" (click)="closeTab(path, $event)" [attr.aria-label]="'ide.closeFile' | t: { name: path }"><app-icon name="x" [size]="12" /></button>
+        </div>
+      }
+    </div>
+    <div class="ide-editor" #editorHost dir="ltr">
+      @if (editorState() === 'loading') { <p class="ide-editor-msg muted"><app-icon name="refresh" class="spin" [size]="16" /> {{ 'ide.loadingEditor' | t }}</p> }
+      @if (editorState() === 'failed') { <p class="ide-editor-msg text-danger">{{ 'ide.editorFailed' | t }}</p> }
+      @if (editorState() === 'ready' && !active()) { <p class="ide-editor-msg muted">{{ 'ide.noFileOpen' | t }}</p> }
+    </div>
+
+    <div class="ide-splitter ide-splitter-h" role="separator" tabindex="0" aria-orientation="horizontal" [attr.aria-label]="'ide.resizePanel' | t"
+         (pointerdown)="startResize($event, 'panel')" (keydown)="resizeWithKeys($event, 'panel')"></div>
+    <section class="ide-panel" [attr.aria-label]="'ide.panel' | t">
+      <div class="ide-panel-tabs" role="tablist">
+        <button type="button" role="tab" [attr.aria-selected]="panel() === 'output'" (click)="panel.set('output')"><app-icon name="terminal" [size]="13" /> {{ 'ide.output' | t }}</button>
+        <button type="button" role="tab" [attr.aria-selected]="panel() === 'problems'" (click)="panel.set('problems')">
+          {{ 'ide.problems' | t }}@if (problems().length) { <span class="badge" [class.badge-danger]="errorCount() > 0">{{ problems().length }}</span> }
+        </button>
+        @if (kind() === 'Sql') {
+          <button type="button" role="tab" [attr.aria-selected]="panel() === 'results'" (click)="panel.set('results')">{{ 'ide.results' | t }}</button>
+        }
+        @if (hasTests()) {
+          <button type="button" role="tab" [attr.aria-selected]="panel() === 'tests'" (click)="panel.set('tests')">
+            {{ 'ide.tests' | t }}@if (testSummary(); as s) { <span class="badge" [class.badge-success]="s.passed === s.total" [class.badge-danger]="s.passed < s.total">{{ s.passed }}/{{ s.total }}</span> }
+          </button>
+        }
+        @if (kind() === 'CSharp') {
+          <button type="button" role="tab" [attr.aria-selected]="panel() === 'input'" (click)="panel.set('input')">{{ 'ide.input' | t }}</button>
+        }
+        <span class="grow"></span>
+        @if (panel() === 'output') {
+          <button type="button" class="icon-btn" (click)="clearConsole()" [title]="'common.clear' | t" [attr.aria-label]="'ide.clearOutput' | t"><app-icon name="trash" [size]="13" /></button>
+        }
+      </div>
+      <div class="ide-panel-body" role="tabpanel" tabindex="0">
+        @switch (panel()) {
+          @case ('output') {
+            @if (kind() === 'Sql' && sqlConversions().length) {
+              <details class="ide-notes">
+                <summary class="small">{{ 'ide.sqlConverted' | t: { n: sqlConversions().length } }}</summary>
+                <ul class="small">@for (c of sqlConversions(); track $index) { <li><strong>{{ ('ide.sqlNotes.' + c.code) | t }}</strong> <code dir="ltr">{{ c.detail }}</code></li> }</ul>
+              </details>
+            }
+            @if (sqlHint(); as hint) { <p class="callout small"><app-icon name="bulb" [size]="14" /> {{ ('ide.sqlHints.' + hint) | t }}</p> }
+            <pre class="ide-console" dir="ltr">@for (line of consoleLines(); track $index) {<span [class]="'ide-line ide-line-' + line.level">{{ line.text }}
+</span>}</pre>
+            @if (!consoleLines().length) { <p class="small muted">{{ (hasPreview() ? 'ide.previewHint' : 'ide.outputHint') | t }}</p> }
+          }
+          @case ('problems') {
+            @if (problems().length) {
+              <ul class="ide-problems">
+                @for (p of problems(); track $index) {
+                  <li><button type="button" class="link-btn" (click)="goTo(p)">
+                    <app-icon [name]="p.severity === 'error' ? 'alert' : 'info'" [size]="13" [class.text-danger]="p.severity === 'error'" />
+                    <code dir="ltr">{{ p.file }}:{{ p.line }}:{{ p.column }}</code> <span dir="ltr">{{ p.message }}</span>
+                  </button></li>
+                }
+              </ul>
+            } @else { <p class="small muted">{{ 'ide.noProblems' | t }}</p> }
+          }
+          @case ('results') {
+            @if (sqlResult()?.results?.length) { <app-sql-results [results]="sqlResult()!.results" /> }
+            @else { <p class="small muted">{{ 'ide.noResults' | t }}</p> }
+          }
+          @case ('tests') {
+            @if (testResults(); as results) {
+              @if (testSummary(); as s) {
+                <p class="ide-test-summary" [class.text-success]="s.passed === s.total && s.total > 0">
+                  {{ 'ide.testsPassed' | t: { passed: s.passed, total: s.total } }}
+                </p>
+              }
+              <ul class="ide-tests">
+                @for (t of results; track $index) {
+                  <li [class.passed]="t.passed">
+                    <app-icon [name]="t.passed ? 'check-circle' : 'x'" [size]="14" />
+                    <span>{{ t.name }}</span>
+                    @if (t.message) { <code class="ide-test-msg" dir="ltr">{{ t.message }}</code> }
+                  </li>
+                } @empty { <li class="muted">{{ 'ide.noTestResults' | t }}</li> }
+              </ul>
+            } @else { <p class="small muted">{{ 'ide.testsHint' | t }}</p> }
+          }
+          @case ('input') {
+            <label class="small" [for]="'ide-stdin-' + id">{{ 'ide.inputLabel' | t }}</label>
+            <textarea class="input ide-stdin" [id]="'ide-stdin-' + id" rows="4" dir="ltr" [ngModel]="stdin()" (ngModelChange)="stdin.set($event)" spellcheck="false"></textarea>
+          }
+        }
+      </div>
+    </section>
+  </div>
+
+  @if (hasPreview()) {
+    <div class="ide-splitter ide-splitter-v" role="separator" tabindex="0" aria-orientation="vertical" [attr.aria-label]="'ide.resizePreview' | t"
+         (pointerdown)="startResize($event, 'preview')" (keydown)="resizeWithKeys($event, 'preview')"></div>
+    <section class="ide-preview" [attr.aria-label]="'ide.previewPane' | t">
+      <div class="ide-preview-head">
+        <span class="small muted">{{ 'ide.previewPane' | t }}</span>
+        <button type="button" class="icon-btn" (click)="run()" [title]="'ide.refreshPreview' | t" [attr.aria-label]="'ide.refreshPreview' | t"><app-icon name="refresh" [size]="14" /></button>
+      </div>
+      <iframe #previewFrame class="ide-preview-frame" sandbox="allow-scripts allow-modals allow-forms" [title]="'ide.previewPane' | t"></iframe>
+      @if (!lastRun()) { <p class="ide-preview-empty small muted">{{ 'ide.previewEmpty' | t }}</p> }
+    </section>
+  }
+</div>

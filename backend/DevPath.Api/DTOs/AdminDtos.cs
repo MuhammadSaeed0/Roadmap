@@ -24,3 +24,5 @@ public record AdminOverviewDto(AdminStatsDto Stats, IReadOnlyList<AdminUserDto> 
 public record AdminStatusRequest([MaxLength(500)] string? Reason);
 
 public record PromoteAdminRequest([Required, EmailAddress, MaxLength(254)] string? Email);
+
+public record AdminRenameRequest([Required, MaxLength(100)] string? FullName);

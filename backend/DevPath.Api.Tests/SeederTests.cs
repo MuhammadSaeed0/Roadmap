@@ -39,13 +39,22 @@ public class SeederTests : IAsyncLifetime
         Assert.Equal(150, await _db.Topics.CountAsync());
         Assert.Equal(4, await _db.Projects.CountAsync());
         Assert.True(await _db.Resources.CountAsync() > 100);
-        Assert.True(await _db.PracticeExercises.CountAsync() >= 30);
+        Assert.True(await _db.PracticeExercises.CountAsync() >= 140);
+        // Every technology of the roadmap has exercises, and the full-stack challenges are complete.
+        var skills = await _db.PracticeExercises.Select(e => e.Topic!.Skill).Distinct().ToListAsync();
+        Assert.All(Enum.GetValues<SkillArea>().Where(s => s != SkillArea.Professional), s => Assert.Contains(s, skills));
+        Assert.True(await _db.PracticeExercises.CountAsync(e => e.Type == ExerciseType.FullStack) >= 10);
         Assert.True(await _db.InterviewQuestions.CountAsync() >= 50);
         // Every topic has bilingual content and a code sample.
         Assert.False(await _db.Topics.AnyAsync(t => t.TitleAr == "" || t.SummaryAr == "" || t.CodeSample == null));
-        // Every topic has at least two curated videos with valid YouTube ids.
-        var videosPerTopic = await _db.Topics.Select(t => _db.CuratedVideos.Count(v => v.TopicId == t.Id)).ToListAsync();
-        Assert.All(videosPerTopic, n => Assert.InRange(n, 2, 4));
+        // Every topic has 2–4 curated English videos and at most two Arabic ones, all with valid YouTube ids.
+        var videosPerTopic = await _db.Topics.Select(t => new
+        {
+            English = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.English),
+            Arabic = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.Arabic),
+        }).ToListAsync();
+        Assert.All(videosPerTopic, n => { Assert.InRange(n.English, 2, 4); Assert.InRange(n.Arabic, 0, 2); });
+        Assert.True(videosPerTopic.Count(n => n.Arabic > 0) >= videosPerTopic.Count / 2, "at least half of the topics should have an Arabic video");
         Assert.All(await _db.CuratedVideos.Select(v => v.VideoId).ToListAsync(), id => Assert.True(DevPath.Api.Services.YouTubeIds.IsValid(id)));
         // Every project task has videos, and every topic has a quiz with a valid answer for each question.
         Assert.False(await _db.ProjectTasks.AnyAsync(t => !_db.ProjectTaskVideos.Any(v => v.ProjectTaskId == t.Id)));

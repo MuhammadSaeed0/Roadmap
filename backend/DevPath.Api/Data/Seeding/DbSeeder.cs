@@ -26,6 +26,7 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
     };
 
     private SnippetStore _snippets = null!;
+    private PracticeFileStore _practiceFiles = null!;
 
     public static string DefaultSeedDirectory => Path.Combine(AppContext.BaseDirectory, "SeedData");
 
@@ -35,6 +36,7 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
         var content = SeedContent.Load(dir, JsonOptions);
         content.Validate();
         _snippets = new SnippetStore(Path.Combine(dir, "snippets"));
+        _practiceFiles = new PracticeFileStore(Path.Combine(dir, "practice-files"));
 
         // With connection resiliency (EnableRetryOnFailure) an explicit transaction must run
         // inside the execution strategy, so the whole unit can be retried as one.
@@ -292,6 +294,20 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
             e.SolutionEn = s.SolutionEn;
             e.SolutionAr = s.SolutionAr;
             e.SolutionCode = _snippets.Get("practice", s.Key + ".solution").Code;
+            e.Runner = s.Runner;
+            e.StarterFiles = _practiceFiles.Files(s.Key, "starter");
+            e.SolutionFiles = _practiceFiles.Files(s.Key, "solution");
+            e.Tests = _practiceFiles.Tests(s.Key);
+            e.Dataset = s.Dataset;
+            e.Technologies = s.Technologies is { Count: > 0 } ? string.Join(',', s.Technologies) : null;
+            e.ScenarioEn = s.ScenarioEn ?? "";
+            e.ScenarioAr = s.ScenarioAr ?? "";
+            e.RequirementsEn = string.Join('\n', s.RequirementsEn ?? []);
+            e.RequirementsAr = string.Join('\n', s.RequirementsAr ?? []);
+            e.AcceptanceEn = string.Join('\n', s.AcceptanceEn ?? []);
+            e.AcceptanceAr = string.Join('\n', s.AcceptanceAr ?? []);
+            e.BonusEn = string.Join('\n', s.BonusEn ?? []);
+            e.BonusAr = string.Join('\n', s.BonusAr ?? []);
         }
         await db.SaveChangesAsync(ct);
     }
@@ -315,6 +331,9 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
                 }
                 v.Title = s.Title;
                 v.ChannelTitle = s.Channel;
+                v.Language = s.ParsedLanguage;
+                v.DurationSeconds = s.DurationSeconds;
+                v.Description = s.Description ?? "";
                 v.Order = ++order;
             }
         }
@@ -451,6 +470,9 @@ public class SeedContent
         };
     }
 
+    /// <summary>The sample databases of the SQL runner (frontend/src/app/core/runners/sql-datasets.ts).</summary>
+    public static readonly string[] SqlDatasets = ["shop", "hr", "school"];
+
     /// <summary>Fails fast with a clear message if a seed file references something that doesn't exist.</summary>
     public void Validate()
     {
@@ -495,12 +517,32 @@ public class SeedContent
             foreach (var t in p.Milestones.SelectMany(m => m.Tasks))
                 foreach (var s in t.Topics) Ref(s, $"Task '{t.Key}'");
         }
-        foreach (var e in Exercises) Ref(e.Topic, $"Exercise '{e.Key}'");
+        foreach (var e in Exercises)
+        {
+            Ref(e.Topic, $"Exercise '{e.Key}'");
+            void SameLength(List<string>? en, List<string>? ar, string what)
+            {
+                if ((en?.Count ?? 0) != (ar?.Count ?? 0)) errors.Add($"Exercise '{e.Key}' has a different number of English and Arabic {what}");
+            }
+            SameLength(e.HintsEn, e.HintsAr, "hints");
+            SameLength(e.RequirementsEn, e.RequirementsAr, "requirements");
+            SameLength(e.AcceptanceEn, e.AcceptanceAr, "acceptance criteria");
+            SameLength(e.BonusEn, e.BonusAr, "bonus items");
+            if (e.Runner == ExerciseRunner.Sql && !SqlDatasets.Contains(e.Dataset ?? ""))
+                errors.Add($"SQL exercise '{e.Key}' needs a dataset: {string.Join(", ", SqlDatasets)}");
+            if (e.Type == ExerciseType.FullStack && (e.Technologies is not { Count: >= 2 } || e.AcceptanceEn is not { Count: > 0 }))
+                errors.Add($"Full-stack challenge '{e.Key}' needs at least two technologies and acceptance criteria");
+        }
         foreach (var q in Interviews) Ref(q.Topic, $"Interview question '{q.Key}'");
         foreach (var (slug, videos) in Videos)
         {
             Ref(slug, "videos.json");
             Unique(videos.Select(v => v.VideoId), $"video in videos.json for '{slug}'");
+            foreach (var v in videos)
+            {
+                try { _ = v.ParsedLanguage; _ = v.DurationSeconds; }
+                catch (Exception ex) when (ex is InvalidDataException or FormatException) { errors.Add($"videos.json entry '{v.VideoId}' for '{slug}': {ex.Message}"); }
+            }
             foreach (var v in videos.Where(v => !Services.YouTubeIds.IsValid(v.VideoId) || string.IsNullOrWhiteSpace(v.Title)))
                 errors.Add($"videos.json entry for '{slug}' has an invalid video id or an empty title ('{v.VideoId}')");
         }

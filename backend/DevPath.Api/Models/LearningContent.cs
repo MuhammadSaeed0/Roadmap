@@ -132,6 +132,28 @@ public class PracticeExercise
     public string SolutionAr { get; set; } = "";
     public string? SolutionCode { get; set; }
 
+    /// <summary>The in-browser runner for this exercise's code (None: no runner).</summary>
+    public ExerciseRunner Runner { get; set; }
+    /// <summary>JSON array of { path, content }: the files the learner starts from. Null: <see cref="Code"/> is the only file.</summary>
+    public string? StarterFiles { get; set; }
+    /// <summary>JSON array of { path, content }: the model solution, sent only once it is revealed.</summary>
+    public string? SolutionFiles { get; set; }
+    /// <summary>Automatic checks: C# or JavaScript test code, or a JSON spec of expected SQL results.</summary>
+    public string? Tests { get; set; }
+    /// <summary>SQL exercises: the sample database they run against (shop, hr, school).</summary>
+    public string? Dataset { get; set; }
+    /// <summary>Integrated challenges: the skills they combine, comma separated (e.g. "AspNetCore,Angular,SqlServer").</summary>
+    public string? Technologies { get; set; }
+    public string ScenarioEn { get; set; } = "";
+    public string ScenarioAr { get; set; } = "";
+    /// <summary>Line-separated lists.</summary>
+    public string RequirementsEn { get; set; } = "";
+    public string RequirementsAr { get; set; } = "";
+    public string AcceptanceEn { get; set; } = "";
+    public string AcceptanceAr { get; set; } = "";
+    public string BonusEn { get; set; } = "";
+    public string BonusAr { get; set; } = "";
+
     /// <summary>Per-user rows, filtered to the signed-in user (at most one).</summary>
     public List<PracticeProgress> ProgressRows { get; set; } = [];
 }

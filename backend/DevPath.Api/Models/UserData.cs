@@ -114,6 +114,34 @@ public class PracticeProgress : IUserOwned
     public bool SolutionRevealed { get; set; }
     public DateTime? CompletedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+
+    /// <summary>JSON array of { path, content }: the learner's latest code, saved as they type.</summary>
+    public string? SavedFiles { get; set; }
+    /// <summary>How many times the learner submitted the code to the automatic checks.</summary>
+    public int Submissions { get; set; }
+    /// <summary>Percentage of checks passed, as reported by the learner's browser (it runs the checks).</summary>
+    public int? LastScore { get; set; }
+    public int? BestScore { get; set; }
+    public DateTime? LastSubmittedAt { get; set; }
+    /// <summary>Acceptance criteria the learner ticked off, as comma-separated indexes.</summary>
+    public string? CheckedCriteria { get; set; }
+}
+
+/// <summary>A saved Code Playground workspace: a set of files of one kind (C#, SQL, Angular ...).</summary>
+public class PlaygroundProject : IUserOwned
+{
+    public int Id { get; set; }
+    public string UserId { get; set; } = "";
+    public required string Name { get; set; }
+    public WorkspaceKind Kind { get; set; }
+    /// <summary>The template it started from, for "reset".</summary>
+    public string? Template { get; set; }
+    /// <summary>JSON array of { path, content }.</summary>
+    public required string Files { get; set; }
+    public int FileCount { get; set; }
+    public int SizeBytes { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }
 
 public class InterviewProgress : IUserOwned

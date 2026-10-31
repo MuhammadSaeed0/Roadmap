@@ -33,7 +33,7 @@ public class AnalyticsService(
             .ToList();
 
         var projectSummaries = await projects.GetSummariesAsync(ct);
-        var practiceStats = (await practice.ListAsync(null, null, null, ct)).Stats;
+        var practiceStats = (await practice.ListAsync(new PracticeFilter(), ct)).Stats;
 
         var interviewRatings = await db.InterviewQuestions.AsNoTracking()
             .Select(q => q.ProgressRows.Select(p => (InterviewRating?)p.Rating).FirstOrDefault())

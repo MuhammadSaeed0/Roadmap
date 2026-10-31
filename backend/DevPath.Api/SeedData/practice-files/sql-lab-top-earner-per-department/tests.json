@@ -1,0 +1,48 @@
+{
+  "checks": [
+    {
+      "nameEn": "Your query returns the expected rows in the right order",
+      "nameAr": "يُرجع استعلامك الصفوف المتوقعة بالترتيب الصحيح",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "Department",
+          "Employee",
+          "Salary"
+        ],
+        "rows": [
+          [
+            "Engineering",
+            "Ahmed Mansour",
+            52000
+          ],
+          [
+            "Finance",
+            "Tarek Helmy",
+            45000
+          ],
+          [
+            "Marketing",
+            "Ola Wagdy",
+            39000
+          ],
+          [
+            "Research",
+            "Farida Anwar",
+            50000
+          ],
+          [
+            "Sales",
+            "Hassan Gamal",
+            48000
+          ],
+          [
+            "Support",
+            "Wael Fawzy",
+            30000
+          ]
+        ]
+      }
+    }
+  ]
+}

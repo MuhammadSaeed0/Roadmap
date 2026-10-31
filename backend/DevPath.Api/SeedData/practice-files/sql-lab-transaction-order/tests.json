@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "nameEn": "A pending order for customer 3",
+      "nameAr": "طلب بحالة Pending للعميل 3",
+      "sql": "SELECT CustomerId, OrderDate, Status FROM Orders WHERE Id = (SELECT MAX(Id) FROM Orders)",
+      "expected": {
+        "columns": [
+          "CustomerId",
+          "OrderDate",
+          "Status"
+        ],
+        "rows": [
+          [
+            3,
+            "2025-10-10",
+            "Pending"
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "Its line: 2 headsets at the current price",
+      "nameAr": "سطره: قطعتا Headset بالسعر الحالي",
+      "sql": "SELECT p.Name, l.Quantity, l.UnitPrice FROM OrderLines l JOIN Products p ON p.Id = l.ProductId WHERE l.OrderId = (SELECT MAX(Id) FROM Orders)",
+      "expected": {
+        "columns": [
+          "Name",
+          "Quantity",
+          "UnitPrice"
+        ],
+        "rows": [
+          [
+            "Headset",
+            2,
+            79
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "The stock went down by 2",
+      "nameAr": "نقص المخزون بمقدار 2",
+      "sql": "SELECT Stock FROM Products WHERE Name = 'Headset'",
+      "expected": {
+        "columns": [
+          "Stock"
+        ],
+        "rows": [
+          [
+            16
+          ]
+        ]
+      }
+    }
+  ]
+}

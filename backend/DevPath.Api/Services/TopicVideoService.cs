@@ -51,18 +51,18 @@ public class TopicVideoService(
             ?? throw new NotFoundException("Topic", topicId);
         var query = SearchQuery(topic.TitleEn, topic.Skill);
         var (status, suggestions) = await SuggestionsAsync(topic.Id, topic.TitleEn, topic.Skill, query, ct);
-        if (suggestions.Count == 0)
-        {
-            // No live results (no API key, quota reached, YouTube unreachable or nothing relevant):
-            // the curated, pre-verified videos for this topic stand in, so the topic is never empty.
-            var curated = await db.CuratedVideos.AsNoTracking().Where(v => v.TopicId == topicId).OrderBy(v => v.Order)
-                .Select(v => new CachedVideo(v.VideoId, v.Title, v.ChannelTitle, null, null)).ToListAsync(ct);
-            if (curated.Count > 0) (status, suggestions) = ("ok", curated);
-        }
+        // The hand-picked, pre-verified Arabic and English videos always come first; live suggestions
+        // (only with a YouTube API key) follow. Without live results the curated list keeps the topic full.
+        var curated = await db.CuratedVideos.AsNoTracking().Where(v => v.TopicId == topicId)
+            .OrderBy(v => v.Language).ThenBy(v => v.Order).ToListAsync(ct);
+        if (suggestions.Count == 0 && curated.Count > 0) status = "ok";
 
         var added = await db.UserTopicVideos.AsNoTracking().Where(v => v.TopicId == topicId).OrderBy(v => v.CreatedAt).ToListAsync(ct);
         var videos = new List<TopicVideoDto>();
         var seen = new HashSet<string>();
+        foreach (var v in curated.Where(v => seen.Add(v.VideoId)))
+            videos.Add(new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, v.DurationSeconds, "suggested", null, false, false,
+                v.Language, v.Description.Length > 0 ? v.Description : null));
         foreach (var v in suggestions.Where(v => seen.Add(v.VideoId)))
             videos.Add(new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, v.PublishedAt, v.DurationSeconds, "suggested", null, false, false));
         foreach (var v in added.Where(v => seen.Add(v.VideoId)))
@@ -71,6 +71,80 @@ public class TopicVideoService(
         var flags = await db.VideoProgress.AsNoTracking().Where(p => seen.Contains(p.VideoId)).ToDictionaryAsync(p => p.VideoId, ct);
         return new TopicVideosDto(status, query, videos.Select(v => flags.TryGetValue(v.VideoId, out var f)
             ? v with { IsWatched = f.IsWatched, IsBookmarked = f.IsBookmarked } : v).ToList());
+    }
+
+    /// <summary>The curated videos of the whole roadmap, by phase and topic, optionally in one language.</summary>
+    public async Task<VideoLibraryDto> LibraryAsync(VideoLanguage? language, CancellationToken ct)
+    {
+        var all = await db.CuratedVideos.AsNoTracking()
+            .Select(v => new
+            {
+                v.TopicId, v.VideoId, v.Title, v.ChannelTitle, v.DurationSeconds, v.Language, v.Description, v.Order,
+                TopicSlug = v.Topic.Slug, TopicTitleEn = v.Topic.TitleEn, TopicTitleAr = v.Topic.TitleAr, TopicOrder = v.Topic.Order, v.Topic.Skill,
+                PhaseId = v.Topic.PhaseId, PhaseOrder = v.Topic.Phase.Order, PhaseTitleEn = v.Topic.Phase.TitleEn, PhaseTitleAr = v.Topic.Phase.TitleAr,
+            })
+            .ToListAsync(ct);
+        var flags = await db.VideoProgress.AsNoTracking().ToDictionaryAsync(p => p.VideoId, ct);
+        var shown = all.Where(v => language == null || v.Language == language).ToList();
+        var phases = shown
+            .GroupBy(v => new { v.PhaseId, v.PhaseOrder, v.PhaseTitleEn, v.PhaseTitleAr })
+            .OrderBy(g => g.Key.PhaseOrder)
+            .Select(g => new VideoLibraryPhaseDto(g.Key.PhaseId, g.Key.PhaseOrder, g.Key.PhaseTitleEn, g.Key.PhaseTitleAr,
+                g.GroupBy(v => new { v.TopicId, v.TopicSlug, v.TopicTitleEn, v.TopicTitleAr, v.TopicOrder, v.Skill })
+                    .OrderBy(t => t.Key.TopicOrder)
+                    .Select(t => new VideoLibraryTopicDto(t.Key.TopicId, t.Key.TopicSlug, t.Key.TopicTitleEn, t.Key.TopicTitleAr, t.Key.Skill,
+                        t.OrderBy(v => v.Language).ThenBy(v => v.Order)
+                            .Select(v => new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, v.DurationSeconds, "suggested", null,
+                                flags.TryGetValue(v.VideoId, out var f) && f.IsWatched, flags.TryGetValue(v.VideoId, out var f2) && f2.IsBookmarked,
+                                v.Language, v.Description.Length > 0 ? v.Description : null))
+                            .ToList()))
+                    .ToList()))
+            .ToList();
+        return new VideoLibraryDto(phases,
+            all.Count(v => v.Language == VideoLanguage.English), all.Count(v => v.Language == VideoLanguage.Arabic),
+            all.Where(v => flags.TryGetValue(v.VideoId, out var f) && f.IsWatched).Select(v => v.VideoId).Distinct().Count());
+    }
+
+    /// <summary>
+    /// The user's saved videos, newest first, wherever they were saved: the curated lists, project tasks, videos
+    /// they added by link or live suggestions. Saving stores only the video id and topic, so the details come
+    /// from whichever of those sources knows the video.
+    /// </summary>
+    public async Task<IReadOnlyList<SavedVideoDto>> SavedAsync(CancellationToken ct)
+    {
+        var saved = await db.VideoProgress.AsNoTracking().Where(p => p.IsBookmarked)
+            .OrderByDescending(p => p.UpdatedAt)
+            .Select(p => new { p.VideoId, p.TopicId, p.IsWatched, p.UpdatedAt, p.Topic.TitleEn, p.Topic.TitleAr, p.Topic.Skill })
+            .ToListAsync(ct);
+        if (saved.Count == 0) return [];
+
+        var ids = saved.Select(s => s.VideoId).Distinct().ToList();
+        var known = new Dictionary<string, TopicVideoDto>();
+        void Add(TopicVideoDto video) => known.TryAdd(video.VideoId, video);
+
+        foreach (var v in await db.CuratedVideos.AsNoTracking().Where(v => ids.Contains(v.VideoId))
+                     .Select(v => new { v.VideoId, v.Title, v.ChannelTitle, v.DurationSeconds, v.Language, v.Description }).ToListAsync(ct))
+            Add(new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, v.DurationSeconds, "suggested", null, false, true, v.Language,
+                v.Description.Length > 0 ? v.Description : null));
+        foreach (var v in await db.ProjectTaskVideos.AsNoTracking().Where(v => ids.Contains(v.VideoId))
+                     .Select(v => new { v.VideoId, v.Title, v.ChannelTitle }).ToListAsync(ct))
+            Add(new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, null, "task", null, false, true));
+        foreach (var v in await db.UserTopicVideos.AsNoTracking().Where(v => ids.Contains(v.VideoId))
+                     .Select(v => new { v.Id, v.VideoId, v.Title, v.ChannelTitle }).ToListAsync(ct))
+            Add(new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, null, "added", v.Id, false, true));
+        if (known.Count < ids.Count)
+        {
+            var topicIds = saved.Where(s => !known.ContainsKey(s.VideoId)).Select(s => s.TopicId).Distinct().ToList();
+            foreach (var json in await db.TopicVideoCache.AsNoTracking().Where(c => topicIds.Contains(c.TopicId)).Select(c => c.VideosJson).ToListAsync(ct))
+                foreach (var v in JsonSerializer.Deserialize<List<CachedVideo>>(json) ?? [])
+                    if (ids.Contains(v.VideoId)) Add(new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, v.PublishedAt, v.DurationSeconds, "suggested", null, false, true));
+        }
+
+        // A video no source knows any more (for example a suggestion that dropped out of the cache) is still listed.
+        return saved.Select(s => new SavedVideoDto(s.TopicId, s.TitleEn, s.TitleAr, s.Skill, s.UpdatedAt,
+                (known.TryGetValue(s.VideoId, out var v) ? v : new TopicVideoDto(s.VideoId, "YouTube video", "", null, null, "suggested", null, false, true))
+                with { IsWatched = s.IsWatched, IsBookmarked = true }))
+            .ToList();
     }
 
     /// <summary>
@@ -89,12 +163,12 @@ public class TopicVideoService(
         if (videos.Count < MinTaskVideos && task.TopicIds.Count > 0)
         {
             var fromTopics = await db.CuratedVideos.AsNoTracking().Where(v => task.TopicIds.Contains(v.TopicId))
-                .Select(v => new { v.TopicId, v.Order, v.VideoId, v.Title, v.ChannelTitle }).ToListAsync(ct);
+                .Select(v => new { v.TopicId, v.Order, v.VideoId, v.Title, v.ChannelTitle, v.Language, v.DurationSeconds }).ToListAsync(ct);
             // Take each linked topic's best video first, then the second ones, and so on.
             var extra = fromTopics.OrderBy(v => v.Order).ThenBy(v => task.TopicIds.IndexOf(v.TopicId))
                 .Where(v => videos.All(x => x.VideoId != v.VideoId)).DistinctBy(v => v.VideoId)
                 .Take(MinTaskVideos + 1 - videos.Count);
-            videos.AddRange(extra.Select(v => new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, null, "topic", null, false, false)));
+            videos.AddRange(extra.Select(v => new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, v.DurationSeconds, "topic", null, false, false, v.Language)));
         }
 
         var ids = videos.Select(v => v.VideoId).ToList();

@@ -150,6 +150,30 @@ const PAGE_SIZE = 20;
                             <div><dt>{{ 'admin.detail.lastSignIn' | t }}</dt><dd>{{ u.lastSignInAt ? (u.lastSignInAt | fmtDate) : '—' }}</dd></div>
                             @if (u.statusReason) { <div class="wide"><dt>{{ 'admin.detail.reason' | t }}</dt><dd>{{ u.statusReason }}</dd></div> }
                           </dl>
+                          @if (canRename(u) || canDelete(u)) {
+                            <div class="admin-manage">
+                              <h3 class="sub-title">{{ 'admin.manage.title' | t }}</h3>
+                              @if (canRename(u)) {
+                                <form class="admin-rename" (ngSubmit)="rename(u)">
+                                  <label class="label" [for]="'name-' + u.id">{{ 'admin.manage.nameLabel' | t }}</label>
+                                  <div class="admin-rename-row">
+                                    <input class="input input-sm" [id]="'name-' + u.id" name="fullName" maxlength="100" required autocomplete="off"
+                                           [(ngModel)]="nameDraft" />
+                                    <button type="submit" class="btn btn-secondary btn-sm"
+                                            [disabled]="busyId() === u.id || !nameDraft.trim() || nameDraft.trim() === u.fullName">{{ 'admin.manage.saveName' | t }}</button>
+                                  </div>
+                                </form>
+                              }
+                              @if (canDelete(u)) {
+                                <div class="admin-delete">
+                                  <p class="small muted">{{ 'admin.manage.deleteHelp' | t }}</p>
+                                  <button type="button" class="btn btn-danger btn-sm" [disabled]="busyId() === u.id" (click)="deleteUser(u)">
+                                    <app-icon name="trash" [size]="15" /> {{ 'admin.manage.delete' | t }}
+                                  </button>
+                                </div>
+                              }
+                            </div>
+                          }
                         </td>
                       </tr>
                     }
@@ -296,6 +320,9 @@ export default class AdminPage implements OnInit {
   protected readonly promoting = signal(false);
   protected readonly testing = signal(false);
 
+  /** The name being edited in the open account's details. */
+  protected nameDraft = '';
+
   protected readonly reasonRequest = signal<ReasonRequest | null>(null);
   protected reason = '';
 
@@ -371,6 +398,59 @@ export default class AdminPage implements OnInit {
 
   protected toggle(id: string): void {
     this.openId.set(this.openId() === id ? null : id);
+    this.nameDraft = this.users()?.items.find(u => u.id === id)?.fullName ?? '';
+  }
+
+  /** Administrators rename users and themselves; other administrators and the main administrator only by the main administrator. */
+  protected canRename(u: AdminUser): boolean {
+    const me = this.auth.account();
+    return u.id === me?.id || !!me?.isOwner || (!u.isAdmin && !u.isOwner);
+  }
+
+  /** Nobody deletes themselves or the main administrator; deleting an administrator is for the main administrator. */
+  protected canDelete(u: AdminUser): boolean {
+    const me = this.auth.account();
+    return !u.isOwner && u.id !== me?.id && (!u.isAdmin || !!me?.isOwner);
+  }
+
+  protected async rename(user: AdminUser): Promise<void> {
+    const name = this.nameDraft.trim();
+    if (!name || name === user.fullName) return;
+    this.busyId.set(user.id);
+    try {
+      const updated = await this.api.rename(user.id, name);
+      this.users.update(list => list && { ...list, items: list.items.map(u => (u.id === updated.id ? updated : u)) });
+      this.nameDraft = updated.fullName;
+      this.toast.success(this.i18n.t('admin.done.rename', { name: updated.fullName }));
+      if (user.id === this.auth.account()?.id) void this.auth.refresh();
+    } catch (e) {
+      this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
+    } finally {
+      this.busyId.set(null);
+    }
+  }
+
+  protected async deleteUser(user: AdminUser): Promise<void> {
+    const ok = await this.confirm.ask({
+      title: this.i18n.t('admin.confirm.deleteTitle'),
+      message: this.i18n.t('admin.confirm.delete', { name: user.fullName, email: user.email }),
+      confirmText: this.i18n.t('admin.manage.delete'),
+      danger: true,
+    });
+    if (!ok) return;
+    this.busyId.set(user.id);
+    try {
+      await this.api.deleteUser(user.id);
+      this.openId.set(null);
+      this.users.update(list => list && { ...list, total: list.total - 1, items: list.items.filter(u => u.id !== user.id) });
+      this.toast.success(this.i18n.t('admin.done.delete', { email: user.email }));
+      void this.loadOverview();
+    } catch (e) {
+      this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
+      void this.loadUsers();
+    } finally {
+      this.busyId.set(null);
+    }
   }
 
   /** Only the actions the API would accept for this account; everything is still checked on the server. */

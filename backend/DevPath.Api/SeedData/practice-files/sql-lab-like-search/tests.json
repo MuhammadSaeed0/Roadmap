@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "nameEn": "Your query returns the expected rows",
+      "nameAr": "يُرجع استعلامك الصفوف المتوقعة",
+      "expected": {
+        "columns": [
+          "Name",
+          "Stock"
+        ],
+        "rows": [
+          [
+            "Gaming Mouse",
+            30
+          ],
+          [
+            "Office Mouse",
+            120
+          ],
+          [
+            "Vertical Mouse",
+            8
+          ]
+        ]
+      }
+    }
+  ]
+}

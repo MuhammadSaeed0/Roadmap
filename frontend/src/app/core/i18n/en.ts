@@ -8,6 +8,7 @@ export const en = {
     practice: 'Practice Lab', interviews: 'Interview Preparation', resources: 'Resources', notes: 'My Notes',
     progress: 'Progress & Analytics', career: 'Career Readiness', settings: 'Settings', search: 'Search',
     learn: 'Learn', build: 'Build & practise', track: 'Track', manage: 'Manage', admin: 'Administration',
+    playground: 'Code Playground', videos: 'Video Library',
   },
   common: {
     loading: 'Loading…', retry: 'Try again', save: 'Save', saving: 'Saving…', cancel: 'Cancel', delete: 'Delete',
@@ -17,7 +18,7 @@ export const en = {
     showing: '{from}–{to} of {total}', noResults: 'No results', optional: 'optional', today: 'Today',
     total: 'Total', details: 'Details', openLink: 'Open link', copy: 'Copy', copied: 'Copied',
     language: 'Language', theme: 'Theme', light: 'Light', dark: 'Dark', system: 'System',
-    skipToContent: 'Skip to main content', menu: 'Menu', closeMenu: 'Close menu', perPage: 'Per page',
+    skipToContent: 'Skip to main content', menu: 'Menu', closeMenu: 'Close menu', collapseMenu: 'Collapse the menu', expandMenu: 'Expand the menu', perPage: 'Per page',
     lastUpdated: 'Updated {date}', filters: 'Filters', yes: 'Yes', no: 'No', percent: '{n}%', breadcrumb: 'Breadcrumb', mode: 'Mode',
   },
   errors: {
@@ -144,6 +145,10 @@ export const en = {
       emailVerified: 'Email confirmed', confirmedBefore: 'Before verification existed', approved: 'Approved',
       statusChanged: 'Status changed', lastSignIn: 'Last sign-in', reason: 'Note',
     },
+    manage: {
+      title: 'Manage this account', nameLabel: 'Name', saveName: 'Save name', delete: 'Delete account',
+      deleteHelp: 'Removes the account and everything it saved (progress, notes, sessions, projects, practice work). This can’t be undone.',
+    },
     confirm: {
       approveTitle: 'Approve this account?', approve: '{name} ({email}) will get full access to DevPath and receive an email.',
       rejectTitle: 'Reject this account?', reject: '{name} ({email}) won’t be able to use DevPath. They’ll be told by email.',
@@ -151,12 +156,14 @@ export const en = {
       reactivateTitle: 'Reactivate this account?', reactivate: '{name} ({email}) will be able to use DevPath again.',
       promoteTitle: 'Make this account an administrator?', promote: '{email} will be able to approve, reject and suspend accounts.',
       revokeTitle: 'Remove administrator rights?', revoke: '{email} will no longer be able to use the admin area.',
+      deleteTitle: 'Delete this account permanently?', delete: '{name} ({email}) and everything they saved (progress, notes, sessions, projects and practice work) will be deleted. This can’t be undone. The address can be used to sign up again.',
     },
     reasonLabel: 'Note for the user (optional)', reasonHelp: 'Shown on their status page and included in the email. Up to 500 characters.',
     done: {
       approve: '{email} was approved.', reject: '{email} was rejected.', suspend: '{email} was suspended.',
       reactivate: '{email} was reactivated.', 'resend-verification': 'A new confirmation link was sent to {email}.',
       promote: '{email} is now an administrator.', revoke: '{email} is no longer an administrator.',
+      rename: 'The name was changed to {name}.', delete: '{email} was deleted.',
     },
     promoteLabel: 'Add an administrator', promotePlaceholder: 'name@example.com',
     promoteHelp: 'The account must already exist, be approved and have a confirmed email.', promote: 'Make administrator',
@@ -168,6 +175,7 @@ export const en = {
       approve: 'approved', reject: 'rejected', suspend: 'suspended', reactivate: 'reactivated',
       resend_verification: 'resent the confirmation email to', grant_admin: 'made an administrator:', revoke_admin: 'removed admin rights from',
       owner_assigned: 'set up the main administrator:', test_email: 'sent a test email',
+      rename: 'renamed', delete_user: 'deleted the account',
     },
   },
   videos: {
@@ -185,6 +193,8 @@ export const en = {
     addLabel: 'Add a YouTube video by link', addPlaceholder: 'https://www.youtube.com/watch?v=…', add: 'Add', adding: 'Adding…', added: 'Video added',
     taskTitle: 'Videos: how to build it', fromTopic: 'From a related topic',
     taskAddHint: 'To add your own video, open one of the related topics above.',
+    language: { all: 'All languages', Arabic: 'Arabic', English: 'English' }, languageFilter: 'Video language',
+    noneInLanguage: 'No videos in this language for this topic yet.',
   },
   quiz: {
     title: 'Check your understanding', intro: 'Answer after watching the videos and reading the topic. Pass with {pct}% to open the next level.',
@@ -218,9 +228,12 @@ export const en = {
     Documentation: 'Documentation', Tutorial: 'Tutorial', Course: 'Course', Video: 'Video', Article: 'Article',
     Reference: 'Reference', Tool: 'Tool',
   },
-  difficulty: { Beginner: 'Beginner', Intermediate: 'Intermediate', Advanced: 'Advanced' },
+  difficulty: { Beginner: 'Beginner', Intermediate: 'Intermediate', Advanced: 'Advanced', Expert: 'Expert' },
   verification: { Unverified: 'Not verified', Verified: 'Verified', Broken: 'Broken link' },
-  exerciseType: { Coding: 'Coding', Debugging: 'Debugging', Scenario: 'Real-world scenario', CodeReview: 'Code review' },
+  exerciseType: {
+    Coding: 'Coding challenge', Debugging: 'Debugging', Scenario: 'Real-world scenario', CodeReview: 'Code review', Conceptual: 'Concepts',
+    Practical: 'Practical task', MiniProject: 'Mini project', FullStack: 'Full-stack challenge', Challenge: 'Advanced challenge',
+  },
   practiceStatus: { NotStarted: 'Not started', Attempted: 'Attempted', Completed: 'Completed' },
   interviewCategory: {
     CSharp: 'C#', DotNet: '.NET', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server',
@@ -318,13 +331,26 @@ export const en = {
     crCount: '{done} of {unlocked} unlocked change requests done', noCr: 'No change requests yet.',
   },
   practice: {
-    title: 'Practice Lab', subtitle: 'Coding, debugging, real-world scenarios and code reviews. Try first — then reveal hints and the solution.',
-    problem: 'Problem', expected: 'Expected outcome', starterCode: 'Code', yourAttempt: 'Your attempt or explanation',
+    title: 'Practice Lab', subtitle: 'Concepts, coding and debugging challenges, practical tasks, mini projects and full-stack challenges, with a code editor that runs in your browser. Try first — then reveal hints and the solution.',
+    task: 'The task', showTask: 'Show the task', hideTask: 'Hide the task', problem: 'Problem', expected: 'Expected outcome', starterCode: 'Code', yourAttempt: 'Your attempt or explanation',
     attemptPlaceholder: 'Describe your approach, paste your code, or list the problems you found…',
     saveAttempt: 'Save attempt', attemptSaved: 'Attempt saved', hints: 'Hints', hintsCount: '{n} of {total} hints revealed',
     revealHint: 'Reveal next hint', revealSolution: 'Reveal solution', solutionLocked: 'Save your own attempt first to unlock the solution.',
     solution: 'Suggested solution', markCompleted: 'Mark as completed', resetExercise: 'Start over', completed: 'Completed',
-    disclaimer: 'Exercises are not executed here — run code in VS Code, then come back to compare.',
+    disclaimer: 'C#, SQL, TypeScript and Angular exercises run right here in your browser; server-side tasks are built in your own environment.',
+    progressTitle: 'Your progress by technology', overall: '{done} of {total} completed · {attempted} in progress',
+    skillLine: '{done} completed · {left} left', search: 'Search exercises…', allTypes: 'All types', allDifficulties: 'All levels', anyStatus: 'Any status',
+    runnableOnly: 'Runs in the browser', showing: 'Showing {n} of {total} exercises', bestScore: 'Best score {score}%', technologies: 'Technologies',
+    runner: { CSharp: 'Run C#', Sql: 'Run SQL', JavaScript: 'Run JS', TypeScript: 'Run TS', Web: 'Live preview', Angular: 'Angular preview' },
+    scenario: 'Scenario', requirements: 'Requirements', acceptance: 'Acceptance criteria', acceptanceHint: 'Tick each one when your solution meets it.',
+    bonus: 'Bonus requirements (optional)', yourNotes: 'Notes and explanation', notesHint: 'Optional: explain your approach in your own words. Saved code also counts as an attempt.',
+    buildLocally: 'This challenge needs a real server, database or several apps working together. Build it in your own environment (VS Code, SQL Server); use the editor here for the starter files and to save your work.',
+    solutionLockedCode: 'Write some code, run the checks or save an explanation first to unlock the solution.',
+    submissions: '{n} check run(s) · last score {score}%', scoreNote: 'The checks run in your browser, so the score is your own record of progress, not an official grade.',
+    resetCode: 'Reset the code to the starter files', resetCodeConfirm: 'Replace your code with the original starter files?',
+    checksNote: 'Run checks tests your code against the exercise’s expectations. Passing all of them completes the exercise.',
+    allChecksPassed: 'All checks passed: exercise completed!',
+    saveState: { idle: '', saving: 'Saving…', saved: 'Code saved', error: 'Not saved: check your connection' },
     steps: { read: 'Read', investigate: 'Investigate', hint: 'Hints', solution: 'Solution', complete: 'Complete' },
     empty: 'No exercises match this filter.', notFound: 'This exercise doesn’t exist.', relatedTopic: 'Related topic',
     resetConfirm: 'Clear your attempt and revealed hints for this exercise?',
@@ -339,6 +365,7 @@ export const en = {
     count: '{n} questions', showMore: 'Show more ({n} left)',
   },
   resources: {
+    general: 'General resources', count: '{n} resources',
     title: 'Resources', subtitle: 'Curated, mostly official, free documentation. Links open in a new tab.',
     verify: 'Check all links', verifying: 'Checking links…', verifyResult: '{verified} verified, {broken} broken, {unreachable} unreachable',
     allTypes: 'All types', free: 'Free', paid: 'Paid', lastVerified: 'Verified {date}', notVerified: 'Not verified yet',
@@ -438,5 +465,5 @@ export const en = {
 };
 
 /** Same shape as `en`, but every leaf is any string (so Arabic can differ). */
-type Widen<T> = { [K in keyof T]: T[K] extends string ? string : Widen<T[K]> };
+export type Widen<T> = { [K in keyof T]: T[K] extends string ? string : Widen<T[K]> };
 export type Translations = Widen<typeof en>;

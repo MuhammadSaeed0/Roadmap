@@ -8,8 +8,10 @@ import { TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
 import { TopicVideo } from '../../core/models';
 import { ConfirmService, ToastService } from '../../core/ui-services';
-import { embedUrl, formatVideoDuration, parseYouTubeVideoId, searchUrl, thumbnailUrl, watchUrl } from '../../core/youtube';
+import { embedUrl, parseYouTubeVideoId, searchUrl, watchUrl } from '../../core/youtube';
 import { IconComponent } from '../../shared/icon.component';
+import { VideoCardComponent } from '../../shared/video-card.component';
+import { VideoLanguageFilter, VideoLanguageService } from '../../core/video-language';
 import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.components';
 
 /**
@@ -21,7 +23,7 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
 @Component({
   selector: 'app-topic-videos',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, IconComponent, TranslatePipe, SkeletonComponent, ErrorStateComponent],
+  imports: [ReactiveFormsModule, IconComponent, TranslatePipe, SkeletonComponent, ErrorStateComponent, VideoCardComponent],
   template: `
     <section class="card content-section" [id]="taskId() ? null : 'videos'" [attr.data-tour]="taskId() ? null : 'topic-videos'" [attr.aria-labelledby]="headingId()">
       <div class="card-head">
@@ -73,47 +75,22 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
         @if (v.videos.length === 0) {
           <p class="muted">{{ (v.status === 'ok' ? 'videos.empty' : 'videos.emptyAdd') | t }}</p>
         } @else {
+          @if (hasLanguages()) {
+            <div class="segmented video-lang-filter" role="radiogroup" [attr.aria-label]="'videos.languageFilter' | t">
+              @for (option of languageOptions; track option) {
+                <button type="button" role="radio" [class.active]="languages.filter() === option" [attr.aria-checked]="languages.filter() === option"
+                        (click)="languages.set(option)">{{ ('videos.language.' + option) | t }}</button>
+              }
+            </div>
+          }
           <ul class="video-grid" role="list">
-            @for (video of v.videos; track video.videoId) {
-              <li class="video-card" [class.is-playing]="playing()?.videoId === video.videoId">
-                <button type="button" class="video-thumb" (click)="play(video)" [attr.aria-label]="'videos.play' | t: { title: video.title }">
-                  <img [src]="thumb(video.videoId)" alt="" loading="lazy" width="320" height="180" />
-                  <span class="video-play" aria-hidden="true"><app-icon name="play" [size]="20" /></span>
-                  @if (duration(video); as d) { <span class="video-duration">{{ d }}</span> }
-                  @if (video.isWatched) { <span class="video-watched"><app-icon name="check" [size]="12" /> {{ 'videos.watched' | t }}</span> }
-                </button>
-                <div class="video-body">
-                  <p class="video-title" [title]="video.title">{{ video.title }}</p>
-                  <p class="muted small video-channel">
-                    {{ video.channelTitle }}@if (video.source === 'added') { <span class="chip chip-sm">{{ 'videos.addedByYou' | t }}</span> }
-                    @if (video.source === 'topic') { <span class="chip chip-sm chip-ghost">{{ 'videos.fromTopic' | t }}</span> }
-                  </p>
-                  <div class="video-actions">
-                    <button type="button" class="icon-btn" [class.is-on]="video.isWatched" [attr.aria-pressed]="video.isWatched"
-                            [attr.aria-label]="(video.isWatched ? 'videos.markUnwatched' : 'videos.markWatched') | t"
-                            [title]="(video.isWatched ? 'videos.markUnwatched' : 'videos.markWatched') | t"
-                            [disabled]="busy() === video.videoId" (click)="toggle(video, 'isWatched')">
-                      <app-icon name="check-circle" [size]="17" />
-                    </button>
-                    <button type="button" class="icon-btn" [class.is-on]="video.isBookmarked" [attr.aria-pressed]="video.isBookmarked"
-                            [attr.aria-label]="(video.isBookmarked ? 'videos.unsave' : 'videos.save') | t"
-                            [title]="(video.isBookmarked ? 'videos.unsave' : 'videos.save') | t"
-                            [disabled]="busy() === video.videoId" (click)="toggle(video, 'isBookmarked')">
-                      <app-icon name="bookmark" [size]="17" />
-                    </button>
-                    <a class="icon-btn" [href]="watch(video.videoId)" target="_blank" rel="noopener noreferrer"
-                       [attr.aria-label]="('videos.openOnYoutube' | t) + ': ' + video.title" [title]="'videos.openOnYoutube' | t">
-                      <app-icon name="external" [size]="16" />
-                    </a>
-                    @if (video.addedId !== null) {
-                      <button type="button" class="icon-btn" [attr.aria-label]="'videos.remove' | t" [title]="'videos.remove' | t"
-                              [disabled]="busy() === video.videoId" (click)="remove(video)">
-                        <app-icon name="trash" [size]="16" />
-                      </button>
-                    }
-                  </div>
-                </div>
+            @for (video of shown(); track video.videoId) {
+              <li>
+                <app-video-card [video]="video" [playing]="playing()?.videoId === video.videoId" [busy]="busy() === video.videoId"
+                                (play)="play(video)" (toggle)="toggle(video, $event)" (remove)="remove(video)" />
               </li>
+            } @empty {
+              <li class="muted small">{{ 'videos.noneInLanguage' | t }}</li>
             }
           </ul>
         }
@@ -170,8 +147,11 @@ export class TopicVideosComponent {
   protected readonly youtubeSearch = computed(() => searchUrl(this.data.value()?.searchQuery || `${this.topicTitle()} tutorial`));
 
   protected readonly watch = watchUrl;
-  protected readonly thumb = thumbnailUrl;
-  protected readonly duration = (v: TopicVideo) => formatVideoDuration(v.durationSeconds);
+  protected readonly languages = inject(VideoLanguageService);
+  protected readonly languageOptions: VideoLanguageFilter[] = ['all', 'Arabic', 'English'];
+  /** The language filter only appears when the list has curated videos in both languages. */
+  protected readonly hasLanguages = computed(() => new Set((this.data.value()?.videos ?? []).map(v => v.language).filter(Boolean)).size > 1);
+  protected readonly shown = computed(() => this.languages.apply(this.data.value()?.videos ?? []));
 
   constructor() {
     effect(() => {

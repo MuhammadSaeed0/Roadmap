@@ -33,7 +33,9 @@ public record RoadmapDto(IReadOnlyList<PhaseDto> Phases, int? CurrentPhaseId);
 public record ResourceDto(
     int Id, string Key, string TitleEn, string? TitleAr, string Url, string SourceName,
     ResourceType Type, Difficulty Difficulty, bool IsFree, VerificationStatus VerificationStatus,
-    DateTime? LastVerifiedAt, int? LastStatusCode, IReadOnlyList<TopicRefDto> Topics);
+    DateTime? LastVerifiedAt, int? LastStatusCode, IReadOnlyList<TopicRefDto> Topics,
+    /// <summary>The phase of the earliest roadmap topic the resource belongs to (null when it isn't linked to a topic).</summary>
+    PhaseRefDto? Phase = null);
 
 public record TopicProjectLinkDto(int ProjectId, string Slug, string TitleEn, string TitleAr, int TaskCount);
 

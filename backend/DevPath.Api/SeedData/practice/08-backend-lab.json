@@ -1,0 +1,799 @@
+[
+  {
+    "key": "api-lab-status-codes",
+    "type": "Coding",
+    "topic": "api-status-codes",
+    "difficulty": "Beginner",
+    "minutes": 15,
+    "titleEn": "Pick the right HTTP status code",
+    "titleAr": "اختر رمز حالة HTTP الصحيح",
+    "problemEn": "A service returns an OperationOutcome. Write HttpStatus.For(outcome) with a switch expression that returns the status code an API should send: Success 200, Created 201, Deleted 204, ValidationFailed 400, Unauthenticated 401, Forbidden 403, NotFound 404, Conflict 409. Anything else is 500.",
+    "problemAr": "تُرجع خدمة قيمة من النوع OperationOutcome. اكتب HttpStatus.For(outcome) باستخدام switch expression تُرجع رمز الحالة الذي يجب أن ترسله الـ API: Success هو 200، وCreated هو 201، وDeleted هو 204، وValidationFailed هو 400، وUnauthenticated هو 401، وForbidden هو 403، وNotFound هو 404، وConflict هو 409. وأي شيء آخر هو 500.",
+    "expectedEn": "For(OperationOutcome.Created) is 201, For(OperationOutcome.Unauthenticated) is 401 and For(OperationOutcome.Forbidden) is 403.",
+    "expectedAr": "For(OperationOutcome.Created) تساوي 201، وFor(OperationOutcome.Unauthenticated) تساوي 401، وFor(OperationOutcome.Forbidden) تساوي 403.",
+    "hintsEn": [
+      "outcome switch { OperationOutcome.Success => 200, … , _ => 500 }",
+      "401 means \"we don’t know who you are\"; 403 means \"we know, and you’re not allowed\"."
+    ],
+    "hintsAr": [
+      "outcome switch { OperationOutcome.Success => 200, … , _ => 500 }",
+      "401 تعني «لا نعرف من أنت»، و403 تعني «نعرفك، لكن غير مسموح لك»."
+    ],
+    "solutionEn": "A switch expression maps each outcome to exactly one code and the discard (_) catches anything new. In a controller these become Ok(), CreatedAtAction(), NoContent(), ValidationProblem(), Unauthorized(), Forbid(), NotFound() and Conflict().",
+    "solutionAr": "تربط switch expression كل نتيجة برمز واحد، ويلتقط الرمز _ أي قيمة جديدة. وفي الـ Controller تصبح هذه Ok() وCreatedAtAction() وNoContent() وValidationProblem() وUnauthorized() وForbid() وNotFound() وConflict().",
+    "runner": "CSharp"
+  },
+  {
+    "key": "api-lab-dto-mapping",
+    "type": "Coding",
+    "topic": "api-dtos",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Map entities to DTOs",
+    "titleAr": "تحويل الكيانات إلى DTOs",
+    "problemEn": "Never return database entities from an API: they leak fields (like PasswordHash) and tie clients to your schema. Write OrderMapping.ToDto(Order order) that returns an OrderDto with the order id, the customer’s full name, the date as yyyy-MM-dd, the lines (product name, quantity, line total) and the order total. The DTO types are records; the customer’s email and password hash must not appear anywhere in them.",
+    "problemAr": "لا تُرجع كيانات قاعدة البيانات من الـ API أبدًا: فهي تسرّب حقولًا (مثل PasswordHash) وتربط العملاء ببنية قاعدتك. اكتب OrderMapping.ToDto(Order order) التي تُرجع OrderDto برقم الطلب، والاسم الكامل للعميل، والتاريخ بصيغة yyyy-MM-dd، والأسطر (اسم المنتج والكمية وإجمالي السطر)، وإجمالي الطلب. أنواع الـ DTO من نوع record، ويجب ألا يظهر بريد العميل ولا PasswordHash في أي منها.",
+    "expectedEn": "An order with 2 × 15.99 and 1 × 49.99 maps to Total 81.97, CustomerName \"Sara Ahmed\" and Date \"2026-10-01\".",
+    "expectedAr": "طلب فيه 2 × 15.99 و1 × 49.99 يتحول إلى Total يساوي 81.97، وCustomerName يساوي \"Sara Ahmed\"، وDate يساوي \"2026-10-01\".",
+    "hintsEn": [
+      "new OrderDto(order.Id, $\"{order.Customer.FirstName} {order.Customer.LastName}\", …)",
+      "order.Lines.Select(l => new OrderLineDto(l.ProductName, l.Quantity, l.UnitPrice * l.Quantity)).ToList()"
+    ],
+    "hintsAr": [
+      "new OrderDto(order.Id, $\"{order.Customer.FirstName} {order.Customer.LastName}\", …)",
+      "order.Lines.Select(l => new OrderLineDto(l.ProductName, l.Quantity, l.UnitPrice * l.Quantity)).ToList()"
+    ],
+    "solutionEn": "Records give you concise, immutable DTOs. Mapping explicitly (or with a projection in an EF query) controls exactly what leaves the server; computed fields like totals belong in the DTO so clients don’t repeat the logic.",
+    "solutionAr": "تمنحك الـ Records كائنات DTO مختصرة وغير قابلة للتعديل. والتحويل الصريح (أو الإسقاط داخل استعلام EF) يتحكم بدقة فيما يخرج من الخادم، والحقول المحسوبة مثل الإجماليات مكانها الـ DTO حتى لا يكرر العملاء المنطق.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "api-lab-validate-request",
+    "type": "Coding",
+    "topic": "api-validation",
+    "difficulty": "Intermediate",
+    "minutes": 25,
+    "titleEn": "Validate a request like ValidationProblem does",
+    "titleAr": "التحقق من طلب كما يفعل ValidationProblem",
+    "problemEn": "Write RequestValidator.Validate(CreateProductRequest request) returning Dictionary<string, string[]>: field name → error messages (the shape ASP.NET Core sends in a 400 ValidationProblem). Rules: Name required (not blank) and at most 100 characters; Price greater than 0; Stock 0 or more; Category one of \"Audio\", \"Input\", \"Display\"; Sku must match the pattern three capital letters, a dash and four digits (e.g. \"KEY-1234\"). A field can have several errors. A valid request returns an empty dictionary.",
+    "problemAr": "اكتب RequestValidator.Validate(CreateProductRequest request) التي تُرجع Dictionary<string, string[]>: اسم الحقل ← رسائل الأخطاء (وهو الشكل الذي ترسله ASP.NET Core في استجابة 400 من نوع ValidationProblem). القواعد: Name مطلوب (غير فارغ) و100 حرف على الأكثر؛ وPrice أكبر من 0؛ وStock يساوي 0 أو أكثر؛ وCategory واحد من \"Audio\" و\"Input\" و\"Display\"؛ وSku يطابق النمط: ثلاثة أحرف كبيرة ثم شرطة ثم أربعة أرقام (مثل \"KEY-1234\"). قد يكون للحقل أكثر من خطأ. والطلب الصحيح يُرجع قاموسًا فارغًا.",
+    "expectedEn": "A request with an empty name and a price of -1 returns errors for Name and Price only.",
+    "expectedAr": "طلب باسم فارغ وسعر -1 يُرجع أخطاءً للحقلين Name وPrice فقط.",
+    "hintsEn": [
+      "Collect errors with a helper: void Add(string field, string message) that appends to a List per field.",
+      "Regex.IsMatch(sku, @\"^[A-Z]{3}-\\d{4}$\")",
+      "Convert at the end: errors.ToDictionary(e => e.Key, e => e.Value.ToArray())."
+    ],
+    "hintsAr": [
+      "اجمع الأخطاء بدالة مساعدة: void Add(string field, string message) تضيف إلى List لكل حقل.",
+      "Regex.IsMatch(sku, @\"^[A-Z]{3}-\\d{4}$\")",
+      "حوّل في النهاية: errors.ToDictionary(e => e.Key, e => e.Value.ToArray())."
+    ],
+    "solutionEn": "Gathering every error (instead of stopping at the first) lets the UI show all problems at once. In a real API you’d express the same rules with data annotations or FluentValidation, and the framework returns this dictionary as ValidationProblemDetails automatically.",
+    "solutionAr": "جمع كل الأخطاء (بدلًا من التوقف عند أولها) يسمح للواجهة بعرض كل المشكلات مرة واحدة. وفي API حقيقية تعبّر عن القواعد نفسها بـ Data annotations أو FluentValidation، ويُرجع الإطار هذا القاموس كـ ValidationProblemDetails تلقائيًا.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "api-lab-paged-query",
+    "type": "Practical",
+    "topic": "api-pagination",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Paging, filtering and sorting an IQueryable",
+    "titleAr": "تقسيم الصفحات والتصفية والترتيب على IQueryable",
+    "problemEn": "Implement ProductQueries.Search(IQueryable<Product> source, ProductQuery query) returning PagedResult<ProductDto>. It filters by Search (case-insensitive, in the name), Category and MinPrice/MaxPrice when they’re given; sorts by query.Sort: \"name\" (default), \"price\", \"-price\" (descending) — any other value falls back to \"name\"; then pages with Page (from 1) and PageSize (default 10, at most 50; values below 1 become 1). The total count is taken after filtering and before paging. The same code works unchanged on an EF Core DbSet, where every step becomes SQL.",
+    "problemAr": "نفّذ ProductQueries.Search(IQueryable<Product> source, ProductQuery query) التي تُرجع PagedResult<ProductDto>. تصفّي حسب Search (دون تمييز حالة الأحرف، داخل الاسم)، وCategory، وMinPrice/MaxPrice عند تحديدها؛ وترتّب حسب query.Sort: \"name\" (الافتراضي)، و\"price\"، و\"-price\" (تنازليًا) — وأي قيمة أخرى ترجع إلى \"name\"؛ ثم تقسّم الصفحات بـ Page (تبدأ من 1) وPageSize (افتراضيًا 10، و50 على الأكثر؛ والقيم الأقل من 1 تصبح 1). يُحسب العدد الكلي بعد التصفية وقبل التقسيم. ويعمل الكود نفسه دون تغيير على DbSet في EF Core، حيث تتحول كل خطوة إلى SQL.",
+    "expectedEn": "Searching \"mo\" sorted by -price with PageSize 2 returns Monitor then Mouse on page 1 and Total 3.",
+    "expectedAr": "البحث عن \"mo\" مرتبًا بـ -price مع PageSize يساوي 2 يُرجع Monitor ثم Mouse في الصفحة 1 وTotal يساوي 3.",
+    "hintsEn": [
+      "Keep the type IQueryable<Product> and add .Where(...) only when a filter is set.",
+      "var total = filtered.Count(); then .Skip((page - 1) * size).Take(size).",
+      "Use a switch expression for the sort: \"price\" => q.OrderBy(p => p.Price), \"-price\" => q.OrderByDescending(p => p.Price), _ => q.OrderBy(p => p.Name)."
+    ],
+    "hintsAr": [
+      "أبقِ النوع IQueryable<Product> وأضف .Where(...) فقط عند تحديد المرشح.",
+      "var total = filtered.Count(); ثم .Skip((page - 1) * size).Take(size).",
+      "استخدم switch expression للترتيب: \"price\" => q.OrderBy(p => p.Price)، و\"-price\" => q.OrderByDescending(p => p.Price)، و_ => q.OrderBy(p => p.Name)."
+    ],
+    "solutionEn": "Composing an IQueryable lets the database do the filtering, sorting and paging (WHERE … ORDER BY … OFFSET/FETCH). Clamp page and size so clients can’t ask for a million rows, whitelist sort fields instead of building them from user text, and always sort before Skip/Take so pages are stable.",
+    "solutionAr": "بناء IQueryable خطوة بخطوة يترك التصفية والترتيب والتقسيم لقاعدة البيانات (WHERE … ORDER BY … OFFSET/FETCH). اضبط الصفحة والحجم حتى لا يطلب العميل مليون صف، واستخدم قائمة مسموحة لحقول الترتيب بدلًا من بنائها من نص المستخدم، ورتّب دائمًا قبل Skip/Take لتكون الصفحات ثابتة.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "api-lab-middleware-pipeline",
+    "type": "Challenge",
+    "topic": "api-middleware",
+    "difficulty": "Advanced",
+    "minutes": 45,
+    "titleEn": "Build a middleware pipeline",
+    "titleAr": "ابنِ سلسلة Middleware",
+    "problemEn": "ASP.NET Core handles each request by passing it through a chain of middleware; each one can act before and after calling next(), or stop the chain. Rebuild the idea: Pipeline.Use(Func<HttpContext, Func<Task>, Task> middleware) adds a step, and Build(Func<HttpContext, Task> endpoint) returns a RequestDelegate that runs the steps in the order they were added and finally the endpoint. Then write two middleware in Middlewares: ErrorHandling (catches any exception from later steps, sets StatusCode 500 and Body \"Something went wrong\") and ApiKey(string key) (if the request header \"X-Api-Key\" doesn’t equal key, set 401 and don’t call next).",
+    "problemAr": "تعالج ASP.NET Core كل طلب بتمريره عبر سلسلة من الـ Middleware؛ يمكن لكل منها أن يعمل قبل استدعاء next() وبعده، أو أن يوقف السلسلة. أعد بناء الفكرة: Pipeline.Use(Func<HttpContext, Func<Task>, Task> middleware) تضيف خطوة، وBuild(Func<HttpContext, Task> endpoint) تُرجع RequestDelegate تنفّذ الخطوات بترتيب إضافتها ثم الـ Endpoint في النهاية. ثم اكتب Middleware اثنين في Middlewares: ErrorHandling (تلتقط أي استثناء من الخطوات اللاحقة، وتضبط StatusCode على 500 وBody على \"Something went wrong\") وApiKey(string key) (إذا لم تساوِ الترويسة \"X-Api-Key\" قيمة key، تضبط 401 ولا تستدعي next).",
+    "expectedEn": "With Use(log \"A\"), Use(log \"B\") and an endpoint that logs \"endpoint\", the log is A-in, B-in, endpoint, B-out, A-out.",
+    "expectedAr": "مع Use(تسجيل \"A\") وUse(تسجيل \"B\") وEndpoint يسجّل \"endpoint\"، يكون السجل: A-in ثم B-in ثم endpoint ثم B-out ثم A-out.",
+    "hintsEn": [
+      "Build from the end: start with the endpoint, then wrap it with the last middleware, then the one before, …",
+      "For each middleware m and the current next delegate n: RequestDelegate wrapped = ctx => m(ctx, () => n(ctx));",
+      "Iterate the list in reverse so the first middleware ends up outermost."
+    ],
+    "hintsAr": [
+      "ابنِ من النهاية: ابدأ بالـ Endpoint، ثم غلّفه بآخر Middleware، ثم الذي قبله، …",
+      "لكل Middleware m وللمفوَّض التالي n: RequestDelegate wrapped = ctx => m(ctx, () => n(ctx));",
+      "كرّر على القائمة بالعكس لتصبح أول Middleware هي الخارجية."
+    ],
+    "solutionEn": "The pipeline is a chain of closures: each step receives the next one, so the order of Use calls is the order of execution, and code after await next() runs on the way back. That’s why UseExceptionHandler goes first (it wraps everything) and authentication comes before authorization and endpoints.",
+    "solutionAr": "السلسلة مجموعة من الـ Closures: كل خطوة تستقبل التي تليها، فيكون ترتيب استدعاءات Use هو ترتيب التنفيذ، والكود بعد await next() يعمل في طريق العودة. لهذا يأتي UseExceptionHandler أولًا (فهو يغلّف كل شيء)، وتأتي المصادقة قبل التفويض وقبل الـ Endpoints.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "api-lab-products-crud",
+    "type": "Practical",
+    "topic": "api-controllers-routing",
+    "difficulty": "Intermediate",
+    "minutes": 60,
+    "titleEn": "A complete CRUD controller",
+    "titleAr": "Controller كامل لعمليات CRUD",
+    "problemEn": "Finish ProductsController so it exposes a REST API for products: GET /api/products (list), GET /api/products/{id} (404 when missing), POST (validates with data annotations, returns 201 with a Location header via CreatedAtAction), PUT /api/products/{id} (204, or 404), DELETE /api/products/{id} (204, or 404). Use the DTOs — never the Product entity — in requests and responses, and keep the logic in IProductService.",
+    "problemAr": "أكمل ProductsController ليعرض REST API للمنتجات: GET /api/products (القائمة)، وGET /api/products/{id} (404 عند عدم الوجود)، وPOST (يتحقق بالـ Data annotations ويُرجع 201 مع ترويسة Location عبر CreatedAtAction)، وPUT /api/products/{id} (204 أو 404)، وDELETE /api/products/{id} (204 أو 404). استخدم الـ DTOs — لا كيان Product — في الطلبات والاستجابات، وأبقِ المنطق في IProductService.",
+    "expectedEn": "Every endpoint returns the right status code: 200/201/204 on success, 400 for invalid input, 404 for unknown ids.",
+    "expectedAr": "كل Endpoint يُرجع رمز الحالة الصحيح: 200/201/204 عند النجاح، و400 للمدخلات غير الصحيحة، و404 للأرقام غير المعروفة.",
+    "hintsEn": [
+      "public ActionResult<ProductDto> GetById(int id) => service.Find(id) is { } p ? p : NotFound();",
+      "With [ApiController], invalid models return 400 automatically — you don’t need ModelState checks.",
+      "Try it with the .http file or Swagger after dotnet run."
+    ],
+    "hintsAr": [
+      "public ActionResult<ProductDto> GetById(int id) => service.Find(id) is { } p ? p : NotFound();",
+      "مع [ApiController] تُرجع النماذج غير الصحيحة 400 تلقائيًا — لا تحتاج إلى فحص ModelState.",
+      "جرّبه بملف .http أو Swagger بعد dotnet run."
+    ],
+    "solutionEn": "The controller only translates HTTP to service calls and results to status codes; validation is declarative on the DTOs; the service owns the data. This separation is what lets you swap the in-memory service for an EF Core one without touching the controller.",
+    "solutionAr": "يكتفي الـ Controller بترجمة HTTP إلى استدعاءات للخدمة والنتائج إلى رموز حالة؛ والتحقق تصريحي على الـ DTOs؛ والخدمة تملك البيانات. وهذا الفصل هو ما يسمح باستبدال الخدمة في الذاكرة بخدمة EF Core دون لمس الـ Controller.",
+    "requirementsEn": [
+      "[ApiController] and [Route(\"api/[controller]\")] on the controller.",
+      "Request DTOs use [Required], [StringLength] and [Range].",
+      "POST returns CreatedAtAction(nameof(GetById), new { id }, dto).",
+      "The controller depends on IProductService through its constructor."
+    ],
+    "requirementsAr": [
+      "[ApiController] و[Route(\"api/[controller]\")] على الـ Controller.",
+      "تستخدم DTOs الطلبات [Required] و[StringLength] و[Range].",
+      "يُرجع POST القيمة CreatedAtAction(nameof(GetById), new { id }, dto).",
+      "يعتمد الـ Controller على IProductService عبر الـ Constructor."
+    ],
+    "acceptanceEn": [
+      "GET /api/products returns 200 with a JSON array.",
+      "GET /api/products/999 returns 404.",
+      "POST with an empty name returns 400 with a validation problem.",
+      "POST with valid data returns 201 and a Location header.",
+      "PUT and DELETE return 204, or 404 for an unknown id."
+    ],
+    "acceptanceAr": [
+      "GET /api/products يُرجع 200 مع مصفوفة JSON.",
+      "GET /api/products/999 يُرجع 404.",
+      "POST باسم فارغ يُرجع 400 مع Validation problem.",
+      "POST ببيانات صحيحة يُرجع 201 وترويسة Location.",
+      "PUT وDELETE يُرجعان 204، أو 404 لرقم غير معروف."
+    ]
+  },
+  {
+    "key": "api-lab-problem-details",
+    "type": "Practical",
+    "topic": "api-error-handling",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "Consistent errors with ProblemDetails",
+    "titleAr": "أخطاء موحّدة باستخدام ProblemDetails",
+    "problemEn": "Right now an exception in the API returns an HTML error page or a stack trace. Add global error handling: register AddProblemDetails() and an IExceptionHandler (GlobalExceptionHandler) that turns NotFoundException into 404, ConflictException into 409 and anything else into 500 — always as a ProblemDetails JSON body with a title and the request’s traceId, and without exception details for 500s. Log unexpected exceptions with ILogger.",
+    "problemAr": "حاليًا يُرجع أي استثناء في الـ API صفحة خطأ HTML أو Stack trace. أضف معالجة عامة للأخطاء: سجّل AddProblemDetails() وIExceptionHandler باسم GlobalExceptionHandler يحوّل NotFoundException إلى 404، وConflictException إلى 409، وأي شيء آخر إلى 500 — دائمًا كجسم JSON من نوع ProblemDetails بعنوان وبـ traceId الخاص بالطلب، ودون تفاصيل الاستثناء في حالات 500. وسجّل الاستثناءات غير المتوقعة بـ ILogger.",
+    "expectedEn": "GET /api/orders/999 returns 404 application/problem+json; an unexpected failure returns 500 with a generic message and the full exception only in the logs.",
+    "expectedAr": "GET /api/orders/999 يُرجع 404 من نوع application/problem+json، والفشل غير المتوقع يُرجع 500 برسالة عامة، والاستثناء الكامل في السجلات فقط.",
+    "hintsEn": [
+      "public async ValueTask<bool> TryHandleAsync(HttpContext http, Exception ex, CancellationToken ct)",
+      "var (status, title) = ex switch { NotFoundException => (404, ex.Message), ConflictException => (409, ex.Message), _ => (500, \"An unexpected error occurred.\") };",
+      "Return problemDetails.TryWriteAsync(new ProblemDetailsContext { HttpContext = http, ProblemDetails = { Status = status, Title = title }, Exception = ex });"
+    ],
+    "hintsAr": [
+      "public async ValueTask<bool> TryHandleAsync(HttpContext http, Exception ex, CancellationToken ct)",
+      "var (status, title) = ex switch { NotFoundException => (404, ex.Message), ConflictException => (409, ex.Message), _ => (500, \"An unexpected error occurred.\") };",
+      "أرجع problemDetails.TryWriteAsync(new ProblemDetailsContext { HttpContext = http, ProblemDetails = { Status = status, Title = title }, Exception = ex });"
+    ],
+    "solutionEn": "Centralising error handling keeps controllers free of try/catch, gives clients one predictable error format (RFC 9457 ProblemDetails) and stops internal details from leaking. Expected failures become 4xx with a useful message; unexpected ones become a generic 500 that you investigate through the logs and the traceId.",
+    "solutionAr": "توحيد معالجة الأخطاء يحرر الـ Controllers من try/catch، ويعطي العملاء شكل خطأ واحدًا متوقعًا (ProblemDetails وفق RFC 9457)، ويمنع تسرّب التفاصيل الداخلية. فالأخطاء المتوقعة تصبح 4xx برسالة مفيدة، وغير المتوقعة تصبح 500 عامة تحقق فيها عبر السجلات والـ traceId.",
+    "requirementsEn": [
+      "Program.cs calls AddProblemDetails(), AddExceptionHandler<GlobalExceptionHandler>() and app.UseExceptionHandler().",
+      "GlobalExceptionHandler implements IExceptionHandler and uses IProblemDetailsService to write the response.",
+      "Domain exceptions (NotFoundException, ConflictException) map to 404 and 409.",
+      "500 responses never include the exception message or stack trace."
+    ],
+    "requirementsAr": [
+      "يستدعي Program.cs كلًا من AddProblemDetails() وAddExceptionHandler<GlobalExceptionHandler>() وapp.UseExceptionHandler().",
+      "ينفّذ GlobalExceptionHandler الواجهة IExceptionHandler ويستخدم IProblemDetailsService لكتابة الاستجابة.",
+      "استثناءات النطاق (NotFoundException وConflictException) تتحول إلى 404 و409.",
+      "استجابات 500 لا تتضمن رسالة الاستثناء ولا الـ Stack trace أبدًا."
+    ],
+    "acceptanceEn": [
+      "A missing order returns 404 with a ProblemDetails body.",
+      "A duplicate returns 409.",
+      "Any other exception returns 500 with a generic title.",
+      "Every error response includes a traceId.",
+      "The unexpected exception is logged."
+    ],
+    "acceptanceAr": [
+      "الطلب غير الموجود يُرجع 404 بجسم ProblemDetails.",
+      "التكرار يُرجع 409.",
+      "أي استثناء آخر يُرجع 500 بعنوان عام.",
+      "كل استجابة خطأ تتضمن traceId.",
+      "يُسجَّل الاستثناء غير المتوقع."
+    ]
+  },
+  {
+    "key": "api-lab-jwt-auth",
+    "type": "Practical",
+    "topic": "api-authentication",
+    "difficulty": "Advanced",
+    "minutes": 90,
+    "titleEn": "Register, log in and protect endpoints with JWT",
+    "titleAr": "التسجيل والدخول وحماية الـ Endpoints باستخدام JWT",
+    "problemEn": "Add authentication to the API: POST /api/auth/register stores a user with a hashed password (PasswordHasher<User>, never the plain password); POST /api/auth/login checks the password and returns a signed JWT (1 hour, with the user id, email and role as claims); GET /api/me requires a valid token; GET /api/admin/stats requires the Admin role. The signing key comes from configuration (user secrets in development, an environment variable in production) — never from source code.",
+    "problemAr": "أضف المصادقة إلى الـ API: يخزّن POST /api/auth/register مستخدمًا بكلمة مرور مُجزّأة (PasswordHasher<User>، وليس كلمة المرور الصريحة أبدًا)؛ ويتحقق POST /api/auth/login من كلمة المرور ويُرجع JWT موقّعًا (لمدة ساعة، مع رقم المستخدم وبريده ودوره كـ Claims)؛ ويتطلب GET /api/me توكنًا صحيحًا؛ ويتطلب GET /api/admin/stats دور Admin. ويأتي مفتاح التوقيع من الإعدادات (User secrets أثناء التطوير، ومتغير بيئة في الإنتاج) — لا من الكود أبدًا.",
+    "expectedEn": "Without a token /api/me returns 401; with a user token /api/admin/stats returns 403; with an admin token it returns 200.",
+    "expectedAr": "دون توكن يُرجع /api/me الرمز 401، ومع توكن مستخدم عادي يُرجع /api/admin/stats الرمز 403، ومع توكن مدير يُرجع 200.",
+    "hintsEn": [
+      "dotnet user-secrets set \"Jwt:Key\" \"<a long random value>\"",
+      "new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(issuer, audience, claims, expires: DateTime.UtcNow.AddHours(1), signingCredentials: creds))",
+      "User.FindFirstValue(ClaimTypes.Email) reads a claim inside a controller."
+    ],
+    "hintsAr": [
+      "dotnet user-secrets set \"Jwt:Key\" \"<قيمة عشوائية طويلة>\"",
+      "new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(issuer, audience, claims, expires: DateTime.UtcNow.AddHours(1), signingCredentials: creds))",
+      "User.FindFirstValue(ClaimTypes.Email) يقرأ Claim داخل الـ Controller."
+    ],
+    "solutionEn": "Hash passwords with a slow, salted algorithm (PasswordHasher uses PBKDF2) and compare with VerifyHashedPassword. Issue short-lived signed tokens with only the claims you need, validate everything on the way in, keep keys in configuration, and use one vague error for failed logins so attackers can’t discover which emails exist.",
+    "solutionAr": "جزّئ كلمات المرور بخوارزمية بطيئة مملّحة (يستخدم PasswordHasher خوارزمية PBKDF2) وقارن بـ VerifyHashedPassword. أصدر توكنات قصيرة العمر وموقّعة بالـ Claims اللازمة فقط، وتحقق من كل شيء عند الاستقبال، واحفظ المفاتيح في الإعدادات، واستخدم رسالة واحدة غامضة لفشل الدخول حتى لا يكتشف المهاجم أي البريدات موجودة.",
+    "requirementsEn": [
+      "Passwords are hashed with PasswordHasher<User>; login uses VerifyHashedPassword.",
+      "Login failures return 401 with the same message for \"unknown email\" and \"wrong password\".",
+      "JWT settings (issuer, audience, key) are read from configuration; the key is at least 32 bytes.",
+      "AddAuthentication().AddJwtBearer(...) validates issuer, audience, lifetime and signing key.",
+      "[Authorize] and [Authorize(Roles = \"Admin\")] protect the endpoints."
+    ],
+    "requirementsAr": [
+      "تُجزّأ كلمات المرور بـ PasswordHasher<User>، ويستخدم تسجيل الدخول VerifyHashedPassword.",
+      "فشل الدخول يُرجع 401 بالرسالة نفسها لحالتي «بريد غير معروف» و«كلمة مرور خاطئة».",
+      "تُقرأ إعدادات JWT (issuer وaudience وkey) من الإعدادات، والمفتاح 32 بايت على الأقل.",
+      "يتحقق AddAuthentication().AddJwtBearer(...) من issuer وaudience والصلاحية الزمنية ومفتاح التوقيع.",
+      "تحمي [Authorize] و[Authorize(Roles = \"Admin\")] الـ Endpoints."
+    ],
+    "acceptanceEn": [
+      "Registering twice with the same email returns 409.",
+      "The stored user has a hash, not the password.",
+      "Login with correct credentials returns a token; wrong ones return 401.",
+      "/api/me returns the current user’s email from the token.",
+      "A non-admin gets 403 from the admin endpoint.",
+      "No secret appears in the source code or appsettings.json."
+    ],
+    "acceptanceAr": [
+      "التسجيل مرتين بالبريد نفسه يُرجع 409.",
+      "المستخدم المخزّن له Hash لا كلمة مرور.",
+      "الدخول ببيانات صحيحة يُرجع توكنًا، وبيانات خاطئة تُرجع 401.",
+      "يُرجع /api/me بريد المستخدم الحالي من التوكن.",
+      "المستخدم غير المدير يحصل على 403 من Endpoint المدير.",
+      "لا يظهر أي سر في الكود أو في appsettings.json."
+    ],
+    "bonusEn": [
+      "Add refresh tokens stored hashed in the database.",
+      "Lock the account for 5 minutes after 5 failed logins."
+    ],
+    "bonusAr": [
+      "أضف Refresh tokens مخزّنة مُجزّأة في قاعدة البيانات.",
+      "اقفل الحساب 5 دقائق بعد 5 محاولات دخول فاشلة."
+    ]
+  },
+  {
+    "key": "ef-lab-relationships",
+    "type": "Practical",
+    "topic": "ef-relationships",
+    "difficulty": "Intermediate",
+    "minutes": 60,
+    "titleEn": "Model relationships and create a migration",
+    "titleAr": "نمذجة العلاقات وإنشاء Migration",
+    "problemEn": "Model a small library in EF Core: an Author has many Books (one-to-many, required); a Book has many Tags and a Tag has many Books (many-to-many); each Book has one optional BookCover (one-to-one). Configure them in OnModelCreating with the Fluent API: required lengths, a unique index on Book.Isbn, cascade delete from Author to Books but not from Tag to Books, and decimal(10,2) for Book.Price. Then add a migration and look at the generated SQL.",
+    "problemAr": "نمذج مكتبة صغيرة في EF Core: للمؤلف Author عدة كتب Books (علاقة واحد لمتعدد، إلزامية)؛ وللكتاب عدة وسوم Tags وللوسم عدة كتب (متعدد لمتعدد)؛ ولكل كتاب غلاف اختياري واحد BookCover (واحد لواحد). اضبطها في OnModelCreating بالـ Fluent API: الأطوال المطلوبة، وفهرس فريد على Book.Isbn، والحذف المتتالي من Author إلى Books لكن ليس من Tag إلى Books، وdecimal(10,2) للحقل Book.Price. ثم أضف Migration واطّلع على الـ SQL الناتج.",
+    "expectedEn": "dotnet ef migrations add InitialLibrary creates the tables Authors, Books, Tags, BookCovers and a BookTag join table with the right foreign keys and index.",
+    "expectedAr": "الأمر dotnet ef migrations add InitialLibrary ينشئ الجداول Authors وBooks وTags وBookCovers وجدول الربط BookTag بالمفاتيح الأجنبية والفهرس الصحيحة.",
+    "hintsEn": [
+      "modelBuilder.Entity<Book>().HasIndex(b => b.Isbn).IsUnique();",
+      "modelBuilder.Entity<Book>().HasMany(b => b.Tags).WithMany(t => t.Books);",
+      "dotnet ef migrations script shows the SQL a migration will run."
+    ],
+    "hintsAr": [
+      "modelBuilder.Entity<Book>().HasIndex(b => b.Isbn).IsUnique();",
+      "modelBuilder.Entity<Book>().HasMany(b => b.Tags).WithMany(t => t.Books);",
+      "الأمر dotnet ef migrations script يعرض الـ SQL الذي ستنفذه الـ Migration."
+    ],
+    "solutionEn": "Conventions infer a lot, but explicit Fluent configuration documents intent: which side owns the foreign key, what happens on delete, which columns are unique and how big text and decimal columns are. Always read the generated migration — it’s the SQL that will run against production.",
+    "solutionAr": "تستنتج الاصطلاحات الكثير، لكن إعداد Fluent الصريح يوثّق النية: أي طرف يملك المفتاح الأجنبي، وماذا يحدث عند الحذف، وأي الأعمدة فريدة، وما حجم الأعمدة النصية والعشرية. واقرأ دائمًا الـ Migration المولّدة — فهي الـ SQL الذي سيُنفّذ على الإنتاج.",
+    "requirementsEn": [
+      "Navigation properties on both sides of every relationship.",
+      "Fluent configuration in OnModelCreating (HasMany/WithOne, HasMany/WithMany, HasOne/WithOne).",
+      "A unique index on Isbn and max lengths on text columns.",
+      "A migration generated with dotnet ef and reviewed before applying."
+    ],
+    "requirementsAr": [
+      "خصائص التنقل على طرفي كل علاقة.",
+      "إعداد Fluent في OnModelCreating (HasMany/WithOne وHasMany/WithMany وHasOne/WithOne).",
+      "فهرس فريد على Isbn وأطوال قصوى للأعمدة النصية.",
+      "Migration مولّدة بـ dotnet ef ومراجَعة قبل التطبيق."
+    ],
+    "acceptanceEn": [
+      "The migration creates five tables including the join table.",
+      "Deleting an author deletes their books; deleting a tag keeps the books.",
+      "Inserting two books with the same ISBN fails.",
+      "Prices are stored as decimal(10,2)."
+    ],
+    "acceptanceAr": [
+      "تنشئ الـ Migration خمسة جداول منها جدول الربط.",
+      "حذف مؤلف يحذف كتبه، وحذف وسم يُبقي الكتب.",
+      "إدخال كتابين بنفس ISBN يفشل.",
+      "تُخزّن الأسعار بنوع decimal(10,2)."
+    ]
+  },
+  {
+    "key": "ef-lab-n-plus-one",
+    "type": "Debugging",
+    "topic": "ef-n-plus-one",
+    "difficulty": "Advanced",
+    "minutes": 30,
+    "titleEn": "Debug: a report that sends 501 queries",
+    "titleAr": "تصحيح: تقرير يرسل 501 استعلامًا",
+    "problemEn": "The order report endpoint takes several seconds. With logging of SQL commands turned on you see one query for the orders and then one more for every order’s customer and lines — the N+1 problem (lazy loading is enabled). Rewrite GetReport so it runs a single query that returns only the fields the report needs, read-only.",
+    "problemAr": "يستغرق Endpoint تقرير الطلبات عدة ثوانٍ. وعند تفعيل تسجيل أوامر SQL ترى استعلامًا واحدًا للطلبات ثم استعلامًا إضافيًا لعميل كل طلب وأسطره — وهي مشكلة N+1 (التحميل الكسول مفعّل). أعد كتابة GetReport لتنفذ استعلامًا واحدًا يُرجع الحقول التي يحتاجها التقرير فقط، للقراءة فقط.",
+    "expectedEn": "The report returns the same data with one SQL query instead of 1 + N, and nothing is tracked by the DbContext.",
+    "expectedAr": "يُرجع التقرير البيانات نفسها باستعلام SQL واحد بدلًا من 1 + N، ولا يتتبع الـ DbContext أي شيء.",
+    "hintsEn": [
+      "Look for navigation properties (order.Customer, order.Lines) used inside the foreach.",
+      "Projection: .Select(o => new OrderReportRow(o.Id, o.Customer.Name, o.Lines.Sum(l => l.Quantity * l.UnitPrice)))",
+      "optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information) prints every SQL command."
+    ],
+    "hintsAr": [
+      "ابحث عن خصائص التنقل (order.Customer وorder.Lines) المستخدمة داخل foreach.",
+      "الإسقاط: .Select(o => new OrderReportRow(o.Id, o.Customer.Name, o.Lines.Sum(l => l.Quantity * l.UnitPrice)))",
+      "optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information) يطبع كل أوامر SQL."
+    ],
+    "solutionEn": "Lazy loading hides a query behind each navigation property access, so a loop over N orders becomes N extra round-trips. A projection translates to one SQL statement with joins and a SUM, returns only the needed columns, and doesn’t create tracked entities at all. Include() would also remove the N+1 but loads whole entities.",
+    "solutionAr": "يخفي التحميل الكسول استعلامًا خلف كل وصول إلى خاصية تنقل، فتصبح حلقة على N طلب N رحلة إضافية إلى قاعدة البيانات. أما الإسقاط فيُترجم إلى عبارة SQL واحدة بـ Joins وSUM، ويُرجع الأعمدة المطلوبة فقط، ولا ينشئ كيانات متتبَّعة أصلًا. وInclude() يزيل مشكلة N+1 أيضًا لكنه يحمّل الكيانات كاملة.",
+    "requirementsEn": [
+      "No database access inside the loop.",
+      "A Select projection into OrderReportRow (computed total included).",
+      "AsNoTracking() is unnecessary with a projection — explain why in a comment.",
+      "Verify the query count in the log (LogTo(Console.WriteLine) or an interceptor)."
+    ],
+    "requirementsAr": [
+      "لا وصول إلى قاعدة البيانات داخل الحلقة.",
+      "إسقاط Select إلى OrderReportRow (مع الإجمالي المحسوب).",
+      "AsNoTracking() غير ضروري مع الإسقاط — اشرح السبب في تعليق.",
+      "تحقق من عدد الاستعلامات في السجل (LogTo(Console.WriteLine) أو Interceptor)."
+    ],
+    "acceptanceEn": [
+      "The endpoint issues exactly one SELECT.",
+      "The output is unchanged.",
+      "No entities are loaded — only the needed columns."
+    ],
+    "acceptanceAr": [
+      "يُصدر الـ Endpoint استعلام SELECT واحدًا بالضبط.",
+      "المخرجات لم تتغير.",
+      "لا تُحمّل أي كيانات — فقط الأعمدة المطلوبة."
+    ]
+  },
+  {
+    "key": "ef-lab-concurrency",
+    "type": "Practical",
+    "topic": "ef-concurrency",
+    "difficulty": "Advanced",
+    "minutes": 50,
+    "titleEn": "Optimistic concurrency with a row version",
+    "titleAr": "التزامن المتفائل باستخدام Row version",
+    "problemEn": "Two admins open the same product and both save a new price: the second save silently overwrites the first. Add optimistic concurrency: a RowVersion column ([Timestamp] byte[]) on Product, send it to the client in the DTO (as base64), require it back in the update request, and set it as the original value before SaveChanges. When EF throws DbUpdateConcurrencyException, return 409 Conflict with the current values so the UI can show them.",
+    "problemAr": "يفتح مديران المنتج نفسه ويحفظ كلاهما سعرًا جديدًا: فيستبدل الحفظ الثاني الأول بصمت. أضف التزامن المتفائل: عمود RowVersion ([Timestamp] byte[]) في Product، وأرسله إلى العميل في الـ DTO (بصيغة base64)، واطلبه مرة أخرى في طلب التحديث، واضبطه كقيمة أصلية قبل SaveChanges. وعندما يرمي EF استثناء DbUpdateConcurrencyException أرجع 409 Conflict مع القيم الحالية لتعرضها الواجهة.",
+    "expectedEn": "Two updates using the same version: the first returns 204, the second returns 409 with the latest price.",
+    "expectedAr": "تحديثان بنفس الإصدار: الأول يُرجع 204، والثاني يُرجع 409 مع أحدث سعر.",
+    "hintsEn": [
+      "Convert.FromBase64String(request.Version)",
+      "catch (DbUpdateConcurrencyException) { var current = await db.Products.AsNoTracking().FirstAsync(p => p.Id == id); return Conflict(ToDto(current)); }"
+    ],
+    "hintsAr": [
+      "Convert.FromBase64String(request.Version)",
+      "catch (DbUpdateConcurrencyException) { var current = await db.Products.AsNoTracking().FirstAsync(p => p.Id == id); return Conflict(ToDto(current)); }"
+    ],
+    "solutionEn": "SQL Server updates the rowversion on every write. EF adds WHERE RowVersion = @original to the UPDATE; if another save changed the row, zero rows are affected and EF throws. Returning 409 with the latest data lets the user decide instead of losing someone’s work.",
+    "solutionAr": "يحدّث SQL Server قيمة rowversion مع كل كتابة. ويضيف EF الشرط WHERE RowVersion = @original إلى UPDATE؛ فإن غيّر حفظ آخر الصف تتأثر صفر صفوف ويرمي EF استثناءً. وإرجاع 409 مع أحدث البيانات يترك القرار للمستخدم بدلًا من ضياع عمل أحدهم.",
+    "requirementsEn": [
+      "Product has [Timestamp] public byte[] RowVersion.",
+      "ProductDto and UpdateProductRequest carry the version as a base64 string.",
+      "The update sets Entry(product).Property(p => p.RowVersion).OriginalValue to the client’s version.",
+      "DbUpdateConcurrencyException is caught and turned into 409 with the current data."
+    ],
+    "requirementsAr": [
+      "في Product الخاصية [Timestamp] public byte[] RowVersion.",
+      "يحمل ProductDto وUpdateProductRequest الإصدار كنص base64.",
+      "يضبط التحديث Entry(product).Property(p => p.RowVersion).OriginalValue على إصدار العميل.",
+      "يُلتقط DbUpdateConcurrencyException ويتحول إلى 409 مع البيانات الحالية."
+    ],
+    "acceptanceEn": [
+      "A normal update succeeds and returns a new version.",
+      "An update with an old version returns 409.",
+      "The 409 body includes the current price and version.",
+      "No update is lost silently."
+    ],
+    "acceptanceAr": [
+      "التحديث العادي ينجح ويُرجع إصدارًا جديدًا.",
+      "التحديث بإصدار قديم يُرجع 409.",
+      "جسم الاستجابة 409 يتضمن السعر والإصدار الحاليين.",
+      "لا يضيع أي تحديث بصمت."
+    ]
+  },
+  {
+    "key": "con-iqueryable-ienumerable",
+    "type": "Conceptual",
+    "topic": "ef-iqueryable-ienumerable",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "IQueryable or IEnumerable?",
+    "titleAr": "IQueryable أم IEnumerable؟",
+    "problemEn": "Explain in your own words the difference between these two lines and what SQL each sends to the database:\n\nvar a = db.Orders.Where(o => o.Total > 100).ToList();\nvar b = db.Orders.ToList().Where(o => o.Total > 100).ToList();\n\nThen say which one a repository method should return to a service, and why calling AsEnumerable() too early is a performance bug.",
+    "problemAr": "اشرح بأسلوبك الفرق بين هذين السطرين وما يرسله كل منهما من SQL إلى قاعدة البيانات:\n\nvar a = db.Orders.Where(o => o.Total > 100).ToList();\nvar b = db.Orders.ToList().Where(o => o.Total > 100).ToList();\n\nثم بيّن ما يجب أن تُرجعه دالة في الـ Repository إلى الخدمة ولماذا، ولماذا يُعد استدعاء AsEnumerable() مبكرًا خطأً في الأداء.",
+    "expectedEn": "An explanation that a filters in SQL (WHERE Total > 100) while b loads every order into memory and filters in C#, plus a reasoned recommendation.",
+    "expectedAr": "شرح أن a تصفّي في SQL (WHERE Total > 100) بينما تحمّل b كل الطلبات في الذاكرة وتصفّي في C#، مع توصية مبرَّرة.",
+    "hintsEn": [
+      "IQueryable builds an expression tree that EF translates to SQL when you enumerate it.",
+      "After ToList() or AsEnumerable(), the rest of the query runs in your process."
+    ],
+    "hintsAr": [
+      "يبني IQueryable شجرة تعبيرات يترجمها EF إلى SQL عند التكرار عليها.",
+      "بعد ToList() أو AsEnumerable() يعمل باقي الاستعلام داخل عمليتك."
+    ],
+    "solutionEn": "IQueryable<T> represents a query that hasn’t run yet; EF translates the whole chain to SQL at ToList(). In a the WHERE is part of the SQL, so only matching rows travel over the network. In b, ToList() runs SELECT * FROM Orders first and the filter runs in memory — fine for 10 rows, disastrous for a million. Return IQueryable only inside the data layer (or accept filter parameters), and materialise once, after filtering, sorting and paging.",
+    "solutionAr": "يمثل IQueryable<T> استعلامًا لم يُنفذ بعد، ويترجم EF السلسلة كلها إلى SQL عند ToList(). في a يكون WHERE جزءًا من الـ SQL فتنتقل الصفوف المطابقة فقط عبر الشبكة. وفي b ينفذ ToList() أولًا SELECT * FROM Orders ثم تعمل التصفية في الذاكرة — مقبول مع 10 صفوف وكارثي مع مليون. أرجع IQueryable داخل طبقة البيانات فقط (أو استقبل معاملات التصفية)، ونفّذ الاستعلام مرة واحدة بعد التصفية والترتيب والتقسيم."
+  },
+  {
+    "key": "con-service-lifetimes",
+    "type": "Conceptual",
+    "topic": "api-service-lifetimes",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "Singleton, scoped or transient?",
+    "titleAr": "Singleton أم Scoped أم Transient؟",
+    "problemEn": "For each service choose a lifetime and justify it: (1) the EF Core DbContext; (2) an in-memory cache of country names loaded at startup; (3) a stateless PriceCalculator; (4) a CurrentUser service that reads the user from the request; (5) an EmailSender that uses an HttpClient. Then explain what goes wrong if a singleton depends on a scoped DbContext (a \"captive dependency\").",
+    "problemAr": "لكل خدمة اختر مدة حياة وبرّر اختيارك: (1) الـ DbContext في EF Core؛ (2) ذاكرة مؤقتة لأسماء الدول تُحمّل عند بدء التشغيل؛ (3) PriceCalculator بلا حالة؛ (4) خدمة CurrentUser تقرأ المستخدم من الطلب؛ (5) EmailSender تستخدم HttpClient. ثم اشرح ما الخطأ إذا اعتمدت خدمة Singleton على DbContext من نوع Scoped (ما يُسمى Captive dependency).",
+    "expectedEn": "A lifetime per service with a one-line reason each, and a clear explanation of the captive dependency problem.",
+    "expectedAr": "مدة حياة لكل خدمة مع سبب في سطر واحد، وشرح واضح لمشكلة Captive dependency.",
+    "hintsEn": [
+      "Scoped = one instance per HTTP request.",
+      "A singleton lives for the whole app; whatever it holds lives as long as it does."
+    ],
+    "hintsAr": [
+      "Scoped = نسخة واحدة لكل طلب HTTP.",
+      "تعيش خدمة Singleton طوال عمر التطبيق، وكل ما تحمله يعيش بقدر عمرها."
+    ],
+    "solutionEn": "DbContext: scoped (it isn’t thread-safe and tracks entities per unit of work). Country cache: singleton (shared, read-only data). PriceCalculator: transient or singleton (no state). CurrentUser: scoped (it belongs to one request). EmailSender: transient or scoped, registered with AddHttpClient so the handler pool is managed for you. A singleton that captures a scoped DbContext keeps one context for the app’s lifetime: shared across threads (crashes), never disposed, and full of stale tracked entities. ASP.NET Core’s scope validation throws at startup in Development to catch it.",
+    "solutionAr": "الـ DbContext: Scoped (ليس آمنًا مع الخيوط المتعددة ويتتبع الكيانات لكل وحدة عمل). ذاكرة الدول: Singleton (بيانات مشتركة للقراءة فقط). PriceCalculator: Transient أو Singleton (بلا حالة). CurrentUser: Scoped (تخص طلبًا واحدًا). EmailSender: Transient أو Scoped، وتُسجَّل بـ AddHttpClient ليُدار مخزون الـ Handlers نيابة عنك. والـ Singleton التي تلتقط DbContext من نوع Scoped تحتفظ بـ Context واحد طوال عمر التطبيق: مشترك بين الخيوط (فينهار)، ولا يُتخلص منه أبدًا، ومليء بكيانات متتبَّعة قديمة. ويرمي التحقق من النطاقات في ASP.NET Core استثناءً عند بدء التشغيل في بيئة Development لاكتشاف ذلك."
+  },
+  {
+    "key": "con-authn-authz",
+    "type": "Conceptual",
+    "topic": "api-authorization",
+    "difficulty": "Beginner",
+    "minutes": 10,
+    "titleEn": "Authentication vs authorization",
+    "titleAr": "المصادقة مقابل التفويض",
+    "problemEn": "Explain the difference between authentication and authorization with an example from an online shop. Then say which HTTP status code each failure returns (401 or 403) and why the order of app.UseAuthentication() and app.UseAuthorization() matters.",
+    "problemAr": "اشرح الفرق بين المصادقة (Authentication) والتفويض (Authorization) بمثال من متجر إلكتروني. ثم بيّن رمز الحالة الذي يُرجعه كل فشل (401 أو 403)، ولماذا يهم ترتيب app.UseAuthentication() وapp.UseAuthorization().",
+    "expectedEn": "Authentication = who you are; authorization = what you’re allowed to do; 401 vs 403; authentication must run first.",
+    "expectedAr": "المصادقة = من أنت؛ والتفويض = ما المسموح لك فعله؛ و401 مقابل 403؛ ويجب أن تعمل المصادقة أولًا.",
+    "hintsEn": [
+      "Logging in is authentication; \"only admins can refund orders\" is authorization."
+    ],
+    "hintsAr": [
+      "تسجيل الدخول مصادقة، و«المدير وحده يمكنه استرداد الطلبات» تفويض."
+    ],
+    "solutionEn": "Authentication proves identity (logging in, validating a token) — failing it returns 401 Unauthorized (\"we don’t know who you are\"). Authorization decides whether that identity may do something (only the order’s owner can view it; only admins can refund) — failing it returns 403 Forbidden. Authorization needs the user that authentication produced, so UseAuthentication must come before UseAuthorization in the pipeline.",
+    "solutionAr": "تثبت المصادقة الهوية (تسجيل الدخول، التحقق من التوكن) — وفشلها يُرجع 401 Unauthorized («لا نعرف من أنت»). ويقرر التفويض هل يحق لهذه الهوية فعل شيء (صاحب الطلب وحده يراه، والمدير وحده يسترد المبلغ) — وفشله يُرجع 403 Forbidden. ويحتاج التفويض إلى المستخدم الذي أنتجته المصادقة، لذلك يجب أن يأتي UseAuthentication قبل UseAuthorization في السلسلة."
+  },
+  {
+    "key": "con-rest-design",
+    "type": "Conceptual",
+    "topic": "api-http-rest",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Design the endpoints of a REST API",
+    "titleAr": "صمّم الـ Endpoints لواجهة REST",
+    "problemEn": "Design the endpoints for a library API with books, members and loans. For each operation write the HTTP method, the URL and the success status code: list books with search and paging; get one book; add a book; change a book; remove a book; list a member’s loans; borrow a book; return a book. Avoid verbs in URLs.",
+    "problemAr": "صمّم الـ Endpoints لواجهة مكتبة فيها كتب وأعضاء وإعارات. لكل عملية اكتب طريقة HTTP والرابط ورمز حالة النجاح: عرض الكتب مع البحث وتقسيم الصفحات؛ وجلب كتاب واحد؛ وإضافة كتاب؛ وتعديل كتاب؛ وحذف كتاب؛ وعرض إعارات عضو؛ واستعارة كتاب؛ وإرجاع كتاب. تجنب الأفعال في الروابط.",
+    "expectedEn": "A table such as GET /api/books?search=&page= → 200, POST /api/books → 201, DELETE /api/books/{id} → 204, POST /api/members/{id}/loans → 201 …",
+    "expectedAr": "جدول مثل GET /api/books?search=&page= ← 200، وPOST /api/books ← 201، وDELETE /api/books/{id} ← 204، وPOST /api/members/{id}/loans ← 201 …",
+    "hintsEn": [
+      "Resources are nouns; the HTTP method is the verb.",
+      "Returning a book can be modelled as updating the loan (PATCH /api/loans/{id} with returnedAt) or deleting it — pick one and justify it."
+    ],
+    "hintsAr": [
+      "الموارد أسماء، وطريقة HTTP هي الفعل.",
+      "يمكن تمثيل إرجاع الكتاب كتحديث للإعارة (PATCH /api/loans/{id} مع returnedAt) أو كحذفها — اختر واحدًا وبرّره."
+    ],
+    "solutionEn": "GET /api/books?search=&page=&pageSize= (200), GET /api/books/{id} (200/404), POST /api/books (201 + Location), PUT /api/books/{id} (204), DELETE /api/books/{id} (204), GET /api/members/{id}/loans (200), POST /api/members/{id}/loans { bookId } (201, or 409 when the book is already on loan), PATCH /api/loans/{id} { returnedAt } (204). Keeping loans as a resource preserves the history instead of deleting it.",
+    "solutionAr": "GET /api/books?search=&page=&pageSize= (200)، وGET /api/books/{id} (200 أو 404)، وPOST /api/books (201 مع Location)، وPUT /api/books/{id} (204)، وDELETE /api/books/{id} (204)، وGET /api/members/{id}/loans (200)، وPOST /api/members/{id}/loans مع { bookId } (201، أو 409 إذا كان الكتاب معارًا بالفعل)، وPATCH /api/loans/{id} مع { returnedAt } (204). وإبقاء الإعارات كمورد يحفظ السجل بدلًا من حذفه."
+  },
+  {
+    "key": "con-signals-vs-observables",
+    "type": "Conceptual",
+    "topic": "ng-rxjs",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "Signals or observables?",
+    "titleAr": "Signals أم Observables؟",
+    "problemEn": "In Angular, when do you use a signal and when an RxJS observable? Classify these and explain: (1) the selected tab; (2) a search box that calls the API as you type; (3) the total of a cart; (4) a WebSocket stream of notifications; (5) the result of one HTTP GET shown in a template.",
+    "problemAr": "في Angular، متى تستخدم Signal ومتى تستخدم Observable من RxJS؟ صنّف ما يلي واشرح: (1) التبويب المختار؛ (2) مربع بحث يستدعي الـ API أثناء الكتابة؛ (3) إجمالي السلة؛ (4) تدفق إشعارات عبر WebSocket؛ (5) نتيجة طلب HTTP GET واحد تُعرض في القالب.",
+    "expectedEn": "Signals for synchronous state and derived values; observables for events over time and async streams, bridged with toSignal where the template needs them.",
+    "expectedAr": "الـ Signals للحالة المتزامنة والقيم المشتقة، والـ Observables للأحداث عبر الزمن والتدفقات غير المتزامنة، مع ربطها بـ toSignal حيث يحتاجها القالب.",
+    "hintsEn": [
+      "A signal always has a current value; an observable is a stream of values over time.",
+      "Operators like debounceTime and switchMap only exist for observables."
+    ],
+    "hintsAr": [
+      "للـ Signal قيمة حالية دائمًا، أما الـ Observable فتدفق قيم عبر الزمن.",
+      "عوامل مثل debounceTime وswitchMap موجودة للـ Observables فقط."
+    ],
+    "solutionEn": "Selected tab and cart total: signals (state + computed). Search box: an observable pipeline (debounceTime, distinctUntilChanged, switchMap) exposed to the template with toSignal. WebSocket notifications: observable (a stream with no \"current value\"). One HTTP GET: either — subscribe and set a signal, or toSignal(http.get(...)). Rule of thumb: signals hold state, observables model time.",
+    "solutionAr": "التبويب المختار وإجمالي السلة: Signals (حالة + computed). مربع البحث: سلسلة Observable (debounceTime وdistinctUntilChanged وswitchMap) تُعرض للقالب بـ toSignal. إشعارات WebSocket: Observable (تدفق بلا «قيمة حالية»). طلب HTTP GET واحد: أيهما — اشترك واضبط Signal، أو toSignal(http.get(...)). والقاعدة: الـ Signals تحمل الحالة، والـ Observables تمثل الزمن."
+  },
+  {
+    "key": "con-index-tradeoffs",
+    "type": "Conceptual",
+    "topic": "sql-indexing",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "When does an index help?",
+    "titleAr": "متى يفيد الفهرس؟",
+    "problemEn": "The Orders table has 5 million rows. For each query say whether an index helps and which one: (1) WHERE CustomerId = 42; (2) WHERE YEAR(CreatedAt) = 2026; (3) WHERE Status = 'Paid' when 95% of orders are paid; (4) WHERE Email LIKE '%@gmail.com'; (5) WHERE CustomerId = 42 ORDER BY CreatedAt DESC. Then name two costs of adding indexes.",
+    "problemAr": "في جدول Orders خمسة ملايين صف. لكل استعلام قل هل يفيد الفهرس وأي فهرس: (1) WHERE CustomerId = 42؛ (2) WHERE YEAR(CreatedAt) = 2026؛ (3) WHERE Status = 'Paid' حين يكون 95% من الطلبات مدفوعة؛ (4) WHERE Email LIKE '%@gmail.com'؛ (5) WHERE CustomerId = 42 ORDER BY CreatedAt DESC. ثم اذكر تكلفتين لإضافة الفهارس.",
+    "expectedEn": "A judgement per query, the rewrite for (2) and (4) where possible, a composite index for (5), and the write/storage costs.",
+    "expectedAr": "حكم لكل استعلام، وإعادة صياغة (2) و(4) حيث أمكن، وفهرس مركّب لـ (5)، وتكاليف الكتابة والتخزين.",
+    "hintsEn": [
+      "A function on a column (YEAR(CreatedAt)) prevents an index seek — rewrite as a range.",
+      "An index helps when it filters out most rows."
+    ],
+    "hintsAr": [
+      "استخدام دالة على العمود (YEAR(CreatedAt)) يمنع البحث بالفهرس — أعد صياغته كنطاق.",
+      "يفيد الفهرس عندما يستبعد معظم الصفوف."
+    ],
+    "solutionEn": "(1) Yes: index on CustomerId (seek). (2) Not as written; rewrite as CreatedAt >= '2026-01-01' AND CreatedAt < '2027-01-01' and index CreatedAt. (3) Barely: the predicate isn’t selective, so a scan is cheaper; a filtered index on the rare statuses helps the opposite query. (4) No: a leading wildcard can’t seek; store the domain in its own column or use full-text search. (5) A composite index (CustomerId, CreatedAt DESC) serves both the filter and the sort. Costs: every INSERT/UPDATE/DELETE must maintain each index, and indexes use disk and memory.",
+    "solutionAr": "(1) نعم: فهرس على CustomerId (Seek). (2) ليس بصيغته الحالية؛ أعد كتابته CreatedAt >= '2026-01-01' AND CreatedAt < '2027-01-01' وافهرس CreatedAt. (3) بالكاد: الشرط غير انتقائي فيكون المسح أرخص، والفهرس المفلتر على الحالات النادرة يفيد الاستعلام المعاكس. (4) لا: البدء بـ % يمنع الـ Seek؛ خزّن النطاق في عمود مستقل أو استخدم البحث النصي الكامل. (5) فهرس مركّب (CustomerId, CreatedAt DESC) يخدم التصفية والترتيب معًا. التكاليف: كل INSERT وUPDATE وDELETE يجب أن يحدّث كل فهرس، والفهارس تستهلك القرص والذاكرة."
+  },
+  {
+    "key": "con-test-pyramid",
+    "type": "Conceptual",
+    "topic": "test-strategy",
+    "difficulty": "Intermediate",
+    "minutes": 15,
+    "titleEn": "What would you test, and how?",
+    "titleAr": "ماذا ستختبر، وكيف؟",
+    "problemEn": "You’re adding \"apply a discount code at checkout\" to a shop (Angular + ASP.NET Core + SQL Server). List the tests you’d write, grouped as unit, integration and end-to-end, with one example each, and explain why most tests should be unit tests.",
+    "problemAr": "تضيف ميزة «تطبيق كود خصم عند الدفع» إلى متجر (Angular + ASP.NET Core + SQL Server). اذكر الاختبارات التي ستكتبها مقسمة إلى Unit وIntegration وEnd-to-end مع مثال لكل نوع، واشرح لماذا يجب أن تكون معظم الاختبارات Unit tests.",
+    "expectedEn": "Unit tests for the discount rules, integration tests for the endpoint + database, a few end-to-end tests for the checkout flow, with the reasoning of the test pyramid.",
+    "expectedAr": "اختبارات Unit لقواعد الخصم، واختبارات Integration للـ Endpoint مع قاعدة البيانات، وبضعة اختبارات End-to-end لمسار الدفع، مع تعليل هرم الاختبارات.",
+    "hintsEn": [
+      "Unit tests are fast and pinpoint failures; end-to-end tests are slow and brittle but prove the whole flow."
+    ],
+    "hintsAr": [
+      "اختبارات Unit سريعة وتحدد مكان الفشل بدقة، واختبارات End-to-end بطيئة وهشة لكنها تثبت المسار كاملًا."
+    ],
+    "solutionEn": "Unit: DiscountCalculator — percentage vs fixed, expired codes, minimum order, never below zero (many fast cases). Integration: POST /api/cart/discount with WebApplicationFactory and a test database — 200 with the new total, 400 for an invalid code, 404 for an unknown cart. Angular: the checkout component shows the error message from a 400. End-to-end: one happy path (apply a code, pay) and one failure. The pyramid shape keeps the suite fast and failures easy to locate, while the few top-level tests prove the parts work together.",
+    "solutionAr": "Unit: الصنف DiscountCalculator — النسبة مقابل القيمة الثابتة، والأكواد المنتهية، والحد الأدنى للطلب، وعدم النزول تحت الصفر (حالات كثيرة سريعة). Integration: POST /api/cart/discount باستخدام WebApplicationFactory وقاعدة بيانات للاختبار — 200 مع الإجمالي الجديد، و400 لكود غير صحيح، و404 لسلة غير معروفة. Angular: يعرض مكون الدفع رسالة الخطأ القادمة من 400. End-to-end: مسار نجاح واحد (تطبيق الكود ثم الدفع) ومسار فشل واحد. شكل الهرم يبقي مجموعة الاختبارات سريعة وأماكن الفشل سهلة التحديد، بينما تثبت الاختبارات العليا القليلة أن الأجزاء تعمل معًا."
+  },
+  {
+    "key": "git-lab-commit-messages",
+    "type": "Conceptual",
+    "topic": "git-commit-quality",
+    "difficulty": "Beginner",
+    "minutes": 15,
+    "titleEn": "Rewrite bad commit messages",
+    "titleAr": "أعد كتابة رسائل Commit سيئة",
+    "problemEn": "Rewrite these commit messages so a teammate understands what changed and why from the log alone: \"fix\", \"changes\", \"wip\", \"update stuff\", \"asdf\", \"fixed the bug from yesterday\". For two of them, also write a body explaining the reason. Then say when a change should be split into several commits.",
+    "problemAr": "أعد كتابة رسائل الـ Commit هذه بحيث يفهم زميلك ما تغيّر ولماذا من السجل وحده: \"fix\" و\"changes\" و\"wip\" و\"update stuff\" و\"asdf\" و\"fixed the bug from yesterday\". ولاثنتين منها اكتب أيضًا متنًا يشرح السبب. ثم بيّن متى يجب تقسيم التغيير إلى عدة Commits.",
+    "expectedEn": "Imperative, specific subjects under ~60 characters (e.g. \"Fix total rounding for discounted orders\"), bodies that explain why, and a rule for splitting commits.",
+    "expectedAr": "عناوين بصيغة الأمر ومحددة وأقل من 60 حرفًا تقريبًا (مثل \"Fix total rounding for discounted orders\")، ومتون تشرح السبب، وقاعدة للتقسيم.",
+    "hintsEn": [
+      "Complete the sentence \"If applied, this commit will …\".",
+      "One logical change per commit: a refactor and a feature are two commits."
+    ],
+    "hintsAr": [
+      "أكمل الجملة \"If applied, this commit will …\".",
+      "تغيير منطقي واحد لكل Commit: إعادة الهيكلة والميزة Commit-ان منفصلان."
+    ],
+    "solutionEn": "Examples: \"Fix order total rounding when a discount applies\", \"Add pagination to GET /api/products\", \"Rename CustomerDto.FullName to Name\", \"Validate email format on sign-up\". A body explains the reason and side effects (\"Totals were rounded per line, so 3 × 0.335 became 1.02 instead of 1.01. Round once, on the order total.\"). Split when a commit mixes unrelated changes (formatting + a fix, a refactor + a feature) so each can be reviewed and reverted on its own.",
+    "solutionAr": "أمثلة: \"Fix order total rounding when a discount applies\"، و\"Add pagination to GET /api/products\"، و\"Rename CustomerDto.FullName to Name\"، و\"Validate email format on sign-up\". ويشرح المتن السبب والآثار الجانبية (\"كانت الإجماليات تُقرّب لكل سطر، فصار 3 × 0.335 يساوي 1.02 بدل 1.01. قرّب مرة واحدة على إجمالي الطلب.\"). وقسّم عندما يخلط الـ Commit تغييرات غير مترابطة (تنسيق + إصلاح، أو إعادة هيكلة + ميزة) ليمكن مراجعة كل منها والتراجع عنه وحده."
+  },
+  {
+    "key": "git-lab-merge-conflict",
+    "type": "Practical",
+    "topic": "git-conflicts",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Resolve a merge conflict",
+    "titleAr": "حلّ تعارض دمج",
+    "problemEn": "You merged main into your branch and Git stopped with a conflict in PriceCalculator.cs. On main, a teammate added a 14% VAT step; on your branch you added a discount parameter. Resolve the conflict so the result keeps both changes (discount first, then VAT), remove every conflict marker, and list the Git commands you’d run afterwards.",
+    "problemAr": "دمجت main في فرعك فتوقف Git بسبب تعارض في PriceCalculator.cs. في main أضاف زميل خطوة ضريبة قيمة مضافة 14%، وفي فرعك أضفت معامل خصم. حلّ التعارض بحيث تحتفظ النتيجة بالتغييرين (الخصم أولًا ثم الضريبة)، واحذف كل علامات التعارض، واذكر أوامر Git التي ستنفذها بعد ذلك.",
+    "expectedEn": "A file without <<<<<<<, ======= or >>>>>>> markers that applies the discount and then VAT, followed by git add, git commit (or git merge --continue).",
+    "expectedAr": "ملف بلا علامات <<<<<<< و======= و>>>>>>>، يطبّق الخصم ثم الضريبة، يليه git add ثم git commit (أو git merge --continue).",
+    "hintsEn": [
+      "Everything between <<<<<<< HEAD and ======= is your version; between ======= and >>>>>>> main is theirs.",
+      "Don’t just pick one side — combine the intent of both.",
+      "Build and run the tests before committing the merge."
+    ],
+    "hintsAr": [
+      "كل ما بين <<<<<<< HEAD و======= هو نسختك، وما بين ======= و>>>>>>> main هو نسختهم.",
+      "لا تختر طرفًا واحدًا فقط — اجمع هدف التغييرين.",
+      "ابنِ المشروع وشغّل الاختبارات قبل تأكيد الدمج."
+    ],
+    "solutionEn": "Read both sides, understand what each change is for, and write the combined version by hand: subtotal → minus discount → plus VAT, rounded once. Then git add PriceCalculator.cs, run the build and tests, and git commit (or git merge --continue). If it goes wrong, git merge --abort returns you to where you started.",
+    "solutionAr": "اقرأ الطرفين، وافهم هدف كل تغيير، واكتب النسخة المدمجة يدويًا: المجموع الفرعي ← ناقص الخصم ← زائد الضريبة، مع التقريب مرة واحدة. ثم git add PriceCalculator.cs، وشغّل البناء والاختبارات، ثم git commit (أو git merge --continue). وإذا ساءت الأمور فإن git merge --abort يعيدك إلى ما قبل الدمج."
+  },
+  {
+    "key": "git-lab-feature-branch",
+    "type": "Practical",
+    "topic": "git-branching",
+    "difficulty": "Beginner",
+    "minutes": 25,
+    "titleEn": "A feature branch from start to pull request",
+    "titleAr": "فرع ميزة من البداية حتى Pull request",
+    "problemEn": "Write, in order, the Git commands for this workflow and one sentence explaining each: get the latest main; create a branch for \"add product search\"; commit your work in two meaningful commits; bring in new commits that landed on main meanwhile; push the branch; open a pull request; after it’s merged, delete the branch locally and remotely.",
+    "problemAr": "اكتب بالترتيب أوامر Git لسير العمل التالي مع جملة تشرح كل أمر: احصل على أحدث main؛ وأنشئ فرعًا لميزة \"add product search\"؛ وسجّل عملك في Commit-ين ذوي معنى؛ واجلب الـ Commits الجديدة التي وصلت إلى main في الأثناء؛ وادفع الفرع؛ وافتح Pull request؛ وبعد الدمج احذف الفرع محليًا وعن بُعد.",
+    "expectedEn": "A numbered list of commands (git switch main, git pull, git switch -c feature/product-search, git add -p, git commit, git fetch + git merge origin/main or git rebase, git push -u origin …, gh pr create, git branch -d, git push origin --delete …) with explanations.",
+    "expectedAr": "قائمة مرقمة بالأوامر (git switch main، وgit pull، وgit switch -c feature/product-search، وgit add -p، وgit commit، وgit fetch + git merge origin/main أو git rebase، وgit push -u origin …، وgh pr create، وgit branch -d، وgit push origin --delete …) مع الشرح.",
+    "hintsEn": [
+      "git switch -c <name> creates and switches in one step.",
+      "git push -u sets the upstream so later pushes need no arguments."
+    ],
+    "hintsAr": [
+      "git switch -c <name> ينشئ الفرع وينتقل إليه في خطوة واحدة.",
+      "git push -u يضبط الـ Upstream فلا تحتاج الدفعات اللاحقة إلى معاملات."
+    ],
+    "solutionEn": "1 git switch main && git pull — start from the latest code. 2 git switch -c feature/product-search — isolate the work. 3 git add -p; git commit -m \"Add product search endpoint\"; then \"Add search box to the products page\" — small, reviewable commits. 4 git fetch && git merge origin/main (or git rebase origin/main before sharing) — resolve conflicts early. 5 git push -u origin feature/product-search. 6 Open the PR (gh pr create or on GitHub) with a description and screenshots. 7 After merge: git switch main && git pull, git branch -d feature/product-search, git push origin --delete feature/product-search.",
+    "solutionAr": "1 git switch main && git pull — ابدأ من أحدث كود. 2 git switch -c feature/product-search — اعزل العمل. 3 git add -p ثم git commit -m \"Add product search endpoint\" ثم \"Add search box to the products page\" — Commits صغيرة سهلة المراجعة. 4 git fetch && git merge origin/main (أو git rebase origin/main قبل المشاركة) — حلّ التعارضات مبكرًا. 5 git push -u origin feature/product-search. 6 افتح الـ PR (بـ gh pr create أو على GitHub) مع وصف ولقطات شاشة. 7 بعد الدمج: git switch main && git pull، ثم git branch -d feature/product-search، ثم git push origin --delete feature/product-search."
+  },
+  {
+    "key": "test-lab-xunit-calculator",
+    "type": "Practical",
+    "topic": "test-unit-csharp",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "Write unit tests with xUnit",
+    "titleAr": "اكتب Unit tests باستخدام xUnit",
+    "problemEn": "ShippingCalculator decides the shipping cost: free for orders of 1000 or more; otherwise 50 for Cairo and Giza, 75 elsewhere; express adds 40; weights over 10 kg add 5 per extra kg (rounded up); a negative subtotal or weight throws ArgumentOutOfRangeException. Write xUnit tests that cover every rule and the boundaries (999.99 vs 1000, exactly 10 kg vs 10.1 kg). Use [Theory] with [InlineData] where cases differ only in data, and name tests after the behaviour.",
+    "problemAr": "يحدد ShippingCalculator تكلفة الشحن: مجاني للطلبات بقيمة 1000 أو أكثر؛ وإلا 50 للقاهرة والجيزة و75 لغيرهما؛ والشحن السريع يضيف 40؛ والأوزان فوق 10 كجم تضيف 5 لكل كيلوجرام إضافي (مقرّبًا لأعلى)؛ والمجموع أو الوزن السالب يرمي ArgumentOutOfRangeException. اكتب اختبارات xUnit تغطي كل قاعدة والحدود (999.99 مقابل 1000، و10 كجم بالضبط مقابل 10.1 كجم). استخدم [Theory] مع [InlineData] حين تختلف الحالات في البيانات فقط، وسمِّ الاختبارات باسم السلوك.",
+    "expectedEn": "A test class with Facts and Theories that would fail if any single rule were broken, including the boundaries.",
+    "expectedAr": "صنف اختبارات بـ Facts وTheories يفشل إذا كُسرت أي قاعدة منفردة، بما في ذلك الحدود.",
+    "hintsEn": [
+      "[Theory] [InlineData(\"Cairo\", 50)] [InlineData(\"Aswan\", 75)] public void Standard_rates(string city, decimal expected)",
+      "Mutation thinking: for each rule, ask \"would a test fail if I broke this line?\""
+    ],
+    "hintsAr": [
+      "[Theory] [InlineData(\"Cairo\", 50)] [InlineData(\"Aswan\", 75)] public void Standard_rates(string city, decimal expected)",
+      "فكّر بطريقة الطفرات: لكل قاعدة اسأل «هل سيفشل اختبار إذا كسرت هذا السطر؟»"
+    ],
+    "solutionEn": "Good unit tests pin down behaviour at the edges where bugs live (999.99/1000, 10/10.1 kg), use Theories to cover many inputs without copy-paste, and read like a specification. Breaking any rule should turn exactly the related tests red.",
+    "solutionAr": "تثبّت الاختبارات الجيدة السلوك عند الحواف حيث تعيش الأخطاء (999.99/1000 و10/10.1 كجم)، وتستخدم Theories لتغطية مدخلات كثيرة دون نسخ ولصق، وتُقرأ كأنها مواصفات. وكسر أي قاعدة يجب أن يحوّل الاختبارات المتعلقة بها فقط إلى اللون الأحمر.",
+    "requirementsEn": [
+      "At least one [Theory] with several [InlineData] rows.",
+      "Boundary values for the free-shipping limit and the weight limit.",
+      "Assert.Throws for invalid input.",
+      "Test names describe behaviour, e.g. Orders_of_1000_or_more_ship_free."
+    ],
+    "requirementsAr": [
+      "[Theory] واحد على الأقل بعدة صفوف [InlineData].",
+      "قيم حدية لحد الشحن المجاني وحد الوزن.",
+      "Assert.Throws للمدخلات غير الصحيحة.",
+      "أسماء الاختبارات تصف السلوك، مثل Orders_of_1000_or_more_ship_free."
+    ],
+    "acceptanceEn": [
+      "dotnet test passes.",
+      "Changing >= 1000 to > 1000 in the calculator makes a test fail.",
+      "Changing the rounding of extra kilograms makes a test fail.",
+      "Each test checks one behaviour (Arrange, Act, Assert)."
+    ],
+    "acceptanceAr": [
+      "ينجح dotnet test.",
+      "تغيير >= 1000 إلى > 1000 في الحاسبة يُفشل اختبارًا.",
+      "تغيير تقريب الكيلوجرامات الإضافية يُفشل اختبارًا.",
+      "كل اختبار يتحقق من سلوك واحد (Arrange ثم Act ثم Assert)."
+    ]
+  },
+  {
+    "key": "test-lab-fakes",
+    "type": "Practical",
+    "topic": "test-mocking",
+    "difficulty": "Advanced",
+    "minutes": 45,
+    "titleEn": "Test a service with fakes",
+    "titleAr": "اختبر خدمة باستخدام Fakes",
+    "problemEn": "OrderService.PlaceOrder checks stock through IInventory, saves the order through IOrderRepository and sends a confirmation through IEmailSender. Write tests without a database or a mail server: use hand-written fakes (or NSubstitute/Moq if you prefer). Cover: a successful order saves once and sends one email; out-of-stock throws and neither saves nor emails; if sending the email fails, the order is still saved and the failure is logged, not thrown.",
+    "problemAr": "تتحقق OrderService.PlaceOrder من المخزون عبر IInventory، وتحفظ الطلب عبر IOrderRepository، وترسل تأكيدًا عبر IEmailSender. اكتب اختبارات بلا قاعدة بيانات ولا خادم بريد: استخدم Fakes مكتوبة يدويًا (أو NSubstitute/Moq إن فضّلت). غطِّ: الطلب الناجح يُحفظ مرة واحدة ويرسل بريدًا واحدًا؛ ونفاد المخزون يرمي استثناءً ولا يحفظ ولا يرسل؛ وإذا فشل إرسال البريد يبقى الطلب محفوظًا ويُسجَّل الفشل ولا يُرمى.",
+    "expectedEn": "Three or more tests that verify the interactions (saved once, email sent or not) and the outcome, running in milliseconds.",
+    "expectedAr": "ثلاثة اختبارات أو أكثر تتحقق من التفاعلات (حُفظ مرة واحدة، أُرسل البريد أو لا) ومن النتيجة، وتعمل في أجزاء من الثانية.",
+    "hintsEn": [
+      "class FakeEmailSender : IEmailSender { public List<string> Sent = []; public bool Fail; public Task SendAsync(string to, string body) { if (Fail) throw new Exception(); Sent.Add(to); return Task.CompletedTask; } }",
+      "Microsoft.Extensions.Logging.Abstractions.NullLogger<OrderService>.Instance works when you don’t assert on logs."
+    ],
+    "hintsAr": [
+      "class FakeEmailSender : IEmailSender { public List<string> Sent = []; public bool Fail; public Task SendAsync(string to, string body) { if (Fail) throw new Exception(); Sent.Add(to); return Task.CompletedTask; } }",
+      "يعمل Microsoft.Extensions.Logging.Abstractions.NullLogger<OrderService>.Instance عندما لا تتحقق من السجلات."
+    ],
+    "solutionEn": "Depending on interfaces lets the test swap slow or unreliable collaborators for simple in-memory fakes. Asserting on what the fakes recorded checks the service’s decisions (save first, then notify; never notify about a failed order) without testing the infrastructure itself — that belongs in integration tests.",
+    "solutionAr": "الاعتماد على الواجهات يسمح للاختبار باستبدال المتعاونين البطيئين أو غير الموثوقين بـ Fakes بسيطة في الذاكرة. والتحقق مما سجلته الـ Fakes يختبر قرارات الخدمة (احفظ أولًا ثم أبلغ، ولا تُبلغ عن طلب فاشل) دون اختبار البنية التحتية نفسها — فمكانها اختبارات Integration.",
+    "requirementsEn": [
+      "No real database, SMTP or HTTP calls in the tests.",
+      "Fakes record what was called so tests can assert on it.",
+      "One test per behaviour, named after it."
+    ],
+    "requirementsAr": [
+      "لا قاعدة بيانات حقيقية ولا SMTP ولا HTTP في الاختبارات.",
+      "تسجّل الـ Fakes ما استُدعي لتتحقق منه الاختبارات.",
+      "اختبار واحد لكل سلوك ومسمّى باسمه."
+    ],
+    "acceptanceEn": [
+      "dotnet test passes in well under a second.",
+      "Removing the stock check makes a test fail.",
+      "Moving SendAsync before SaveAsync breaks the email-failure test."
+    ],
+    "acceptanceAr": [
+      "ينجح dotnet test في أقل بكثير من ثانية.",
+      "إزالة فحص المخزون تُفشل اختبارًا.",
+      "نقل SendAsync قبل SaveAsync يكسر اختبار فشل البريد."
+    ]
+  },
+  {
+    "key": "test-lab-angular-service",
+    "type": "Practical",
+    "topic": "test-angular-services",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "Test an Angular service that calls HTTP",
+    "titleAr": "اختبر خدمة Angular تستدعي HTTP",
+    "problemEn": "ProductsApi has list(page) (GET /api/products?page=…) and create(product) (POST /api/products). Write tests with TestBed, provideHttpClient() and provideHttpClientTesting(): check the URL, method, query parameters and body; flush fake responses; and check that an HTTP 400 is turned into the friendly message the service exposes. Finish by verifying that no unexpected requests were made.",
+    "problemAr": "في ProductsApi الدالة list(page) (GET /api/products?page=…) والدالة create(product) (POST /api/products). اكتب اختبارات بـ TestBed وprovideHttpClient() وprovideHttpClientTesting(): تحقق من الرابط والطريقة ومعاملات الاستعلام والجسم؛ وأرسل استجابات وهمية بـ flush؛ وتحقق من أن HTTP 400 يتحول إلى الرسالة الودية التي تعرضها الخدمة. وفي النهاية تحقق من عدم وجود طلبات غير متوقعة.",
+    "expectedEn": "A spec where each test expects one request with HttpTestingController, flushes a response and asserts on the result; httpMock.verify() runs after each test.",
+    "expectedAr": "ملف Spec يتوقع فيه كل اختبار طلبًا واحدًا بـ HttpTestingController، ويرسل استجابة، ويتحقق من النتيجة، مع تشغيل httpMock.verify() بعد كل اختبار.",
+    "hintsEn": [
+      "const req = httpMock.expectOne(r => r.url === '/api/products' && r.params.get('page') === '2');",
+      "req.flush({ errors: { Name: ['Name is required.'] } }, { status: 400, statusText: 'Bad Request' });"
+    ],
+    "hintsAr": [
+      "const req = httpMock.expectOne(r => r.url === '/api/products' && r.params.get('page') === '2');",
+      "req.flush({ errors: { Name: ['Name is required.'] } }, { status: 400, statusText: 'Bad Request' });"
+    ],
+    "solutionEn": "HttpTestingController replaces the network: the service makes real HttpClient calls, the test intercepts them, checks they’re correct and decides the response. This tests your request building and error mapping deterministically, without a backend.",
+    "solutionAr": "يحل HttpTestingController محل الشبكة: تجري الخدمة استدعاءات HttpClient حقيقية، ويعترضها الاختبار، ويتحقق من صحتها، ويقرر الاستجابة. وهذا يختبر بناء الطلبات وتحويل الأخطاء بشكل حتمي دون Backend.",
+    "requirementsEn": [
+      "TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] }).",
+      "httpMock.expectOne(...) checks method, URL and params.",
+      "An error response is flushed with { status: 400, statusText: \"Bad Request\" }.",
+      "afterEach(() => httpMock.verify())."
+    ],
+    "requirementsAr": [
+      "TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] }).",
+      "يتحقق httpMock.expectOne(...) من الطريقة والرابط والمعاملات.",
+      "تُرسل استجابة الخطأ بـ { status: 400, statusText: \"Bad Request\" }.",
+      "afterEach(() => httpMock.verify())."
+    ],
+    "acceptanceEn": [
+      "ng test runs the spec and it passes.",
+      "Changing the URL in the service makes a test fail.",
+      "The error test proves the friendly message is produced."
+    ],
+    "acceptanceAr": [
+      "يشغّل ng test ملف الـ Spec وينجح.",
+      "تغيير الرابط في الخدمة يُفشل اختبارًا.",
+      "يثبت اختبار الخطأ أن الرسالة الودية تُنتَج."
+    ]
+  }
+]

@@ -1,0 +1,706 @@
+[
+  {
+    "key": "fs-employee-management",
+    "type": "FullStack",
+    "topic": "fs-crud-workflows",
+    "difficulty": "Intermediate",
+    "minutes": 360,
+    "titleEn": "Employee management system",
+    "titleAr": "نظام إدارة الموظفين",
+    "problemEn": "Build the full feature: SQL Server tables and EF Core entities for employees and departments, an ASP.NET Core API with validation and paging, and an Angular UI with a searchable list and an add/edit form.",
+    "problemAr": "ابنِ الميزة كاملة: جداول SQL Server وكيانات EF Core للموظفين والأقسام، وواجهة ASP.NET Core API مع التحقق وتقسيم الصفحات، وواجهة Angular بقائمة قابلة للبحث ونموذج للإضافة والتعديل.",
+    "expectedEn": "HR can list, search, filter by department, page, add, edit and delete employees; invalid input shows clear messages; data survives a restart.",
+    "expectedAr": "يستطيع قسم الموارد البشرية عرض الموظفين والبحث والتصفية حسب القسم والتنقل بين الصفحات والإضافة والتعديل والحذف، وتُظهر المدخلات غير الصحيحة رسائل واضحة، وتبقى البيانات بعد إعادة التشغيل.",
+    "hintsEn": [
+      "Start from the database and API; test them with an .http file before building the UI.",
+      "Put the paging and filtering logic in one IQueryable pipeline (filter → count → sort → page → project).",
+      "Read filters from the route with withComponentInputBinding or ActivatedRoute.queryParamMap."
+    ],
+    "hintsAr": [
+      "ابدأ بقاعدة البيانات والـ API واختبرهما بملف .http قبل بناء الواجهة.",
+      "ضع منطق التقسيم والتصفية في سلسلة IQueryable واحدة (تصفية ← عدّ ← ترتيب ← تقسيم ← إسقاط).",
+      "اقرأ المرشحات من الرابط بـ withComponentInputBinding أو ActivatedRoute.queryParamMap."
+    ],
+    "solutionEn": "Design the contract first, then go bottom-up: entities and migration → service with an IQueryable pipeline → controller with DTOs and status codes → Angular API service → list component driven by URL query parameters → form component reused for create and edit, mapping 400 ValidationProblem errors to form controls. Keep business rules (unique email, salary ≥ 0) in the backend and repeat them in the form only for faster feedback.",
+    "solutionAr": "صمّم العقد أولًا ثم ابنِ من الأسفل للأعلى: الكيانات والـ Migration ← خدمة بسلسلة IQueryable ← Controller بكائنات DTO ورموز الحالة ← خدمة API في Angular ← مكون قائمة يقوده معاملات الرابط ← مكون نموذج يُعاد استخدامه للإنشاء والتعديل ويربط أخطاء ValidationProblem من نوع 400 بعناصر النموذج. أبقِ قواعد العمل (البريد الفريد والراتب ≥ 0) في الـ Backend، وكرّرها في النموذج فقط لتسريع الاستجابة.",
+    "technologies": [
+      "Angular",
+      "TypeScript",
+      "AspNetCore",
+      "EfCore",
+      "SqlServer"
+    ],
+    "scenarioEn": "A small company tracks its staff in a spreadsheet. HR wants a web app to add, edit, search and remove employees and see them by department.",
+    "scenarioAr": "شركة صغيرة تتابع موظفيها في جدول بيانات. ويريد قسم الموارد البشرية تطبيق ويب لإضافة الموظفين وتعديلهم والبحث عنهم وحذفهم وعرضهم حسب القسم.",
+    "requirementsEn": [
+      "Employees: name, email (unique), job title, salary, hire date, department.",
+      "EF Core migration creates the tables, a unique index on Email and a foreign key to Departments.",
+      "The API uses DTOs and returns 201/204/400/404/409 correctly.",
+      "The list page supports search, department filter and paging through query parameters.",
+      "One reactive form is used for both add and edit, with server errors shown next to the fields."
+    ],
+    "requirementsAr": [
+      "الموظف: الاسم، والبريد (فريد)، والمسمى الوظيفي، والراتب، وتاريخ التعيين، والقسم.",
+      "تنشئ Migration من EF Core الجداول وفهرسًا فريدًا على Email ومفتاحًا أجنبيًا إلى Departments.",
+      "تستخدم الـ API كائنات DTO وتُرجع 201/204/400/404/409 بشكل صحيح.",
+      "تدعم صفحة القائمة البحث والتصفية حسب القسم وتقسيم الصفحات عبر معاملات الرابط.",
+      "نموذج تفاعلي واحد للإضافة والتعديل، وتظهر أخطاء الخادم بجوار الحقول."
+    ],
+    "acceptanceEn": [
+      "Adding an employee with an existing email shows \"This email is already used\".",
+      "Searching \"ali\" finds every employee whose name contains it, across pages.",
+      "Deleting asks for confirmation and the row disappears without reloading the page.",
+      "Refreshing the browser on page 3 keeps the page and filters (they’re in the URL).",
+      "Salaries can’t be negative, and the hire date can’t be in the future."
+    ],
+    "acceptanceAr": [
+      "إضافة موظف ببريد موجود تعرض \"This email is already used\".",
+      "البحث عن \"ali\" يجد كل موظف يحتوي اسمه عليها عبر الصفحات.",
+      "الحذف يطلب تأكيدًا ويختفي الصف دون إعادة تحميل الصفحة.",
+      "تحديث المتصفح في الصفحة 3 يحتفظ بالصفحة والمرشحات (فهي في الرابط).",
+      "لا يمكن أن يكون الراتب سالبًا ولا تاريخ التعيين في المستقبل."
+    ],
+    "bonusEn": [
+      "Export the filtered list to CSV.",
+      "Soft delete with an \"archived\" view.",
+      "Show the number of employees per department on a dashboard."
+    ],
+    "bonusAr": [
+      "صدّر القائمة المصفّاة إلى CSV.",
+      "حذف ناعم مع عرض \"مؤرشف\".",
+      "اعرض عدد الموظفين في كل قسم على لوحة معلومات."
+    ]
+  },
+  {
+    "key": "fs-external-api",
+    "type": "FullStack",
+    "topic": "fs-connect-angular-api",
+    "difficulty": "Intermediate",
+    "minutes": 240,
+    "titleEn": "Integrate an external API through your backend",
+    "titleAr": "دمج API خارجية عبر الـ Backend الخاص بك",
+    "problemEn": "Create a backend endpoint that calls a public weather API with a typed HttpClient, maps the response to your own DTO, caches results for 10 minutes and handles failures. Build an Angular page that searches by city with debounce and shows loading, error and empty states.",
+    "problemAr": "أنشئ Endpoint في الـ Backend يستدعي API طقس عامة عبر HttpClient محدد النوع، ويحوّل الاستجابة إلى DTO خاص بك، ويخزّن النتائج مؤقتًا 10 دقائق، ويعالج الأعطال. وابنِ صفحة Angular تبحث بالمدينة مع debounce وتعرض حالات التحميل والخطأ والفراغ.",
+    "expectedEn": "Typing a city shows its weather; repeated searches within 10 minutes don’t call the provider again; provider outages show a friendly message instead of crashing.",
+    "expectedAr": "كتابة مدينة تعرض حالة طقسها، والبحث المتكرر خلال 10 دقائق لا يستدعي المزوّد مجددًا، وتعطل المزوّد يعرض رسالة ودية بدلًا من الانهيار.",
+    "hintsEn": [
+      "Open-Meteo (geocoding + forecast) needs no API key and allows server calls.",
+      "Map the provider’s JSON to an internal record immediately; never pass it through to the client.",
+      "Use cache.GetOrCreateAsync(key, entry => …)."
+    ],
+    "hintsAr": [
+      "لا يحتاج Open-Meteo (البحث الجغرافي + التوقعات) إلى مفتاح، ويسمح بالاستدعاء من الخادم.",
+      "حوّل JSON المزوّد إلى Record داخلي فورًا، ولا تمرره إلى العميل أبدًا.",
+      "استخدم cache.GetOrCreateAsync(key, entry => …)."
+    ],
+    "solutionEn": "The backend acts as an anti-corruption layer: one typed client knows the provider’s format, everything else uses your DTO. Configuration and secrets come from options, caching reduces cost and latency, and explicit status codes let the Angular page show the right state.",
+    "solutionAr": "يعمل الـ Backend كطبقة حماية من الفساد (Anti-corruption layer): يعرف Client واحد محدد النوع شكل المزوّد، وكل شيء آخر يستخدم الـ DTO الخاص بك. تأتي الإعدادات والأسرار من Options، ويقلل التخزين المؤقت التكلفة والتأخير، وتسمح رموز الحالة الصريحة لصفحة Angular بعرض الحالة الصحيحة.",
+    "technologies": [
+      "Angular",
+      "TypeScript",
+      "AspNetCore"
+    ],
+    "scenarioEn": "Your app should show the current weather for a city. The browser must not call the third-party API directly: the key would leak, the response format may change, and you want caching.",
+    "scenarioAr": "يجب أن يعرض تطبيقك حالة الطقس الحالية لمدينة. ولا يجوز للمتصفح استدعاء الـ API الخارجية مباشرة: فسيتسرب المفتاح، وقد يتغير شكل الاستجابة، وتريد التخزين المؤقت.",
+    "requirementsEn": [
+      "A typed client registered with AddHttpClient<WeatherClient>() and a timeout.",
+      "Settings (base URL, API key) bound with the options pattern; no keys in source control.",
+      "IMemoryCache with a 10-minute absolute expiration per city.",
+      "Unknown city → 404; provider down or timeout → 503 with ProblemDetails.",
+      "Angular search uses debounceTime, distinctUntilChanged and switchMap."
+    ],
+    "requirementsAr": [
+      "Client محدد النوع مسجَّل بـ AddHttpClient<WeatherClient>() مع مهلة زمنية.",
+      "الإعدادات (الرابط الأساسي ومفتاح الـ API) مربوطة بنمط Options، ولا مفاتيح في نظام التحكم بالإصدارات.",
+      "IMemoryCache بانتهاء مطلق بعد 10 دقائق لكل مدينة.",
+      "مدينة غير معروفة ← 404؛ تعطل المزوّد أو انتهاء المهلة ← 503 مع ProblemDetails.",
+      "يستخدم بحث Angular العوامل debounceTime وdistinctUntilChanged وswitchMap."
+    ],
+    "acceptanceEn": [
+      "The browser network tab shows only calls to your own API.",
+      "A second search for the same city within 10 minutes is answered from the cache (visible in logs).",
+      "Stopping the network to the provider produces a clear \"Weather is unavailable right now\" message.",
+      "Typing quickly sends one request, not one per key."
+    ],
+    "acceptanceAr": [
+      "يُظهر تبويب الشبكة في المتصفح استدعاءات لـ API الخاصة بك فقط.",
+      "البحث الثاني عن المدينة نفسها خلال 10 دقائق يُجاب من الذاكرة المؤقتة (ظاهر في السجلات).",
+      "قطع الاتصال بالمزوّد ينتج رسالة واضحة \"Weather is unavailable right now\".",
+      "الكتابة السريعة ترسل طلبًا واحدًا لا طلبًا لكل حرف."
+    ],
+    "bonusEn": [
+      "Add a 5-day forecast.",
+      "Use Polly / Microsoft.Extensions.Http.Resilience for retries with backoff.",
+      "Remember the last 5 searches in localStorage."
+    ],
+    "bonusAr": [
+      "أضف توقعات 5 أيام.",
+      "استخدم Polly أو Microsoft.Extensions.Http.Resilience لإعادة المحاولة مع التأخير التصاعدي.",
+      "احفظ آخر 5 عمليات بحث في localStorage."
+    ]
+  },
+  {
+    "key": "fs-authentication",
+    "type": "FullStack",
+    "topic": "fs-auth-flow",
+    "difficulty": "Advanced",
+    "minutes": 480,
+    "titleEn": "Authentication from login form to protected API",
+    "titleAr": "المصادقة من نموذج الدخول حتى الـ API المحمية",
+    "problemEn": "Implement registration and login in ASP.NET Core with hashed passwords and tokens (or secure cookies), protect the API, and wire Angular: a login/register page, an auth service holding the current user in a signal, an HTTP interceptor that attaches the token and handles 401, and a route guard.",
+    "problemAr": "نفّذ التسجيل والدخول في ASP.NET Core بكلمات مرور مُجزّأة وتوكنات (أو Cookies آمنة)، واحمِ الـ API، واربط Angular: صفحة دخول وتسجيل، وخدمة مصادقة تحتفظ بالمستخدم الحالي في Signal، وHTTP interceptor يضيف التوكن ويعالج 401، وRoute guard.",
+    "expectedEn": "Users can register, log in, use protected pages and log out; expired or missing tokens redirect to login with a message; nobody can read another user’s data.",
+    "expectedAr": "يستطيع المستخدمون التسجيل والدخول واستخدام الصفحات المحمية والخروج، وتُعيد التوكنات المنتهية أو المفقودة إلى صفحة الدخول مع رسالة، ولا يستطيع أحد قراءة بيانات مستخدم آخر.",
+    "hintsEn": [
+      "Store the token in memory (a signal) and, if you must persist it, prefer an HttpOnly cookie over localStorage.",
+      "HttpInterceptorFn: req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })",
+      "CanActivateFn returning router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } })"
+    ],
+    "hintsAr": [
+      "احفظ التوكن في الذاكرة (Signal)، وإن احتجت إلى حفظه فالأفضل HttpOnly cookie بدلًا من localStorage.",
+      "HttpInterceptorFn: req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })",
+      "CanActivateFn تُرجع router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } })"
+    ],
+    "solutionEn": "Authentication spans every layer: the database stores hashes, the API issues and validates short-lived credentials and scopes every query to the caller, and Angular only improves the experience (guard, interceptor, redirects) — the server stays the real gatekeeper.",
+    "solutionAr": "تمتد المصادقة عبر كل الطبقات: تخزّن قاعدة البيانات الـ Hashes، وتُصدر الـ API بيانات اعتماد قصيرة العمر وتتحقق منها وتقصر كل استعلام على المستدعي، وتحسّن Angular التجربة فقط (Guard وInterceptor وإعادة التوجيه) — ويبقى الخادم هو الحارس الحقيقي.",
+    "technologies": [
+      "Angular",
+      "TypeScript",
+      "AspNetCore",
+      "EfCore",
+      "SqlServer"
+    ],
+    "scenarioEn": "A notes app is about to go public. Each user must register, log in, see only their own data and be sent back to the login page when their session ends.",
+    "scenarioAr": "تطبيق ملاحظات على وشك الإطلاق للعامة. يجب أن يسجّل كل مستخدم ويدخل ويرى بياناته فقط، وأن يُعاد إلى صفحة الدخول عند انتهاء جلسته.",
+    "requirementsEn": [
+      "Passwords hashed with PasswordHasher or ASP.NET Core Identity; minimum length and lockout after repeated failures.",
+      "Signing keys and connection strings from configuration (user secrets / environment), never committed.",
+      "Every query for user data filters by the current user id taken from the token, not from the request body.",
+      "Angular: functional interceptor and canActivate guard; the current user is a signal.",
+      "A 401 from any request clears the session and redirects to /login?returnUrl=…"
+    ],
+    "requirementsAr": [
+      "تُجزّأ كلمات المرور بـ PasswordHasher أو ASP.NET Core Identity، مع حد أدنى للطول وقفل الحساب بعد محاولات فاشلة متكررة.",
+      "مفاتيح التوقيع وسلاسل الاتصال من الإعدادات (User secrets أو متغيرات البيئة)، ولا تُحفظ في المستودع أبدًا.",
+      "كل استعلام لبيانات المستخدم يصفّي برقم المستخدم الحالي المأخوذ من التوكن، لا من جسم الطلب.",
+      "في Angular: Interceptor وظيفي وcanActivate guard، والمستخدم الحالي Signal.",
+      "أي استجابة 401 تمسح الجلسة وتعيد التوجيه إلى /login?returnUrl=…"
+    ],
+    "acceptanceEn": [
+      "Wrong credentials show one generic error message.",
+      "Requesting /api/notes/{id} of another user returns 404 (not 403, to avoid leaking existence).",
+      "Opening a protected route while logged out redirects to login and back after logging in.",
+      "After logout, the back button doesn’t show protected data.",
+      "The token never appears in URLs or logs."
+    ],
+    "acceptanceAr": [
+      "بيانات الدخول الخاطئة تعرض رسالة خطأ عامة واحدة.",
+      "طلب /api/notes/{id} لمستخدم آخر يُرجع 404 (لا 403، حتى لا يُكشف وجوده).",
+      "فتح مسار محمي دون دخول يعيد التوجيه إلى صفحة الدخول ثم يعود بعد الدخول.",
+      "بعد الخروج لا يعرض زر الرجوع بيانات محمية.",
+      "لا يظهر التوكن في الروابط ولا في السجلات أبدًا."
+    ],
+    "bonusEn": [
+      "Refresh tokens with rotation.",
+      "Email confirmation and password reset (log the links locally instead of sending email).",
+      "Role-based menu items."
+    ],
+    "bonusAr": [
+      "Refresh tokens مع التدوير.",
+      "تأكيد البريد وإعادة تعيين كلمة المرور (سجّل الروابط محليًا بدلًا من إرسال البريد).",
+      "عناصر قائمة حسب الدور."
+    ]
+  },
+  {
+    "key": "fs-catalog-paging",
+    "type": "FullStack",
+    "topic": "fs-pagination",
+    "difficulty": "Intermediate",
+    "minutes": 300,
+    "titleEn": "Product catalog with server-side paging and filtering",
+    "titleAr": "كتالوج منتجات مع تقسيم الصفحات والتصفية على الخادم",
+    "problemEn": "Move filtering, sorting and paging to the server: a query endpoint that translates to efficient SQL with the right indexes, and an Angular catalog page whose state (filters, sort, page) lives in the URL.",
+    "problemAr": "انقل التصفية والترتيب والتقسيم إلى الخادم: Endpoint استعلام يُترجم إلى SQL فعّال بالفهارس الصحيحة، وصفحة كتالوج في Angular تعيش حالتها (المرشحات والترتيب والصفحة) في الرابط.",
+    "expectedEn": "Each page loads in well under a second with 50,000 products; changing filters resets to page 1; links to a filtered page can be shared.",
+    "expectedAr": "تُحمّل كل صفحة في أقل بكثير من ثانية مع 50,000 منتج، وتغيير المرشحات يعيد إلى الصفحة 1، ويمكن مشاركة رابط صفحة مصفّاة.",
+    "hintsEn": [
+      "Log EF’s SQL with LogTo or look at it in SQL Server Profiler / Extended Events.",
+      "Router: navigate([], { queryParams, queryParamsHandling: 'merge' })",
+      "Keyset (seek) pagination is the bonus answer for very deep pages."
+    ],
+    "hintsAr": [
+      "سجّل الـ SQL الخاص بـ EF بـ LogTo أو راجعه في SQL Server Profiler أو Extended Events.",
+      "في الموجّه: navigate([], { queryParams, queryParamsHandling: 'merge' })",
+      "تقسيم الصفحات بالمفتاح (Keyset/seek) هو إجابة المكافأة للصفحات العميقة جدًا."
+    ],
+    "solutionEn": "Let the database do the work: compose one IQueryable so EF emits a single SELECT … WHERE … ORDER BY … OFFSET/FETCH plus a COUNT, back it with indexes chosen from real plans, and keep the UI state in the URL so it’s shareable and navigable.",
+    "solutionAr": "دع قاعدة البيانات تقوم بالعمل: ابنِ IQueryable واحدًا ليُصدر EF عبارة SELECT … WHERE … ORDER BY … OFFSET/FETCH واحدة مع COUNT، وادعمه بفهارس مختارة من خطط حقيقية، وأبقِ حالة الواجهة في الرابط لتكون قابلة للمشاركة والتنقل.",
+    "technologies": [
+      "Angular",
+      "TypeScript",
+      "AspNetCore",
+      "EfCore",
+      "SqlServer"
+    ],
+    "scenarioEn": "The shop now has 50,000 products and the catalog page loads all of them, taking 8 seconds. Customers want to search, filter by category and price, sort and page.",
+    "scenarioAr": "أصبح في المتجر 50,000 منتج، وصفحة الكتالوج تحمّلها كلها في 8 ثوانٍ. ويريد العملاء البحث والتصفية حسب التصنيف والسعر والترتيب والتنقل بين الصفحات.",
+    "requirementsEn": [
+      "Seed 50,000 products (EF Core seeding or a SQL script) to measure realistically.",
+      "An IQueryable pipeline: filter → count → whitelisted sort → Skip/Take → projection to DTO.",
+      "Page size capped (e.g. 100) and invalid sort values ignored.",
+      "Indexes chosen from the actual query plans (e.g. CategoryId + Price).",
+      "Angular reads and writes filters as query parameters; the search input is debounced."
+    ],
+    "requirementsAr": [
+      "أدخل 50,000 منتج (Seeding في EF Core أو سكربت SQL) لقياس واقعي.",
+      "سلسلة IQueryable: تصفية ← عدّ ← ترتيب من قائمة مسموحة ← Skip/Take ← إسقاط إلى DTO.",
+      "حجم الصفحة محدود (مثل 100) وقيم الترتيب غير الصحيحة تُتجاهل.",
+      "فهارس مختارة من خطط التنفيذ الفعلية (مثل CategoryId + Price).",
+      "تقرأ Angular المرشحات وتكتبها كمعاملات رابط، ومدخل البحث مع debounce."
+    ],
+    "acceptanceEn": [
+      "The SQL for a page uses OFFSET/FETCH and selects only DTO columns (check the logged SQL).",
+      "Sorting by price with a category filter uses an index seek in the execution plan.",
+      "Copying the URL into another tab shows exactly the same results.",
+      "Requesting pageSize=100000 returns at most the cap.",
+      "Back and forward buttons move through previous filter states."
+    ],
+    "acceptanceAr": [
+      "يستخدم الـ SQL للصفحة OFFSET/FETCH ويختار أعمدة الـ DTO فقط (راجع الـ SQL المسجّل).",
+      "الترتيب بالسعر مع مرشح التصنيف يستخدم Index seek في خطة التنفيذ.",
+      "نسخ الرابط إلى تبويب آخر يعرض النتائج نفسها تمامًا.",
+      "طلب pageSize=100000 يُرجع الحد الأقصى فقط.",
+      "زرّا الرجوع والتقدم يتنقلان بين حالات المرشحات السابقة."
+    ],
+    "bonusEn": [
+      "Keyset pagination for \"load more\".",
+      "Facet counts per category for the current search.",
+      "Response caching for anonymous catalog pages."
+    ],
+    "bonusAr": [
+      "تقسيم بالمفتاح لزر \"تحميل المزيد\".",
+      "عدد النتائج لكل تصنيف في البحث الحالي.",
+      "تخزين مؤقت للاستجابات لصفحات الكتالوج العامة."
+    ]
+  },
+  {
+    "key": "fs-checkout-transaction",
+    "type": "FullStack",
+    "topic": "ef-transactions",
+    "difficulty": "Advanced",
+    "minutes": 360,
+    "titleEn": "Checkout as one transaction",
+    "titleAr": "عملية الدفع كمعاملة واحدة",
+    "problemEn": "Implement checkout so that creating the order, its lines, decreasing stock and recording the payment happen in one database transaction; nothing is saved if any step fails. Prevent overselling under concurrency and make the request idempotent. In Angular, disable the button while submitting and show what went wrong.",
+    "problemAr": "نفّذ الدفع بحيث يتم إنشاء الطلب وأسطره وإنقاص المخزون وتسجيل الدفع في معاملة قاعدة بيانات واحدة، ولا يُحفظ شيء إذا فشلت أي خطوة. وامنع البيع الزائد مع التزامن واجعل الطلب Idempotent. وفي Angular عطّل الزر أثناء الإرسال واعرض ما الخطأ.",
+    "expectedEn": "Either the whole order exists with correct stock, or nothing changed; two simultaneous checkouts for the last item produce one success and one 409; retrying with the same key returns the first order.",
+    "expectedAr": "إما أن يوجد الطلب كاملًا بمخزون صحيح، وإما لم يتغير شيء؛ وعمليتا دفع متزامنتان لآخر قطعة تنتجان نجاحًا واحدًا و409؛ وإعادة المحاولة بالمفتاح نفسه تُرجع الطلب الأول.",
+    "hintsEn": [
+      "ExecuteUpdateAsync(s => s.SetProperty(p => p.Stock, p => p.Stock - qty)) with Where(p => p.Id == id && p.Stock >= qty) returns the affected row count.",
+      "await using var tx = await db.Database.BeginTransactionAsync(); … await tx.CommitAsync();",
+      "Generate the idempotency key in Angular (crypto.randomUUID()) when the checkout page opens."
+    ],
+    "hintsAr": [
+      "ExecuteUpdateAsync(s => s.SetProperty(p => p.Stock, p => p.Stock - qty)) مع Where(p => p.Id == id && p.Stock >= qty) يُرجع عدد الصفوف المتأثرة.",
+      "await using var tx = await db.Database.BeginTransactionAsync(); … await tx.CommitAsync();",
+      "أنشئ مفتاح الـ Idempotency في Angular (crypto.randomUUID()) عند فتح صفحة الدفع."
+    ],
+    "solutionEn": "Treat checkout as a unit of work: validate and price on the server, perform every write inside one transaction, guard stock with an atomic conditional update so concurrent buyers can’t both win, and use an idempotency key so network retries and double clicks are harmless.",
+    "solutionAr": "تعامل مع الدفع كوحدة عمل: تحقق وسعّر على الخادم، ونفّذ كل الكتابات داخل معاملة واحدة، واحمِ المخزون بتحديث مشروط ذري حتى لا يفوز مشتريان متزامنان معًا، واستخدم مفتاح Idempotency لتصبح إعادة المحاولة والنقر المزدوج بلا ضرر.",
+    "technologies": [
+      "Angular",
+      "TypeScript",
+      "AspNetCore",
+      "EfCore",
+      "SqlServer"
+    ],
+    "scenarioEn": "During a sale, some orders were saved without lines, stock went negative, and double-clicking \"Pay\" created two orders. Checkout must be all-or-nothing and safe to retry.",
+    "scenarioAr": "أثناء التخفيضات حُفظت بعض الطلبات دون أسطر، وأصبح المخزون سالبًا، والنقر المزدوج على \"Pay\" أنشأ طلبين. يجب أن يكون الدفع كله أو لا شيء، وآمنًا لإعادة المحاولة.",
+    "requirementsEn": [
+      "Prices are read from the database, never trusted from the client.",
+      "One transaction (SaveChanges once, or BeginTransactionAsync for several steps).",
+      "Stock decreased with a conditional update (WHERE Stock >= @qty) or a concurrency token.",
+      "An IdempotencyKey column with a unique index; a repeated key returns the existing order.",
+      "Angular disables \"Pay\" while the request is in flight and shows 409 details per product."
+    ],
+    "requirementsAr": [
+      "تُقرأ الأسعار من قاعدة البيانات ولا يُوثق بها من العميل أبدًا.",
+      "معاملة واحدة (SaveChanges مرة واحدة، أو BeginTransactionAsync لعدة خطوات).",
+      "إنقاص المخزون بتحديث مشروط (WHERE Stock >= @qty) أو Concurrency token.",
+      "عمود IdempotencyKey بفهرس فريد، والمفتاح المكرر يُرجع الطلب الموجود.",
+      "تعطّل Angular زر \"Pay\" أثناء الطلب وتعرض تفاصيل 409 لكل منتج."
+    ],
+    "acceptanceEn": [
+      "Simulating a failure after the lines are added leaves no order in the database.",
+      "Running two checkouts in parallel for 1 remaining item gives exactly one success.",
+      "Double-clicking Pay creates one order.",
+      "The total is computed on the server from current prices.",
+      "Stock never goes below zero."
+    ],
+    "acceptanceAr": [
+      "محاكاة فشل بعد إضافة الأسطر لا تترك أي طلب في قاعدة البيانات.",
+      "تشغيل عمليتي دفع بالتوازي لقطعة واحدة متبقية يعطي نجاحًا واحدًا بالضبط.",
+      "النقر المزدوج على Pay ينشئ طلبًا واحدًا.",
+      "يُحسب الإجمالي على الخادم من الأسعار الحالية.",
+      "لا ينزل المخزون تحت الصفر أبدًا."
+    ],
+    "bonusEn": [
+      "Reserve stock for 10 minutes while the user pays.",
+      "An outbox table for the confirmation email, sent after commit."
+    ],
+    "bonusAr": [
+      "احجز المخزون 10 دقائق أثناء الدفع.",
+      "جدول Outbox لبريد التأكيد يُرسل بعد الـ Commit."
+    ]
+  },
+  {
+    "key": "fs-task-board",
+    "type": "FullStack",
+    "topic": "fs-concurrent-updates",
+    "difficulty": "Advanced",
+    "minutes": 360,
+    "titleEn": "Team task board with concurrent edits",
+    "titleAr": "لوحة مهام للفريق مع تعديلات متزامنة",
+    "problemEn": "Build a board (columns To do / Doing / Done) where tasks can be created, edited and moved. Use optimistic concurrency so a stale edit is rejected with 409, and in Angular show a dialog that compares \"your change\" with \"the latest version\" and lets the user retry or discard.",
+    "problemAr": "ابنِ لوحة (أعمدة To do وDoing وDone) يمكن فيها إنشاء المهام وتعديلها ونقلها. استخدم التزامن المتفائل ليُرفض التعديل القديم بـ 409، وفي Angular اعرض نافذة تقارن \"تغييرك\" بـ\"أحدث نسخة\" وتسمح للمستخدم بإعادة المحاولة أو التجاهل.",
+    "expectedEn": "Editing a task that someone else changed shows the conflict dialog instead of overwriting; moving tasks updates immediately (optimistic UI) and rolls back if the server rejects it.",
+    "expectedAr": "تعديل مهمة غيّرها شخص آخر يعرض نافذة التعارض بدلًا من الاستبدال، ونقل المهام يحدّث الواجهة فورًا (واجهة متفائلة) ويتراجع إذا رفض الخادم.",
+    "hintsEn": [
+      "@angular/cdk/drag-drop makes moving cards between columns straightforward.",
+      "Keep the version alongside each task in the client state and send it on every PATCH."
+    ],
+    "hintsAr": [
+      "تسهّل @angular/cdk/drag-drop نقل البطاقات بين الأعمدة.",
+      "احتفظ بالإصدار مع كل مهمة في حالة العميل وأرسله مع كل PATCH."
+    ],
+    "solutionEn": "Optimistic concurrency fits collaborative apps: reads are free, writes carry the version they were based on, and the database rejects stale writes. The UI turns a 409 into a decision for the user instead of a silent overwrite, and optimistic updates keep the board feeling instant.",
+    "solutionAr": "يناسب التزامن المتفائل التطبيقات التعاونية: القراءة مجانية، والكتابة تحمل الإصدار الذي بُنيت عليه، وترفض قاعدة البيانات الكتابات القديمة. وتحوّل الواجهة استجابة 409 إلى قرار للمستخدم بدلًا من الاستبدال الصامت، وتبقي التحديثات المتفائلة اللوحة سريعة الاستجابة.",
+    "technologies": [
+      "Angular",
+      "TypeScript",
+      "AspNetCore",
+      "EfCore",
+      "SqlServer"
+    ],
+    "scenarioEn": "A team of five uses a Kanban board. When two people edit the same task at the same time, one person’s change disappears without anyone noticing.",
+    "scenarioAr": "يستخدم فريق من خمسة أشخاص لوحة Kanban. وعندما يعدّل شخصان المهمة نفسها في الوقت نفسه يختفي تغيير أحدهما دون أن يلاحظ أحد.",
+    "requirementsEn": [
+      "Tasks have a rowversion concurrency token exposed to the client as an opaque version.",
+      "PATCH applies only the provided fields and returns the new version.",
+      "409 responses include the current task.",
+      "Angular updates the UI optimistically and reverts on error.",
+      "Board state lives in a service with signals; components stay presentational."
+    ],
+    "requirementsAr": [
+      "للمهام Concurrency token من نوع rowversion يُعرض للعميل كإصدار غير مفهوم المحتوى.",
+      "يطبّق PATCH الحقول المرسلة فقط ويُرجع الإصدار الجديد.",
+      "تتضمن استجابات 409 المهمة الحالية.",
+      "تحدّث Angular الواجهة بتفاؤل وتتراجع عند الخطأ.",
+      "تعيش حالة اللوحة في خدمة بـ Signals، وتبقى المكونات للعرض فقط."
+    ],
+    "acceptanceEn": [
+      "Two browser windows editing the same task: the second save shows the conflict dialog.",
+      "Choosing \"use latest\" refreshes the task; choosing \"overwrite\" retries with the new version.",
+      "Moving a card when the server is down puts it back and shows an error.",
+      "No edit is ever lost silently."
+    ],
+    "acceptanceAr": [
+      "نافذتا متصفح تعدّلان المهمة نفسها: الحفظ الثاني يعرض نافذة التعارض.",
+      "اختيار \"use latest\" يحدّث المهمة، واختيار \"overwrite\" يعيد المحاولة بالإصدار الجديد.",
+      "نقل بطاقة والخادم متوقف يعيدها مكانها ويعرض خطأ.",
+      "لا يضيع أي تعديل بصمت أبدًا."
+    ],
+    "bonusEn": [
+      "Real-time updates with SignalR so other users see moves instantly.",
+      "An activity log per task."
+    ],
+    "bonusAr": [
+      "تحديثات فورية بـ SignalR ليرى المستخدمون الآخرون النقل مباشرة.",
+      "سجل نشاط لكل مهمة."
+    ]
+  },
+  {
+    "key": "fs-reporting-dashboard",
+    "type": "FullStack",
+    "topic": "fs-search-filtering",
+    "difficulty": "Advanced",
+    "minutes": 360,
+    "titleEn": "Sales reporting dashboard",
+    "titleAr": "لوحة تقارير المبيعات",
+    "problemEn": "Write the aggregate queries (GROUP BY month, top products, KPIs) so they run in SQL — with EF Core LINQ or a SQL view — and build an Angular dashboard with KPI cards, a monthly chart (CSS bars or a chart library) and a top-products table, all driven by a date-range picker.",
+    "problemAr": "اكتب استعلامات التجميع (GROUP BY بالشهر، وأفضل المنتجات، ومؤشرات الأداء) بحيث تعمل في SQL — عبر LINQ في EF Core أو View في SQL — وابنِ لوحة Angular ببطاقات المؤشرات، ورسم شهري (أعمدة CSS أو مكتبة رسوم)، وجدول أفضل المنتجات، وكلها يقودها منتقي نطاق التاريخ.",
+    "expectedEn": "Selecting a range updates every widget from three fast endpoints; numbers match a manual SQL check; months without sales appear as zero.",
+    "expectedAr": "اختيار نطاق يحدّث كل عنصر من ثلاثة Endpoints سريعة، والأرقام تطابق فحص SQL يدويًا، والأشهر بلا مبيعات تظهر بصفر.",
+    "hintsEn": [
+      "GroupBy(o => new { o.CreatedAt.Year, o.CreatedAt.Month }) translates to SQL GROUP BY in EF Core.",
+      "forkJoin or three toSignal calls let the widgets load independently.",
+      "Add an index on Orders(CreatedAt) INCLUDE (Total) and check the plan."
+    ],
+    "hintsAr": [
+      "GroupBy(o => new { o.CreatedAt.Year, o.CreatedAt.Month }) يُترجم إلى GROUP BY في SQL مع EF Core.",
+      "تسمح forkJoin أو ثلاثة استدعاءات toSignal بتحميل العناصر بشكل مستقل.",
+      "أضف فهرسًا على Orders(CreatedAt) INCLUDE (Total) وراجع خطة التنفيذ."
+    ],
+    "solutionEn": "Reports are aggregation problems: push GROUP BY and SUM to SQL, shape the result for the chart on the server (including empty months), and keep each widget independent on the client so one slow query doesn’t block the whole page.",
+    "solutionAr": "التقارير مسائل تجميع: ادفع GROUP BY وSUM إلى SQL، وشكّل النتيجة للرسم على الخادم (بما فيها الأشهر الفارغة)، وأبقِ كل عنصر مستقلًا في العميل حتى لا يعطّل استعلام بطيء الصفحة كلها.",
+    "technologies": [
+      "Angular",
+      "TypeScript",
+      "AspNetCore",
+      "EfCore",
+      "SqlServer"
+    ],
+    "scenarioEn": "Managers export orders to Excel every Monday to see revenue per month and best-selling products. They want a dashboard with a date range.",
+    "scenarioAr": "يصدّر المديرون الطلبات إلى Excel كل يوم اثنين لرؤية الإيراد لكل شهر وأكثر المنتجات مبيعًا. ويريدون لوحة معلومات بنطاق تاريخ.",
+    "requirementsEn": [
+      "Aggregations run in the database (check the SQL); no loading all orders into memory.",
+      "Date ranges are half-open (>= from AND < to + 1 day) and validated (from ≤ to, max 2 years).",
+      "Months without orders are filled with zero in the response.",
+      "Money is decimal end to end and formatted with the currency pipe.",
+      "The three widgets load in parallel and each has its own loading/error state."
+    ],
+    "requirementsAr": [
+      "تعمل التجميعات في قاعدة البيانات (راجع الـ SQL)، ولا تحميل لكل الطلبات في الذاكرة.",
+      "نطاقات التاريخ نصف مفتوحة (>= from AND < to + يوم) ويُتحقق منها (from ≤ to، وسنتان كحد أقصى).",
+      "تُملأ الأشهر بلا طلبات بصفر في الاستجابة.",
+      "المبالغ من نوع decimal من البداية للنهاية وتُنسّق بأنبوب currency.",
+      "تُحمّل العناصر الثلاثة بالتوازي، ولكل منها حالة تحميل وخطأ خاصة."
+    ],
+    "acceptanceEn": [
+      "The revenue total equals SELECT SUM(…) run by hand for the same range.",
+      "A range with no orders shows zeros, not errors.",
+      "An invalid range returns 400 and the UI explains it.",
+      "Changing the range cancels the previous requests (switchMap)."
+    ],
+    "acceptanceAr": [
+      "إجمالي الإيراد يساوي SELECT SUM(…) المنفذ يدويًا للنطاق نفسه.",
+      "النطاق بلا طلبات يعرض أصفارًا لا أخطاء.",
+      "النطاق غير الصحيح يُرجع 400 وتشرحه الواجهة.",
+      "تغيير النطاق يلغي الطلبات السابقة (switchMap)."
+    ],
+    "bonusEn": [
+      "Compare with the previous period (+/- %).",
+      "Export the report to CSV from the API."
+    ],
+    "bonusAr": [
+      "قارن بالفترة السابقة (+/- %).",
+      "صدّر التقرير إلى CSV من الـ API."
+    ]
+  },
+  {
+    "key": "fs-notes-tags",
+    "type": "FullStack",
+    "topic": "fs-dto-mapping",
+    "difficulty": "Intermediate",
+    "minutes": 300,
+    "titleEn": "Notes app with tags",
+    "titleAr": "تطبيق ملاحظات بالوسوم",
+    "problemEn": "Model notes and tags as a many-to-many relationship, expose an API that accepts tags as plain names (creating missing tags), and build an Angular editor with autosave (debounced) and a tag filter that shows how many notes each tag has.",
+    "problemAr": "نمذج الملاحظات والوسوم كعلاقة متعدد لمتعدد، واعرض API تستقبل الوسوم كأسماء نصية (وتنشئ الوسوم غير الموجودة)، وابنِ محرر Angular بحفظ تلقائي (مع debounce) ومرشح وسوم يعرض عدد الملاحظات لكل وسم.",
+    "expectedEn": "Notes can be created, tagged, filtered and searched; edits save automatically 1 second after typing stops; unused tags disappear from the filter.",
+    "expectedAr": "يمكن إنشاء الملاحظات ووسمها وتصفيتها والبحث فيها، وتُحفظ التعديلات تلقائيًا بعد ثانية من توقف الكتابة، وتختفي الوسوم غير المستخدمة من المرشح.",
+    "hintsEn": [
+      "Load the note with Include(n => n.Tags) before replacing tags.",
+      "Normalise tag names (Trim, lower-case) in one place.",
+      "CanDeactivateFn can warn about unsaved changes."
+    ],
+    "hintsAr": [
+      "حمّل الملاحظة بـ Include(n => n.Tags) قبل استبدال الوسوم.",
+      "وحّد أسماء الوسوم (Trim وتحويل لأحرف صغيرة) في مكان واحد.",
+      "يمكن لـ CanDeactivateFn التحذير من التغييرات غير المحفوظة."
+    ],
+    "solutionEn": "The DTO is deliberately simpler than the model (tags as names), so the service does the mapping: normalise names, find or create tags, and sync the join table. On the client, an RxJS pipeline turns keystrokes into calm autosaves.",
+    "solutionAr": "الـ DTO أبسط من النموذج عن قصد (الوسوم كأسماء)، فتقوم الخدمة بالتحويل: توحيد الأسماء، وإيجاد الوسوم أو إنشاؤها، ومزامنة جدول الربط. وفي العميل تحوّل سلسلة RxJS ضغطات المفاتيح إلى عمليات حفظ تلقائي هادئة.",
+    "technologies": [
+      "Angular",
+      "TypeScript",
+      "AspNetCore",
+      "EfCore",
+      "SqlServer"
+    ],
+    "scenarioEn": "You want a personal notes app: write notes, tag them, filter by tag and search, with autosave while typing.",
+    "scenarioAr": "تريد تطبيق ملاحظات شخصيًا: تكتب الملاحظات وتضع لها وسومًا وتصفّيها حسب الوسم وتبحث فيها، مع حفظ تلقائي أثناء الكتابة.",
+    "requirementsEn": [
+      "Many-to-many Note ↔ Tag with a unique index on Tag.Name (case-insensitive).",
+      "Saving a note replaces its tag set; new tag names are created, removed ones are detached.",
+      "The list returns a short excerpt, not the whole body.",
+      "Autosave uses a debounced stream and shows \"Saving… / Saved\".",
+      "Tag counts come from one grouped query."
+    ],
+    "requirementsAr": [
+      "علاقة متعدد لمتعدد Note ↔ Tag مع فهرس فريد على Tag.Name (دون تمييز حالة الأحرف).",
+      "حفظ الملاحظة يستبدل مجموعة وسومها: تُنشأ الأسماء الجديدة وتُفصل المحذوفة.",
+      "تُرجع القائمة مقتطفًا قصيرًا لا النص الكامل.",
+      "يستخدم الحفظ التلقائي Stream مع debounce ويعرض \"Saving… / Saved\".",
+      "تأتي أعداد الوسوم من استعلام تجميع واحد."
+    ],
+    "acceptanceEn": [
+      "Typing in the editor saves once after a pause, not on every key.",
+      "Tagging \"Work\" and \"work\" results in one tag.",
+      "Filtering by a tag shows only its notes; the counts are correct.",
+      "Leaving the page with unsaved changes asks for confirmation."
+    ],
+    "acceptanceAr": [
+      "الكتابة في المحرر تحفظ مرة واحدة بعد التوقف، لا مع كل حرف.",
+      "وسم \"Work\" و\"work\" ينتج وسمًا واحدًا.",
+      "التصفية بوسم تعرض ملاحظاته فقط، والأعداد صحيحة.",
+      "مغادرة الصفحة مع تغييرات غير محفوظة تطلب تأكيدًا."
+    ],
+    "bonusEn": [
+      "Markdown preview.",
+      "Pin notes to the top.",
+      "Restore a previous version."
+    ],
+    "bonusAr": [
+      "معاينة Markdown.",
+      "تثبيت ملاحظات في الأعلى.",
+      "استعادة نسخة سابقة."
+    ]
+  },
+  {
+    "key": "fs-role-admin",
+    "type": "FullStack",
+    "topic": "api-authorization",
+    "difficulty": "Expert",
+    "minutes": 480,
+    "titleEn": "Role-based admin panel with an audit log",
+    "titleAr": "لوحة إدارة حسب الأدوار مع سجل تدقيق",
+    "problemEn": "Implement policy-based and resource-based authorization in ASP.NET Core, an admin user-management API with safety rules, and an append-only audit log written for every sensitive action. In Angular, build the admin pages, hide actions the user can’t perform (a structural directive) and guard routes — knowing that the server enforces the real rules.",
+    "problemAr": "نفّذ التفويض القائم على السياسات وعلى الموارد في ASP.NET Core، وAPI لإدارة المستخدمين بقواعد أمان، وسجل تدقيق للإضافة فقط يُكتب مع كل إجراء حساس. وفي Angular ابنِ صفحات الإدارة، وأخفِ الإجراءات التي لا يستطيعها المستخدم (Structural directive)، واحمِ المسارات — مع العلم أن الخادم هو من يفرض القواعد الحقيقية.",
+    "expectedEn": "Each role sees and can do exactly what the matrix allows; forbidden actions return 403 even when called directly; every role change, lock and order view by staff appears in the audit log with who, what, when.",
+    "expectedAr": "كل دور يرى ويفعل بالضبط ما تسمح به المصفوفة، والإجراءات الممنوعة تُرجع 403 حتى عند استدعائها مباشرة، وكل تغيير دور وقفل حساب واطلاع موظف على طلب يظهر في سجل التدقيق: من وماذا ومتى.",
+    "hintsEn": [
+      "builder.Services.AddAuthorizationBuilder().AddPolicy(\"CanManageUsers\", p => p.RequireRole(\"Admin\"));",
+      "IAuthorizationService.AuthorizeAsync(User, order, \"CanViewOrder\") with an AuthorizationHandler<Requirement, Order>.",
+      "Write the audit entry in the same transaction as the change it records."
+    ],
+    "hintsAr": [
+      "builder.Services.AddAuthorizationBuilder().AddPolicy(\"CanManageUsers\", p => p.RequireRole(\"Admin\"));",
+      "IAuthorizationService.AuthorizeAsync(User, order, \"CanViewOrder\") مع AuthorizationHandler<Requirement, Order>.",
+      "اكتب سجل التدقيق في المعاملة نفسها مع التغيير الذي يسجّله."
+    ],
+    "solutionEn": "Centralise rules in policies and handlers so they’re testable and consistent; check ownership against the resource, not just the role; make the audit log part of the same unit of work. The UI mirrors permissions for usability, but every rule is enforced on the server.",
+    "solutionAr": "ركّز القواعد في السياسات والـ Handlers لتكون قابلة للاختبار ومتسقة، وتحقق من الملكية مقابل المورد لا الدور فقط، واجعل سجل التدقيق جزءًا من وحدة العمل نفسها. تعكس الواجهة الصلاحيات لسهولة الاستخدام، لكن كل قاعدة تُفرض على الخادم.",
+    "technologies": [
+      "Angular",
+      "TypeScript",
+      "AspNetCore",
+      "EfCore",
+      "SqlServer"
+    ],
+    "scenarioEn": "The shop now has staff: Admins manage users, Support can view any order but change nothing, Auditors read the audit log. Every sensitive action must be traceable.",
+    "scenarioAr": "أصبح للمتجر موظفون: الـ Admins يديرون المستخدمين، والدعم Support يرى أي طلب دون تغيير شيء، والمدققون Auditors يقرؤون سجل التدقيق. ويجب أن يكون كل إجراء حساس قابلًا للتتبع.",
+    "requirementsEn": [
+      "Named policies (RequireRole / custom requirements) instead of role strings scattered in controllers.",
+      "Resource-based authorization: customers can read only their own orders.",
+      "Safety rules: you can’t lock yourself or remove the last Admin.",
+      "Audit entries: actor id, action, target, timestamp (UTC), IP; no secrets or full request bodies.",
+      "Angular *appHasRole directive and role guards; menus hide unavailable actions."
+    ],
+    "requirementsAr": [
+      "سياسات مسماة (RequireRole أو متطلبات مخصصة) بدلًا من نصوص أدوار مبعثرة في الـ Controllers.",
+      "تفويض قائم على الموارد: العملاء يقرؤون طلباتهم فقط.",
+      "قواعد أمان: لا يمكنك قفل نفسك ولا إزالة آخر Admin.",
+      "سجلات التدقيق: رقم الفاعل، والإجراء، والهدف، والوقت (UTC)، والـ IP؛ بلا أسرار ولا أجسام طلبات كاملة.",
+      "Directive باسم *appHasRole وRole guards في Angular، والقوائم تخفي الإجراءات غير المتاحة."
+    ],
+    "acceptanceEn": [
+      "A Support user calling PUT /api/admin/users/5/roles with Postman gets 403.",
+      "Removing the Admin role from the only admin returns 400 with a clear message.",
+      "Every role change appears in the audit log with the acting user.",
+      "A customer requesting someone else’s order gets 404.",
+      "Hiding a button in Angular is never the only protection (verified by calling the API directly)."
+    ],
+    "acceptanceAr": [
+      "مستخدم Support يستدعي PUT /api/admin/users/5/roles عبر Postman يحصل على 403.",
+      "إزالة دور Admin من المدير الوحيد تُرجع 400 برسالة واضحة.",
+      "كل تغيير دور يظهر في سجل التدقيق مع المستخدم الفاعل.",
+      "العميل الذي يطلب طلب شخص آخر يحصل على 404.",
+      "إخفاء زر في Angular ليس الحماية الوحيدة أبدًا (يُتحقق باستدعاء الـ API مباشرة)."
+    ],
+    "bonusEn": [
+      "Export the audit log to CSV with a date filter.",
+      "Require re-entering the password before role changes."
+    ],
+    "bonusAr": [
+      "صدّر سجل التدقيق إلى CSV مع مرشح تاريخ.",
+      "اطلب إعادة إدخال كلمة المرور قبل تغيير الأدوار."
+    ]
+  },
+  {
+    "key": "fs-library-loans",
+    "type": "FullStack",
+    "topic": "fs-error-handling",
+    "difficulty": "Expert",
+    "minutes": 600,
+    "titleEn": "Capstone: library loans system",
+    "titleAr": "المشروع الختامي: نظام إعارة المكتبة",
+    "problemEn": "Build the complete system as a portfolio project: domain rules in testable classes, EF Core persistence with migrations, a REST API with ProblemDetails errors, an Angular app for librarians, unit and integration tests, a README, and a CI workflow — developed on feature branches with pull requests.",
+    "problemAr": "ابنِ النظام كاملًا كمشروع لملف أعمالك: قواعد النطاق في أصناف قابلة للاختبار، وحفظ البيانات بـ EF Core مع Migrations، وREST API بأخطاء ProblemDetails، وتطبيق Angular لأمناء المكتبة، واختبارات Unit وIntegration، وملف README، وسير عمل CI — مع التطوير على فروع ميزات ودمجها بـ Pull requests.",
+    "expectedEn": "A working, documented, tested application you could demo in an interview: loans and returns follow every rule, errors are clear, and CI runs the tests on every push.",
+    "expectedAr": "تطبيق يعمل وموثّق ومختبَر يمكنك عرضه في مقابلة عمل: الإعارة والإرجاع يتبعان كل القواعد، والأخطاء واضحة، وتشغّل الـ CI الاختبارات مع كل Push.",
+    "hintsEn": [
+      "Inject TimeProvider and use FakeTimeProvider in tests to jump days ahead.",
+      "Model Loan.Return(now) to compute the fine inside the domain, not in the controller.",
+      "Keep a short docs/decisions.md: one paragraph per important choice."
+    ],
+    "hintsAr": [
+      "احقن TimeProvider واستخدم FakeTimeProvider في الاختبارات للقفز أيامًا للأمام.",
+      "نمذج Loan.Return(now) لتحسب الغرامة داخل النطاق لا في الـ Controller.",
+      "احتفظ بملف قصير docs/decisions.md: فقرة لكل قرار مهم."
+    ],
+    "solutionEn": "This capstone ties the roadmap together: a domain that owns the rules, persistence that protects consistency, an API that communicates clearly, a UI that guides users, tests that prove behaviour, and the engineering habits (Git, docs, CI) that make it maintainable — exactly what an interviewer wants to see.",
+    "solutionAr": "يربط هذا المشروع الختامي المسار كله: نطاق يملك القواعد، وحفظ يحمي الاتساق، وAPI تتواصل بوضوح، وواجهة ترشد المستخدمين، واختبارات تثبت السلوك، وعادات هندسية (Git والتوثيق والـ CI) تجعله قابلًا للصيانة — وهذا بالضبط ما يريد المقابِل رؤيته.",
+    "technologies": [
+      "Angular",
+      "TypeScript",
+      "AspNetCore",
+      "EfCore",
+      "SqlServer",
+      "Testing",
+      "Git"
+    ],
+    "scenarioEn": "A community library wants to stop using paper cards. Members borrow up to 3 books for 14 days; late returns cost 2 EGP per day; members with unpaid fines over 50 EGP can’t borrow. Librarians need an overdue report.",
+    "scenarioAr": "مكتبة مجتمعية تريد التوقف عن استخدام البطاقات الورقية. يستعير الأعضاء حتى 3 كتب لمدة 14 يومًا، وتكلّف الإعادة المتأخرة 2 جنيه عن كل يوم، ولا يستطيع الأعضاء الذين عليهم غرامات غير مدفوعة تزيد على 50 جنيهًا الاستعارة. ويحتاج أمناء المكتبة إلى تقرير بالمتأخرات.",
+    "requirementsEn": [
+      "Business rules (limit, due date, fines, blocking) live in the domain and are covered by unit tests.",
+      "Integration tests with WebApplicationFactory cover borrow, return and the 409 cases.",
+      "All errors are ProblemDetails; concurrency on the last copy is handled.",
+      "Dates use a clock abstraction (TimeProvider) so tests can control \"today\".",
+      "README: how to run, architecture, decisions; CI builds the backend and frontend and runs tests.",
+      "Work happens on branches merged through pull requests with meaningful commits."
+    ],
+    "requirementsAr": [
+      "قواعد العمل (الحد والموعد والغرامات والحظر) تعيش في النطاق وتغطيها Unit tests.",
+      "اختبارات Integration بـ WebApplicationFactory تغطي الاستعارة والإرجاع وحالات 409.",
+      "كل الأخطاء ProblemDetails، ويُعالج التزامن على آخر نسخة.",
+      "تستخدم التواريخ تجريدًا للساعة (TimeProvider) لتتحكم الاختبارات في «اليوم».",
+      "README: طريقة التشغيل والمعمارية والقرارات؛ وتبني الـ CI الـ Backend والـ Frontend وتشغّل الاختبارات.",
+      "يتم العمل على فروع تُدمج عبر Pull requests مع Commits ذات معنى."
+    ],
+    "acceptanceEn": [
+      "Borrowing a 4th book returns 409 \"Loan limit reached\".",
+      "Returning a book 3 days late records a fine of 6 EGP.",
+      "A member with 60 EGP unpaid can’t borrow until paying.",
+      "The overdue report lists only unreturned loans past their due date.",
+      "A fresh clone runs with the README instructions; CI is green."
+    ],
+    "acceptanceAr": [
+      "استعارة كتاب رابع تُرجع 409 \"Loan limit reached\".",
+      "إرجاع كتاب متأخرًا 3 أيام يسجّل غرامة 6 جنيهات.",
+      "العضو المدين بـ 60 جنيهًا لا يستطيع الاستعارة حتى يدفع.",
+      "يعرض تقرير المتأخرات الإعارات غير المُرجعة التي تجاوزت موعدها فقط.",
+      "نسخة جديدة من المستودع تعمل بتعليمات الـ README، والـ CI ناجحة."
+    ],
+    "bonusEn": [
+      "Reservations queue for books that are out.",
+      "Email reminders (logged locally) two days before the due date.",
+      "Deploy to a free hosting tier and add the link to your portfolio."
+    ],
+    "bonusAr": [
+      "قائمة حجوزات للكتب المُعارة.",
+      "تذكيرات بالبريد (تُسجّل محليًا) قبل الموعد بيومين.",
+      "انشر على استضافة مجانية وأضف الرابط إلى ملف أعمالك."
+    ]
+  }
+]

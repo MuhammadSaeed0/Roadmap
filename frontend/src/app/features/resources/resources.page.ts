@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { ApiError } from '../../core/api-error';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { FormatDatePipe, LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
-import { ResourceType, SKILLS, SkillArea } from '../../core/models';
+import { PhaseRef, Resource, ResourceType, SKILLS, SkillArea } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../../shared/ui.components';
@@ -17,6 +17,8 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
     SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
   template: `
     <app-page-header [title]="'resources.title' | t" [subtitle]="'resources.subtitle' | t">
+      <button type="button" class="btn btn-secondary btn-sm" (click)="setAll(true)">{{ 'roadmap.expandAll' | t }}</button>
+      <button type="button" class="btn btn-ghost btn-sm" (click)="setAll(false)">{{ 'roadmap.collapseAll' | t }}</button>
       <button type="button" class="btn btn-secondary btn-sm" data-tour="resources-verify" [disabled]="verifying()" (click)="verify()" [title]="'resources.verifyHelp' | t">
         <app-icon name="refresh" [size]="15" [class.spin]="verifying()" /> {{ (verifying() ? 'resources.verifying' : 'resources.verify') | t }}
       </button>
@@ -50,8 +52,27 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
       @if (list.length === 0) {
         <app-empty-state icon="link" [title]="'resources.empty' | t" />
       } @else {
-        <div class="grid grid-2" [class.is-loading]="data.loading()" data-tour="resources-list">
-          @for (r of list; track r.id) {
+        <ol class="timeline" role="list" [class.is-loading]="data.loading()" data-tour="resources-list">
+          @for (group of groups(); track group.key) {
+            <li class="phase card">
+              <button type="button" class="phase-head" (click)="toggle(group.key)" [attr.aria-expanded]="isOpen(group.key)"
+                      [attr.aria-controls]="'res-phase-' + group.key">
+                <span class="phase-num" aria-hidden="true">{{ group.phase?.order ?? '·' }}</span>
+                <span class="phase-info">
+                  @if (group.phase; as phase) {
+                    <span class="phase-eyebrow">{{ 'roadmap.phase' | t: { n: phase.order } }}</span>
+                    <span class="phase-title">{{ phase | loc: 'title' }}</span>
+                  } @else {
+                    <span class="phase-title">{{ 'resources.general' | t }}</span>
+                  }
+                </span>
+                <span class="phase-stats"><span class="small">{{ 'resources.count' | t: { n: group.items.length } }}</span></span>
+                <app-icon name="chevron-down" class="chev" [class.open]="isOpen(group.key)" />
+              </button>
+              @if (isOpen(group.key)) {
+              <div class="phase-body" [id]="'res-phase-' + group.key">
+              <div class="grid grid-2 resource-grid">
+          @for (r of group.items; track r.id) {
             <article class="card resource-card">
               <div class="resource-card-head">
                 <span class="type-pill">{{ 'resourceType.' + r.type | t }}</span>
@@ -72,7 +93,12 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
               </div>
             </article>
           }
-        </div>
+              </div>
+              </div>
+              }
+            </li>
+          }
+        </ol>
       }
     }
   `,
@@ -91,6 +117,37 @@ export default class ResourcesPage {
   private timer: ReturnType<typeof setTimeout> | undefined;
 
   protected readonly data = createLoader(() => this.api.resources({ type: this.type(), skill: this.skill(), q: this.q() }));
+
+  /** Resources by roadmap phase (the phase of their earliest topic), in roadmap order; unlinked ones last. */
+  protected readonly groups = computed(() => {
+    const byKey = new Map<string, { key: string; phase: PhaseRef | null; items: Resource[] }>();
+    for (const r of this.data.value() ?? []) {
+      const key = r.phase ? String(r.phase.id) : 'general';
+      if (!byKey.has(key)) byKey.set(key, { key, phase: r.phase ?? null, items: [] });
+      byKey.get(key)!.items.push(r);
+    }
+    return [...byKey.values()].sort((a, b) => (a.phase?.order ?? 999) - (b.phase?.order ?? 999));
+  });
+
+  /** Phases opened by hand (the first one to begin with); while searching or filtering every group with results is open. */
+  private readonly expanded = signal<Set<string> | null>(null);
+  private readonly filtering = computed(() => !!(this.q() || this.type() || this.skill()));
+
+  protected isOpen(key: string): boolean {
+    if (this.filtering()) return true;
+    const open = this.expanded();
+    return open ? open.has(key) : key === this.groups()[0]?.key;
+  }
+
+  protected toggle(key: string): void {
+    const open = new Set(this.expanded() ?? (this.groups()[0] ? [this.groups()[0].key] : []));
+    if (this.isOpen(key)) open.delete(key); else open.add(key);
+    this.expanded.set(open);
+  }
+
+  protected setAll(open: boolean): void {
+    this.expanded.set(new Set(open ? this.groups().map(g => g.key) : []));
+  }
 
   protected host(url: string): string {
     try { return new URL(url).host; } catch { return url; }

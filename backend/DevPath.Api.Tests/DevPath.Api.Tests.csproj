@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.13" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
@@ -22,6 +23,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DevPath.Api\DevPath.Api.csproj" />
+  </ItemGroup>
+
+  <!-- The in-browser C# runner's compile-and-run logic, used here to check every C# exercise's model solution. -->
+  <ItemGroup>
+    <Compile Include="..\DevPath.CodeRunner\CSharpRunner.cs" Link="CodeRunner\CSharpRunner.cs" />
   </ItemGroup>
 
 </Project>

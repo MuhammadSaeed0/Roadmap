@@ -1,0 +1,3 @@
+SELECT Name
+FROM Students
+WHERE Email IS NULL;

@@ -1,0 +1,15 @@
+@api = http://localhost:5000/api/products
+
+GET {{api}}
+
+###
+POST {{api}}
+Content-Type: application/json
+
+{ "name": "Keyboard", "price": 49.99, "stock": 10 }
+
+###
+POST {{api}}
+Content-Type: application/json
+
+{ "name": "", "price": -1, "stock": 0 }

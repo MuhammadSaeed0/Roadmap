@@ -26,6 +26,78 @@ public class AdminTests(ApiFactory factory) : IClassFixture<ApiFactory>
         return await scope.ServiceProvider.GetRequiredService<AppDbContext>().Users.Where(u => u.Email == email).Select(u => u.Id).SingleAsync();
     }
 
+    [Fact]
+    public async Task An_administrator_deletes_a_user_and_everything_they_saved()
+    {
+        var (admin, _) = await factory.CreateAdminClientAsync();
+        var email = factory.NewEmail();
+        var user = await factory.CreateUserClientAsync(email);
+        (await user.PostAsJsonAsync("/api/notes", new { title = "My note", content = "Saved before the deletion" })).EnsureSuccessStatusCode();
+        var id = await IdOf(email);
+
+        var deleted = await admin.DeleteAsync($"/api/admin/users/{id}");
+        Assert.Equal(HttpStatusCode.NoContent, deleted.StatusCode);
+
+        using (var scope = factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            Assert.False(await db.Users.AnyAsync(u => u.Id == id));
+            Assert.False(await db.Notes.IgnoreQueryFilters().AnyAsync(n => n.UserId == id));
+            Assert.True(await db.AdminAudit.AnyAsync(a => a.Action == "delete_user" && a.TargetEmail == email));
+        }
+        // Their session ends at once, the account is gone from the list, and the address is free to sign up again.
+        Assert.Equal(HttpStatusCode.Unauthorized, (await user.GetAsync("/api/auth/me")).StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, (await admin.GetAsync($"/api/admin/users/{id}")).StatusCode);
+        Assert.Equal(HttpStatusCode.Created, (await factory.CreateClient().PostAsJsonAsync("/api/auth/register",
+            new { fullName = "Back again", email, password = ApiFactory.Password })).StatusCode);
+    }
+
+    [Fact]
+    public async Task Deleting_follows_the_administrator_hierarchy()
+    {
+        var owner = await factory.CreateOwnerClientAsync();
+        var (admin, adminEmail) = await factory.CreateAdminClientAsync();
+        var (_, otherAdminEmail) = await factory.CreateAdminClientAsync();
+        var user = await factory.CreateUserClientAsync();
+
+        Assert.Equal("self_action", await Code(await admin.DeleteAsync($"/api/admin/users/{await IdOf(adminEmail)}")));
+        Assert.Equal("owner_protected", await Code(await admin.DeleteAsync($"/api/admin/users/{await IdOf(ApiFactory.OwnerEmail)}")));
+        Assert.Equal("owner_required", await Code(await admin.DeleteAsync($"/api/admin/users/{await IdOf(otherAdminEmail)}")));
+        Assert.Equal(HttpStatusCode.Forbidden, (await user.DeleteAsync($"/api/admin/users/{await IdOf(otherAdminEmail)}")).StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, (await admin.DeleteAsync("/api/admin/users/no-such-user")).StatusCode);
+
+        // The main administrator can delete another administrator, but never their own account.
+        Assert.Equal(HttpStatusCode.NoContent, (await owner.DeleteAsync($"/api/admin/users/{await IdOf(otherAdminEmail)}")).StatusCode);
+        Assert.Equal("self_action", await Code(await owner.DeleteAsync($"/api/admin/users/{await IdOf(ApiFactory.OwnerEmail)}")));
+    }
+
+    [Fact]
+    public async Task Administrators_rename_accounts_within_the_hierarchy()
+    {
+        var owner = await factory.CreateOwnerClientAsync();
+        var (admin, adminEmail) = await factory.CreateAdminClientAsync();
+        var (_, otherAdminEmail) = await factory.CreateAdminClientAsync();
+        var userEmail = factory.NewEmail();
+        var user = await factory.CreateUserClientAsync(userEmail);
+        var userId = await IdOf(userEmail);
+
+        var renamed = await admin.PutAsJsonAsync($"/api/admin/users/{userId}/name", new { fullName = "  Sara Ahmed  " });
+        Assert.Equal(HttpStatusCode.OK, renamed.StatusCode);
+        Assert.Equal("Sara Ahmed", (await Json(renamed))["fullName"]!.GetValue<string>());
+        Assert.Equal("Sara Ahmed", (await Json(await user.GetAsync("/api/auth/me")))["fullName"]!.GetValue<string>());
+
+        Assert.Equal(HttpStatusCode.BadRequest, (await admin.PutAsJsonAsync($"/api/admin/users/{userId}/name", new { fullName = "   " })).StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest, (await admin.PutAsJsonAsync($"/api/admin/users/{userId}/name", new { fullName = new string('x', 101) })).StatusCode);
+        Assert.Equal(HttpStatusCode.OK, (await admin.PutAsJsonAsync($"/api/admin/users/{await IdOf(adminEmail)}/name", new { fullName = "Me" })).StatusCode);
+        Assert.Equal("owner_required", await Code(await admin.PutAsJsonAsync($"/api/admin/users/{await IdOf(otherAdminEmail)}/name", new { fullName = "X" })));
+        Assert.Equal("owner_required", await Code(await admin.PutAsJsonAsync($"/api/admin/users/{await IdOf(ApiFactory.OwnerEmail)}/name", new { fullName = "X" })));
+        Assert.Equal(HttpStatusCode.Forbidden, (await user.PutAsJsonAsync($"/api/admin/users/{userId}/name", new { fullName = "Hacked" })).StatusCode);
+
+        Assert.Equal(HttpStatusCode.OK, (await owner.PutAsJsonAsync($"/api/admin/users/{await IdOf(otherAdminEmail)}/name", new { fullName = "Omar" })).StatusCode);
+        using var scope = factory.Services.CreateScope();
+        Assert.True(await scope.ServiceProvider.GetRequiredService<AppDbContext>().AdminAudit.AnyAsync(a => a.Action == "rename" && a.TargetEmail == userEmail));
+    }
+
     /// <summary>A registered account that has confirmed its email and waits for approval.</summary>
     private async Task<(HttpClient Client, string Email, string Id)> PendingApprovalAsync()
     {
@@ -251,16 +323,19 @@ public class OwnerInitializationTests
     }
 
     [Fact]
-    public async Task Without_the_secret_nobody_becomes_owner_at_start_up()
+    public async Task An_unconfirmed_registration_of_the_owner_address_gets_no_rights()
     {
         var factory = await StartAsync([]);
         try
         {
-            await factory.RegisterAsync(ApiFactory.OwnerEmail);
-            await factory.ApproveInDatabaseAsync(ApiFactory.OwnerEmail);   // even verified and approved
+            var client = await factory.RegisterAsync(ApiFactory.OwnerEmail);
             await RunEnsureOwnerAsync(factory);
+            var login = await factory.CreateClient().PostAsJsonAsync("/api/auth/login", new { email = ApiFactory.OwnerEmail, password = ApiFactory.Password });
+            Assert.Equal(HttpStatusCode.OK, login.StatusCode);
+
             using var scope = factory.Services.CreateScope();
             Assert.False(await scope.ServiceProvider.GetRequiredService<AppDbContext>().Users.AnyAsync(u => u.IsOwner));
+            Assert.Equal(HttpStatusCode.Forbidden, (await client.GetAsync("/api/admin/overview")).StatusCode);
         }
         finally
         {
@@ -269,7 +344,76 @@ public class OwnerInitializationTests
     }
 
     [Fact]
-    public async Task Ownership_is_not_moved_when_the_configured_address_changes()
+    public async Task The_owner_address_is_the_owner_as_soon_as_it_is_confirmed()
+    {
+        var factory = await StartAsync([]);
+        try
+        {
+            // Sign up with the owner address and confirm it: no approval needed, straight to owner.
+            var client = await factory.RegisterAsync(ApiFactory.OwnerEmail);
+            var token = factory.Emails.LastToken(ApiFactory.OwnerEmail, "verification");
+            var verified = await client.PostAsJsonAsync("/api/auth/verify-email", new { token });
+            Assert.Equal(HttpStatusCode.OK, verified.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/api/admin/overview")).StatusCode);
+            var me = await client.GetFromJsonAsync<System.Text.Json.Nodes.JsonObject>("/api/auth/me");
+            Assert.True(me!["isOwner"]!.GetValue<bool>());
+            Assert.Equal("Approved", me["status"]!.GetValue<string>());
+        }
+        finally
+        {
+            await ((IAsyncLifetime)factory).DisposeAsync();
+        }
+    }
+
+    [Fact]
+    public async Task The_owner_is_restored_at_sign_in_and_start_up_whatever_happened_to_the_account()
+    {
+        var factory = await StartAsync([]);
+        try
+        {
+            // A confirmed account for the owner address that lost everything: not owner, no role, waiting for approval.
+            await factory.RegisterAsync(ApiFactory.OwnerEmail);
+            using (var scope = factory.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var user = await db.Users.SingleAsync(u => u.Email == ApiFactory.OwnerEmail);
+                user.EmailConfirmed = true;
+                user.EmailVerifiedAt = DateTime.UtcNow;
+                user.Status = AccountStatus.PendingApproval;
+                await db.SaveChangesAsync();
+            }
+
+            var client = factory.CreateClient();
+            var login = await client.PostAsJsonAsync("/api/auth/login", new { email = ApiFactory.OwnerEmail, password = ApiFactory.Password });
+            Assert.Equal(HttpStatusCode.OK, login.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/api/admin/overview")).StatusCode);
+
+            // Suspended and demoted behind the API's back (for example by editing the database): the next start-up restores it.
+            using (var scope = factory.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var user = await db.Users.SingleAsync(u => u.Email == ApiFactory.OwnerEmail);
+                user.Status = AccountStatus.Suspended;
+                user.IsOwner = false;
+                await db.SaveChangesAsync();
+            }
+            await RunEnsureOwnerAsync(factory);
+            using (var scope = factory.Services.CreateScope())
+            {
+                var user = await scope.ServiceProvider.GetRequiredService<AppDbContext>().Users.SingleAsync(u => u.Email == ApiFactory.OwnerEmail);
+                Assert.True(user.IsOwner);
+                Assert.Equal(AccountStatus.Approved, user.Status);
+                Assert.True(await scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>().IsInRoleAsync(user, Roles.Admin));
+            }
+        }
+        finally
+        {
+            await ((IAsyncLifetime)factory).DisposeAsync();
+        }
+    }
+
+    [Fact]
+    public async Task Ownership_moves_to_the_configured_address()
     {
         var factory = await StartAsync(new() { ["Admin:OwnerPassword"] = "Bootstrap123" });
         try
@@ -289,9 +433,12 @@ public class OwnerInitializationTests
                 await workflow.EnsureOwnerAsync(CancellationToken.None);
             }
 
+            // The newly configured (and confirmed) address is now the only owner; the previous owner stays an administrator.
             using var check = factory.Services.CreateScope();
             var owner = await check.ServiceProvider.GetRequiredService<AppDbContext>().Users.SingleAsync(u => u.IsOwner);
-            Assert.Equal(ApiFactory.OwnerEmail, owner.Email);
+            Assert.Equal(other, owner.Email);
+            var previous = await check.ServiceProvider.GetRequiredService<AppDbContext>().Users.SingleAsync(u => u.Email == ApiFactory.OwnerEmail);
+            Assert.True(await check.ServiceProvider.GetRequiredService<UserManager<AppUser>>().IsInRoleAsync(previous, Roles.Admin));
         }
         finally
         {

@@ -12,6 +12,11 @@ public class VideosController(TopicVideoService videos) : ControllerBase
     [HttpGet("topics/{topicId:int}/videos")]
     public Task<TopicVideosDto> List(int topicId, CancellationToken ct) => videos.GetAsync(topicId, ct);
 
+    /// <summary>Every curated video, organised by roadmap phase and topic. Language: English or Arabic (omit for both).</summary>
+    [HttpGet("videos/library")]
+    public Task<VideoLibraryDto> Library([FromQuery] Models.VideoLanguage? language, CancellationToken ct) =>
+        videos.LibraryAsync(language, ct);
+
     [HttpGet("project-tasks/{taskId:int}/videos")]
     public Task<TaskVideosDto> ListForTask(int taskId, CancellationToken ct) => videos.GetForTaskAsync(taskId, ct);
 
@@ -28,6 +33,10 @@ public class VideosController(TopicVideoService videos) : ControllerBase
         await videos.RemoveAsync(id, ct);
         return NoContent();
     }
+
+    /// <summary>The videos you saved, newest first, with the topic each was saved from.</summary>
+    [HttpGet("videos/saved")]
+    public Task<IReadOnlyList<SavedVideoDto>> Saved(CancellationToken ct) => videos.SavedAsync(ct);
 
     [HttpPut("videos/{videoId}/progress")]
     public Task<VideoProgressDto> SetProgress(string videoId, UpdateVideoProgressRequest request, CancellationToken ct) =>

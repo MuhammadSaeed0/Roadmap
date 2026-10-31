@@ -1,0 +1,1 @@
+-- Speed up: WHERE CustomerId = @id ORDER BY OrderDate DESC

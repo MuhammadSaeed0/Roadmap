@@ -1,0 +1,40 @@
+{
+  "checks": [
+    {
+      "nameEn": "The index exists on Orders",
+      "nameAr": "الفهرس موجود على Orders",
+      "sql": "SELECT name, tbl_name FROM sqlite_schema WHERE type = 'index' AND name = 'IX_Orders_Customer_Date'",
+      "expected": {
+        "columns": [
+          "name",
+          "tbl_name"
+        ],
+        "rows": [
+          [
+            "IX_Orders_Customer_Date",
+            "Orders"
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "Its columns are CustomerId, then OrderDate",
+      "nameAr": "أعمدته CustomerId ثم OrderDate",
+      "sql": "SELECT name FROM pragma_index_info('IX_Orders_Customer_Date') ORDER BY seqno",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "name"
+        ],
+        "rows": [
+          [
+            "CustomerId"
+          ],
+          [
+            "OrderDate"
+          ]
+        ]
+      }
+    }
+  ]
+}

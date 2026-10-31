@@ -33,28 +33,31 @@ Angular 22 + TypeScript   →   ASP.NET Core 10 Web API (C#)   →   EF Core 10 
 10. [Email verification, approval and administration](#email-verification-approval-and-administration)
 11. [Deployment](#deployment)
 12. [YouTube videos](#youtube-videos)
-13. [Onboarding tour and help](#onboarding-tour-and-help)
-14. [Bilingual UI and right-to-left support](#bilingual-ui-and-right-to-left-support)
-15. [How progress, recommendations and reviews are calculated](#how-progress-recommendations-and-reviews-are-calculated)
-16. [Editing the learning content](#editing-the-learning-content)
-17. [Tests](#tests)
-18. [Troubleshooting](#troubleshooting)
-19. [Known limitations](#known-limitations)
-20. [Ideas for future improvements](#ideas-for-future-improvements)
+13. [Code runners](#code-runners)
+14. [Onboarding tour and help](#onboarding-tour-and-help)
+15. [Bilingual UI and right-to-left support](#bilingual-ui-and-right-to-left-support)
+16. [How progress, recommendations and reviews are calculated](#how-progress-recommendations-and-reviews-are-calculated)
+17. [Editing the learning content](#editing-the-learning-content)
+18. [Tests](#tests)
+19. [Troubleshooting](#troubleshooting)
+20. [Known limitations](#known-limitations)
+21. [Ideas for future improvements](#ideas-for-future-improvements)
 
 ---
 
 ## Features
 
 - **Accounts**: sign-up, sign-in, sign-out, password reset and password change. Every account has its own private progress, notes, sessions, reviews, projects, practice answers, interview ratings, preferences and videos (see [Accounts and data privacy](#accounts-and-data-privacy)).
-- **Videos on every topic**: 3–4 hand-picked YouTube tutorials per topic (598 in total, all checked to exist and allow embedding), optional live suggestions from the YouTube API, plus your own videos added by link, with an in-page player and per-account "watched" and "saved" flags (see [YouTube videos](#youtube-videos)).
+- **Videos on every topic**: 3–4 hand-picked English YouTube tutorials per topic (598) plus up to two Arabic explanations (139 videos on 84 of the 150 topics), all checked to exist and allow embedding, with a language filter, durations and short descriptions, optional live suggestions from the YouTube API, plus your own videos added by link, with an in-page player and per-account "watched" and "saved" flags (see [YouTube videos](#youtube-videos)).
 - **A quiz on every topic**, right under the videos: 600 bilingual multiple-choice questions (4 per topic) in three levels that open one after another: the topic itself, the topic mixed with the topics just before it, and a wider review of the topics leading up to it. You need 75% to open the next level. The API grades answers, so the correct options never reach the browser before you answer, and each answer comes with a short explanation. The questions test each topic's ideas (what the videos teach); they weren't written from individual video transcripts.
 - **Dashboard**: weighted overall progress, completed and remaining topics, time remaining, current phase, a "continue learning" recommendation with its reasons, a 30/60/120-minute study plan, project progress, per-skill progress, recent activity, study streak and quick actions.
 - **Roadmap**: 13 phases and 150 topics, from C# fundamentals to full-stack projects. No prior experience is assumed: phase 5 starts with databases and SQL from zero (tables, `SELECT`, `INSERT`/`UPDATE`/`DELETE`, keys, `JOIN`, `GROUP BY`) before EF Core, and phase 6 applies SQL Server in real applications. Any topic can still be marked "already known" from its page.
 - **Topic pages** cover: what it is, why it matters, how it works, a real-world example, a code example, a practice task, an independent challenge, verified resources, prerequisites, topics it unlocks, related projects, interview questions, exercises and notes. You can also set status, prior knowledge, confidence (0–5), add the topic to spaced review, and log study sessions.
 - **Learning Library**: server-side search, filters (skill, phase, status, priority, knowledge) and pagination. The filters are kept in the URL.
 - **Four projects**: Employee Management (C# console), Inventory API, Project Dashboard (Angular) and Sales and Order Management (full stack). They have 16 milestones, 62 tasks with acceptance criteria and topic links, 15 realistic **change requests** that unlock as a project progresses, a portfolio checklist and a repository link. Every task and change request has 3–4 YouTube videos on how to build that part (280 hand-picked videos in `SeedData/project-videos.json`, each checked with YouTube; tasks with fewer are topped up from their related topics' videos).
-- **Practice Lab**: 39 coding, debugging, real-world scenario and code-review exercises. The API enforces the flow *attempt → hints → solution*, so the solution is never sent before you've saved your own attempt.
+- **Practice Lab**: 140 exercises across the whole roadmap (C#, OOP, LINQ, ASP.NET Core, EF Core, SQL, TypeScript, Angular, testing, Git and professional skills): coding, debugging, conceptual, practical, mini projects, advanced challenges and 10 **full-stack challenges** with a scenario, technologies, requirements, acceptance criteria, hints and bonus tasks. Four levels (Beginner → Expert); filters by technology, topic, level, type and status, plus search; progress per technology from what you actually solved. Exercises open in an editor: C#, SQL, TypeScript and JavaScript exercises run **automatic checks** in your browser (submitting records your score, and passing every check completes the exercise), Angular exercises run a live preview, and project-style tasks (controllers, EF Core, tests, Git) are edited here and built locally. The API still enforces *attempt → hints → solution*.
+- **Code Playground**: an in-browser IDE (Monaco, the editor of VS Code) for C#, SQL, TypeScript, JavaScript, HTML/CSS and multi-file Angular projects, with a file explorer, tabs, console, problems panel, tests, live preview, save/autosave/restore, import and download as .zip, and full screen. **All code runs in your browser**, never on the server: C# with the Roslyn compiler on .NET WebAssembly, SQL on SQLite (sql.js) with the common T-SQL syntax translated, JavaScript in a worker, and previews in a sandboxed frame without access to your session (see [Code runners](#code-runners)).
+- **Video library**: every topic's videos in one place, organised by the roadmap, with a language filter (English / Arabic), durations and short descriptions.
 - **Interview preparation**: 855 bilingual questions in 17 categories (at least 50 each), each linked to a topic. Besides the stack (C#, .NET, ASP.NET Core, EF Core, SQL Server, TypeScript, Angular, REST, testing, Git, full-stack design) it covers the classic coding-interview themes: data structures, algorithms, object-oriented design, system design, concurrency and behavioral questions. These are written for this project, not copied from any book. Study mode shows question and answer, with search, difficulty and rating filters; practice mode shows one question at a time and you rate yourself (need review / partial / confident).
 - **Resources**: 157 free, mostly official links. Each one was checked over HTTP when it was seeded, and a **"Check all links"** button re-verifies them on demand.
 - **Notes**: a searchable knowledge base. A note can be linked to a topic, project, task or interview question. Deleting asks for confirmation, and you're warned about unsaved changes.
@@ -87,6 +90,7 @@ dotnet run                     # also seeds the learning content on start-up
 # 2) Frontend, in a second terminal (http://localhost:4200)
 cd frontend
 npm install
+npm run build:runners          # once (and after changing backend/DevPath.CodeRunner): builds the in-browser code runners
 npm start                      # = ng serve
 ```
 
@@ -218,8 +222,12 @@ Content tables have foreign keys, unique indexes on every slug/key, check constr
 | PUT | `/api/projects/{id}/portfolio/{itemId}`, `/api/projects/{id}/repository` | Portfolio checklist, repo URL |
 | GET | `/api/resources?topicId&type&skill&q` | Resources |
 | POST | `/api/resources/verify` | Re-check every link over HTTP |
-| GET | `/api/practice?type&topicId&skill`, `/api/practice/{id}` | Exercises (hints and solution only once revealed) |
+| GET | `/api/practice?type&topicId&skill&difficulty&status&runner&q`, `/api/practice/{id}` | Exercises with per-technology statistics (hints and solution only once revealed) |
 | PUT/POST | `/api/practice/{id}/attempt`, `/hints`, `/solution`, `/status` | Practice workflow |
+| PUT/POST | `/api/practice/{id}/files`, `/api/practice/{id}/submissions`, `/api/practice/{id}/criteria` | Save your exercise files, record a checked submission (score), tick acceptance criteria |
+| GET/POST/PUT/DELETE | `/api/playground/projects`, `/api/playground/projects/{id}` | Your saved Code Playground projects (up to 100) |
+| GET | `/api/videos/library?language=English\|Arabic` | Every topic's curated videos, by phase (all languages without `language`) |
+| GET | `/api/videos/saved` | The videos you saved, newest first, with the topic each was saved from |
 | GET/PUT | `/api/interviews?category&topicId&rating`, `/api/interviews/{id}/progress` | Interview questions and self-rating |
 | GET/POST/PUT/DELETE | `/api/notes`, `/api/notes/{id}` | Notes CRUD and search |
 | GET/PUT/POST/DELETE | `/api/reviews`, `/api/reviews/{topicId}`, `/api/reviews/{topicId}/complete` | Spaced-review queue |
@@ -230,6 +238,7 @@ Content tables have foreign keys, unique indexes on every slug/key, check constr
 | POST | `/api/auth/forgot-password`, `/api/auth/reset-password`, `/api/auth/change-password` | Password recovery and change |
 | GET | `/api/admin/overview`, `/api/admin/users?q&status&page&pageSize`, `/api/admin/users/{id}`, `/api/admin/audit` | Admin statistics, account list and details, activity log (administrators) |
 | POST | `/api/admin/users/{id}/approve`, `/reject`, `/suspend`, `/reactivate`, `/resend-verification` | Account approval actions (administrators) |
+| PUT / DELETE | `/api/admin/users/{id}/name`, `/api/admin/users/{id}` | Rename an account; delete an account and everything it saved, permanently (administrators; other administrators only by the main administrator; never yourself or the main administrator) |
 | POST/DELETE | `/api/admin/admins`, `/api/admin/admins/{id}`; POST `/api/admin/test-email` | Grant or revoke administrator rights, test email (main administrator only) |
 | GET/POST | `/api/topics/{id}/videos` | Suggested + your own videos for a topic; add a video by YouTube link |
 | GET | `/api/project-tasks/{id}/videos` | Videos showing how to build a project task |
@@ -304,7 +313,7 @@ set-up, the settings, HTTPS and troubleshooting, is in [docs/DEPLOYMENT.md](docs
 
 Each topic page has a **Videos** section:
 
-- **Curated videos (no setup needed):** `SeedData/videos.json` lists 3–4 tutorials for every topic, 598 in total. They were found by searching the web for each topic and then checked one by one with YouTube (the video exists, is public and allows embedding); titles and channel names come from YouTube itself. The seeder loads them into the `CuratedVideos` table like any other content and keeps the table in sync with the file. They are shown whenever live suggestions aren't available.
+- **Curated videos (no setup needed):** `SeedData/videos.json` lists 3–4 English tutorials for every topic (598) and up to two **Arabic** explanations (139 videos, on 84 of the 150 topics). Each entry has `language` (`en` / `ar`) and, where known, `duration` and a short `description` taken from the video. Arabic videos were chosen only when they are originally in Arabic (spoken Arabic, not an English video with a translated title or an automatic Arabic dub), about the topic and the roadmap's technology, and playable; topics without a suitable Arabic video simply show the English ones. The learner's language choice (All / English / Arabic) is remembered across the video library and topic pages. They were found by searching the web for each topic and then checked one by one with YouTube (the video exists, is public and allows embedding); titles and channel names come from YouTube itself. The seeder loads them into the `CuratedVideos` table like any other content and keeps the table in sync with the file. They are shown whenever live suggestions aren't available.
 - **Live suggestions (optional)** are found with the **YouTube Data API v3** when you set an API key: the API searches for "*skill* + *topic title* tutorial" (for example "C# Loops tutorial"), confirms each result is public, processed and embeddable, and drops Shorts, very long streams, near-duplicate titles, videos for another stack (a C# topic won't show Python) and videos whose title doesn't mention the topic. Results are **cached per topic for 30 days** and shared by all accounts, so each topic costs about 101 quota units a month (the free daily quota is 10,000).
 - **Add your own** by pasting any YouTube link (watch, youtu.be, shorts or embed). The API checks it with YouTube's public oEmbed endpoint, so this works **without an API key**, and rejects missing, private and non-embeddable videos. Added videos are private to your account.
 - Videos play in the page with the privacy-enhanced player (`youtube-nocookie.com`), loaded only when you click; every card also links to YouTube.
@@ -319,6 +328,23 @@ dotnet user-secrets set "YouTube:ApiKey" "YOUR_KEY"
 ```
 
 The key is used only by the API; it is never sent to the browser.
+
+## Code runners
+
+The Practice Lab and the Code Playground run code **in the learner's browser only**. The server stores files and scores but never compiles or executes learner code, so a runaway or malicious program can only affect its own browser tab.
+
+| Language | How it runs | Built from |
+|---|---|---|
+| C# | Roslyn compiles to an in-memory assembly on the .NET 10 WebAssembly runtime, inside a Web Worker; `Console.ReadLine` reads the Input panel; `[Test]` methods with `Assert` are the automatic checks | `backend/DevPath.CodeRunner` → `npm run build:runners csharp` |
+| SQL | SQLite compiled to WebAssembly (sql.js) with sample databases (shop, hr, school); common T-SQL (`TOP`, `IDENTITY`, `GETDATE()`, `N'…'`, `GO`, `OFFSET … FETCH`, `ISNULL`, `LEN`…) is translated and each translation is listed in the output | the `sql.js` package |
+| TypeScript / JavaScript | compiled by the TypeScript service already running in the editor, then run in a fresh Web Worker per run with a small `test()` / `expect()` framework | — |
+| HTML/CSS and Angular | a live preview in a sandboxed iframe; Angular is compiled just in time from a bundled copy of `@angular/*` and RxJS | `npm run build:runners angular` |
+
+**Isolation.** The runners live in a sandboxed iframe (`sandbox="allow-scripts"`) with an opaque origin, so learner code can't read the site's cookies or call the API as the learner. Each engine runs in its own worker, which is terminated on a time limit (and on Stop) and restarted, so an endless loop can't freeze the page. Output is capped. `/runners/*` gets its own Content-Security-Policy (`wasm-unsafe-eval` for WebAssembly, `blob:` workers), while the rest of the site keeps the strict policy.
+
+**Build.** The C# runner and the Angular preview packages are generated (`npm run build:runners`, not committed). The deploy script builds them before `ng build` and then writes Brotli copies of the build (`npm run precompress`), which the API serves to browsers that accept them: the C# runtime is about 66 MB raw and 9 MB compressed, and the browser caches it.
+
+**Checks.** `npm run verify:exercises` (frontend) and `PracticeExerciseTests` (backend) run every exercise through the same code the browser uses and fail if a model solution doesn't pass all its checks or a starter already does.
 
 ## Onboarding tour and help
 
@@ -373,13 +399,16 @@ All content lives in `backend/DevPath.Api/SeedData/`:
 - `projects.json`, `portfolio-checklist.json`, `resources.json`, `practice/*.json`, `interviews/*.json`, `quizzes/*.json`, `videos.json`, `project-videos.json`
 - `snippets/{topics|practice|interviews}/{key}.{cs|ts|sql|html|sh|http|txt}`: code samples as real files. The extension sets the language, and `*.solution.*` holds exercise solutions.
 
+Practice Lab exercises that use the editor keep their code next to them in `practice-files/{key}/`: `starter/**` (what the learner starts with), `solution/**` (only the files the model solution changes) and the automatic checks, `tests.cs` (`[Test]` methods with `Assert`), `tests.js` (`test()` / `expect()`) or `tests.json` (the rows SQL checks expect, computed from the model solution, never the solution itself). The `runner` field (`CSharp`, `Sql`, `TypeScript`, `JavaScript`, `Web`, `Angular` or `None`) decides where the code runs. After editing exercises, run `npm run verify:exercises` in `frontend` and the backend tests: both prove every model solution passes its checks and no starter does.
+
 Edit a file and restart the API. The seeder **inserts or updates rows by slug or key** and keeps link tables in sync. Before touching the database it validates the content (duplicate keys, unknown topic references, prerequisite cycles) and fails with a clear message if something is wrong. Your progress is never affected.
 
 ## Tests
 
 ```bash
-dotnet test DevPath.slnx          # 160 backend tests
-cd frontend && npm test           # 47 frontend tests (Vitest), add -- --watch=false for one run
+dotnet test DevPath.slnx          # 189 backend tests
+cd frontend && npm test           # 73 frontend tests (Vitest), add -- --watch=false for one run
+cd frontend && npm run verify:exercises   # every SQL / TypeScript / JavaScript exercise: model solution passes, starter does not
 ```
 
 - **Backend (xUnit):** progress weighting (including "SQL knowledge doesn't inflate progress"), recommendation rules, review intervals, week boundaries and streaks; the seeder (full content, idempotent re-seeding that keeps user progress, rejection of invalid data); and HTTP tests through `WebApplicationFactory` (status codes, ProblemDetails codes, validation, notes CRUD, practice gating, locked change requests, Arabic search…).
@@ -411,7 +440,8 @@ cd frontend && npm test           # 47 frontend tests (Vitest), add -- --watch=f
 - Learning content is edited through `SeedData`, not from the admin area (which manages accounts only).
 - Real email delivery and the live MonsterASP.NET deployment need your Brevo and hosting credentials; they were tested locally only (see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)).
 - Automatic video suggestions need a YouTube Data API key; relevance filtering is rule-based, so an occasional off-target video can slip through (add your own instead).
-- Practice exercises are **not executed** in the browser: you write and run code in your own editor, then compare.
+- The in-browser runners are a sandbox, not a full development machine: C# runs console-style code (no ASP.NET Core or EF Core packages, so those exercises are built locally), SQL runs on SQLite with common T-SQL translated (some SQL Server features such as stored procedures aren't available), and the Angular preview compiles just in time, so a few build-time-only features behave differently from `ng build`.
+- The first C# run downloads the compiler and runtime (about 9 MB compressed); later runs use the browser cache.
 - Link verification needs internet access. Some sites block automated requests, so they can show as "Not verified" even though they work in a browser.
 - The highlighter is intentionally minimal (keywords, strings, comments, numbers, types).
 - Arabic counts use a "label: value" form instead of full Arabic plural rules.

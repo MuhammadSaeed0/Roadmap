@@ -1,0 +1,24 @@
+{
+  "checks": [
+    {
+      "nameEn": "Your query returns the expected rows",
+      "nameAr": "يُرجع استعلامك الصفوف المتوقعة",
+      "expected": {
+        "columns": [
+          "Name"
+        ],
+        "rows": [
+          [
+            "Chadi Nour"
+          ],
+          [
+            "Farah Moussa"
+          ],
+          [
+            "Kareem Sabry"
+          ]
+        ]
+      }
+    }
+  ]
+}
