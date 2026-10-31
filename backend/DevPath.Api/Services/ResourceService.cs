@@ -31,7 +31,10 @@ public class ResourceService(AppDbContext db, IHttpClientFactory httpFactory, Ti
                 r.Id, r.Key, r.TitleEn, r.TitleAr, r.Url, r.SourceName, r.Type, r.Difficulty, r.IsFree,
                 r.VerificationStatus, r.LastVerifiedAt, r.LastStatusCode,
                 r.TopicLinks.Select(l => new TopicRefDto(l.Topic.Id, l.Topic.Slug, l.Topic.TitleEn, l.Topic.TitleAr, l.Topic.Skill,
-                    l.Topic.ProgressRows.Select(p => (TopicStatus?)p.Status).FirstOrDefault() ?? TopicStatus.NotStarted)).ToList()))
+                    l.Topic.ProgressRows.Select(p => (TopicStatus?)p.Status).FirstOrDefault() ?? TopicStatus.NotStarted)).ToList(),
+                r.TopicLinks.OrderBy(l => l.Topic.Phase.Order).ThenBy(l => l.Topic.Order)
+                    .Select(l => new PhaseRefDto(l.Topic.Phase.Id, l.Topic.Phase.Slug, l.Topic.Phase.Order, l.Topic.Phase.TitleEn, l.Topic.Phase.TitleAr))
+                    .FirstOrDefault()))
             .AsSplitQuery()
             .ToListAsync(ct);
     }

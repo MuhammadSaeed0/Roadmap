@@ -367,6 +367,7 @@ export const ar: Translations = {
     count: '{n} سؤال', showMore: 'عرض المزيد (متبقٍ {n})',
   },
   resources: {
+    general: 'مصادر عامة', count: '{n} مصدر',
     title: 'المصادر', subtitle: 'توثيق مجاني مختار ومعظمه رسمي. تُفتح الروابط في تبويب جديد.',
     verify: 'فحص كل الروابط', verifying: 'جارٍ فحص الروابط…', verifyResult: '{verified} متحقق منها، {broken} معطلة، {unreachable} تعذّر الوصول إليها',
     allTypes: 'كل الأنواع', free: 'مجاني', paid: 'مدفوع', lastVerified: 'تم التحقق {date}', notVerified: 'لم يتم التحقق بعد',

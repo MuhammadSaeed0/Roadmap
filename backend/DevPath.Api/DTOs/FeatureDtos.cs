@@ -215,6 +215,9 @@ public record VideoLibraryDto(IReadOnlyList<VideoLibraryPhaseDto> Phases, int En
 
 public record VideoLibraryPhaseDto(int Id, int Order, string TitleEn, string TitleAr, IReadOnlyList<VideoLibraryTopicDto> Topics);
 
+/// <summary>A video the user saved, with the topic it was saved from (newest first in the list).</summary>
+public record SavedVideoDto(int TopicId, string TopicTitleEn, string TopicTitleAr, SkillArea Skill, DateTime SavedAt, TopicVideoDto Video);
+
 public record VideoLibraryTopicDto(int Id, string Slug, string TitleEn, string TitleAr, SkillArea Skill, IReadOnlyList<TopicVideoDto> Videos);
 
 /// <param name="Status">"ok", or why suggestions couldn't be refreshed: "not_configured", "quota_exceeded", "unavailable".</param>

@@ -81,5 +81,8 @@ export const workspaceEn = {
   videoLibrary: {
     title: 'Video Library', subtitle: 'Hand-picked Arabic and English videos for every part of the roadmap, organised by phase and topic.',
     watched: 'Watched', search: 'Search topics, videos or channels…', unwatchedOnly: 'Not watched yet', empty: 'No videos match these filters.', count: '{n} videos',
+    tabs: 'Video lists', tabAll: 'All videos', tabSaved: 'Saved',
+    savedEmpty: 'You haven’t saved any videos yet.', savedEmptyHint: 'Use the bookmark button on any video, here, on a topic page or in a project, to keep it in this list.',
+    savedNoMatch: 'None of your saved videos match these filters.', savedFrom: 'Saved from: {topic}',
   },
 };

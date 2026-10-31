@@ -107,6 +107,7 @@ export class ApiService {
   // ----- Topic videos -----
   topicVideos(topicId: number) { return this.get<M.TopicVideos>(`/topics/${topicId}/videos`); }
   videoLibrary(language: M.VideoLanguage | null = null) { return this.get<M.VideoLibrary>(`/videos/library`, { language }); }
+  savedVideos() { return this.get<M.SavedVideo[]>(`/videos/saved`); }
   /** The API checks the link with YouTube before saving it. */
   addTopicVideo(topicId: number, url: string) { return this.post<M.TopicVideo>(`/topics/${topicId}/videos`, { url }); }
   removeTopicVideo(id: number) { return this.delete(`/topic-videos/${id}`); }

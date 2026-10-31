@@ -17,6 +17,23 @@ public class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>, IAsyncLif
     private async Task<JsonNode> Json(HttpResponseMessage response) =>
         JsonNode.Parse(await response.Content.ReadAsStringAsync())!;
 
+    [Fact]
+    public async Task Resources_are_placed_in_the_phase_of_their_earliest_topic()
+    {
+        var roadmap = await Json(await _client.GetAsync("/api/roadmap"));
+        var phaseOfTopic = roadmap["phases"]!.AsArray()
+            .SelectMany(p => p!["topics"]!.AsArray().Select(t => (Topic: t!["id"]!.GetValue<int>(), Order: p["order"]!.GetValue<int>())))
+            .ToDictionary(x => x.Topic, x => x.Order);
+
+        var resources = (await Json(await _client.GetAsync("/api/resources"))).AsArray();
+        Assert.True(resources.Count(r => r!["phase"] is not null) > resources.Count * 9 / 10, "almost every resource belongs to a phase");
+        foreach (var r in resources.Where(r => r!["phase"] is not null))
+        {
+            var earliest = r!["topics"]!.AsArray().Min(t => phaseOfTopic[t!["id"]!.GetValue<int>()]);
+            Assert.Equal(earliest, r["phase"]!["order"]!.GetValue<int>());
+        }
+    }
+
     [Theory]
     [InlineData("/api/health")]
     [InlineData("/api/dashboard")]

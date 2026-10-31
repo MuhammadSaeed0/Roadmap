@@ -365,6 +365,7 @@ export const en = {
     count: '{n} questions', showMore: 'Show more ({n} left)',
   },
   resources: {
+    general: 'General resources', count: '{n} resources',
     title: 'Resources', subtitle: 'Curated, mostly official, free documentation. Links open in a new tab.',
     verify: 'Check all links', verifying: 'Checking links…', verifyResult: '{verified} verified, {broken} broken, {unreachable} unreachable',
     allTypes: 'All types', free: 'Free', paid: 'Paid', lastVerified: 'Verified {date}', notVerified: 'Not verified yet',

@@ -106,6 +106,48 @@ public class TopicVideoService(
     }
 
     /// <summary>
+    /// The user's saved videos, newest first, wherever they were saved: the curated lists, project tasks, videos
+    /// they added by link or live suggestions. Saving stores only the video id and topic, so the details come
+    /// from whichever of those sources knows the video.
+    /// </summary>
+    public async Task<IReadOnlyList<SavedVideoDto>> SavedAsync(CancellationToken ct)
+    {
+        var saved = await db.VideoProgress.AsNoTracking().Where(p => p.IsBookmarked)
+            .OrderByDescending(p => p.UpdatedAt)
+            .Select(p => new { p.VideoId, p.TopicId, p.IsWatched, p.UpdatedAt, p.Topic.TitleEn, p.Topic.TitleAr, p.Topic.Skill })
+            .ToListAsync(ct);
+        if (saved.Count == 0) return [];
+
+        var ids = saved.Select(s => s.VideoId).Distinct().ToList();
+        var known = new Dictionary<string, TopicVideoDto>();
+        void Add(TopicVideoDto video) => known.TryAdd(video.VideoId, video);
+
+        foreach (var v in await db.CuratedVideos.AsNoTracking().Where(v => ids.Contains(v.VideoId))
+                     .Select(v => new { v.VideoId, v.Title, v.ChannelTitle, v.DurationSeconds, v.Language, v.Description }).ToListAsync(ct))
+            Add(new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, v.DurationSeconds, "suggested", null, false, true, v.Language,
+                v.Description.Length > 0 ? v.Description : null));
+        foreach (var v in await db.ProjectTaskVideos.AsNoTracking().Where(v => ids.Contains(v.VideoId))
+                     .Select(v => new { v.VideoId, v.Title, v.ChannelTitle }).ToListAsync(ct))
+            Add(new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, null, "task", null, false, true));
+        foreach (var v in await db.UserTopicVideos.AsNoTracking().Where(v => ids.Contains(v.VideoId))
+                     .Select(v => new { v.Id, v.VideoId, v.Title, v.ChannelTitle }).ToListAsync(ct))
+            Add(new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, null, null, "added", v.Id, false, true));
+        if (known.Count < ids.Count)
+        {
+            var topicIds = saved.Where(s => !known.ContainsKey(s.VideoId)).Select(s => s.TopicId).Distinct().ToList();
+            foreach (var json in await db.TopicVideoCache.AsNoTracking().Where(c => topicIds.Contains(c.TopicId)).Select(c => c.VideosJson).ToListAsync(ct))
+                foreach (var v in JsonSerializer.Deserialize<List<CachedVideo>>(json) ?? [])
+                    if (ids.Contains(v.VideoId)) Add(new TopicVideoDto(v.VideoId, v.Title, v.ChannelTitle, v.PublishedAt, v.DurationSeconds, "suggested", null, false, true));
+        }
+
+        // A video no source knows any more (for example a suggestion that dropped out of the cache) is still listed.
+        return saved.Select(s => new SavedVideoDto(s.TopicId, s.TitleEn, s.TitleAr, s.Skill, s.UpdatedAt,
+                (known.TryGetValue(s.VideoId, out var v) ? v : new TopicVideoDto(s.VideoId, "YouTube video", "", null, null, "suggested", null, false, true))
+                with { IsWatched = s.IsWatched, IsBookmarked = true }))
+            .ToList();
+    }
+
+    /// <summary>
     /// Videos showing how to build a project task: the ones picked for it, topped up from its linked
     /// topics' curated videos so every task has at least <see cref="MinTaskVideos"/>.
     /// </summary>

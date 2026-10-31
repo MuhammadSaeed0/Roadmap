@@ -55,6 +55,8 @@ export interface Resource {
   id: number; key: string; titleEn: string; titleAr: string | null; url: string; sourceName: string;
   type: ResourceType; difficulty: Difficulty; isFree: boolean; verificationStatus: VerificationStatus;
   lastVerifiedAt: string | null; lastStatusCode: number | null; topics: TopicRef[];
+  /** The phase of its earliest roadmap topic; null when the resource isn't linked to a topic. */
+  phase?: PhaseRef | null;
 }
 
 export interface StudySession {
@@ -238,6 +240,8 @@ export interface VideoLibrary {
     topics: { id: number; slug: string; titleEn: string; titleAr: string; skill: SkillArea; videos: TopicVideo[] }[] }[];
   englishCount: number; arabicCount: number; watchedCount: number;
 }
+/** A video the user saved, with the topic it was saved from. */
+export interface SavedVideo { topicId: number; topicTitleEn: string; topicTitleAr: string; skill: SkillArea; savedAt: string; video: TopicVideo; }
 export interface TopicVideos {
   status: VideoSuggestionStatus; searchQuery: string; videos: TopicVideo[];
   /** Task videos only: the topic that watched/saved flags are stored against. */

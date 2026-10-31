@@ -729,7 +729,7 @@ button.stat-card:hover { border-color: var(--accent); }
 .note-textarea { min-height: 320px; font-size: 0.98rem; }
 
 /* ---------- Progress & charts ---------- */
-.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 18px; overflow-x: auto; }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 18px; overflow-x: auto; overflow-y: hidden; }
 .tabs button { border: 0; background: none; padding: 10px 16px; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
 .tabs button:hover { color: var(--text); }
 .tabs button.active { color: var(--accent-text); border-bottom-color: var(--accent); }
@@ -1288,11 +1288,13 @@ fieldset:disabled .quiz-option { cursor: default; }
 .video-desc { margin: 4px 0 0; color: var(--text-2); }
 .video-grid > li { display: flex; }
 .video-grid > li > app-video-card { flex: 1; }
-.video-phase { margin-bottom: 12px; }
-.video-phase > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; cursor: pointer; font-size: 1.02rem; }
-/* "Phase 1" stays on one line (the roadmap's .phase-num is a fixed-size number badge). */
-.video-phase-num { flex: none; white-space: nowrap; padding: 2px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text-2); font-size: 0.8rem; font-weight: 650; }
 .video-topic { margin-top: 16px; }
+.tabs .tab-count { margin-inline-start: 6px; padding: 0 7px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); font-size: 0.75rem; font-weight: 650; }
+.tabs button { display: inline-flex; align-items: center; gap: 6px; }
+.saved-item { flex-direction: column; gap: 6px; }
+.saved-from { color: var(--muted); }
+.saved-from:hover { color: var(--accent-text); }
+.resource-grid { margin-top: 14px; }
 .video-topic h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 1rem; margin: 0 0 10px; }
 
 @media (max-width: 900px) {

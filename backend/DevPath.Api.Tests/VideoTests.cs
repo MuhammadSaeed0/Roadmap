@@ -160,6 +160,41 @@ public class VideoTests : IAsyncLifetime
         Assert.False(updated["isWatched"]!.GetValue<bool>());
         Assert.True(updated["isBookmarked"]!.GetValue<bool>());
     }
+
+    [Fact]
+    public async Task Saved_videos_are_listed_newest_first_with_their_details_and_only_for_their_owner()
+    {
+        Assert.Empty((await Json(await _client.GetAsync("/api/videos/saved"))).AsArray());
+
+        // A curated video of topic 1, and a video the user added by link to topic 4.
+        string curatedId;
+        using (var scope = _factory.Services.CreateScope())
+            curatedId = await scope.ServiceProvider.GetRequiredService<AppDbContext>().CuratedVideos.Where(v => v.TopicId == 1).Select(v => v.VideoId).FirstAsync();
+        _factory.YouTube.Lookups["eeeeeeeeee1"] = new VideoLookupResult(VideoLookupStatus.Found, "My own find", "Some Channel");
+        (await _client.PostAsJsonAsync("/api/topics/4/videos", new { url = "https://youtu.be/eeeeeeeeee1" })).EnsureSuccessStatusCode();
+
+        (await _client.PutAsJsonAsync($"/api/videos/{curatedId}/progress", new { topicId = 1, isWatched = true, isBookmarked = true })).EnsureSuccessStatusCode();
+        await Task.Delay(20);
+        (await _client.PutAsJsonAsync("/api/videos/eeeeeeeeee1/progress", new { topicId = 4, isWatched = false, isBookmarked = true })).EnsureSuccessStatusCode();
+        // Watched but not saved: not in the list.
+        (await _client.PutAsJsonAsync("/api/videos/eeeeeeeeee2/progress", new { topicId = 4, isWatched = true, isBookmarked = false })).EnsureSuccessStatusCode();
+
+        var list = (await Json(await _client.GetAsync("/api/videos/saved"))).AsArray();
+        Assert.Equal(2, list.Count);
+        Assert.Equal("eeeeeeeeee1", list[0]!["video"]!["videoId"]!.GetValue<string>());
+        Assert.Equal("My own find", list[0]!["video"]!["title"]!.GetValue<string>());
+        Assert.Equal(4, list[0]!["topicId"]!.GetValue<int>());
+        Assert.Equal(curatedId, list[1]!["video"]!["videoId"]!.GetValue<string>());
+        Assert.True(list[1]!["video"]!["isWatched"]!.GetValue<bool>());
+        Assert.False(string.IsNullOrEmpty(list[1]!["video"]!["title"]!.GetValue<string>()));
+        Assert.False(string.IsNullOrEmpty(list[1]!["topicTitleEn"]!.GetValue<string>()));
+
+        // Another account sees none of them; unsaving removes a video from the list.
+        var other = await _factory.CreateUserClientAsync();
+        Assert.Empty((await Json(await other.GetAsync("/api/videos/saved"))).AsArray());
+        (await _client.PutAsJsonAsync("/api/videos/eeeeeeeeee1/progress", new { topicId = 4, isWatched = false, isBookmarked = false })).EnsureSuccessStatusCode();
+        Assert.Single((await Json(await _client.GetAsync("/api/videos/saved"))).AsArray());
+    }
 }
 
 /// <summary>Pure tests for link parsing and the relevance rules.</summary>

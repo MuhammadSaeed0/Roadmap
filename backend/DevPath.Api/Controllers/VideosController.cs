@@ -34,6 +34,10 @@ public class VideosController(TopicVideoService videos) : ControllerBase
         return NoContent();
     }
 
+    /// <summary>The videos you saved, newest first, with the topic each was saved from.</summary>
+    [HttpGet("videos/saved")]
+    public Task<IReadOnlyList<SavedVideoDto>> Saved(CancellationToken ct) => videos.SavedAsync(ct);
+
     [HttpPut("videos/{videoId}/progress")]
     public Task<VideoProgressDto> SetProgress(string videoId, UpdateVideoProgressRequest request, CancellationToken ct) =>
         videos.SetProgressAsync(videoId, request, ct);

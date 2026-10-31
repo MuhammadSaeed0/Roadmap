@@ -227,6 +227,7 @@ Content tables have foreign keys, unique indexes on every slug/key, check constr
 | PUT/POST | `/api/practice/{id}/files`, `/api/practice/{id}/submissions`, `/api/practice/{id}/criteria` | Save your exercise files, record a checked submission (score), tick acceptance criteria |
 | GET/POST/PUT/DELETE | `/api/playground/projects`, `/api/playground/projects/{id}` | Your saved Code Playground projects (up to 100) |
 | GET | `/api/videos/library?language=English\|Arabic` | Every topic's curated videos, by phase (all languages without `language`) |
+| GET | `/api/videos/saved` | The videos you saved, newest first, with the topic each was saved from |
 | GET/PUT | `/api/interviews?category&topicId&rating`, `/api/interviews/{id}/progress` | Interview questions and self-rating |
 | GET/POST/PUT/DELETE | `/api/notes`, `/api/notes/{id}` | Notes CRUD and search |
 | GET/PUT/POST/DELETE | `/api/reviews`, `/api/reviews/{topicId}`, `/api/reviews/{topicId}/complete` | Spaced-review queue |
