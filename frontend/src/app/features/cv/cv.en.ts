@@ -1,0 +1,122 @@
+// CV builder strings. They load with the CV pages (registerTranslations in cv-strings.ts), not with the app's
+// first download; cv.ar.ts must have the same keys (the CvStrings type checks it).
+export const cvEn = {
+  cv: {
+    title: 'CV Builder',
+    subtitle: 'Build a professional CV from what you have learned and built, then download it as PDF or Word.',
+    privacy: 'Your CVs are private: only you can see, download or share them.',
+    newCv: 'New CV',
+    myCvs: 'My CVs',
+    noCvs: 'No CVs yet',
+    noCvsHint: 'Create your first CV. It starts with your name and e-mail, and the platform can suggest skills and projects from your progress.',
+    templatesTitle: 'Templates',
+    templatesHint: 'Every template has its own layout. You can switch at any time without losing anything.',
+    atsBadge: 'ATS-friendly',
+    photoBadge: 'Photo',
+    create: {
+      title: 'Create a CV', name: 'CV name', namePlaceholder: 'e.g. Backend developer CV', targetRole: 'Target role (optional)',
+      targetRoleHint: 'Used as your professional title, e.g. “Junior .NET Developer”.', template: 'Template', create: 'Create CV',
+    },
+    card: {
+      updated: 'Updated {date}', tailoredFor: 'Tailored for {job}', copyOf: 'Copy of another CV', open: 'Open', duplicate: 'Duplicate',
+      deleteConfirm: 'Delete “{name}”? This can’t be undone.', deleted: 'CV deleted.', duplicated: 'Copy created.', actions: 'Actions for {name}',
+    },
+    downloadPdf: 'Download PDF',
+    downloadDocx: 'Download Word (.docx)',
+    downloading: 'Preparing your file…',
+    downloadFailed: 'The download failed. Try again.',
+    editor: {
+      back: 'All CVs', titleLabel: 'CV name', saved: 'All changes saved', saving: 'Saving…', unsaved: 'Unsaved changes',
+      saveFailed: 'Not saved: {reason}', retry: 'Try again', preview: 'Preview', pages: '{n} page(s)', page: 'Page {n} of {total}',
+      zoomIn: 'Zoom in', zoomOut: 'Zoom out', zoom: 'Zoom', updating: 'Updating…', previewFailed: 'The preview could not be updated.',
+      onePageHint: 'Most junior CVs fit on one page. Try “Compact” in Design or shorten long sections.',
+      tabs: { edit: 'Edit', preview: 'Preview' },
+      panels: { content: 'Content', design: 'Design', suggestions: 'From my progress', job: 'Job match', ats: 'ATS check' },
+    },
+    steps: {
+      personal: 'Personal info', summary: 'Summary', experience: 'Experience', projects: 'Projects', skills: 'Skills', education: 'Education',
+      certifications: 'Certifications', languages: 'Languages', more: 'More sections',
+    },
+    fields: {
+      fullName: 'Full name', title: 'Professional title', email: 'E-mail', phone: 'Phone', location: 'City, country', linkedIn: 'LinkedIn URL',
+      gitHub: 'GitHub URL', website: 'Website / portfolio', summary: 'Professional summary',
+      summaryHint: '2–4 sentences: who you are, what you build and with which technologies, and what you are looking for.',
+      jobTitle: 'Job title', company: 'Company / organisation', employmentType: 'Type (full-time, internship, freelance…)', workLocation: 'Location',
+      start: 'Start', end: 'End', current: 'I work here now', datesHint: 'Use one format everywhere, e.g. “Jul 2023”.',
+      responsibilities: 'What you did', achievements: 'Achievements (optional)', onePerLine: 'One point per line. Start with a verb: Built, Designed, Improved…',
+      institution: 'University / school', degree: 'Degree', field: 'Field of study', description: 'Description',
+      projectName: 'Project name', technologies: 'Technologies', commaSeparated: 'Separate with commas', highlights: 'Key points', repoUrl: 'Repository URL',
+      demoUrl: 'Live demo URL', date: 'Date', category: 'Group', categoryPlaceholder: 'e.g. Backend', skills: 'Skills',
+      certName: 'Certificate name', issuer: 'Issued by', url: 'Credential URL', language: 'Language', level: 'Level',
+      levelPlaceholder: 'e.g. Native, Professional working', sectionTitle: 'Section title', sectionKind: 'Kind', items: 'Items',
+    },
+    actions: {
+      addExperience: 'Add experience', addProject: 'Add project', addEducation: 'Add education', addGroup: 'Add skill group',
+      addCertification: 'Add certification', addLanguage: 'Add language', addSection: 'Add section', remove: 'Remove', moveUp: 'Move up',
+      moveDown: 'Move down', removeConfirm: 'Remove this entry?',
+    },
+    hints: {
+      noExperience: 'No work experience yet? That’s normal. Leave this empty, and put your projects first: they show what you can build.',
+      certifications: 'Only certificates you actually earned from the organisation that issued them. Progress on DevPath is not a certificate.',
+      projects: 'For each project: what it does, the technologies, and what you built yourself. Link the repository.',
+      skills: 'List what you can really use, grouped (Languages, Backend, Frontend, Databases, Tools).',
+    },
+    photo: {
+      label: 'Photo (optional)', upload: 'Upload photo', change: 'Change', remove: 'Remove photo',
+      help: 'JPEG or PNG, at most 300 KB. Many employers prefer CVs without a photo, and some templates never show one.',
+      notInTemplate: 'This template doesn’t show photos.',
+    },
+    design: {
+      template: 'Template', color: 'Accent colour', colorFixed: 'This template always uses black text, which ATS read best.', font: 'Font',
+      fonts: { sans: 'Sans-serif (Noto Sans)', serif: 'Serif (Noto Serif)', lato: 'Modern (Lato)' },
+      density: 'Spacing', comfortable: 'Comfortable', compact: 'Compact (fits more on a page)',
+      direction: 'Language of the CV', ltr: 'English (left to right)', rtl: 'Arabic (right to left)', showPhoto: 'Show my photo',
+      sections: 'Sections', sectionsHint: 'Order the sections and hide the ones you don’t need.', show: 'Show {name}', hide: 'Hide {name}',
+      resetOrder: 'Reset to the template’s order',
+    },
+    sectionNames: {
+      summary: 'Summary', experience: 'Experience', projects: 'Projects', skills: 'Skills', education: 'Education',
+      certifications: 'Certifications', languages: 'Languages', sections: 'Additional sections',
+    },
+    sectionKinds: {
+      achievements: 'Achievements', volunteer: 'Volunteering', publications: 'Publications', coursework: 'Relevant coursework',
+      opensource: 'Open source', interests: 'Interests', custom: 'Custom section',
+    },
+    suggest: {
+      intro: 'Suggestions from your activity on DevPath. Nothing is added until you choose it, and each one says how strong the evidence is.',
+      skills: 'Skills', projects: 'Projects', coursework: 'Coursework (completed phases)', add: 'Add', added: 'Added', addProject: 'Add to CV',
+      none: 'Nothing to suggest yet. Complete topics, exercises or project tasks and come back.', certTitle: 'Certifications',
+      completed: 'Completed', inProgress: 'In progress', tasks: '{done} of {total} tasks',
+      inProgressNote: 'Added as “in progress”. Update it when you finish.',
+      levels: { verified: 'Verified', built: 'Built', practiced: 'Practiced', studied: 'Studied' },
+      levelHelp: {
+        verified: 'Passed every automatic check', built: 'A project with a repository', practiced: 'Marked as done by you',
+        studied: 'Topics you completed',
+      },
+    },
+    job: {
+      working: 'Comparing…', intro: 'Paste a job description to see which of its requirements your CV already shows, and what you could highlight.',
+      paste: 'Job description', placeholder: 'Paste the job posting here…', analyse: 'Compare with my CV', matched: 'Already in your CV',
+      learning: 'On your learning path (add only if you can talk about it)', missing: 'Not in your CV', highlight: 'Projects to highlight',
+      order: 'Suggested section order', applyOrder: 'Use this order', orderApplied: 'Section order updated.', none: 'No known keywords found in this description.',
+      copyTitle: 'Save a tailored version',
+      copyHint: 'Creates a copy of this CV for this job, with the suggested section order. Your original CV stays as it is.',
+      copyName: 'Job / company', createCopy: 'Create tailored copy', copyCreated: 'Tailored copy created.',
+    },
+    ats: {
+      intro: 'Checks common problems that make CVs hard for applicant tracking systems (ATS) and recruiters to read.',
+      disclaimer: 'The score is a guide to common issues, not a promise of how any real ATS will rank your CV.', run: 'Check my CV',
+      score: 'Readiness', withJob: 'Include the job description from “Job match”', issues: 'What to improve', noIssues: 'No problems found.',
+      keywords: 'Job keywords', matched: 'Found', missing: 'Missing', severity: { error: 'Important', warning: 'Recommended', info: 'Tip' }, goTo: 'Go to {section}',
+    },
+    errors: {
+      too_many_cvs: 'You can keep up to 30 CVs. Delete one to make room.', cv_too_large: 'This CV is too large. Shorten some sections.',
+      invalid_url: 'Links must start with http:// or https://.', invalid_email: 'Enter a valid e-mail address.',
+      photo_too_large: 'Use a JPEG or PNG photo of at most 300 KB.', photo_type: 'Use a JPEG or PNG photo.',
+      rate_limited: 'Too many requests. Wait a little and try again.',
+      unknown_template: 'Choose one of the available templates.',
+    },
+  },
+};
+
+export type CvStrings = typeof cvEn;

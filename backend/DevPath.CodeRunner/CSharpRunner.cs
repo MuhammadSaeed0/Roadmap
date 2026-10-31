@@ -210,6 +210,14 @@ public sealed class CSharpRunner(IReadOnlyList<MetadataReference> references)
             output.WriteLine("(Nothing to run: add top-level statements or a static Main method.)");
             return null;
         }
+        // With async Main (or top-level statements that use await) the compiler's entry point is a synchronous
+        // wrapper, "<Main>", that blocks on the Task. The browser runtime has a single thread, so that block would
+        // never let Task.Delay or any other await finish: call the async method ("Main", or "<Main>$" for top-level
+        // statements) itself and await it instead.
+        if (entry.Name == "<Main>" && entry.DeclaringType?
+                .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                .FirstOrDefault(m => m.Name is "Main" or "<Main>$" && typeof(Task).IsAssignableFrom(m.ReturnType)) is { } asyncMain)
+            entry = asyncMain;
         try
         {
             var result = entry.Invoke(null, entry.GetParameters().Length == 0 ? null : [Array.Empty<string>()]);

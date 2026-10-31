@@ -50,6 +50,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<VideoProgress> VideoProgress => Set<VideoProgress>();
     public DbSet<QuizAttempt> QuizAttempts => Set<QuizAttempt>();
     public DbSet<PlaygroundProject> PlaygroundProjects => Set<PlaygroundProject>();
+    public DbSet<CvDocument> CvDocuments => Set<CvDocument>();
 
     // Accounts and administration (not filtered per user: only auth and admin code reads them)
     public DbSet<AccountToken> AccountTokens => Set<AccountToken>();
@@ -327,6 +328,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             OwnedByUser(e);
             e.Property(x => x.Name).HasMaxLength(100);
             e.Property(x => x.Template).HasMaxLength(60);
+            e.HasIndex(x => new { x.UserId, x.UpdatedAt });
+        });
+
+        b.Entity<CvDocument>(e =>
+        {
+            OwnedByUser(e);
+            e.Property(x => x.Title).HasMaxLength(100);
+            e.Property(x => x.TemplateKey).HasMaxLength(40);
+            e.Property(x => x.PhotoContentType).HasMaxLength(20);
+            e.Property(x => x.TailoredFor).HasMaxLength(150);
             e.HasIndex(x => new { x.UserId, x.UpdatedAt });
         });
 

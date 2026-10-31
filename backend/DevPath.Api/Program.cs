@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using DevPath.Api.Controllers;
@@ -6,6 +7,7 @@ using DevPath.Api.Data.Seeding;
 using DevPath.Api.Middleware;
 using DevPath.Api.Models;
 using DevPath.Api.Services;
+using DevPath.Api.Services.Cv;
 using DevPath.Api.Validation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -131,6 +133,11 @@ builder.Services.AddRateLimiter(o =>
             PermitLimit = builder.Configuration.GetValue("Auth:AttemptsPerMinute", 10),
             Window = TimeSpan.FromMinutes(1),
         }));
+    // Per account: rendering a CV costs CPU.
+    static string Account(HttpContext http) =>
+        http.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? http.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+    o.AddPolicy(CvRateLimits.Render, http => RateLimitPartition.GetFixedWindowLimiter(Account(http),
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 90, Window = TimeSpan.FromMinutes(1) }));
 });
 
 // ---------- API ----------
@@ -188,6 +195,13 @@ builder.Services.AddScoped<SearchService>();
 builder.Services.AddScoped<TopicVideoService>();
 builder.Services.AddScoped<QuizService>();
 builder.Services.AddScoped<PlaygroundService>();
+// CV builder. The fonts embedded in exported CVs ship with the app (Resources/Fonts).
+CvPdfRenderer.EnsureConfigured(Path.Combine(AppContext.BaseDirectory, "Resources", "Fonts"));
+builder.Services.AddSingleton<CvPdfRenderer>();
+builder.Services.AddSingleton<CvDocxRenderer>();
+builder.Services.AddScoped<CvService>();
+builder.Services.AddScoped<CvSuggestionService>();
+builder.Services.AddScoped<CvAnalysisService>();
 
 var app = builder.Build();
 
