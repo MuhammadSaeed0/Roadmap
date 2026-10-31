@@ -85,6 +85,48 @@ public class PracticeExerciseTests
         Assert.Contains(broken.Diagnostics, d => d.Id == "CS0029" && d.File == "Program.cs" && d.Line == 1);
     }
 
+    /// <summary>
+    /// The browser runs .NET on one thread. Async programs must be awaited, not blocked on: blocking (what the
+    /// compiler's synchronous "&lt;Main&gt;" wrapper does) would wait forever for a continuation that needs that thread.
+    /// The runs here use a single-threaded SynchronizationContext, like the browser, so blocking would hang.
+    /// </summary>
+    [Theory]
+    [InlineData("var prices = await Task.WhenAll(Price(\"a\"), Price(\"bb\"));\nConsole.WriteLine(string.Join(\",\", prices));\n" +
+                "static async Task<int> Price(string s) { await Task.Delay(50); return s.Length; }", "1,2")]
+    [InlineData("class P { static async Task Main() { await Task.Delay(50); Console.WriteLine(\"main done\"); } }", "main done")]
+    [InlineData("class P { static async Task<int> Main(string[] args) { await Task.Yield(); Console.WriteLine(\"args \" + args.Length); return 0; } }", "args 0")]
+    public void Async_programs_run_on_a_single_thread(string program, string expected)
+    {
+        var result = SingleThread.Run(() => Runner.RunAsync(new RunRequest([new SourceFile("Program.cs", program)])), TimeSpan.FromSeconds(20));
+        Assert.Null(result.Exception);
+        Assert.Equal(expected, result.Output.Trim());
+    }
+
+    /// <summary>Runs async code with every continuation queued back to one thread, as in WebAssembly.</summary>
+    private sealed class SingleThread : SynchronizationContext
+    {
+        private readonly System.Collections.Concurrent.BlockingCollection<(SendOrPostCallback, object?)> _queue = [];
+
+        public override void Post(SendOrPostCallback d, object? state) => _queue.Add((d, state));
+
+        public static T Run<T>(Func<Task<T>> work, TimeSpan timeout)
+        {
+            var context = new SingleThread();
+            T result = default!;
+            var thread = new Thread(() =>
+            {
+                SetSynchronizationContext(context);
+                var task = work();
+                task.ContinueWith(_ => context._queue.CompleteAdding(), TaskScheduler.Default);
+                foreach (var (callback, state) in context._queue.GetConsumingEnumerable()) callback(state);
+                result = task.GetAwaiter().GetResult();
+            }) { IsBackground = true };
+            thread.Start();
+            Assert.True(thread.Join(timeout), "The program never finished: it blocked the only thread.");
+            return result;
+        }
+    }
+
     [Fact]
     public async Task Runaway_output_is_cut_off()
     {
