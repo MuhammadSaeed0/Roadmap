@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using DevPath.Api.Controllers;
@@ -6,6 +7,7 @@ using DevPath.Api.Data.Seeding;
 using DevPath.Api.Middleware;
 using DevPath.Api.Models;
 using DevPath.Api.Services;
+using DevPath.Api.Services.Cv;
 using DevPath.Api.Validation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -131,6 +133,13 @@ builder.Services.AddRateLimiter(o =>
             PermitLimit = builder.Configuration.GetValue("Auth:AttemptsPerMinute", 10),
             Window = TimeSpan.FromMinutes(1),
         }));
+    // Per account: rendering a CV costs CPU, and every AI request costs money.
+    static string Account(HttpContext http) =>
+        http.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? http.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+    o.AddPolicy(CvRateLimits.Render, http => RateLimitPartition.GetFixedWindowLimiter(Account(http),
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 90, Window = TimeSpan.FromMinutes(1) }));
+    o.AddPolicy(CvRateLimits.Ai, http => RateLimitPartition.GetFixedWindowLimiter(Account(http),
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = builder.Configuration.GetValue("Anthropic:RequestsPerDay", 40), Window = TimeSpan.FromDays(1) }));
 });
 
 // ---------- API ----------
@@ -188,6 +197,15 @@ builder.Services.AddScoped<SearchService>();
 builder.Services.AddScoped<TopicVideoService>();
 builder.Services.AddScoped<QuizService>();
 builder.Services.AddScoped<PlaygroundService>();
+// CV builder. The fonts embedded in exported CVs ship with the app (Resources/Fonts).
+CvPdfRenderer.EnsureConfigured(Path.Combine(AppContext.BaseDirectory, "Resources", "Fonts"));
+builder.Services.AddSingleton<CvPdfRenderer>();
+builder.Services.AddSingleton<CvDocxRenderer>();
+builder.Services.AddSingleton<ICvAiClient, CvAiClient>();
+builder.Services.AddScoped<CvService>();
+builder.Services.AddScoped<CvSuggestionService>();
+builder.Services.AddScoped<CvAnalysisService>();
+builder.Services.AddScoped<CvAiService>();
 
 var app = builder.Build();
 
