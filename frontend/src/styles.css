@@ -1230,10 +1230,10 @@ fieldset:disabled .quiz-option { cursor: default; }
 .sql-table-wrap { overflow: auto; max-height: 320px; border: 1px solid var(--border); border-radius: var(--radius-xs); }
 .sql-table { border-collapse: collapse; width: max-content; min-width: 100%; font-family: var(--font-mono); font-size: 0.8rem; direction: ltr; }
 .sql-table th, .sql-table td { padding: 4px 10px; border-bottom: 1px solid var(--border); text-align: start; white-space: nowrap; }
-.sql-table th { position: sticky; top: 0; background: var(--surface-2); font-weight: 650; }
+.sql-table th { position: sticky; top: 0; background: var(--surface-2); font-weight: 650; box-shadow: inset 0 -1px 0 var(--border-strong); }
 .sql-table .sql-num { text-align: end; }
 .sql-table .sql-null { color: var(--muted); font-style: italic; }
-.sql-table .sql-rownum { color: var(--muted); width: 1%; }
+.sql-table .sql-rownum { color: var(--muted); width: 1%; text-align: end; }
 
 /* Practice Lab, Code Playground and Video Library pages */
 .check-label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
