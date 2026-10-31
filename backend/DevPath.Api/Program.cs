@@ -35,10 +35,6 @@ if (builder.Environment.IsProduction() && ProductionSettings.Problems(builder.Co
     throw new InvalidOperationException("Production configuration is incomplete:" + Environment.NewLine + "- " +
         string.Join(Environment.NewLine + "- ", problems) + Environment.NewLine + "See docs/DEPLOYMENT.md.");
 
-// Optional features: say in the log when they are off, but don't stop the site.
-if (builder.Environment.IsProduction() && string.IsNullOrWhiteSpace(builder.Configuration["Anthropic:ApiKey"]))
-    Console.WriteLine("Anthropic:ApiKey is not set: the CV builder's AI assistant is switched off (environment variable Anthropic__ApiKey).");
-
 // ---------- Database ----------
 // The connection string lives in appsettings.json (LocalDB, Windows authentication, no password).
 // To use a different server or credentials, override it with user secrets — see README.
@@ -137,13 +133,11 @@ builder.Services.AddRateLimiter(o =>
             PermitLimit = builder.Configuration.GetValue("Auth:AttemptsPerMinute", 10),
             Window = TimeSpan.FromMinutes(1),
         }));
-    // Per account: rendering a CV costs CPU, and every AI request costs money.
+    // Per account: rendering a CV costs CPU.
     static string Account(HttpContext http) =>
         http.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? http.Connection.RemoteIpAddress?.ToString() ?? "unknown";
     o.AddPolicy(CvRateLimits.Render, http => RateLimitPartition.GetFixedWindowLimiter(Account(http),
         _ => new FixedWindowRateLimiterOptions { PermitLimit = 90, Window = TimeSpan.FromMinutes(1) }));
-    o.AddPolicy(CvRateLimits.Ai, http => RateLimitPartition.GetFixedWindowLimiter(Account(http),
-        _ => new FixedWindowRateLimiterOptions { PermitLimit = builder.Configuration.GetValue("Anthropic:RequestsPerDay", 40), Window = TimeSpan.FromDays(1) }));
 });
 
 // ---------- API ----------
@@ -205,11 +199,9 @@ builder.Services.AddScoped<PlaygroundService>();
 CvPdfRenderer.EnsureConfigured(Path.Combine(AppContext.BaseDirectory, "Resources", "Fonts"));
 builder.Services.AddSingleton<CvPdfRenderer>();
 builder.Services.AddSingleton<CvDocxRenderer>();
-builder.Services.AddSingleton<ICvAiClient, CvAiClient>();
 builder.Services.AddScoped<CvService>();
 builder.Services.AddScoped<CvSuggestionService>();
 builder.Services.AddScoped<CvAnalysisService>();
-builder.Services.AddScoped<CvAiService>();
 
 var app = builder.Build();
 

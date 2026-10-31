@@ -2,16 +2,15 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { Router } from '@angular/router';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { TranslatePipe } from '../../core/i18n/pipes';
-import { createLoader } from '../../core/loader';
 import { ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
-import { CvAiResult, CvApiService, CvJobMatch } from './cv-api.service';
+import { CvApiService, CvJobMatch } from './cv-api.service';
 import { CvEditorState } from './cv-editor.state';
 import { useCvErrors } from './cv-strings';
 
 /**
- * Compares the CV with a job description (keywords, no AI), optionally asks the assistant how to tailor it,
- * and saves a tailored copy. The CV being edited is never overwritten by tailoring.
+ * Compares the CV with a job description (keywords) and saves a tailored copy. The CV being edited is never
+ * overwritten by tailoring.
  */
 @Component({
   selector: 'app-cv-job',
@@ -27,12 +26,8 @@ import { useCvErrors } from './cv-strings';
     <div class="cv-row">
       <button type="button" class="btn btn-primary btn-sm" (click)="analyse()" [disabled]="busy() || !state.jobDescription().trim()">
         <app-icon name="target" [size]="14" /> {{ 'cv.job.analyse' | t }}</button>
-      @if (aiEnabled()) {
-        <button type="button" class="btn btn-secondary btn-sm" (click)="tailorWithAi()" [disabled]="busy() || !state.jobDescription().trim()">
-          <app-icon name="sparkle" [size]="14" /> {{ 'cv.job.aiTailor' | t }}</button>
-      }
     </div>
-    @if (busy()) { <p class="small muted" role="status">{{ 'cv.ai.working' | t }}</p> }
+    @if (busy()) { <p class="small muted" role="status">{{ 'cv.job.working' | t }}</p> }
     @if (error()) { <p class="callout callout-danger small" role="alert">{{ error() }}</p> }
 
     @if (match(); as m) {
@@ -69,19 +64,7 @@ import { useCvErrors } from './cv-strings';
       }
     }
 
-    @if (ai(); as r) {
-      <section class="card cv-ai-box" aria-live="polite">
-        <h3><app-icon name="sparkle" [size]="15" /> {{ 'cv.job.aiTitle' | t }}</h3>
-        @if (r.text) { <p class="cv-pre">{{ r.text }}</p> }
-        @if (r.suggestions.length) {
-          <ul class="small">@for (s of r.suggestions; track $index) { <li><span class="chip chip-sm">{{ s.section }}</span> {{ s.suggestion }}</li> }</ul>
-        }
-        @if (r.notes.length) { <ul class="small muted">@for (n of r.notes; track $index) { <li>{{ n }}</li> }</ul> }
-        <p class="small muted">{{ 'cv.ai.disclaimer' | t }}</p>
-      </section>
-    }
-
-    @if (match() || ai()) {
+    @if (match()) {
       <section class="card cv-copy">
         <h3>{{ 'cv.job.copyTitle' | t }}</h3>
         <p class="small muted">{{ 'cv.job.copyHint' | t }}</p>
@@ -100,11 +83,7 @@ import { useCvErrors } from './cv-strings';
     .cv-kw h3, .cv-copy h3 { font-size: .9rem; margin: 0 0 6px; }
     .cv-kw ul { margin: 0; padding-inline-start: 18px; }
     .cv-ok { background: var(--success-soft); color: var(--success); }
-    .cv-ai-box, .cv-copy { display: flex; flex-direction: column; gap: 8px; padding: 14px; }
-    .cv-ai-box { border-color: var(--accent); }
-    .cv-ai-box h3 { display: flex; gap: 6px; align-items: center; font-size: .95rem; margin: 0; color: var(--accent-text); }
-    .cv-ai-box ul { margin: 0; padding-inline-start: 18px; }
-    .cv-pre { white-space: pre-wrap; margin: 0; }
+    .cv-copy { display: flex; flex-direction: column; gap: 8px; padding: 14px; }
   `,
 })
 export class CvJobComponent {
@@ -115,12 +94,9 @@ export class CvJobComponent {
   private readonly router = inject(Router);
   private readonly errorText = useCvErrors();
 
-  private readonly status = createLoader(() => this.api.aiStatus());
-  protected readonly aiEnabled = computed(() => !!this.status.value()?.enabled);
   protected readonly busy = signal(false);
   protected readonly error = signal('');
   protected readonly match = signal<CvJobMatch | null>(null);
-  protected readonly ai = signal<CvAiResult | null>(null);
   protected readonly jobName = signal('');
   protected readonly orderText = computed(() =>
     (this.match()?.suggestedOrder ?? []).map(k => this.i18n.t('cv.sectionNames.' + k)).join(' → '));
@@ -134,32 +110,21 @@ export class CvJobComponent {
     });
   }
 
-  protected async tailorWithAi(): Promise<void> {
-    await this.busyWhile(async () => {
-      if (!(await this.state.flush())) throw new Error(this.state.saveError());
-      this.ai.set(await this.api.ai(this.state.id(), {
-        action: 'tailor', jobDescription: this.state.jobDescription(), targetRole: this.state.content()?.personal.title || null,
-      }));
-    });
-  }
-
   protected applyOrder(m: CvJobMatch): void {
     this.state.setStyle({ sectionOrder: [...m.suggestedOrder] });
     this.toast.success(this.i18n.t('cv.job.orderApplied'));
   }
 
-  /** A copy for this job, with the suggested order and AI summary applied to the copy only. */
+  /** A copy for this job, with the suggested section order applied to the copy only. */
   protected async createCopy(): Promise<void> {
     await this.busyWhile(async () => {
       if (!(await this.state.flush())) throw new Error(this.state.saveError());
       const copy = await this.api.duplicate(this.state.id(), { tailoredFor: this.jobName().trim() });
       const order = this.match()?.suggestedOrder;
-      const summary = this.ai()?.text;
-      if (order || summary) {
+      if (order) {
         await this.api.update(copy.summary.id, {
-          title: copy.summary.title, templateKey: copy.summary.templateKey,
-          content: summary ? { ...copy.content, summary } : copy.content,
-          style: order ? { ...copy.style, sectionOrder: [...order] } : copy.style,
+          title: copy.summary.title, templateKey: copy.summary.templateKey, content: copy.content,
+          style: { ...copy.style, sectionOrder: [...order] },
         });
       }
       this.toast.success(this.i18n.t('cv.job.copyCreated'));

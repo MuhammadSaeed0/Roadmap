@@ -105,21 +105,3 @@ public record CvJobMatchRequest([Required, MaxLength(20000)] string? JobDescript
 public record CvJobMatchDto(
     IReadOnlyList<string> JobKeywords, IReadOnlyList<string> Matched, IReadOnlyList<string> MissingButLearning,
     IReadOnlyList<string> Missing, IReadOnlyList<string> ProjectsToHighlight, IReadOnlyList<string> SuggestedOrder);
-
-// ---------- AI assistant ----------
-
-public record CvAiStatusDto(bool Enabled, string? Model);
-
-/// <param name="Action">summary, improve-text, bullets, project, skills, ats, concise, missing, tailor.</param>
-/// <param name="Text">The text to improve (for improve-text, bullets, project).</param>
-/// <param name="Context">What the text is (e.g. "Backend developer at Acme") to help the rewrite.</param>
-public record CvAiRequest(
-    [Required, MaxLength(30)] string? Action, [MaxLength(6000)] string? Text = null, [MaxLength(300)] string? Context = null,
-    [MaxLength(20000)] string? JobDescription = null, [MaxLength(120)] string? TargetRole = null);
-
-public record CvAiSuggestion(string Section, string Suggestion);
-
-/// <summary>What the assistant proposes; nothing is applied to the CV until the user chooses to.</summary>
-public record CvAiResultDto(
-    string Action, string? Text, IReadOnlyList<string> Bullets, IReadOnlyList<CvAiSuggestion> Suggestions,
-    IReadOnlyList<string> Matching, IReadOnlyList<string> Missing, IReadOnlyList<string> Notes);

@@ -31,7 +31,7 @@ export const SECTION_IDS = [
   // Progress, career, settings, search, admin
   'progress-tabs', 'progress-panel', 'career-gaps', 'career-areas', 'career-portfolio',
   // CV builder
-  'cv-new', 'cv-list', 'cv-templates', 'cv-download', 'cv-editor', 'cv-suggestions', 'cv-assistant', 'cv-preview',
+  'cv-new', 'cv-list', 'cv-templates', 'cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview',
   'settings-appearance', 'settings-learning', 'settings-account', 'settings-about', 'search-results',
   'admin-stats', 'admin-tabs', 'admin-users',
 ] as const;
@@ -64,7 +64,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   progress: ['progress-tabs', 'progress-panel'],
   career: ['career-gaps', 'career-areas', 'career-portfolio'],
   cv: ['cv-new', 'cv-list', 'cv-templates'],
-  'cv-editor': ['cv-download', 'cv-editor', 'cv-suggestions', 'cv-assistant', 'cv-preview'],
+  'cv-editor': ['cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview'],
   settings: ['settings-appearance', 'settings-learning', 'settings-account', 'settings-about'],
   search: ['search-results'],
   admin: ['admin-stats', 'admin-tabs', 'admin-users'],

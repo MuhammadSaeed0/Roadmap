@@ -51,7 +51,7 @@ export const content: TourContent = {
     notes: { title: 'My Notes', summary: 'Your personal knowledge base. Notes can be searched and linked to a topic or project.' },
     progress: { title: 'Progress & Analytics', summary: 'Detailed progress by skill and phase, your weekly review, and the spaced-review queue of topics to revisit.' },
     career: { title: 'Career Readiness', summary: 'An evidence-based view of how ready you are for a junior full-stack .NET + Angular role, built from your topics, projects, practice and interview answers.' },
-    cv: { title: 'CV Builder', summary: 'Create CVs from six professional templates, fill them with help from your progress on DevPath and an AI assistant, and download them as PDF or Word.' },
+    cv: { title: 'CV Builder', summary: 'Create CVs from six professional templates, fill them with suggestions from your progress on DevPath, check them for ATS problems, and download them as PDF or Word.' },
     'cv-editor': { title: 'CV editor', summary: 'Edit your CV section by section beside a live preview of the real PDF. Changes are saved automatically.' },
     settings: { title: 'Settings', summary: 'Language and theme, your learning preferences, and your account.' },
     search: { title: 'Search', summary: 'Results from across DevPath for what you typed, grouped by kind.' },
@@ -141,7 +141,7 @@ export const content: TourContent = {
     'cv-download': { title: 'Download', body: 'A real PDF with selectable text, or an editable Word document you can change further.' },
     'cv-editor': { title: 'Edit and design', body: 'Fill in your CV step by step, then change the template, colour, font, spacing and section order under “Design”.' },
     'cv-suggestions': { title: 'From my progress', body: 'Skills, projects and coursework the platform can vouch for, each labelled with how strong the evidence is. You choose what to add.' },
-    'cv-assistant': { title: 'AI assistant, job match and ATS check', body: 'Improve wording, tailor the CV to a job description and check it for common ATS problems. Nothing changes until you apply it.' },
+    'cv-tools': { title: 'Job match and ATS check', body: 'Compare the CV with a job description, save a tailored copy for that job, and check it for common ATS problems.' },
     'cv-preview': { title: 'Live preview', body: 'Exactly what the PDF will look like, page by page. Zoom in and out; on small screens, switch with the Edit / Preview tabs.' },
 
     'settings-appearance': { title: 'Appearance', body: 'Language (Arabic switches the whole interface to right-to-left) and light, dark or system theme. These are saved in this browser.' },

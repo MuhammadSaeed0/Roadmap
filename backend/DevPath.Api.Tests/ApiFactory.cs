@@ -4,7 +4,6 @@ using DevPath.Api.Data;
 using DevPath.Api.Data.Seeding;
 using DevPath.Api.Models;
 using DevPath.Api.Services;
-using DevPath.Api.Services.Cv;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -35,7 +34,6 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     public FakeYouTubeClient YouTube { get; } = new();
     public CapturingEmailSender Emails { get; } = new();
-    public FakeCvAiClient CvAi { get; } = new();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -56,8 +54,6 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
             services.AddSingleton<IYouTubeClient>(YouTube);
             services.RemoveAll<IAccountEmailSender>();
             services.AddSingleton<IAccountEmailSender>(Emails);
-            services.RemoveAll<ICvAiClient>();
-            services.AddSingleton<ICvAiClient>(CvAi);
         });
     }
 
@@ -170,24 +166,6 @@ public class FakeYouTubeClient : IYouTubeClient
 }
 
 /// <summary>Keeps every email so tests can read them and follow their links.</summary>
-/// <summary>Stands in for the language model: records the prompt and returns a prepared JSON answer.</summary>
-public class FakeCvAiClient : ICvAiClient
-{
-    public bool Enabled { get; set; } = true;
-    public string? Model => "fake-model";
-    public string Answer { get; set; } = """{"text":"","bullets":[],"suggestions":[],"matching":[],"missing":[],"notes":[]}""";
-    public Exception? Throw { get; set; }
-    public string? LastSystem { get; private set; }
-    public string? LastPrompt { get; private set; }
-
-    public Task<string> CompleteJsonAsync(string system, string prompt, CancellationToken ct)
-    {
-        LastSystem = system;
-        LastPrompt = prompt;
-        return Throw is null ? Task.FromResult(Answer) : Task.FromException<string>(Throw);
-    }
-}
-
 public class CapturingEmailSender : IAccountEmailSender
 {
     public ConcurrentQueue<EmailMessage> Sent { get; } = new();

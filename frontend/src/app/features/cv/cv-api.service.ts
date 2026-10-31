@@ -56,13 +56,6 @@ export interface CvAtsReport { score: number; issues: CvAtsIssue[]; matchedKeywo
 export interface CvJobMatch {
   jobKeywords: string[]; matched: string[]; missingButLearning: string[]; missing: string[]; projectsToHighlight: string[]; suggestedOrder: CvSectionKey[];
 }
-export type CvAiAction = 'summary' | 'improve-text' | 'bullets' | 'project' | 'skills' | 'ats' | 'concise' | 'missing' | 'tailor';
-export interface CvAiRequest { action: CvAiAction; text?: string | null; context?: string | null; jobDescription?: string | null; targetRole?: string | null; }
-export interface CvAiResult {
-  action: CvAiAction; text: string | null; bullets: string[]; suggestions: { section: string; suggestion: string }[];
-  matching: string[]; missing: string[]; notes: string[];
-}
-
 export const SECTION_KEYS: CvSectionKey[] = ['summary', 'experience', 'projects', 'skills', 'education', 'certifications', 'languages', 'sections'];
 
 /** The CV builder endpoints. Every CV is private to its owner; the server checks that on each call. */
@@ -112,8 +105,6 @@ export class CvApiService {
     return this.run(this.http.post<CvAtsReport>(`${this.base}/ats-check`, body));
   }
   jobMatch(id: number, jobDescription: string) { return this.run(this.http.post<CvJobMatch>(`${this.base}/${id}/job-match`, { jobDescription })); }
-  aiStatus() { return this.run(this.http.get<{ enabled: boolean; model: string | null }>(`${this.base}/ai/status`)); }
-  ai(id: number, body: CvAiRequest) { return this.run(this.http.post<CvAiResult>(`${this.base}/${id}/ai`, body)); }
 
   private async run<T>(request: Observable<T>): Promise<T> {
     try {

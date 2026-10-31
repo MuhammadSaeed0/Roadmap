@@ -61,7 +61,6 @@ publish script writes into the **published copy** of `web.config` (IIS never ser
 | Brevo API key | `Email__Brevo__ApiKey` | yes |
 | Main administrator's address | `Admin__OwnerEmail` | in appsettings.json already |
 | First password for the main administrator | `Admin__OwnerPassword` | optional |
-| Anthropic API key (CV builder's AI assistant) | `Anthropic__ApiKey` | optional; without it the assistant is switched off |
 
 In Production the app **refuses to start** when a required value is missing or still has a development value
 (LocalDB, the console-only `Log` email provider, a localhost or http address). The log line says which one.
@@ -129,7 +128,6 @@ environment lets you require an approval before each deployment.
 | `EMAIL_SENDER` | verified sender address |
 | `OWNER_EMAIL` | optional, overrides `Admin:OwnerEmail` |
 | `OWNER_PASSWORD` | optional, first owner password |
-| `ANTHROPIC_API_KEY` | optional, turns on the CV builder's AI assistant |
 | `MONSTERASP_SITE`, `MONSTERASP_SERVER`, `MONSTERASP_USERNAME`, `MONSTERASP_PASSWORD` | Web Deploy details |
 
 ## 5. After deploying

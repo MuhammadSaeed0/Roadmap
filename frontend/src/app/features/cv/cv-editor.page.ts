@@ -6,7 +6,6 @@ import { ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.components';
 import { CvApiService } from './cv-api.service';
-import { CvAssistantComponent } from './cv-assistant.component';
 import { CvAtsComponent } from './cv-ats.component';
 import { CONTENT_STEPS, ContentStep, CvContentComponent } from './cv-content.component';
 import { CvDesignComponent } from './cv-design.component';
@@ -15,10 +14,10 @@ import { CvJobComponent } from './cv-job.component';
 import { CvSuggestionsComponent } from './cv-suggestions.component';
 import { useCvErrors } from './cv-strings';
 
-type Panel = 'content' | 'design' | 'suggestions' | 'assistant' | 'job' | 'ats';
+type Panel = 'content' | 'design' | 'suggestions' | 'job' | 'ats';
 const PANELS: { key: Panel; icon: string }[] = [
   { key: 'content', icon: 'edit' }, { key: 'design', icon: 'format' }, { key: 'suggestions', icon: 'award' },
-  { key: 'assistant', icon: 'sparkle' }, { key: 'job', icon: 'target' }, { key: 'ats', icon: 'check-circle' },
+  { key: 'job', icon: 'target' }, { key: 'ats', icon: 'check-circle' },
 ];
 const ZOOMS = [50, 65, 80, 100, 125, 150];
 
@@ -28,7 +27,7 @@ const ZOOMS = [50, 65, 80, 100, 125, 150];
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [CvEditorState],
   imports: [RouterLink, IconComponent, TranslatePipe, SkeletonComponent, ErrorStateComponent, CvContentComponent, CvDesignComponent,
-    CvSuggestionsComponent, CvAssistantComponent, CvJobComponent, CvAtsComponent],
+    CvSuggestionsComponent, CvJobComponent, CvAtsComponent],
   template: `
     @if (loadError()) {
       <app-error-state [error]="loadError()" (retry)="load()" />
@@ -70,7 +69,7 @@ const ZOOMS = [50, 65, 80, 100, 125, 150];
           <div class="cv-panels" role="tablist" [attr.aria-label]="'cv.title' | t">
             @for (p of panels; track p.key) {
               <button type="button" role="tab" class="cv-panel-tab" [id]="'cvtab-' + p.key" [attr.aria-selected]="panel() === p.key"
-                      [attr.aria-controls]="'cvpanel'" (click)="panel.set(p.key)" [attr.data-tour]="p.key === 'suggestions' ? 'cv-suggestions' : p.key === 'assistant' ? 'cv-assistant' : null">
+                      [attr.aria-controls]="'cvpanel'" (click)="panel.set(p.key)" [attr.data-tour]="p.key === 'suggestions' ? 'cv-suggestions' : p.key === 'job' ? 'cv-tools' : null">
                 <app-icon [name]="p.icon" [size]="14" /> {{ 'cv.editor.panels.' + p.key | t }}
               </button>
             }
@@ -80,7 +79,6 @@ const ZOOMS = [50, 65, 80, 100, 125, 150];
               @case ('content') { <app-cv-content [(step)]="step" /> }
               @case ('design') { <app-cv-design /> }
               @case ('suggestions') { <app-cv-suggestions /> }
-              @case ('assistant') { <app-cv-assistant /> }
               @case ('job') { <app-cv-job /> }
               @case ('ats') { <app-cv-ats (goTo)="goTo($event)" /> }
             }

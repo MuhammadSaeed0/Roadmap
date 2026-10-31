@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.RateLimiting;
 
 namespace DevPath.Api.Controllers;
 
-/// <summary>The CV builder: the signed-in user's CVs, previews, exports, suggestions, checks and the AI assistant.</summary>
+/// <summary>The CV builder: the signed-in user's CVs, previews, exports, suggestions and checks.</summary>
 [ApiController]
 [Route("api/cv")]
-public class CvController(CvService cvs, CvSuggestionService suggestions, CvAnalysisService analysis, CvAiService assistant, CvPdfRenderer pdf) : ControllerBase
+public class CvController(CvService cvs, CvSuggestionService suggestions, CvAnalysisService analysis, CvPdfRenderer pdf) : ControllerBase
 {
     private const string Docx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
     private static readonly ConcurrentDictionary<string, byte[]> Thumbnails = new();
@@ -120,19 +120,10 @@ public class CvController(CvService cvs, CvSuggestionService suggestions, CvAnal
         var (_, content, style) = await cvs.LoadAsync(id, ct);
         return await analysis.MatchAsync(content, style, request.JobDescription!, ct);
     }
-
-    [HttpGet("ai/status")]
-    public CvAiStatusDto AiStatus() => assistant.Status();
-
-    /// <summary>Asks the AI assistant for a proposal about a saved CV. Nothing is changed until the user applies it.</summary>
-    [HttpPost("{id:int}/ai"), EnableRateLimiting(CvRateLimits.Ai)]
-    public Task<CvAiResultDto> Ai(int id, CvAiRequest request, CancellationToken ct) => assistant.RunAsync(id, request, ct);
 }
 
 public static class CvRateLimits
 {
     /// <summary>Previews, exports and ATS checks: rendering costs CPU.</summary>
     public const string Render = "cv-render";
-    /// <summary>AI requests cost money: a per-account daily allowance.</summary>
-    public const string Ai = "cv-ai";
 }
