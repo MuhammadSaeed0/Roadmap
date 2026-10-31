@@ -79,10 +79,16 @@ public class CvTests(ApiFactory factory) : IClassFixture<ApiFactory>, IAsyncLife
         var saved = await Json(await _a.PutAsJsonAsync($"/api/cv/{id}", new
         {
             title = "My CV", templateKey = "minimal",
-            content = new { personal = new { fullName = "  Sara  " }, skills = new[] { new { category = "Tools", items = new[] { "Git", "", "  " } } } },
+            content = new
+            {
+                personal = new { fullName = "  Sara  ", gitHub = "github.com/sara", linkedIn = "www.linkedin.com/in/sara" },
+                skills = new[] { new { category = "Tools", items = new[] { "Git", "", "  " } } },
+            },
             style = new { accent = "red", font = "comic", sectionOrder = new[] { "skills", "bogus" }, density = "compact", direction = "rtl", showPhoto = true },
         }));
         Assert.Equal("Sara", saved["content"]!["personal"]!["fullName"]!.GetValue<string>());
+        Assert.Equal("https://github.com/sara", saved["content"]!["personal"]!["gitHub"]!.GetValue<string>());   // scheme added
+        Assert.Equal("https://www.linkedin.com/in/sara", saved["content"]!["personal"]!["linkedIn"]!.GetValue<string>());
         Assert.Single(saved["content"]!["skills"]![0]!["items"]!.AsArray());
         var s = saved["style"]!;
         Assert.Equal("#374151", s["accent"]!.GetValue<string>());   // invalid colour → template default

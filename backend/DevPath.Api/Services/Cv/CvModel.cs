@@ -53,6 +53,10 @@ public static partial class CvRules
 
     [GeneratedRegex("^#[0-9a-fA-F]{6}$")] private static partial Regex ColorPattern();
     [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")] private static partial Regex EmailPattern();
+    [GeneratedRegex(@"^(www\.)?[a-z0-9-]+(\.[a-z0-9-]+)+(:\d+)?([/?#]\S*)?$", RegexOptions.IgnoreCase)] private static partial Regex BareAddress();
+
+    /// <summary>"github.com/sara" → "https://github.com/sara": people often type links without the scheme.</summary>
+    private static string Link(string value) => value.Length > 0 && !value.Contains("://") && BareAddress().IsMatch(value) ? "https://" + value : value;
 
     public static CvContent Empty(string fullName = "", string email = "", string title = "") =>
         Normalize(new CvContent(Personal: new CvPersonal(FullName: fullName, Email: email, Title: title)));
@@ -79,7 +83,7 @@ public static partial class CvRules
         var p = c.Personal ?? new CvPersonal();
         return new CvContent(
             new CvPersonal(T(p.FullName, 100), T(p.Title, 120), T(p.Email, 254), T(p.Phone, 40), T(p.Location, 120),
-                T(p.LinkedIn, 300), T(p.GitHub, 300), T(p.Website, 300)),
+                Link(T(p.LinkedIn, 300)), Link(T(p.GitHub, 300)), Link(T(p.Website, 300))),
             T(c.Summary, 2000),
             (c.Education ?? []).Take(10).Select(e => new CvEducation(T(e.Institution, 150), T(e.Degree, 150), T(e.Field, 150),
                 T(e.Start, 20), T(e.End, 20), T(e.Description, 800), L(e.Achievements, 10, 300))).ToList(),
@@ -87,9 +91,9 @@ public static partial class CvRules
                 T(e.Location, 120), T(e.Start, 20), T(e.End, 20), e.Current, L(e.Responsibilities, 12, 400), L(e.Achievements, 12, 400))).ToList(),
             (c.Skills ?? []).Take(12).Select(g => new CvSkillGroup(T(g.Category, 60), L(g.Items, 40, 60))).ToList(),
             (c.Projects ?? []).Take(15).Select(p => new CvProject(T(p.Name, 150), T(p.Description, 1200), L(p.Technologies, 20, 60),
-                L(p.Highlights, 10, 400), T(p.RepoUrl, 300), T(p.DemoUrl, 300), T(p.Date, 20))).ToList(),
+                L(p.Highlights, 10, 400), Link(T(p.RepoUrl, 300)), Link(T(p.DemoUrl, 300)), T(p.Date, 20))).ToList(),
             (c.Certifications ?? []).Take(20).Select(x => new CvCertification(T(x.Name, 150), T(x.Issuer, 150), T(x.Date, 20),
-                T(x.Url, 300), T(x.Description, 500))).ToList(),
+                Link(T(x.Url, 300)), T(x.Description, 500))).ToList(),
             (c.Languages ?? []).Take(15).Select(l => new CvLanguage(T(l.Name, 60), T(l.Level, 60))).ToList(),
             (c.Sections ?? []).Take(10).Select(s => new CvSection(T(s.Kind, 30), T(s.Title, 80), L(s.Items, 30, 400))).ToList());
     }

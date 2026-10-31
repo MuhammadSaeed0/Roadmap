@@ -397,7 +397,8 @@ dotnet user-secrets set "Anthropic:ApiKey" "YOUR_KEY"
 ```
 
 In production set the environment variable `Anthropic__ApiKey` (GitHub secret `ANTHROPIC_API_KEY` for the automated
-deployment). Each account may make 40 AI requests a day (`Anthropic:RequestsPerDay`).
+deployment). Each account may make 40 AI requests a day (`Anthropic:RequestsPerDay`); the count is kept in
+memory, so it starts again when the app restarts.
 
 ## Onboarding tour and help
 
