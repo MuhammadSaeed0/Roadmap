@@ -2,21 +2,64 @@
 // so a long or endless program can always be stopped by terminating the worker.
 //
 // Messages from the app:   { channel: 'devpath-runner', id, engine, action: 'run' | 'schema' | 'stop' | 'warmup', payload, timeoutMs }
+//                          { channel: 'devpath-runner', type: 'assets-supported' }   the app serves engine files
+//                          { channel: 'devpath-runner', type: 'asset', assetId, ok, body?, contentType?, message? }
 // Messages to the app:     { channel: 'devpath-runner', id?, engine, type: 'status' | 'result' | 'error', ... }
+//                          { channel: 'devpath-runner', type: 'asset-request', assetId, url }
+//
+// Engine files (the .NET runtime and assemblies, SQLite) come through the app, which keeps them in its Cache Storage:
+// this document has an opaque origin, so it has no storage of its own and the browser doesn't reuse its HTTP cache
+// either. Without that, the C# compiler (about 9 MB) would be downloaded again on every visit.
 'use strict';
 
 const CHANNEL = 'devpath-runner';
 const base = new URL('./', location.href).href;
 
+/**
+ * Runs inside each worker (inlined into its source): runnerFetch(url) asks the host, and through it the app, for an
+ * engine file, falling back to a normal download if the app doesn't answer.
+ */
+function assetBridge() {
+  const pending = new Map();
+  let next = 0;
+  self.addEventListener('message', (event) => {
+    const data = event.data;
+    if (!data || data.type !== 'asset') return;
+    const job = pending.get(data.assetId);
+    if (!job) return;
+    pending.delete(data.assetId);
+    if (data.ok) job.resolve(data); else job.reject(new Error(data.message || 'Asset unavailable'));
+  });
+  const ask = (url) => new Promise((resolve, reject) => {
+    const assetId = ++next;
+    pending.set(assetId, { resolve, reject });
+    self.postMessage({ type: 'asset-request', assetId, url });
+  });
+  self.runnerFetch = async (url) => {
+    const absolute = new URL(url, self.RUNNER_BASE).href;
+    try {
+      const asset = await ask(absolute);
+      return new Response(asset.body, { status: 200, headers: { 'content-type': asset.contentType || 'application/octet-stream' } });
+    } catch {
+      return fetch(absolute);
+    }
+  };
+}
+const bridge = `self.RUNNER_BASE = ${JSON.stringify(base)}; (${assetBridge.toString()})();`;
+
 // How each engine's worker is started. Workers are created from blob URLs because this document has an
 // opaque origin; the scripts they load are fetched from the site with CORS.
 const engines = {
-  csharp: () => `import(${JSON.stringify(base + 'csharp/worker.js')}).catch(e => postMessage({ type: 'fatal', message: String(e && e.message || e) }));`,
-  sql: () => `self.RUNNER_BASE = ${JSON.stringify(base)}; importScripts(${JSON.stringify(base + 'sql/sql-engine.js')});`,
+  csharp: () => `${bridge} import(${JSON.stringify(base + 'csharp/worker.js')}).catch(e => postMessage({ type: 'fatal', message: String(e && e.message || e) }));`,
+  sql: () => `${bridge} importScripts(${JSON.stringify(base + 'sql/sql-engine.js')});`,
   javascript: () => `self.RUNNER_BASE = ${JSON.stringify(base)}; importScripts(${JSON.stringify(base + 'js/js-engine.js')});`,
 };
 
 const state = {};   // engine -> { worker, ready: Promise, pending: Map<id, {resolve, reject, timer}> }
+const assets = new Map();   // assetId sent to the app -> { worker, assetId inside that worker }
+let nextAsset = 0;
+/** Set when the app says it serves engine files ({ type: 'assets-supported' }); otherwise workers download them. */
+let appServesAssets = false;
 
 const FRESH_WORKER_PER_RUN = new Set(['javascript']);
 
@@ -32,6 +75,13 @@ function start(engine) {
   entry.ready = new Promise((resolve, reject) => {
     worker.onmessage = (event) => {
       const data = event.data;
+      if (data.type === 'asset-request') {
+        if (!appServesAssets) { worker.postMessage({ type: 'asset', assetId: data.assetId, ok: false, message: 'Not served by the app.' }); return; }
+        const assetId = ++nextAsset;
+        assets.set(assetId, { worker, assetId: data.assetId });
+        post({ type: 'asset-request', engine, assetId, url: data.url });
+        return;
+      }
       if (data.type === 'ready') { post({ engine, type: 'status', status: 'ready' }); resolve(); return; }
       if (data.type === 'fatal') { post({ engine, type: 'status', status: 'failed', message: data.message }); reject(new Error(data.message)); stop(engine); return; }
       const job = entry.pending.get(data.id);
@@ -81,7 +131,17 @@ async function request(engine, action, payload, timeoutMs) {
 
 addEventListener('message', async (event) => {
   const data = event.data;
-  if (event.source !== parent || !data || data.channel !== CHANNEL || !(data.engine in engines)) return;
+  if (event.source !== parent || !data || data.channel !== CHANNEL) return;
+  if (data.type === 'assets-supported') { appServesAssets = true; return; }
+  if (data.type === 'asset') {
+    const target = assets.get(data.assetId);
+    if (!target) return;
+    assets.delete(data.assetId);
+    const reply = { type: 'asset', assetId: target.assetId, ok: data.ok, body: data.body, contentType: data.contentType, message: data.message };
+    target.worker.postMessage(reply, data.body ? [data.body] : []);
+    return;
+  }
+  if (!(data.engine in engines)) return;
   const { id, engine, action } = data;
   if (action === 'stop') { stop(engine); return; }
   try {
