@@ -26,12 +26,28 @@ public class PrecompressedStaticFiles(RequestDelegate next, IWebHostEnvironment 
                 headers.ContentType = contentType;
                 headers.ContentEncoding = "br";
                 headers.Vary = HeaderNames.AcceptEncoding;
-                headers.ContentLength = compressed.Length;
-                headers.LastModified = compressed.LastModified.ToString("R");
+                var lastModified = compressed.LastModified.ToUniversalTime();
+                lastModified = new DateTimeOffset(lastModified.Year, lastModified.Month, lastModified.Day, lastModified.Hour, lastModified.Minute, lastModified.Second, TimeSpan.Zero);
+                var etag = $"\"{lastModified.UtcTicks:x}-{compressed.Length:x}\"";
+                headers.LastModified = lastModified.ToString("R");
+                headers.ETag = etag;
                 // Files under _framework and Monaco's assets carry a content hash in their name.
                 headers.CacheControl = path.Contains("/_framework/", StringComparison.Ordinal) || path.Contains("/monaco/vs/assets/", StringComparison.Ordinal)
                     ? "public, max-age=31536000, immutable"
                     : "public, max-age=3600";
+                // Conditional requests (the code runners revalidate their cached files this way) get a 304 without a body.
+                var ifNoneMatch = request.Headers.IfNoneMatch.ToString();
+                var notModified = ifNoneMatch.Length > 0
+                    ? ifNoneMatch.Split(',').Any(t => t.Trim() == etag || t.Trim() == "*")
+                    : DateTimeOffset.TryParse(request.Headers.IfModifiedSince.ToString(), out var since) && lastModified <= since;
+                if (notModified)
+                {
+                    context.Response.StatusCode = StatusCodes.Status304NotModified;
+                    headers.ContentLength = null;
+                    headers.ContentEncoding = default;
+                    return;
+                }
+                headers.ContentLength = compressed.Length;
                 if (HttpMethods.IsHead(request.Method)) return;
                 await context.Response.SendFileAsync(compressed, context.RequestAborted);
                 return;

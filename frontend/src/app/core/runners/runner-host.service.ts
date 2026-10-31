@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, NgZone, inject, signal } from '@angular/core';
 import { WorkspaceFile } from '../models';
+import { loadRunnerAsset, runnerAssetUrl } from './runner-assets';
 
 /** Engines that run in the runner host (runners/host.html). HTML and Angular previews use their own pages. */
 export type RunnerEngine = 'csharp' | 'sql' | 'javascript';
@@ -88,6 +89,20 @@ export class RunnerHostService {
     });
   }
 
+  /** Answers an engine's request for one of its files, from the cache when possible (see runner-assets.ts). */
+  private async serveAsset(frame: HTMLIFrameElement, data: { engine: RunnerEngine; assetId: number; url: string }): Promise<void> {
+    const reply = (message: object, transfer: Transferable[] = []) =>
+      frame.contentWindow?.postMessage({ channel: CHANNEL, type: 'asset', assetId: data.assetId, ...message }, '*', transfer);
+    const url = runnerAssetUrl(String(data.url), this.document.baseURI);
+    if (!url) { reply({ ok: false, message: 'Not a runner file.' }); return; }
+    try {
+      const asset = await loadRunnerAsset(url);
+      reply({ ok: true, body: asset.body, contentType: asset.contentType }, [asset.body]);
+    } catch (e) {
+      reply({ ok: false, message: String((e as Error)?.message ?? e) });
+    }
+  }
+
   private ensureHost(): Promise<void> {
     this.hostReady ??= new Promise<void>((resolve, reject) => {
       const frame = this.document.createElement('iframe');
@@ -102,8 +117,14 @@ export class RunnerHostService {
         if (event.source !== frame.contentWindow) return;
         const data = event.data;
         if (!data || data.channel !== CHANNEL) return;
+        if (data.type === 'asset-request') { void this.serveAsset(frame, data); return; }
         this.zone.run(() => {
-          if (data.type === 'status' && data.engine === 'host') { clearTimeout(timer); resolve(); return; }
+          if (data.type === 'status' && data.engine === 'host') {
+            clearTimeout(timer);
+            frame.contentWindow!.postMessage({ channel: CHANNEL, type: 'assets-supported' }, '*');
+            resolve();
+            return;
+          }
           if (data.type === 'status') {
             this.status.update(s => ({ ...s, [data.engine]: data.status }));
             if (data.status === 'failed') this.failure.update(f => ({ ...f, [data.engine]: data.message }));

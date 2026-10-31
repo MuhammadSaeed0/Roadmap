@@ -114,10 +114,15 @@ function handle(data) {
   }
 }
 
-initSqlJs({ locateFile: (file) => self.RUNNER_BASE + 'sql/' + file })
+// The WebAssembly file comes from the app's cache through the runner host (see runners/host.js).
+const wasmUrl = self.RUNNER_BASE + 'sql/sql-wasm.wasm';
+(self.runnerFetch ? self.runnerFetch(wasmUrl) : fetch(wasmUrl))
+  .then((response) => (response.ok ? response.arrayBuffer() : Promise.reject(new Error('HTTP ' + response.status))))
+  .then((wasmBinary) => initSqlJs({ wasmBinary, locateFile: (file) => self.RUNNER_BASE + 'sql/' + file }))
   .then((module) => {
     SQL = module;
     self.onmessage = (event) => {
+      if (event.data && event.data.type === 'asset') return;   // answered by the asset bridge
       const { id } = event.data;
       try { self.postMessage({ id, type: 'result', result: handle(event.data) }); }
       catch (e) { self.postMessage({ id, type: 'error', message: String(e.message || e) }); }
