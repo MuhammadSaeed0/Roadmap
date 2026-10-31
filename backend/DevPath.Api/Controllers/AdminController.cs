@@ -41,6 +41,18 @@ public class AdminController(AdminService admin) : ControllerBase
     [HttpPost("users/{id}/resend-verification")]
     public Task<AdminUserDto> ResendVerification(string id, CancellationToken ct) => admin.ResendVerificationAsync(id, ct);
 
+    /// <summary>Changes the account's display name.</summary>
+    [HttpPut("users/{id}/name")]
+    public Task<AdminUserDto> Rename(string id, AdminRenameRequest request, CancellationToken ct) => admin.RenameAsync(id, request.FullName!, ct);
+
+    /// <summary>Deletes the account and everything it saved, permanently. The audit log keeps a record of the deletion.</summary>
+    [HttpDelete("users/{id}")]
+    public async Task<IActionResult> Delete(string id, CancellationToken ct)
+    {
+        await admin.DeleteAsync(id, ct);
+        return NoContent();
+    }
+
     /// <summary>Main administrator only: make an existing, approved account an administrator.</summary>
     [HttpPost("admins")]
     public Task<AdminUserDto> Promote(PromoteAdminRequest request, CancellationToken ct) => admin.PromoteAsync(request.Email!, ct);

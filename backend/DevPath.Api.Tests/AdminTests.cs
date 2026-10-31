@@ -26,6 +26,78 @@ public class AdminTests(ApiFactory factory) : IClassFixture<ApiFactory>
         return await scope.ServiceProvider.GetRequiredService<AppDbContext>().Users.Where(u => u.Email == email).Select(u => u.Id).SingleAsync();
     }
 
+    [Fact]
+    public async Task An_administrator_deletes_a_user_and_everything_they_saved()
+    {
+        var (admin, _) = await factory.CreateAdminClientAsync();
+        var email = factory.NewEmail();
+        var user = await factory.CreateUserClientAsync(email);
+        (await user.PostAsJsonAsync("/api/notes", new { title = "My note", content = "Saved before the deletion" })).EnsureSuccessStatusCode();
+        var id = await IdOf(email);
+
+        var deleted = await admin.DeleteAsync($"/api/admin/users/{id}");
+        Assert.Equal(HttpStatusCode.NoContent, deleted.StatusCode);
+
+        using (var scope = factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            Assert.False(await db.Users.AnyAsync(u => u.Id == id));
+            Assert.False(await db.Notes.IgnoreQueryFilters().AnyAsync(n => n.UserId == id));
+            Assert.True(await db.AdminAudit.AnyAsync(a => a.Action == "delete_user" && a.TargetEmail == email));
+        }
+        // Their session ends at once, the account is gone from the list, and the address is free to sign up again.
+        Assert.Equal(HttpStatusCode.Unauthorized, (await user.GetAsync("/api/auth/me")).StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, (await admin.GetAsync($"/api/admin/users/{id}")).StatusCode);
+        Assert.Equal(HttpStatusCode.Created, (await factory.CreateClient().PostAsJsonAsync("/api/auth/register",
+            new { fullName = "Back again", email, password = ApiFactory.Password })).StatusCode);
+    }
+
+    [Fact]
+    public async Task Deleting_follows_the_administrator_hierarchy()
+    {
+        var owner = await factory.CreateOwnerClientAsync();
+        var (admin, adminEmail) = await factory.CreateAdminClientAsync();
+        var (_, otherAdminEmail) = await factory.CreateAdminClientAsync();
+        var user = await factory.CreateUserClientAsync();
+
+        Assert.Equal("self_action", await Code(await admin.DeleteAsync($"/api/admin/users/{await IdOf(adminEmail)}")));
+        Assert.Equal("owner_protected", await Code(await admin.DeleteAsync($"/api/admin/users/{await IdOf(ApiFactory.OwnerEmail)}")));
+        Assert.Equal("owner_required", await Code(await admin.DeleteAsync($"/api/admin/users/{await IdOf(otherAdminEmail)}")));
+        Assert.Equal(HttpStatusCode.Forbidden, (await user.DeleteAsync($"/api/admin/users/{await IdOf(otherAdminEmail)}")).StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, (await admin.DeleteAsync("/api/admin/users/no-such-user")).StatusCode);
+
+        // The main administrator can delete another administrator, but never their own account.
+        Assert.Equal(HttpStatusCode.NoContent, (await owner.DeleteAsync($"/api/admin/users/{await IdOf(otherAdminEmail)}")).StatusCode);
+        Assert.Equal("self_action", await Code(await owner.DeleteAsync($"/api/admin/users/{await IdOf(ApiFactory.OwnerEmail)}")));
+    }
+
+    [Fact]
+    public async Task Administrators_rename_accounts_within_the_hierarchy()
+    {
+        var owner = await factory.CreateOwnerClientAsync();
+        var (admin, adminEmail) = await factory.CreateAdminClientAsync();
+        var (_, otherAdminEmail) = await factory.CreateAdminClientAsync();
+        var userEmail = factory.NewEmail();
+        var user = await factory.CreateUserClientAsync(userEmail);
+        var userId = await IdOf(userEmail);
+
+        var renamed = await admin.PutAsJsonAsync($"/api/admin/users/{userId}/name", new { fullName = "  Sara Ahmed  " });
+        Assert.Equal(HttpStatusCode.OK, renamed.StatusCode);
+        Assert.Equal("Sara Ahmed", (await Json(renamed))["fullName"]!.GetValue<string>());
+        Assert.Equal("Sara Ahmed", (await Json(await user.GetAsync("/api/auth/me")))["fullName"]!.GetValue<string>());
+
+        Assert.Equal(HttpStatusCode.BadRequest, (await admin.PutAsJsonAsync($"/api/admin/users/{userId}/name", new { fullName = "   " })).StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest, (await admin.PutAsJsonAsync($"/api/admin/users/{userId}/name", new { fullName = new string('x', 101) })).StatusCode);
+        Assert.Equal(HttpStatusCode.OK, (await admin.PutAsJsonAsync($"/api/admin/users/{await IdOf(adminEmail)}/name", new { fullName = "Me" })).StatusCode);
+        Assert.Equal("owner_required", await Code(await admin.PutAsJsonAsync($"/api/admin/users/{await IdOf(otherAdminEmail)}/name", new { fullName = "X" })));
+        Assert.Equal("owner_required", await Code(await admin.PutAsJsonAsync($"/api/admin/users/{await IdOf(ApiFactory.OwnerEmail)}/name", new { fullName = "X" })));
+        Assert.Equal(HttpStatusCode.Forbidden, (await user.PutAsJsonAsync($"/api/admin/users/{userId}/name", new { fullName = "Hacked" })).StatusCode);
+
+        Assert.Equal(HttpStatusCode.OK, (await owner.PutAsJsonAsync($"/api/admin/users/{await IdOf(otherAdminEmail)}/name", new { fullName = "Omar" })).StatusCode);
+        using var scope = factory.Services.CreateScope();
+        Assert.True(await scope.ServiceProvider.GetRequiredService<AppDbContext>().AdminAudit.AnyAsync(a => a.Action == "rename" && a.TargetEmail == userEmail));
+    }
+
     /// <summary>A registered account that has confirmed its email and waits for approval.</summary>
     private async Task<(HttpClient Client, string Email, string Id)> PendingApprovalAsync()
     {

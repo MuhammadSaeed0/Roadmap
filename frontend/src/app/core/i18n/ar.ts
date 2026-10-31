@@ -147,6 +147,10 @@ export const ar: Translations = {
       emailVerified: 'تأكيد البريد', confirmedBefore: 'قبل تفعيل خاصية التأكيد', approved: 'الموافقة',
       statusChanged: 'آخر تغيير للحالة', lastSignIn: 'آخر تسجيل دخول', reason: 'الملاحظة',
     },
+    manage: {
+      title: 'إدارة هذا الحساب', nameLabel: 'الاسم', saveName: 'حفظ الاسم', delete: 'حذف الحساب',
+      deleteHelp: 'يحذف الحساب وكل ما حفظه (التقدم والملاحظات والجلسات والمشاريع وحلول التمارين). لا يمكن التراجع عن ذلك.',
+    },
     confirm: {
       approveTitle: 'الموافقة على هذا الحساب؟', approve: 'سيحصل {name} ({email}) على وصول كامل إلى DevPath وتصله رسالة بريد.',
       rejectTitle: 'رفض هذا الحساب؟', reject: 'لن يتمكن {name} ({email}) من استخدام DevPath، وسيُبلَّغ بالبريد.',
@@ -154,12 +158,14 @@ export const ar: Translations = {
       reactivateTitle: 'إعادة تفعيل هذا الحساب؟', reactivate: 'سيتمكن {name} ({email}) من استخدام DevPath مجددًا.',
       promoteTitle: 'ترقية هذا الحساب إلى مسؤول؟', promote: 'سيتمكن {email} من الموافقة على الحسابات ورفضها وإيقافها.',
       revokeTitle: 'إزالة صلاحيات المسؤول؟', revoke: 'لن يتمكن {email} من استخدام لوحة الإدارة بعد الآن.',
+      deleteTitle: 'حذف هذا الحساب نهائيًا؟', delete: 'سيُحذف {name} ({email}) وكل ما حفظه (التقدم والملاحظات والجلسات والمشاريع وحلول التمارين). لا يمكن التراجع عن ذلك، ويمكن التسجيل بهذا البريد مرة أخرى.',
     },
     reasonLabel: 'ملاحظة للمستخدم (اختياري)', reasonHelp: 'تظهر في صفحة حالته وتُضمَّن في رسالة البريد. حتى 500 حرف.',
     done: {
       approve: 'تمت الموافقة على {email}.', reject: 'تم رفض {email}.', suspend: 'تم إيقاف {email}.',
       reactivate: 'أُعيد تفعيل {email}.', 'resend-verification': 'أُرسل رابط تأكيد جديد إلى {email}.',
       promote: 'أصبح {email} مسؤولًا.', revoke: 'لم يعد {email} مسؤولًا.',
+      rename: 'تم تغيير الاسم إلى {name}.', delete: 'تم حذف {email}.',
     },
     promoteLabel: 'إضافة مسؤول', promotePlaceholder: 'name@example.com',
     promoteHelp: 'يجب أن يكون الحساب موجودًا ومعتمدًا وبريده مؤكَّدًا.', promote: 'ترقية إلى مسؤول',
@@ -171,6 +177,7 @@ export const ar: Translations = {
       approve: 'وافق على', reject: 'رفض', suspend: 'أوقف', reactivate: 'أعاد تفعيل',
       resend_verification: 'أعاد إرسال رسالة التأكيد إلى', grant_admin: 'منح صلاحيات المسؤول إلى', revoke_admin: 'أزال صلاحيات المسؤول من',
       owner_assigned: 'عيّن المسؤول الرئيسي:', test_email: 'أرسل رسالة تجريبية',
+      rename: 'غيّر اسم', delete_user: 'حذف حساب',
     },
   },
   videos: {

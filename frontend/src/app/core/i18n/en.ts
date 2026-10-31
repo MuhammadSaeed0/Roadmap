@@ -145,6 +145,10 @@ export const en = {
       emailVerified: 'Email confirmed', confirmedBefore: 'Before verification existed', approved: 'Approved',
       statusChanged: 'Status changed', lastSignIn: 'Last sign-in', reason: 'Note',
     },
+    manage: {
+      title: 'Manage this account', nameLabel: 'Name', saveName: 'Save name', delete: 'Delete account',
+      deleteHelp: 'Removes the account and everything it saved (progress, notes, sessions, projects, practice work). This can’t be undone.',
+    },
     confirm: {
       approveTitle: 'Approve this account?', approve: '{name} ({email}) will get full access to DevPath and receive an email.',
       rejectTitle: 'Reject this account?', reject: '{name} ({email}) won’t be able to use DevPath. They’ll be told by email.',
@@ -152,12 +156,14 @@ export const en = {
       reactivateTitle: 'Reactivate this account?', reactivate: '{name} ({email}) will be able to use DevPath again.',
       promoteTitle: 'Make this account an administrator?', promote: '{email} will be able to approve, reject and suspend accounts.',
       revokeTitle: 'Remove administrator rights?', revoke: '{email} will no longer be able to use the admin area.',
+      deleteTitle: 'Delete this account permanently?', delete: '{name} ({email}) and everything they saved (progress, notes, sessions, projects and practice work) will be deleted. This can’t be undone. The address can be used to sign up again.',
     },
     reasonLabel: 'Note for the user (optional)', reasonHelp: 'Shown on their status page and included in the email. Up to 500 characters.',
     done: {
       approve: '{email} was approved.', reject: '{email} was rejected.', suspend: '{email} was suspended.',
       reactivate: '{email} was reactivated.', 'resend-verification': 'A new confirmation link was sent to {email}.',
       promote: '{email} is now an administrator.', revoke: '{email} is no longer an administrator.',
+      rename: 'The name was changed to {name}.', delete: '{email} was deleted.',
     },
     promoteLabel: 'Add an administrator', promotePlaceholder: 'name@example.com',
     promoteHelp: 'The account must already exist, be approved and have a confirmed email.', promote: 'Make administrator',
@@ -169,6 +175,7 @@ export const en = {
       approve: 'approved', reject: 'rejected', suspend: 'suspended', reactivate: 'reactivated',
       resend_verification: 'resent the confirmation email to', grant_admin: 'made an administrator:', revoke_admin: 'removed admin rights from',
       owner_assigned: 'set up the main administrator:', test_email: 'sent a test email',
+      rename: 'renamed', delete_user: 'deleted the account',
     },
   },
   videos: {

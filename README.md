@@ -237,6 +237,7 @@ Content tables have foreign keys, unique indexes on every slug/key, check constr
 | POST | `/api/auth/forgot-password`, `/api/auth/reset-password`, `/api/auth/change-password` | Password recovery and change |
 | GET | `/api/admin/overview`, `/api/admin/users?q&status&page&pageSize`, `/api/admin/users/{id}`, `/api/admin/audit` | Admin statistics, account list and details, activity log (administrators) |
 | POST | `/api/admin/users/{id}/approve`, `/reject`, `/suspend`, `/reactivate`, `/resend-verification` | Account approval actions (administrators) |
+| PUT / DELETE | `/api/admin/users/{id}/name`, `/api/admin/users/{id}` | Rename an account; delete an account and everything it saved, permanently (administrators; other administrators only by the main administrator; never yourself or the main administrator) |
 | POST/DELETE | `/api/admin/admins`, `/api/admin/admins/{id}`; POST `/api/admin/test-email` | Grant or revoke administrator rights, test email (main administrator only) |
 | GET/POST | `/api/topics/{id}/videos` | Suggested + your own videos for a topic; add a video by YouTube link |
 | GET | `/api/project-tasks/{id}/videos` | Videos showing how to build a project task |

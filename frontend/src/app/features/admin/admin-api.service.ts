@@ -50,6 +50,10 @@ export class AdminApiService {
     return this.run(this.http.post<AdminUser>(`${this.base}/users/${encodeURIComponent(id)}/${action}`, body));
   }
 
+  rename(id: string, fullName: string) { return this.run(this.http.put<AdminUser>(`${this.base}/users/${encodeURIComponent(id)}/name`, { fullName })); }
+  /** Deletes the account and everything it saved, permanently. */
+  deleteUser(id: string) { return this.run(this.http.delete<void>(`${this.base}/users/${encodeURIComponent(id)}`)); }
+
   promote(email: string) { return this.run(this.http.post<AdminUser>(`${this.base}/admins`, { email })); }
   revoke(id: string) { return this.run(this.http.delete<AdminUser>(`${this.base}/admins/${encodeURIComponent(id)}`)); }
   audit(take = 100) { return this.run(this.http.get<AdminAudit[]>(`${this.base}/audit`, { params: { take } })); }

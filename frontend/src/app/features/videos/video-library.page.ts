@@ -77,7 +77,7 @@ type LibraryTopic = Library['phases'][number]['topics'][number];
       @for (phase of phases(); track phase.id) {
         <details class="card video-phase" [open]="filtering() || phase.order === firstPhase()" data-tour="videos-phase">
           <summary>
-            <span class="phase-num">{{ 'roadmap.phase' | t: { n: phase.order } }}</span>
+            <span class="video-phase-num">{{ 'roadmap.phase' | t: { n: phase.order } }}</span>
             <strong>{{ phase | loc: 'title' }}</strong>
             <span class="muted small">{{ 'videoLibrary.count' | t: { n: phase.count } }}</span>
           </summary>

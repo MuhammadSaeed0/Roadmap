@@ -132,6 +132,52 @@ public class AdminService(
         return await GetAsync(target.Id, ct);
     }
 
+    /// <summary>
+    /// Changes an account's display name. Administrators can rename users and themselves; renaming another
+    /// administrator (or the main administrator) is for the main administrator.
+    /// </summary>
+    public async Task<AdminUserDto> RenameAsync(string id, string fullName, CancellationToken ct)
+    {
+        var actor = await ActorAsync(ct);
+        var target = await FindAsync(id);
+        var name = fullName.Trim();
+        if (name.Length == 0) throw new ApiProblemException(400, "name_required", "Enter a name.");
+        if (target.Id != actor.Id && !actor.IsOwner && (target.IsOwner || await users.IsInRoleAsync(target, Roles.Admin)))
+            throw new ApiProblemException(403, "owner_required", "Only the main administrator can rename another administrator.");
+        if (target.FullName == name) return await GetAsync(id, ct);
+
+        var previous = target.FullName;
+        await InTransactionAsync(async () =>
+        {
+            target.FullName = name;
+            var updated = await users.UpdateAsync(target);
+            if (!updated.Succeeded) throw new ApiProblemException(409, "update_failed", "The account couldn't be updated. Reload and try again.");
+            await AuditAsync(actor, "rename", target, $"{previous} → {name}", ct);
+        }, ct);
+        return await GetAsync(id, ct);
+    }
+
+    /// <summary>
+    /// Deletes an account and everything it saved (progress, notes, sessions, projects, practice work…, which the
+    /// database removes with it). Nobody can delete themselves or the main administrator, and deleting another
+    /// administrator is for the main administrator. The audit log keeps the deletion, with the address it had.
+    /// </summary>
+    public async Task DeleteAsync(string id, CancellationToken ct)
+    {
+        var actor = await ActorAsync(ct);
+        var target = await FindAsync(id);
+        Guard(actor, target);
+        if (!actor.IsOwner && await users.IsInRoleAsync(target, Roles.Admin))
+            throw new ApiProblemException(403, "owner_required", "Only the main administrator can delete another administrator.");
+
+        await InTransactionAsync(async () =>
+        {
+            await AuditAsync(actor, "delete_user", target, target.FullName, ct);
+            var deleted = await users.DeleteAsync(target);
+            if (!deleted.Succeeded) throw new ApiProblemException(409, "delete_failed", "The account couldn't be deleted. Reload and try again.");
+        }, ct);
+    }
+
     public async Task SendTestEmailAsync(CancellationToken ct)
     {
         var actor = await RequireOwnerAsync(ct);
