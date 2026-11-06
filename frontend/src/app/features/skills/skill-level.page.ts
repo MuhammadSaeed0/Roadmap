@@ -34,11 +34,15 @@ type Tone = 'danger' | 'warning' | 'accent' | 'success';
     .tier[data-tier='QuizVerified'], .tier[data-tier='Reviewed'] { background: var(--success-soft); color: var(--success); }
     .tier[data-tier='AutoChecked'], .tier[data-tier='Evidenced'] { background: var(--info-soft); color: var(--info); }
     .tier[data-tier='SelfReported'] { background: var(--warning-soft); color: var(--warning); }
-    .cat-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 24px; }
+    .tiers { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+    .check-items { display: flex; flex-direction: column; gap: 14px; margin: 10px 0; padding: 0; list-style: none; }
+    .check-item { display: flex; flex-direction: column; gap: 4px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .check-item:first-child { padding-top: 0; border-top: 0; }
+    .cat-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 32px; margin-top: 12px; }
     .cat { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
     .cat-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; font-size: 0.88rem; }
     .cat-head strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .evidence-mini { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 0.74rem; color: var(--muted); }
+    .evidence-mini { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 2px; font-size: 0.74rem; color: var(--muted); }
     .req { padding: 12px 0; border-top: 1px solid var(--border); }
     .req:first-of-type { border-top: 0; }
     .req-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
@@ -99,10 +103,10 @@ type Tone = 'danger' | 'warning' | 'accent' | 'success';
             </li>
           }
         </ol>
-        <p class="tiny muted">
+        <div class="tiers">
           <span class="tier" data-tier="QuizVerified">{{ 'devLevel.verifiedXp' | t: { xp: (d.stats.verifiedPoints | fmtNum) } }}</span>
           <span class="tier" data-tier="SelfReported">{{ 'devLevel.selfReportedXp' | t: { xp: (d.stats.selfReportedPoints | fmtNum) } }}</span>
-        </p>
+        </div>
       </section>
 
       <section class="card" aria-labelledby="next-h" data-tour="skills-next">
@@ -179,9 +183,9 @@ type Tone = 'danger' | 'warning' | 'accent' | 'success';
         <section class="card" aria-labelledby="chk-h" data-tour="skills-checks">
           <h2 id="chk-h" class="card-title"><app-icon name="flask" /> {{ 'devLevel.checksTitle' | t }}</h2>
           <p class="small muted">{{ 'devLevel.checksIntro' | t }}</p>
-          <ul class="mini-list" role="list">
+          <ul class="check-items" role="list">
             @for (a of d.assessment.slice(0, showAllChecks() ? 99 : 5); track a.category) {
-              <li class="stack">
+              <li class="check-item">
                 <div class="row-between">
                   <strong class="small">{{ 'devLevel.categories.' + a.category | t }}</strong>
                   <span class="row-gap">
