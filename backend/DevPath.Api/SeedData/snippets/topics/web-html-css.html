@@ -1,0 +1,26 @@
+<main class="products">
+  <form class="search" role="search">
+    <label for="q">Search products</label>
+    <input id="q" name="q" type="search" />
+    <button type="submit">Search</button>
+  </form>
+
+  <ul class="grid">
+    <li class="card"><h2>Keyboard</h2><p>$49</p></li>
+    <li class="card"><h2>Mouse</h2><p>$19</p></li>
+  </ul>
+</main>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root { --accent: #2563eb; }
+  .search { display: flex; gap: 0.5rem; align-items: end; }
+  .grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    padding: 0;
+    list-style: none;
+  }
+  .card { padding: 1rem; border: 1px solid #ddd; border-inline-start: 4px solid var(--accent); }
+</style>

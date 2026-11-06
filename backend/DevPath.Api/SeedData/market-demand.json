@@ -6,6 +6,20 @@
   "postings": 36,
   "source": "Indeed job search API through the Indeed connector (search_jobs, get_job_details). LinkedIn was not used: no authorised LinkedIn access was available in this session.",
   "topics": {
+    "ai-dotnet-llm": [
+      {
+        "technology": "AI coding assistants",
+        "postings": 5,
+        "required": 5,
+        "share": 13.9
+      },
+      {
+        "technology": "LLM/Generative AI",
+        "postings": 4,
+        "required": 3,
+        "share": 11.1
+      }
+    ],
     "api-authentication": [
       {
         "technology": "Authentication",
@@ -84,12 +98,36 @@
         "share": 22.2
       }
     ],
+    "arch-clean-architecture": [
+      {
+        "technology": "Clean Architecture",
+        "postings": 2,
+        "required": 1,
+        "share": 5.6
+      }
+    ],
     "arch-design-patterns": [
       {
         "technology": "Design Patterns",
         "postings": 9,
         "required": 9,
         "share": 25
+      }
+    ],
+    "arch-domain-driven-design": [
+      {
+        "technology": "Domain-Driven Design",
+        "postings": 2,
+        "required": 1,
+        "share": 5.6
+      }
+    ],
+    "arch-message-brokers": [
+      {
+        "technology": "RabbitMQ",
+        "postings": 2,
+        "required": 1,
+        "share": 5.6
       }
     ],
     "arch-microservices": [
@@ -238,6 +276,14 @@
         "postings": 7,
         "required": 2,
         "share": 19.4
+      }
+    ],
+    "dotnet-legacy-modernization": [
+      {
+        "technology": ".NET Framework",
+        "postings": 9,
+        "required": 8,
+        "share": 25
       }
     ],
     "ef-dbcontext": [
@@ -480,6 +526,22 @@
         "postings": 6,
         "required": 4,
         "share": 16.7
+      }
+    ],
+    "web-html-css": [
+      {
+        "technology": "HTML/CSS",
+        "postings": 14,
+        "required": 13,
+        "share": 38.9
+      }
+    ],
+    "web-javascript-essentials": [
+      {
+        "technology": "JavaScript",
+        "postings": 15,
+        "required": 14,
+        "share": 41.7
       }
     ]
   }

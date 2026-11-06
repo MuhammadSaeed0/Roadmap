@@ -3177,6 +3177,52 @@
       "description": "▬ Related Videos ▬▬▬▬▬▬▬▬▬▬"
     }
   ],
+  "web-html-css": [
+    {
+      "videoId": "1Rs2ND1ryYc",
+      "title": "CSS Tutorial - Zero to Hero (Complete Course)",
+      "channel": "freeCodeCamp.org",
+      "language": "en"
+    },
+    {
+      "videoId": "n4R2E7O-Ngo",
+      "title": "CSS Full Course for Beginners | Complete All-in-One Tutorial | 11 Hours",
+      "channel": "Dave Gray",
+      "language": "en"
+    },
+    {
+      "videoId": "bRmq2xe56IM",
+      "title": "HTML and CSS Full Course for Beginners",
+      "channel": "IDTech",
+      "language": "en"
+    }
+  ],
+  "web-javascript-essentials": [
+    {
+      "videoId": "PkZNo7MFNFg",
+      "title": "Learn JavaScript - Full Course for Beginners",
+      "channel": "freeCodeCamp.org",
+      "language": "en"
+    },
+    {
+      "videoId": "W6NZfCO5SIk",
+      "title": "JavaScript Course for Beginners – Your First Step to Web Development",
+      "channel": "Programming with Mosh",
+      "language": "en"
+    },
+    {
+      "videoId": "lfmg-EJ8gm4",
+      "title": "JavaScript Full Course for free 🌐",
+      "channel": "Bro Code",
+      "language": "en"
+    },
+    {
+      "videoId": "hdI2bqOjy3c",
+      "title": "JavaScript Crash Course For Beginners",
+      "channel": "Traversy Media",
+      "language": "en"
+    }
+  ],
   "ts-types-inference": [
     {
       "videoId": "M9HxVB1TpP8",
@@ -5250,6 +5296,66 @@
       "language": "en"
     }
   ],
+  "arch-clean-architecture": [
+    {
+      "videoId": "rjefnUC9Z90",
+      "title": "Clean Architecture with ASP.NET Core 10",
+      "channel": "dotnet",
+      "language": "en"
+    },
+    {
+      "videoId": "YTcZ2c-1X6g",
+      "title": "Clean architecture in ASP.NET Core, simply explained",
+      "channel": "Round The Code",
+      "language": "en"
+    },
+    {
+      "videoId": "GYZcds1FjEM",
+      "title": "Visual Studio Toolbox Live - Clean Architecture for ASP.NET Core Apps",
+      "channel": "Microsoft Visual Studio",
+      "language": "en"
+    }
+  ],
+  "arch-domain-driven-design": [
+    {
+      "videoId": "hWOvPGfkunI",
+      "title": "The Best Domain Design Implementation for .NET Developers in 2025!",
+      "channel": "Tural Suleymani",
+      "language": "en"
+    },
+    {
+      "videoId": "L4sg3BaDLAw",
+      "title": "Domain-Driven Design (DDD) in ASP.NET Core Web API – Complete Guide with Real-World Example",
+      "channel": "Dot Net Tutorials",
+      "language": "en"
+    },
+    {
+      "videoId": "Bc02G4it5lc",
+      "title": "Clean Architecture in .NET 10 - Master the Domain Layer with DDD",
+      "channel": "EzzyLearning",
+      "language": "en"
+    }
+  ],
+  "dotnet-legacy-modernization": [
+    {
+      "videoId": "wzzb1_oJwew",
+      "title": "Coding Short: Upgrade Your .NET Framework Projects with the Upgrade Assistant",
+      "channel": "Shawn Wildermuth",
+      "language": "en"
+    },
+    {
+      "videoId": "DSUnHdkKuCM",
+      "title": ".NET Framework Migration to .NET 8",
+      "channel": "CodeOpinion",
+      "language": "en"
+    },
+    {
+      "videoId": "LQxSX_gkNj4",
+      "title": "Creating a New Project with the Upgrade Assistant Visual Studio Extension [8 of18] Migrating ASP.NET",
+      "channel": "dotnet",
+      "language": "en"
+    }
+  ],
   "pro-security": [
     {
       "videoId": "Jzr0Jdnq_EI",
@@ -5546,6 +5652,26 @@
       "language": "en"
     }
   ],
+  "ai-dotnet-llm": [
+    {
+      "videoId": "5BSbdlvnGiI",
+      "title": "Simplifying AI Development with Microsoft.Extensions.AI & Semantic Kernel | Local Llama Integration",
+      "channel": "Fabian G Williams",
+      "language": "en"
+    },
+    {
+      "videoId": "h1P0iSJFffQ",
+      "title": "Integrating OpenAI & .NET With Semantic Kernel",
+      "channel": "Aviron Software",
+      "language": "en"
+    },
+    {
+      "videoId": "kCGZPhnTGHM",
+      "title": "Use Semantic Kernel to build AI Apps and Agents - a simple intro!",
+      "channel": "The Code Wolf",
+      "language": "en"
+    }
+  ],
   "devops-kubernetes": [
     {
       "videoId": "s_o8dwzRlu4",
@@ -5583,6 +5709,32 @@
       "videoId": "Nw4AZs1kLAs",
       "title": "Introduction to .NET Microservices (.NET 8)",
       "channel": "DotNetMastery",
+      "language": "en"
+    }
+  ],
+  "arch-message-brokers": [
+    {
+      "videoId": "_vO6KNBsp-4",
+      "title": "RabbitMQ Explained: Message Broker Architecture & AMQP Protocol Tutorial for Beginners",
+      "channel": "CodeLucky",
+      "language": "en"
+    },
+    {
+      "videoId": "G5L0a46xZ4c",
+      "title": "RabbitMQ - Exchange, Queue and Binding",
+      "channel": "Djole",
+      "language": "en"
+    },
+    {
+      "videoId": "iBTgZ4aYXpc",
+      "title": "RabbitMQ with C#.NET #2 - Publish and Subscribe",
+      "channel": "A Coder's Journey",
+      "language": "en"
+    },
+    {
+      "videoId": "ovE8NKAwqTI",
+      "title": "RabbitMQ Deadletter Exchanges and Queues setup through the management UI",
+      "channel": "Mike Møller Nielsen",
       "language": "en"
     }
   ]
