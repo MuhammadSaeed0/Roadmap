@@ -1,0 +1,27 @@
+User story (INV-142)
+  As a warehouse manager
+  I want to see the products that are below their reorder level
+  so that I can order them before they run out.
+
+Acceptance criteria
+  Given a product with Stock 4 and ReorderLevel 10
+  When I open "Low stock"
+  Then the product is listed with its stock, reorder level and supplier.
+
+  Given no product is below its reorder level
+  When I open "Low stock"
+  Then I see "Nothing to reorder" instead of an empty table.
+
+Split vertically (each slice can be demonstrated on its own)
+  INV-142a  GET /api/products/low-stock (+ integration test)       3 points
+  INV-142b  Angular "Low stock" page with loading/empty states      3 points
+  INV-142c  Daily e-mail to the manager when the list is not empty  5 points
+
+Definition of done
+  Code reviewed and merged, tests green in CI, migration included,
+  deployed to staging and accepted by the product owner.
+
+Daily stand-up
+  Yesterday: finished INV-142a, pull request #57 is in review.
+  Today:     start INV-142b.
+  Blocked:   need the supplier field from the purchasing team's API.

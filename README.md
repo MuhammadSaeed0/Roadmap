@@ -39,20 +39,21 @@ Angular 22 + TypeScript   →   ASP.NET Core 10 Web API (C#)   →   EF Core 10 
 16. [Bilingual UI and right-to-left support](#bilingual-ui-and-right-to-left-support)
 17. [How progress, recommendations and reviews are calculated](#how-progress-recommendations-and-reviews-are-calculated)
 18. [Editing the learning content](#editing-the-learning-content)
-19. [Tests](#tests)
-20. [Troubleshooting](#troubleshooting)
-21. [Known limitations](#known-limitations)
-22. [Ideas for future improvements](#ideas-for-future-improvements)
+19. [Job-market research](#job-market-research)
+20. [Tests](#tests)
+21. [Troubleshooting](#troubleshooting)
+22. [Known limitations](#known-limitations)
+23. [Ideas for future improvements](#ideas-for-future-improvements)
 
 ---
 
 ## Features
 
 - **Accounts**: sign-up, sign-in, sign-out, password reset and password change. Every account has its own private progress, notes, sessions, reviews, projects, practice answers, interview ratings, preferences and videos (see [Accounts and data privacy](#accounts-and-data-privacy)).
-- **Videos on every topic**: 3–4 hand-picked English YouTube tutorials per topic (598) plus up to two Arabic explanations (139 videos on 84 of the 150 topics), all checked to exist and allow embedding, with a language filter, durations and short descriptions, optional live suggestions from the YouTube API, plus your own videos added by link, with an in-page player and per-account "watched" and "saved" flags (see [YouTube videos](#youtube-videos)).
+- **Videos on every topic**: 3–4 hand-picked English YouTube tutorials per topic (625) plus up to two Arabic explanations (139 videos on 84 of the 159 topics), all checked to exist and allow embedding, with a language filter, durations and short descriptions, optional live suggestions from the YouTube API, plus your own videos added by link, with an in-page player and per-account "watched" and "saved" flags (see [YouTube videos](#youtube-videos)).
 - **A quiz on every topic**, right under the videos: 600 bilingual multiple-choice questions (4 per topic) in three levels that open one after another: the topic itself, the topic mixed with the topics just before it, and a wider review of the topics leading up to it. You need 75% to open the next level. The API grades answers, so the correct options never reach the browser before you answer, and each answer comes with a short explanation. The questions test each topic's ideas (what the videos teach); they weren't written from individual video transcripts.
 - **Dashboard**: weighted overall progress, completed and remaining topics, time remaining, current phase, a "continue learning" recommendation with its reasons, a 30/60/120-minute study plan, project progress, per-skill progress, recent activity, study streak and quick actions.
-- **Roadmap**: 13 phases and 150 topics, from C# fundamentals to full-stack projects. No prior experience is assumed: phase 5 starts with databases and SQL from zero (tables, `SELECT`, `INSERT`/`UPDATE`/`DELETE`, keys, `JOIN`, `GROUP BY`) before EF Core, and phase 6 applies SQL Server in real applications. Any topic can still be marked "already known" from its page.
+- **Roadmap**: 14 phases and 159 topics, from C# fundamentals to full-stack projects. No prior experience is assumed: phase 5 starts with databases and SQL from zero (tables, `SELECT`, `INSERT`/`UPDATE`/`DELETE`, keys, `JOIN`, `GROUP BY`) before EF Core, and phase 6 applies SQL Server in real applications. Any topic can still be marked "already known" from its page.
 - **Topic pages** cover: what it is, why it matters, how it works, a real-world example, a code example, a practice task, an independent challenge, verified resources, prerequisites, topics it unlocks, related projects, interview questions, exercises and notes. You can also set status, prior knowledge, confidence (0–5), add the topic to spaced review, and log study sessions.
 - **Learning Library**: server-side search, filters (skill, phase, status, priority, knowledge) and pagination. The filters are kept in the URL.
 - **Four projects**: Employee Management (C# console), Inventory API, Project Dashboard (Angular) and Sales and Order Management (full stack). They have 16 milestones, 62 tasks with acceptance criteria and topic links, 15 realistic **change requests** that unlock as a project progresses, a portfolio checklist and a repository link. Every task and change request has 3–4 YouTube videos on how to build that part (280 hand-picked videos in `SeedData/project-videos.json`, each checked with YouTube; tasks with fewer are topped up from their related topics' videos).
@@ -320,7 +321,7 @@ set-up, the settings, HTTPS and troubleshooting, is in [docs/DEPLOYMENT.md](docs
 
 Each topic page has a **Videos** section:
 
-- **Curated videos (no setup needed):** `SeedData/videos.json` lists 3–4 English tutorials for every topic (598) and up to two **Arabic** explanations (139 videos, on 84 of the 150 topics). Each entry has `language` (`en` / `ar`) and, where known, `duration` and a short `description` taken from the video. Arabic videos were chosen only when they are originally in Arabic (spoken Arabic, not an English video with a translated title or an automatic Arabic dub), about the topic and the roadmap's technology, and playable; topics without a suitable Arabic video simply show the English ones. The learner's language choice (All / English / Arabic) is remembered across the video library and topic pages. They were found by searching the web for each topic and then checked one by one with YouTube (the video exists, is public and allows embedding); titles and channel names come from YouTube itself. The seeder loads them into the `CuratedVideos` table like any other content and keeps the table in sync with the file. They are shown whenever live suggestions aren't available.
+- **Curated videos (no setup needed):** `SeedData/videos.json` lists 3–4 English tutorials for every topic (625) and up to two **Arabic** explanations (139 videos, on 84 of the 159 topics). Each entry has `language` (`en` / `ar`) and, where known, `duration` and a short `description` taken from the video. Arabic videos were chosen only when they are originally in Arabic (spoken Arabic, not an English video with a translated title or an automatic Arabic dub), about the topic and the roadmap's technology, and playable; topics without a suitable Arabic video simply show the English ones. The learner's language choice (All / English / Arabic) is remembered across the video library and topic pages. They were found by searching the web for each topic and then checked one by one with YouTube (the video exists, is public and allows embedding); titles and channel names come from YouTube itself. The seeder loads them into the `CuratedVideos` table like any other content and keeps the table in sync with the file. They are shown whenever live suggestions aren't available.
 - **Live suggestions (optional)** are found with the **YouTube Data API v3** when you set an API key: the API searches for "*skill* + *topic title* tutorial" (for example "C# Loops tutorial"), confirms each result is public, processed and embeddable, and drops Shorts, very long streams, near-duplicate titles, videos for another stack (a C# topic won't show Python) and videos whose title doesn't mention the topic. Results are **cached per topic for 30 days** and shared by all accounts, so each topic costs about 101 quota units a month (the free daily quota is 10,000).
 - **Add your own** by pasting any YouTube link (watch, youtu.be, shorts or embed). The API checks it with YouTube's public oEmbed endpoint, so this works **without an API key**, and rejects missing, private and non-embeddable videos. Added videos are private to your account.
 - Videos play in the page with the privacy-enhanced player (`youtube-nocookie.com`), loaded only when you click; every card also links to YouTube.
@@ -435,7 +436,21 @@ All content lives in `backend/DevPath.Api/SeedData/`:
 
 Practice Lab exercises that use the editor keep their code next to them in `practice-files/{key}/`: `starter/**` (what the learner starts with), `solution/**` (only the files the model solution changes) and the automatic checks, `tests.cs` (`[Test]` methods with `Assert`), `tests.js` (`test()` / `expect()`) or `tests.json` (the rows SQL checks expect, computed from the model solution, never the solution itself). The `runner` field (`CSharp`, `Sql`, `TypeScript`, `JavaScript`, `Web`, `Angular` or `None`) decides where the code runs. After editing exercises, run `npm run verify:exercises` in `frontend` and the backend tests: both prove every model solution passes its checks and no starter does.
 
-Edit a file and restart the API. The seeder **inserts or updates rows by slug or key** and keeps link tables in sync. Before touching the database it validates the content (duplicate keys, unknown topic references, prerequisite cycles) and fails with a clear message if something is wrong. Your progress is never affected.
+Edit a file and restart the API. The seeder **inserts or updates rows by slug or key** and keeps link tables in sync. Before touching the database it validates the content (duplicate keys, unknown topic references, prerequisite cycles, a topic placed before one of its prerequisites, English and Arabic objective lists of different lengths) and fails with a clear message if something is wrong. Your progress is never affected.
+
+## Job-market research
+
+The roadmap is checked against real .NET job postings. `tools/market-research` counts which technologies employers
+require or prefer, ranks them, and compares them with the roadmap topics; each topic page then shows how often its
+technology appeared in the latest run (generated into `SeedData/market-demand.json` and seeded into the `TopicDemand` table).
+
+- Each run is a dated folder in `docs/market-research/runs/` with the postings, the generated analysis and a written
+  report. Runs are never overwritten, and `docs/market-research/history.json` keeps one line per run.
+- The latest run (2026-11-06, 36 postings from August to November 2026) added Design Patterns, Stored procedures,
+  Agile/Scrum and a new **Cloud, DevOps & Distributed Systems** phase (Docker, CI/CD, cloud fundamentals, Azure
+  deployment, Kubernetes, microservices). The evidence and its limits are in
+  [docs/market-research/runs/2026-11-06/REPORT.md](docs/market-research/runs/2026-11-06/REPORT.md).
+- To run a new round, follow [tools/market-research/README.md](tools/market-research/README.md).
 
 ## Tests
 

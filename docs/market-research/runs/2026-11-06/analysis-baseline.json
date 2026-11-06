@@ -1,0 +1,3698 @@
+{
+  "run": "2026-11-06",
+  "period": {
+    "from": "2026-08-06",
+    "to": "2026-11-06"
+  },
+  "source": "Indeed job search API through the Indeed connector (search_jobs, get_job_details). LinkedIn was not used: no authorised LinkedIn access was available in this session.",
+  "postings": 36,
+  "excluded": 8,
+  "duplicates": 1,
+  "regions": {
+    "North America": 17,
+    "Europe": 11,
+    "Middle East": 6,
+    "International": 1,
+    "Egypt": 1
+  },
+  "countries": {
+    "US": 13,
+    "GB": 6,
+    "AE": 5,
+    "CA": 4,
+    "IE": 4,
+    "DE": 1,
+    "IN": 1,
+    "EG": 1,
+    "SA": 1
+  },
+  "levels": {
+    "Senior": 18,
+    "Mid": 13,
+    "Lead": 4,
+    "Junior": 1
+  },
+  "remote": 9,
+  "coreStack": [
+    {
+      "name": "C#",
+      "postings": 31,
+      "share": 86.1
+    },
+    {
+      "name": "SQL Server",
+      "postings": 28,
+      "share": 77.8
+    },
+    {
+      "name": "ASP.NET Core",
+      "postings": 27,
+      "share": 75
+    },
+    {
+      "name": "Angular",
+      "postings": 14,
+      "share": 38.9
+    },
+    {
+      "name": "Entity Framework Core",
+      "postings": 13,
+      "share": 36.1
+    }
+  ],
+  "ranking": [
+    {
+      "name": "REST APIs",
+      "category": "Backend ecosystem",
+      "relevance": 3,
+      "postings": 22,
+      "share": 61.1,
+      "required": 21,
+      "preferred": 1,
+      "requiredShare": 95,
+      "score": 59.7,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "api-http-rest"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 9,
+        "Mid": 10,
+        "Lead": 3
+      },
+      "regions": {
+        "North America": 12,
+        "Europe": 4,
+        "Middle East": 5,
+        "Egypt": 1
+      },
+      "companies": [
+        "3Pillar Global",
+        "BAM Technologies, LLC",
+        "Citi",
+        "CorGTA (recruiter)",
+        "Corseez",
+        "Cpl (recruiter)",
+        "Excellent Webworld Pvt. Ltd.",
+        "Global Information Technology",
+        "Hippo Digital Limited",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "JNL Technologies",
+        "Kalsoft",
+        "Luxoft",
+        "Mazuma Software",
+        "Quad Infotech",
+        "SPLIIT",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "TEKZONE INDUSTRIAL CONSTRUCTION COMPANY",
+        "Tavant Technologies",
+        "Xpertbizz",
+        "isgSearch (recruiter)",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "Git",
+      "category": "CI/CD & DevOps",
+      "relevance": 3,
+      "postings": 19,
+      "share": 52.8,
+      "required": 19,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 52.8,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "git-fundamentals"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 10,
+        "Mid": 7,
+        "Lead": 2
+      },
+      "regions": {
+        "North America": 13,
+        "Europe": 3,
+        "Middle East": 3
+      },
+      "companies": [
+        "3Pillar Global",
+        "BAM Technologies, LLC",
+        "Citi",
+        "CorGTA (recruiter)",
+        "Cotiviti",
+        "Cpl (recruiter)",
+        "Excellent Webworld Pvt. Ltd.",
+        "Global Information Technology",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "JNL Technologies",
+        "Luxoft",
+        "Mazuma Software",
+        "Quad Infotech",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "Tavant Technologies",
+        "Universal Technologies",
+        "Version 1",
+        "Xpertbizz",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "CI/CD",
+      "category": "CI/CD & DevOps",
+      "relevance": 3,
+      "postings": 17,
+      "share": 47.2,
+      "required": 15,
+      "preferred": 2,
+      "requiredShare": 88,
+      "score": 44.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "add",
+      "levels": {
+        "Senior": 9,
+        "Mid": 6,
+        "Lead": 2
+      },
+      "regions": {
+        "North America": 10,
+        "Europe": 4,
+        "International": 1,
+        "Middle East": 2
+      },
+      "companies": [
+        "3Pillar Global",
+        "BAM Technologies, LLC",
+        "Citi",
+        "CorGTA (recruiter)",
+        "Cpl (recruiter)",
+        "Creed Interactive",
+        "Global Information Technology",
+        "Hippo Digital Limited",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "Luxoft",
+        "Quad Infotech",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "Stellar Technologies (listed under Cirtec Medical)",
+        "Version 1",
+        "Xpertbizz",
+        "isgSearch (recruiter)",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "Agile/Scrum",
+      "category": "Architecture & engineering",
+      "relevance": 2,
+      "postings": 16,
+      "share": 44.4,
+      "required": 15,
+      "preferred": 1,
+      "requiredShare": 94,
+      "score": 34.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "add",
+      "levels": {
+        "Mid": 6,
+        "Senior": 7,
+        "Lead": 3
+      },
+      "regions": {
+        "North America": 9,
+        "Europe": 5,
+        "Middle East": 2
+      },
+      "companies": [
+        "3Pillar Global",
+        "BAM Technologies, LLC",
+        "Client Server (recruiter)",
+        "CorGTA (recruiter)",
+        "Excellent Webworld Pvt. Ltd.",
+        "Hippo Digital Limited",
+        "Holman",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "JNL Technologies",
+        "MEDIFOX DAN GmbH",
+        "Mazuma Software",
+        "Noir (recruiter)",
+        "Tavant Technologies",
+        "Universal Technologies",
+        "Version 1",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "JavaScript",
+      "category": "Frontend ecosystem",
+      "relevance": 2,
+      "postings": 15,
+      "share": 41.7,
+      "required": 14,
+      "preferred": 1,
+      "requiredShare": 93,
+      "score": 32.2,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "ts-types-inference"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Mid": 6,
+        "Senior": 8,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 10,
+        "Middle East": 2,
+        "Egypt": 1,
+        "Europe": 2
+      },
+      "companies": [
+        "3Pillar Global",
+        "BAM Technologies, LLC",
+        "CorGTA (recruiter)",
+        "Corseez",
+        "Cotiviti",
+        "Cpl (recruiter)",
+        "Creed Interactive",
+        "Excellent Webworld Pvt. Ltd.",
+        "Hippo Digital Limited",
+        "Holman",
+        "Quad Infotech",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "TEKZONE INDUSTRIAL CONSTRUCTION COMPANY",
+        "Tavant Technologies",
+        "Xpertbizz"
+      ]
+    },
+    {
+      "name": "Azure",
+      "category": "Cloud & infrastructure",
+      "relevance": 3,
+      "postings": 14,
+      "share": 38.9,
+      "required": 9,
+      "preferred": 5,
+      "requiredShare": 64,
+      "score": 31.9,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "add",
+      "levels": {
+        "Senior": 7,
+        "Mid": 4,
+        "Lead": 3
+      },
+      "regions": {
+        "North America": 8,
+        "Middle East": 3,
+        "Europe": 3
+      },
+      "companies": [
+        "3Pillar Global",
+        "CorGTA (recruiter)",
+        "Cpl (recruiter)",
+        "Creed Interactive",
+        "Excellent Webworld Pvt. Ltd.",
+        "Global Information Technology",
+        "Hippo Digital Limited",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "JNL Technologies",
+        "Luxoft",
+        "SPLIIT",
+        "Tavant Technologies",
+        "Xpertbizz",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "HTML/CSS",
+      "category": "Frontend ecosystem",
+      "relevance": 2,
+      "postings": 14,
+      "share": 38.9,
+      "required": 13,
+      "preferred": 1,
+      "requiredShare": 93,
+      "score": 30,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "ng-templates-binding"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Mid": 6,
+        "Senior": 6,
+        "Lead": 2
+      },
+      "regions": {
+        "North America": 10,
+        "Middle East": 2,
+        "Egypt": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "3Pillar Global",
+        "CorGTA (recruiter)",
+        "Corseez",
+        "Cotiviti",
+        "Creed Interactive",
+        "Excellent Webworld Pvt. Ltd.",
+        "Hippo Digital Limited",
+        "Holman",
+        "JNL Technologies",
+        "Quad Infotech",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "TEKZONE INDUSTRIAL CONSTRUCTION COMPANY",
+        "Tavant Technologies",
+        "Universal Technologies"
+      ]
+    },
+    {
+      "name": "Unit testing",
+      "category": "Testing & quality",
+      "relevance": 3,
+      "postings": 10,
+      "share": 27.8,
+      "required": 10,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 27.8,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "test-unit-csharp"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 4,
+        "Mid": 5,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 8,
+        "Europe": 1,
+        "Middle East": 1
+      },
+      "companies": [
+        "3Pillar Global",
+        "Citi",
+        "Global Information Technology",
+        "Holman",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "JNL Technologies",
+        "Mazuma Software",
+        "Quad Infotech",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "Tavant Technologies"
+      ]
+    },
+    {
+      "name": "Azure DevOps",
+      "category": "CI/CD & DevOps",
+      "relevance": 2,
+      "postings": 14,
+      "share": 38.9,
+      "required": 10,
+      "preferred": 4,
+      "requiredShare": 71,
+      "score": 26.7,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "add",
+      "levels": {
+        "Senior": 5,
+        "Mid": 7,
+        "Lead": 2
+      },
+      "regions": {
+        "North America": 9,
+        "Middle East": 2,
+        "Egypt": 1,
+        "Europe": 2
+      },
+      "companies": [
+        "BAM Technologies, LLC",
+        "CorGTA (recruiter)",
+        "Corseez",
+        "Hippo Digital Limited",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "Luxoft",
+        "Mazuma Software",
+        "Quad Infotech",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "Universal Technologies",
+        "Version 1",
+        "Xpertbizz",
+        "isgSearch (recruiter)",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "Design Patterns",
+      "category": "Architecture & engineering",
+      "relevance": 3,
+      "postings": 9,
+      "share": 25,
+      "required": 9,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 25,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "add",
+      "levels": {
+        "Senior": 4,
+        "Lead": 1,
+        "Mid": 4
+      },
+      "regions": {
+        "North America": 6,
+        "Europe": 2,
+        "Middle East": 1
+      },
+      "companies": [
+        "BAM Technologies, LLC",
+        "Citi",
+        "Client Server (recruiter)",
+        "Global Information Technology",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "Mazuma Software",
+        "Quad Infotech",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "Xpertbizz"
+      ]
+    },
+    {
+      "name": "Microservices",
+      "category": "Architecture & engineering",
+      "relevance": 3,
+      "postings": 11,
+      "share": 30.6,
+      "required": 4,
+      "preferred": 7,
+      "requiredShare": 36,
+      "score": 20.8,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "add",
+      "levels": {
+        "Senior": 4,
+        "Mid": 5,
+        "Lead": 2
+      },
+      "regions": {
+        "North America": 6,
+        "Europe": 2,
+        "Middle East": 3
+      },
+      "companies": [
+        "3Pillar Global",
+        "BAM Technologies, LLC",
+        "CorGTA (recruiter)",
+        "Excellent Webworld Pvt. Ltd.",
+        "Global Information Technology",
+        "Hippo Digital Limited",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "Luxoft",
+        "MEDIFOX DAN GmbH",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "ASP.NET MVC",
+      "category": "Core stack",
+      "relevance": 2,
+      "postings": 9,
+      "share": 25,
+      "required": 9,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 20,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "api-controllers-routing"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Mid": 4,
+        "Senior": 4,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 4,
+        "Middle East": 1,
+        "Egypt": 1,
+        "Europe": 3
+      },
+      "companies": [
+        "3Pillar Global",
+        "Corseez",
+        "Cotiviti",
+        "Cpl (recruiter)",
+        "Excellent Webworld Pvt. Ltd.",
+        "Hippo Digital Limited",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "Version 1",
+        "Xpertbizz"
+      ]
+    },
+    {
+      "name": "OOP",
+      "category": "Architecture & engineering",
+      "relevance": 3,
+      "postings": 7,
+      "share": 19.4,
+      "required": 7,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 19.4,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "oop-classes-objects"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Mid": 6,
+        "Lead": 1
+      },
+      "regions": {
+        "Europe": 2,
+        "Middle East": 2,
+        "North America": 3
+      },
+      "companies": [
+        "Client Server (recruiter)",
+        "Excellent Webworld Pvt. Ltd.",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "Mazuma Software",
+        "Noir (recruiter)",
+        "Quad Infotech",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "Docker",
+      "category": "Cloud & infrastructure",
+      "relevance": 3,
+      "postings": 10,
+      "share": 27.8,
+      "required": 3,
+      "preferred": 7,
+      "requiredShare": 30,
+      "score": 18.1,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "add",
+      "levels": {
+        "Senior": 5,
+        "Mid": 3,
+        "Lead": 2
+      },
+      "regions": {
+        "North America": 5,
+        "Europe": 3,
+        "Middle East": 2
+      },
+      "companies": [
+        "BAM Technologies, LLC",
+        "CorGTA (recruiter)",
+        "Global Information Technology",
+        "Hippo Digital Limited",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "Luxoft",
+        "MEDIFOX DAN GmbH",
+        "SPLIIT",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "ASP.NET",
+      "category": "Core stack",
+      "relevance": 2,
+      "postings": 8,
+      "share": 22.2,
+      "required": 8,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 17.8,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "api-startup"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 3,
+        "Mid": 4,
+        "Junior": 1
+      },
+      "regions": {
+        "North America": 5,
+        "Middle East": 3
+      },
+      "companies": [
+        "ExaSystems Development Inc.",
+        "Excellent Webworld Pvt. Ltd.",
+        "Holman",
+        "Kalsoft",
+        "Mazuma Software",
+        "TEKZONE INDUSTRIAL CONSTRUCTION COMPANY",
+        "Xpertbizz",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "AWS",
+      "category": "Cloud & infrastructure",
+      "relevance": 2,
+      "postings": 8,
+      "share": 22.2,
+      "required": 8,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 17.8,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "add",
+      "levels": {
+        "Mid": 2,
+        "Senior": 4,
+        "Lead": 2
+      },
+      "regions": {
+        "North America": 5,
+        "Europe": 3
+      },
+      "companies": [
+        "3Pillar Global",
+        "BAM Technologies, LLC",
+        "Client Server (recruiter)",
+        "CorGTA (recruiter)",
+        "Creed Interactive",
+        "Hippo Digital Limited",
+        "MEDIFOX DAN GmbH",
+        "isgSearch (recruiter)"
+      ]
+    },
+    {
+      "name": "TypeScript",
+      "category": "Frontend ecosystem",
+      "relevance": 3,
+      "postings": 6,
+      "share": 16.7,
+      "required": 4,
+      "preferred": 2,
+      "requiredShare": 67,
+      "score": 13.9,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "ts-types-inference"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Mid": 2,
+        "Senior": 4
+      },
+      "regions": {
+        "North America": 5,
+        "Europe": 1
+      },
+      "companies": [
+        "3Pillar Global",
+        "BAM Technologies, LLC",
+        "Quad Infotech",
+        "SPLIIT",
+        "Tavant Technologies",
+        "Universal Technologies"
+      ]
+    },
+    {
+      "name": "LINQ",
+      "category": "Backend ecosystem",
+      "relevance": 3,
+      "postings": 5,
+      "share": 13.9,
+      "required": 5,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 13.9,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "linq-fundamentals"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 3,
+        "Mid": 2
+      },
+      "regions": {
+        "North America": 3,
+        "Middle East": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "Cpl (recruiter)",
+        "Global Information Technology",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "Universal Technologies"
+      ]
+    },
+    {
+      "name": "Code review",
+      "category": "Architecture & engineering",
+      "relevance": 2,
+      "postings": 6,
+      "share": 16.7,
+      "required": 6,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 13.3,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "pro-code-review"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 3,
+        "Mid": 2,
+        "Lead": 1
+      },
+      "regions": {
+        "Europe": 2,
+        "International": 1,
+        "Egypt": 1,
+        "North America": 2
+      },
+      "companies": [
+        "Corseez",
+        "JNL Technologies",
+        "MEDIFOX DAN GmbH",
+        "Stellar Technologies (listed under Cirtec Medical)",
+        "Version 1",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "Stored procedures",
+      "category": "Data",
+      "relevance": 2,
+      "postings": 6,
+      "share": 16.7,
+      "required": 6,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 13.3,
+      "coverage": "mentioned",
+      "roadmapTopics": [
+        "sql-transactions",
+        "sql-data-access-design",
+        "pro-documentation"
+      ],
+      "recommendation": "improve",
+      "levels": {
+        "Senior": 4,
+        "Mid": 2
+      },
+      "regions": {
+        "North America": 3,
+        "Middle East": 1,
+        "Europe": 2
+      },
+      "companies": [
+        "Cotiviti",
+        "Cpl (recruiter)",
+        "Kalsoft",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "Version 1",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "Messaging",
+      "category": "Backend ecosystem",
+      "relevance": 3,
+      "postings": 5,
+      "share": 13.9,
+      "required": 4,
+      "preferred": 1,
+      "requiredShare": 80,
+      "score": 12.5,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 4,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 3,
+        "Middle East": 1
+      },
+      "companies": [
+        "Citi",
+        "Global Information Technology",
+        "Luxoft",
+        "SMBC Group",
+        "SPLIIT"
+      ]
+    },
+    {
+      "name": ".NET Framework",
+      "category": "Legacy .NET",
+      "relevance": 1,
+      "postings": 9,
+      "share": 25,
+      "required": 8,
+      "preferred": 1,
+      "requiredShare": 89,
+      "score": 11.8,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 7,
+        "Lead": 2
+      },
+      "regions": {
+        "North America": 4,
+        "Europe": 4,
+        "Middle East": 1
+      },
+      "companies": [
+        "Citi",
+        "Cotiviti",
+        "Cpl (recruiter)",
+        "Global Information Technology",
+        "JNL Technologies",
+        "Luxoft",
+        "Tavant Technologies",
+        "Version 1"
+      ]
+    },
+    {
+      "name": "AI coding assistants",
+      "category": "AI tooling",
+      "relevance": 2,
+      "postings": 5,
+      "share": 13.9,
+      "required": 5,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 11.1,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 3,
+        "Lead": 1,
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 3,
+        "Europe": 2
+      },
+      "companies": [
+        "Client Server (recruiter)",
+        "Creed Interactive",
+        "Holman",
+        "MEDIFOX DAN GmbH",
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": "Query tuning",
+      "category": "Data",
+      "relevance": 2,
+      "postings": 5,
+      "share": 13.9,
+      "required": 5,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 11.1,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "ef-query-performance",
+        "sql-query-efficiency"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 3,
+        "Mid": 1,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 2,
+        "Middle East": 1,
+        "Europe": 2
+      },
+      "companies": [
+        "Cotiviti",
+        "Cpl (recruiter)",
+        "Luxoft",
+        "SUPPORTSOFT TECHNOLOGIES"
+      ]
+    },
+    {
+      "name": "Secure development (SSDLC)",
+      "category": "Security",
+      "relevance": 2,
+      "postings": 5,
+      "share": 13.9,
+      "required": 5,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 11.1,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "pro-security"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 2,
+        "Mid": 3
+      },
+      "regions": {
+        "Europe": 1,
+        "Middle East": 1,
+        "Egypt": 1,
+        "North America": 2
+      },
+      "companies": [
+        "CorGTA (recruiter)",
+        "Corseez",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "MEDIFOX DAN GmbH",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "Async programming",
+      "category": "Backend ecosystem",
+      "relevance": 3,
+      "postings": 4,
+      "share": 11.1,
+      "required": 4,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 11.1,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "cs-async-await"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 3,
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 3,
+        "Europe": 1
+      },
+      "companies": [
+        "Cpl (recruiter)",
+        "Global Information Technology",
+        "Universal Technologies",
+        "isgSearch (recruiter)"
+      ]
+    },
+    {
+      "name": "Logging & monitoring",
+      "category": "Testing & quality",
+      "relevance": 3,
+      "postings": 4,
+      "share": 11.1,
+      "required": 4,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 11.1,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "api-logging",
+        "pro-logging-diagnostics"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 3,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 2,
+        "Middle East": 1
+      },
+      "companies": [
+        "Global Information Technology",
+        "Luxoft",
+        "MEDIFOX DAN GmbH",
+        "Version 1"
+      ]
+    },
+    {
+      "name": "Kubernetes",
+      "category": "Cloud & infrastructure",
+      "relevance": 2,
+      "postings": 7,
+      "share": 19.4,
+      "required": 2,
+      "preferred": 5,
+      "requiredShare": 29,
+      "score": 10,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "add",
+      "levels": {
+        "Senior": 3,
+        "Mid": 2,
+        "Lead": 2
+      },
+      "regions": {
+        "North America": 5,
+        "Europe": 1,
+        "Middle East": 1
+      },
+      "companies": [
+        "BAM Technologies, LLC",
+        "CorGTA (recruiter)",
+        "Global Information Technology",
+        "Hippo Digital Limited",
+        "Luxoft",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "React",
+      "category": "Frontend ecosystem",
+      "relevance": 1,
+      "postings": 9,
+      "share": 25,
+      "required": 5,
+      "preferred": 4,
+      "requiredShare": 56,
+      "score": 9.7,
+      "coverage": "mentioned",
+      "roadmapTopics": [
+        "api-status-codes"
+      ],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 2,
+        "Senior": 5,
+        "Lead": 2
+      },
+      "regions": {
+        "North America": 7,
+        "Europe": 1,
+        "Middle East": 1
+      },
+      "companies": [
+        "3Pillar Global",
+        "CorGTA (recruiter)",
+        "Creed Interactive",
+        "Hippo Digital Limited",
+        "Holman",
+        "Luxoft",
+        "Tavant Technologies",
+        "Xpertbizz",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "jQuery",
+      "category": "Frontend ecosystem",
+      "relevance": 1,
+      "postings": 7,
+      "share": 19.4,
+      "required": 6,
+      "preferred": 1,
+      "requiredShare": 86,
+      "score": 9,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 3,
+        "Mid": 4
+      },
+      "regions": {
+        "North America": 3,
+        "Middle East": 2,
+        "Egypt": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "Corseez",
+        "Cotiviti",
+        "Cpl (recruiter)",
+        "Dubai Insurance TPA",
+        "Excellent Webworld Pvt. Ltd.",
+        "Holman",
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": "Software architecture",
+      "category": "Architecture & engineering",
+      "relevance": 2,
+      "postings": 4,
+      "share": 11.1,
+      "required": 4,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 8.9,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 1,
+        "Senior": 3
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 3
+      },
+      "companies": [
+        "3Pillar Global",
+        "Citi",
+        "MEDIFOX DAN GmbH",
+        "SMBC Group"
+      ]
+    },
+    {
+      "name": "Test automation",
+      "category": "Testing & quality",
+      "relevance": 2,
+      "postings": 4,
+      "share": 11.1,
+      "required": 4,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 8.9,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "test-strategy"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 3,
+        "Lead": 1
+      },
+      "regions": {
+        "Europe": 3,
+        "Middle East": 1
+      },
+      "companies": [
+        "Cpl (recruiter)",
+        "Luxoft",
+        "MEDIFOX DAN GmbH",
+        "SPLIIT"
+      ]
+    },
+    {
+      "name": "xUnit",
+      "category": "Testing & quality",
+      "relevance": 2,
+      "postings": 4,
+      "share": 11.1,
+      "required": 4,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 8.9,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "test-unit-csharp"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 2,
+        "Mid": 2
+      },
+      "regions": {
+        "Europe": 2,
+        "North America": 2
+      },
+      "companies": [
+        "Citi",
+        "Quad Infotech",
+        "SPLIIT",
+        "SUPPORTSOFT TECHNOLOGIES"
+      ]
+    },
+    {
+      "name": "Authentication",
+      "category": "Security",
+      "relevance": 3,
+      "postings": 3,
+      "share": 8.3,
+      "required": 3,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 8.3,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "api-authentication",
+        "api-authorization"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 1,
+        "Mid": 1,
+        "Lead": 1
+      },
+      "regions": {
+        "Europe": 1,
+        "Middle East": 2
+      },
+      "companies": [
+        "Citi",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "Luxoft"
+      ]
+    },
+    {
+      "name": "Background services",
+      "category": "Backend ecosystem",
+      "relevance": 3,
+      "postings": 3,
+      "share": 8.3,
+      "required": 3,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 8.3,
+      "coverage": "mentioned",
+      "roadmapTopics": [
+        "sql-connection-management"
+      ],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 3
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 2
+      },
+      "companies": [
+        "Global Information Technology",
+        "SPLIIT",
+        "Version 1"
+      ]
+    },
+    {
+      "name": "Integration testing",
+      "category": "Testing & quality",
+      "relevance": 3,
+      "postings": 3,
+      "share": 8.3,
+      "required": 3,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 8.3,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "test-integration"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 2,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 3
+      },
+      "companies": [
+        "Global Information Technology",
+        "JNL Technologies",
+        "Tavant Technologies"
+      ]
+    },
+    {
+      "name": "SOLID",
+      "category": "Architecture & engineering",
+      "relevance": 3,
+      "postings": 3,
+      "share": 8.3,
+      "required": 3,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 8.3,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "oop-solid"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 1,
+        "Lead": 1,
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 1,
+        "Middle East": 1
+      },
+      "companies": [
+        "Client Server (recruiter)",
+        "Global Information Technology",
+        "INNOBAYT INNOVATIVE SOLUTIONS"
+      ]
+    },
+    {
+      "name": "Python",
+      "category": "Other languages",
+      "relevance": 1,
+      "postings": 5,
+      "share": 13.9,
+      "required": 5,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 6.9,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2,
+        "Lead": 2,
+        "Mid": 1
+      },
+      "regions": {
+        "Europe": 2,
+        "Middle East": 3
+      },
+      "companies": [
+        "Citi",
+        "Client Server (recruiter)",
+        "Kalsoft",
+        "Luxoft",
+        "TEKZONE INDUSTRIAL CONSTRUCTION COMPANY"
+      ]
+    },
+    {
+      "name": "OAuth 2.0",
+      "category": "Security",
+      "relevance": 3,
+      "postings": 3,
+      "share": 8.3,
+      "required": 2,
+      "preferred": 1,
+      "requiredShare": 67,
+      "score": 6.9,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2,
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 3
+      },
+      "companies": [
+        "CorGTA (recruiter)",
+        "Global Information Technology",
+        "SUPPORTSOFT TECHNOLOGIES"
+      ]
+    },
+    {
+      "name": "Performance profiling",
+      "category": "Testing & quality",
+      "relevance": 2,
+      "postings": 4,
+      "share": 11.1,
+      "required": 2,
+      "preferred": 2,
+      "requiredShare": 50,
+      "score": 6.7,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "pro-performance"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 1,
+        "Mid": 2,
+        "Lead": 1
+      },
+      "regions": {
+        "Europe": 1,
+        "Middle East": 2,
+        "North America": 1
+      },
+      "companies": [
+        "Citi",
+        "INNOBAYT INNOVATIVE SOLUTIONS",
+        "Luxoft",
+        "SUPPORTSOFT TECHNOLOGIES"
+      ]
+    },
+    {
+      "name": "Azure SQL",
+      "category": "Cloud & infrastructure",
+      "relevance": 2,
+      "postings": 3,
+      "share": 8.3,
+      "required": 3,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 6.7,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 2,
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 2,
+        "North America": 1
+      },
+      "companies": [
+        "Noir (recruiter)",
+        "Xpertbizz"
+      ]
+    },
+    {
+      "name": "Multithreading",
+      "category": "Backend ecosystem",
+      "relevance": 2,
+      "postings": 3,
+      "share": 8.3,
+      "required": 3,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 6.7,
+      "coverage": "mentioned",
+      "roadmapTopics": [
+        "cs-async-await",
+        "api-service-lifetimes"
+      ],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 1,
+        "Mid": 1,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 2,
+        "Middle East": 1
+      },
+      "companies": [
+        "Luxoft",
+        "Universal Technologies",
+        "isgSearch (recruiter)"
+      ]
+    },
+    {
+      "name": "TDD",
+      "category": "Testing & quality",
+      "relevance": 2,
+      "postings": 3,
+      "share": 8.3,
+      "required": 3,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 6.7,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 1,
+        "Lead": 1,
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 2
+      },
+      "companies": [
+        "Cpl (recruiter)",
+        "Hippo Digital Limited",
+        "SUPPORTSOFT TECHNOLOGIES"
+      ]
+    },
+    {
+      "name": "Jenkins",
+      "category": "CI/CD & DevOps",
+      "relevance": 1,
+      "postings": 5,
+      "share": 13.9,
+      "required": 4,
+      "preferred": 1,
+      "requiredShare": 80,
+      "score": 6.3,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 2,
+        "Senior": 2,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 3,
+        "Europe": 2
+      },
+      "companies": [
+        "3Pillar Global",
+        "CorGTA (recruiter)",
+        "Cpl (recruiter)",
+        "Hippo Digital Limited",
+        "SUPPORTSOFT TECHNOLOGIES"
+      ]
+    },
+    {
+      "name": "Bootstrap",
+      "category": "Frontend ecosystem",
+      "relevance": 1,
+      "postings": 4,
+      "share": 11.1,
+      "required": 4,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 5.6,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 2,
+        "Senior": 2
+      },
+      "regions": {
+        "North America": 3,
+        "Europe": 1
+      },
+      "companies": [
+        "3Pillar Global",
+        "Cotiviti",
+        "Cpl (recruiter)",
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": "PostgreSQL",
+      "category": "Data",
+      "relevance": 1,
+      "postings": 4,
+      "share": 11.1,
+      "required": 4,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 5.6,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 1,
+        "Senior": 3
+      },
+      "regions": {
+        "North America": 4
+      },
+      "companies": [
+        "3Pillar Global",
+        "BAM Technologies, LLC",
+        "CorGTA (recruiter)",
+        "Xpertbizz"
+      ]
+    },
+    {
+      "name": "Azure Functions",
+      "category": "Cloud & infrastructure",
+      "relevance": 2,
+      "postings": 3,
+      "share": 8.3,
+      "required": 2,
+      "preferred": 1,
+      "requiredShare": 67,
+      "score": 5.6,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2,
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 3
+      },
+      "companies": [
+        "CorGTA (recruiter)",
+        "Xpertbizz",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "Terraform",
+      "category": "Cloud & infrastructure",
+      "relevance": 2,
+      "postings": 3,
+      "share": 8.3,
+      "required": 2,
+      "preferred": 1,
+      "requiredShare": 67,
+      "score": 5.6,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2,
+        "Lead": 1
+      },
+      "regions": {
+        "Europe": 2,
+        "North America": 1
+      },
+      "companies": [
+        "CorGTA (recruiter)",
+        "Hippo Digital Limited",
+        "MEDIFOX DAN GmbH"
+      ]
+    },
+    {
+      "name": "Caching",
+      "category": "Backend ecosystem",
+      "relevance": 3,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 5.6,
+      "coverage": "mentioned",
+      "roadmapTopics": [
+        "sql-query-efficiency"
+      ],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 1,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Middle East": 1
+      },
+      "companies": [
+        "Global Information Technology",
+        "Luxoft"
+      ]
+    },
+    {
+      "name": "JWT",
+      "category": "Security",
+      "relevance": 3,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 5.6,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "api-authentication"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 1,
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 2
+      },
+      "companies": [
+        "Global Information Technology",
+        "SUPPORTSOFT TECHNOLOGIES"
+      ]
+    },
+    {
+      "name": "LLM/Generative AI",
+      "category": "AI tooling",
+      "relevance": 1,
+      "postings": 4,
+      "share": 11.1,
+      "required": 3,
+      "preferred": 1,
+      "requiredShare": 75,
+      "score": 4.9,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 3,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 2,
+        "Middle East": 2
+      },
+      "companies": [
+        "Holman",
+        "Kalsoft",
+        "Luxoft",
+        "Tavant Technologies"
+      ]
+    },
+    {
+      "name": "Windows Services",
+      "category": "Backend ecosystem",
+      "relevance": 1,
+      "postings": 4,
+      "share": 11.1,
+      "required": 3,
+      "preferred": 1,
+      "requiredShare": 75,
+      "score": 4.9,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2,
+        "Mid": 2
+      },
+      "regions": {
+        "North America": 3,
+        "Europe": 1
+      },
+      "companies": [
+        "Quad Infotech",
+        "Universal Technologies",
+        "Version 1",
+        "isgSearch (recruiter)"
+      ]
+    },
+    {
+      "name": "Distributed systems",
+      "category": "Architecture & engineering",
+      "relevance": 2,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 4.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 1,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "Client Server (recruiter)",
+        "Global Information Technology"
+      ]
+    },
+    {
+      "name": "Mocking",
+      "category": "Testing & quality",
+      "relevance": 2,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 4.4,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "test-mocking"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Mid": 1,
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "Mazuma Software",
+        "SPLIIT"
+      ]
+    },
+    {
+      "name": "RBAC",
+      "category": "Security",
+      "relevance": 2,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 4.4,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "api-authorization"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 1,
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 2
+      },
+      "companies": [
+        "Global Information Technology",
+        "SUPPORTSOFT TECHNOLOGIES"
+      ]
+    },
+    {
+      "name": "GitLab CI",
+      "category": "CI/CD & DevOps",
+      "relevance": 1,
+      "postings": 3,
+      "share": 8.3,
+      "required": 3,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 4.2,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2,
+        "Mid": 1
+      },
+      "regions": {
+        "Europe": 1,
+        "North America": 2
+      },
+      "companies": [
+        "Citi",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "Universal Technologies"
+      ]
+    },
+    {
+      "name": "Oracle",
+      "category": "Data",
+      "relevance": 1,
+      "postings": 3,
+      "share": 8.3,
+      "required": 3,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 4.2,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 2,
+        "Senior": 1
+      },
+      "regions": {
+        "Middle East": 1,
+        "North America": 2
+      },
+      "companies": [
+        "Dubai Insurance TPA",
+        "Quad Infotech",
+        "Xpertbizz"
+      ]
+    },
+    {
+      "name": "Clean Architecture",
+      "category": "Architecture & engineering",
+      "relevance": 3,
+      "postings": 2,
+      "share": 5.6,
+      "required": 1,
+      "preferred": 1,
+      "requiredShare": 50,
+      "score": 4.2,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 1,
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Egypt": 1
+      },
+      "companies": [
+        "Corseez",
+        "Global Information Technology"
+      ]
+    },
+    {
+      "name": "Blazor",
+      "category": "Frontend ecosystem",
+      "relevance": 1,
+      "postings": 3,
+      "share": 8.3,
+      "required": 2,
+      "preferred": 1,
+      "requiredShare": 67,
+      "score": 3.5,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 2,
+        "Junior": 1
+      },
+      "regions": {
+        "Middle East": 1,
+        "North America": 2
+      },
+      "companies": [
+        "Dubai Insurance TPA",
+        "ExaSystems Development Inc.",
+        "nexus-opus recruiting solution"
+      ]
+    },
+    {
+      "name": "MongoDB",
+      "category": "Data",
+      "relevance": 1,
+      "postings": 3,
+      "share": 8.3,
+      "required": 2,
+      "preferred": 1,
+      "requiredShare": 67,
+      "score": 3.5,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 2,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Middle East": 2
+      },
+      "companies": [
+        "3Pillar Global",
+        "Luxoft",
+        "TEKZONE INDUSTRIAL CONSTRUCTION COMPANY"
+      ]
+    },
+    {
+      "name": "SOAP",
+      "category": "Legacy .NET",
+      "relevance": 1,
+      "postings": 3,
+      "share": 8.3,
+      "required": 2,
+      "preferred": 1,
+      "requiredShare": 67,
+      "score": 3.5,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 3
+      },
+      "regions": {
+        "North America": 2,
+        "Egypt": 1
+      },
+      "companies": [
+        "3Pillar Global",
+        "Corseez",
+        "SUPPORTSOFT TECHNOLOGIES"
+      ]
+    },
+    {
+      "name": "SSRS",
+      "category": "Data",
+      "relevance": 1,
+      "postings": 3,
+      "share": 8.3,
+      "required": 2,
+      "preferred": 1,
+      "requiredShare": 67,
+      "score": 3.5,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 2,
+        "Senior": 1
+      },
+      "regions": {
+        "Egypt": 1,
+        "North America": 2
+      },
+      "companies": [
+        "Corseez",
+        "SUPPORTSOFT TECHNOLOGIES",
+        "Universal Technologies"
+      ]
+    },
+    {
+      "name": "Telerik",
+      "category": "Frontend ecosystem",
+      "relevance": 1,
+      "postings": 3,
+      "share": 8.3,
+      "required": 2,
+      "preferred": 1,
+      "requiredShare": 67,
+      "score": 3.5,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Middle East": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "Cotiviti",
+        "Cpl (recruiter)",
+        "Luxoft"
+      ]
+    },
+    {
+      "name": "WCF",
+      "category": "Legacy .NET",
+      "relevance": 1,
+      "postings": 3,
+      "share": 8.3,
+      "required": 2,
+      "preferred": 1,
+      "requiredShare": 67,
+      "score": 3.5,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 2,
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 2,
+        "Egypt": 1
+      },
+      "companies": [
+        "3Pillar Global",
+        "Corseez",
+        "Cotiviti"
+      ]
+    },
+    {
+      "name": "Event-driven architecture",
+      "category": "Architecture & engineering",
+      "relevance": 2,
+      "postings": 3,
+      "share": 8.3,
+      "required": 0,
+      "preferred": 3,
+      "requiredShare": 0,
+      "score": 3.3,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 1,
+        "Middle East": 1
+      },
+      "companies": [
+        "Global Information Technology",
+        "Luxoft",
+        "SPLIIT"
+      ]
+    },
+    {
+      "name": "Application Insights",
+      "category": "Testing & quality",
+      "relevance": 2,
+      "postings": 2,
+      "share": 5.6,
+      "required": 1,
+      "preferred": 1,
+      "requiredShare": 50,
+      "score": 3.3,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "Global Information Technology",
+        "Version 1"
+      ]
+    },
+    {
+      "name": "Azure Service Bus",
+      "category": "Backend ecosystem",
+      "relevance": 2,
+      "postings": 2,
+      "share": 5.6,
+      "required": 1,
+      "preferred": 1,
+      "requiredShare": 50,
+      "score": 3.3,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2
+      },
+      "regions": {
+        "North America": 2
+      },
+      "companies": [
+        "CorGTA (recruiter)",
+        "Global Information Technology"
+      ]
+    },
+    {
+      "name": "Domain-Driven Design",
+      "category": "Architecture & engineering",
+      "relevance": 2,
+      "postings": 2,
+      "share": 5.6,
+      "required": 1,
+      "preferred": 1,
+      "requiredShare": 50,
+      "score": 3.3,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 1,
+        "Mid": 1
+      },
+      "regions": {
+        "Europe": 1,
+        "North America": 1
+      },
+      "companies": [
+        "MEDIFOX DAN GmbH",
+        "isgSearch (recruiter)"
+      ]
+    },
+    {
+      "name": "Microsoft Entra ID",
+      "category": "Security",
+      "relevance": 2,
+      "postings": 2,
+      "share": 5.6,
+      "required": 1,
+      "preferred": 1,
+      "requiredShare": 50,
+      "score": 3.3,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2
+      },
+      "regions": {
+        "North America": 2
+      },
+      "companies": [
+        "CorGTA (recruiter)",
+        "Global Information Technology"
+      ]
+    },
+    {
+      "name": "RabbitMQ",
+      "category": "Backend ecosystem",
+      "relevance": 2,
+      "postings": 2,
+      "share": 5.6,
+      "required": 1,
+      "preferred": 1,
+      "requiredShare": 50,
+      "score": 3.3,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2
+      },
+      "regions": {
+        "Europe": 1,
+        "North America": 1
+      },
+      "companies": [
+        "Citi",
+        "CorGTA (recruiter)"
+      ]
+    },
+    {
+      "name": "ADO.NET",
+      "category": "Legacy .NET",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.8,
+      "coverage": "mentioned",
+      "roadmapTopics": [
+        "sql-parameterization",
+        "sql-connection-management"
+      ],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 1,
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 2
+      },
+      "companies": [
+        "Universal Technologies",
+        "isgSearch (recruiter)"
+      ]
+    },
+    {
+      "name": "Algorithms",
+      "category": "Architecture & engineering",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.8,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 1,
+        "Lead": 1
+      },
+      "regions": {
+        "Europe": 2
+      },
+      "companies": [
+        "Citi",
+        "Client Server (recruiter)"
+      ]
+    },
+    {
+      "name": "ASP.NET Web Forms",
+      "category": "Legacy .NET",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.8,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 1,
+        "Senior": 1
+      },
+      "regions": {
+        "Egypt": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "Corseez",
+        "Version 1"
+      ]
+    },
+    {
+      "name": "Bicep/ARM",
+      "category": "Cloud & infrastructure",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.8,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 1,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "CorGTA (recruiter)",
+        "Hippo Digital Limited"
+      ]
+    },
+    {
+      "name": "Linux",
+      "category": "Cloud & infrastructure",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.8,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "Citi",
+        "Creed Interactive"
+      ]
+    },
+    {
+      "name": "MySQL",
+      "category": "Data",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.8,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 1,
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 2
+      },
+      "companies": [
+        "3Pillar Global",
+        "Creed Interactive"
+      ]
+    },
+    {
+      "name": "PHP",
+      "category": "Other languages",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 2,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.8,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 1,
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Middle East": 1
+      },
+      "companies": [
+        "Creed Interactive",
+        "TEKZONE INDUSTRIAL CONSTRUCTION COMPANY"
+      ]
+    },
+    {
+      "name": "RxJS",
+      "category": "Frontend ecosystem",
+      "relevance": 3,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.8,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "ng-rxjs"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": "Azure Key Vault",
+      "category": "Security",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "CorGTA (recruiter)"
+      ]
+    },
+    {
+      "name": "CQRS",
+      "category": "Architecture & engineering",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "isgSearch (recruiter)"
+      ]
+    },
+    {
+      "name": "Data modelling",
+      "category": "Data",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "sql-tables-keys",
+        "oop-object-modeling"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": "Distributed tracing",
+      "category": "Testing & quality",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "MEDIFOX DAN GmbH"
+      ]
+    },
+    {
+      "name": "Execution plans",
+      "category": "Data",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "sql-execution-plans"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "Cpl (recruiter)"
+      ]
+    },
+    {
+      "name": "Hangfire",
+      "category": "Backend ecosystem",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "Version 1"
+      ]
+    },
+    {
+      "name": "Indexing",
+      "category": "Data",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "sql-indexing"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "Cpl (recruiter)"
+      ]
+    },
+    {
+      "name": "Kafka",
+      "category": "Backend ecosystem",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "Citi"
+      ]
+    },
+    {
+      "name": "MassTransit",
+      "category": "Backend ecosystem",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "SPLIIT"
+      ]
+    },
+    {
+      "name": "OpenAPI/Swagger",
+      "category": "Backend ecosystem",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "api-http-rest"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "Citi"
+      ]
+    },
+    {
+      "name": "Refactoring",
+      "category": "Architecture & engineering",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "pro-refactoring"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Mazuma Software"
+      ]
+    },
+    {
+      "name": "Web accessibility",
+      "category": "Frontend ecosystem",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 2.2,
+      "coverage": "mentioned",
+      "roadmapTopics": [
+        "ng-reusable-components"
+      ],
+      "recommendation": "ignore",
+      "levels": {
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "JNL Technologies"
+      ]
+    },
+    {
+      "name": "FHIR/HL7",
+      "category": "Other",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 1,
+      "preferred": 1,
+      "requiredShare": 50,
+      "score": 2.1,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "CorGTA (recruiter)",
+        "SPLIIT"
+      ]
+    },
+    {
+      "name": "npm",
+      "category": "Frontend ecosystem",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 1,
+      "preferred": 1,
+      "requiredShare": 50,
+      "score": 2.1,
+      "coverage": "mentioned",
+      "roadmapTopics": [
+        "pro-security"
+      ],
+      "recommendation": "watch",
+      "levels": {
+        "Lead": 1,
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 2
+      },
+      "companies": [
+        "JNL Technologies",
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": "SSIS",
+      "category": "Data",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 1,
+      "preferred": 1,
+      "requiredShare": 50,
+      "score": 2.1,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Senior": 2
+      },
+      "regions": {
+        "North America": 1,
+        "Europe": 1
+      },
+      "companies": [
+        "Cpl (recruiter)",
+        "Universal Technologies"
+      ]
+    },
+    {
+      "name": "VB.NET",
+      "category": "Legacy .NET",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 1,
+      "preferred": 1,
+      "requiredShare": 50,
+      "score": 2.1,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 2
+      },
+      "regions": {
+        "Egypt": 1,
+        "North America": 1
+      },
+      "companies": [
+        "Corseez",
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": "WPF",
+      "category": "Legacy .NET",
+      "relevance": 1,
+      "postings": 2,
+      "share": 5.6,
+      "required": 1,
+      "preferred": 1,
+      "requiredShare": 50,
+      "score": 2.1,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "watch",
+      "levels": {
+        "Mid": 1,
+        "Lead": 1
+      },
+      "regions": {
+        "North America": 1,
+        "Middle East": 1
+      },
+      "companies": [
+        "Luxoft",
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": ".NET Aspire",
+      "category": "Cloud & infrastructure",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "SPLIIT"
+      ]
+    },
+    {
+      "name": "Ansible",
+      "category": "CI/CD & DevOps",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "Cpl (recruiter)"
+      ]
+    },
+    {
+      "name": "Automation/bots",
+      "category": "AI tooling",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Middle East": 1
+      },
+      "companies": [
+        "Kalsoft"
+      ]
+    },
+    {
+      "name": "Bash",
+      "category": "Cloud & infrastructure",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "Citi"
+      ]
+    },
+    {
+      "name": "C++",
+      "category": "Other languages",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "SMBC Group"
+      ]
+    },
+    {
+      "name": "Cloud platforms",
+      "category": "Cloud & infrastructure",
+      "relevance": 3,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "International": 1
+      },
+      "companies": [
+        "Stellar Technologies (listed under Cirtec Medical)"
+      ]
+    },
+    {
+      "name": "CloudFormation",
+      "category": "Cloud & infrastructure",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Lead": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "Hippo Digital Limited"
+      ]
+    },
+    {
+      "name": "COM interop",
+      "category": "Legacy .NET",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "isgSearch (recruiter)"
+      ]
+    },
+    {
+      "name": "DynamoDB",
+      "category": "Data",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "BAM Technologies, LLC"
+      ]
+    },
+    {
+      "name": "F#",
+      "category": "Other languages",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Lead": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "Hippo Digital Limited"
+      ]
+    },
+    {
+      "name": "FastEndpoints",
+      "category": "Backend ecosystem",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Holman"
+      ]
+    },
+    {
+      "name": "GCP",
+      "category": "Cloud & infrastructure",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Creed Interactive"
+      ]
+    },
+    {
+      "name": "GIS",
+      "category": "Data",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Xpertbizz"
+      ]
+    },
+    {
+      "name": "Jasmine/Karma",
+      "category": "Testing & quality",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "covered",
+      "roadmapTopics": [
+        "test-angular-components"
+      ],
+      "recommendation": "covered",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": "Java",
+      "category": "Other languages",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "Citi"
+      ]
+    },
+    {
+      "name": "Jira",
+      "category": "CI/CD & DevOps",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Universal Technologies"
+      ]
+    },
+    {
+      "name": "MVVM",
+      "category": "Legacy .NET",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Lead": 1
+      },
+      "regions": {
+        "Middle East": 1
+      },
+      "companies": [
+        "Luxoft"
+      ]
+    },
+    {
+      "name": "Performance/load testing",
+      "category": "Testing & quality",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "MEDIFOX DAN GmbH"
+      ]
+    },
+    {
+      "name": "React Native",
+      "category": "Frontend ecosystem",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "SPLIIT"
+      ]
+    },
+    {
+      "name": "Redux",
+      "category": "Frontend ecosystem",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "3Pillar Global"
+      ]
+    },
+    {
+      "name": "Security scanning (Veracode)",
+      "category": "Security",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Universal Technologies"
+      ]
+    },
+    {
+      "name": "Windows Forms",
+      "category": "Legacy .NET",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "isgSearch (recruiter)"
+      ]
+    },
+    {
+      "name": "WordPress",
+      "category": "Other",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 1,
+      "preferred": 0,
+      "requiredShare": 100,
+      "score": 1.4,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Creed Interactive"
+      ]
+    },
+    {
+      "name": "GitHub Actions",
+      "category": "CI/CD & DevOps",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 1.1,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "CorGTA (recruiter)"
+      ]
+    },
+    {
+      "name": "OpenID Connect",
+      "category": "Security",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 1.1,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "CorGTA (recruiter)"
+      ]
+    },
+    {
+      "name": "Redis",
+      "category": "Backend ecosystem",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 1.1,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Global Information Technology"
+      ]
+    },
+    {
+      "name": "SignalR",
+      "category": "Backend ecosystem",
+      "relevance": 2,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 1.1,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": ".NET MAUI",
+      "category": "Frontend ecosystem",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 0.7,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Junior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "ExaSystems Development Inc."
+      ]
+    },
+    {
+      "name": "Azure certification",
+      "category": "Other",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 0.7,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Xpertbizz"
+      ]
+    },
+    {
+      "name": "Capacitor",
+      "category": "Frontend ecosystem",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 0.7,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": "Data visualisation",
+      "category": "Frontend ecosystem",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 0.7,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Quad Infotech"
+      ]
+    },
+    {
+      "name": "Elasticsearch/OpenSearch",
+      "category": "Backend ecosystem",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 0.7,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Senior": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "BAM Technologies, LLC"
+      ]
+    },
+    {
+      "name": "MuleSoft",
+      "category": "Other",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 0.7,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Mid": 1
+      },
+      "regions": {
+        "North America": 1
+      },
+      "companies": [
+        "Mazuma Software"
+      ]
+    },
+    {
+      "name": "Node.js",
+      "category": "Other languages",
+      "relevance": 1,
+      "postings": 1,
+      "share": 2.8,
+      "required": 0,
+      "preferred": 1,
+      "requiredShare": 0,
+      "score": 0.7,
+      "coverage": "missing",
+      "roadmapTopics": [],
+      "recommendation": "ignore",
+      "levels": {
+        "Lead": 1
+      },
+      "regions": {
+        "Europe": 1
+      },
+      "companies": [
+        "Hippo Digital Limited"
+      ]
+    }
+  ],
+  "changesSincePrevious": null,
+  "taxonomySlugsNotInRoadmap": [
+    "Messaging → arch-microservices",
+    "RabbitMQ → arch-microservices",
+    "Azure Service Bus → arch-microservices",
+    "MassTransit → arch-microservices",
+    "Azure → cloud-azure-app-service",
+    "Azure → cloud-fundamentals",
+    "Azure SQL → cloud-azure-app-service",
+    "AWS → cloud-fundamentals",
+    "Cloud platforms → cloud-fundamentals",
+    "Docker → devops-docker",
+    "Kubernetes → devops-kubernetes",
+    "CI/CD → devops-ci-cd",
+    "Azure DevOps → devops-ci-cd",
+    "GitHub Actions → devops-ci-cd",
+    "Design Patterns → arch-design-patterns",
+    "Microservices → arch-microservices",
+    "Event-driven architecture → arch-microservices",
+    "Distributed systems → arch-microservices",
+    "Agile/Scrum → pro-agile-scrum",
+    "Distributed tracing → arch-microservices",
+    "Application Insights → cloud-azure-app-service",
+    "Azure Key Vault → cloud-azure-app-service",
+    "Stored procedures → sql-stored-procedures"
+  ],
+  "baselineRoadmap": "C:\\Users\\MOHAME~1.ABD\\AppData\\Local\\Temp\\claude\\3a38d6379f050760\\042efd15-0324-46ad-a659-5cc092caac11\\scratchpad\\market\\baseline\\backend\\DevPath.Api\\SeedData\\roadmap"
+}

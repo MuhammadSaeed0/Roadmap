@@ -21,6 +21,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     // Content (seeded)
     public DbSet<Phase> Phases => Set<Phase>();
     public DbSet<Topic> Topics => Set<Topic>();
+    public DbSet<TopicDemand> TopicDemand => Set<TopicDemand>();
     public DbSet<TopicPrerequisite> TopicPrerequisites => Set<TopicPrerequisite>();
     public DbSet<Resource> Resources => Set<Resource>();
     public DbSet<ResourceTopic> ResourceTopics => Set<ResourceTopic>();
@@ -113,6 +114,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.Property(x => x.DescriptionAr).HasMaxLength(1000);
         });
 
+        b.Entity<TopicDemand>(e =>
+        {
+            e.Property(x => x.Technology).HasMaxLength(80);
+            e.Property(x => x.Run).HasMaxLength(20);
+            e.Property(x => x.PeriodFrom).HasMaxLength(10);
+            e.Property(x => x.PeriodTo).HasMaxLength(10);
+            e.HasIndex(x => x.TopicId);
+            e.HasOne(x => x.Topic).WithMany(t => t.Demand).HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
         b.Entity<Topic>(e =>
         {
             e.HasIndex(x => x.Slug).IsUnique();
@@ -122,6 +133,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.Property(x => x.TitleEn).HasMaxLength(200);
             e.Property(x => x.TitleAr).HasMaxLength(200);
             e.Property(x => x.CodeLanguage).HasMaxLength(20);
+            e.Property(x => x.Difficulty).HasMaxLength(20);
             e.HasOne(x => x.Phase).WithMany(p => p.Topics)
                 .HasForeignKey(x => x.PhaseId).OnDelete(DeleteBehavior.Restrict);
         });

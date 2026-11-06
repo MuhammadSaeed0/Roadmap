@@ -219,7 +219,7 @@ export const ar: Translations = {
   },
   skills: {
     CSharp: 'C#', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server', TypeScript: 'TypeScript',
-    Angular: 'Angular', FullStack: 'الدمج بين الواجهة والخلفية', Testing: 'الاختبار', Git: 'Git وGitHub', Professional: 'المهارات الاحترافية',
+    Angular: 'Angular', FullStack: 'الدمج بين الواجهة والخلفية', Testing: 'الاختبار', Git: 'Git وGitHub', Professional: 'المهارات الاحترافية', DevOps: 'السحابة وDevOps',
   },
   priority: { Core: 'أساسي', Important: 'مهم', Optional: 'اختياري' },
   topicStatus: { NotStarted: 'لم يبدأ', InProgress: 'قيد التعلم', Completed: 'مكتمل', Skipped: 'أعرفه مسبقًا' },
@@ -297,7 +297,7 @@ export const ar: Translations = {
     interview: 'تدرّب على أسئلة المقابلات', go: 'انتقل',
   },
   roadmap: {
-    title: 'خارطة طريقي', subtitle: '13 مرحلة من أول برنامج C# إلى مشاريع Full-Stack، خطوة بخطوة.',
+    title: 'خارطة طريقي', subtitle: '14 مرحلة من أول برنامج C# إلى مشاريع Full-Stack، خطوة بخطوة.',
     current: 'المرحلة الحالية', topicsDone: 'المواضيع: {done} من {total}', remaining: 'متبقٍ {n} دقيقة', projectsIntro: 'طبّق ما تعلمته في أربعة مشاريع.',
     expandAll: 'توسيع الكل', collapseAll: 'طي الكل', locked: 'المتطلبات السابقة لم تكتمل',
     phase: 'المرحلة {n}',
@@ -320,6 +320,8 @@ export const ar: Translations = {
     date: 'التاريخ', note: 'ملاحظة', noSessions: 'لا توجد جلسات دراسة بعد.', addNote: 'إضافة ملاحظة', noNotes: 'لا توجد ملاحظات لهذا الموضوع بعد.',
     completedOn: 'اكتمل في {date}', saved: 'تم حفظ التقدم', sessionSaved: 'تم حفظ جلسة الدراسة', noResources: 'لا توجد مصادر مرتبطة بعد.',
     tasks: 'المهام: {n}', none: 'لا يوجد', deleteSession: 'هل تريد حذف جلسة الدراسة هذه؟', notFound: 'هذا الموضوع غير موجود.', minutes: '{n} دقيقة', breadcrumb: 'خارطة الطريق',
+    objectives: 'في نهاية الموضوع ستستطيع', marketDemand: 'الطلب في سوق العمل', demandLine: 'في {postings} من {total} إعلان وظيفة ({required} كشرط أساسي)',
+    demandSource: 'من إعلانات وظائف .NET المنشورة بين {from} و{to}.',
   },
   projects: {
     title: 'المشاريع', subtitle: 'أربعة مشاريع عملية، من تطبيق Console إلى نظامك الرئيسي في معرض الأعمال.',

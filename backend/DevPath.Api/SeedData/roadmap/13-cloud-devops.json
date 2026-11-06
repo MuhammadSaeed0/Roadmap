@@ -1,0 +1,194 @@
+{
+  "slug": "cloud-devops",
+  "order": 13,
+  "titleEn": "Cloud, DevOps & Distributed Systems",
+  "titleAr": "السحابة وDevOps والأنظمة الموزعة",
+  "descriptionEn": "How a .NET + Angular application is packaged, built, tested and deployed automatically, and how it runs in the cloud. Added from the November 2026 job-market research, where these were the most requested skills beyond the core stack.",
+  "descriptionAr": "كيف يُغلَّف تطبيق .NET + Angular ويُبنى ويُختبر ويُنشر تلقائيًا، وكيف يعمل على السحابة. أُضيفت هذه المرحلة بناءً على بحث سوق العمل في نوفمبر 2026، حيث كانت هذه المهارات الأكثر طلبًا بعد المهارات الأساسية.",
+  "topics": [
+    {
+      "slug": "devops-docker",
+      "skill": "DevOps", "priority": "Important", "minutes": 60, "difficulty": "Intermediate",
+      "titleEn": "Containerising ASP.NET Core and Angular with Docker",
+      "titleAr": "تغليف ASP.NET Core وAngular في حاويات Docker",
+      "summaryEn": "Docker packages an application with its runtime and dependencies into an image that runs the same way on any machine. A multi-stage Dockerfile builds the API with the .NET SDK image and runs it on the smaller ASP.NET runtime image; Docker Compose starts the API, the database and the Angular app together.",
+      "summaryAr": "يغلّف Docker التطبيق مع بيئة تشغيله واعتماداته في صورة (Image) تعمل بالطريقة نفسها على أي جهاز. ملف Dockerfile متعدد المراحل يبني الـ API بصورة .NET SDK ويشغّله على صورة ASP.NET الأصغر، ويشغّل Docker Compose الـ API وقاعدة البيانات وتطبيق Angular معًا.",
+      "whyEn": "Containers are how most teams now build, test and deploy services: CI pipelines build images, cloud platforms run them, and local development uses Compose to start the database. Employers list Docker for both backend and full-stack .NET roles, usually together with CI/CD and cloud.",
+      "whyAr": "الحاويات هي الطريقة التي تبني بها معظم الفرق خدماتها وتختبرها وتنشرها اليوم: خطوط CI تبني الصور، والمنصات السحابية تشغّلها، والتطوير المحلي يستخدم Compose لتشغيل قاعدة البيانات. يذكر أصحاب العمل Docker في وظائف .NET للواجهة الخلفية والـ Full Stack، وغالبًا مع CI/CD والسحابة.",
+      "howEn": "Write a Dockerfile with two stages: 'FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build' runs 'dotnet restore' and 'dotnet publish -c Release -o /app', then 'FROM mcr.microsoft.com/dotnet/aspnet:10.0' copies /app and sets ENTRYPOINT. Add a .dockerignore (bin/, obj/, node_modules/). Build with 'docker build -t devpath-api .', run with 'docker run -p 8080:8080 -e ConnectionStrings__DevPath=... devpath-api'. Configuration comes from environment variables, never from files baked into the image. In compose.yaml, define the api, a SQL Server container and a volume for its data.",
+      "howAr": "اكتب Dockerfile من مرحلتين: الأولى FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build تنفّذ dotnet restore وdotnet publish -c Release -o /app، والثانية FROM mcr.microsoft.com/dotnet/aspnet:10.0 تنسخ /app وتحدد ENTRYPOINT. أضف ملف .dockerignore (bin/ وobj/ وnode_modules/). ابنِ بالأمر docker build -t devpath-api . وشغّل بالأمر docker run -p 8080:8080 -e ConnectionStrings__DevPath=... devpath-api. تأتي الإعدادات من متغيرات البيئة، وليس من ملفات داخل الصورة. وفي compose.yaml عرّف الـ api وحاوية SQL Server وVolume لبياناتها.",
+      "exampleEn": "The Inventory API in a container: one 'docker compose up' starts SQL Server and the API, applies migrations on start-up and serves Swagger on http://localhost:8080 — a new team member runs the project without installing SQL Server.",
+      "exampleAr": "واجهة Inventory API داخل حاوية: الأمر docker compose up وحده يشغّل SQL Server والـ API، ويطبّق الـ Migrations عند التشغيل، ويعرض Swagger على http://localhost:8080 — فيشغّل عضو جديد في الفريق المشروع دون تثبيت SQL Server.",
+      "practiceEn": "Write a multi-stage Dockerfile for Project 2's API and a compose.yaml that starts it with SQL Server. Check the final image size with 'docker images' and compare it with a single-stage build.",
+      "practiceAr": "اكتب Dockerfile متعدد المراحل لواجهة المشروع الثاني، وملف compose.yaml يشغّلها مع SQL Server. قارن حجم الصورة النهائية عبر docker images بحجمها عند البناء في مرحلة واحدة.",
+      "challengeEn": "Containerise the full Project 4 stack: the API, SQL Server and the Angular app served by nginx, with health checks, a named volume for the database and secrets passed as environment variables. Document 'docker compose up' as the only setup step in the README.",
+      "challengeAr": "غلّف المشروع الرابع كاملًا في حاويات: الـ API وSQL Server وتطبيق Angular يقدّمه nginx، مع فحوص الصحة (Health checks) وVolume مسمّى لقاعدة البيانات وتمرير الأسرار كمتغيرات بيئة. وثّق في ملف README أن docker compose up هي خطوة الإعداد الوحيدة.",
+      "objectivesEn": [
+        "Explain images, containers, layers and registries",
+        "Write a multi-stage Dockerfile for an ASP.NET Core API",
+        "Configure a containerised app through environment variables",
+        "Start an API, a database and a frontend together with Docker Compose"
+      ],
+      "objectivesAr": [
+        "شرح الصور والحاويات والطبقات ومستودعات الصور",
+        "كتابة Dockerfile متعدد المراحل لواجهة ASP.NET Core",
+        "ضبط إعدادات التطبيق داخل الحاوية عبر متغيرات البيئة",
+        "تشغيل API وقاعدة بيانات وواجهة أمامية معًا باستخدام Docker Compose"
+      ],
+      "prerequisites": ["pro-deployment", "api-configuration"]
+    },
+    {
+      "slug": "devops-ci-cd",
+      "skill": "DevOps", "priority": "Core", "minutes": 60, "difficulty": "Intermediate",
+      "titleEn": "CI/CD pipelines with GitHub Actions and Azure DevOps",
+      "titleAr": "خطوط CI/CD باستخدام GitHub Actions وAzure DevOps",
+      "summaryEn": "Continuous integration builds and tests every push and pull request automatically; continuous delivery turns a green build into a deployable artifact and releases it. GitHub Actions and Azure Pipelines describe these steps as YAML files kept in the repository.",
+      "summaryAr": "التكامل المستمر (CI) يبني كل Push وPull Request ويختبره تلقائيًا، والتسليم المستمر (CD) يحوّل البناء الناجح إلى حزمة قابلة للنشر ويصدرها. يصف GitHub Actions وAzure Pipelines هذه الخطوات في ملفات YAML تُحفظ داخل المستودع.",
+      "whyEn": "CI/CD was the most requested skill beyond the core stack in the market research, and Azure DevOps was named on its own in many .NET postings. Teams expect developers to keep the pipeline green, read its logs, and add steps for tests, migrations and deployments.",
+      "whyAr": "كان CI/CD أكثر مهارة مطلوبة بعد المهارات الأساسية في بحث السوق، وذُكر Azure DevOps بالاسم في كثير من إعلانات .NET. تتوقع الفرق من المطور أن يحافظ على نجاح خط البناء، ويقرأ سجلاته، ويضيف خطوات للاختبارات والـ Migrations والنشر.",
+      "howEn": "Create .github/workflows/ci.yml triggered 'on: [push, pull_request]'. Jobs run on 'ubuntu-latest': actions/checkout, actions/setup-dotnet, 'dotnet restore', 'dotnet build --no-restore', 'dotnet test --no-build', and for the frontend actions/setup-node with 'npm ci', 'npm test' and 'npm run build'. Protect the main branch so a pull request can only merge when the checks pass. Store secrets in the repository's secrets, never in YAML. Azure Pipelines uses the same ideas with azure-pipelines.yml, stages, jobs and the DotNetCoreCLI task.",
+      "howAr": "أنشئ الملف .github/workflows/ci.yml ليعمل عند on: [push, pull_request]. تعمل المهام (Jobs) على ubuntu-latest: actions/checkout ثم actions/setup-dotnet ثم dotnet restore ثم dotnet build --no-restore ثم dotnet test --no-build، وللواجهة الأمامية actions/setup-node مع npm ci وnpm test وnpm run build. احمِ فرع main بحيث لا يُدمج Pull Request إلا إذا نجحت الفحوص. خزّن الأسرار في Secrets المستودع وليس في ملف YAML. يستخدم Azure Pipelines الأفكار نفسها عبر azure-pipelines.yml مع Stages وJobs ومهمة DotNetCoreCLI.",
+      "exampleEn": "DevPath itself: every pull request runs the backend tests and the Angular build in GitHub Actions, and every merge to main publishes the site — a red check blocks the merge before a bug reaches users.",
+      "exampleAr": "منصة DevPath نفسها: كل Pull Request يشغّل اختبارات الواجهة الخلفية وبناء Angular في GitHub Actions، وكل دمج في main ينشر الموقع — والفحص الأحمر يمنع الدمج قبل أن يصل الخطأ إلى المستخدمين.",
+      "practiceEn": "Add a GitHub Actions workflow to Project 2 that restores, builds and runs the xUnit tests on every pull request, then break a test on purpose and watch the pull request turn red.",
+      "practiceAr": "أضف إلى المشروع الثاني سير عمل GitHub Actions يستعيد الحزم ويبني ويشغّل اختبارات xUnit عند كل Pull Request، ثم أفسد اختبارًا عمدًا وراقب كيف يتحول الـ Pull Request إلى الأحمر.",
+      "challengeEn": "Build a two-stage pipeline for Project 4: a CI job (backend tests, Angular tests and build, Docker image build) on pull requests, and a CD job on main that pushes the image to a registry and deploys it, with the connection string supplied as a secret and a manual approval before production.",
+      "challengeAr": "ابنِ خطًا من مرحلتين للمشروع الرابع: مهمة CI (اختبارات الواجهة الخلفية، واختبارات Angular وبناؤه، وبناء صورة Docker) عند كل Pull Request، ومهمة CD على main ترفع الصورة إلى مستودع صور وتنشرها، مع تمرير سلسلة الاتصال كسر (Secret) وموافقة يدوية قبل بيئة الإنتاج.",
+      "objectivesEn": [
+        "Explain the difference between continuous integration, delivery and deployment",
+        "Write a GitHub Actions workflow that builds and tests a .NET + Angular repository",
+        "Keep secrets out of the repository and use protected branches",
+        "Read an Azure Pipelines YAML file and map it to the same steps"
+      ],
+      "objectivesAr": [
+        "التمييز بين التكامل المستمر والتسليم المستمر والنشر المستمر",
+        "كتابة سير عمل GitHub Actions يبني ويختبر مستودع .NET + Angular",
+        "إبقاء الأسرار خارج المستودع واستخدام الفروع المحمية",
+        "قراءة ملف Azure Pipelines YAML وربطه بالخطوات نفسها"
+      ],
+      "prerequisites": ["devops-docker", "git-pull-requests", "test-unit-csharp"]
+    },
+    {
+      "slug": "cloud-fundamentals",
+      "skill": "DevOps", "priority": "Important", "minutes": 40, "difficulty": "Beginner",
+      "titleEn": "Cloud fundamentals for .NET developers (Azure and AWS)",
+      "titleAr": "أساسيات السحابة لمطوري .NET (Azure وAWS)",
+      "summaryEn": "Cloud platforms rent computing as services: IaaS (virtual machines), PaaS (managed app hosting and databases), serverless functions and SaaS. Azure and AWS offer the same building blocks under different names — Azure App Service and AWS Elastic Beanstalk, Azure SQL and Amazon RDS, Azure Functions and AWS Lambda, Key Vault and Secrets Manager.",
+      "summaryAr": "تؤجّر المنصات السحابية الحوسبة كخدمات: IaaS (أجهزة افتراضية)، وPaaS (استضافة مُدارة للتطبيقات وقواعد البيانات)، والدوال بلا خوادم (Serverless)، وSaaS. يقدّم Azure وAWS اللبنات نفسها بأسماء مختلفة — Azure App Service مقابل AWS Elastic Beanstalk، وAzure SQL مقابل Amazon RDS، وAzure Functions مقابل AWS Lambda، وKey Vault مقابل Secrets Manager.",
+      "whyEn": "Azure was the most requested cloud in the .NET postings and AWS appeared in many as well, often as 'Azure or AWS'. Knowing the shared concepts — regions, identity, managed services, cost — lets you work on either and pick up the other quickly.",
+      "whyAr": "كان Azure أكثر منصة سحابية طلبًا في إعلانات .NET، وظهر AWS في كثير منها أيضًا، وغالبًا بصيغة «Azure أو AWS». فهم المفاهيم المشتركة — المناطق (Regions) والهوية والخدمات المُدارة والتكلفة — يتيح لك العمل على أيٍّ منهما وتعلّم الأخرى بسرعة.",
+      "howEn": "Learn the service models and the shared-responsibility model (the provider secures the platform, you secure your app and data). Map each part of a typical app to a managed service: web API → App Service / Elastic Beanstalk or a container service; database → Azure SQL / RDS; secrets → Key Vault / Secrets Manager; logs → Application Insights / CloudWatch. Use the free tiers, set a budget alert first, and delete resources you no longer need.",
+      "howAr": "تعلّم نماذج الخدمة ونموذج المسؤولية المشتركة (المزوّد يؤمّن المنصة وأنت تؤمّن تطبيقك وبياناتك). اربط كل جزء من تطبيق نموذجي بخدمة مُدارة: الـ Web API ← App Service أو Elastic Beanstalk أو خدمة حاويات؛ قاعدة البيانات ← Azure SQL أو RDS؛ الأسرار ← Key Vault أو Secrets Manager؛ السجلات ← Application Insights أو CloudWatch. استخدم الباقات المجانية، وضع تنبيه ميزانية أولًا، واحذف الموارد التي لم تعد تحتاجها.",
+      "exampleEn": "Hosting the Sales & Orders system: the API on Azure App Service, the database on Azure SQL, the connection string in Key Vault and errors in Application Insights — on AWS the same design becomes Elastic Beanstalk, RDS, Secrets Manager and CloudWatch.",
+      "exampleAr": "استضافة نظام المبيعات والطلبات: الـ API على Azure App Service، وقاعدة البيانات على Azure SQL، وسلسلة الاتصال في Key Vault، والأخطاء في Application Insights — وعلى AWS يصبح التصميم نفسه Elastic Beanstalk وRDS وSecrets Manager وCloudWatch.",
+      "practiceEn": "Draw the architecture of Project 4 twice: once with Azure services and once with AWS services, labelling which parts are IaaS, PaaS or serverless and where secrets and logs live.",
+      "practiceAr": "ارسم بنية المشروع الرابع مرتين: مرة بخدمات Azure ومرة بخدمات AWS، مع توضيح أي الأجزاء IaaS أو PaaS أو Serverless وأين تُحفظ الأسرار والسجلات.",
+      "challengeEn": "Write a one-page hosting proposal for a small company's .NET + Angular app: compare a PaaS option and a container option on Azure, estimate the monthly cost with the official pricing calculator, and list the security responsibilities that stay with the team.",
+      "challengeAr": "اكتب مقترح استضافة من صفحة واحدة لتطبيق .NET + Angular لشركة صغيرة: قارن خيار PaaS بخيار الحاويات على Azure، وقدّر التكلفة الشهرية بالحاسبة الرسمية للأسعار، واذكر مسؤوليات الأمان التي تبقى على الفريق.",
+      "objectivesEn": [
+        "Explain IaaS, PaaS, serverless and the shared-responsibility model",
+        "Map an API, a database, secrets and logs to Azure and AWS services",
+        "Keep cloud costs under control with free tiers, budgets and clean-up"
+      ],
+      "objectivesAr": [
+        "شرح IaaS وPaaS والـ Serverless ونموذج المسؤولية المشتركة",
+        "ربط الـ API وقاعدة البيانات والأسرار والسجلات بخدمات Azure وAWS",
+        "التحكم في تكلفة السحابة بالباقات المجانية والميزانيات وحذف الموارد غير المستخدمة"
+      ],
+      "prerequisites": ["pro-deployment"]
+    },
+    {
+      "slug": "cloud-azure-app-service",
+      "skill": "DevOps", "priority": "Important", "minutes": 75, "difficulty": "Intermediate",
+      "titleEn": "Deploying to Azure: App Service, Azure SQL, Key Vault and monitoring",
+      "titleAr": "النشر على Azure: App Service وAzure SQL وKey Vault والمراقبة",
+      "summaryEn": "Azure App Service hosts an ASP.NET Core API (and its Angular files) without managing servers; Azure SQL Database is a managed SQL Server; Key Vault stores secrets that the app reads through a managed identity; Application Insights collects requests, failures and traces.",
+      "summaryAr": "يستضيف Azure App Service واجهة ASP.NET Core (وملفات Angular الخاصة بها) دون إدارة خوادم؛ وAzure SQL Database هو SQL Server مُدار؛ وKey Vault يحفظ الأسرار التي يقرؤها التطبيق عبر هوية مُدارة (Managed Identity)؛ وApplication Insights يجمع الطلبات والأعطال والتتبّع.",
+      "whyEn": "Azure is the cloud most .NET employers in the research use, and postings name its services directly: App Service, Azure SQL, Azure Functions, Key Vault, Application Insights. Deploying your own project end to end is strong portfolio evidence.",
+      "whyAr": "Azure هي السحابة التي يستخدمها معظم أصحاب العمل في إعلانات .NET ضمن البحث، والإعلانات تذكر خدماتها بالاسم: App Service وAzure SQL وAzure Functions وKey Vault وApplication Insights. ونشر مشروعك الخاص من البداية إلى النهاية دليل قوي في ملف أعمالك.",
+      "howEn": "Create a resource group, an App Service plan and a Web App for .NET 10; create an Azure SQL server and database and allow the Web App to reach it. Turn on the Web App's system-assigned managed identity, grant it access to a Key Vault, and add the vault to configuration ('builder.Configuration.AddAzureKeyVault(...)') so the connection string never appears in code or pipelines. Deploy from the CI/CD pipeline with the azure/webapps-deploy action, apply EF Core migrations with a migration bundle, and enable Application Insights (OpenTelemetry) to see requests and exceptions.",
+      "howAr": "أنشئ Resource Group وخطة App Service وتطبيق Web App لـ .NET 10، ثم خادم Azure SQL وقاعدة بيانات واسمح للتطبيق بالوصول إليها. فعّل الهوية المُدارة (System-assigned managed identity) للتطبيق، وامنحها صلاحية الوصول إلى Key Vault، وأضف الخزنة إلى الإعدادات (builder.Configuration.AddAzureKeyVault(...)) حتى لا تظهر سلسلة الاتصال في الكود أو في خطوط النشر. انشر من خط CI/CD عبر الإجراء azure/webapps-deploy، وطبّق Migrations الخاصة بـ EF Core عبر Migration bundle، وفعّل Application Insights (OpenTelemetry) لرؤية الطلبات والاستثناءات.",
+      "exampleEn": "Publishing the Inventory API: a merge to main runs the pipeline, deploys to a staging slot, runs a smoke test against /health, then swaps the slot into production — the database password lives only in Key Vault.",
+      "exampleAr": "نشر Inventory API: الدمج في main يشغّل خط النشر، فينشر إلى Staging slot، ويشغّل اختبارًا سريعًا على /health، ثم يبدّل الـ Slot إلى الإنتاج — وكلمة مرور قاعدة البيانات موجودة في Key Vault فقط.",
+      "practiceEn": "Deploy Project 2's API to a free App Service plan with an Azure SQL database (free offer), read the connection string from Key Vault through a managed identity, and confirm requests appear in Application Insights.",
+      "practiceAr": "انشر واجهة المشروع الثاني على خطة App Service مجانية مع قاعدة Azure SQL (العرض المجاني)، واقرأ سلسلة الاتصال من Key Vault عبر هوية مُدارة، وتأكد من ظهور الطلبات في Application Insights.",
+      "challengeEn": "Take Project 4 to production on Azure: staging and production slots, migrations applied by the pipeline, secrets in Key Vault, a health check, an alert when the failure rate rises, and a written rollback procedure — then share the live URL in your portfolio.",
+      "challengeAr": "انقل المشروع الرابع إلى بيئة الإنتاج على Azure: Slots للـ Staging والإنتاج، وMigrations يطبّقها خط النشر، والأسرار في Key Vault، وفحص صحة، وتنبيه عند ارتفاع نسبة الأعطال، وإجراء مكتوب للتراجع (Rollback) — ثم أضف الرابط المباشر إلى ملف أعمالك.",
+      "objectivesEn": [
+        "Host an ASP.NET Core API on Azure App Service with an Azure SQL database",
+        "Read secrets from Key Vault through a managed identity",
+        "Deploy from a CI/CD pipeline with migrations and deployment slots",
+        "Monitor requests and failures with Application Insights"
+      ],
+      "objectivesAr": [
+        "استضافة واجهة ASP.NET Core على Azure App Service مع قاعدة Azure SQL",
+        "قراءة الأسرار من Key Vault عبر هوية مُدارة",
+        "النشر من خط CI/CD مع الـ Migrations والـ Deployment slots",
+        "مراقبة الطلبات والأعطال باستخدام Application Insights"
+      ],
+      "prerequisites": ["cloud-fundamentals", "devops-ci-cd"]
+    },
+    {
+      "slug": "devops-kubernetes",
+      "skill": "DevOps", "priority": "Optional", "minutes": 60, "difficulty": "Advanced",
+      "titleEn": "Kubernetes basics for application developers",
+      "titleAr": "أساسيات Kubernetes لمطوري التطبيقات",
+      "summaryEn": "Kubernetes runs containers across a cluster and keeps them in the state you declare: Deployments keep the right number of Pods running, Services give them a stable address, ConfigMaps and Secrets hold configuration, and probes tell Kubernetes when a container is healthy and ready.",
+      "summaryAr": "يشغّل Kubernetes الحاويات عبر عنقود (Cluster) من الأجهزة ويحافظ عليها في الحالة التي تصفها: الـ Deployments تُبقي العدد الصحيح من الـ Pods، والـ Services تمنحها عنوانًا ثابتًا، والـ ConfigMaps والـ Secrets تحفظ الإعدادات، والـ Probes تخبر Kubernetes متى تكون الحاوية سليمة وجاهزة.",
+      "whyEn": "Kubernetes appeared in a fifth of the .NET postings, mostly as a preferred skill next to Docker and microservices. Developers are rarely asked to run clusters, but are expected to read manifests, add health probes and debug a failing Pod.",
+      "whyAr": "ظهر Kubernetes في نحو خُمس إعلانات .NET، غالبًا كمهارة مفضّلة بجانب Docker والخدمات المصغّرة. نادرًا ما يُطلب من المطور إدارة العناقيد، لكن يُتوقع منه قراءة ملفات الـ Manifests وإضافة فحوص الصحة وتتبّع سبب تعطل Pod.",
+      "howEn": "Start a local cluster (Docker Desktop's Kubernetes or kind). Write a Deployment with your API image, two replicas, resource requests, environment variables from a ConfigMap and a Secret, and liveness/readiness probes pointing at ASP.NET Core health checks ('/health/live', '/health/ready'). Expose it with a Service and apply with 'kubectl apply -f'. Investigate with 'kubectl get pods', 'kubectl describe pod' and 'kubectl logs'.",
+      "howAr": "شغّل عنقودًا محليًا (Kubernetes المدمج في Docker Desktop أو kind). اكتب Deployment بصورة الـ API الخاصة بك، مع نسختين (Replicas) وطلبات موارد ومتغيرات بيئة من ConfigMap وSecret، وفحوص Liveness وReadiness تشير إلى Health checks في ASP.NET Core (/health/live و/health/ready). اعرضه عبر Service وطبّقه بالأمر kubectl apply -f. وتتبّع المشكلات بالأوامر kubectl get pods وkubectl describe pod وkubectl logs.",
+      "exampleEn": "When the Inventory API's database is unreachable, its readiness probe fails, Kubernetes stops sending it traffic, and the other replica keeps serving requests until the connection returns.",
+      "exampleAr": "عندما يتعذر على Inventory API الوصول إلى قاعدة البيانات، يفشل فحص الجاهزية، فيتوقف Kubernetes عن إرسال الطلبات إليه، وتستمر النسخة الأخرى في خدمة الطلبات حتى يعود الاتصال.",
+      "practiceEn": "Deploy Project 2's container to a local cluster with two replicas, a Service and health probes; delete one Pod and watch Kubernetes replace it.",
+      "practiceAr": "انشر حاوية المشروع الثاني على عنقود محلي بنسختين وService وفحوص صحة، ثم احذف Pod واحدًا وراقب كيف يستبدله Kubernetes.",
+      "challengeEn": "Run Project 4 on a local cluster: API, Angular frontend and SQL Server (with a persistent volume), configuration in ConfigMaps and Secrets, and a rolling update of the API image with zero downtime.",
+      "challengeAr": "شغّل المشروع الرابع على عنقود محلي: الـ API وواجهة Angular وSQL Server (مع Persistent volume)، والإعدادات في ConfigMaps وSecrets، وتحديث متدرّج (Rolling update) لصورة الـ API دون توقف الخدمة.",
+      "objectivesEn": [
+        "Describe Pods, Deployments, Services, ConfigMaps and Secrets",
+        "Write a Deployment and a Service for an ASP.NET Core container",
+        "Connect liveness and readiness probes to ASP.NET Core health checks",
+        "Debug a failing Pod with kubectl"
+      ],
+      "objectivesAr": [
+        "وصف الـ Pods والـ Deployments والـ Services والـ ConfigMaps والـ Secrets",
+        "كتابة Deployment وService لحاوية ASP.NET Core",
+        "ربط فحوص Liveness وReadiness بـ Health checks في ASP.NET Core",
+        "تتبّع سبب تعطل Pod باستخدام kubectl"
+      ],
+      "prerequisites": ["devops-docker", "cloud-fundamentals"]
+    },
+    {
+      "slug": "arch-microservices",
+      "skill": "AspNetCore", "priority": "Important", "minutes": 60, "difficulty": "Advanced",
+      "titleEn": "Microservices, messaging and distributed systems",
+      "titleAr": "الخدمات المصغّرة والرسائل والأنظمة الموزعة",
+      "summaryEn": "A microservice architecture splits a system into small services that each own their data and are deployed independently. Services talk over HTTP for queries and through a message broker (RabbitMQ, Azure Service Bus) for events, which brings new problems: network failures, eventual consistency, duplicate messages and tracing a request across services.",
+      "summaryAr": "تقسّم بنية الخدمات المصغّرة (Microservices) النظام إلى خدمات صغيرة تملك كل منها بياناتها وتُنشر بشكل مستقل. تتواصل الخدمات عبر HTTP للاستعلامات وعبر وسيط رسائل (RabbitMQ أو Azure Service Bus) للأحداث، وهذا يجلب مشكلات جديدة: أعطال الشبكة، والاتساق النهائي (Eventual consistency)، وتكرار الرسائل، وتتبّع الطلب عبر الخدمات.",
+      "whyEn": "Microservices appeared in about a third of the postings (usually as preferred), together with messaging, event-driven design and Docker. Interviewers ask when a monolith is the better choice, so knowing the trade-offs matters as much as the patterns.",
+      "whyAr": "ظهرت الخدمات المصغّرة في نحو ثلث الإعلانات (غالبًا كمهارة مفضّلة) مع الرسائل والتصميم المعتمد على الأحداث وDocker. يسأل المقابِلون متى يكون الـ Monolith هو الخيار الأفضل، لذا فإن فهم الموازنات مهم بقدر أهمية الأنماط.",
+      "howEn": "Start from a modular monolith and split only where a part needs independent deployment or scaling. Give each service its own database; never share tables. Use HTTP with timeouts and retries (Microsoft.Extensions.Http.Resilience) for queries, and publish integration events (e.g. OrderPlaced) through a broker for workflows — with idempotent consumers and the outbox pattern so an event is never lost or applied twice. Add an API gateway for the Angular client, correlation IDs and OpenTelemetry tracing across services, and .NET Aspire to run everything locally.",
+      "howAr": "ابدأ بـ Modular monolith ولا تفصل إلا الجزء الذي يحتاج نشرًا أو توسعًا مستقلًا. امنح كل خدمة قاعدة بياناتها الخاصة، ولا تشارك الجداول أبدًا. استخدم HTTP مع مهلات وإعادة محاولة (Microsoft.Extensions.Http.Resilience) للاستعلامات، وانشر أحداث تكامل (مثل OrderPlaced) عبر وسيط رسائل لسير العمل — مع مستهلكين متساوي الأثر (Idempotent) ونمط Outbox حتى لا يضيع حدث أو يُطبّق مرتين. أضف API Gateway لعميل Angular، ومعرّفات ربط (Correlation IDs) وتتبّع OpenTelemetry عبر الخدمات، و.NET Aspire لتشغيل كل شيء محليًا.",
+      "exampleEn": "In the Sales & Orders system, the Orders service saves an order and publishes OrderPlaced; the Inventory service reserves stock and the Notifications service e-mails the customer — if Inventory is down, the message waits in the queue instead of failing the checkout.",
+      "exampleAr": "في نظام المبيعات والطلبات، تحفظ خدمة الطلبات الطلب وتنشر الحدث OrderPlaced؛ فتحجز خدمة المخزون الكمية وترسل خدمة الإشعارات بريدًا للعميل — وإذا كانت خدمة المخزون متوقفة، تنتظر الرسالة في الطابور بدل أن تفشل عملية الشراء.",
+      "practiceEn": "Split Project 4 on paper into services with their own data, list which calls are queries (HTTP) and which are events (messages), and write down what happens when each service is unavailable.",
+      "practiceAr": "قسّم المشروع الرابع على الورق إلى خدمات تملك بياناتها، وحدد أي الاتصالات استعلامات (HTTP) وأيها أحداث (رسائل)، واكتب ما يحدث عندما تتعطل كل خدمة.",
+      "challengeEn": "Extract the inventory part of Project 4 into a separate ASP.NET Core service with its own database, connect it through RabbitMQ (MassTransit) with an outbox and idempotent consumer, run both with .NET Aspire or Docker Compose, and show one order traced across both services.",
+      "challengeAr": "افصل جزء المخزون من المشروع الرابع في خدمة ASP.NET Core مستقلة بقاعدة بياناتها، واربطها عبر RabbitMQ (باستخدام MassTransit) مع Outbox ومستهلك متساوي الأثر، وشغّل الخدمتين عبر .NET Aspire أو Docker Compose، واعرض تتبّع طلب واحد عبر الخدمتين.",
+      "objectivesEn": [
+        "Decide between a modular monolith and microservices from concrete trade-offs",
+        "Design service boundaries with one database per service",
+        "Use messaging with idempotent consumers and the outbox pattern",
+        "Trace a request across services with correlation IDs and OpenTelemetry"
+      ],
+      "objectivesAr": [
+        "الاختيار بين Modular monolith والخدمات المصغّرة بناءً على موازنات محددة",
+        "تصميم حدود الخدمات بقاعدة بيانات مستقلة لكل خدمة",
+        "استخدام الرسائل مع مستهلكين متساوي الأثر ونمط Outbox",
+        "تتبّع الطلب عبر الخدمات بمعرّفات الربط وOpenTelemetry"
+      ],
+      "prerequisites": ["devops-docker", "fs-api-contracts", "sql-transactions"]
+    }
+  ]
+}

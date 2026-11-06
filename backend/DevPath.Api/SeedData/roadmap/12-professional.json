@@ -83,6 +83,37 @@
       "prerequisites": ["pro-breaking-down-features"]
     },
     {
+      "slug": "pro-agile-scrum",
+      "skill": "Professional", "priority": "Important", "minutes": 35, "difficulty": "Beginner",
+      "titleEn": "Working in Agile teams: Scrum, user stories and estimation",
+      "titleAr": "العمل في فرق Agile: Scrum وقصص المستخدم والتقدير",
+      "summaryEn": "Scrum organises work into short sprints with a backlog of user stories, a sprint goal and four events: planning, daily stand-up, review and retrospective. Stories carry acceptance criteria, are estimated (often in story points) and move across a board in Jira or Azure Boards until they meet the team's definition of done.",
+      "summaryAr": "ينظّم Scrum العمل في دورات قصيرة (Sprints) مع قائمة مهام من قصص المستخدم (Backlog)، وهدف للـ Sprint، وأربعة أحداث: التخطيط، والاجتماع اليومي، والمراجعة، والاستعادة (Retrospective). تحمل القصص معايير قبول، وتُقدَّر (غالبًا بنقاط القصة)، وتتحرك على لوحة في Jira أو Azure Boards حتى تحقق «تعريف الاكتمال» لدى الفريق.",
+      "whyEn": "Agile/Scrum was required in almost half of the .NET postings in the market research. Juniors are judged early on how they take a story, ask about acceptance criteria, report progress in the stand-up and finish work to the definition of done.",
+      "whyAr": "طُلبت Agile/Scrum في قرابة نصف إعلانات .NET في بحث السوق. ويُقيَّم المطور المبتدئ مبكرًا على طريقة استلامه للقصة، وسؤاله عن معايير القبول، وعرضه لتقدمه في الاجتماع اليومي، وإنهائه العمل وفق تعريف الاكتمال.",
+      "howEn": "Write stories as 'As a <role> I want <goal> so that <benefit>' with testable acceptance criteria. Split large stories vertically (a thin slice through UI, API and database) so each can be demonstrated. Estimate relatively with story points or t-shirt sizes and re-estimate when you learn more. In the stand-up say what you finished, what is next and what blocks you. Link commits and pull requests to the work item, and treat 'done' as merged, tested and deployable — not 'works on my machine'.",
+      "howAr": "اكتب القصص بصيغة «بصفتي <دور> أريد <هدف> حتى <فائدة>» مع معايير قبول قابلة للاختبار. قسّم القصص الكبيرة عموديًا (شريحة رفيعة تمر بالواجهة والـ API وقاعدة البيانات) حتى يمكن عرض كل منها. قدّر نسبيًا بنقاط القصة أو مقاسات القمصان، وأعد التقدير عندما تعرف أكثر. وفي الاجتماع اليومي اذكر ما أنهيته وما التالي وما يعيقك. اربط الـ Commits والـ Pull Requests بعنصر العمل، واعتبر «مكتمل» تعني مدموجًا ومختبرًا وقابلًا للنشر — وليس «يعمل على جهازي».",
+      "exampleEn": "'As a warehouse manager I want to see products below their reorder level so that I can order in time' becomes three slices: the API endpoint, the Angular list, and the e-mail alert — each estimated, demonstrated and accepted separately.",
+      "exampleAr": "قصة «بصفتي مدير مستودع أريد رؤية المنتجات التي انخفضت عن حد إعادة الطلب حتى أطلبها في الوقت المناسب» تصبح ثلاث شرائح: نقطة الـ API، وقائمة Angular، وتنبيه البريد — تُقدَّر كل منها وتُعرض وتُقبل بشكل منفصل.",
+      "practiceEn": "Turn the next milestone of your current project into user stories with acceptance criteria, estimate them in story points, and track them on a GitHub Projects or Azure Boards board for one week.",
+      "practiceAr": "حوّل المرحلة التالية من مشروعك الحالي إلى قصص مستخدم بمعايير قبول، وقدّرها بنقاط القصة، وتابعها على لوحة GitHub Projects أو Azure Boards لمدة أسبوع.",
+      "challengeEn": "Run a two-week solo sprint on Project 4: a sprint goal, a planned backlog, daily notes in stand-up format, a short demo video at the end and a written retrospective with one improvement you apply in the next sprint.",
+      "challengeAr": "نفّذ Sprint فرديًا لمدة أسبوعين على المشروع الرابع: هدف للـ Sprint، وقائمة مهام مخططة، وملاحظات يومية بصيغة الاجتماع اليومي، وفيديو عرض قصير في النهاية، واستعادة مكتوبة فيها تحسين واحد تطبّقه في الـ Sprint التالي.",
+      "objectivesEn": [
+        "Describe the Scrum roles, events and artifacts",
+        "Write user stories with testable acceptance criteria and split them vertically",
+        "Estimate work relatively and report progress in a stand-up",
+        "Apply a definition of done to your own work"
+      ],
+      "objectivesAr": [
+        "وصف أدوار Scrum وأحداثه ومخرجاته",
+        "كتابة قصص مستخدم بمعايير قبول قابلة للاختبار وتقسيمها عموديًا",
+        "تقدير العمل نسبيًا وعرض التقدم في الاجتماع اليومي",
+        "تطبيق تعريف الاكتمال على عملك"
+      ],
+      "prerequisites": ["pro-breaking-down-features", "pro-requirements"]
+    },
+    {
       "slug": "pro-code-review",
       "skill": "Professional", "priority": "Core", "minutes": 40,
       "titleEn": "Code review",

@@ -5,6 +5,7 @@ import { IconComponent } from './icon.component';
 
 const LABELS: Record<string, string> = {
   csharp: 'C#', typescript: 'TypeScript', sql: 'SQL', html: 'HTML', bash: 'Shell', http: 'HTTP', json: 'JSON', css: 'CSS', text: 'Text',
+  yaml: 'YAML', dockerfile: 'Dockerfile',
 };
 
 /** Code is always rendered left-to-right, even when the page is in Arabic (dir="rtl"). */

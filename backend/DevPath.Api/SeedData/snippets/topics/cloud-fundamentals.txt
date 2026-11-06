@@ -1,0 +1,22 @@
+The same application on two clouds
+
+Part of the app          Azure                         AWS                          Model
+-----------------------  ----------------------------  ---------------------------  ----------
+ASP.NET Core API         App Service                   Elastic Beanstalk            PaaS
+API in a container       Container Apps / AKS          ECS (Fargate) / EKS          PaaS / CaaS
+Background job           Azure Functions               Lambda                       Serverless
+Angular files            Static Web Apps / Storage     S3 + CloudFront              PaaS
+SQL Server database      Azure SQL Database            RDS for SQL Server           PaaS
+Secrets                  Key Vault                     Secrets Manager              PaaS
+Logs, traces, alerts     Application Insights          CloudWatch / X-Ray           PaaS
+Identity for the app     Managed identity              IAM role                     -
+A full virtual machine   Virtual Machines              EC2                          IaaS
+
+Shared responsibility
+  Provider: data centres, hardware, the platform and its patches.
+  You:      your code, its dependencies, configuration, secrets, data and access rights.
+
+Before creating anything
+  1. Set a budget and an alert.
+  2. Pick one region close to your users and keep everything there.
+  3. Tag resources (project, environment) and delete what you no longer use.

@@ -58,6 +58,13 @@ export default class TopicDetailPage {
     ];
   });
 
+  /** What the learner should be able to do after the topic, in the current language. */
+  protected readonly objectives = computed(() => {
+    const t = this.data.value();
+    if (!t) return [];
+    return t.objectivesEn.map((en, i) => this.i18n.pick(en, t.objectivesAr[i]));
+  });
+
   constructor() {
     // Reload when the route id changes (e.g. clicking a related topic).
     effect(() => {

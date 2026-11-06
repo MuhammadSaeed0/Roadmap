@@ -29,6 +29,7 @@ public class ProgressOptions
         [SkillArea.Testing] = 0.9,
         [SkillArea.Git] = 0.6,
         [SkillArea.Professional] = 0.7,
+        [SkillArea.DevOps] = 0.8,
     };
 
     public Dictionary<TopicPriority, double> PriorityWeights { get; set; } = new()

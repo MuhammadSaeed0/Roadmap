@@ -1,0 +1,244 @@
+{
+  "run": "2026-11-06",
+  "collectedOn": "2026-11-06",
+  "periodFrom": "2026-08-06",
+  "periodTo": "2026-11-06",
+  "source": "Indeed job search API through the Indeed connector (search_jobs, get_job_details). LinkedIn was not used: no authorised LinkedIn access was available in this session.",
+  "inclusionRule": "Posted within the period; C#/.NET is an explicit requirement (not one option among several stacks); a real vacancy with a description. Technologies are recorded as written in the posting, as 'required' (must-have, mandatory, requirements) or 'preferred' (nice to have, a plus, preferred). Duplicated adverts are listed once (see 'duplicates').",
+  "excluded": [
+    { "ref": "https://to.indeed.com/aakylgvyvgxn", "reason": "posted 2026-04-01, outside the period" },
+    { "ref": "https://to.indeed.com/aa8yj6l4hlmr", "reason": ".NET is one option among Python/Node.js/Java" },
+    { "ref": "https://to.indeed.com/aa9jy2tt4z8w", "reason": ".NET is one option among Node.js/Python/Java" },
+    { "ref": "https://to.indeed.com/aal4jnxbrcft", "reason": "no job description supplied" },
+    { "ref": "https://to.indeed.com/aachtl9htfr2", "reason": "advert states it 'does not represent a live vacancy' (register-interest advert)" },
+    { "ref": "https://to.indeed.com/aahcn7zs8ypj", "reason": "not a .NET role (JavaScript/TypeScript)" },
+    { "ref": "https://to.indeed.com/aa4rglskf7l8", "reason": ".NET only given as an example of a language to list" },
+    { "ref": "https://to.indeed.com/aabxvyy44lwq", "reason": ".NET is one option among many languages (Azure Logic Apps integration role)" }
+  ],
+  "duplicates": [
+    { "kept": "https://to.indeed.com/aa6j98yfnp4y", "duplicate": "https://to.indeed.com/aascrl4fkp26", "reason": "same Mazuma Software advert posted twice (identical text)" }
+  ],
+  "postings": [
+    {
+      "ref": "https://to.indeed.com/aaxnddhqbc4y", "title": "Senior Backend .NET Developer", "company": "Global Information Technology",
+      "posted": "2026-10-06", "location": "Remote (Southfield, MI)", "country": "US", "region": "North America", "remote": true, "level": "Senior", "experience": "6-8+ years",
+      "required": ["C#", "ASP.NET Core", "Entity Framework Core", "LINQ", "SQL Server", "REST APIs", "SOLID", "Clean Architecture", "Design Patterns", "Async programming", "Background services", "Messaging", "Azure Service Bus", "OAuth 2.0", "JWT", "Microsoft Entra ID", "RBAC", "Caching", "Logging & monitoring", "Unit testing", "Integration testing", "CI/CD", "Azure", "Git", "Distributed systems"],
+      "preferred": ["Microservices", "Event-driven architecture", "Redis", "Docker", "Kubernetes", "Azure API Management", "Application Insights", ".NET Framework migration"]
+    },
+    {
+      "ref": "https://to.indeed.com/aat8p9h9cn2c", "title": ".NET Fullstack Developer with ReactJS Exp", "company": "3Pillar Global",
+      "posted": "2026-10-15", "location": "Remote", "country": "US", "region": "North America", "remote": true, "level": "Mid", "experience": "not stated",
+      "required": ["C#", "ASP.NET Core", "ASP.NET MVC", "WCF", "REST APIs", "SOAP", "React", "Redux", "TypeScript", "JavaScript", "HTML/CSS", "Bootstrap", "SQL Server", "MySQL", "PostgreSQL", "MongoDB", "Azure", "AWS", "Unit testing", "CI/CD", "Jenkins", "Microservices", "System design", "UML", "Agile/Scrum", "Git"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aahp4bkypkzr", "title": "Full Stack Software Developer III", "company": "BAM Technologies, LLC",
+      "posted": "2026-11-03", "location": "Remote", "country": "US", "region": "North America", "remote": true, "level": "Senior", "experience": "7+ years",
+      "required": ["C#", "ASP.NET Core", "Angular", "JavaScript", "SQL Server", "PostgreSQL", "DynamoDB", "AWS", "Git", "CI/CD", "Azure DevOps", "Microservices", "REST APIs", "Design Patterns", "Agile/Scrum"],
+      "preferred": ["Docker", "Kubernetes", "TypeScript", "GitHub", "Elasticsearch/OpenSearch"]
+    },
+    {
+      "ref": "https://to.indeed.com/aagmmrgvcqhd", "title": "Developer III", "company": "Holman",
+      "posted": "2026-11-02", "location": "Mount Laurel, NJ (remote)", "country": "US", "region": "North America", "remote": true, "level": "Senior", "experience": "7+ years",
+      "required": ["C#", "ASP.NET", "ASP.NET Core", "FastEndpoints", "React", "jQuery", "JavaScript", "HTML/CSS", "SQL Server", "Entity Framework Core", "Unit testing", "Agile/Scrum", "AI coding assistants", "AI agents"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aat8rt9phpny", "title": "Senior Web Developer", "company": "Cotiviti",
+      "posted": "2026-11-04", "location": "Remote", "country": "US", "region": "North America", "remote": true, "level": "Senior", "experience": "5+ years",
+      "required": ["C#", "ASP.NET MVC", "ASP.NET Core", ".NET Framework", "WCF", "Entity Framework Core", "SQL Server", "Stored procedures", "Query tuning", "JavaScript", "jQuery", "HTML/CSS", "Bootstrap", "Telerik", "Git"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aa8yt24b6glz", "title": "Senior Developer", "company": "Creed Interactive",
+      "posted": "2026-11-05", "location": "Minneapolis, MN", "country": "US", "region": "North America", "remote": false, "level": "Senior", "experience": "6+ years",
+      "required": ["ASP.NET Core", "PHP", "Angular", "React", "JavaScript", "HTML/CSS", "WordPress", "SQL Server", "MySQL", "Linux", "Azure", "AWS", "GCP", "AI coding assistants"],
+      "preferred": ["CI/CD"]
+    },
+    {
+      "ref": "https://to.indeed.com/aayp8r6gw6fq", "title": "C# Developer - Equity Derivatives Technology Risk (AVP)", "company": "Citi",
+      "posted": "2026-11-04", "location": "London", "country": "GB", "region": "Europe", "remote": false, "level": "Senior", "experience": "not stated",
+      "required": ["C#", ".NET Framework", "Performance profiling", "Unit testing", "NUnit", "xUnit", "OpenAPI/Swagger", "REST APIs", "Authentication", "Python", "Java", "Bash", "Linux", "Git", "CI/CD", "GitLab CI", "GitHub", "Messaging", "Kafka", "RabbitMQ", "Design Patterns", "System design", "Algorithms"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aaj2dqvz7zjj", "title": ".NET Developer (consultancy)", "company": "Noir (recruiter)",
+      "posted": "2026-10-14", "location": "London or Surrey / remote", "country": "GB", "region": "Europe", "remote": true, "level": "Mid", "experience": "not stated",
+      "required": ["C#", "ASP.NET Core", "Azure SQL", "Agile/Scrum"],
+      "preferred": [],
+      "mentionedNotRequired": ["Blazor", "React", "Microservices", "Azure", "MongoDB", "AWS", "Node.js", "Elasticsearch/OpenSearch"],
+      "quality": "Recruiter template advert; the other technologies are listed as training the client provides, so they are not counted."
+    },
+    {
+      "ref": "https://to.indeed.com/aanxm67mp7vf", "title": ".NET Developer (social networking site)", "company": "Noir (recruiter)",
+      "posted": "2026-10-14", "location": "London / remote", "country": "GB", "region": "Europe", "remote": true, "level": "Mid", "experience": "not stated",
+      "required": ["C#", "ASP.NET Core", "Azure SQL", "OOP"],
+      "preferred": [],
+      "mentionedNotRequired": ["Azure DevOps", "Blazor", "React", "Multithreading", "ML.NET", "Azure", "MongoDB"],
+      "quality": "Recruiter template advert; the other technologies are 'exposure' the client offers, so they are not counted."
+    },
+    {
+      "ref": "https://to.indeed.com/aakv69tt78cm", "title": "Principal Software Engineer C# .Net AWS - FinTech", "company": "Client Server (recruiter)",
+      "posted": "2026-11-05", "location": "London (hybrid)", "country": "GB", "region": "Europe", "remote": false, "level": "Lead", "experience": "not stated",
+      "required": ["C#", "AWS", "Python", "Scalable systems", "OOP", "Data structures", "Design Patterns", "SOLID", "Agile/Scrum", "AI coding assistants"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aaxdnqfwq6dv", "title": "Senior Backend Entwickler C# & .NET", "company": "MEDIFOX DAN GmbH",
+      "posted": "2026-11-02", "location": "Germany (100% remote)", "country": "DE", "region": "Europe", "remote": true, "level": "Senior", "experience": "not stated",
+      "required": ["C#", "ASP.NET Core", "AWS", "Software architecture", "Test automation", "Performance/load testing", "Logging & monitoring", "Distributed tracing", "Secure development (SSDLC)", "Code review", "Agile/Scrum", "AI coding assistants"],
+      "preferred": ["Microservices", "Docker", "Terraform", "Domain-Driven Design"]
+    },
+    {
+      "ref": "https://to.indeed.com/aaqxrzrgvcbc", "title": "Senior .NET Developer", "company": "Stellar Technologies (listed under Cirtec Medical)",
+      "posted": "2026-10-12", "location": "India (listed as Dubai)", "country": "IN", "region": "International", "remote": false, "level": "Senior", "experience": "6+ years",
+      "required": ["ASP.NET Core", "DevOps practices", "Code review"],
+      "preferred": ["Cloud platforms", "CI/CD"],
+      "quality": "Listed in Dubai but the text says the role is in India."
+    },
+    {
+      "ref": "https://to.indeed.com/aac8h2sqpybs", "title": ".NET + Angular Developer", "company": "Excellent Webworld Pvt. Ltd.",
+      "posted": "2026-08-11", "location": "Dubai", "country": "AE", "region": "Middle East", "remote": false, "level": "Mid", "experience": "3-5 years",
+      "required": ["C#", "ASP.NET", "ASP.NET Core", "ASP.NET MVC", "REST APIs", "Angular", "SQL Server", "HTML/CSS", "JavaScript", "jQuery", "OOP", "Git"],
+      "preferred": ["Azure", "Microservices", "Agile/Scrum"]
+    },
+    {
+      "ref": "https://to.indeed.com/aahlwjztgtn2", "title": "Software Engineer (.NET)", "company": "INNOBAYT INNOVATIVE SOLUTIONS",
+      "posted": "2026-10-14", "location": "Dubai", "country": "AE", "region": "Middle East", "remote": false, "level": "Mid", "experience": "4+ years",
+      "required": ["C#", "ASP.NET Core", "REST APIs", "SQL Server", "Entity Framework Core", "LINQ", "OOP", "SOLID", "Design Patterns", "Git", "Unit testing", "Authentication", "Secure development (SSDLC)", "Agile/Scrum"],
+      "preferred": ["Azure", "CI/CD", "Azure DevOps", "Docker", "Microservices", "Application performance monitoring"]
+    },
+    {
+      "ref": "https://to.indeed.com/aah9s77xlqnr", "title": "Application Developer", "company": "Dubai Insurance TPA",
+      "posted": "2026-10-12", "location": "Dubai", "country": "AE", "region": "Middle East", "remote": false, "level": "Mid", "experience": "3+ years",
+      "required": ["C#", "ASP.NET Core", "Angular", "jQuery", "Blazor", "Oracle PL/SQL"],
+      "preferred": ["SQL Server"]
+    },
+    {
+      "ref": "https://to.indeed.com/aadzybpfcz79", "title": "Web Application Developer", "company": "TEKZONE INDUSTRIAL CONSTRUCTION COMPANY",
+      "posted": "2026-09-18", "location": "Dubai", "country": "AE", "region": "Middle East", "remote": false, "level": "Mid", "experience": "3-5 years",
+      "required": ["ASP.NET", "Python", "PHP", "HTML/CSS", "JavaScript", "SQL Server", "MongoDB", "REST APIs"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aa9f8ffkxpyq", "title": ".NET Developer", "company": "Corseez",
+      "posted": "2026-09-24", "location": "Cairo", "country": "EG", "region": "Egypt", "remote": false, "level": "Mid", "experience": "3-5 years",
+      "required": ["C#", "VB.NET", "ASP.NET MVC", "ASP.NET Web Forms", "HTML/CSS", "SQL Server", "Secure development (SSDLC)", "Code review"],
+      "preferred": ["JavaScript", "jQuery", "Tableau", "N-tier architecture", "Entity Framework Core", "WCF", "SOAP", "REST APIs", "TFS"]
+    },
+    {
+      "ref": "https://to.indeed.com/aa7dsnqbkdbp", "title": "Senior .NET Developer", "company": "Kalsoft",
+      "posted": "2026-08-28", "location": "Riyadh", "country": "SA", "region": "Middle East", "remote": false, "level": "Senior", "experience": "8-10 years",
+      "required": ["C#", "ASP.NET", "ASP.NET Core", "REST APIs", "SQL Server", "Stored procedures", "Python", "Automation/bots", "LLM/Generative AI"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aahc7p69lrkz", "title": "Full Stack .NET Developer", "company": "Universal Technologies",
+      "posted": "2026-10-23", "location": "New York, NY (hybrid)", "country": "US", "region": "North America", "remote": false, "level": "Senior", "experience": "5+ years",
+      "required": ["C#", "ASP.NET Core", "Windows Services", "SSIS", "Async programming", "Multithreading", "LINQ", "Entity Framework Core", "ADO.NET", "SQL Server", "Angular", "TypeScript", "HTML/CSS", "SSRS", "Security scanning (Veracode)", "Git", "GitLab CI", "Bitbucket", "Agile/Scrum", "Jira", "Azure DevOps"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aa6j98yfnp4y", "title": "Mid-Level C# / .NET & Angular Developer", "company": "Mazuma Software",
+      "posted": "2026-11-02", "location": "New York, NY (hybrid)", "country": "US", "region": "North America", "remote": false, "level": "Mid", "experience": "5+ years",
+      "required": ["C#", "ASP.NET", "ASP.NET Core", "Angular", "SQL Server", "REST APIs", "OOP", "Design Patterns", "Unit testing", "Mocking", "Refactoring", "Git", "Agile/Scrum"],
+      "preferred": ["Azure DevOps", "MuleSoft"]
+    },
+    {
+      "ref": "https://to.indeed.com/aagp6dcfdlrs", "title": ".NET Developer", "company": "SUPPORTSOFT TECHNOLOGIES",
+      "posted": "2026-10-19", "location": "New York, NY (on site)", "country": "US", "region": "North America", "remote": false, "level": "Mid", "experience": "not stated",
+      "required": ["C#", "ASP.NET MVC", "ASP.NET Core", "Entity Framework Core", "LINQ", "SQL Server", "Stored procedures", "Query tuning", "REST APIs", "SOAP", "HTML/CSS", "JavaScript", "Angular", "SSRS", "Crystal Reports", "Design Patterns", "Unit testing", "xUnit", "NUnit", "MSTest", "TDD", "Git", "CI/CD", "Azure DevOps", "Jenkins", "GitLab CI", "OAuth 2.0", "JWT", "RBAC"],
+      "preferred": ["Microservices", "Performance optimisation", "Docker", "Kubernetes"]
+    },
+    {
+      "ref": "https://to.indeed.com/aaj667dvr68b", "title": ".NET Application Developer", "company": "Xpertbizz",
+      "posted": "2026-10-21", "location": "New York, NY", "country": "US", "region": "North America", "remote": false, "level": "Senior", "experience": "8+ years",
+      "required": ["C#", "ASP.NET", "ASP.NET Core", "ASP.NET MVC", "Entity Framework Core", "SQL Server", "Azure", "Azure App Service", "Azure SQL", "Azure Functions", "JavaScript", "React", "Angular", "REST APIs", "PostgreSQL", "Oracle", "GIS", "Design Patterns", "CI/CD", "Azure DevOps", "Git", "GitHub"],
+      "preferred": ["Azure certification"]
+    },
+    {
+      "ref": "https://to.indeed.com/aarnqkfzd4v2", "title": "Senior .NET Full Stack developer", "company": "Tavant Technologies",
+      "posted": "2026-09-15", "location": "Coppell, TX", "country": "US", "region": "North America", "remote": false, "level": "Senior", "experience": "7+ years",
+      "required": ["C#", ".NET Framework", "SQL Server", "ASP.NET Core", "JavaScript", "REST APIs", "Entity Framework Core", "Unit testing", "Integration testing", "Git", "Agile/Scrum"],
+      "preferred": ["Angular", "React", "HTML/CSS", "TypeScript", "Azure", "LLM/Generative AI"]
+    },
+    {
+      "ref": "https://to.indeed.com/aaj4gd78qnrd", "title": ".NET Developer (Senior and Mid-Level)", "company": "nexus-opus recruiting solution",
+      "posted": "2026-11-01", "location": "Dallas, TX (hybrid)", "country": "US", "region": "North America", "remote": false, "level": "Mid", "experience": "4-7 years",
+      "required": ["C#", "ASP.NET", "ASP.NET Core", "REST APIs", "SQL Server", "Stored procedures", "Azure", "Azure DevOps", "CI/CD", "Git", "OOP", "Agile/Scrum", "Secure development (SSDLC)", "Code review"],
+      "preferred": ["Microservices", "Azure Functions", "Docker", "Kubernetes", "React", "Angular", "Blazor"]
+    },
+    {
+      "ref": "https://to.indeed.com/aaqxnky6jc7z", "title": "Senior .Net Lead Developer", "company": "JNL Technologies",
+      "posted": "2026-10-10", "location": "Coppell, TX", "country": "US", "region": "North America", "remote": false, "level": "Lead", "experience": "6+ years",
+      "required": ["C#", ".NET Framework", "ASP.NET Core", "SQL Server", "REST APIs", "Entity Framework Core", "HTML/CSS", "Web accessibility", "npm", "Unit testing", "Integration testing", "Git", "Agile/Scrum", "Code review"],
+      "preferred": ["Azure"]
+    },
+    {
+      "ref": "https://to.indeed.com/aatywy8jyhdr", "title": "Full Stack Developer (ASP.NET / Blazor / MAUI)", "company": "ExaSystems Development Inc.",
+      "posted": "2026-10-30", "location": "Mississauga, ON (hybrid)", "country": "CA", "region": "North America", "remote": false, "level": "Junior", "experience": "2 years",
+      "required": ["ASP.NET", "Blazor", "SQL Server"],
+      "preferred": [".NET MAUI"]
+    },
+    {
+      "ref": "https://to.indeed.com/aam8dtg7fq87", "title": "Full Stack Angular/.NET Developer", "company": "Quad Infotech",
+      "posted": "2026-10-16", "location": "North York, ON (hybrid)", "country": "CA", "region": "North America", "remote": false, "level": "Mid", "experience": "3+ years",
+      "required": ["Angular", "TypeScript", "RxJS", "C#", "ASP.NET Core", "HTML/CSS", "JavaScript", "jQuery", "Bootstrap", "Oracle PL/SQL", "Data modelling", "REST APIs", "OOP", "Design Patterns", "Unit testing", "Jasmine/Karma", "xUnit", "Git", "CI/CD", "Azure DevOps", "AI coding assistants"],
+      "preferred": ["Capacitor", "SignalR", "VB.NET", "WPF", "Windows Services", "npm", "NuGet packages", "Data visualisation"]
+    },
+    {
+      "ref": "https://to.indeed.com/aaztcvmrxd79", "title": "Full Stack .NET Developer - 6 month contract", "company": "CorGTA (recruiter)",
+      "posted": "2026-10-30", "location": "Remote (Toronto area)", "country": "CA", "region": "North America", "remote": true, "level": "Senior", "experience": "7-8 years",
+      "required": ["C#", "ASP.NET Core", "Entity Framework Core", "REST APIs", "React", "Angular", "HTML/CSS", "JavaScript", "Azure", "Azure Functions", "Azure App Service", "Azure Key Vault", "AWS", "Microservices", "Docker", "Kubernetes", "SQL Server", "PostgreSQL", "CI/CD", "Terraform", "Bicep/ARM", "Git", "Agile/Scrum", "FHIR/HL7", "Secure development (SSDLC)"],
+      "preferred": ["Azure DevOps", "GitHub Actions", "Jenkins", "OAuth 2.0", "OpenID Connect", "Azure AD B2C", "RabbitMQ", "Azure Service Bus"]
+    },
+    {
+      "ref": "https://to.indeed.com/aat4bxxwhxt8", "title": ".Net Application Developer", "company": "isgSearch (recruiter)",
+      "posted": "2026-10-22", "location": "Toronto, ON (hybrid)", "country": "CA", "region": "North America", "remote": false, "level": "Mid", "experience": "not stated",
+      "required": ["C#", "Windows Forms", "Entity Framework Core", "ADO.NET", "SQL Server", "Multithreading", "Async programming", "Windows Services", "COM interop", "REST APIs", "AWS", "Azure DevOps", "CI/CD", "Domain-Driven Design", "CQRS"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aamtzpn4c4pn", "title": "Lead .NET Developer", "company": "Hippo Digital Limited",
+      "posted": "2026-11-05", "location": "Manchester (hybrid)", "country": "GB", "region": "Europe", "remote": false, "level": "Lead", "experience": "not stated",
+      "required": ["C#", "F#", "ASP.NET MVC", "HTML/CSS", "JavaScript", "Docker", "Kubernetes", "Microservices", "REST APIs", "Agile/Scrum", "TDD", "Terraform", "CloudFormation", "Bicep/ARM", "AWS", "Azure", "DevOps practices", "CI/CD", "Jenkins", "Azure DevOps"],
+      "preferred": ["Node.js", "React", "Angular"]
+    },
+    {
+      "ref": "https://to.indeed.com/aa2j2frfsybl", "title": "Senior Full Stack Developer", "company": "SPLIIT",
+      "posted": "2026-10-06", "location": "Manchester (hybrid)", "country": "GB", "region": "Europe", "remote": false, "level": "Senior", "experience": "5+ years",
+      "required": ["C#", "ASP.NET Core", "TypeScript", "Entity Framework Core", "SQL Server", "REST APIs", "Messaging", "MassTransit", "Background services", "React Native", "Test automation", "MSTest", "Mocking", "Azure", ".NET Aspire", "Docker"],
+      "preferred": ["Event-driven architecture", "Open Banking"]
+    },
+    {
+      "ref": "https://to.indeed.com/aatqlv4wxycd", "title": "Senior Full Stack Developer - Portfolio Management System", "company": "Luxoft",
+      "posted": "2026-10-27", "location": "Abu Dhabi", "country": "AE", "region": "Middle East", "remote": false, "level": "Lead", "experience": "10+ years",
+      "required": ["C#", ".NET Framework", "WPF", "MVVM", "Multithreading", "DevExpress", "ASP.NET Core", "REST APIs", "Python", "SQL Server", "Query tuning", "Performance profiling", "Git", "Test automation", "CI/CD", "Azure DevOps", "Caching", "Logging & monitoring", "Authentication", "LLM/Generative AI"],
+      "preferred": ["React", "Angular", "MongoDB", "Microservices", "Event-driven architecture", "Messaging", "Azure", "Docker", "Kubernetes", "API management", "RAG"]
+    },
+    {
+      "ref": "https://to.indeed.com/aajmvfmf9zjl", "title": "Senior .NET Developer (fixed-term)", "company": "Cpl (recruiter)",
+      "posted": "2026-10-22", "location": "Dublin", "country": "IE", "region": "Europe", "remote": false, "level": "Senior", "experience": "15+ years",
+      "required": ["C#", ".NET Framework", "SQL Server", "Stored procedures", "Indexing", "Execution plans", "Query tuning", "Azure"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aav9hlw2q2lc", "title": "Senior .Net Developer", "company": "Version 1",
+      "posted": "2026-10-30", "location": "Dublin (hybrid)", "country": "IE", "region": "Europe", "remote": false, "level": "Senior", "experience": "10+ years",
+      "required": ["ASP.NET Web Forms", "ASP.NET MVC", ".NET Framework", "ASP.NET Core", "SQL Server", "Stored procedures", "Azure DevOps", "Git", "TFS", "Windows Services", "Hangfire", "Background services", "CI/CD", "Application Insights", "Logging & monitoring", "Agile/Scrum", "Code review"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aanqjggyncg4", "title": "C# Developer (Sales & Trading middleware)", "company": "SMBC Group",
+      "posted": "2026-10-27", "location": "Dublin", "country": "IE", "region": "Europe", "remote": false, "level": "Senior", "experience": "10+ years",
+      "required": ["C#", "ASP.NET Core", "C++", "SQL Server", "Messaging", "Software architecture"],
+      "preferred": []
+    },
+    {
+      "ref": "https://to.indeed.com/aaq922nzznmj", "title": "Senior Full Stack .NET Developer", "company": "Cpl (recruiter)",
+      "posted": "2026-10-02", "location": "Dublin (hybrid)", "country": "IE", "region": "Europe", "remote": false, "level": "Senior", "experience": "not stated",
+      "required": ["C#", ".NET Framework", "ASP.NET MVC", "SQL Server", "Query tuning", "JavaScript", "jQuery", "Bootstrap", "REST APIs", "Async programming", "LINQ", "TDD", "Test automation", "Git", "Jenkins", "Bitbucket", "Ansible", "CI/CD"],
+      "preferred": ["Kendo UI", "Selenium", "SSIS"]
+    }
+  ]
+}

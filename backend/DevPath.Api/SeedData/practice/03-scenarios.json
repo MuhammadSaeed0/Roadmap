@@ -94,5 +94,80 @@
     "hintsAr": ["احسب الجلسات لكل program_name في sys.dm_exec_sessions عبر الزمن.", "ابحث في الكود عن new SqlConnection دون using.", "هل تحتجز معاملات طويلة أو قارئات تدفقية الاتصالات؟"],
     "solutionEn": "Watch sessions grow towards 100 (the default Max Pool Size). The usual cause is a connection or DbContext that's never disposed (e.g. created manually in a background job) or kept open across slow work. Wrap connections in using/await using, use scoped DbContexts, keep transactions short. Raising Max Pool Size only hides the leak.",
     "solutionAr": "راقب نمو الجلسات نحو 100 (القيمة الافتراضية لـ Max Pool Size). السبب المعتاد اتصال أو DbContext لا يُتخلص منه أبدًا (مثل إنشائه يدويًا في مهمة خلفية) أو يبقى مفتوحًا أثناء عمل بطيء. غلّف الاتصالات بـ using/await using، واستخدم DbContext بنطاق Scoped، واجعل المعاملات قصيرة. ورفع Max Pool Size يخفي التسريب فقط."
+  },
+  {
+    "key": "scn-container-crashes-in-staging",
+    "type": "Scenario",
+    "topic": "devops-docker",
+    "difficulty": "Intermediate",
+    "minutes": 25,
+    "titleEn": "The container works on your machine but crashes in staging",
+    "titleAr": "الحاوية تعمل على جهازك لكنها تتعطل في بيئة Staging",
+    "problemEn": "The Inventory API image runs fine with 'docker compose up' on your laptop. In staging the container restarts every few seconds and the log ends with: 'A network-related or instance-specific error occurred while establishing a connection to SQL Server. (provider: TCP Provider, error: 40 - Could not open a connection to SQL Server) Server=localhost'. What is wrong and how do you fix it so the same image works everywhere?",
+    "problemAr": "صورة Inventory API تعمل جيدًا بالأمر docker compose up على حاسوبك. لكن في بيئة Staging تُعاد الحاوية إلى التشغيل كل بضع ثوانٍ، وينتهي السجل بالرسالة: 'A network-related or instance-specific error occurred while establishing a connection to SQL Server. (provider: TCP Provider, error: 40 - Could not open a connection to SQL Server) Server=localhost'. ما الخطأ؟ وكيف تصلحه حتى تعمل الصورة نفسها في كل مكان؟",
+    "expectedEn": "Configuration supplied per environment, a correct database host, and a container that fails clearly instead of restarting silently.",
+    "expectedAr": "إعدادات تُمرَّر لكل بيئة، واسم مضيف صحيح لقاعدة البيانات، وحاوية تفشل برسالة واضحة بدل إعادة التشغيل بصمت.",
+    "hintsEn": [
+      "Inside a container, what does 'localhost' point to?",
+      "Where does the connection string come from in each environment?",
+      "How would a health check have shown the problem sooner?"
+    ],
+    "hintsAr": [
+      "داخل الحاوية، إلى ماذا يشير localhost؟",
+      "من أين تأتي سلسلة الاتصال في كل بيئة؟",
+      "كيف كان فحص الصحة سيكشف المشكلة أسرع؟"
+    ],
+    "solutionEn": "1) Inside a container 'localhost' is the container itself, so the connection string baked into appsettings.json can only work where the database runs in the same container network under that name. 2) Remove environment-specific values from the image; pass ConnectionStrings__Inventory as an environment variable (in Compose: the service name 'db'; in staging: the real server, ideally from a secret store). 3) Add a /health check that includes the database and use it as the container's health check, so a misconfiguration is visible immediately. 4) Keep the image identical across environments and change only configuration.",
+    "solutionAr": "1) داخل الحاوية يشير localhost إلى الحاوية نفسها، لذا لا تعمل سلسلة الاتصال المضمّنة في appsettings.json إلا حيث تعمل قاعدة البيانات في شبكة الحاويات نفسها بهذا الاسم. 2) أزل القيم الخاصة بكل بيئة من الصورة، ومرّر ConnectionStrings__Inventory كمتغير بيئة (في Compose: اسم الخدمة db، وفي Staging: الخادم الحقيقي ويفضَّل من مخزن أسرار). 3) أضف فحص /health يشمل قاعدة البيانات واستخدمه كفحص صحة للحاوية، فيظهر الخطأ في الإعدادات فورًا. 4) أبقِ الصورة متطابقة في كل البيئات وغيّر الإعدادات فقط."
+  },
+  {
+    "key": "scn-pipeline-red-after-merge",
+    "type": "Scenario",
+    "topic": "devops-ci-cd",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "The main branch pipeline turned red after a merge",
+    "titleAr": "أصبح خط البناء على الفرع main أحمر بعد عملية دمج",
+    "problemEn": "Two pull requests were green and both were merged into main within ten minutes. Now the main pipeline fails with 'error CS0117: OrderDto does not contain a definition for CustomerName', and a teammate suggests disabling the failing job so a hotfix can ship. What happened, what do you do now, and how do you stop it happening again?",
+    "problemAr": "كان هناك Pull Request ناجحان، ودُمج كلاهما في main خلال عشر دقائق. الآن يفشل خط البناء على main بالخطأ 'error CS0117: OrderDto does not contain a definition for CustomerName'، ويقترح زميل تعطيل المهمة الفاشلة حتى يُنشر إصلاح عاجل. ماذا حدث؟ وماذا تفعل الآن؟ وكيف تمنع تكراره؟",
+    "expectedEn": "A diagnosis of the semantic conflict, a quick fix or revert that keeps main green, and branch rules that test the merged result.",
+    "expectedAr": "تشخيص للتعارض الدلالي، وإصلاح أو تراجع سريع يُبقي main ناجحًا، وقواعد للفروع تختبر النتيجة بعد الدمج.",
+    "hintsEn": [
+      "Each pull request was tested against which version of main?",
+      "What is the fastest safe way to make main green again?",
+      "Which branch-protection settings test the code as it will be after merging?"
+    ],
+    "hintsAr": [
+      "كل Pull Request اختُبر مقابل أي نسخة من main؟",
+      "ما أسرع طريقة آمنة لإعادة main إلى النجاح؟",
+      "أي إعدادات لحماية الفروع تختبر الكود كما سيكون بعد الدمج؟"
+    ],
+    "solutionEn": "1) It is a semantic merge conflict: one PR renamed CustomerName while the other started using it; each was green against the old main. 2) Never disable the job — revert the second merge (or push a small fix) so main is green, then ship the hotfix through the pipeline. 3) Turn on 'require branches to be up to date before merging' (or a merge queue) so each PR is tested on top of the latest main, and keep required status checks on main.",
+    "solutionAr": "1) هذا تعارض دمج دلالي: أحد الطلبين غيّر اسم CustomerName بينما بدأ الآخر في استخدامه، وكل منهما نجح مقابل النسخة القديمة من main. 2) لا تعطّل المهمة أبدًا — تراجع عن الدمج الثاني (أو ادفع إصلاحًا صغيرًا) حتى يعود main ناجحًا، ثم انشر الإصلاح العاجل عبر خط البناء. 3) فعّل خيار «يجب أن تكون الفروع محدّثة قبل الدمج» (أو Merge queue) حتى يُختبر كل PR فوق آخر نسخة من main، وأبقِ الفحوص الإلزامية على main."
+  },
+  {
+    "key": "scn-secret-committed",
+    "type": "Scenario",
+    "topic": "cloud-azure-app-service",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "A production connection string was committed to the repository",
+    "titleAr": "سلسلة اتصال الإنتاج رُفعت إلى المستودع",
+    "problemEn": "While reviewing a pull request you notice appsettings.Production.json contains the Azure SQL connection string with its password. The PR author says they will delete the line in the next commit. Is that enough? List what you do, in order.",
+    "problemAr": "أثناء مراجعة Pull Request تلاحظ أن الملف appsettings.Production.json يحتوي على سلسلة اتصال Azure SQL مع كلمة المرور. يقول صاحب الطلب إنه سيحذف السطر في الـ Commit التالي. هل هذا كافٍ؟ اذكر ما تفعله بالترتيب.",
+    "expectedEn": "Treat the secret as compromised: rotate it, move it to Key Vault with a managed identity, and prevent it from happening again.",
+    "expectedAr": "التعامل مع السر على أنه مكشوف: تغييره، ونقله إلى Key Vault مع هوية مُدارة، ومنع تكرار ذلك.",
+    "hintsEn": [
+      "Deleting a line removes it from the history?",
+      "Who could already have a copy?",
+      "How can the app read the secret without anyone storing it?"
+    ],
+    "hintsAr": [
+      "هل حذف السطر يزيله من سجل Git؟",
+      "من قد يكون لديه نسخة بالفعل؟",
+      "كيف يقرأ التطبيق السر دون أن يحفظه أحد؟"
+    ],
+    "solutionEn": "Deleting the line is not enough: the password stays in Git history, forks and CI logs. 1) Rotate the database password (or switch the app to Microsoft Entra authentication) immediately. 2) Store the new secret in Key Vault and let the Web App read it through its managed identity; keep only non-secret settings in appsettings files. 3) Remove the secret from the history if the repository is shared, but assume it was already copied. 4) Add secret scanning / push protection and a review checklist item so it cannot happen again.",
+    "solutionAr": "حذف السطر غير كافٍ: تبقى كلمة المرور في سجل Git والنسخ المتفرعة (Forks) وسجلات الـ CI. 1) غيّر كلمة مرور قاعدة البيانات فورًا (أو انقل التطبيق إلى مصادقة Microsoft Entra). 2) خزّن السر الجديد في Key Vault ودع التطبيق يقرؤه عبر هويته المُدارة، وأبقِ الإعدادات غير السرية فقط في ملفات appsettings. 3) أزل السر من السجل إن كان المستودع مشتركًا، لكن افترض أنه نُسخ بالفعل. 4) فعّل فحص الأسرار وحماية الرفع (Secret scanning / Push protection) وأضف بندًا في قائمة المراجعة حتى لا يتكرر ذلك."
   }
 ]

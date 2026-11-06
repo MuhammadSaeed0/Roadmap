@@ -8,7 +8,7 @@ export const content: TourContent = {
     welcomeTitle: 'Start your journey into programming, one step at a time',
     welcomeBody: 'If you’re just getting started with programming, you’re in the right place. DevPath starts with the basics of C# and builds up step by step until you can create complete web apps with .NET and Angular, always showing you what to learn next and how to practise it.',
     welcomePoints: [
-      'A roadmap of 13 phases, each building on the one before',
+      'A roadmap of 14 phases, each building on the one before',
       'Every topic explained, with videos, short quizzes and practice exercises, then four real projects to apply what you’ve learned',
       'Progress tracking and regular review to make it stick, plus a view of how ready you are for your first job',
     ],
@@ -39,7 +39,7 @@ export const content: TourContent = {
   },
   pages: {
     dashboard: { title: 'Dashboard', summary: 'Your daily starting point: overall progress, today’s study time, the next topic to learn, a plan for the time you have, and shortcuts to everything else.' },
-    roadmap: { title: 'My Roadmap', summary: 'The whole curriculum as 13 phases in order. Open a phase to see its topics, mark what you finish, and see which projects come after it.' },
+    roadmap: { title: 'My Roadmap', summary: 'The whole curriculum as 14 phases in order. Open a phase to see its topics, mark what you finish, and see which projects come after it.' },
     library: { title: 'Learning Library', summary: 'Every topic in one searchable, filterable list, so you can find anything without going phase by phase.' },
     topic: { title: 'Topic', summary: 'Everything for one topic: the explanation, code, videos, a three-level quiz, practice tasks, resources and your notes, with your own progress on the side.' },
     projects: { title: 'Projects', summary: 'Four practical projects, from a console app to a full portfolio system. Each one unlocks after a roadmap phase and tracks its tasks, change requests and portfolio checklist.' },
@@ -78,7 +78,7 @@ export const content: TourContent = {
     'dashboard-activity': { title: 'Recent activity', body: 'What you did lately: completed topics, study sessions, practice and project tasks, with links back to each.' },
     'dashboard-actions': { title: 'Quick actions', body: 'Shortcuts to continue learning, resume your active project, start a practice exercise, review weak topics or check your career readiness.' },
 
-    'roadmap-header': { title: 'Roadmap controls', body: 'Expand or collapse all 13 phases at once.' },
+    'roadmap-header': { title: 'Roadmap controls', body: 'Expand or collapse all 14 phases at once.' },
     'roadmap-phases': { title: 'Phases and topics', body: 'The curriculum in order, with your progress in each phase and the current one marked. Open a phase to see its topics and mark each one complete when you finish it. Locked topics need their prerequisites first.' },
     'library-filters': { title: 'Search and filters', body: 'Search every topic by name and narrow the list by skill, phase, status, priority or what you already know.' },
     'library-list': { title: 'All topics', body: 'Each row shows the topic’s skill, priority, estimated time and your status. Click a title to open the topic.' },

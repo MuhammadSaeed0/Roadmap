@@ -1,0 +1,98 @@
+{
+  "runs": [
+    {
+      "run": "2026-11-06",
+      "period": {
+        "from": "2026-08-06",
+        "to": "2026-11-06"
+      },
+      "postings": 36,
+      "regions": {
+        "North America": 17,
+        "Europe": 11,
+        "Middle East": 6,
+        "International": 1,
+        "Egypt": 1
+      },
+      "top": [
+        {
+          "name": "REST APIs",
+          "share": 61.1,
+          "recommendation": "covered"
+        },
+        {
+          "name": "Git",
+          "share": 52.8,
+          "recommendation": "covered"
+        },
+        {
+          "name": "CI/CD",
+          "share": 47.2,
+          "recommendation": "covered"
+        },
+        {
+          "name": "Agile/Scrum",
+          "share": 44.4,
+          "recommendation": "covered"
+        },
+        {
+          "name": "JavaScript",
+          "share": 41.7,
+          "recommendation": "covered"
+        },
+        {
+          "name": "Azure",
+          "share": 38.9,
+          "recommendation": "covered"
+        },
+        {
+          "name": "HTML/CSS",
+          "share": 38.9,
+          "recommendation": "covered"
+        },
+        {
+          "name": "Unit testing",
+          "share": 27.8,
+          "recommendation": "covered"
+        },
+        {
+          "name": "Azure DevOps",
+          "share": 38.9,
+          "recommendation": "covered"
+        },
+        {
+          "name": "Design Patterns",
+          "share": 25,
+          "recommendation": "covered"
+        },
+        {
+          "name": "Microservices",
+          "share": 30.6,
+          "recommendation": "covered"
+        },
+        {
+          "name": "ASP.NET MVC",
+          "share": 25,
+          "recommendation": "covered"
+        },
+        {
+          "name": "OOP",
+          "share": 19.4,
+          "recommendation": "covered"
+        },
+        {
+          "name": "Docker",
+          "share": 27.8,
+          "recommendation": "covered"
+        },
+        {
+          "name": "ASP.NET",
+          "share": 22.2,
+          "recommendation": "covered"
+        }
+      ],
+      "add": [],
+      "improve": []
+    }
+  ]
+}

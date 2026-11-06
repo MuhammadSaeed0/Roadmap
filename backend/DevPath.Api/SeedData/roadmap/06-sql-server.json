@@ -159,6 +159,37 @@
       "prerequisites": ["sql-parameterization"]
     },
     {
+      "slug": "sql-stored-procedures",
+      "skill": "SqlServer", "priority": "Important", "minutes": 45, "difficulty": "Intermediate",
+      "titleEn": "Stored procedures, views and functions in T-SQL",
+      "titleAr": "الإجراءات المخزنة والـ Views والدوال في T-SQL",
+      "summaryEn": "Stored procedures are named, parameterised T-SQL programs saved in the database; views are saved queries; scalar and table-valued functions return values or rows. Many existing .NET systems keep important business logic in them, and EF Core can call them with FromSql and ExecuteSql.",
+      "summaryAr": "الإجراءات المخزنة (Stored procedures) برامج T-SQL مُسمّاة تقبل معاملات وتُحفظ في قاعدة البيانات؛ والـ Views استعلامات محفوظة؛ والدوال (Scalar وTable-valued) تُعيد قيمًا أو صفوفًا. تحتفظ كثير من أنظمة .NET القائمة بمنطق عمل مهم داخلها، ويستطيع EF Core استدعاءها عبر FromSql وExecuteSql.",
+      "whyEn": "Stored procedures were explicitly required in several .NET postings, especially for enterprise, finance and government systems that maintain large SQL Server databases. You must be able to read, write, tune and call them safely even when new code uses EF Core.",
+      "whyAr": "طُلبت الإجراءات المخزنة صراحةً في عدة إعلانات .NET، خاصة في أنظمة الشركات والقطاع المالي والحكومي التي تدير قواعد SQL Server كبيرة. يجب أن تستطيع قراءتها وكتابتها وتحسين أدائها واستدعاءها بأمان حتى عندما يستخدم الكود الجديد EF Core.",
+      "howEn": "Write 'CREATE OR ALTER PROCEDURE dbo.GetLowStockProducts @Threshold int AS BEGIN SET NOCOUNT ON; SELECT ... WHERE Stock < @Threshold; END'. Use parameters (never concatenated strings), TRY/CATCH with transactions for multi-step changes, and OUTPUT parameters or result sets for results. Keep procedures in source control as migration scripts. From EF Core, call them with 'context.Products.FromSql($\"EXEC dbo.GetLowStockProducts {threshold}\")' or 'Database.ExecuteSqlAsync', which turn interpolated values into parameters. Check their plans like any query.",
+      "howAr": "اكتب CREATE OR ALTER PROCEDURE dbo.GetLowStockProducts @Threshold int AS BEGIN SET NOCOUNT ON; SELECT ... WHERE Stock < @Threshold; END. استخدم المعاملات (لا تدمج النصوص أبدًا)، وTRY/CATCH مع المعاملات (Transactions) للتعديلات متعددة الخطوات، ومعاملات OUTPUT أو مجموعات النتائج لإرجاع النتائج. احفظ الإجراءات في نظام التحكم بالإصدارات كسكربتات Migrations. ومن EF Core استدعها عبر context.Products.FromSql($\"EXEC dbo.GetLowStockProducts {threshold}\") أو Database.ExecuteSqlAsync، اللذين يحوّلان القيم المُدرجة إلى معاملات. وافحص خطط تنفيذها كأي استعلام.",
+      "exampleEn": "A monthly sales report that aggregates millions of rows runs as a stored procedure close to the data; the API calls it with EF Core's FromSql and maps the result to a DTO.",
+      "exampleAr": "تقرير المبيعات الشهري الذي يجمّع ملايين الصفوف يُنفَّذ كإجراء مخزن قريب من البيانات؛ ويستدعيه الـ API عبر FromSql في EF Core ويحوّل النتيجة إلى DTO.",
+      "practiceEn": "Write a stored procedure that returns the products below a stock threshold for a category, add it with a migration, and call it from Project 2 with FromSql.",
+      "practiceAr": "اكتب إجراءً مخزنًا يُعيد المنتجات التي يقل مخزونها عن حدٍّ معيّن ضمن فئة، وأضفه عبر Migration، واستدعه من المشروع الثاني باستخدام FromSql.",
+      "challengeEn": "Implement 'transfer stock between warehouses' as a stored procedure with a transaction, TRY/CATCH and validation, call it from the API, and write an integration test that proves a failed transfer leaves both warehouses unchanged.",
+      "challengeAr": "نفّذ عملية «نقل مخزون بين مستودعين» كإجراء مخزن مع Transaction وTRY/CATCH وتحقق من صحة البيانات، واستدعه من الـ API، واكتب اختبار تكامل يثبت أن النقل الفاشل يترك المستودعين دون تغيير.",
+      "objectivesEn": [
+        "Write parameterised stored procedures, views and functions",
+        "Handle errors and transactions inside a procedure",
+        "Call procedures safely from EF Core with FromSql and ExecuteSql",
+        "Keep database code in source control through migrations"
+      ],
+      "objectivesAr": [
+        "كتابة إجراءات مخزنة وViews ودوال تستخدم المعاملات",
+        "معالجة الأخطاء والـ Transactions داخل الإجراء",
+        "استدعاء الإجراءات بأمان من EF Core عبر FromSql وExecuteSql",
+        "حفظ كود قاعدة البيانات في نظام التحكم بالإصدارات عبر الـ Migrations"
+      ],
+      "prerequisites": ["sql-parameterization", "sql-transactions"]
+    },
+    {
       "slug": "sql-ef-generated-sql",
       "skill": "SqlServer", "priority": "Important", "minutes": 30,
       "titleEn": "Reviewing EF Core-generated SQL",

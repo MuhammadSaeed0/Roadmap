@@ -1457,6 +1457,10 @@ namespace DevPath.Api.Migrations
                     b.Property<string>("CodeSample")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Difficulty")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<int>("EstimatedMinutes")
                         .HasColumnType("int");
 
@@ -1473,6 +1477,14 @@ namespace DevPath.Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HowEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ObjectivesAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ObjectivesEn")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1541,6 +1553,56 @@ namespace DevPath.Api.Migrations
                     b.HasIndex("PhaseId", "Order");
 
                     b.ToTable("Topics");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.TopicDemand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PeriodFrom")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("PeriodTo")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("Postings")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Required")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Run")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<double>("Share")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Technology")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalPostings")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.ToTable("TopicDemand");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.TopicPrerequisite", b =>
@@ -2207,6 +2269,17 @@ namespace DevPath.Api.Migrations
                     b.Navigation("Phase");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.TopicDemand", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.Topic", "Topic")
+                        .WithMany("Demand")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.TopicPrerequisite", b =>
                 {
                     b.HasOne("DevPath.Api.Models.Topic", "PrerequisiteTopic")
@@ -2382,6 +2455,8 @@ namespace DevPath.Api.Migrations
 
             modelBuilder.Entity("DevPath.Api.Models.Topic", b =>
                 {
+                    b.Navigation("Demand");
+
                     b.Navigation("Prerequisites");
 
                     b.Navigation("ProgressRows");

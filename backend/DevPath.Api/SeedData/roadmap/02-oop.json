@@ -140,6 +140,37 @@
       "prerequisites": ["oop-composition", "oop-polymorphism"]
     },
     {
+      "slug": "arch-design-patterns",
+      "skill": "CSharp", "priority": "Important", "minutes": 60, "difficulty": "Intermediate",
+      "titleEn": "Design patterns in C# (Strategy, Factory, Decorator, Observer, Repository)",
+      "titleAr": "أنماط التصميم في C# (Strategy وFactory وDecorator وObserver وRepository)",
+      "summaryEn": "Design patterns are named, proven solutions to recurring design problems. The ones you meet daily in .NET code: Strategy (swap an algorithm behind an interface), Factory (centralise object creation), Decorator (add behaviour by wrapping), Observer (events and notifications) and Repository (hide data access behind an abstraction).",
+      "summaryAr": "أنماط التصميم حلول مُسمّاة ومجرَّبة لمشكلات تصميم متكررة. الأنماط التي تقابلها يوميًا في كود .NET هي: Strategy (تبديل الخوارزمية خلف واجهة)، وFactory (تجميع إنشاء الكائنات في مكان واحد)، وDecorator (إضافة سلوك بالتغليف)، وObserver (الأحداث والإشعارات)، وRepository (إخفاء الوصول إلى البيانات خلف تجريد).",
+      "whyEn": "A quarter of the .NET postings in the market research required design patterns explicitly, usually next to SOLID and OOP. Patterns give the team a shared vocabulary in code reviews and design discussions, and they are a favourite interview topic.",
+      "whyAr": "طلب ربع إعلانات .NET في بحث السوق أنماط التصميم صراحةً، وغالبًا بجانب SOLID والبرمجة الكائنية. تمنح الأنماط الفريق لغة مشتركة في مراجعات الكود ونقاشات التصميم، وهي من أكثر موضوعات المقابلات شيوعًا.",
+      "howEn": "Learn each pattern from the problem it solves, not from its UML diagram. Strategy: an IShippingCostCalculator with one class per carrier, chosen at runtime. Factory: a method or class that returns the right strategy for an input. Decorator: a CachedProductService that wraps IProductService (in ASP.NET Core, register it with DI or Scrutor). Observer: C# events, or MediatR notifications. Repository: an interface over EF Core only when it adds value (testability, aggregates). Recognise the patterns already in .NET: middleware is Chain of Responsibility, IOptions is an Options pattern, ILogger providers are Strategies.",
+      "howAr": "تعلّم كل نمط من المشكلة التي يحلها لا من مخطط UML. Strategy: واجهة IShippingCostCalculator مع صنف لكل شركة شحن يُختار وقت التشغيل. Factory: دالة أو صنف يُعيد الاستراتيجية المناسبة لمدخل معيّن. Decorator: صنف CachedProductService يغلّف IProductService (وفي ASP.NET Core يُسجَّل عبر DI أو Scrutor). Observer: أحداث C# أو إشعارات MediatR. Repository: واجهة فوق EF Core فقط عندما تضيف قيمة (قابلية الاختبار أو الـ Aggregates). وتعرّف على الأنماط الموجودة أصلًا في .NET: الـ Middleware هو Chain of Responsibility، وIOptions هو نمط Options، ومزوّدو ILogger هم Strategies.",
+      "exampleEn": "In the Sales & Orders system, the discount rules (seasonal, loyalty, coupon) become one IDiscountStrategy each, a DiscountStrategyFactory picks the right one for an order, and adding a new promotion means adding a class instead of editing a long switch statement.",
+      "exampleAr": "في نظام المبيعات والطلبات، تصبح قواعد الخصم (موسمي، ولاء، كوبون) كلٌّ منها IDiscountStrategy مستقلة، ويختار DiscountStrategyFactory المناسبة للطلب، فتصبح إضافة عرض جديد إضافة صنف بدل تعديل جملة switch طويلة.",
+      "practiceEn": "Refactor a method with a large switch on order type into the Strategy pattern with a small factory, and add unit tests that prove each strategy works on its own.",
+      "practiceAr": "أعد هيكلة دالة تحتوي على switch كبير حسب نوع الطلب إلى نمط Strategy مع Factory صغير، وأضف اختبارات وحدة تثبت أن كل استراتيجية تعمل بمفردها.",
+      "challengeEn": "In Project 2, add caching to the product queries with the Decorator pattern (without touching the original service), send a notification when stock falls below a threshold with the Observer pattern, and explain in the README which patterns you used and why.",
+      "challengeAr": "في المشروع الثاني، أضف التخزين المؤقت لاستعلامات المنتجات باستخدام نمط Decorator (دون تعديل الخدمة الأصلية)، وأرسل إشعارًا عند انخفاض المخزون عن حدٍّ معيّن باستخدام نمط Observer، واشرح في ملف README الأنماط التي استخدمتها ولماذا.",
+      "objectivesEn": [
+        "Recognise the problem each common pattern solves",
+        "Implement Strategy, Factory, Decorator and Observer in C#",
+        "Register pattern-based classes with ASP.NET Core dependency injection",
+        "Spot the patterns that ASP.NET Core itself uses"
+      ],
+      "objectivesAr": [
+        "التعرّف على المشكلة التي يحلها كل نمط شائع",
+        "تنفيذ Strategy وFactory وDecorator وObserver في C#",
+        "تسجيل الأصناف المبنية على الأنماط في حقن الاعتماديات بـ ASP.NET Core",
+        "اكتشاف الأنماط التي يستخدمها ASP.NET Core نفسه"
+      ],
+      "prerequisites": ["oop-solid", "oop-interfaces"]
+    },
+    {
       "slug": "oop-object-modeling",
       "skill": "CSharp", "priority": "Core", "minutes": 45,
       "titleEn": "Practical object modeling",

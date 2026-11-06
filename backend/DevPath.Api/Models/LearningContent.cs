@@ -67,6 +67,14 @@ public class Topic
     // so each holds at most one row (or none) whenever it is queried.
     public List<TopicProgress> ProgressRows { get; set; } = [];
     public List<ReviewSchedule> ReviewRows { get; set; } = [];
+
+    /// <summary>What the learner can do after the topic, one objective per line (empty for older topics).</summary>
+    public string ObjectivesEn { get; set; } = "";
+    public string ObjectivesAr { get; set; } = "";
+    /// <summary>How demanding the topic is; null where the seed doesn't say.</summary>
+    public Difficulty? Difficulty { get; set; }
+    /// <summary>How often employers ask for the technologies this topic teaches (from docs/market-research).</summary>
+    public List<TopicDemand> Demand { get; set; } = [];
 }
 
 /// <summary>Explicit many-to-many: Topic requires PrerequisiteTopic.</summary>
@@ -177,4 +185,27 @@ public class InterviewQuestion
 
     /// <summary>Per-user rows, filtered to the signed-in user (at most one).</summary>
     public List<InterviewProgress> ProgressRows { get; set; } = [];
+}
+
+/// <summary>
+/// Job-market evidence for a topic: in a research run, how many of the analysed job postings asked for one of the
+/// technologies the topic teaches. Written by the seeder from SeedData/market-demand.json (made by
+/// tools/market-research/analyze.mjs), so it changes only when a new research run is published.
+/// </summary>
+public class TopicDemand
+{
+    public int Id { get; set; }
+    public int TopicId { get; set; }
+    public Topic Topic { get; set; } = null!;
+    public required string Technology { get; set; }
+    /// <summary>Distinct postings that list the technology (required or preferred), and how many of them require it.</summary>
+    public int Postings { get; set; }
+    public int Required { get; set; }
+    /// <summary>Percentage of the run's postings, e.g. 38.9.</summary>
+    public double Share { get; set; }
+    public int TotalPostings { get; set; }
+    /// <summary>The research run, e.g. "2026-11-06", and the period its postings were published in.</summary>
+    public required string Run { get; set; }
+    public required string PeriodFrom { get; set; }
+    public required string PeriodTo { get; set; }
 }

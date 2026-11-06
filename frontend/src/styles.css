@@ -586,6 +586,12 @@ html[lang='ar'] .prose { font-size: 1.02rem; }
 .session-list li { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; font-size: 0.86rem; padding: 4px 0; border-bottom: 1px dashed var(--border); }
 .session-note { grid-column: 1 / -1; }
 .link-list { display: flex; flex-direction: column; gap: 8px; }
+.objective-list { margin: 0; padding-inline-start: 22px; display: flex; flex-direction: column; gap: 6px; line-height: 1.6; }
+.demand-list { list-style: none; margin: 0 0 10px; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.demand-list li { display: flex; flex-direction: column; gap: 4px; }
+.demand-row { display: flex; justify-content: space-between; gap: 8px; }
+.demand-bar { height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; }
+.demand-bar span { display: block; height: 100%; background: var(--accent); }
 .link-list li { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 0.92rem; }
 .link-list .icon { color: var(--muted); }
 .check-list { display: flex; flex-direction: column; gap: 7px; font-size: 0.92rem; }

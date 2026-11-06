@@ -59,11 +59,11 @@ public class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>, IAsyncLif
     }
 
     [Fact]
-    public async Task Roadmap_has_13_phases_and_enums_are_strings()
+    public async Task Roadmap_has_14_phases_and_enums_are_strings()
     {
         var json = await Json(await _client.GetAsync("/api/roadmap"));
         var phases = json["phases"]!.AsArray();
-        Assert.Equal(13, phases.Count);
+        Assert.Equal(14, phases.Count);
         Assert.Equal("NotStarted", phases[0]!["topics"]![1]!["status"]!.GetValue<string>());
     }
 
@@ -96,6 +96,24 @@ public class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>, IAsyncLif
         Assert.Equal("Completed", topic["status"]!.GetValue<string>());
         Assert.Equal(3, topic["confidence"]!.GetValue<int>());
         Assert.NotNull(topic["completedAt"]);
+    }
+
+    [Fact]
+    public async Task Topic_detail_includes_objectives_difficulty_and_market_demand()
+    {
+        var roadmap = await Json(await _client.GetAsync("/api/roadmap"));
+        var id = roadmap["phases"]!.AsArray().SelectMany(p => p!["topics"]!.AsArray())
+            .Single(t => t!["slug"]!.GetValue<string>() == "devops-ci-cd")!["id"]!.GetValue<int>();
+
+        var topic = await Json(await _client.GetAsync($"/api/topics/{id}"));
+        Assert.Equal("Intermediate", topic["difficulty"]!.GetValue<string>());
+        Assert.True(topic["objectivesEn"]!.AsArray().Count >= 3);
+        Assert.Equal(topic["objectivesEn"]!.AsArray().Count, topic["objectivesAr"]!.AsArray().Count);
+        var demand = topic["demand"]!.AsArray();
+        Assert.Contains(demand, d => d!["technology"]!.GetValue<string>() == "CI/CD");
+        var shares = demand.Select(d => d!["share"]!.GetValue<double>()).ToList();
+        Assert.Equal(shares.OrderByDescending(s => s), shares);
+        Assert.All(demand, d => Assert.True(d!["totalPostings"]!.GetValue<int>() > 0));
     }
 
     [Fact]

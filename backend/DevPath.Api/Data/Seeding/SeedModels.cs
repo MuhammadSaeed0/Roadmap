@@ -20,7 +20,15 @@ public record TopicSeed(
     string ExampleEn, string ExampleAr,
     string PracticeEn, string PracticeAr,
     string ChallengeEn, string ChallengeAr,
-    List<string>? Prerequisites);
+    List<string>? Prerequisites,
+    List<string>? ObjectivesEn = null, List<string>? ObjectivesAr = null, Difficulty? Difficulty = null);
+
+/// <summary>SeedData/market-demand.json: the latest job-market research run, per roadmap topic.</summary>
+public record MarketDemandSeed(
+    string Run, string PeriodFrom, string PeriodTo, int Postings, string Source,
+    Dictionary<string, List<TopicDemandSeed>> Topics);
+
+public record TopicDemandSeed(string Technology, int Postings, int Required, double Share);
 
 public record ResourceSeed(
     string Key, string TitleEn, string? TitleAr, string Url, string Source,
@@ -107,7 +115,8 @@ public class SnippetStore
     private static readonly Dictionary<string, string> Languages = new(StringComparer.OrdinalIgnoreCase)
     {
         [".cs"] = "csharp", [".ts"] = "typescript", [".sql"] = "sql", [".html"] = "html",
-        [".css"] = "css", [".json"] = "json", [".sh"] = "bash", [".http"] = "http", [".txt"] = "text"
+        [".css"] = "css", [".json"] = "json", [".sh"] = "bash", [".http"] = "http", [".txt"] = "text",
+        [".yml"] = "yaml", [".dockerfile"] = "dockerfile"
     };
 
     private readonly Dictionary<string, (string Code, string Language)> _snippets = new(StringComparer.OrdinalIgnoreCase);

@@ -35,8 +35,8 @@ public class SeederTests : IAsyncLifetime
     {
         await Seeder().SeedAsync();
 
-        Assert.Equal(13, await _db.Phases.CountAsync());
-        Assert.Equal(150, await _db.Topics.CountAsync());
+        Assert.Equal(14, await _db.Phases.CountAsync());
+        Assert.Equal(159, await _db.Topics.CountAsync());
         Assert.Equal(4, await _db.Projects.CountAsync());
         Assert.True(await _db.Resources.CountAsync() > 100);
         Assert.True(await _db.PracticeExercises.CountAsync() >= 140);
@@ -63,6 +63,43 @@ public class SeederTests : IAsyncLifetime
         {
             Assert.Equal(q.OptionsEn.Count, q.OptionsAr.Count);
             Assert.InRange(q.AnswerIndex, 0, q.OptionsEn.Count - 1);
+        });
+    }
+
+    [Fact]
+    public async Task Topics_added_from_the_market_research_have_objectives_difficulty_and_demand()
+    {
+        await Seeder().SeedAsync();
+
+        var slugs = new[] { "arch-design-patterns", "sql-stored-procedures", "pro-agile-scrum", "devops-docker", "devops-ci-cd",
+            "cloud-fundamentals", "cloud-azure-app-service", "devops-kubernetes", "arch-microservices" };
+        var topics = await _db.Topics.Include(t => t.Demand).Include(t => t.Phase).Where(t => slugs.Contains(t.Slug)).ToListAsync();
+        Assert.Equal(slugs.Length, topics.Count);
+        Assert.All(topics, t =>
+        {
+            Assert.NotNull(t.Difficulty);
+            Assert.True(t.ObjectivesEn.Split('\n').Length >= 3, t.Slug);
+            Assert.Equal(t.ObjectivesEn.Split('\n').Length, t.ObjectivesAr.Split('\n').Length);
+            Assert.NotEmpty(t.Demand);
+            Assert.All(t.Demand, d => { Assert.InRange(d.Postings, 1, d.TotalPostings); Assert.InRange(d.Share, 0, 100); });
+        });
+        Assert.Contains(topics.Single(t => t.Slug == "devops-ci-cd").Demand, d => d.Technology == "CI/CD");
+        // The cloud phase sits before the projects phase, which stays last.
+        var phases = await _db.Phases.OrderBy(p => p.Order).Select(p => p.Slug).ToListAsync();
+        Assert.Equal(phases.Count - 2, phases.IndexOf(topics.Single(t => t.Slug == "devops-docker").Phase!.Slug));
+    }
+
+    [Fact]
+    public async Task Every_prerequisite_comes_earlier_in_the_roadmap()
+    {
+        await Seeder().SeedAsync();
+
+        var order = await _db.Topics.Select(t => new { t.Id, Phase = t.Phase!.Order, t.Order }).ToDictionaryAsync(t => t.Id);
+        var pairs = await _db.TopicPrerequisites.Select(p => new { p.TopicId, p.PrerequisiteTopicId }).ToListAsync();
+        Assert.All(pairs, p =>
+        {
+            var (topic, pre) = (order[p.TopicId], order[p.PrerequisiteTopicId]);
+            Assert.True((pre.Phase, pre.Order).CompareTo((topic.Phase, topic.Order)) < 0, $"topic {p.TopicId} comes before its prerequisite {p.PrerequisiteTopicId}");
         });
     }
 
@@ -96,24 +133,46 @@ public class SeederTests : IAsyncLifetime
         var dir = Directory.CreateTempSubdirectory("devpath-seed-").FullName;
         try
         {
-            Directory.CreateDirectory(Path.Combine(dir, "roadmap"));
-            Directory.CreateDirectory(Path.Combine(dir, "practice"));
-            Directory.CreateDirectory(Path.Combine(dir, "interviews"));
-            var phase = new PhaseSeed("p1", 1, "Phase", "مرحلة", "", "",
-                [new TopicSeed("a", SkillArea.CSharp, TopicPriority.Core, 10, "A", "أ", "", "", "", "", "", "", "", "", "", "", "", "", ["missing-topic"])]);
-            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { new JsonStringEnumConverter() } };
-            File.WriteAllText(Path.Combine(dir, "roadmap", "01.json"), JsonSerializer.Serialize(phase, options));
-            foreach (var file in new[] { "resources.json", "projects.json", "portfolio-checklist.json" })
-                File.WriteAllText(Path.Combine(dir, file), "[]");
-
-            var content = SeedContent.Load(dir, new JsonSerializerOptions { PropertyNameCaseInsensitive = true, Converters = { new JsonStringEnumConverter() } });
-            var error = Assert.Throws<InvalidDataException>(content.Validate);
+            var error = ValidateSeed(dir, Topic("a", ["missing-topic"]));
             Assert.Contains("unknown topic 'missing-topic'", error.Message);
         }
         finally
         {
             Directory.Delete(dir, recursive: true);
         }
+    }
+
+    [Fact]
+    public void A_topic_placed_before_its_prerequisite_is_rejected()
+    {
+        var dir = Directory.CreateTempSubdirectory("devpath-seed-").FullName;
+        try
+        {
+            var error = ValidateSeed(dir, Topic("a", ["b"]), Topic("b", []));
+            Assert.Contains("Topic 'a' comes before its prerequisite 'b'", error.Message);
+        }
+        finally
+        {
+            Directory.Delete(dir, recursive: true);
+        }
+    }
+
+    private static TopicSeed Topic(string slug, List<string> prerequisites) =>
+        new(slug, SkillArea.CSharp, TopicPriority.Core, 10, slug, slug, "", "", "", "", "", "", "", "", "", "", "", "", prerequisites);
+
+    private static InvalidDataException ValidateSeed(string dir, params TopicSeed[] topics)
+    {
+        Directory.CreateDirectory(Path.Combine(dir, "roadmap"));
+        Directory.CreateDirectory(Path.Combine(dir, "practice"));
+        Directory.CreateDirectory(Path.Combine(dir, "interviews"));
+        var phase = new PhaseSeed("p1", 1, "Phase", "مرحلة", "", "", [.. topics]);
+        var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { new JsonStringEnumConverter() } };
+        File.WriteAllText(Path.Combine(dir, "roadmap", "01.json"), JsonSerializer.Serialize(phase, options));
+        foreach (var file in new[] { "resources.json", "projects.json", "portfolio-checklist.json" })
+            File.WriteAllText(Path.Combine(dir, file), "[]");
+
+        var content = SeedContent.Load(dir, new JsonSerializerOptions { PropertyNameCaseInsensitive = true, Converters = { new JsonStringEnumConverter() } });
+        return Assert.Throws<InvalidDataException>(content.Validate);
     }
 
     private sealed class FakeHostEnvironment : IHostEnvironment

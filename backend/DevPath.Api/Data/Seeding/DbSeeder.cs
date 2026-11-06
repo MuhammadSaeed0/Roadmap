@@ -57,6 +57,7 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
             await SyncCuratedVideosAsync(content.Videos, topics, ct);
             await SyncProjectTaskVideosAsync(content.TaskVideos, ct);
             await SyncQuizzesAsync(content.Quizzes, topics, ct);
+            await SyncMarketDemandAsync(content.MarketDemand, topics, ct);
 
             await tx.CommitAsync(ct);
         });
@@ -124,10 +125,28 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
                 t.PracticeTaskAr = s.PracticeAr;
                 t.ChallengeEn = s.ChallengeEn;
                 t.ChallengeAr = s.ChallengeAr;
+                t.ObjectivesEn = string.Join('\n', s.ObjectivesEn ?? []);
+                t.ObjectivesAr = string.Join('\n', s.ObjectivesAr ?? []);
+                t.Difficulty = s.Difficulty;
             }
         }
         await db.SaveChangesAsync(ct);
         return existing;
+    }
+
+    /// <summary>Replaces the market evidence with the latest research run (or clears it when there is none).</summary>
+    private async Task SyncMarketDemandAsync(MarketDemandSeed? seed, Dictionary<string, Topic> topics, CancellationToken ct)
+    {
+        db.TopicDemand.RemoveRange(await db.TopicDemand.ToListAsync(ct));
+        if (seed is not null)
+            foreach (var (slug, rows) in seed.Topics)
+                foreach (var r in rows)
+                    db.TopicDemand.Add(new TopicDemand
+                    {
+                        TopicId = topics[slug].Id, Technology = r.Technology, Postings = r.Postings, Required = r.Required, Share = r.Share,
+                        TotalPostings = seed.Postings, Run = seed.Run, PeriodFrom = seed.PeriodFrom, PeriodTo = seed.PeriodTo,
+                    });
+        await db.SaveChangesAsync(ct);
     }
 
     private async Task SyncPrerequisitesAsync(List<PhaseSeed> seeds, Dictionary<string, Topic> topics, CancellationToken ct)
@@ -435,6 +454,7 @@ public class SeedContent
     public Dictionary<string, List<VideoSeed>> Videos { get; private init; } = [];
     public Dictionary<string, List<VideoSeed>> TaskVideos { get; private init; } = [];
     public List<QuizSeed> Quizzes { get; private init; } = [];
+    public MarketDemandSeed? MarketDemand { get; private init; }
 
     public static SeedContent Load(string dir, JsonSerializerOptions options)
     {
@@ -467,6 +487,10 @@ public class SeedContent
                 ? Read<Dictionary<string, List<VideoSeed>>>(Path.Combine(dir, "project-videos.json"))
                 : [],
             Quizzes = Directory.Exists(Path.Combine(dir, "quizzes")) ? ReadAll<QuizSeed>("quizzes") : [],
+            // Optional: written by tools/market-research/analyze.mjs for the latest research run.
+            MarketDemand = File.Exists(Path.Combine(dir, "market-demand.json"))
+                ? Read<MarketDemandSeed>(Path.Combine(dir, "market-demand.json"))
+                : null,
         };
     }
 
@@ -503,6 +527,19 @@ public class SeedContent
         {
             if (!topicSet.Contains(slug)) errors.Add($"{from} references unknown topic '{slug}'");
         }
+
+        // Learning sequence: a prerequisite must come earlier in the roadmap than the topic that needs it.
+        var position = Phases.SelectMany(p => p.Topics.Select((t, i) => (t.Slug, Key: p.Order * 1000 + i)))
+            .GroupBy(x => x.Slug).ToDictionary(g => g.Key, g => g.First().Key);
+        foreach (var t in Phases.SelectMany(p => p.Topics))
+        {
+            if ((t.ObjectivesEn?.Count ?? 0) != (t.ObjectivesAr?.Count ?? 0))
+                errors.Add($"Topic '{t.Slug}' has a different number of English and Arabic objectives");
+            foreach (var pre in (t.Prerequisites ?? []).Where(position.ContainsKey))
+                if (position[pre] > position[t.Slug])
+                    errors.Add($"Topic '{t.Slug}' comes before its prerequisite '{pre}'");
+        }
+        foreach (var slug in MarketDemand?.Topics.Keys ?? Enumerable.Empty<string>()) Ref(slug, "market-demand.json");
 
         foreach (var t in Phases.SelectMany(p => p.Topics))
             foreach (var pre in t.Prerequisites ?? [])

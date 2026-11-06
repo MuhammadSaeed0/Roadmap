@@ -16,6 +16,7 @@
         <span class="chip">{{ 'skills.' + t.skill | t }}</span>
         <span class="chip" [attr.data-priority]="t.priority">{{ 'priority.' + t.priority | t }}</span>
         <span class="chip chip-ghost"><app-icon name="clock" [size]="13" /> {{ t.estimatedMinutes | duration }}</span>
+        @if (t.difficulty) { <span class="chip chip-ghost">{{ 'difficulty.' + t.difficulty | t }}</span> }
         <span class="badge" [attr.data-status]="t.status"><app-icon [name]="statusIcon(t.status)" [size]="13" /> {{ 'topicStatus.' + t.status | t }}</span>
       </div>
       <h1 id="page-title" tabindex="-1">{{ t | loc: 'title' }}</h1>
@@ -29,6 +30,15 @@
 
   <div class="detail-layout">
     <article class="detail-main">
+      @if (objectives().length > 0) {
+        <section class="card content-section" id="objectives">
+          <h2 class="section-title"><app-icon name="check" /> {{ 'topic.objectives' | t }}</h2>
+          <ul class="objective-list">
+            @for (o of objectives(); track $index) { <li>{{ o }}</li> }
+          </ul>
+        </section>
+      }
+
       @for (s of sections(); track s.id) {
         <section class="card content-section" [id]="s.id" data-tour="topic-content">
           <h2 class="section-title"><app-icon [name]="s.icon" /> {{ s.title | t }}</h2>
@@ -189,6 +199,22 @@
           }
         </div>
       </section>
+
+      @if (t.demand.length > 0) {
+        <section class="card demand-card" aria-labelledby="demand-h">
+          <h2 id="demand-h" class="card-title"><app-icon name="briefcase" [size]="16" /> {{ 'topic.marketDemand' | t }}</h2>
+          <ul class="demand-list" role="list">
+            @for (d of t.demand; track d.technology) {
+              <li>
+                <div class="demand-row"><bdi dir="ltr">{{ d.technology }}</bdi><strong>{{ 'common.percent' | t: { n: d.share } }}</strong></div>
+                <div class="demand-bar" aria-hidden="true"><span [style.width.%]="d.share"></span></div>
+                <span class="muted small">{{ 'topic.demandLine' | t: { postings: d.postings, total: d.totalPostings, required: d.required } }}</span>
+              </li>
+            }
+          </ul>
+          <p class="muted small">{{ 'topic.demandSource' | t: { from: (t.demand[0].periodFrom | fmtDate: 'short'), to: (t.demand[0].periodTo | fmtDate: 'short') } }}</p>
+        </section>
+      }
 
       <section class="card" aria-labelledby="rel-h" data-tour="topic-related">
         <h2 id="rel-h" class="card-title">{{ 'topic.prerequisites' | t }}</h2>
