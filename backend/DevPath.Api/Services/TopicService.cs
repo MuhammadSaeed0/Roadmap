@@ -90,6 +90,7 @@ public class TopicService(
             .Include(t => t.Phase)
             .Include(t => t.ProgressRows)
             .Include(t => t.ReviewRows)
+            .Include(t => t.Demand)
             .SingleOrDefaultAsync(t => t.Id == id, ct)
             ?? throw new NotFoundException("Topic", id);
 
@@ -147,7 +148,13 @@ public class TopicService(
             sessions.Take(10).ToList(), sessions.Sum(s => s.ActualMinutes), noteCount,
             topic.ReviewRows.FirstOrDefault() is { } r
                 ? new ReviewStateDto(r.IntervalDays, r.NextReviewOn, r.LastReviewedOn, r.ReviewCount, r.NextReviewOn <= today)
-                : null);
+                : null,
+            Lines(topic.ObjectivesEn), Lines(topic.ObjectivesAr), topic.Difficulty,
+            topic.Demand.OrderByDescending(d => d.Share).ThenBy(d => d.Technology)
+                .Select(d => new TopicDemandDto(d.Technology, d.Postings, d.Required, d.Share, d.TotalPostings, d.Run, d.PeriodFrom, d.PeriodTo))
+                .ToList());
+
+        static IReadOnlyList<string> Lines(string text) => text.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
     }
 
     public async Task<TopicProgressDto> UpdateProgressAsync(int id, UpdateTopicProgressRequest request, CancellationToken ct)

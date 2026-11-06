@@ -1,0 +1,42 @@
+# inventory-api.yaml — apply with: kubectl apply -f inventory-api.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-api
+spec:
+  replicas: 2                              # Kubernetes keeps two Pods running
+  selector:
+    matchLabels: { app: inventory-api }
+  template:
+    metadata:
+      labels: { app: inventory-api }
+    spec:
+      containers:
+        - name: api
+          image: myregistry.azurecr.io/inventory-api:1.4.0
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef: { name: inventory-config }
+            - secretRef: { name: inventory-secrets }      # e.g. ConnectionStrings__Inventory
+          resources:
+            requests: { cpu: 100m, memory: 128Mi }
+            limits: { memory: 256Mi }
+          livenessProbe:                                   # restart the container if it hangs
+            httpGet: { path: /health/live, port: 8080 }
+          readinessProbe:                                  # send traffic only when the database is reachable
+            httpGet: { path: /health/ready, port: 8080 }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-api
+spec:
+  selector: { app: inventory-api }
+  ports:
+    - port: 80
+      targetPort: 8080
+
+# Investigate:
+#   kubectl get pods                 kubectl describe pod <name>
+#   kubectl logs <name>              kubectl rollout status deployment/inventory-api

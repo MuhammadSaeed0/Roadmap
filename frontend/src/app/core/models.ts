@@ -3,7 +3,7 @@
 
 export type SkillArea =
   | 'CSharp' | 'AspNetCore' | 'EfCore' | 'SqlServer' | 'TypeScript'
-  | 'Angular' | 'FullStack' | 'Testing' | 'Git' | 'Professional';
+  | 'Angular' | 'FullStack' | 'Testing' | 'Git' | 'Professional' | 'DevOps';
 export type TopicPriority = 'Core' | 'Important' | 'Optional';
 export type TopicStatus = 'NotStarted' | 'InProgress' | 'Completed' | 'Skipped';
 export type KnowledgeLevel = 'Unassessed' | 'AlreadyKnow' | 'NeedReview' | 'NeedToLearn';
@@ -25,7 +25,7 @@ export type InterviewCategory =
 export type InterviewRating = 'NeedReview' | 'Partial' | 'Confident';
 export type DayOfWeek = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
 
-export const SKILLS: SkillArea[] = ['CSharp', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'FullStack', 'Testing', 'Git', 'Professional'];
+export const SKILLS: SkillArea[] = ['CSharp', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'FullStack', 'Testing', 'Git', 'DevOps', 'Professional'];
 export const INTERVIEW_CATEGORIES: InterviewCategory[] = ['CSharp', 'DotNet', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'RestApi', 'Testing', 'Git', 'FullStackDesign',
   'DataStructures', 'Algorithms', 'ObjectOrientedDesign', 'SystemDesign', 'Concurrency', 'Behavioral'];
 export const EXERCISE_TYPES: ExerciseType[] = ['Conceptual', 'Coding', 'Debugging', 'Practical', 'MiniProject', 'FullStack', 'Challenge', 'Scenario', 'CodeReview'];
@@ -79,6 +79,13 @@ export interface TopicDetail {
   interviewQuestions: { id: number; questionEn: string; questionAr: string; difficulty: Difficulty; rating: InterviewRating | null }[];
   exercises: { id: number; type: ExerciseType; titleEn: string; titleAr: string; difficulty: Difficulty; status: PracticeStatus }[];
   sessions: StudySession[]; totalMinutesStudied: number; noteCount: number; review: ReviewState | null;
+  objectivesEn: string[]; objectivesAr: string[]; difficulty: Difficulty | null; demand: TopicDemand[];
+}
+
+/** How often a technology taught by a topic appeared in the job postings of the latest market research run. */
+export interface TopicDemand {
+  technology: string; postings: number; required: number; share: number; totalPostings: number;
+  run: string; periodFrom: string; periodTo: string;
 }
 
 export interface TopicProgressUpdate { status: TopicStatus; knowledge: KnowledgeLevel; confidence: number | null; }

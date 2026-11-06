@@ -5405,5 +5405,185 @@
       "channel": "Ozcode",
       "language": "en"
     }
+  ],
+  "arch-design-patterns": [
+    {
+      "videoId": "3-KNkDY3guM",
+      "title": "Software Design Patterns Explained | Singleton, Factory, Strategy, Observer, Decorator in C#",
+      "channel": "LogicUnboxed",
+      "language": "en"
+    },
+    {
+      "videoId": "aBOrVRKK3fA",
+      "title": "Strategy and Factory Pattern, The Best Software Design Pattern Combo",
+      "channel": "Jono Williams",
+      "language": "en"
+    },
+    {
+      "videoId": "jKh1qg21tUQ",
+      "title": "All 23 GoF Design Patterns Explained with Real C# Code [.NET 8 eCommerce API]",
+      "channel": "Real World Devs",
+      "language": "en"
+    }
+  ],
+  "sql-stored-procedures": [
+    {
+      "videoId": "DX8I5SmB6jo",
+      "title": "SQL Stored Procedure (Visually Explained) | Comprehensive Guide | #SQL Course 33",
+      "channel": "Data with Baraa",
+      "language": "en"
+    },
+    {
+      "videoId": "--sr0pK75aE",
+      "title": "Create Stored Procedures in SQL Server using T-SQL",
+      "channel": "Kahan Data Solutions",
+      "language": "en"
+    },
+    {
+      "videoId": "2OuhVHJGuS0",
+      "title": "How to Write Stored Procedure in SQL Server for Beginners",
+      "channel": "Alkademy Learning",
+      "language": "en"
+    }
+  ],
+  "pro-agile-scrum": [
+    {
+      "videoId": "SWDhGSZNF9M",
+      "title": "Scrum in 20 mins... (with examples)",
+      "channel": "Codex Community",
+      "language": "en"
+    },
+    {
+      "videoId": "XU0llRltyFM",
+      "title": "Intro to Scrum in Under 10 Minutes",
+      "channel": "Axosoft",
+      "language": "en"
+    },
+    {
+      "videoId": "ogV2r9579WI",
+      "title": "What are Agile Epics, User Stories, and Story Points?",
+      "channel": "Online PM Courses - Mike Clayton",
+      "language": "en"
+    }
+  ],
+  "devops-docker": [
+    {
+      "videoId": "GAnT23KBSEI",
+      "title": "How do you write a Dockerfile for an ASP.NET Core app?",
+      "channel": "Round The Code",
+      "language": "en"
+    },
+    {
+      "videoId": "UT9l_UfhexE",
+      "title": "ASP.NET Core Meets Docker: From Zero to Containerized",
+      "channel": "Trevoir Williams",
+      "language": "en"
+    },
+    {
+      "videoId": "_wp2zJHs9l0",
+      "title": ".NET 8  .🚀🔥:  Integrating Docker with a .NET Web API - A Step-by-Step Guide",
+      "channel": "Mohamad Lawand",
+      "language": "en"
+    }
+  ],
+  "devops-ci-cd": [
+    {
+      "videoId": "7LkRipTlTzc",
+      "title": "CI/CD with GitHub Actions [8 of 8] | .NET on Azure for Beginners",
+      "channel": "dotnet",
+      "language": "en"
+    },
+    {
+      "videoId": "R8_veQiYBjI",
+      "title": "GitHub Actions Tutorial - Basic Concepts and CI/CD Pipeline with Docker",
+      "channel": "TechWorld with Nana",
+      "language": "en"
+    },
+    {
+      "videoId": "vBUpk393onI",
+      "title": "How to create Build Pipeline in Azure DevOps for ASP.NET Core Web API | CI/CD",
+      "channel": "Remigiusz Zalewski",
+      "language": "en"
+    }
+  ],
+  "cloud-fundamentals": [
+    {
+      "videoId": "wFsOjHgvUfM",
+      "title": "The Basics You Need to Know about AWS, Azure, and Google Cloud",
+      "channel": "ArjanCodes",
+      "language": "en"
+    },
+    {
+      "videoId": "9CVBohl6w0Q",
+      "title": "AZ-900 Episode 5 | IaaS vs PaaS vs SaaS cloud service models | Microsoft Azure Fundamentals Course",
+      "channel": "Adam Marczak - Azure for Everyone",
+      "language": "en"
+    },
+    {
+      "videoId": "A1lIxZ0AZEE",
+      "title": "AWS vs Azure vs GCP - Which One Should You Choose?",
+      "channel": "AI With Soleyman",
+      "language": "en"
+    }
+  ],
+  "cloud-azure-app-service": [
+    {
+      "videoId": "wMaBUwezctk",
+      "title": "Deploy an ASP.NET Core App to Azure App Service with Azure SQL Database",
+      "channel": "DotNetMirror",
+      "language": "en"
+    },
+    {
+      "videoId": "5w5UDYd3rL0",
+      "title": "How to Deploy .NET 9 Web API to Azure App Service with Azure SQL Database (Step-by-Step Tutorial)",
+      "channel": "Muhammad Abdullah",
+      "language": "en"
+    },
+    {
+      "videoId": "hX89L52iC94",
+      "title": "How to Deploy ASP.NET Core Web API and SQL Server Database to Microsoft Azure",
+      "channel": "Dot Net Tutorials",
+      "language": "en"
+    }
+  ],
+  "devops-kubernetes": [
+    {
+      "videoId": "s_o8dwzRlu4",
+      "title": "Kubernetes Crash Course for Absolute Beginners [NEW]",
+      "channel": "TechWorld with Nana",
+      "language": "en"
+    },
+    {
+      "videoId": "zTBpl1nSPqk",
+      "title": "How to deploy .NET Web API to Kubernetes",
+      "channel": "Remigiusz Zalewski",
+      "language": "en"
+    },
+    {
+      "videoId": "x9NptrXA1dM",
+      "title": ".NET 7  💥  - Deploy .NET Apps to Kubernetes",
+      "channel": "Mohamad Lawand",
+      "language": "en"
+    }
+  ],
+  "arch-microservices": [
+    {
+      "videoId": "CqCDOosvZIk",
+      "title": ".NET Microservices – Full Course for Beginners",
+      "channel": "freeCodeCamp.org",
+      "language": "en"
+    },
+    {
+      "videoId": "ByYyk8eMG6c",
+      "title": ".NET Microservices – Full Course for Beginners",
+      "channel": "Julio Casal",
+      "language": "en"
+    },
+    {
+      "videoId": "Nw4AZs1kLAs",
+      "title": "Introduction to .NET Microservices (.NET 8)",
+      "channel": "DotNetMastery",
+      "language": "en"
+    }
   ]
 }

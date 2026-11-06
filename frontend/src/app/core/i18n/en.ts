@@ -217,7 +217,7 @@ export const en = {
   },
   skills: {
     CSharp: 'C#', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server', TypeScript: 'TypeScript',
-    Angular: 'Angular', FullStack: 'Full-stack integration', Testing: 'Testing', Git: 'Git & GitHub', Professional: 'Professional skills',
+    Angular: 'Angular', FullStack: 'Full-stack integration', Testing: 'Testing', Git: 'Git & GitHub', Professional: 'Professional skills', DevOps: 'Cloud & DevOps',
   },
   priority: { Core: 'Core', Important: 'Important', Optional: 'Optional' },
   topicStatus: { NotStarted: 'Not started', InProgress: 'In progress', Completed: 'Completed', Skipped: 'Already known' },
@@ -295,7 +295,7 @@ export const en = {
     interview: 'Practise interview questions', go: 'Go',
   },
   roadmap: {
-    title: 'My Roadmap', subtitle: '13 phases from your first C# program to full-stack projects, one step at a time.',
+    title: 'My Roadmap', subtitle: '14 phases from your first C# program to full-stack projects, one step at a time.',
     current: 'Current phase', topicsDone: '{done} of {total} topics', remaining: '{n} min left', projectsIntro: 'Apply what you learned in four projects.',
     expandAll: 'Expand all', collapseAll: 'Collapse all', locked: 'Prerequisites not finished',
     phase: 'Phase {n}',
@@ -318,6 +318,8 @@ export const en = {
     date: 'Date', note: 'Note', noSessions: 'No study sessions yet.', addNote: 'Add a note', noNotes: 'No notes for this topic yet.',
     completedOn: 'Completed {date}', saved: 'Progress saved', sessionSaved: 'Study session saved', noResources: 'No resources linked yet.',
     tasks: '{n} tasks', none: 'None', deleteSession: 'Delete this study session?', notFound: 'This topic doesn’t exist.', minutes: '{n} min', breadcrumb: 'Roadmap',
+    objectives: 'By the end you can', marketDemand: 'Job market demand', demandLine: 'In {postings} of {total} job postings ({required} as a requirement)',
+    demandSource: 'From .NET job postings published between {from} and {to}.',
   },
   projects: {
     title: 'Projects', subtitle: 'Four practical projects, from a console app to your main portfolio system.',

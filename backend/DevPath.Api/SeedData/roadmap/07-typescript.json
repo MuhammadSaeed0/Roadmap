@@ -178,25 +178,6 @@
       "prerequisites": ["ts-promises"]
     },
     {
-      "slug": "ts-error-handling",
-      "skill": "TypeScript", "priority": "Important", "minutes": 25,
-      "titleEn": "Error handling in TypeScript",
-      "titleAr": "معالجة الأخطاء في TypeScript",
-      "summaryEn": "try/catch/finally works like C#, but the caught value is 'unknown' — anything can be thrown — so you must check its type before using it.",
-      "summaryAr": "تعمل try/catch/finally كما في C#، لكن القيمة الملتقطة من النوع unknown لأنه يمكن رمي أي شيء، لذا يجب التحقق من نوعها قبل استخدامها.",
-      "whyEn": "Robust frontends show friendly messages for network failures, validation errors and server errors instead of a blank screen.",
-      "whyAr": "الواجهات القوية تعرض رسائل ودية لأعطال الشبكة وأخطاء التحقق وأخطاء الخادم بدلًا من شاشة فارغة.",
-      "howEn": "Use 'instanceof' (Error, HttpErrorResponse) to narrow the error. Translate error codes from the API into user-facing messages in one place.",
-      "howAr": "استخدم instanceof (Error وHttpErrorResponse) لتضييق نوع الخطأ، وترجم رموز الأخطاء القادمة من الـ API إلى رسائل للمستخدم في مكان واحد.",
-      "exampleEn": "DevPath converts HttpErrorResponse into an ApiError with a status, a code (e.g. 'attempt_required') and field errors.",
-      "exampleAr": "يحوّل DevPath الاستجابة HttpErrorResponse إلى ApiError يحتوي على الحالة ورمز (مثل attempt_required) وأخطاء الحقول.",
-      "practiceEn": "Write a function that turns any caught value into a readable message string.",
-      "practiceAr": "اكتب دالة تحوّل أي قيمة ملتقطة إلى نص رسالة مقروء.",
-      "challengeEn": "Design an error model for your Angular app that distinguishes offline, validation, not found and server errors.",
-      "challengeAr": "صمّم نموذج أخطاء لتطبيق Angular يميز بين انقطاع الاتصال وأخطاء التحقق وعدم الوجود وأخطاء الخادم.",
-      "prerequisites": ["ts-async-await", "ts-narrowing"]
-    },
-    {
       "slug": "ts-narrowing",
       "skill": "TypeScript", "priority": "Important", "minutes": 25,
       "titleEn": "Type narrowing",
@@ -214,6 +195,25 @@
       "challengeEn": "Use a 'never' check in a switch to make the compiler fail when a new state is added but not handled.",
       "challengeAr": "استخدم فحص never داخل switch لجعل المترجم يفشل عند إضافة حالة جديدة دون معالجتها.",
       "prerequisites": ["ts-interfaces-aliases"]
+    },
+    {
+      "slug": "ts-error-handling",
+      "skill": "TypeScript", "priority": "Important", "minutes": 25,
+      "titleEn": "Error handling in TypeScript",
+      "titleAr": "معالجة الأخطاء في TypeScript",
+      "summaryEn": "try/catch/finally works like C#, but the caught value is 'unknown' — anything can be thrown — so you must check its type before using it.",
+      "summaryAr": "تعمل try/catch/finally كما في C#، لكن القيمة الملتقطة من النوع unknown لأنه يمكن رمي أي شيء، لذا يجب التحقق من نوعها قبل استخدامها.",
+      "whyEn": "Robust frontends show friendly messages for network failures, validation errors and server errors instead of a blank screen.",
+      "whyAr": "الواجهات القوية تعرض رسائل ودية لأعطال الشبكة وأخطاء التحقق وأخطاء الخادم بدلًا من شاشة فارغة.",
+      "howEn": "Use 'instanceof' (Error, HttpErrorResponse) to narrow the error. Translate error codes from the API into user-facing messages in one place.",
+      "howAr": "استخدم instanceof (Error وHttpErrorResponse) لتضييق نوع الخطأ، وترجم رموز الأخطاء القادمة من الـ API إلى رسائل للمستخدم في مكان واحد.",
+      "exampleEn": "DevPath converts HttpErrorResponse into an ApiError with a status, a code (e.g. 'attempt_required') and field errors.",
+      "exampleAr": "يحوّل DevPath الاستجابة HttpErrorResponse إلى ApiError يحتوي على الحالة ورمز (مثل attempt_required) وأخطاء الحقول.",
+      "practiceEn": "Write a function that turns any caught value into a readable message string.",
+      "practiceAr": "اكتب دالة تحوّل أي قيمة ملتقطة إلى نص رسالة مقروء.",
+      "challengeEn": "Design an error model for your Angular app that distinguishes offline, validation, not found and server errors.",
+      "challengeAr": "صمّم نموذج أخطاء لتطبيق Angular يميز بين انقطاع الاتصال وأخطاء التحقق وعدم الوجود وأخطاء الخادم.",
+      "prerequisites": ["ts-async-await", "ts-narrowing"]
     }
   ]
 }

@@ -15,7 +15,9 @@ public enum SkillArea
     FullStack,
     Testing,
     Git,
-    Professional
+    Professional,
+    /// <summary>Containers, CI/CD, cloud platforms and the infrastructure an application runs on.</summary>
+    DevOps
 }
 
 public enum TopicPriority

@@ -61,7 +61,12 @@ public record TopicDetailDto(
     IReadOnlyList<TopicRefDto> Prerequisites, IReadOnlyList<TopicRefDto> Unlocks, IReadOnlyList<TopicRefDto> SamePhase,
     IReadOnlyList<ResourceDto> Resources, IReadOnlyList<TopicProjectLinkDto> Projects,
     IReadOnlyList<InterviewRefDto> InterviewQuestions, IReadOnlyList<ExerciseRefDto> Exercises,
-    IReadOnlyList<StudySessionDto> Sessions, int TotalMinutesStudied, int NoteCount, ReviewStateDto? Review);
+    IReadOnlyList<StudySessionDto> Sessions, int TotalMinutesStudied, int NoteCount, ReviewStateDto? Review,
+    IReadOnlyList<string> ObjectivesEn, IReadOnlyList<string> ObjectivesAr, Difficulty? Difficulty,
+    IReadOnlyList<TopicDemandDto> Demand);
+
+/// <summary>Job-market evidence for a topic: in research run Run, Postings of TotalPostings job adverts asked for Technology.</summary>
+public record TopicDemandDto(string Technology, int Postings, int Required, double Share, int TotalPostings, string Run, string PeriodFrom, string PeriodTo);
 
 public record UpdateTopicProgressRequest(
     [Required] TopicStatus? Status,
