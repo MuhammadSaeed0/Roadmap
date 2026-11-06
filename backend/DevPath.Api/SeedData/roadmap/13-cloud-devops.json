@@ -129,8 +129,44 @@
       "prerequisites": ["cloud-fundamentals", "devops-ci-cd"]
     },
     {
+      "slug": "ai-dotnet-llm",
+      "skill": "DevOps",
+      "priority": "Optional",
+      "minutes": 90,
+      "difficulty": "Intermediate",
+      "titleEn": "AI in .NET: calling LLMs, RAG and AI-assisted development",
+      "titleAr": "الذكاء الاصطناعي في .NET: استدعاء نماذج اللغة وRAG والتطوير بمساعدة الذكاء الاصطناعي",
+      "summaryEn": "Large language models (LLMs) are called over HTTP like any other API. In .NET, Microsoft.Extensions.AI gives one IChatClient interface over Azure OpenAI, OpenAI and local models, and Semantic Kernel adds plugins and agents on top. Retrieval-augmented generation (RAG) stores your documents as embeddings in a vector store, finds the relevant ones for a question and sends them to the model with the prompt.",
+      "summaryAr": "تُستدعى نماذج اللغة الكبيرة (LLMs) عبر HTTP مثل أي API أخرى. في .NET تقدّم مكتبة Microsoft.Extensions.AI واجهة واحدة IChatClient فوق Azure OpenAI وOpenAI والنماذج المحلية، ويضيف Semantic Kernel فوقها الإضافات (Plugins) والوكلاء (Agents). أما التوليد المعزّز بالاسترجاع (RAG) فيخزّن مستنداتك كتمثيلات رقمية (Embeddings) في مخزن متجهات، ويجد المستندات المناسبة للسؤال ويرسلها إلى النموذج مع الطلب.",
+      "whyEn": "AI skills appeared in 28% of the analysed LinkedIn postings: LLM integration with Azure OpenAI, Semantic Kernel or RAG (12%), and the use of AI coding assistants (12%), sometimes as a requirement. Teams expect developers to add AI features safely and to review AI-generated code critically.",
+      "whyAr": "ظهرت مهارات الذكاء الاصطناعي في 28% من إعلانات LinkedIn التي حُللت: دمج نماذج اللغة عبر Azure OpenAI أو Semantic Kernel أو RAG (12%)، واستخدام مساعدات البرمجة بالذكاء الاصطناعي (12%)، وأحيانًا كمتطلب. وتتوقع الفرق من المطور أن يضيف ميزات الذكاء الاصطناعي بأمان وأن يراجع الكود الذي يولّده الذكاء الاصطناعي بعين ناقدة.",
+      "howEn": "Register an IChatClient in Program.cs (for example from the Azure.AI.OpenAI or OpenAI package with '.AsIChatClient()'), keep the key in user secrets or Key Vault, and call 'await chat.GetResponseAsync(messages)'. Write a system message with the rules, pass user text as data, and request structured output ('GetResponseAsync<T>') instead of parsing free text. For RAG: split documents into chunks, create embeddings with IEmbeddingGenerator, store them in a vector store (Azure AI Search, PostgreSQL pgvector or an in-memory store for learning), search the top matches for each question and include them in the prompt with their sources. Set timeouts, limit tokens and log cost; never send personal or secret data you aren't allowed to share, treat model output as untrusted, and evaluate answers with a small test set. When an AI assistant writes code for you, review it like a colleague's pull request.",
+      "howAr": "سجّل IChatClient في Program.cs (مثلًا من حزمة Azure.AI.OpenAI أو OpenAI مع .AsIChatClient())، واحفظ المفتاح في User secrets أو Key Vault، واستدعِ await chat.GetResponseAsync(messages). اكتب رسالة نظام (System message) بالقواعد، ومرّر نص المستخدم كبيانات، واطلب مخرجات منظمة (GetResponseAsync<T>) بدل تحليل نص حر. ولـ RAG: قسّم المستندات إلى أجزاء، وأنشئ لها Embeddings بـ IEmbeddingGenerator، واحفظها في مخزن متجهات (Azure AI Search أو PostgreSQL مع pgvector أو مخزن في الذاكرة للتعلم)، وابحث عن أقرب النتائج لكل سؤال وضمّنها في الطلب مع مصادرها. اضبط المهلات وحدد عدد التوكنات وسجّل التكلفة؛ ولا ترسل بيانات شخصية أو سرية غير مسموح بمشاركتها، وتعامل مع مخرجات النموذج على أنها غير موثوقة، وقيّم الإجابات بمجموعة اختبار صغيرة. وعندما يكتب لك مساعد ذكاء اصطناعي كودًا، راجعه كما تراجع Pull request من زميل.",
+      "exampleEn": "A support page that answers 'How do I return an order?' from the company's own policy documents: the API finds the three most relevant paragraphs, asks the model to answer only from them, and shows the answer with links to the sources.",
+      "exampleAr": "صفحة دعم تجيب عن سؤال «كيف أُرجع طلبًا؟» من مستندات سياسات الشركة نفسها: تجد الـ API أقرب ثلاث فقرات، وتطلب من النموذج أن يجيب منها فقط، وتعرض الإجابة مع روابط المصادر.",
+      "practiceEn": "1) Call a chat model from a console app with IChatClient and a key from user secrets. 2) Ask for structured output into a C# record. 3) Create embeddings for ten sentences and find the closest one to a question. 4) Review an AI-generated method for bugs, missing tests and security issues.",
+      "practiceAr": "1) استدعِ نموذج محادثة من تطبيق Console عبر IChatClient ومفتاح من User secrets. 2) اطلب مخرجات منظمة في Record بلغة C#. 3) أنشئ Embeddings لعشر جمل وجد أقربها إلى سؤال. 4) راجع دالة ولّدها الذكاء الاصطناعي بحثًا عن الأخطاء والاختبارات الناقصة ومشكلات الأمان.",
+      "challengeEn": "Add a 'product assistant' endpoint to Project 4 that answers questions from the product catalogue with RAG, returns structured JSON with the products it used, has a timeout and a token limit, logs cost per request, and has five automated tests that check answers stay grounded in the catalogue.",
+      "challengeAr": "أضف إلى المشروع الرابع نقطة نهاية «مساعد المنتجات» تجيب عن الأسئلة من كتالوج المنتجات باستخدام RAG، وتُرجع JSON منظمًا بالمنتجات التي استخدمتها، ولها مهلة وحد للتوكنات، وتسجّل تكلفة كل طلب، ومعها خمسة اختبارات آلية تتأكد أن الإجابات مبنية على الكتالوج.",
+      "objectivesEn": [
+        "Call a language model from ASP.NET Core through IChatClient with keys kept out of source code",
+        "Write system prompts and request structured output",
+        "Build a small RAG pipeline with embeddings and a vector store",
+        "Control cost, timeouts and data privacy, and treat model output as untrusted",
+        "Review and own AI-generated code"
+      ],
+      "objectivesAr": [
+        "استدعاء نموذج لغة من ASP.NET Core عبر IChatClient مع إبقاء المفاتيح خارج الكود",
+        "كتابة رسائل النظام وطلب مخرجات منظمة",
+        "بناء مسار RAG صغير بالـ Embeddings ومخزن متجهات",
+        "التحكم في التكلفة والمهلات وخصوصية البيانات، والتعامل مع مخرجات النموذج كغير موثوقة",
+        "مراجعة الكود المولّد بالذكاء الاصطناعي وتحمّل مسؤوليته"
+      ],
+      "prerequisites": ["cloud-azure-app-service", "api-configuration"]
+    },
+    {
       "slug": "devops-kubernetes",
-      "skill": "DevOps", "priority": "Optional", "minutes": 60, "difficulty": "Advanced",
+      "skill": "DevOps", "priority": "Important", "minutes": 60, "difficulty": "Advanced",
       "titleEn": "Kubernetes basics for application developers",
       "titleAr": "أساسيات Kubernetes لمطوري التطبيقات",
       "summaryEn": "Kubernetes runs containers across a cluster and keeps them in the state you declare: Deployments keep the right number of Pods running, Services give them a stable address, ConfigMaps and Secrets hold configuration, and probes tell Kubernetes when a container is healthy and ready.",
@@ -189,6 +225,42 @@
         "تتبّع الطلب عبر الخدمات بمعرّفات الربط وOpenTelemetry"
       ],
       "prerequisites": ["devops-docker", "fs-api-contracts", "sql-transactions"]
+    },
+    {
+      "slug": "arch-message-brokers",
+      "skill": "AspNetCore",
+      "priority": "Important",
+      "minutes": 90,
+      "difficulty": "Advanced",
+      "titleEn": "Message brokers with RabbitMQ: exchanges, acknowledgements, retries and dead-letter queues",
+      "titleAr": "وسطاء الرسائل مع RabbitMQ: الـ Exchanges والتأكيدات وإعادة المحاولة وطوابير الرسائل الميتة",
+      "summaryEn": "A message broker stores messages between a publisher and its consumers so they don't have to be online at the same time. In RabbitMQ a publisher sends to an exchange (direct, topic or fanout), bindings with routing keys copy the message to queues, and consumers acknowledge each message after processing it. Durable queues, persistent messages, retries and dead-letter queues decide what happens when something fails. Kafka and Azure Service Bus solve the same problem with different trade-offs.",
+      "summaryAr": "يخزّن وسيط الرسائل (Message broker) الرسائل بين الناشر ومستهلكيه حتى لا يلزم أن يكونوا متصلين في الوقت نفسه. في RabbitMQ يرسل الناشر إلى Exchange (من نوع direct أو topic أو fanout)، وتنسخ الروابط (Bindings) بمفاتيح التوجيه (Routing keys) الرسالة إلى الطوابير، ويؤكد المستهلكون (Ack) كل رسالة بعد معالجتها. وتحدد الطوابير الدائمة (Durable) والرسائل المستمرة وإعادة المحاولة وطوابير الرسائل الميتة (Dead-letter) ما يحدث عند الفشل. ويحل Kafka وAzure Service Bus المشكلة نفسها بموازنات مختلفة.",
+      "whyEn": "A message broker was a mandatory requirement in every LinkedIn posting that mentioned one (20% of those analysed); RabbitMQ was named in 16%. One posting listed exactly these skills: exchanges, routing keys, acknowledgements, dead-letter queues, retries, durability, and publisher/consumer patterns.",
+      "whyAr": "كان وسيط الرسائل متطلبًا إلزاميًا في كل إعلان على LinkedIn ذكره (20% من الإعلانات التي حُللت)، وذُكر RabbitMQ بالاسم في 16%. وأدرج أحد الإعلانات هذه المهارات تحديدًا: الـ Exchanges ومفاتيح التوجيه والتأكيدات وطوابير الرسائل الميتة وإعادة المحاولة والديمومة وأنماط الناشر والمستهلك.",
+      "howEn": "Run RabbitMQ in Docker ('rabbitmq:management') and open the management UI on port 15672. Declare a durable topic exchange 'orders', a durable queue 'inventory.order-placed' bound with the key 'order.placed', and publish persistent messages. Consume with manual acknowledgements: ack after the work is saved, nack (without requeue) when it can't succeed so the message goes to the queue's dead-letter exchange. Limit unacknowledged messages with prefetch (BasicQos). Make consumers idempotent by storing processed message ids, because a message can be delivered twice. In application code, MassTransit (or Wolverine) wraps these details: it creates exchanges and queues from message types, retries with back-off, moves poison messages to an _error queue and supports the outbox. Choose Azure Service Bus for a managed broker on Azure, and Kafka for high-volume event streams that consumers replay.",
+      "howAr": "شغّل RabbitMQ في Docker بالصورة rabbitmq:management وافتح واجهة الإدارة على المنفذ 15672. عرّف Exchange دائمًا من نوع topic اسمه orders، وطابورًا دائمًا inventory.order-placed مربوطًا بالمفتاح order.placed، وانشر رسائل مستمرة (Persistent). استهلك الرسائل بتأكيد يدوي: أرسل ack بعد حفظ العمل، وأرسل nack دون إعادة إلى الطابور عندما لا يمكن أن تنجح المعالجة، فتنتقل الرسالة إلى Exchange الرسائل الميتة الخاص بالطابور. حدّد عدد الرسائل غير المؤكدة بالـ Prefetch (BasicQos). واجعل المستهلكين متساوي الأثر (Idempotent) بتخزين معرّفات الرسائل المعالجة، لأن الرسالة قد تصل مرتين. وفي كود التطبيق تغلّف MassTransit (أو Wolverine) هذه التفاصيل: تنشئ الـ Exchanges والطوابير من أنواع الرسائل، وتعيد المحاولة مع تباعد زمني، وتنقل الرسائل المسمومة إلى طابور _error، وتدعم الـ Outbox. اختر Azure Service Bus لوسيط مُدار على Azure، وKafka لتدفقات الأحداث الضخمة التي يعيد المستهلكون قراءتها.",
+      "exampleEn": "OrderPlaced is published to the 'orders' topic exchange: the inventory queue (bound to 'order.*') reserves stock, the e-mail queue (bound to 'order.placed') sends a receipt. When the e-mail provider is down, the consumer retries three times, then the message waits in the dead-letter queue until someone replays it — no order is lost.",
+      "exampleAr": "يُنشر OrderPlaced إلى Exchange الموضوعات orders: يحجز طابور المخزون (المربوط بـ order.*) الكمية، ويرسل طابور البريد (المربوط بـ order.placed) إيصالًا. وعندما يتعطل مزوّد البريد، يعيد المستهلك المحاولة ثلاث مرات، ثم تنتظر الرسالة في طابور الرسائل الميتة حتى يعيد أحدهم تشغيلها — ولا يضيع أي طلب.",
+      "practiceEn": "1) Start RabbitMQ in Docker and publish a message to a direct, a topic and a fanout exchange from the management UI. 2) Write a .NET consumer with manual acks and prefetch. 3) Configure a dead-letter exchange and send a failing message to it. 4) Make the consumer idempotent and prove a duplicate is ignored.",
+      "practiceAr": "1) شغّل RabbitMQ في Docker وانشر رسالة إلى Exchange من نوع direct وآخر topic وآخر fanout من واجهة الإدارة. 2) اكتب مستهلكًا في .NET بتأكيد يدوي وPrefetch. 3) اضبط Exchange للرسائل الميتة وأرسل إليه رسالة تفشل. 4) اجعل المستهلك متساوي الأثر وأثبت أن الرسالة المكررة تُتجاهل.",
+      "challengeEn": "In Project 4, publish OrderPlaced through MassTransit and RabbitMQ with the EF Core outbox, consume it in an inventory worker with retry and back-off, send poison messages to the error queue, and write an integration test with Testcontainers that proves a message survives a consumer restart.",
+      "challengeAr": "في المشروع الرابع، انشر OrderPlaced عبر MassTransit وRabbitMQ مع Outbox في EF Core، واستهلكه في عامل مخزون مع إعادة محاولة وتباعد زمني، وأرسل الرسائل المسمومة إلى طابور الأخطاء، واكتب اختبار تكامل بـ Testcontainers يثبت أن الرسالة تبقى بعد إعادة تشغيل المستهلك.",
+      "objectivesEn": [
+        "Explain exchanges, queues, bindings and routing keys, and choose between direct, topic and fanout",
+        "Consume messages with manual acknowledgements and prefetch",
+        "Handle failures with retries, durable queues and dead-letter queues",
+        "Make consumers idempotent and publish reliably with the outbox",
+        "Compare RabbitMQ, Azure Service Bus and Kafka"
+      ],
+      "objectivesAr": [
+        "شرح الـ Exchanges والطوابير والروابط ومفاتيح التوجيه، والاختيار بين direct وtopic وfanout",
+        "استهلاك الرسائل بتأكيد يدوي وPrefetch",
+        "معالجة الفشل بإعادة المحاولة والطوابير الدائمة وطوابير الرسائل الميتة",
+        "جعل المستهلكين متساوي الأثر والنشر الموثوق بالـ Outbox",
+        "المقارنة بين RabbitMQ وAzure Service Bus وKafka"
+      ],
+      "prerequisites": ["arch-microservices"]
     }
   ]
 }

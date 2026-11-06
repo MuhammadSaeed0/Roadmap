@@ -7,6 +7,78 @@
   "descriptionAr": "JavaScript مع الأنواع، وهي لغة Angular، وستبدو لك مفاهيم كثيرة مألوفة بعد C#.",
   "topics": [
     {
+      "slug": "web-html-css",
+      "skill": "TypeScript",
+      "priority": "Important",
+      "minutes": 90,
+      "difficulty": "Beginner",
+      "titleEn": "HTML and CSS for application developers",
+      "titleAr": "HTML وCSS لمطوّري التطبيقات",
+      "summaryEn": "HTML describes the structure and meaning of a page (headings, forms, lists, buttons) and CSS decides how it looks: the box model, Flexbox and Grid for layout, and media queries for different screen sizes. Every Angular template is HTML styled with CSS, so these two are the base of all front-end work.",
+      "summaryAr": "تصف HTML بنية الصفحة ومعناها (العناوين والنماذج والقوائم والأزرار)، وتحدد CSS شكلها: نموذج الصندوق (Box model)، وFlexbox وGrid لتخطيط الصفحة، وMedia queries لأحجام الشاشات المختلفة. كل قالب في Angular هو HTML منسّق بـ CSS، لذا فهاتان اللغتان أساس كل عمل في الواجهة الأمامية.",
+      "whyEn": "HTML/CSS was a mandatory requirement in about a third of the analysed LinkedIn postings (36%), and every full-stack role expects you to build a form or a responsive table without a designer. Semantic HTML also gives accessibility and better tests for free.",
+      "whyAr": "كانت HTML/CSS متطلبًا إلزاميًا في نحو ثلث إعلانات LinkedIn التي حُللت (36%)، وتتوقع كل وظيفة Full Stack أن تبني نموذجًا أو جدولًا متجاوبًا دون مصمم. كما أن HTML الدلالية (Semantic) تمنحك سهولة الوصول (Accessibility) واختبارات أفضل دون جهد إضافي.",
+      "howEn": "Use semantic elements (header, nav, main, section, button, label + input) instead of generic divs. Learn the box model (content, padding, border, margin) and set 'box-sizing: border-box'. Lay out one dimension with Flexbox (display: flex; gap; justify-content; align-items) and two dimensions with Grid (grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))). Make layouts responsive with relative units (rem, %, fr) and mobile-first media queries. Use CSS custom properties (--accent) for colours, and check contrast and keyboard focus with the browser DevTools.",
+      "howAr": "استخدم العناصر الدلالية (header وnav وmain وsection وbutton وlabel مع input) بدل div العامة. تعلّم نموذج الصندوق (المحتوى وpadding وborder وmargin) واضبط box-sizing: border-box. رتّب البعد الواحد بـ Flexbox (display: flex مع gap وjustify-content وalign-items) والبعدين بـ Grid (grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))). اجعل التخطيط متجاوبًا بالوحدات النسبية (rem و% وfr) وMedia queries تبدأ من الجوال. استخدم متغيرات CSS (مثل --accent) للألوان، وافحص التباين والتنقل بلوحة المفاتيح من أدوات المتصفح.",
+      "exampleEn": "A product list page: a header with navigation, a search form with labelled inputs, and a card grid that shows one column on a phone and four on a desktop — with no JavaScript at all.",
+      "exampleAr": "صفحة قائمة منتجات: ترويسة فيها تنقل، ونموذج بحث بحقول لها تسميات (Labels)، وشبكة بطاقات تعرض عمودًا واحدًا على الجوال وأربعة أعمدة على الحاسوب — دون أي JavaScript.",
+      "practiceEn": "1) Build a sign-up form with semantic HTML and labels. 2) Lay out a header with Flexbox. 3) Build a responsive card grid with CSS Grid. 4) Tab through the page and fix any element you can't reach with the keyboard.",
+      "practiceAr": "1) ابنِ نموذج تسجيل بـ HTML دلالية وتسميات للحقول. 2) رتّب ترويسة بـ Flexbox. 3) ابنِ شبكة بطاقات متجاوبة بـ CSS Grid. 4) تنقّل في الصفحة بمفتاح Tab وأصلح أي عنصر لا تصل إليه بلوحة المفاتيح.",
+      "challengeEn": "Build the static HTML/CSS of Project 2's product list and edit form so that it works from 360px to 1440px wide and in right-to-left mode (dir=\"rtl\"), using logical properties such as margin-inline-start. You will reuse it later as the Angular template.",
+      "challengeAr": "ابنِ صفحتي قائمة المنتجات ونموذج التعديل في المشروع الثاني بـ HTML وCSS فقط بحيث تعملان من عرض 360px إلى 1440px وفي اتجاه من اليمين لليسار (dir=\"rtl\")، مستخدمًا الخصائص المنطقية مثل margin-inline-start. ستعيد استخدامها لاحقًا كقالب في Angular.",
+      "objectivesEn": [
+        "Structure a page with semantic HTML elements and accessible forms",
+        "Explain the CSS box model and use box-sizing: border-box",
+        "Build one-dimensional layouts with Flexbox and two-dimensional layouts with Grid",
+        "Make a layout responsive with relative units and media queries",
+        "Support right-to-left pages with CSS logical properties"
+      ],
+      "objectivesAr": [
+        "بناء صفحة بعناصر HTML دلالية ونماذج سهلة الوصول",
+        "شرح نموذج الصندوق في CSS واستخدام box-sizing: border-box",
+        "بناء تخطيط أحادي البعد بـ Flexbox وثنائي البعد بـ Grid",
+        "جعل التخطيط متجاوبًا بالوحدات النسبية وMedia queries",
+        "دعم الصفحات من اليمين لليسار بخصائص CSS المنطقية"
+      ],
+      "prerequisites": ["cs-project-structure"]
+    },
+    {
+      "slug": "web-javascript-essentials",
+      "skill": "TypeScript",
+      "priority": "Important",
+      "minutes": 120,
+      "difficulty": "Beginner",
+      "titleEn": "JavaScript essentials: the DOM, events, fetch and the event loop",
+      "titleAr": "أساسيات JavaScript: الـ DOM والأحداث وfetch وحلقة الأحداث",
+      "summaryEn": "JavaScript is the language the browser runs; TypeScript adds types on top and compiles to it. Knowing plain JavaScript — let/const, functions and closures, arrays and objects, the DOM and events, modules, promises with fetch, and the single-threaded event loop — explains most of what Angular does for you.",
+      "summaryAr": "JavaScript هي اللغة التي يشغّلها المتصفح، وTypeScript تضيف الأنواع فوقها وتُترجم إليها. معرفة JavaScript الصافية — let وconst، والدوال والـ Closures، والمصفوفات والكائنات، والـ DOM والأحداث، والوحدات (Modules)، والـ Promises مع fetch، وحلقة الأحداث ذات الخيط الواحد — تشرح معظم ما يفعله Angular نيابة عنك.",
+      "whyEn": "JavaScript was listed in 40% of the analysed LinkedIn postings, almost always as a requirement, and interviewers for Angular roles ask about closures, 'this', equality and the event loop. Debugging an Angular app in the browser is debugging JavaScript.",
+      "whyAr": "ذُكرت JavaScript في 40% من إعلانات LinkedIn التي حُللت، وغالبًا كمتطلب إلزامي، ويسأل المقابِلون في وظائف Angular عن الـ Closures و this والمساواة وحلقة الأحداث. وتتبّع أخطاء تطبيق Angular في المتصفح هو في الحقيقة تتبّع أخطاء JavaScript.",
+      "howEn": "Use const by default and let when a value changes; never var. Compare with === (not ==). Transform arrays with map, filter and reduce, and copy objects with the spread operator. Select elements with document.querySelector, react with addEventListener, and update the page by changing textContent or creating elements. Split code into ES modules (import/export). Call APIs with 'const res = await fetch(url)' and check res.ok before 'await res.json()'. Remember that JavaScript runs one task at a time: awaited work comes back through the event loop, so long loops freeze the page.",
+      "howAr": "استخدم const افتراضيًا وlet عندما تتغير القيمة، ولا تستخدم var. قارن بـ === وليس ==. حوّل المصفوفات بـ map وfilter وreduce، وانسخ الكائنات بعامل النشر (Spread). اختر العناصر بـ document.querySelector، واستجب للأحداث بـ addEventListener، وحدّث الصفحة بتغيير textContent أو إنشاء عناصر. قسّم الكود إلى ES modules (import وexport). استدعِ الـ APIs بـ const res = await fetch(url) وتحقق من res.ok قبل await res.json(). وتذكّر أن JavaScript تنفّذ مهمة واحدة في كل مرة: العمل المنتظَر يعود عبر حلقة الأحداث (Event loop)، لذا تجمّد الحلقات الطويلة الصفحة.",
+      "exampleEn": "A search box without any framework: an input event waits 300 ms (debounce), fetches /api/products?search=..., and renders the results into a list — the same flow Angular later implements with RxJS and HttpClient.",
+      "exampleAr": "مربع بحث دون أي إطار عمل: ينتظر حدث input مدة 300 ميلي ثانية (Debounce)، ثم يطلب /api/products?search=...، ويعرض النتائج في قائمة — وهو التدفق نفسه الذي ينفّذه Angular لاحقًا بـ RxJS وHttpClient.",
+      "practiceEn": "1) Rewrite three for-loops with map, filter and reduce. 2) Write a counter function that uses a closure. 3) Build a to-do list with addEventListener and the DOM only. 4) Fetch JSON from a public API and show an error message when the request fails.",
+      "practiceAr": "1) أعد كتابة ثلاث حلقات for باستخدام map وfilter وreduce. 2) اكتب دالة عدّاد تستخدم Closure. 3) ابنِ قائمة مهام بـ addEventListener والـ DOM فقط. 4) اطلب JSON من API عامة واعرض رسالة خطأ عند فشل الطلب.",
+      "challengeEn": "Add a vanilla JavaScript module to the static product page from the previous topic that searches Project 2's API with a debounced input, shows loading, empty and error states, and cancels the previous request with AbortController.",
+      "challengeAr": "أضف وحدة JavaScript صافية إلى صفحة المنتجات الثابتة من الموضوع السابق تبحث في API المشروع الثاني بمدخل مؤجَّل (Debounce)، وتعرض حالات التحميل والنتيجة الفارغة والخطأ، وتلغي الطلب السابق بـ AbortController.",
+      "objectivesEn": [
+        "Use const/let, strict equality, closures and array methods correctly",
+        "Read and change the page through the DOM and handle events",
+        "Organise code into ES modules",
+        "Call an API with fetch and async/await and handle failures",
+        "Explain the event loop and why long synchronous work freezes the page"
+      ],
+      "objectivesAr": [
+        "استخدام const وlet والمساواة الصارمة والـ Closures ودوال المصفوفات بشكل صحيح",
+        "قراءة الصفحة وتغييرها عبر الـ DOM ومعالجة الأحداث",
+        "تنظيم الكود في ES modules",
+        "استدعاء API بـ fetch وasync/await ومعالجة الفشل",
+        "شرح حلقة الأحداث ولماذا يجمّد العمل المتزامن الطويل الصفحة"
+      ],
+      "prerequisites": ["web-html-css", "cs-methods"]
+    },
+    {
       "slug": "ts-types-inference",
       "skill": "TypeScript", "priority": "Core", "minutes": 40,
       "titleEn": "Types and type inference",

@@ -36,7 +36,7 @@ public class SeederTests : IAsyncLifetime
         await Seeder().SeedAsync();
 
         Assert.Equal(14, await _db.Phases.CountAsync());
-        Assert.Equal(159, await _db.Topics.CountAsync());
+        Assert.Equal(166, await _db.Topics.CountAsync());
         Assert.Equal(4, await _db.Projects.CountAsync());
         Assert.True(await _db.Resources.CountAsync() > 100);
         Assert.True(await _db.PracticeExercises.CountAsync() >= 140);
@@ -87,6 +87,134 @@ public class SeederTests : IAsyncLifetime
         // The cloud phase sits before the projects phase, which stays last.
         var phases = await _db.Phases.OrderBy(p => p.Order).Select(p => p.Slug).ToListAsync();
         Assert.Equal(phases.Count - 2, phases.IndexOf(topics.Single(t => t.Slug == "devops-docker").Phase!.Slug));
+    }
+
+    [Fact]
+    public async Task Topics_added_from_the_linkedin_research_are_complete_and_placed_by_their_prerequisites()
+    {
+        await Seeder().SeedAsync();
+
+        var slugs = new[] { "web-html-css", "web-javascript-essentials", "arch-clean-architecture", "arch-domain-driven-design",
+            "dotnet-legacy-modernization", "ai-dotnet-llm", "arch-message-brokers" };
+        var topics = await _db.Topics.Include(t => t.Demand).Include(t => t.Phase).Where(t => slugs.Contains(t.Slug)).ToListAsync();
+        Assert.Equal(slugs.Length, topics.Count);
+        Assert.All(topics, t =>
+        {
+            Assert.NotNull(t.Difficulty);
+            Assert.True(t.EstimatedMinutes > 0, t.Slug);
+            Assert.All(new[] { t.SummaryAr, t.WhyEn, t.WhyAr, t.PracticeTaskEn, t.PracticeTaskAr, t.ChallengeEn, t.ChallengeAr }, s => Assert.False(string.IsNullOrWhiteSpace(s), t.Slug));
+            Assert.True(t.ObjectivesEn.Split('\n').Length >= 3, t.Slug);
+            Assert.Equal(t.ObjectivesEn.Split('\n').Length, t.ObjectivesAr.Split('\n').Length);
+            Assert.NotNull(t.CodeSample);
+            Assert.NotEmpty(t.Demand);
+        });
+        foreach (var slug in slugs)
+        {
+            var id = topics.Single(t => t.Slug == slug).Id;
+            Assert.True(await _db.ResourceTopics.AnyAsync(r => r.TopicId == id), slug);
+            Assert.True(await _db.TopicPrerequisites.AnyAsync(p => p.TopicId == id), slug);
+        }
+
+        // Inserted between existing topics, not appended at the end of a phase.
+        async Task<string> Next(string slug)
+        {
+            var t = topics.Single(x => x.Slug == slug);
+            return await _db.Topics.Where(x => x.PhaseId == t.PhaseId && x.Order == t.Order + 1).Select(x => x.Slug).SingleAsync();
+        }
+        Assert.Equal("web-javascript-essentials", await Next("web-html-css"));
+        Assert.Equal("ts-types-inference", await Next("web-javascript-essentials"));
+        Assert.Equal("arch-domain-driven-design", await Next("arch-clean-architecture"));
+        Assert.Equal("devops-kubernetes", await Next("ai-dotnet-llm"));
+        Assert.Equal(1, topics.Single(t => t.Slug == "web-html-css").Order);
+    }
+
+    [Fact]
+    public async Task Inserting_the_new_topics_keeps_existing_progress_and_starts_them_not_started()
+    {
+        // Simulate the database before the update: seed a copy of the content without the new topics.
+        var newSlugs = new HashSet<string> { "web-html-css", "web-javascript-essentials", "arch-clean-architecture", "arch-domain-driven-design",
+            "dotnet-legacy-modernization", "ai-dotnet-llm", "arch-message-brokers" };
+        var oldDir = CopySeedWithout(newSlugs);
+        try
+        {
+            await Seeder().SeedAsync(oldDir);
+            Assert.Equal(159, await _db.Topics.CountAsync());
+            Assert.False(await _db.Topics.AnyAsync(t => newSlugs.Contains(t.Slug)));
+
+            // Topics right next to where the new ones go, so their Order values shift.
+            var tracked = new[] { "ts-types-inference", "pro-refactoring", "pro-security", "cloud-azure-app-service", "devops-kubernetes", "arch-microservices" };
+            var before = await _db.Topics.Where(t => tracked.Contains(t.Slug)).ToDictionaryAsync(t => t.Slug, t => t.Id);
+            _db.Users.Add(new AppUser { Id = "learner", UserName = "learner@example.com", Email = "learner@example.com", FullName = "Learner" });
+            foreach (var (slug, id) in before)
+                _db.TopicProgress.Add(new TopicProgress { UserId = "learner", TopicId = id, Status = TopicStatus.Completed, Confidence = 5, UpdatedAt = DateTime.UtcNow });
+            await _db.SaveChangesAsync();
+            _db.ChangeTracker.Clear();
+
+            await Seeder().SeedAsync();
+
+            Assert.Equal(166, await _db.Topics.CountAsync());
+            var after = await _db.Topics.Where(t => tracked.Contains(t.Slug)).ToDictionaryAsync(t => t.Slug, t => t.Id);
+            Assert.Equal(before, after); // same ids, so progress still points at the same topics
+            var progress = await _db.TopicProgress.IgnoreQueryFilters().Include(p => p.Topic).ToListAsync();
+            Assert.Equal(tracked.Length, progress.Count);
+            Assert.All(progress, p => { Assert.Equal(TopicStatus.Completed, p.Status); Assert.Contains(p.Topic!.Slug, tracked); });
+            // New topics have no progress row, so they show as not started.
+            Assert.DoesNotContain(progress, p => newSlugs.Contains(p.Topic!.Slug));
+        }
+        finally
+        {
+            Directory.Delete(oldDir, recursive: true);
+        }
+    }
+
+    private static string CopySeedWithout(HashSet<string> slugs)
+    {
+        var source = DbSeeder.DefaultSeedDirectory;
+        var dir = Directory.CreateTempSubdirectory("devpath-old-seed-").FullName;
+        foreach (var file in Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories))
+        {
+            var target = Path.Combine(dir, Path.GetRelativePath(source, file));
+            Directory.CreateDirectory(Path.GetDirectoryName(target)!);
+            File.Copy(file, target);
+        }
+        static void Edit(string path, Action<System.Text.Json.Nodes.JsonNode> change)
+        {
+            var node = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(path))!;
+            change(node);
+            File.WriteAllText(path, node.ToJsonString());
+        }
+        static void RemoveWhere(System.Text.Json.Nodes.JsonArray array, Func<System.Text.Json.Nodes.JsonNode, bool> match)
+        {
+            foreach (var item in array.Where(i => match(i!)).ToList()) array.Remove(item);
+        }
+        foreach (var file in Directory.GetFiles(Path.Combine(dir, "roadmap")))
+            Edit(file, n => RemoveWhere(n["topics"]!.AsArray(), t => slugs.Contains((string)t["slug"]!)));
+        foreach (var file in Directory.GetFiles(Path.Combine(dir, "quizzes")))
+            Edit(file, n => RemoveWhere(n.AsArray(), q => slugs.Contains((string)q["topic"]!)));
+        Edit(Path.Combine(dir, "videos.json"), n => { foreach (var s in slugs) n.AsObject().Remove(s); });
+        Edit(Path.Combine(dir, "market-demand.json"), n => { foreach (var s in slugs) n["topics"]!.AsObject().Remove(s); });
+        Edit(Path.Combine(dir, "resources.json"), n =>
+        {
+            foreach (var r in n.AsArray()) RemoveWhere(r!["topics"]!.AsArray(), s => slugs.Contains((string)s!));
+            RemoveWhere(n.AsArray(), r => r["topics"]!.AsArray().Count == 0);
+        });
+        return dir;
+    }
+
+    [Fact]
+    public async Task Slugs_and_titles_are_unique_and_every_earlier_topic_is_still_in_its_phase()
+    {
+        await Seeder().SeedAsync();
+
+        var topics = await _db.Topics.Select(t => new { t.Slug, t.TitleEn, Phase = t.Phase!.Slug }).ToListAsync();
+        Assert.Equal(topics.Count, topics.Select(t => t.Slug.ToLowerInvariant()).Distinct().Count());
+        Assert.Equal(topics.Count, topics.Select(t => t.TitleEn.Trim().ToLowerInvariant()).Distinct().Count());
+
+        // The 159 topics that existed before the LinkedIn update keep their slug and their phase.
+        var before = File.ReadAllLines(Path.Combine(AppContext.BaseDirectory, "TestData", "topics-before-linkedin-update.txt"))
+            .Where(l => l.Length > 0).Select(l => l.Split(' ')).ToList();
+        Assert.Equal(159, before.Count);
+        Assert.All(before, b => Assert.Contains(topics, t => t.Phase == b[0] && t.Slug == b[1]));
     }
 
     [Fact]
