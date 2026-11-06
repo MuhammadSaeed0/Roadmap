@@ -30,6 +30,33 @@ public class VideoTests : IAsyncLifetime
     private static YouTubeVideo Video(string id, string title, int seconds = 900, string description = "") =>
         new(id, title, "Some Channel", description, [], new DateTime(2025, 5, 1), seconds);
 
+    [Theory]
+    [InlineData(true)]   // production: a YouTube key is set, so every topic also builds a live search
+    [InlineData(false)]  // no key: curated videos only
+    public async Task Every_topic_lists_all_its_curated_videos(bool liveSearch)
+    {
+        _factory.YouTube.IsConfigured = liveSearch;
+        _factory.YouTube.Search = _ => [];
+        using var scope = _factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var expected = await db.Topics.Select(t => new { t.Id, t.Slug, Videos = db.CuratedVideos.Count(v => v.TopicId == t.Id) }).ToListAsync();
+
+        foreach (var topic in expected)
+        {
+            var response = await _client.GetAsync($"/api/topics/{topic.Id}/videos");
+            Assert.True(response.StatusCode == HttpStatusCode.OK, $"{topic.Slug}: {(int)response.StatusCode}");
+            var videos = (await Json(response))["videos"]!.AsArray();
+            Assert.True(videos.Count >= 2, $"{topic.Slug} shows {videos.Count} videos");
+            Assert.True(videos.Count(v => v!["language"] is not null) == topic.Videos, $"{topic.Slug} shows {videos.Count} of {topic.Videos} curated videos");
+        }
+    }
+
+    [Fact]
+    public void Every_skill_area_has_its_own_youtube_search_term() =>
+        // Only Professional topics use the stack-neutral fallback on purpose.
+        Assert.All(Enum.GetValues<SkillArea>().Where(s => s != SkillArea.Professional),
+            skill => Assert.DoesNotContain("software developer", TopicVideoService.SearchQuery("Topic", skill)));
+
     [Fact]
     public async Task Suggestions_are_relevant_shared_and_cached()
     {

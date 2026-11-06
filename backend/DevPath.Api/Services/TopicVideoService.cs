@@ -36,7 +36,12 @@ public class TopicVideoService(
         [SkillArea.Testing] = (".NET", [".net", "c#", "xunit", "angular", "test"]),
         [SkillArea.Git] = ("Git", ["git", "github"]),
         [SkillArea.Professional] = ("software developer", []),
+        [SkillArea.DevOps] = (".NET", [".net", "dotnet", "c#", "asp.net", "docker", "kubernetes", "azure", "devops", "ci/cd", "cloud", "rabbitmq", "microservice"]),
     };
+
+    // A skill added later without an entry falls back to a stack-neutral search instead of failing the request.
+    private static (string Term, string[] Aliases) SkillFor(SkillArea skill) =>
+        Skills.TryGetValue(skill, out var s) ? s : ("software developer", []);
 
     private static readonly HashSet<string> StopWords =
     [
@@ -289,7 +294,7 @@ public class TopicVideoService(
     /// <summary>"C# Loops tutorial". The skill name is left out when the title already contains it.</summary>
     internal static string SearchQuery(string title, SkillArea skill)
     {
-        var term = Skills[skill].Term;
+        var term = SkillFor(skill).Term;
         var clean = System.Text.RegularExpressions.Regex.Replace(title, @"\s*\(.*?\)\s*", " ").Trim();
         return clean.Contains(term, StringComparison.OrdinalIgnoreCase) ? $"{clean} tutorial" : $"{term} {clean} tutorial";
     }
@@ -298,7 +303,7 @@ public class TopicVideoService(
     internal static IEnumerable<CachedVideo> Relevant(IEnumerable<YouTubeVideo> results, string topicTitle, SkillArea skill)
     {
         var keywords = TopicKeywords(topicTitle);
-        var aliases = Skills[skill].Aliases;
+        var aliases = SkillFor(skill).Aliases;
         var seenTitles = new HashSet<string>();
         foreach (var v in results)
         {
