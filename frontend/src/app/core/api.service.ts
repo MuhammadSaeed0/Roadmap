@@ -100,6 +100,12 @@ export class ApiService {
   progress() { return this.get<M.ProgressReport>('/progress'); }
   weekly(weekOf?: string) { return this.get<M.WeeklyReview>('/progress/weekly', { weekOf }); }
   careerReadiness() { return this.get<M.CareerReadiness>('/career-readiness'); }
+  skillLevel() { return this.get<M.SkillLevel>('/skill-level'); }
+  xpHistory(page = 1, pageSize = 20) { return this.get<M.XpHistory>('/skill-level/history', { page, pageSize }); }
+  projectAssessment(projectId: number) { return this.get<M.ProjectAssessment>(`/projects/${projectId}/assessment`); }
+  saveProjectAssessment(projectId: number, body: { scores: Record<string, number>; notes: string | null }) {
+    return this.put<M.ProjectAssessment>(`/projects/${projectId}/assessment`, body);
+  }
   search(q: string) { return this.get<M.SearchResult>('/search', { q }); }
   preferences() { return this.get<M.Preferences>('/preferences'); }
   savePreferences(body: M.Preferences) { return this.put<M.Preferences>('/preferences', body); }

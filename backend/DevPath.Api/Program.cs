@@ -191,6 +191,9 @@ builder.Services.AddScoped<StudyPlanService>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<AnalyticsService>();
 builder.Services.AddScoped<CareerReadinessService>();
+// Developer level rules are read once at start-up; a broken rules file stops the app instead of giving wrong levels.
+builder.Services.AddSingleton(_ => DevPath.Api.Services.Skills.SkillRules.Load());
+builder.Services.AddScoped<DevPath.Api.Services.Skills.SkillAssessmentService>();
 builder.Services.AddScoped<SearchService>();
 builder.Services.AddScoped<TopicVideoService>();
 builder.Services.AddScoped<QuizService>();

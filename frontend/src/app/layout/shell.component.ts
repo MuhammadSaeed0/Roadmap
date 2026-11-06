@@ -232,6 +232,7 @@ export class ShellComponent {
     ] },
     { key: 'nav.track', items: [
       { path: '/progress', key: 'nav.progress', icon: 'chart' },
+      { path: '/skills', key: 'nav.skills', icon: 'award' },
       { path: '/career', key: 'nav.career', icon: 'briefcase' },
       { path: '/cv', key: 'nav.cv', icon: 'file' },
       { path: '/settings', key: 'nav.settings', icon: 'settings' },

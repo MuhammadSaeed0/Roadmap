@@ -50,6 +50,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<UserTopicVideo> UserTopicVideos => Set<UserTopicVideo>();
     public DbSet<VideoProgress> VideoProgress => Set<VideoProgress>();
     public DbSet<QuizAttempt> QuizAttempts => Set<QuizAttempt>();
+    public DbSet<QuizAnswer> QuizAnswers => Set<QuizAnswer>();
+    public DbSet<XpTransaction> XpTransactions => Set<XpTransaction>();
+    public DbSet<ProjectAssessment> ProjectAssessments => Set<ProjectAssessment>();
+    public DbSet<LevelChange> LevelChanges => Set<LevelChange>();
     public DbSet<PlaygroundProject> PlaygroundProjects => Set<PlaygroundProject>();
     public DbSet<CvDocument> CvDocuments => Set<CvDocument>();
 
@@ -420,6 +424,43 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             OwnedByUser(e);
             e.HasIndex(x => new { x.UserId, x.TopicId, x.Level });
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ---------- Developer level (Services/Skills) ----------
+        b.Entity<QuizAnswer>(e =>
+        {
+            OwnedByUser(e);
+            // SQL Server allows one cascade path: deleting an account removes its attempts, and the attempts remove their answers.
+            e.HasOne<AppUser>().WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.NoAction);
+            e.HasIndex(x => new { x.UserId, x.QuestionId });
+            e.HasOne(x => x.Attempt).WithMany(a => a.Answers).HasForeignKey(x => x.AttemptId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<XpTransaction>(e =>
+        {
+            OwnedByUser(e);
+            e.Property(x => x.SourceKey).HasMaxLength(120);
+            e.Property(x => x.Categories).HasMaxLength(300);
+            // Idempotency: two requests that reconcile the same source at once collide here instead of both adding points.
+            e.HasIndex(x => new { x.UserId, x.SourceKey, x.Seq }).IsUnique();
+            e.HasIndex(x => new { x.UserId, x.CreatedAt });
+        });
+
+        b.Entity<ProjectAssessment>(e =>
+        {
+            OwnedByUser(e);
+            e.HasKey(x => new { x.UserId, x.ProjectId });
+            e.Property(x => x.Scores).HasMaxLength(2000);
+            e.Property(x => x.Notes).HasMaxLength(4000);
+            e.HasOne(x => x.Project).WithMany().HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<LevelChange>(e =>
+        {
+            OwnedByUser(e);
+            e.Property(x => x.Level).HasMaxLength(32);
+            e.Property(x => x.PreviousLevel).HasMaxLength(32);
+            e.HasIndex(x => new { x.UserId, x.ChangedAt });
         });
 
         // ---------- Shared caches ----------

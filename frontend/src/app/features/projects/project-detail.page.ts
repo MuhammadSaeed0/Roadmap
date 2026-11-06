@@ -12,6 +12,7 @@ import { ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import { statusIcon } from '../../shared/status';
 import { TopicVideosComponent } from '../topics/topic-videos.component';
+import { ProjectReviewComponent } from '../skills/project-review.component';
 import { ErrorStateComponent, ProgressBarComponent, ProgressRingComponent, SkeletonComponent } from '../../shared/ui.components';
 
 const URL_PATTERN = /^https?:\/\/\S+$/i;
@@ -20,7 +21,7 @@ const URL_PATTERN = /^https?:\/\/\S+$/i;
   selector: 'app-project-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, RouterLink, ReactiveFormsModule, IconComponent, TranslatePipe, LocalizePipe, DurationPipe,
-    ProgressRingComponent, ProgressBarComponent, SkeletonComponent, ErrorStateComponent, TopicVideosComponent],
+    ProgressRingComponent, ProgressBarComponent, SkeletonComponent, ErrorStateComponent, TopicVideosComponent, ProjectReviewComponent],
   templateUrl: './project-detail.page.html',
 })
 export default class ProjectDetailPage {
