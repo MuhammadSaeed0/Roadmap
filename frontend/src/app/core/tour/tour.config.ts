@@ -30,6 +30,8 @@ export const SECTION_IDS = [
   'resources-verify', 'resources-filters', 'resources-list', 'notes-new', 'notes-list', 'notes-editor',
   // Progress, career, settings, search, admin
   'progress-tabs', 'progress-panel', 'career-gaps', 'career-areas', 'career-portfolio',
+  // Developer level (and the project review card on the project page)
+  'skills-level', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history', 'project-review',
   // CV builder
   'cv-new', 'cv-list', 'cv-templates', 'cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview',
   'settings-appearance', 'settings-learning', 'settings-account', 'settings-about', 'search-results',
@@ -40,7 +42,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 /** Pages with a guide. Routes name theirs in `data.helpId` (see app.routes.ts), so /topics/:id etc. work. */
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'library', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
-  'resources', 'notes', 'progress', 'career', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
+  'resources', 'notes', 'progress', 'skills', 'career', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
 
@@ -52,7 +54,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   library: ['library-filters', 'library-list'],
   topic: ['topic-header', 'topic-content', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-notes', 'topic-related'],
   projects: ['projects-list'],
-  project: ['project-hero', 'project-milestones', 'project-changes', 'project-portfolio', 'project-repo'],
+  project: ['project-hero', 'project-milestones', 'project-changes', 'project-portfolio', 'project-repo', 'project-review'],
   practice: ['practice-types', 'practice-filters', 'practice-list'],
   exercise: ['exercise-problem', 'exercise-workspace', 'exercise-attempt', 'exercise-hints', 'exercise-solution'],
   playground: ['playground-security', 'playground-environments', 'playground-projects'],
@@ -62,6 +64,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   resources: ['resources-verify', 'resources-filters', 'resources-list'],
   notes: ['notes-new', 'notes-list', 'notes-editor'],
   progress: ['progress-tabs', 'progress-panel'],
+  skills: ['skills-level', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history'],
   career: ['career-gaps', 'career-areas', 'career-portfolio'],
   cv: ['cv-new', 'cv-list', 'cv-templates'],
   'cv-editor': ['cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview'],
@@ -100,6 +103,7 @@ export const MAIN_TOUR: readonly MainStep[] = [
   { id: 'resources-filters', route: '/resources', targets: ['resources-filters'] },
   { id: 'notes-list', route: '/notes', targets: ['notes-list'] },
   { id: 'progress-tabs', route: '/progress', targets: ['progress-tabs'] },
+  { id: 'skills-level', route: '/skills', targets: ['skills-level'] },
   { id: 'career-gaps', route: '/career', targets: ['career-gaps'] },
   { id: 'cv-templates', route: '/cv', targets: ['cv-templates', 'cv-new'] },
   { id: 'settings-learning', route: '/settings', targets: ['settings-learning'] },

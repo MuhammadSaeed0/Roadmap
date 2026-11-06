@@ -268,3 +268,42 @@ export interface QuizQuestion {
 export interface Quiz { topicId: number; level: QuizLevel; passPercent: number; levels: QuizLevelInfo[]; questions: QuizQuestion[]; }
 export interface QuizResultItem { questionId: number; choice: number; correctIndex: number; isCorrect: boolean; explanationEn: string; explanationAr: string; }
 export interface QuizResult { level: QuizLevel; score: number; total: number; passed: boolean; results: QuizResultItem[]; levels: QuizLevelInfo[]; }
+
+// ----- Developer level (GET /api/skill-level) -----
+export type VerificationTier = 'SelfReported' | 'Evidenced' | 'AutoChecked' | 'QuizVerified' | 'Reviewed';
+export type EvidenceKind = 'Passive' | 'Knowledge' | 'Practical' | 'Project' | 'Quality';
+export interface EvidenceScore { kind: EvidenceKind; score: number; points: number; maxPoints: number; }
+export interface SkillRequirement { code: string; category: string | null; current: number; required: number; met: boolean; }
+export interface LevelStatus { key: string; index: number; minXp: number; met: boolean; requirements: SkillRequirement[]; }
+export interface ItemRef { type: 'topic' | 'exercise' | 'project'; id: number; level: number | null; }
+export interface SkillAction { code: string; category: string | null; ref: ItemRef | null; titleEn: string | null; titleAr: string | null; amount: number | null; }
+export interface CategoryScore { key: string; weight: number; score: number; proficiency: string; evidence: EvidenceScore[]; points: number; maxPoints: number; }
+export interface TechnologyScore {
+  skill: SkillArea; score: number; evidence: EvidenceScore[]; points: number; topicsDone: number; topicsTotal: number;
+  exercisesDone: number; projectTasksDone: number; questionsAnswered: number; accuracy: number | null; proficiency: string;
+}
+export interface SkillStats {
+  videosWatched: number; questionsAnswered: number; correctAnswers: number; accuracy: number | null; quizAttempts: number;
+  topicsCompleted: number; exercisesCompleted: number; projectTasksCompleted: number; projectsCompleted: number;
+  learningHours: number; technologiesMastered: number; verifiedPoints: number; selfReportedPoints: number;
+}
+export interface SkillWeakTopic { topicId: number; titleEn: string; titleAr: string; category: string; answered: number; correct: number; accuracy: number; }
+export interface XpTransaction {
+  id: number; sourceKey: string; activity: string; evidence: EvidenceKind; verification: VerificationTier;
+  points: number; balance: number; categories: string[]; occurredAt: string | null; createdAt: string;
+}
+export interface SkillLevel {
+  level: string; levelIndex: number; nextLevel: string | null; xpLevel: string; xpAheadOfSkills: boolean;
+  xp: number; maxXp: number; overall: number; progressToNext: number; levels: LevelStatus[];
+  categories: CategoryScore[]; technologies: TechnologyScore[]; stats: SkillStats;
+  weakCategories: string[]; weakTopics: SkillWeakTopic[];
+  nextLevelRequirements: { requirement: SkillRequirement; actions: SkillAction[] }[];
+  assessment: { category: string; band: 'foundation' | 'consolidate' | 'stretch'; stale: boolean; checks: SkillAction[] }[];
+  recentTransactions: XpTransaction[];
+  levelHistory: { level: string; previousLevel: string; xp: number; overall: number; changedAt: string }[];
+}
+export interface XpHistory { items: XpTransaction[]; page: number; pageSize: number; total: number; }
+export interface ProjectAssessment {
+  projectId: number; criteria: string[]; scores: Record<string, number>; notes: string | null;
+  verification: VerificationTier; updatedAt: string | null; countsTowardsLevel: boolean;
+}

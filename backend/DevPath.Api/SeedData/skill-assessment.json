@@ -1,0 +1,134 @@
+{
+  "$comment": "Developer level rules. Every number here is a starting point you can change; the API reads this file at start-up. See docs/skill-assessment-report.md.",
+
+  "points": {
+    "video": { "watched": 2, "watchedWithNotes": 5, "watchedAndAssessed": 10, "maxVideosPerTopic": 3, "minNoteCharacters": 80 },
+    "question": { "Easy": 5, "Medium": 10, "Hard": 20, "Advanced": 30 },
+    "quizLevelPass": { "2": 10, "3": 30 },
+    "quizRetryPenalty": { "freeAttempts": 3, "factor": 0.8 },
+    "topic": { "VeryEasy": 5, "Easy": 10, "Medium": 20, "Hard": 35, "Advanced": 50 },
+    "exercise": { "Basic": 20, "Intermediate": 40, "Advanced": 70, "Complex": 100 },
+    "exerciseQualityShare": 0.2,
+    "exerciseHintPenalty": 0.1,
+    "exerciseMaxHintPenalty": 0.3,
+    "exerciseSolutionFactor": 0.5,
+    "interview": { "Beginner": 5, "Intermediate": 10, "Advanced": 20, "Expert": 30 },
+    "interviewPartialFactor": 0.5,
+    "projectTask": { "Small": 20, "Medium": 40, "Complex": 75 },
+    "projectTaskBands": { "smallMaxMinutes": 40, "mediumMaxMinutes": 60 },
+    "projectCompletion": { "Small": 100, "Medium": 250, "Advanced": 500 },
+    "projectReview": { "Small": 50, "Medium": 100, "Advanced": 150 },
+    "portfolioItem": 5,
+    "selfReportedDailyCap": 600
+  },
+
+  "verification": {
+    "SelfReported": 0.5,
+    "Evidenced": 0.75,
+    "AutoChecked": 0.9,
+    "QuizVerified": 1.0,
+    "Reviewed": 1.0
+  },
+
+  "evidenceWeights": { "Passive": 5, "Knowledge": 20, "Practical": 25, "Project": 40, "Quality": 10 },
+
+  "categories": [
+    { "key": "fundamentals", "weight": 6, "skill": "CSharp" },
+    { "key": "csharp", "weight": 9, "skill": "CSharp" },
+    { "key": "dotnet", "weight": 10, "skill": "AspNetCore" },
+    { "key": "database", "weight": 9, "skill": "SqlServer" },
+    { "key": "efcore", "weight": 7, "skill": "EfCore" },
+    { "key": "frontend", "weight": 8, "skill": "Angular" },
+    { "key": "apis", "weight": 8, "skill": "FullStack" },
+    { "key": "architecture", "weight": 8, "skill": "Professional" },
+    { "key": "testing", "weight": 7, "skill": "Testing" },
+    { "key": "git", "weight": 4, "skill": "Git" },
+    { "key": "devops", "weight": 5, "skill": "DevOps" },
+    { "key": "security", "weight": 6, "skill": null },
+    { "key": "problemSolving", "weight": 6, "skill": null },
+    { "key": "projects", "weight": 12, "skill": null }
+  ],
+
+  "topicCategories": {
+    "slugs": {
+      "api-authentication": "security", "api-authorization": "security", "fs-auth-flow": "security", "fs-cors": "security",
+      "sql-injection": "security", "sql-parameterization": "security", "pro-security": "security",
+      "oop-solid": "architecture", "oop-object-modeling": "architecture",
+      "pro-reading-codebases": "problemSolving", "pro-debugging": "problemSolving", "pro-breaking-down-features": "problemSolving",
+      "pro-requirements": "problemSolving", "pro-incident-investigation": "problemSolving",
+      "pro-agile-scrum": "git", "pro-deployment": "devops", "dotnet-legacy-modernization": "dotnet", "ai-dotnet-llm": "dotnet"
+    },
+    "prefixes": {
+      "arch-": "architecture", "test-": "testing", "db-": "database", "sql-": "database", "ef-": "efcore",
+      "git-": "git", "devops-": "devops", "cloud-": "devops"
+    },
+    "phases": {
+      "csharp-fundamentals": "fundamentals", "object-oriented-programming": "csharp", "modern-csharp": "csharp",
+      "aspnet-core": "dotnet", "ef-core": "efcore", "sql-server-for-dotnet": "database", "typescript": "frontend",
+      "angular": "frontend", "full-stack-integration": "apis", "testing": "testing", "git-github": "git",
+      "professional-skills": "architecture", "cloud-devops": "devops"
+    }
+  },
+
+  "phaseDifficulty": {
+    "csharp-fundamentals": "Beginner", "object-oriented-programming": "Beginner", "modern-csharp": "Intermediate",
+    "aspnet-core": "Intermediate", "ef-core": "Intermediate", "sql-server-for-dotnet": "Intermediate", "typescript": "Beginner",
+    "angular": "Intermediate", "full-stack-integration": "Intermediate", "testing": "Intermediate", "git-github": "Beginner",
+    "professional-skills": "Advanced", "cloud-devops": "Advanced"
+  },
+
+  "exerciseExtraCategories": {
+    "Debugging": "problemSolving", "Scenario": "problemSolving", "Challenge": "problemSolving", "CodeReview": "architecture"
+  },
+
+  "interviewCategories": {
+    "CSharp": "csharp", "DotNet": "dotnet", "AspNetCore": "dotnet", "EfCore": "efcore", "SqlServer": "database",
+    "TypeScript": "frontend", "Angular": "frontend", "RestApi": "apis", "Testing": "testing", "Git": "git",
+    "FullStackDesign": "architecture", "DataStructures": "problemSolving", "Algorithms": "problemSolving",
+    "ObjectOrientedDesign": "architecture", "SystemDesign": "architecture", "Concurrency": "csharp", "Behavioral": "projects"
+  },
+
+  "projectSizes": {
+    "employee-management": "Small", "inventory-api": "Medium", "project-dashboard": "Medium", "sales-order-management": "Advanced"
+  },
+
+  "reviewCriteria": [
+    { "key": "architecture", "category": "architecture" },
+    { "key": "codeQuality", "category": "projects" },
+    { "key": "functionality", "category": "projects" },
+    { "key": "database", "category": "database" },
+    { "key": "api", "category": "apis" },
+    { "key": "frontend", "category": "frontend" },
+    { "key": "security", "category": "security" },
+    { "key": "testing", "category": "testing" },
+    { "key": "performance", "category": "architecture" },
+    { "key": "deployment", "category": "devops" }
+  ],
+
+  "weakThreshold": 40,
+  "staleKnowledgeDays": 90,
+
+  "levels": [
+    { "key": "beginner", "minXp": 0, "minOverall": 0, "categories": {} },
+    {
+      "key": "junior", "minXp": 500, "minOverall": 10,
+      "categories": { "fundamentals": 35, "csharp": 15 },
+      "minProjectTasks": 5
+    },
+    {
+      "key": "mid", "minXp": 2000, "minOverall": 28,
+      "categories": { "fundamentals": 55, "csharp": 40, "dotnet": 35, "database": 35, "efcore": 30, "apis": 30, "frontend": 25, "git": 30, "testing": 15, "projects": 30 },
+      "minProjectsCompleted": 1
+    },
+    {
+      "key": "senior", "minXp": 6000, "minOverall": 50,
+      "categories": { "csharp": 55, "dotnet": 55, "database": 50, "efcore": 50, "apis": 50, "frontend": 40, "architecture": 45, "testing": 45, "security": 45, "problemSolving": 40, "devops": 30, "projects": 50 },
+      "minProjectsCompleted": 3, "minAdvancedProjects": 1
+    },
+    {
+      "key": "expert", "minXp": 12000, "minOverall": 70,
+      "categories": { "fundamentals": 75, "csharp": 70, "dotnet": 70, "database": 70, "efcore": 70, "apis": 70, "frontend": 60, "architecture": 70, "testing": 65, "security": 65, "problemSolving": 65, "devops": 50, "projects": 65 },
+      "minProjectsCompleted": 4, "minAdvancedProjects": 1
+    }
+  ]
+}

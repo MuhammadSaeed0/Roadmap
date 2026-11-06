@@ -210,6 +210,8 @@ public class QuizAttempt : IUserOwned
     public int Score { get; set; }
     public int Total { get; set; }
     public DateTime CreatedAt { get; set; }
+    /// <summary>The answers given in this attempt. Empty for attempts made before answers were recorded.</summary>
+    public List<QuizAnswer> Answers { get; set; } = [];
 }
 
 /// <summary>The user's watched / saved flags for a video. Key: (UserId, VideoId).</summary>

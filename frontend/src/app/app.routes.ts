@@ -21,6 +21,7 @@ const appRoutes: Routes = [
   { path: 'cv', loadComponent: () => import('./features/cv/cv-dashboard.page'), data: { titleKey: 'nav.cv', helpId: 'cv' } },
   { path: 'cv/:id', loadComponent: () => import('./features/cv/cv-editor.page'), data: { titleKey: 'nav.cv', helpId: 'cv-editor' } },
   { path: 'career', loadComponent: () => import('./features/career/career.page'), data: { titleKey: 'nav.career', helpId: 'career' } },
+  { path: 'skills', loadComponent: () => import('./features/skills/skill-level.page'), data: { titleKey: 'nav.skills', helpId: 'skills' } },
   { path: 'settings', loadComponent: () => import('./features/settings/settings.page'), data: { titleKey: 'nav.settings', helpId: 'settings' } },
   { path: 'search', loadComponent: () => import('./features/search/search.page'), data: { titleKey: 'nav.search', helpId: 'search' } },
   { path: 'admin', loadComponent: () => import('./features/admin/admin.page'), canActivate: [adminGuard], data: { titleKey: 'nav.admin', helpId: 'admin' } },

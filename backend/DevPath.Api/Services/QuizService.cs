@@ -58,9 +58,12 @@ public class QuizService(AppDbContext db, TimeProvider clock)
         }
 
         var score = results.Count(r => r.IsCorrect);
+        var now = clock.GetUtcNow().UtcDateTime;
         db.QuizAttempts.Add(new QuizAttempt
         {
-            TopicId = topicId, Level = level, Score = score, Total = results.Count, CreatedAt = clock.GetUtcNow().UtcDateTime,
+            TopicId = topicId, Level = level, Score = score, Total = results.Count, CreatedAt = now,
+            // Kept per question so each question earns developer-level points once, and accuracy can be measured.
+            Answers = results.Select(r => new QuizAnswer { QuestionId = r.QuestionId, Choice = r.Choice, IsCorrect = r.IsCorrect, CreatedAt = now }).ToList(),
         });
         await db.SaveChangesAsync(ct);
 
