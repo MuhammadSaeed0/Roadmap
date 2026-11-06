@@ -5,8 +5,8 @@ This compares the technologies in the LinkedIn summary
 with the roadmap as it is on `main` at commit `f8676f0`: 14 phases and 159 topics. Percentages are
 out of the 25 LinkedIn postings.
 
-**Status: waiting for approval.** Nothing in the roadmap has been changed yet. Step 2.4 of the
-prompt asks to stop here.
+**Status: approved and implemented** (see [roadmap-implementation-report.md](roadmap-implementation-report.md)). Step 2.4 of the
+prompt asked to stop at this point; the owner approved the plan before implementation.
 
 ## How the roadmap is built
 
