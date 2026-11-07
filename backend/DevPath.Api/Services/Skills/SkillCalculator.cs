@@ -512,12 +512,17 @@ public sealed class SkillCalculator(SkillRules rules)
     private List<AssessmentItem> Assessment(Context c, DateTime now)
     {
         var items = new List<AssessmentItem>();
+        // Looked up per category below; a scan of every opportunity per exercise per category took seconds.
+        var exerciseCategories = c.Opportunities.Where(o => o.Activity == XpActivity.ExerciseCompleted && o.Ref is not null)
+            .ToDictionary(o => o.Ref!.Id, o => o.Categories);
+        var lastQuizByCategory = c.Opportunities
+            .Where(o => o.Evidence == EvidenceKind.Knowledge && o.Verification == VerificationTier.QuizVerified && o.Points > 0 && o.OccurredAt is not null)
+            .SelectMany(o => o.Categories.Select(cat => (cat, o.OccurredAt!.Value)))
+            .GroupBy(x => x.cat).ToDictionary(g => g.Key, g => g.Max(x => x.Value));
         foreach (var score in c.Categories.Where(x => x.MaxPoints > 0).OrderBy(x => x.Score))
         {
             var band = score.Score < rules.WeakThreshold ? "foundation" : score.Score < 70 ? "consolidate" : "stretch";
-            var lastQuiz = c.Opportunities.Where(o => o.Evidence == EvidenceKind.Knowledge && o.Verification == VerificationTier.QuizVerified
-                    && o.Points > 0 && o.Categories.Contains(score.Key)).Max(o => o.OccurredAt);
-            var stale = lastQuiz is not null && (now - lastQuiz.Value).TotalDays > rules.StaleKnowledgeDays;
+            var stale = lastQuizByCategory.TryGetValue(score.Key, out var lastQuiz) && (now - lastQuiz).TotalDays > rules.StaleKnowledgeDays;
 
             var topics = c.S.Topics.Where(t => c.CategoryOf[t.Id] == score.Key && c.QuestionsByTopic.GetValueOrDefault(t.Id) > 0)
                 .OrderBy(t => t.Position).ToList();
@@ -547,7 +552,7 @@ public sealed class SkillCalculator(SkillRules rules)
             };
             var exercise = c.S.Exercises
                 .Where(e => e.Status != PracticeStatus.Completed && wanted.Contains(e.Difficulty))
-                .Where(e => c.Opportunities.Any(o => o.Key == $"exercise:{e.Id}" && o.Categories.Contains(score.Key)))
+                .Where(e => exerciseCategories.TryGetValue(e.Id, out var cats) && cats.Contains(score.Key))
                 .OrderBy(e => Array.IndexOf(wanted, e.Difficulty))
                 .ThenByDescending(e => e.Type is ExerciseType.Debugging or ExerciseType.Scenario or ExerciseType.Challenge)
                 .ThenBy(e => e.Id)

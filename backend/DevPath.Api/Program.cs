@@ -230,7 +230,15 @@ if (hasFrontend)
     var contentTypes = new FileExtensionContentTypeProvider();
     contentTypes.Mappings[".dll"] = "application/octet-stream";
     app.UseMiddleware<PrecompressedStaticFiles>(contentTypes);
-    app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = contentTypes });
+    app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = contentTypes, OnPrepareResponse = NoCacheForHtml });
+}
+
+// index.html names the current hashed bundles. Without this header browsers may reuse an old copy after a deploy,
+// and keep showing the previous release until a hard refresh.
+static void NoCacheForHtml(StaticFileResponseContext ctx)
+{
+    if (ctx.File.Name.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+        ctx.Context.Response.Headers.CacheControl = "no-cache";
 }
 
 if (app.Environment.IsDevelopment()) app.UseCors(FrontendCors);
@@ -251,7 +259,7 @@ if (hasFrontend)
 {
     // Unknown /api paths stay JSON 404s; every other path is an Angular route, so it gets index.html.
     app.MapFallback("api/{**rest}", () => Results.Problem(statusCode: StatusCodes.Status404NotFound, title: "Not found.")).AllowAnonymous();
-    app.MapFallbackToFile("index.html").AllowAnonymous();
+    app.MapFallbackToFile("index.html", new StaticFileOptions { OnPrepareResponse = NoCacheForHtml }).AllowAnonymous();
 }
 
 if (!app.Configuration.GetValue("Database:SkipInitialization", false))
