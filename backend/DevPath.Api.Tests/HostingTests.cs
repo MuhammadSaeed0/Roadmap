@@ -40,6 +40,18 @@ public class HostingTests : IAsyncLifetime
         Assert.Contains("<app-root>", await response.Content.ReadAsStringAsync());
     }
 
+    /// <summary>index.html names the current bundles; if a browser reused an old copy it would keep running the previous release.</summary>
+    [Theory]
+    [InlineData("/")]
+    [InlineData("/skills")]
+    [InlineData("/index.html")]
+    public async Task The_angular_page_is_never_reused_from_the_cache_without_checking(string path)
+    {
+        var response = await _factory.CreateClient().GetAsync(path);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.True(response.Headers.CacheControl?.NoCache, $"{path} should be sent with Cache-Control: no-cache");
+    }
+
     [Fact]
     public async Task Static_files_are_served_and_unknown_api_paths_stay_404()
     {

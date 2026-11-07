@@ -23,6 +23,11 @@ type Tone = 'danger' | 'warning' | 'accent' | 'success';
   imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, FormatNumberPipe, FormatDatePipe, PageHeaderComponent,
     ProgressBarComponent, ProgressRingComponent, SkeletonComponent, ErrorStateComponent],
   styles: `
+    /* One even gap between every block of the page (the global .card + .card rule misses a card followed by a grid). */
+    :host { display: flex; flex-direction: column; gap: 20px; }
+    :host > .card, :host > .grid, :host > section { margin: 0; }
+    :host .grid { gap: 20px; }
+    :host .section-title { margin-bottom: 12px; }
     .level-hero { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; align-items: center; }
     .level-name { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; letter-spacing: -0.02em; margin: 2px 0 6px; }
     .ladder { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
