@@ -4,7 +4,7 @@ import { highlight } from './highlight';
 import { IconComponent } from './icon.component';
 
 const LABELS: Record<string, string> = {
-  csharp: 'C#', typescript: 'TypeScript', sql: 'SQL', html: 'HTML', bash: 'Shell', http: 'HTTP', json: 'JSON', css: 'CSS', text: 'Text',
+  csharp: 'C#', aspnet: 'C#', typescript: 'TypeScript', sql: 'SQL', html: 'HTML', bash: 'Shell', http: 'HTTP', json: 'JSON', css: 'CSS', text: 'Text',
   yaml: 'YAML', dockerfile: 'Dockerfile',
 };
 

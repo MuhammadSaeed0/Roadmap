@@ -19,6 +19,7 @@ const KEYWORDS: Record<string, string[]> = {
     'end', 'create', 'alter', 'table', 'index', 'event', 'session', 'server', 'add', 'target', 'action', 'go', 'null',
     'is', 'in', 'desc', 'asc', 'case', 'when', 'then', 'else', 'with', 'state', 'start', 'count', 'sum', 'max', 'min'],
 };
+KEYWORDS['aspnet'] = KEYWORDS['csharp'];
 KEYWORDS['html'] = ['@if', '@else', '@for', '@switch', '@case', '@default', 'track'];
 
 export function highlight(code: string, language: string | null | undefined): string {
