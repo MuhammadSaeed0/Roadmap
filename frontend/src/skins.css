@@ -386,6 +386,23 @@
 .topbar .topbar-search { flex: 1 1 140px; min-width: 140px; }
 .topbar-actions { flex: none; }
 
+/* Phones: everything has to fit in one row of 320-430px. The search field shrinks to its icon and opens over
+   the whole bar while you type, and the language switch shows only the language you can switch to. */
+@media (max-width: 640px) {
+  .topbar { gap: 8px; padding-inline: 12px; }
+  .topbar .topbar-search { flex: 1 1 0; min-width: 40px; }
+  .topbar .topbar-search input { padding-inline: 36px 8px; text-overflow: ellipsis; }
+  .topbar .topbar-search input::placeholder { color: transparent; }
+  .topbar .topbar-search:focus-within { position: absolute; inset-inline: 12px; top: calc((var(--topbar-h) - 40px) / 2); z-index: 50; }
+  .topbar .topbar-search:focus-within input { background: var(--surface); color: var(--text); }
+  .topbar .topbar-search:focus-within input::placeholder { color: var(--muted); }
+  .topbar .topbar-search:focus-within .search-icon { color: var(--muted); }
+  .topbar-actions, .topbar-prefs { gap: 4px; }
+  .topbar .lang-switch { padding: 0; border: 0; background: none; }
+  .topbar .lang-switch button.active { display: none; }
+  .topbar .lang-switch button { padding: 6px 8px; color: var(--bar-text); }
+}
+
 /* =====================================================================
    Luxe glass
    The owner asked for richer colours and a glass look, without the yellow
