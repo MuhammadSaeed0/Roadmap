@@ -528,7 +528,8 @@ export const en = {
   challenges: {
     title: 'Challenges', subtitle: 'Exercises that check themselves. Solve them in the editor and earn points',
     tabChallenges: 'Challenges', tabLeaderboard: 'Leaderboard', yourScore: 'Your score', points: 'points', solved: 'solved',
-    domains: 'Domains', algorithms: 'Algorithms', unsolvedOnly: 'Not solved yet', empty: 'No challenges match these filters',
+    domains: 'Domains',
+    domainNames: { Algorithms: 'Algorithms', DataStructures: 'Data structures', Strings: 'Strings', Math: 'Math', ObjectOriented: 'Object-oriented', Linq: 'LINQ' }, unsolvedOnly: 'Not solved yet', empty: 'No challenges match these filters',
     selfReported: 'The checks run in your browser, so points are your own record, not a verified grade.',
     colChallenge: 'Challenge', colDomain: 'Domain', colDifficulty: 'Difficulty', colTime: 'Time', colStatus: 'Status',
     statusSolved: 'Solved', statusTried: 'Best run {score}%', statusNew: 'Not started',

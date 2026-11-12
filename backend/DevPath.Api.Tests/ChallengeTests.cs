@@ -38,7 +38,14 @@ public class ChallengeTests(ApiFactory factory) : IClassFixture<ApiFactory>
         Assert.Equal(items.Sum(i => i!["points"]!.GetValue<int>()), d["maxPoints"]!.GetValue<int>());
         var lru = items.Single(i => i!["key"]!.GetValue<string>() == "algo-lru-cache")!;
         Assert.Equal(60, lru["points"]!.GetValue<int>());
-        Assert.Equal("Algorithms", d["domains"]!.AsArray()[0]!["key"]!.GetValue<string>());
+        var domains = d["domains"]!.AsArray().Select(x => x!["key"]!.GetValue<string>()).ToList();
+        Assert.Equal("Algorithms", domains[0]);
+        Assert.Contains("DataStructures", domains);
+        Assert.Contains("Strings", domains);
+        Assert.Contains("Math", domains);
+        Assert.Contains("ObjectOriented", domains);
+        Assert.Contains("Linq", domains);
+        Assert.Equal(5, items.Count(i => i!["domain"]!.GetValue<string>() == "DataStructures"));
     }
 
     [Fact]

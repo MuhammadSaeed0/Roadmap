@@ -22,8 +22,19 @@ public class ChallengeService(AppDbContext db, ICurrentUser currentUser)
         _ => 60,
     };
 
-    /// <summary>Algorithm challenges form their own domain; every other challenge belongs to its topic's technology.</summary>
-    public static string DomainOf(string key, SkillArea skill) => key.StartsWith("algo-", StringComparison.Ordinal) ? AlgorithmsDomain : skill.ToString();
+    /// <summary>Challenge sets with their own domain, by key prefix. Every other challenge belongs to its topic's technology.</summary>
+    private static readonly (string Prefix, string Domain)[] Domains =
+    [
+        ("algo-", AlgorithmsDomain), ("ds-", "DataStructures"), ("str-", "Strings"), ("math-", "Math"),
+        ("oopc-", "ObjectOriented"), ("linqc-", "Linq"),
+    ];
+
+    public static string DomainOf(string key, SkillArea skill)
+    {
+        foreach (var (prefix, domain) in Domains)
+            if (key.StartsWith(prefix, StringComparison.Ordinal)) return domain;
+        return skill.ToString();
+    }
 
     public async Task<ChallengesDto> GetAsync(CancellationToken ct)
     {
