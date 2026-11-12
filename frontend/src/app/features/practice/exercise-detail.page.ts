@@ -6,7 +6,7 @@ import { ApiError } from '../../core/api-error';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { DurationPipe, FormatDatePipe, LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
-import { ExerciseDetail, ExerciseRunner, WorkspaceFile, WorkspaceKind } from '../../core/models';
+import { ExerciseDetail, ExerciseRunner, Submission, WorkspaceFile, WorkspaceKind } from '../../core/models';
 import { ConfirmService, ToastService } from '../../core/ui-services';
 import { CodeBlockComponent } from '../../shared/code-block.component';
 import { IconComponent } from '../../shared/icon.component';
@@ -119,6 +119,8 @@ export default class ExerciseDetailPage {
         this.latestFiles = d?.savedFiles ?? d?.starterFiles ?? [];
         this.workspaceFiles.set(this.latestFiles);
         this.saveState.set(d?.savedFiles ? 'saved' : 'idle');
+        this.history.set([]);
+        if (d && d.submissions > 0) void this.loadHistory();
       });
     });
   }
@@ -168,7 +170,27 @@ export default class ExerciseDetailPage {
       const d = await this.api.submitExercise(Number(this.id()), files, result.passed, result.total);
       this.data.set(d);
       this.saveState.set('saved');
+      void this.loadHistory();
       if (result.passed === result.total && before !== 'Completed') this.toast.success(this.i18n.t('practice.allChecksPassed'));
+    } catch (e) {
+      this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
+    }
+  }
+
+  /** Earlier runs of the checks, newest first. */
+  protected readonly history = signal<Submission[]>([]);
+
+  private async loadHistory(): Promise<void> {
+    try { this.history.set(await this.api.exerciseSubmissions(Number(this.id()))); } catch { /* the history is optional */ }
+  }
+
+  /** Puts the code of an earlier submission back in the editor. */
+  protected async loadSubmission(id: number): Promise<void> {
+    if (!(await this.confirm.ask({ message: this.i18n.t('practice.loadSubmissionConfirm'), confirmText: this.i18n.t('practice.loadSubmission') }))) return;
+    try {
+      const s = await this.api.submission(id);
+      this.workspaceFiles.set(s.files.map(f => ({ ...f })));
+      await this.onFilesChanged(s.files);
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
     }

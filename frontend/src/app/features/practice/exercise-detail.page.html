@@ -110,6 +110,23 @@
         </div>
       </section>
 
+      @if (history().length > 0) {
+        <section class="card" aria-labelledby="subs-h">
+          <h2 id="subs-h" class="card-title"><app-icon name="clock" /> {{ 'practice.submissionsTitle' | t }}</h2>
+          <ul class="mini-list" role="list">
+            @for (s of history(); track s.id) {
+              <li class="row-between">
+                <span class="small">
+                  <strong [class.text-success]="s.passed === s.total">{{ s.passed }}/{{ s.total }}</strong>
+                  <span class="muted"> · {{ s.createdAt | fmtDate: 'short' }}</span>
+                </span>
+                <button type="button" class="btn btn-ghost btn-xs" (click)="loadSubmission(s.id)">{{ 'practice.loadSubmission' | t }}</button>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+
       <section class="card" aria-labelledby="hints-h" data-tour="exercise-hints">
         <h2 id="hints-h" class="card-title"><app-icon name="bulb" /> {{ 'practice.hints' | t }}</h2>
         <p class="small muted">{{ 'practice.hintsCount' | t: { n: hints().length, total: d.hintCount } }}</p>

@@ -80,6 +80,13 @@ public record QuizSeed(
     List<string> OptionsEn, List<string> OptionsAr, int Answer,
     string ExplanationEn, string ExplanationAr);
 
+/// <summary>The written tutorial of one topic in SeedData/tutorials/*.json: its lessons in reading order.</summary>
+public record TutorialSeed(string Topic, List<LessonSeed> Lessons);
+
+public record LessonSeed(
+    string Key, string TitleEn, string TitleAr, string BodyEn, string BodyAr,
+    string? Code = null, string? Language = null, string? Output = null);
+
 public record ChecklistSeed(string Key, string TitleEn, string TitleAr, string DescriptionEn, string DescriptionAr);
 
 /// <summary>

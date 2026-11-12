@@ -182,6 +182,7 @@ builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<StudySessionService>();
 builder.Services.AddScoped<ResourceService>();
 builder.Services.AddScoped<PracticeService>();
+builder.Services.AddScoped<ChallengeService>();
 builder.Services.AddScoped<InterviewService>();
 builder.Services.AddScoped<NoteService>();
 builder.Services.AddScoped<ReviewService>();
