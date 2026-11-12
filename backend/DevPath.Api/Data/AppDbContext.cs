@@ -35,6 +35,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<CuratedVideo> CuratedVideos => Set<CuratedVideo>();
     public DbSet<ProjectTaskVideo> ProjectTaskVideos => Set<ProjectTaskVideo>();
     public DbSet<QuizQuestion> QuizQuestions => Set<QuizQuestion>();
+    public DbSet<TopicLesson> TopicLessons => Set<TopicLesson>();
 
     // User data
     public DbSet<TopicProgress> TopicProgress => Set<TopicProgress>();
@@ -54,6 +55,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<XpTransaction> XpTransactions => Set<XpTransaction>();
     public DbSet<ProjectAssessment> ProjectAssessments => Set<ProjectAssessment>();
     public DbSet<LevelChange> LevelChanges => Set<LevelChange>();
+    public DbSet<PracticeSubmission> PracticeSubmissions => Set<PracticeSubmission>();
     public DbSet<PlaygroundProject> PlaygroundProjects => Set<PlaygroundProject>();
     public DbSet<CvDocument> CvDocuments => Set<CvDocument>();
 
@@ -424,6 +426,25 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             OwnedByUser(e);
             e.HasIndex(x => new { x.UserId, x.TopicId, x.Level });
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ---------- Tutorials and challenges ----------
+        b.Entity<TopicLesson>(e =>
+        {
+            e.HasIndex(x => x.Key).IsUnique();
+            e.HasIndex(x => new { x.TopicId, x.Order });
+            e.Property(x => x.Key).HasMaxLength(120);
+            e.Property(x => x.TitleEn).HasMaxLength(200);
+            e.Property(x => x.TitleAr).HasMaxLength(200);
+            e.Property(x => x.CodeLanguage).HasMaxLength(20);
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<PracticeSubmission>(e =>
+        {
+            OwnedByUser(e);
+            e.HasIndex(x => new { x.UserId, x.ExerciseId, x.CreatedAt });
+            e.HasOne(x => x.Exercise).WithMany().HasForeignKey(x => x.ExerciseId).OnDelete(DeleteBehavior.Cascade);
         });
 
         // ---------- Developer level (Services/Skills) ----------

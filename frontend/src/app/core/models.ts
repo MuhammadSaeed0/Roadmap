@@ -307,3 +307,18 @@ export interface ProjectAssessment {
   projectId: number; criteria: string[]; scores: Record<string, number>; notes: string | null;
   verification: VerificationTier; updatedAt: string | null; countsTowardsLevel: boolean;
 }
+
+// ----- Tutorials and challenges -----
+export interface Lesson {
+  id: number; key: string; order: number; titleEn: string; titleAr: string; bodyEn: string; bodyAr: string;
+  code: string | null; codeLanguage: string | null; output: string | null;
+}
+export interface Challenge {
+  id: number; key: string; titleEn: string; titleAr: string; domain: string; difficulty: Difficulty; estimatedMinutes: number;
+  runner: ExerciseRunner; points: number; solved: boolean; bestScore: number | null; submissions: number;
+}
+export interface ChallengeDomain { key: string; total: number; solved: number; points: number; maxPoints: number; }
+export interface Challenges { items: Challenge[]; domains: ChallengeDomain[]; points: number; maxPoints: number; solved: number; }
+export interface LeaderboardRow { rank: number; name: string; points: number; solved: number; isMe: boolean; }
+export interface Submission { id: number; passed: number; total: number; createdAt: string; }
+export interface SubmissionDetail extends Submission { exerciseId: number; files: WorkspaceFile[]; }

@@ -197,6 +197,7 @@ export class ShellComponent {
     { key: 'nav.build', items: [
       { path: '/projects', key: 'nav.projects', icon: 'folder' },
       { path: '/practice', key: 'nav.practice', icon: 'code' },
+      { path: '/challenges', key: 'nav.challenges', icon: 'award' },
       { path: '/playground', key: 'nav.playground', icon: 'terminal' },
     ] },
     { key: 'nav.prepare', items: [

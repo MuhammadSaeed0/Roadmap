@@ -19,6 +19,8 @@ public class PracticeService(AppDbContext db, TimeProvider clock)
 {
     /// <summary>Share of a level's exercises to complete before the next level becomes "current".</summary>
     private const double LevelUpShare = 0.7;
+    /// <summary>Submissions kept per exercise and learner.</summary>
+    public const int MaxSubmissionsKept = 20;
 
     public async Task<PracticeOverviewDto> ListAsync(PracticeFilter filter, CancellationToken ct)
     {
@@ -139,7 +141,15 @@ public class PracticeService(AppDbContext db, TimeProvider clock)
             p.CompletedAt ??= now;
         }
         else MarkAttempted(p);
+        db.PracticeSubmissions.Add(new PracticeSubmission { ExerciseId = e.Id, Passed = passed, Total = total, Files = WorkspaceFiles.Serialize(valid), CreatedAt = now });
         await db.SaveChangesAsync(ct);
+        // Keep the latest attempts only, so the history can't grow without limit.
+        var old = await db.PracticeSubmissions.Where(s => s.ExerciseId == e.Id).OrderByDescending(s => s.Id).Skip(MaxSubmissionsKept).ToListAsync(ct);
+        if (old.Count > 0)
+        {
+            db.PracticeSubmissions.RemoveRange(old);
+            await db.SaveChangesAsync(ct);
+        }
         return ToDetail(e);
     }
 

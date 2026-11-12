@@ -923,6 +923,44 @@ namespace DevPath.Api.Migrations
                         });
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.PracticeSubmission", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ExerciseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Files")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Passed")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Total")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExerciseId");
+
+                    b.HasIndex("UserId", "ExerciseId", "CreatedAt");
+
+                    b.ToTable("PracticeSubmissions");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.Project", b =>
                 {
                     b.Property<int>("Id")
@@ -1714,6 +1752,63 @@ namespace DevPath.Api.Migrations
                     b.ToTable("TopicDemand");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.TopicLesson", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BodyAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BodyEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CodeLanguage")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Output")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("TitleEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Key")
+                        .IsUnique();
+
+                    b.HasIndex("TopicId", "Order");
+
+                    b.ToTable("TopicLessons");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.TopicPrerequisite", b =>
                 {
                     b.Property<int>("TopicId")
@@ -2257,6 +2352,23 @@ namespace DevPath.Api.Migrations
                     b.Navigation("Exercise");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.PracticeSubmission", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.PracticeExercise", "Exercise")
+                        .WithMany()
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exercise");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.Project", b =>
                 {
                     b.HasOne("DevPath.Api.Models.Phase", "StartAfterPhase")
@@ -2488,6 +2600,17 @@ namespace DevPath.Api.Migrations
                 {
                     b.HasOne("DevPath.Api.Models.Topic", "Topic")
                         .WithMany("Demand")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.TopicLesson", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.Topic", "Topic")
+                        .WithMany()
                         .HasForeignKey("TopicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

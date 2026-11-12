@@ -31,6 +31,7 @@ export const SECTION_IDS = [
   // Progress, career, settings, search, admin
   'progress-tabs', 'progress-panel', 'career-gaps', 'career-areas', 'career-portfolio',
   // Developer level (and the project review card on the project page)
+  'challenges-list', 'topic-tutorial',
   'skills-level', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history', 'project-review',
   // CV builder
   'cv-new', 'cv-list', 'cv-templates', 'cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview',
@@ -42,7 +43,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 /** Pages with a guide. Routes name theirs in `data.helpId` (see app.routes.ts), so /topics/:id etc. work. */
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'library', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
-  'resources', 'notes', 'progress', 'skills', 'career', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
+  'resources', 'notes', 'progress', 'challenges', 'skills', 'career', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
 
@@ -52,9 +53,10 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
     'dashboard-projects', 'dashboard-activity', 'dashboard-actions'],
   roadmap: ['roadmap-header', 'roadmap-phases'],
   library: ['library-filters', 'library-list'],
-  topic: ['topic-header', 'topic-content', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-notes', 'topic-related'],
+  topic: ['topic-header', 'topic-content', 'topic-tutorial', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-notes', 'topic-related'],
   projects: ['projects-list'],
   project: ['project-hero', 'project-milestones', 'project-changes', 'project-portfolio', 'project-repo', 'project-review'],
+  challenges: ['challenges-list'],
   practice: ['practice-types', 'practice-filters', 'practice-list'],
   exercise: ['exercise-problem', 'exercise-workspace', 'exercise-attempt', 'exercise-hints', 'exercise-solution'],
   playground: ['playground-security', 'playground-environments', 'playground-projects'],

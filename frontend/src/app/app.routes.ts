@@ -8,6 +8,7 @@ const appRoutes: Routes = [
   { path: 'topics/:id', loadComponent: () => import('./features/topics/topic-detail.page'), data: { titleKey: 'nav.library', helpId: 'topic', skin: 'threads' } },
   { path: 'projects', loadComponent: () => import('./features/projects/projects.page'), data: { titleKey: 'nav.projects', helpId: 'projects', skin: 'gram' } },
   { path: 'projects/:id', loadComponent: () => import('./features/projects/project-detail.page'), data: { titleKey: 'nav.projects', helpId: 'project', skin: 'gram' } },
+  { path: 'challenges', loadComponent: () => import('./features/challenges/challenges.page'), data: { titleKey: 'nav.challenges', helpId: 'challenges', skin: 'gram' } },
   { path: 'practice', loadComponent: () => import('./features/practice/practice.page'), data: { titleKey: 'nav.practice', helpId: 'practice', skin: 'gram' } },
   { path: 'practice/:id', loadComponent: () => import('./features/practice/exercise-detail.page'), data: { titleKey: 'nav.practice', helpId: 'exercise', skin: 'gram' } },
   { path: 'playground', loadComponent: () => import('./features/playground/playground.page'), data: { titleKey: 'nav.playground', helpId: 'playground', skin: 'gram' } },

@@ -70,6 +70,39 @@ public class PracticeExerciseTests
         Assert.False(unsolved.Compiled && unsolved.Tests!.All(t => t.Passed), "the starter code already passes every check");
     }
 
+    public static TheoryData<string> TutorialExamples()
+    {
+        var data = new TheoryData<string>();
+        var dir = Path.Combine(Seed, "tutorials");
+        if (!Directory.Exists(dir)) return data;
+        foreach (var file in Directory.GetFiles(dir, "*.json"))
+            foreach (var tutorial in JsonSerializer.Deserialize<List<TutorialSeed>>(File.ReadAllText(file), Json)!)
+                foreach (var lesson in tutorial.Lessons.Where(l => l.Code is not null && (l.Language ?? "csharp") == "csharp"))
+                    data.Add(lesson.Key);
+        return data;
+    }
+
+    /// <summary>Every C# example in the written tutorials compiles, and prints exactly the output shown under it.</summary>
+    [Theory, MemberData(nameof(TutorialExamples))]
+    public async Task Tutorial_example_compiles_and_prints_the_output_shown(string key)
+    {
+        var lesson = Directory.GetFiles(Path.Combine(Seed, "tutorials"), "*.json")
+            .SelectMany(file => JsonSerializer.Deserialize<List<TutorialSeed>>(File.ReadAllText(file), Json)!)
+            .SelectMany(t => t.Lessons).Single(l => l.Key == key);
+        var result = await Runner.RunAsync(new RunRequest([new SourceFile("Program.cs", lesson.Code!)]));
+        Assert.True(result.Compiled, string.Join("\n", result.Diagnostics.Select(d => $"{d.File}({d.Line}): {d.Message}")));
+        if (lesson.Output is null) return;
+        if (lesson.Output.StartsWith("Unhandled exception. ", StringComparison.Ordinal))
+        {
+            // The example shows a crash on purpose: the exception type must be the one the text names.
+            var type = lesson.Output["Unhandled exception. ".Length..].Split(':')[0];
+            Assert.Contains(type.Split('.').Last(), result.Exception);
+            return;
+        }
+        Assert.Null(result.Exception);
+        Assert.Equal(lesson.Output, result.Output.Replace("\r\n", "\n").TrimEnd('\n'));
+    }
+
     [Fact]
     public async Task Runner_reports_output_input_exceptions_and_compile_errors()
     {

@@ -57,6 +57,7 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
             await SyncCuratedVideosAsync(content.Videos, topics, ct);
             await SyncProjectTaskVideosAsync(content.TaskVideos, ct);
             await SyncQuizzesAsync(content.Quizzes, topics, ct);
+            await SyncTutorialsAsync(content.Tutorials, topics, ct);
             await SyncMarketDemandAsync(content.MarketDemand, topics, ct);
 
             await tx.CommitAsync(ct);
@@ -417,6 +418,36 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
         await db.SaveChangesAsync(ct);
     }
 
+    /// <summary>Lessons are synchronised by key; a lesson that leaves the seed files is removed.</summary>
+    private async Task SyncTutorialsAsync(List<TutorialSeed> seeds, Dictionary<string, Topic> topics, CancellationToken ct)
+    {
+        var existing = await db.TopicLessons.ToDictionaryAsync(l => l.Key, ct);
+        foreach (var tutorial in seeds)
+        {
+            var order = 0;
+            foreach (var s in tutorial.Lessons)
+            {
+                if (!existing.TryGetValue(s.Key, out var lesson))
+                {
+                    lesson = new TopicLesson { Key = s.Key, TitleEn = s.TitleEn, TitleAr = s.TitleAr };
+                    db.TopicLessons.Add(lesson);
+                }
+                lesson.TopicId = topics[tutorial.Topic].Id;
+                lesson.Order = ++order;
+                lesson.TitleEn = s.TitleEn;
+                lesson.TitleAr = s.TitleAr;
+                lesson.BodyEn = s.BodyEn;
+                lesson.BodyAr = s.BodyAr;
+                lesson.Code = s.Code;
+                lesson.CodeLanguage = s.Code is null ? null : s.Language ?? "csharp";
+                lesson.Output = s.Output;
+            }
+        }
+        var keys = seeds.SelectMany(t => t.Lessons).Select(l => l.Key).ToHashSet();
+        db.TopicLessons.RemoveRange(existing.Values.Where(l => !keys.Contains(l.Key)));
+        await db.SaveChangesAsync(ct);
+    }
+
     private async Task SeedInterviewsAsync(List<InterviewSeed> seeds, Dictionary<string, Topic> topics, CancellationToken ct)
     {
         var existing = await db.InterviewQuestions.ToDictionaryAsync(q => q.Key, ct);
@@ -454,6 +485,7 @@ public class SeedContent
     public Dictionary<string, List<VideoSeed>> Videos { get; private init; } = [];
     public Dictionary<string, List<VideoSeed>> TaskVideos { get; private init; } = [];
     public List<QuizSeed> Quizzes { get; private init; } = [];
+    public List<TutorialSeed> Tutorials { get; private init; } = [];
     public MarketDemandSeed? MarketDemand { get; private init; }
 
     public static SeedContent Load(string dir, JsonSerializerOptions options)
@@ -487,6 +519,7 @@ public class SeedContent
                 ? Read<Dictionary<string, List<VideoSeed>>>(Path.Combine(dir, "project-videos.json"))
                 : [],
             Quizzes = Directory.Exists(Path.Combine(dir, "quizzes")) ? ReadAll<QuizSeed>("quizzes") : [],
+            Tutorials = Directory.Exists(Path.Combine(dir, "tutorials")) ? ReadAll<TutorialSeed>("tutorials") : [],
             // Optional: written by tools/market-research/analyze.mjs for the latest research run.
             MarketDemand = File.Exists(Path.Combine(dir, "market-demand.json"))
                 ? Read<MarketDemandSeed>(Path.Combine(dir, "market-demand.json"))
@@ -593,6 +626,14 @@ public class SeedContent
                 errors.Add($"project-videos.json entry for '{key}' has an invalid video id or an empty title ('{v.VideoId}')");
         }
 
+        Unique(Tutorials.SelectMany(t => t.Lessons).Select(l => l.Key), "lesson key");
+        Unique(Tutorials.Select(t => t.Topic), "tutorial topic");
+        foreach (var t in Tutorials)
+        {
+            Ref(t.Topic, $"Tutorial '{t.Topic}'");
+            foreach (var l in t.Lessons.Where(l => string.IsNullOrWhiteSpace(l.TitleAr) || string.IsNullOrWhiteSpace(l.BodyEn) || string.IsNullOrWhiteSpace(l.BodyAr)))
+                errors.Add($"Lesson '{l.Key}' needs a title and a body in both languages");
+        }
         Unique(Quizzes.Select(q => q.Key), "quiz key");
         foreach (var q in Quizzes)
         {
