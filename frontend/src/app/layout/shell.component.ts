@@ -22,12 +22,6 @@ interface NavItem { path: string; key: string; icon: string; }
 
 /** Up to this width the sidebar is a drawer (keep in step with the max-width: 960px rules in styles.css). */
 const NARROW_MAX = 960;
-const NAV_COLLAPSED_KEY = 'devpath.navCollapsed';
-
-function readNavCollapsed(): boolean {
-  try { return localStorage.getItem(NAV_COLLAPSED_KEY) === 'true'; } catch { return false; }
-}
-
 @Component({
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,48 +30,7 @@ function readNavCollapsed(): boolean {
   template: `
     <a class="skip-link" href="#main">{{ 'common.skipToContent' | t }}</a>
 
-    <div class="shell" [class.nav-open]="navOpen()" [class.nav-collapsed]="navCollapsed() && !narrow()" [class.auth-layout]="authLayout()">
-      @if (!authLayout()) {
-      <aside class="sidebar" id="sidebar" [attr.aria-label]="'common.menu' | t">
-        <div class="brand">
-          <a class="brand-link" routerLink="/" (click)="navOpen.set(false)" [attr.aria-label]="'nav.dashboard' | t" [title]="'nav.dashboard' | t">
-          <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 32 32" width="30" height="30">
-              <rect width="32" height="32" rx="9" fill="var(--accent)" />
-              <path d="M9 21.5 14 16l-5-5.5M16.5 22h7" fill="none" stroke="var(--on-accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </span>
-          <span class="brand-text">
-            <strong>{{ 'app.name' | t }}</strong>
-            <small>{{ 'app.tagline' | t }}</small>
-          </span>
-          </a>
-          <button type="button" class="icon-btn nav-close" (click)="navOpen.set(false)" [attr.aria-label]="'common.closeMenu' | t">
-            <app-icon name="x" />
-          </button>
-        </div>
-
-        <nav class="nav" data-tour="nav">
-          @for (group of groups(); track group.key) {
-            <p class="nav-group">{{ group.key | t }}</p>
-            <ul role="list">
-              @for (item of group.items; track item.path) {
-                <li>
-                  <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/' }"
-                     (click)="navOpen.set(false)" #rla="routerLinkActive" [attr.aria-current]="rla.isActive ? 'page' : null"
-                     [attr.title]="navCollapsed() && !narrow() ? (item.key | t) : null">
-                    <app-icon [name]="item.icon" />
-                    <span>{{ item.key | t }}</span>
-                  </a>
-                </li>
-              }
-            </ul>
-          }
-        </nav>
-      </aside>
-      <div class="scrim" (click)="navOpen.set(false)" aria-hidden="true"></div>
-      }
-
+    <div class="shell" [class.auth-layout]="authLayout()">
       <div class="main-col">
         @if (authLayout()) {
           <header class="topbar auth-topbar">
@@ -90,18 +43,41 @@ function readNavCollapsed(): boolean {
           </header>
         } @else {
         <header class="topbar">
-          <!-- On a wide screen this folds the sidebar to icons (and back); on a narrow one it opens it as a drawer. -->
-          <button type="button" class="icon-btn menu-btn" data-tour="menu" (click)="toggleNav()" aria-controls="sidebar"
-                  [attr.aria-expanded]="narrow() ? navOpen() : !navCollapsed()"
-                  [attr.aria-label]="(narrow() ? 'common.menu' : navCollapsed() ? 'common.expandMenu' : 'common.collapseMenu') | t"
-                  [title]="(narrow() ? 'common.menu' : navCollapsed() ? 'common.expandMenu' : 'common.collapseMenu') | t">
-            <app-icon [name]="narrow() ? 'menu' : 'sidebar'" />
+          <a class="brand-link" routerLink="/" (click)="closeNav()" [attr.aria-label]="'nav.dashboard' | t" [title]="'nav.dashboard' | t">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="30" height="30">
+                <rect width="32" height="32" rx="9" fill="var(--bar-mark)" />
+                <path d="M9 21.5 14 16l-5-5.5M16.5 22h7" fill="none" stroke="var(--bar-mark-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <strong class="brand-name">{{ 'app.name' | t }}</strong>
+          </a>
+          <!-- Narrow screens: one button opens every group at once. -->
+          <button type="button" class="icon-btn menu-btn" data-tour="menu" (click)="navOpen.set(!navOpen())" aria-controls="topnav"
+                  [attr.aria-expanded]="navOpen()" [attr.aria-label]="'common.menu' | t" [title]="'common.menu' | t">
+            <app-icon [name]="navOpen() ? 'x' : 'menu'" />
           </button>
-          <div class="crumb">
-            <span class="crumb-root">{{ 'app.name' | t }}</span>
-            <app-icon name="chevron-right" [size]="14" />
-            <span class="crumb-current">{{ titleKey() | t }}</span>
-          </div>
+          <nav class="nav topnav" id="topnav" data-tour="nav" [class.open]="navOpen()" [attr.aria-label]="'common.menu' | t">
+            @for (group of groups(); track group.key) {
+              <div class="menu-wrap nav-menu" [class.current]="group.key === activeGroup()">
+                <button type="button" class="nav-trigger" (click)="toggleGroup(group.key)" aria-haspopup="true"
+                        [attr.aria-expanded]="openGroup() === group.key">
+                  {{ group.key | t }} <app-icon name="chevron-down" [size]="14" />
+                </button>
+                <ul class="menu nav-panel" role="list" [class.show]="openGroup() === group.key">
+                  @for (item of group.items; track item.path) {
+                    <li>
+                      <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+                         (click)="closeNav()" #rla="routerLinkActive" [attr.aria-current]="rla.isActive ? 'page' : null">
+                        <app-icon [name]="item.icon" [size]="18" />
+                        <span>{{ item.key | t }}</span>
+                      </a>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+          </nav>
 
           <app-global-search class="topbar-search" data-tour="search" />
 
@@ -198,8 +174,6 @@ export class ShellComponent {
   protected readonly tour = inject(TourService);
 
   protected readonly navOpen = signal(false);
-  /** Wide screens: the sidebar folded to an icon rail for more room (remembered). Narrow screens use the drawer instead. */
-  protected readonly navCollapsed = signal(readNavCollapsed());
   private readonly narrowQuery = typeof matchMedia === 'function' ? matchMedia(`(max-width: ${NARROW_MAX}px)`) : null;
   protected readonly narrow = signal(this.narrowQuery?.matches ?? false);
   protected readonly quickOpen = signal(false);
@@ -214,11 +188,20 @@ export class ShellComponent {
   protected readonly apiOffline = signal(false);
   protected readonly titleKey = signal('nav.dashboard');
 
+  /** Pages that belong together share a menu, and a skin (see app.routes.ts and skins.css). */
   private readonly baseGroups: { key: string; items: NavItem[] }[] = [
-    { key: 'nav.learn', items: [
+    { key: 'nav.track', items: [
       { path: '/', key: 'nav.dashboard', icon: 'dashboard' },
+      { path: '/progress', key: 'nav.progress', icon: 'chart' },
+      { path: '/skills', key: 'nav.skills', icon: 'award' },
+      { path: '/career', key: 'nav.career', icon: 'briefcase' },
+      { path: '/cv', key: 'nav.cv', icon: 'file' },
+    ] },
+    { key: 'nav.learn', items: [
       { path: '/roadmap', key: 'nav.roadmap', icon: 'map' },
       { path: '/library', key: 'nav.library', icon: 'book' },
+    ] },
+    { key: 'nav.watch', items: [
       { path: '/videos', key: 'nav.videos', icon: 'video' },
       { path: '/resources', key: 'nav.resources', icon: 'link' },
     ] },
@@ -226,21 +209,25 @@ export class ShellComponent {
       { path: '/projects', key: 'nav.projects', icon: 'folder' },
       { path: '/practice', key: 'nav.practice', icon: 'code' },
       { path: '/playground', key: 'nav.playground', icon: 'terminal' },
+    ] },
+    { key: 'nav.prepare', items: [
       { path: '/interviews', key: 'nav.interviews', icon: 'chat' },
       { path: '/notes', key: 'nav.notes', icon: 'note' },
     ] },
-    { key: 'nav.track', items: [
-      { path: '/progress', key: 'nav.progress', icon: 'chart' },
-      { path: '/skills', key: 'nav.skills', icon: 'award' },
-      { path: '/career', key: 'nav.career', icon: 'briefcase' },
-      { path: '/cv', key: 'nav.cv', icon: 'file' },
-      { path: '/settings', key: 'nav.settings', icon: 'settings' },
-    ] },
   ];
   /** Administrators also see the admin area (the API checks the role on every admin request). */
-  protected readonly groups = computed(() => this.auth.isAdmin()
-    ? [...this.baseGroups, { key: 'nav.manage', items: [{ path: '/admin', key: 'nav.admin', icon: 'shield' }] }]
-    : this.baseGroups);
+  protected readonly groups = computed(() => [...this.baseGroups, { key: 'nav.account', items: [
+    { path: '/settings', key: 'nav.settings', icon: 'settings' },
+    ...(this.auth.isAdmin() ? [{ path: '/admin', key: 'nav.admin', icon: 'shield' }] : []),
+  ] }]);
+  /** The menu that is open (wide screens open one at a time). */
+  protected readonly openGroup = signal<string | null>(null);
+  private readonly url = signal('/');
+  /** The group of the page being shown, so its menu button is marked. Topic pages belong to the library. */
+  protected readonly activeGroup = computed(() => {
+    const path = this.url().split(/[?#]/)[0].replace(/^\/topics\b/, '/library');
+    return this.groups().find(g => g.items.some(i => i.path === '/' ? path === '/' : path === i.path || path.startsWith(i.path + '/')))?.key ?? null;
+  });
 
   constructor() {
     const onWidth = (e: MediaQueryListEvent) => { this.narrow.set(e.matches); if (!e.matches) this.navOpen.set(false); };
@@ -261,6 +248,8 @@ export class ShellComponent {
       this.tour.helpId.set(isHelpId(helpId) ? helpId : null);
       this.quickOpen.set(false);
       this.accountOpen.set(false);
+      this.url.set(this.router.url);
+      this.closeNav();
     });
 
     void this.checkHealth();
@@ -287,13 +276,11 @@ export class ShellComponent {
     });
   }
 
-  protected toggleNav(): void {
-    if (this.narrow()) {
-      this.navOpen.update(open => !open);
-      return;
-    }
-    this.navCollapsed.update(collapsed => !collapsed);
-    try { localStorage.setItem(NAV_COLLAPSED_KEY, String(this.navCollapsed())); } catch { /* not remembered */ }
+  protected toggleGroup(key: string): void { this.openGroup.update(open => (open === key ? null : key)); }
+
+  protected closeNav(): void {
+    this.openGroup.set(null);
+    this.navOpen.set(false);
   }
 
   protected go(path: string): void {
@@ -335,12 +322,15 @@ export class ShellComponent {
   @HostListener('document:click', ['$event'])
   protected onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    if (!target.closest?.('.menu-wrap:not(.account-wrap):not(.help-wrap)')) this.quickOpen.set(false);
+    if (!target.closest?.('.menu-wrap:not(.account-wrap):not(.help-wrap):not(.nav-menu)')) this.quickOpen.set(false);
     if (!target.closest?.('.account-wrap')) this.accountOpen.set(false);
+    if (!target.closest?.('.nav-menu')) this.openGroup.set(null);
+    if (!target.closest?.('.topnav, .menu-btn')) this.navOpen.set(false);
   }
 
   @HostListener('document:keydown.escape')
   protected onEscape(): void {
+    this.closeNav();
     this.quickOpen.set(false);
     this.accountOpen.set(false);
     this.navOpen.set(false);

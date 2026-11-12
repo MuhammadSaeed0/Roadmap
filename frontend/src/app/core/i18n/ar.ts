@@ -9,8 +9,9 @@ export const ar: Translations = {
     dashboard: 'لوحة المعلومات', roadmap: 'خارطة طريقي', library: 'مكتبة التعلم', projects: 'المشاريع',
     practice: 'مختبر التدريب', interviews: 'التحضير للمقابلات', resources: 'المصادر', notes: 'ملاحظاتي',
     progress: 'التقدم والتحليلات', career: 'الجاهزية المهنية', settings: 'الإعدادات', search: 'بحث',
-    learn: 'تعلّم', build: 'ابنِ وتدرّب', track: 'تابع', manage: 'الإدارة', admin: 'لوحة الإدارة',
+    learn: 'تعلّم', build: 'ابنِ وتدرّب', track: 'تقدّمي', manage: 'الإدارة', admin: 'لوحة الإدارة',
     playground: 'ساحة البرمجة', videos: 'مكتبة الفيديوهات', cv: 'منشئ السيرة الذاتية', skills: 'مستوى المطوّر',
+    watch: 'شاهد واقرأ', prepare: 'المقابلات والملاحظات', account: 'الحساب',
   },
   common: {
     loading: 'جارٍ التحميل…', retry: 'إعادة المحاولة', save: 'حفظ', saving: 'جارٍ الحفظ…', cancel: 'إلغاء', delete: 'حذف',

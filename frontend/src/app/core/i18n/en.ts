@@ -7,8 +7,9 @@ export const en = {
     dashboard: 'Dashboard', roadmap: 'My Roadmap', library: 'Learning Library', projects: 'Projects',
     practice: 'Practice Lab', interviews: 'Interview Preparation', resources: 'Resources', notes: 'My Notes',
     progress: 'Progress & Analytics', career: 'Career Readiness', settings: 'Settings', search: 'Search',
-    learn: 'Learn', build: 'Build & practise', track: 'Track', manage: 'Manage', admin: 'Administration',
+    learn: 'Learn', build: 'Build & practise', track: 'My progress', manage: 'Manage', admin: 'Administration',
     playground: 'Code Playground', videos: 'Video Library', cv: 'CV Builder', skills: 'Developer Level',
+    watch: 'Watch & read', prepare: 'Interviews & notes', account: 'Account',
   },
   common: {
     loading: 'Loading…', retry: 'Try again', save: 'Save', saving: 'Saving…', cancel: 'Cancel', delete: 'Delete',
