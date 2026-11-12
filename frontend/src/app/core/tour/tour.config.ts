@@ -43,7 +43,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 /** Pages with a guide. Routes name theirs in `data.helpId` (see app.routes.ts), so /topics/:id etc. work. */
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'library', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
-  'resources', 'notes', 'progress', 'challenges', 'skills', 'career', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
+  'resources', 'notes', 'progress', 'skills', 'career', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
 
@@ -56,8 +56,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   topic: ['topic-header', 'topic-content', 'topic-tutorial', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-notes', 'topic-related'],
   projects: ['projects-list'],
   project: ['project-hero', 'project-milestones', 'project-changes', 'project-portfolio', 'project-repo', 'project-review'],
-  challenges: ['challenges-list'],
-  practice: ['practice-types', 'practice-filters', 'practice-list'],
+  practice: ['practice-types', 'practice-filters', 'practice-list', 'challenges-list'],
   exercise: ['exercise-problem', 'exercise-workspace', 'exercise-attempt', 'exercise-hints', 'exercise-solution'],
   playground: ['playground-security', 'playground-environments', 'playground-projects'],
   workspace: ['workspace-title', 'workspace-save', 'workspace-ide'],

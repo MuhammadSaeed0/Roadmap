@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { Router, Routes } from '@angular/router';
 import { accountStatusGuard, adminGuard, authGuard, guestGuard } from './core/auth.guard';
 
 const appRoutes: Routes = [
@@ -8,7 +9,8 @@ const appRoutes: Routes = [
   { path: 'topics/:id', loadComponent: () => import('./features/topics/topic-detail.page'), data: { titleKey: 'nav.library', helpId: 'topic', skin: 'threads' } },
   { path: 'projects', loadComponent: () => import('./features/projects/projects.page'), data: { titleKey: 'nav.projects', helpId: 'projects', skin: 'gram' } },
   { path: 'projects/:id', loadComponent: () => import('./features/projects/project-detail.page'), data: { titleKey: 'nav.projects', helpId: 'project', skin: 'gram' } },
-  { path: 'challenges', loadComponent: () => import('./features/challenges/challenges.page'), data: { titleKey: 'nav.challenges', helpId: 'challenges', skin: 'gram' } },
+  // The challenges live in the Practice Lab now; old links open that tab.
+  { path: 'challenges', redirectTo: () => inject(Router).createUrlTree(['/practice'], { queryParams: { tab: 'challenges' } }) },
   { path: 'practice', loadComponent: () => import('./features/practice/practice.page'), data: { titleKey: 'nav.practice', helpId: 'practice', skin: 'gram' } },
   { path: 'practice/:id', loadComponent: () => import('./features/practice/exercise-detail.page'), data: { titleKey: 'nav.practice', helpId: 'exercise', skin: 'gram' } },
   { path: 'playground', loadComponent: () => import('./features/playground/playground.page'), data: { titleKey: 'nav.playground', helpId: 'playground', skin: 'gram' } },
@@ -48,5 +50,6 @@ export const routes: Routes = [
   // Where signed-in accounts wait for verification or approval, or learn that they were rejected or suspended.
   { path: 'account-status', loadComponent: () => import('./features/auth/account-status.page'), canActivate: [accountStatusGuard], data: { titleKey: 'status.title', layout: 'auth', skin: 'bird' } },
   { path: 'change-password', loadComponent: () => import('./features/auth/change-password.page'), canActivate: [authGuard], data: { titleKey: 'auth.changePassword', layout: 'auth', skin: 'bird' } },
-  ...appRoutes.map((route) => ({ ...route, canActivate: [authGuard, ...(route.canActivate ?? [])] })),
+  // A redirect cannot have guards (NG04014); the page it leads to is guarded.
+  ...appRoutes.map((route) => route.redirectTo ? route : ({ ...route, canActivate: [authGuard, ...(route.canActivate ?? [])] })),
 ];

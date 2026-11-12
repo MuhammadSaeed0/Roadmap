@@ -43,12 +43,6 @@
   ],
   "cs-variables-types": [
     {
-      "videoId": "yquQ9mLtkN8",
-      "title": "C# Variables and Data Types (beginners programming tutorial)",
-      "channel": "CodeBeauty",
-      "language": "en"
-    },
-    {
       "videoId": "_D-HCF3jZKk",
       "title": "3: How To Create Variables In C# | Data Types In C# | C# Tutorial For Beginners | C Sharp Tutorial",
       "channel": "Dani Krossing",
@@ -105,22 +99,6 @@
   ],
   "cs-conditions": [
     {
-      "videoId": "eVWTeoygvFA",
-      "title": "If else statement - C# programming tutorial for beginners",
-      "channel": "CodeBeauty",
-      "language": "en",
-      "duration": "21:06",
-      "description": "In this programming tutorial, we will learn what is if else statement in C#. I'll teach you how to use if else, how to write multiple/chained if else statements, and how to write nested if else statements."
-    },
-    {
-      "videoId": "3wTCv143hNI",
-      "title": "Switch case statement - C# programming tutorial for beginners",
-      "channel": "CodeBeauty",
-      "language": "en",
-      "duration": "22:17",
-      "description": "In this programming tutorial, we will learn what a switch case statement in C# is. I'll teach you how to use a switch case and some tips and tricks. This is one of the main concepts of every programming language so you absolutely have to understand it."
-    },
-    {
       "videoId": "dotDK_PBCF4",
       "title": "Conditional (If/Else/Switch) Statements in C# and How to Use Them",
       "channel": "Height Above Sea Level",
@@ -138,14 +116,6 @@
     }
   ],
   "cs-loops": [
-    {
-      "videoId": "n5GJRVMPnew",
-      "title": "C# Loops for beginners in 40 min - While, Do-While, For (C# Programming tutorial)",
-      "channel": "CodeBeauty",
-      "language": "en",
-      "duration": "40:43",
-      "description": "In this programming tutorial, we will learn what are loops in C#. I'll teach you how to use different types of loops. We will learn about while loop, do-while loop, and for loop."
-    },
     {
       "videoId": "h4hY2hho73Q",
       "title": "C# for loops 🔁",
@@ -338,14 +308,6 @@
       "description": "Ever since Microsoft introduced generics into the language, they have been used almost everywhere. Even if you don't understand how they work, using generics is rather easy."
     },
     {
-      "videoId": "8bfaqFDJ3ME",
-      "title": "Generics in C# for Beginners: Easy Tutorial with Code Examples",
-      "channel": "CodeBeauty",
-      "language": "en",
-      "duration": "17:45",
-      "description": "This is beginner-friendly video about generics in programming. In this video, I'll explain everything you need to know about generics in C# and I'll show you code examples. You will also learn when to use generics and best coding practices."
-    },
-    {
       "videoId": "YEHbjy3JBtE",
       "title": "C# Generics - The complete guide",
       "channel": "Tarodev",
@@ -472,14 +434,6 @@
   ],
   "oop-classes-objects": [
     {
-      "videoId": "c7u3ZdQowgU",
-      "title": "Introduction, Classes and Objects (C# OOP - Practical Programming Tutorial) - part 1",
-      "channel": "CodeBeauty",
-      "language": "en",
-      "duration": "31:14",
-      "description": "Object-oriented programming is a programming paradigm that is based on the concept of objects from the real world, and it is used to represent those real world objects in programming. This video is an introduction to OOP."
-    },
-    {
       "videoId": "9V5B3dNoVIA",
       "title": "C# classes 📦",
       "channel": "Bro Code",
@@ -521,14 +475,6 @@
     }
   ],
   "oop-encapsulation": [
-    {
-      "videoId": "vQ6k1U6nADY",
-      "title": "Encapsulation explained (C# OOP - Practical Programming Tutorial) - part 4",
-      "channel": "CodeBeauty",
-      "language": "en",
-      "duration": "38:39",
-      "description": "In this video, we will learn what is encapsulation in OOP. On practical example, I will show you how to implement encapsulation and the benefits of encapsulation."
-    },
     {
       "videoId": "zJEp-dDhL9E",
       "title": "OOP in C# #7 - Properties and Encapsulation in C#",
@@ -585,14 +531,6 @@
       "language": "en",
       "duration": "14:08",
       "description": "In this video we delve into inheritance. Deriving classes from other classes will allow us to reuse code, minimize errors and keep our program easily readable."
-    },
-    {
-      "videoId": "B7AoNRr1O60",
-      "title": "Inheritance explained (C# OOP - Practical Programming Tutorial) - part 5",
-      "channel": "CodeBeauty",
-      "language": "en",
-      "duration": "32:18",
-      "description": "In this video, we will learn what is inheritance in OOP. I will show you how to implement inheritance on practical example, and what are the benefits of inheritance."
     },
     {
       "videoId": "EvSyka9vJho",
@@ -877,14 +815,6 @@
     }
   ],
   "oop-object-modeling": [
-    {
-      "videoId": "EazrhHMySQw",
-      "title": "C# OOP Full Course: Master Object-Oriented Programming (OOP) with Practical Examples",
-      "channel": "CodeBeauty",
-      "language": "en",
-      "duration": "2:49:29",
-      "description": "In this Full C# course for Object-Oriented Programming . You’ll learn all Object-Oriented Programming (OOP) concepts with practical examples."
-    },
     {
       "videoId": "fS7m1MRFYBg",
       "title": "Advanced C# Tutorial: Not the OOP You Know",

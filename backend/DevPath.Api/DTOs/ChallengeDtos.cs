@@ -10,7 +10,6 @@ public record ChallengeDomainDto(string Key, int Total, int Solved, int Points, 
 
 public record ChallengesDto(IReadOnlyList<ChallengeDto> Items, IReadOnlyList<ChallengeDomainDto> Domains, int Points, int MaxPoints, int Solved);
 
-public record LeaderboardRowDto(int Rank, string Name, int Points, int Solved, bool IsMe);
 
 public record SubmissionDto(long Id, int Passed, int Total, DateTime CreatedAt);
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
@@ -6,6 +6,7 @@ import { DurationPipe, LocalizePipe, TranslatePipe } from '../../core/i18n/pipes
 import { createLoader } from '../../core/loader';
 import { DIFFICULTIES, Difficulty, EXERCISE_TYPES, ExerciseType, PracticeStatus, SKILLS, SkillArea } from '../../core/models';
 import { IconComponent } from '../../shared/icon.component';
+import ChallengesPage from '../challenges/challenges.page';
 import { statusIcon } from '../../shared/status';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
 
@@ -19,13 +20,25 @@ type Filters = { q: string; skill: SkillArea | ''; type: ExerciseType | ''; diff
 @Component({
   selector: 'app-practice-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, RouterLink, IconComponent, TranslatePipe, LocalizePipe, DurationPipe, PageHeaderComponent,
+  imports: [FormsModule, RouterLink, IconComponent, ChallengesPage, TranslatePipe, LocalizePipe, DurationPipe, PageHeaderComponent,
     ProgressBarComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
   template: `
     <app-page-header [title]="'practice.title' | t" [subtitle]="'practice.subtitle' | t">
       <a routerLink="/playground" class="btn btn-secondary btn-sm"><app-icon name="terminal" [size]="15" /> {{ 'nav.playground' | t }}</a>
     </app-page-header>
 
+    <div class="tabs" role="tablist" [attr.aria-label]="'practice.title' | t">
+      <button type="button" role="tab" [attr.aria-selected]="current() === 'exercises'" [class.active]="current() === 'exercises'" (click)="select('exercises')">
+        <app-icon name="code" [size]="15" /> {{ 'practice.tabExercises' | t }}
+      </button>
+      <button type="button" role="tab" [attr.aria-selected]="current() === 'challenges'" [class.active]="current() === 'challenges'" (click)="select('challenges')">
+        <app-icon name="award" [size]="15" /> {{ 'practice.tabChallenges' | t }}
+      </button>
+    </div>
+
+    @if (current() === 'challenges') {
+      <app-challenges-page [embedded]="true" />
+    } @else {
     @if (data.initialLoading()) {
       <div class="card"><app-skeleton [rows]="6" /></div>
     } @else if (data.error()) {
@@ -121,12 +134,22 @@ type Filters = { q: string; skill: SkillArea | ''; type: ExerciseType | ''; diff
         </ol>
       }
     }
+    }
   `,
 })
 export default class PracticePage {
   private readonly api = inject(ApiService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+
+  /** ?tab=challenges, through the router's component input binding. /challenges redirects here. */
+  readonly tab = input<string>();
+  protected readonly current = computed<'exercises' | 'challenges'>(() => this.tab() === 'challenges' ? 'challenges' : 'exercises');
+
+  protected select(tab: 'exercises' | 'challenges'): void {
+    void this.router.navigate([], { queryParams: tab === 'challenges' ? { tab } : {}, replaceUrl: true });
+    if (tab === 'exercises') this.filters.set({ q: '', skill: '', type: '', difficulty: '', status: '', runnable: false });
+  }
 
   protected readonly skills = SKILLS;
   protected readonly difficulties = DIFFICULTIES;

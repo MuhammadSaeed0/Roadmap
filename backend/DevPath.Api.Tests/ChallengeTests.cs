@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DevPath.Api.Tests;
 
-/// <summary>Challenges with points, submission history, the leaderboard and written tutorials, through the HTTP API.</summary>
+/// <summary>Challenges with points, submission history and written tutorials, through the HTTP API.</summary>
 public class ChallengeTests(ApiFactory factory) : IClassFixture<ApiFactory>
 {
     private static async Task<JsonNode> Json(HttpResponseMessage response)
@@ -97,34 +97,17 @@ public class ChallengeTests(ApiFactory factory) : IClassFixture<ApiFactory>
     }
 
     [Fact]
-    public async Task Leaderboard_ranks_learners_by_points_and_marks_the_caller()
-    {
-        var emailA = factory.NewEmail();
-        var a = await factory.CreateUserClientAsync(emailA);
-        var b = await factory.CreateUserClientAsync();
-        (await Submit(a, await ExerciseIdAsync("algo-lru-cache"), 4, 4, "// a")).EnsureSuccessStatusCode();
-        (await Submit(b, await ExerciseIdAsync("algo-reverse-words"), 4, 4, "// b")).EnsureSuccessStatusCode();
-
-        var board = (await Json(await a.GetAsync("/api/challenges/leaderboard"))).AsArray();
-        var me = board.Single(r => r!["isMe"]!.GetValue<bool>())!;
-        Assert.Equal(60, me["points"]!.GetValue<int>());
-        Assert.Equal("Test User", me["name"]!.GetValue<string>());
-        Assert.DoesNotContain(emailA, board.ToJsonString());
-        // Ranks follow points: nobody above the caller has fewer points.
-        Assert.All(board.Where(r => r!["rank"]!.GetValue<int>() < me["rank"]!.GetValue<int>()), r => Assert.True(r!["points"]!.GetValue<int>() >= 60));
-        Assert.Equal(1, (await Json(await b.GetAsync("/api/challenges/leaderboard"))).AsArray().Count(r => r!["isMe"]!.GetValue<bool>()));
-    }
-
-    [Fact]
-    public async Task A_topic_with_a_tutorial_returns_its_lessons_in_order_and_others_return_none()
+    public async Task Every_topic_has_a_tutorial_and_its_lessons_come_back_in_order()
     {
         var client = await factory.CreateUserClientAsync();
-        int withTutorial, without;
+        int withTutorial, signals;
+        bool everyTopicHasLessons;
         using (var scope = factory.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             withTutorial = await db.Topics.Where(t => t.Slug == "cs-loops").Select(t => t.Id).SingleAsync();
-            without = await db.Topics.Where(t => t.Slug == "ng-signals").Select(t => t.Id).SingleAsync();
+            signals = await db.Topics.Where(t => t.Slug == "ng-signals").Select(t => t.Id).SingleAsync();
+            everyTopicHasLessons = await db.Topics.AllAsync(t => db.TopicLessons.Any(l => l.TopicId == t.Id));
         }
         var lessons = (await Json(await client.GetAsync($"/api/topics/{withTutorial}/lessons"))).AsArray();
         Assert.Equal(4, lessons.Count);
@@ -133,7 +116,9 @@ public class ChallengeTests(ApiFactory factory) : IClassFixture<ApiFactory>
         Assert.False(string.IsNullOrWhiteSpace(lessons[0]!["bodyAr"]!.GetValue<string>()));
         Assert.Contains("Round 1", lessons[0]!["output"]!.GetValue<string>());
 
-        Assert.Empty((await Json(await client.GetAsync($"/api/topics/{without}/lessons"))).AsArray());
+        Assert.True(everyTopicHasLessons, "every roadmap topic should have a written tutorial");
+        var signalLessons = (await Json(await client.GetAsync($"/api/topics/{signals}/lessons"))).AsArray();
+        Assert.Equal("signal, computed and effect", signalLessons[0]!["titleEn"]!.GetValue<string>());
         Assert.Equal(HttpStatusCode.NotFound, (await client.GetAsync("/api/topics/999999/lessons")).StatusCode);
         Assert.Equal(HttpStatusCode.Unauthorized, (await factory.CreateClient().GetAsync($"/api/topics/{withTutorial}/lessons")).StatusCode);
     }

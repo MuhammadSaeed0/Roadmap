@@ -336,6 +336,7 @@ export const ar: Translations = {
     crCount: 'طلبات التغيير المنجزة: {done} من {unlocked} مفتوحة', noCr: 'لا توجد طلبات تغيير بعد.',
   },
   practice: {
+    tabExercises: 'التمارين', tabChallenges: 'التحديات',
     title: 'مختبر التدريب', subtitle: 'مفاهيم، وتحديات برمجة وتصحيح أخطاء، ومهام عملية، ومشروعات صغيرة، وتحديات Full-Stack، مع محرر كود يعمل في متصفحك. حاول أولًا ثم اكشف التلميحات والحل.',
     task: 'المهمة', showTask: 'إظهار المهمة', hideTask: 'إخفاء المهمة', problem: 'المشكلة', expected: 'النتيجة المتوقعة', starterCode: 'الكود', yourAttempt: 'محاولتك أو شرحك',
     attemptPlaceholder: 'صِف طريقتك، أو الصق كودك، أو اذكر المشكلات التي وجدتها…',
@@ -529,14 +530,12 @@ export const ar: Translations = {
   tutorial: { title: 'الشرح', lessons: 'الدروس', example: 'مثال', output: 'الناتج', tryIt: 'جرّبه في ساحة البرمجة' },
   challenges: {
     title: 'التحديات', subtitle: 'تمارين تفحص نفسها. حلّها في المحرر واكسب النقاط',
-    tabChallenges: 'التحديات', tabLeaderboard: 'لوحة الترتيب', yourScore: 'نتيجتك', points: 'نقطة', solved: 'محلولة',
+    yourScore: 'نتيجتك', points: 'نقطة', solved: 'محلولة',
     domains: 'المجالات',
     domainNames: { Algorithms: 'الخوارزميات', DataStructures: 'هياكل البيانات', Strings: 'النصوص', Math: 'الرياضيات', ObjectOriented: 'البرمجة كائنية التوجه', Linq: 'استعلامات LINQ' }, unsolvedOnly: 'غير المحلولة فقط', empty: 'لا توجد تحديات تطابق هذه الفلاتر',
     selfReported: 'الفحوص تعمل في متصفحك، فالنقاط سجلّك الشخصي وليست درجة موثّقة.',
     colChallenge: 'التحدي', colDomain: 'المجال', colDifficulty: 'الصعوبة', colTime: 'الوقت', colStatus: 'الحالة',
     statusSolved: 'محلول', statusTried: 'أفضل محاولة {score}%', statusNew: 'لم يبدأ',
-    colRank: 'الترتيب', colName: 'الاسم', you: 'أنت', boardEmpty: 'لم يحل أحد أي تحدٍّ بعد',
-    boardNote: 'المتعلمون الذين حلّوا تحديًا واحدًا على الأقل. النقاط يرسلها متصفح كل متعلم.',
   },
   settings: {
     title: 'الإعدادات', appearance: 'المظهر', languageHelp: 'تحوّل العربية الواجهة بالكامل إلى الاتجاه من اليمين إلى اليسار.',

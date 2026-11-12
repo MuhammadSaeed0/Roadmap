@@ -28,7 +28,8 @@ async function createService(id: string | null = 'user-1', isAdmin = false): Pro
 
 describe('tour configuration', () => {
   it('gives every app page a guide and every guide a page', () => {
-    const shell = routes.filter(r => r.path !== '**' && r.data?.['layout'] !== 'auth' && r.path !== 'change-password');
+    // Redirects such as /challenges are not pages, so they need no guide.
+    const shell = routes.filter(r => r.path !== '**' && !r.redirectTo && r.data?.['layout'] !== 'auth' && r.path !== 'change-password');
     const used = new Set<string>();
     for (const route of shell as Route[]) {
       const helpId = route.data?.['helpId'];
