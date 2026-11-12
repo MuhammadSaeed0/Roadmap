@@ -16,12 +16,12 @@
       <h2 id="actions-h" class="card-title"><app-icon name="target" /> {{ 'dashboard.quickActions' | t }}</h2>
       <div class="quick-grid">
         @if (d.recommendation; as rec) {
-          <a class="quick-action" [routerLink]="['/topics', rec.topic.id]"><app-icon name="play" /> {{ 'dashboard.continueLearning' | t }}</a>
+          <a class="quick-action" [routerLink]="['/topics', rec.topic.id]"><app-icon name="play" /> {{ learningKey() | t }}</a>
         } @else {
           <a class="quick-action" routerLink="/roadmap"><app-icon name="map" /> {{ 'nav.roadmap' | t }}</a>
         }
         @if (activeProject(); as p) {
-          <a class="quick-action" [routerLink]="['/projects', p.id]"><app-icon name="folder" /> {{ 'dashboard.resumeProject' | t }}</a>
+          <a class="quick-action" [routerLink]="['/projects', p.id]"><app-icon name="folder" /> {{ projectKey() | t }}</a>
         }
         <a class="quick-action" routerLink="/practice"><app-icon name="code" /> {{ 'dashboard.startPractice' | t }}</a>
         <a class="quick-action" routerLink="/progress" [queryParams]="{ tab: 'review' }"><app-icon name="repeat" /> {{ 'dashboard.reviewWeak' | t }}</a>
@@ -78,7 +78,7 @@
 
     <!-- C. Continue learning -->
     <section class="card span-6 accent-card" aria-labelledby="continue-h" data-tour="dashboard-continue">
-      <h2 id="continue-h" class="card-title"><app-icon name="sparkle" /> {{ 'dashboard.continueLearning' | t }}</h2>
+      <h2 id="continue-h" class="card-title"><app-icon name="sparkle" /> {{ learningKey() | t }}</h2>
       @if (d.recommendation; as rec) {
         <div class="rec">
           <div class="chips">

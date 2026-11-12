@@ -279,7 +279,7 @@ export const en = {
     todayPlan: 'Today’s learning plan', planIntro: 'How much time do you have today?', planEmpty: 'Nothing left to plan.',
     projects: 'Project progress', skills: 'Skills overview', recentActivity: 'Recent activity',
     noActivity: 'No activity yet — complete a topic or log a study session to see it here.',
-    quickActions: 'Quick actions', resumeProject: 'Resume project', startPractice: 'Start practice',
+    quickActions: 'Quick actions', resumeProject: 'Resume project', startProject: 'Start project', startPractice: 'Start practice',
     reviewWeak: 'Review weak topics', viewReadiness: 'View career readiness',
     streak: '{n}-day streak', noStreak: 'Start a streak today', weekMinutes: '{n} min this week',
     todayGoal: '{done} of {goal} min today', reviewsDue: '{n} reviews due', noReviews: 'No reviews due',
