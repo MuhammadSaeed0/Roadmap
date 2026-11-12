@@ -379,6 +379,9 @@
   .topnav .nav-trigger { width: 100%; height: auto; padding: 12px 8px 4px; color: var(--muted); font-size: 0.82rem; pointer-events: none; box-shadow: none; }
   .topnav .nav-trigger .icon { display: none; }
   .topnav .nav-panel { display: block; position: static; padding: 0; border: 0; box-shadow: none; background: none; }
+  /* Single-item groups render as a plain link — make them look like a normal nav item, not a group header. */
+  .topnav > a.nav-trigger { pointer-events: auto; display: flex; align-items: center; gap: 10px; padding: 10px 8px; color: var(--text-2); font-size: 0.94rem; font-weight: 400; }
+  .topnav > a.nav-trigger > .icon { display: inline-flex; }
 }
 @media (max-width: 640px) { .topbar .brand-name { display: none; } }
 /* The menus keep their width; the search field gives way first. */
@@ -509,6 +512,7 @@
 [data-skin='tube'] .segmented button { padding: 6px 16px; }
 @media (max-width: 1240px) { .topnav .nav-link { pointer-events: auto; color: var(--text-2); font-size: 0.94rem; padding: 10px 8px; box-shadow: none; } }
 .topnav > .nav-link { margin: 0; padding: 0 12px; color: var(--bar-text); font-weight: 500; font-size: 0.92rem; }
+.topnav > .nav-link > .icon { display: none; }
 .topnav > .nav-link:hover { background: var(--bar-hover); color: var(--bar-text); }
 
 /* Jumping to a phase (from the ring rail or a link) stops below the sticky top bar, with the phase header fully in view. */

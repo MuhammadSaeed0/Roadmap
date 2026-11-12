@@ -57,6 +57,12 @@ export function lessonBlocks(body: string): Block[] {
       .lesson-nav { flex-direction: row; overflow-x: auto; }
       .lesson-nav button { width: auto; white-space: nowrap; }
     }
+    @media (max-width: 640px) {
+      .lesson-output { padding: 10px 12px; font-size: 0.82rem; }
+      .lesson h3 { font-size: 1.05rem; }
+      .lesson-nav button { padding: 6px 10px; font-size: 0.84rem; }
+      .lesson-foot { gap: 8px; margin-top: 14px; padding-top: 12px; }
+    }
   `,
   template: `
     @if (lessons().length > 0) {

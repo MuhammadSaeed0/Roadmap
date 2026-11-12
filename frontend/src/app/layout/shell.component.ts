@@ -61,7 +61,10 @@ const NARROW_MAX = 960;
             @for (group of groups(); track group.key) {
               @if (group.items.length === 1) {
                 <a class="nav-trigger nav-link" [class.current]="group.key === activeGroup()" [routerLink]="group.items[0].path" (click)="closeNav()"
-                   [attr.aria-current]="group.key === activeGroup() ? 'page' : null">{{ group.items[0].key | t }}</a>
+                   [attr.aria-current]="group.key === activeGroup() ? 'page' : null">
+                  <app-icon [name]="group.items[0].icon" [size]="18" />
+                  <span>{{ group.items[0].key | t }}</span>
+                </a>
               } @else {
                 <div class="menu-wrap nav-menu" [class.current]="group.key === activeGroup()">
                   <button type="button" class="nav-trigger" (click)="toggleGroup(group.key)" aria-haspopup="true"

@@ -1072,10 +1072,13 @@ button.stat-card:hover { border-color: var(--accent); }
   .topbar-search .search-kbd { display: none; }
   .lang-switch button { padding: 4px 8px; }
   .project-hero { flex-direction: column; align-items: flex-start; }
-  .card { padding: 16px; }
+  .content { padding: 16px 12px; }
+  .card { padding: 14px; }
   .practice-card { padding: 18px; }
   .hbars li { grid-template-columns: minmax(0, 1fr) 30px; }
   .hbars .hbar-track { grid-column: 1 / -1; grid-row: 2; }
+  .code-block pre { padding: 10px 12px; font-size: 0.78rem; }
+  .code-block .code-head { padding: 4px 6px 4px 12px; }
 }
 
 /* Respect reduced-motion preferences */
@@ -1268,4 +1271,17 @@ fieldset:disabled .quiz-option { cursor: default; }
   .ide-panel { height: auto; min-height: 160px; max-height: 50vh; }
   .ide-preview { width: 100%; height: 60vh; border-top: 1px solid var(--border); }
   .ide-tree-actions { display: inline-flex; }
+}
+@media (max-width: 640px) {
+  .ide-toolbar { gap: 4px; padding: 4px 6px; }
+  .ide-toolbar .btn { min-height: 28px; font-size: 0.78rem; padding: 4px 8px; }
+  .ide-toolbar .icon-btn { width: 28px; height: 28px; }
+  .ide-status { font-size: 0.72rem; }
+  .ide-editor { height: 38vh; min-height: 200px; }
+  .ide-tab > button[role='tab'] { padding: 4px 3px 4px 8px; font-size: 0.74rem; }
+  .ide-tab .icon-btn { width: 20px; height: 20px; }
+  .ide-panel-tabs > button[role='tab'] { padding: 5px 8px; font-size: 0.74rem; }
+  .ide-panel-body { padding: 6px 8px; }
+  .ide-console { font-size: 0.76rem; }
+  .ide-preview { height: 50vh; }
 }
