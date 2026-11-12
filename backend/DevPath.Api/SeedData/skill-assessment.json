@@ -85,7 +85,7 @@
     "CSharp": "csharp", "DotNet": "dotnet", "AspNetCore": "dotnet", "EfCore": "efcore", "SqlServer": "database",
     "TypeScript": "frontend", "Angular": "frontend", "RestApi": "apis", "Testing": "testing", "Git": "git",
     "FullStackDesign": "architecture", "DataStructures": "problemSolving", "Algorithms": "problemSolving",
-    "ObjectOrientedDesign": "architecture", "SystemDesign": "architecture", "Concurrency": "csharp", "Behavioral": "projects"
+    "ObjectOrientedDesign": "architecture", "SystemDesign": "architecture", "Concurrency": "csharp", "Behavioral": "projects", "DevOps": "devops"
   },
 
   "projectSizes": {

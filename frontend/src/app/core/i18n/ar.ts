@@ -242,7 +242,7 @@ export const ar: Translations = {
     CSharp: 'C#', DotNet: '.NET', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server',
     TypeScript: 'TypeScript', Angular: 'Angular', RestApi: 'واجهات REST', Testing: 'الاختبار', Git: 'Git', FullStackDesign: 'تصميم Full-Stack',
     DataStructures: 'هياكل البيانات', Algorithms: 'الخوارزميات', ObjectOrientedDesign: 'التصميم كائني التوجه',
-    SystemDesign: 'تصميم الأنظمة', Concurrency: 'التزامن', Behavioral: 'أسئلة سلوكية',
+    SystemDesign: 'تصميم الأنظمة', Concurrency: 'التزامن', Behavioral: 'أسئلة سلوكية', DevOps: 'السحابة و DevOps',
   },
   rating: { NeedReview: 'يحتاج مراجعة', Partial: 'فهمته جزئيًا', Confident: 'واثق', unrated: 'لم أتدرب عليه' },
   confidence: {

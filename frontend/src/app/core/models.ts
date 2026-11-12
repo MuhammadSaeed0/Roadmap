@@ -21,13 +21,13 @@ export type PracticeStatus = 'NotStarted' | 'Attempted' | 'Completed';
 export type InterviewCategory =
   | 'CSharp' | 'DotNet' | 'AspNetCore' | 'EfCore' | 'SqlServer' | 'TypeScript'
   | 'Angular' | 'RestApi' | 'Testing' | 'Git' | 'FullStackDesign'
-  | 'DataStructures' | 'Algorithms' | 'ObjectOrientedDesign' | 'SystemDesign' | 'Concurrency' | 'Behavioral';
+  | 'DataStructures' | 'Algorithms' | 'ObjectOrientedDesign' | 'SystemDesign' | 'Concurrency' | 'Behavioral' | 'DevOps';
 export type InterviewRating = 'NeedReview' | 'Partial' | 'Confident';
 export type DayOfWeek = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
 
 export const SKILLS: SkillArea[] = ['CSharp', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'FullStack', 'Testing', 'Git', 'DevOps', 'Professional'];
 export const INTERVIEW_CATEGORIES: InterviewCategory[] = ['CSharp', 'DotNet', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'RestApi', 'Testing', 'Git', 'FullStackDesign',
-  'DataStructures', 'Algorithms', 'ObjectOrientedDesign', 'SystemDesign', 'Concurrency', 'Behavioral'];
+  'DataStructures', 'Algorithms', 'ObjectOrientedDesign', 'SystemDesign', 'Concurrency', 'Behavioral', 'DevOps'];
 export const EXERCISE_TYPES: ExerciseType[] = ['Conceptual', 'Coding', 'Debugging', 'Practical', 'MiniProject', 'FullStack', 'Challenge', 'Scenario', 'CodeReview'];
 export const DIFFICULTIES: Difficulty[] = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
 

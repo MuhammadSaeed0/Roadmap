@@ -156,7 +156,9 @@ public enum InterviewCategory
     ObjectOrientedDesign,
     SystemDesign,
     Concurrency,
-    Behavioral
+    Behavioral,
+    /// <summary>Containers, CI/CD, cloud platforms, microservices and messaging.</summary>
+    DevOps
 }
 
 public enum InterviewRating

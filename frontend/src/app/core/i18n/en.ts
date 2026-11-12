@@ -240,7 +240,7 @@ export const en = {
     CSharp: 'C#', DotNet: '.NET', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server',
     TypeScript: 'TypeScript', Angular: 'Angular', RestApi: 'REST APIs', Testing: 'Testing', Git: 'Git', FullStackDesign: 'Full-stack design',
     DataStructures: 'Data structures', Algorithms: 'Algorithms', ObjectOrientedDesign: 'Object-oriented design',
-    SystemDesign: 'System design', Concurrency: 'Concurrency', Behavioral: 'Behavioral',
+    SystemDesign: 'System design', Concurrency: 'Concurrency', Behavioral: 'Behavioral', DevOps: 'Cloud & DevOps',
   },
   rating: { NeedReview: 'Need to review', Partial: 'Partially understood', Confident: 'Confident', unrated: 'Not practised' },
   confidence: {

@@ -59,23 +59,28 @@ const NARROW_MAX = 960;
           </button>
           <nav class="nav topnav" id="topnav" data-tour="nav" [class.open]="navOpen()" [attr.aria-label]="'common.menu' | t">
             @for (group of groups(); track group.key) {
-              <div class="menu-wrap nav-menu" [class.current]="group.key === activeGroup()">
-                <button type="button" class="nav-trigger" (click)="toggleGroup(group.key)" aria-haspopup="true"
-                        [attr.aria-expanded]="openGroup() === group.key">
-                  {{ group.key | t }} <app-icon name="chevron-down" [size]="14" />
-                </button>
-                <ul class="menu nav-panel" role="list" [class.show]="openGroup() === group.key">
-                  @for (item of group.items; track item.path) {
-                    <li>
-                      <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/' }"
-                         (click)="closeNav()" #rla="routerLinkActive" [attr.aria-current]="rla.isActive ? 'page' : null">
-                        <app-icon [name]="item.icon" [size]="18" />
-                        <span>{{ item.key | t }}</span>
-                      </a>
-                    </li>
-                  }
-                </ul>
-              </div>
+              @if (group.items.length === 1) {
+                <a class="nav-trigger nav-link" [class.current]="group.key === activeGroup()" [routerLink]="group.items[0].path" (click)="closeNav()"
+                   [attr.aria-current]="group.key === activeGroup() ? 'page' : null">{{ group.items[0].key | t }}</a>
+              } @else {
+                <div class="menu-wrap nav-menu" [class.current]="group.key === activeGroup()">
+                  <button type="button" class="nav-trigger" (click)="toggleGroup(group.key)" aria-haspopup="true"
+                          [attr.aria-expanded]="openGroup() === group.key">
+                    {{ (group.key === activeGroup() ? activeLabel() : group.key) | t }} <app-icon name="chevron-down" [size]="14" />
+                  </button>
+                  <ul class="menu nav-panel" role="list" [class.show]="openGroup() === group.key">
+                    @for (item of group.items; track item.path) {
+                      <li>
+                        <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+                           (click)="closeNav()" #rla="routerLinkActive" [attr.aria-current]="rla.isActive ? 'page' : null">
+                          <app-icon [name]="item.icon" [size]="18" />
+                          <span>{{ item.key | t }}</span>
+                        </a>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
             }
           </nav>
 
@@ -184,7 +189,6 @@ export class ShellComponent {
     ] },
     { key: 'nav.learn', items: [
       { path: '/roadmap', key: 'nav.roadmap', icon: 'map' },
-      { path: '/library', key: 'nav.library', icon: 'book' },
     ] },
     { key: 'nav.watch', items: [
       { path: '/videos', key: 'nav.videos', icon: 'video' },
@@ -200,17 +204,13 @@ export class ShellComponent {
       { path: '/notes', key: 'nav.notes', icon: 'note' },
     ] },
   ];
-  /** Administrators also see the admin area (the API checks the role on every admin request). */
-  protected readonly groups = computed(() => [...this.baseGroups, { key: 'nav.account', items: [
-    { path: '/settings', key: 'nav.settings', icon: 'settings' },
-    ...(this.auth.isAdmin() ? [{ path: '/admin', key: 'nav.admin', icon: 'shield' }] : []),
-  ] }]);
+  protected readonly groups = computed(() => this.baseGroups);
   /** The menu that is open (wide screens open one at a time). */
   protected readonly openGroup = signal<string | null>(null);
   private readonly url = signal('/');
   /** The group of the page being shown, so its menu button is marked. Topic pages belong to the library. */
   protected readonly activeGroup = computed(() => {
-    const path = this.url().split(/[?#]/)[0].replace(/^\/topics\b/, '/library');
+    const path = this.url().split(/[?#]/)[0].replace(/^\/(topics|library)\b/, '/roadmap');
     return this.groups().find(g => g.items.some(i => i.path === '/' ? path === '/' : path === i.path || path.startsWith(i.path + '/')))?.key ?? null;
   });
 
@@ -259,6 +259,14 @@ export class ShellComponent {
       });
     });
   }
+
+  /** While you are on a page, its group's button shows the page's name instead of the group's. */
+  protected readonly activeLabel = computed(() => {
+    const path = this.url().split(/[?#]/)[0].replace(/^\/(topics|library)\b/, '/roadmap');
+    const group = this.groups().find(g => g.key === this.activeGroup());
+    const items = [...(group?.items ?? [])].sort((a, b) => b.path.length - a.path.length);
+    return items.find(i => i.path === '/' ? path === '/' : path === i.path || path.startsWith(i.path + '/'))?.key ?? group?.key ?? '';
+  });
 
   protected toggleGroup(key: string): void { this.openGroup.update(open => (open === key ? null : key)); }
 
