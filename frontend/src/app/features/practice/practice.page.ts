@@ -79,26 +79,46 @@ type Filters = { q: string; skill: SkillArea | ''; type: ExerciseType | ''; diff
       @if (visible().length === 0) {
         <app-empty-state icon="code" [title]="'practice.empty' | t" />
       } @else {
-        <div class="grid grid-3" data-tour="practice-list">
-          @for (e of visible(); track e.id) {
-            <a class="card exercise-card" [routerLink]="['/practice', e.id]" [attr.data-status]="e.status">
-              <div class="exercise-card-head">
-                <span class="type-pill" [attr.data-type]="e.type"><app-icon [name]="icon(e.type)" [size]="14" /> {{ 'exerciseType.' + e.type | t }}</span>
-                <app-icon [name]="statusIcon(e.status)" class="status-icon" [attr.data-status]="e.status" />
-              </div>
-              <h3>{{ e | loc: 'title' }}</h3>
-              <p class="muted small">{{ e | loc: 'topicTitle' }}</p>
-              <div class="chips">
-                <span class="chip chip-sm" [attr.data-difficulty]="e.difficulty">{{ 'difficulty.' + e.difficulty | t }}</span>
-                <span class="chip chip-sm chip-ghost"><app-icon name="clock" [size]="12" /> {{ e.estimatedMinutes | duration }}</span>
-                @if (e.runner !== 'None') { <span class="chip chip-sm chip-ghost"><app-icon name="play" [size]="11" /> {{ ('practice.runner.' + e.runner) | t }}</span> }
-                @for (s of e.technologies; track s) { <span class="chip chip-sm chip-ghost">{{ 'skills.' + s | t }}</span> }
-                @if (e.bestScore !== null) { <span class="chip chip-sm" [attr.data-practice]="e.bestScore === 100 ? 'Completed' : 'Attempted'">{{ e.bestScore }}%</span> }
-                @else { <span class="chip chip-sm" [attr.data-practice]="e.status">{{ 'practiceStatus.' + e.status | t }}</span> }
-              </div>
-            </a>
+        <!-- One collapsible list per kind of exercise. -->
+        <ol class="timeline type-groups" role="list" data-tour="practice-list">
+          @for (g of groups(); track g.type) {
+            <li class="phase card type-group">
+              <button type="button" class="phase-head" (click)="toggle(g.type)" [attr.aria-expanded]="isOpen(g.type)" [attr.aria-controls]="'ptype-' + g.type">
+                <span class="phase-num" aria-hidden="true"><app-icon [name]="icon(g.type)" [size]="18" /></span>
+                <span class="phase-info">
+                  <span class="phase-title">{{ 'exerciseType.' + g.type | t }}</span>
+                </span>
+                <span class="phase-stats">
+                  <span class="small">{{ 'practice.groupLine' | t: { done: g.done, total: g.items.length } }}</span>
+                  <app-progress-bar [value]="(g.done / g.items.length) * 100" [small]="true" tone="success" [label]="'exerciseType.' + g.type | t" />
+                </span>
+                <app-icon name="chevron-down" class="chev" [class.open]="isOpen(g.type)" />
+              </button>
+              @if (isOpen(g.type)) {
+                <div class="phase-body grid grid-3" [id]="'ptype-' + g.type">
+                  @for (e of g.items; track e.id) {
+                  <a class="card exercise-card" [routerLink]="['/practice', e.id]" [attr.data-status]="e.status">
+                    <div class="exercise-card-head">
+                      <span class="type-pill" [attr.data-type]="e.type"><app-icon [name]="icon(e.type)" [size]="14" /> {{ 'exerciseType.' + e.type | t }}</span>
+                      <app-icon [name]="statusIcon(e.status)" class="status-icon" [attr.data-status]="e.status" />
+                    </div>
+                    <h3>{{ e | loc: 'title' }}</h3>
+                    <p class="muted small">{{ e | loc: 'topicTitle' }}</p>
+                    <div class="chips">
+                      <span class="chip chip-sm" [attr.data-difficulty]="e.difficulty">{{ 'difficulty.' + e.difficulty | t }}</span>
+                      <span class="chip chip-sm chip-ghost"><app-icon name="clock" [size]="12" /> {{ e.estimatedMinutes | duration }}</span>
+                      @if (e.runner !== 'None') { <span class="chip chip-sm chip-ghost"><app-icon name="play" [size]="11" /> {{ ('practice.runner.' + e.runner) | t }}</span> }
+                      @for (s of e.technologies; track s) { <span class="chip chip-sm chip-ghost">{{ 'skills.' + s | t }}</span> }
+                      @if (e.bestScore !== null) { <span class="chip chip-sm" [attr.data-practice]="e.bestScore === 100 ? 'Completed' : 'Attempted'">{{ e.bestScore }}%</span> }
+                      @else { <span class="chip chip-sm" [attr.data-practice]="e.status">{{ 'practiceStatus.' + e.status | t }}</span> }
+                    </div>
+                  </a>
+                  }
+                </div>
+              }
+            </li>
           }
-        </div>
+        </ol>
       }
     }
   `,
@@ -133,6 +153,23 @@ export default class PracticePage {
       (!f.runnable || e.runner !== 'None') &&
       (!q || e.titleEn.toLowerCase().includes(q) || e.titleAr.includes(q) || e.topicTitleEn.toLowerCase().includes(q) || e.topicTitleAr.includes(q)));
   });
+
+  /** The exercises shown, one group per kind, in the usual order of kinds. */
+  protected readonly groups = computed(() => EXERCISE_TYPES
+    .map(type => ({ type, items: this.visible().filter(e => e.type === type) }))
+    .filter(g => g.items.length > 0)
+    .map(g => ({ ...g, done: g.items.filter(e => e.status === 'Completed').length })));
+  /** Groups the learner opened or closed by hand; until then the first group is open, or every group while filtering. */
+  private readonly toggled = signal(new Map<ExerciseType, boolean>());
+
+  protected isOpen(type: ExerciseType): boolean {
+    return this.toggled().get(type) ?? (this.filtered() || this.groups()[0]?.type === type);
+  }
+
+  protected toggle(type: ExerciseType): void {
+    const open = !this.isOpen(type);
+    this.toggled.update(m => new Map(m).set(type, open));
+  }
 
   protected icon(type: ExerciseType): string { return TYPE_ICONS[type]; }
 

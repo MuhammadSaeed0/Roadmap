@@ -385,3 +385,99 @@
 .topnav { flex: none; }
 .topbar .topbar-search { flex: 1 1 140px; min-width: 140px; }
 .topbar-actions { flex: none; }
+
+/* =====================================================================
+   Luxe glass
+   The owner asked for richer colours and a glass look, without the yellow
+   and the pink. Every group keeps its layout and gets a deep jewel tone on
+   cool pearl (light) or onyx (dark); the logo tile is platinum in every group.
+   Surfaces are frosted: translucent, blurred, with a light edge.
+     My progress  petrol      Learn       ink        Watch and read  burgundy
+     Build        aubergine   Interviews  emerald    Account         graphite
+   ===================================================================== */
+:root[data-skin] {
+  --bg: #f2f3f5; --surface: #ffffff; --surface-2: #eceef1; --surface-3: #dfe2e7; --border: #dde0e5; --border-strong: #c3c8d0;
+  --text: #15171a; --text-2: #383c42; --muted: #626872; --on-accent: #ffffff;
+  --shadow-sm: 0 1px 2px rgb(15 20 30 / 0.06);
+  --shadow: 0 10px 34px -14px rgb(15 20 30 / 0.22);
+  --bar-text: #f4f5f7; --bar-hover: rgb(255 255 255 / 0.14); --bar-line: rgb(255 255 255 / 0.18); --bar-field: rgb(255 255 255 / 0.14);
+  --bar-mark: #e6e8ec; --bar-mark-ink: var(--bar-bg); --glass-edge: rgb(255 255 255 / 0.55); --glass-fill: 62%;
+}
+:root[data-theme='dark'][data-skin] {
+  --bg: #0c0d0f; --surface: #16181b; --surface-2: #1f2226; --surface-3: #2a2e33; --border: #282c31; --border-strong: #3d434b;
+  --text: #eef0f3; --text-2: #c9cdd3; --muted: #8e959f;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow: 0 14px 40px -16px rgb(0 0 0 / 0.7);
+  --glass-edge: rgb(255 255 255 / 0.08); --glass-fill: 58%;
+}
+:root[data-skin='snap'] { --accent: #14505c; --accent-2: #7d8794; --accent-hover: #0e3d47; --accent-soft: #dcebee; --accent-text: #0e3d47; --bar-bg: #0f3b45; --snap-yellow: var(--accent-soft); }
+:root[data-skin='threads'] { --accent: #2d3357; --accent-2: #7d8794; --accent-hover: #212644; --accent-soft: #e3e5f0; --accent-text: #212644; --bar-bg: #232847; }
+:root[data-skin='tube'] { --accent: #8a1538; --accent-2: #7d8794; --accent-hover: #6e0f2c; --accent-soft: #f6e2e7; --accent-text: #6e0f2c; --bar-bg: #6a0f2a; }
+:root[data-skin='gram'] { --accent: #4b2a5e; --accent-2: #7d8794; --accent-hover: #3a1f4a; --accent-soft: #ece3f1; --accent-text: #3a1f4a; --bar-bg: #38204a; }
+:root[data-skin='chatgreen'] { --accent: #0f5c4a; --accent-2: #7d8794; --accent-hover: #0b4739; --accent-soft: #dcefe8; --accent-text: #0b4739; --bar-bg: #0b4739; --bubble-out: #dcefe8; --chat-wall: #e9ecef; }
+:root[data-skin='bird'] { --accent: #23262b; --accent-2: #7d8794; --accent-hover: #0f1114; --accent-soft: #e6e8ec; --accent-text: #23262b; --bar-bg: #1b1d21; }
+:root[data-theme='dark'][data-skin='snap'] { --accent: #5fb7c6; --accent-hover: #8acdd8; --accent-soft: rgb(95 183 198 / 0.16); --accent-text: #8acdd8; --on-accent: #04161a; }
+:root[data-theme='dark'][data-skin='threads'] { --accent: #a3abdd; --accent-hover: #c0c6ea; --accent-soft: rgb(163 171 221 / 0.16); --accent-text: #c0c6ea; --on-accent: #0c0e1c; }
+:root[data-theme='dark'][data-skin='tube'] { --accent: #d9485f; --accent-hover: #e8808f; --accent-soft: rgb(217 72 95 / 0.18); --accent-text: #e8808f; --on-accent: #1f0610; }
+:root[data-theme='dark'][data-skin='gram'] { --accent: #b79ad0; --accent-hover: #cbb4de; --accent-soft: rgb(183 154 208 / 0.16); --accent-text: #cbb4de; --on-accent: #150a1c; }
+:root[data-theme='dark'][data-skin='chatgreen'] { --accent: #4fc3a1; --accent-hover: #7fd6bb; --accent-soft: rgb(79 195 161 / 0.16); --accent-text: #7fd6bb; --on-accent: #04140f; --bubble-out: #0f4d3f; --chat-wall: transparent; }
+:root[data-theme='dark'][data-skin='bird'] { --accent: #e6e8ec; --accent-hover: #ffffff; --accent-soft: rgb(230 232 236 / 0.12); --accent-text: #e6e8ec; --on-accent: #141414; --bar-bg: #1b1d21; --bar-line: rgb(255 255 255 / 0.18); }
+
+/* Something soft behind the glass, in the tone of the group. */
+:root[data-skin] body {
+  background:
+    radial-gradient(1100px 620px at 8% -10%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 62%),
+    radial-gradient(900px 560px at 100% 8%, color-mix(in srgb, var(--accent-2) 20%, transparent), transparent 60%),
+    radial-gradient(1000px 700px at 60% 110%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+}
+:root[data-skin] .topbar {
+  background: color-mix(in srgb, var(--bar-bg) 76%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(170%); backdrop-filter: blur(20px) saturate(170%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 10px 30px -18px rgb(0 0 0 / 0.5);
+}
+:root[data-skin] .card, :root[data-skin] .notes-layout, :root[data-skin] .stat-row > div {
+  background: color-mix(in srgb, var(--surface) var(--glass-fill), transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(150%); backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-edge);
+}
+:root[data-skin] .menu, :root[data-skin] .search-panel {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  -webkit-backdrop-filter: blur(24px) saturate(160%); backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid var(--glass-edge);
+}
+:root[data-skin] .input, :root[data-skin] .segmented, :root[data-skin] .chip {
+  background-color: color-mix(in srgb, var(--surface) 55%, transparent);
+}
+:root[data-skin] .chip-btn.active, :root[data-skin] .chip-rail .chip.active { background-color: var(--accent); color: var(--on-accent); }
+:root[data-skin] .btn-primary { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22); }
+:root[data-skin] .nav-panel a { color: var(--text-2); }
+/* Pieces the earlier skins had made flat or solid. */
+[data-skin='snap'] .page-header { background: color-mix(in srgb, var(--accent-soft) 70%, transparent); border: 1px solid var(--glass-edge); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+[data-skin='snap'] .page-header h1, [data-skin='snap'] .page-header .page-subtitle { color: var(--text); }
+[data-skin='snap'] .dash-left > .card, [data-skin='tube'] .phase.card, [data-skin='tube'] .video-card, [data-skin='tube'] .stat-card,
+[data-skin='threads'] .table-card, [data-skin='threads'] .filter-bar, [data-skin='chatgreen'] .qa.card, [data-skin='tube'] .video-player.card {
+  background: none; border-color: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+[data-skin='tube'] .phase.card { border-top-color: var(--border); }
+[data-skin='chatgreen'] .notes-layout > .card { background: none; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+[data-skin='chatgreen'] .notes-list { border-inline-end: 1px solid var(--border); }
+[data-skin='chatgreen'] .qa-head { background: color-mix(in srgb, var(--surface) 70%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--glass-edge); }
+[data-skin='chatgreen'] .qa-body { background: color-mix(in srgb, var(--bubble-out) 78%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--glass-edge); }
+[data-skin='tube'] .chip-rail .chip.active { background: var(--accent); color: var(--on-accent); }
+@media (max-width: 1240px) { :root[data-skin] .topnav { background: color-mix(in srgb, var(--surface) 88%, transparent); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); } }
+
+/* Wide screens with a mouse: a menu opens when the pointer is over its group (a click still toggles it). */
+@media (hover: hover) and (min-width: 1241px) {
+  .nav-menu:hover .nav-panel { display: block; }
+  .nav-menu:hover .nav-trigger { background: var(--bar-hover); }
+  .nav-panel { top: 100%; margin-top: 8px; }
+  .nav-panel::before { content: ''; position: absolute; inset-inline: 0; top: -10px; height: 10px; }
+}
+
+/* Practice lab: one collapsible list per kind of exercise. */
+.type-group .phase-body.grid { margin: 0; padding: 16px; }
+.type-group .phase-num { color: var(--accent-text); background: var(--accent-soft); }
+.type-group .exercise-card { margin: 0; }

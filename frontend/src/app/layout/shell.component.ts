@@ -13,7 +13,7 @@ import { ThemeService, ToastService } from '../core/ui-services';
 import { IconComponent } from '../shared/icon.component';
 import { ConfirmDialogComponent, ToastHostComponent } from '../shared/ui.components';
 import { GlobalSearchComponent } from './global-search.component';
-import { SessionDialogComponent, SessionDialogService } from './session-dialog.component';
+import { SessionDialogComponent } from './session-dialog.component';
 import { HelpMenuComponent } from './tour/help-menu.component';
 import { TourOverlayComponent } from './tour/tour-overlay.component';
 import { TourWelcomeComponent } from './tour/tour-welcome.component';
@@ -82,19 +82,6 @@ const NARROW_MAX = 960;
           <app-global-search class="topbar-search" data-tour="search" />
 
           <div class="topbar-actions">
-            <div class="menu-wrap" data-tour="quick-add">
-              <button type="button" class="btn btn-primary btn-sm quick-add" (click)="quickOpen.set(!quickOpen())"
-                      aria-haspopup="menu" [attr.aria-expanded]="quickOpen()">
-                <app-icon name="plus" [size]="16" /><span class="hide-sm">{{ 'quickAdd.title' | t }}</span>
-              </button>
-              @if (quickOpen()) {
-                <div class="menu" role="menu">
-                  <button type="button" role="menuitem" (click)="newNote()"><app-icon name="note" [size]="16" /> {{ 'quickAdd.note' | t }}</button>
-                  <button type="button" role="menuitem" (click)="logSession()"><app-icon name="clock" [size]="16" /> {{ 'quickAdd.session' | t }}</button>
-                </div>
-              }
-            </div>
-
             <ng-container *ngTemplateOutlet="prefs" />
 
             <app-help-menu class="help-in-topbar" />
@@ -168,7 +155,6 @@ export class ShellComponent {
   private readonly api = inject(ApiService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly sessions = inject(SessionDialogService);
   protected readonly auth = inject(AuthService);
   private readonly toast = inject(ToastService);
   protected readonly tour = inject(TourService);
@@ -176,7 +162,6 @@ export class ShellComponent {
   protected readonly navOpen = signal(false);
   private readonly narrowQuery = typeof matchMedia === 'function' ? matchMedia(`(max-width: ${NARROW_MAX}px)`) : null;
   protected readonly narrow = signal(this.narrowQuery?.matches ?? false);
-  protected readonly quickOpen = signal(false);
   protected readonly accountOpen = signal(false);
   /** Account pages (sign-in, sign-up…) hide the sidebar and the app's top bar. */
   // Set from the URL before the first navigation finishes, so neither layout flashes on load.
@@ -246,7 +231,6 @@ export class ShellComponent {
       const helpId = r.snapshot.data['helpId'];
       if (this.tour.helpId() !== (isHelpId(helpId) ? helpId : null)) this.tour.endIfNotTour();
       this.tour.helpId.set(isHelpId(helpId) ? helpId : null);
-      this.quickOpen.set(false);
       this.accountOpen.set(false);
       this.url.set(this.router.url);
       this.closeNav();
@@ -309,20 +293,9 @@ export class ShellComponent {
     }
   }
 
-  protected newNote(): void {
-    this.quickOpen.set(false);
-    void this.router.navigate(['/notes'], { queryParams: { new: 1 } });
-  }
-
-  protected logSession(): void {
-    this.quickOpen.set(false);
-    this.sessions.open();
-  }
-
   @HostListener('document:click', ['$event'])
   protected onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    if (!target.closest?.('.menu-wrap:not(.account-wrap):not(.help-wrap):not(.nav-menu)')) this.quickOpen.set(false);
     if (!target.closest?.('.account-wrap')) this.accountOpen.set(false);
     if (!target.closest?.('.nav-menu')) this.openGroup.set(null);
     if (!target.closest?.('.topnav, .menu-btn')) this.navOpen.set(false);
@@ -331,7 +304,6 @@ export class ShellComponent {
   @HostListener('document:keydown.escape')
   protected onEscape(): void {
     this.closeNav();
-    this.quickOpen.set(false);
     this.accountOpen.set(false);
     this.navOpen.set(false);
   }

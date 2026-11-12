@@ -342,7 +342,7 @@ export const en = {
     solution: 'Suggested solution', markCompleted: 'Mark as completed', resetExercise: 'Start over', completed: 'Completed',
     disclaimer: 'C#, SQL, TypeScript and Angular exercises run right here in your browser; server-side tasks are built in your own environment.',
     progressTitle: 'Your progress by technology', overall: '{done} of {total} completed · {attempted} in progress',
-    skillLine: '{done} completed · {left} left', search: 'Search exercises…', allTypes: 'All types', allDifficulties: 'All levels', anyStatus: 'Any status',
+    skillLine: '{done} completed · {left} left', groupLine: '{done} of {total} completed', search: 'Search exercises…', allTypes: 'All types', allDifficulties: 'All levels', anyStatus: 'Any status',
     runnableOnly: 'Runs in the browser', showing: 'Showing {n} of {total} exercises', bestScore: 'Best score {score}%', technologies: 'Technologies',
     runner: { CSharp: 'Run C#', Sql: 'Run SQL', JavaScript: 'Run JS', TypeScript: 'Run TS', Web: 'Live preview', Angular: 'Angular preview' },
     scenario: 'Scenario', requirements: 'Requirements', acceptance: 'Acceptance criteria', acceptanceHint: 'Tick each one when your solution meets it.',

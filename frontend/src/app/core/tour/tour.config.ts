@@ -88,7 +88,6 @@ export const MAIN_TOUR: readonly MainStep[] = [
   { id: 'welcome', route: '/' },
   { id: 'nav', route: '/', targets: ['nav', 'menu'] },
   { id: 'search', route: '/', targets: ['search'] },
-  { id: 'quick-add', route: '/', targets: ['quick-add'] },
   { id: 'prefs', route: '/', targets: ['prefs'] },
   { id: 'dashboard-hero', route: '/', targets: ['dashboard-hero'] },
   { id: 'dashboard-continue', route: '/', targets: ['dashboard-continue'] },

@@ -344,7 +344,7 @@ export const ar: Translations = {
     solution: 'الحل المقترح', markCompleted: 'تعليم كمكتمل', resetExercise: 'البدء من جديد', completed: 'مكتمل',
     disclaimer: 'تعمل تمارين C# وSQL وTypeScript وAngular هنا في متصفحك مباشرة، أما مهام الخادم فتنفّذها في بيئتك.',
     progressTitle: 'تقدّمك حسب التقنية', overall: 'أكملت {done} من {total} · {attempted} قيد العمل',
-    skillLine: 'أكملت {done} · بقي {left}', search: 'ابحث في التمارين…', allTypes: 'كل الأنواع', allDifficulties: 'كل المستويات', anyStatus: 'أي حالة',
+    skillLine: 'أكملت {done} · بقي {left}', groupLine: 'أكملت {done} من {total}', search: 'ابحث في التمارين…', allTypes: 'كل الأنواع', allDifficulties: 'كل المستويات', anyStatus: 'أي حالة',
     runnableOnly: 'تعمل في المتصفح', showing: 'يُعرض {n} من {total} تمرين', bestScore: 'أفضل نتيجة {score}%', technologies: 'التقنيات',
     runner: { CSharp: 'تشغيل C#', Sql: 'تشغيل SQL', JavaScript: 'تشغيل JS', TypeScript: 'تشغيل TS', Web: 'معاينة مباشرة', Angular: 'معاينة Angular' },
     scenario: 'السيناريو', requirements: 'المتطلبات', acceptance: 'معايير القبول', acceptanceHint: 'علّم كل معيار عندما يحققه حلّك.',
