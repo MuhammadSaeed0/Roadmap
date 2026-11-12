@@ -116,15 +116,17 @@ public class ChallengeTests(ApiFactory factory) : IClassFixture<ApiFactory>
     }
 
     [Fact]
-    public async Task A_topic_with_a_tutorial_returns_its_lessons_in_order_and_others_return_none()
+    public async Task Every_topic_has_a_tutorial_and_its_lessons_come_back_in_order()
     {
         var client = await factory.CreateUserClientAsync();
-        int withTutorial, without;
+        int withTutorial, signals;
+        bool everyTopicHasLessons;
         using (var scope = factory.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             withTutorial = await db.Topics.Where(t => t.Slug == "cs-loops").Select(t => t.Id).SingleAsync();
-            without = await db.Topics.Where(t => t.Slug == "ng-signals").Select(t => t.Id).SingleAsync();
+            signals = await db.Topics.Where(t => t.Slug == "ng-signals").Select(t => t.Id).SingleAsync();
+            everyTopicHasLessons = await db.Topics.AllAsync(t => db.TopicLessons.Any(l => l.TopicId == t.Id));
         }
         var lessons = (await Json(await client.GetAsync($"/api/topics/{withTutorial}/lessons"))).AsArray();
         Assert.Equal(4, lessons.Count);
@@ -133,7 +135,9 @@ public class ChallengeTests(ApiFactory factory) : IClassFixture<ApiFactory>
         Assert.False(string.IsNullOrWhiteSpace(lessons[0]!["bodyAr"]!.GetValue<string>()));
         Assert.Contains("Round 1", lessons[0]!["output"]!.GetValue<string>());
 
-        Assert.Empty((await Json(await client.GetAsync($"/api/topics/{without}/lessons"))).AsArray());
+        Assert.True(everyTopicHasLessons, "every roadmap topic should have a written tutorial");
+        var signalLessons = (await Json(await client.GetAsync($"/api/topics/{signals}/lessons"))).AsArray();
+        Assert.Equal("signal, computed and effect", signalLessons[0]!["titleEn"]!.GetValue<string>());
         Assert.Equal(HttpStatusCode.NotFound, (await client.GetAsync("/api/topics/999999/lessons")).StatusCode);
         Assert.Equal(HttpStatusCode.Unauthorized, (await factory.CreateClient().GetAsync($"/api/topics/{withTutorial}/lessons")).StatusCode);
     }
