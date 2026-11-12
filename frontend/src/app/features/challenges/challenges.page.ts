@@ -172,9 +172,10 @@ export default class ChallengesPage {
     (!this.difficulty() || c.difficulty === this.difficulty()) &&
     (!this.unsolvedOnly() || !c.solved)));
 
-  /** "Algorithms" is its own domain; the others are roadmap technologies and reuse their names. */
+  /** Challenge sets such as Algorithms have their own names; the other domains are roadmap technologies. */
   protected domainName(key: string): string {
-    return key === 'Algorithms' ? this.i18n.t('challenges.algorithms') : this.i18n.t('skills.' + key);
+    const own = 'challenges.domainNames.' + key;
+    return this.i18n.has(own) ? this.i18n.t(own) : this.i18n.t('skills.' + key);
   }
 
   protected openLeaderboard(): void {

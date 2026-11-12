@@ -530,7 +530,8 @@ export const ar: Translations = {
   challenges: {
     title: 'التحديات', subtitle: 'تمارين تفحص نفسها. حلّها في المحرر واكسب النقاط',
     tabChallenges: 'التحديات', tabLeaderboard: 'لوحة الترتيب', yourScore: 'نتيجتك', points: 'نقطة', solved: 'محلولة',
-    domains: 'المجالات', algorithms: 'الخوارزميات', unsolvedOnly: 'غير المحلولة فقط', empty: 'لا توجد تحديات تطابق هذه الفلاتر',
+    domains: 'المجالات',
+    domainNames: { Algorithms: 'الخوارزميات', DataStructures: 'هياكل البيانات', Strings: 'النصوص', Math: 'الرياضيات', ObjectOriented: 'البرمجة كائنية التوجه', Linq: 'استعلامات LINQ' }, unsolvedOnly: 'غير المحلولة فقط', empty: 'لا توجد تحديات تطابق هذه الفلاتر',
     selfReported: 'الفحوص تعمل في متصفحك، فالنقاط سجلّك الشخصي وليست درجة موثّقة.',
     colChallenge: 'التحدي', colDomain: 'المجال', colDifficulty: 'الصعوبة', colTime: 'الوقت', colStatus: 'الحالة',
     statusSolved: 'محلول', statusTried: 'أفضل محاولة {score}%', statusNew: 'لم يبدأ',
