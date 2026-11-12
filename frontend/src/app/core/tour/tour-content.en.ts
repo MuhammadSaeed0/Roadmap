@@ -64,7 +64,7 @@ export const content: TourContent = {
   sections: {
     nav: { title: 'Main menu', body: 'Every page of DevPath is in these menus, grouped by what you do there: My progress, Learn, Watch & read, Build & practise, Interviews & notes, and Account. The group you’re in is underlined, and each group has its own colour.' },
     menu: { title: 'Main menu', body: 'Open the menu to reach every page of DevPath, listed by group.' },
-    search: { title: 'Search everything', body: 'Find topics, projects, tasks, exercises, interview questions, resources and your notes from one box. Press / anywhere to jump here.' },
+    search: { title: 'Search everything', body: 'Find topics, projects, tasks, exercises, interview questions, resources and your notes from one box.' },
     'quick-add': { title: 'Quick add', body: 'Write a new note or log a study session without leaving the page you’re on. Logged sessions count toward your daily goal and streak.' },
     prefs: { title: 'Language and theme', body: 'Switch between English and Arabic (the whole layout turns right-to-left) and between light and dark mode. Your choice is remembered.' },
     account: { title: 'Your account', body: 'Your name and email, Settings and Sign out. Administrators also find the admin area here.' },
@@ -164,7 +164,7 @@ export const content: TourContent = {
     'admin-users': { title: 'Accounts', body: 'Search and filter accounts, then approve, reject, suspend, reactivate or resend the confirmation email. Every action asks for confirmation and is logged.' },
   },
   tips: [
-    'Press / anywhere to search, and ? for quick help on the current page.',
+    'Press ? for quick help on the current page.',
     'Learn in order: each topic builds on the ones before it, and a locked topic shows what to finish first.',
     'Log study sessions to keep your streak and daily goal up to date.',
     'Rate your confidence honestly: low ratings bring a topic back for review sooner.',

@@ -535,7 +535,7 @@ export const ar: Translations = {
   },
   search: {
     title: 'بحث', placeholder: 'ابحث في المواضيع والمشاريع والملاحظات…', minChars: 'اكتب حرفين على الأقل.', noResults: 'لا توجد نتائج لـ «{q}».',
-    resultsFor: 'نتائج «{q}»', shortcut: 'اضغط / للبحث',
+    resultsFor: 'نتائج «{q}»',
     categories: { topics: 'المواضيع', projects: 'المشاريع', tasks: 'مهام المشاريع', practice: 'التمارين', interview: 'أسئلة المقابلات', resources: 'المصادر', notes: 'الملاحظات' },
   },
   quickAdd: { title: 'إضافة سريعة', note: 'ملاحظة جديدة', session: 'تسجيل جلسة دراسة', topicLabel: 'الموضوع', chooseTopic: 'اختر موضوعًا…' },
