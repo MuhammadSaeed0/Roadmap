@@ -42,10 +42,9 @@ function readNavCollapsed(): boolean {
         <div class="brand">
           <a class="brand-link" routerLink="/" (click)="navOpen.set(false)" [attr.aria-label]="'nav.dashboard' | t" [title]="'nav.dashboard' | t">
           <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 32 32" width="30" height="30"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="var(--accent)" /><stop offset="1" stop-color="var(--accent-2)" /></linearGradient></defs>
-              <rect width="32" height="32" rx="9" fill="url(#bg)" />
-              <path d="M9 21.5 14 16l-5-5.5M16.5 22h7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+            <svg viewBox="0 0 32 32" width="30" height="30">
+              <rect width="32" height="32" rx="9" fill="var(--accent)" />
+              <path d="M9 21.5 14 16l-5-5.5M16.5 22h7" fill="none" stroke="var(--on-accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </span>
           <span class="brand-text">
@@ -253,6 +252,9 @@ export class ShellComponent {
       while (r.firstChild) r = r.firstChild;
       this.titleKey.set((r.snapshot.data['titleKey'] as string) ?? 'app.name');
       this.authLayout.set(r.snapshot.data['layout'] === 'auth');
+      // Each page borrows the look of a familiar app; styles in skins.css key off <html data-skin>.
+      const skin = r.snapshot.data['skin'] as string | undefined;
+      if (skin) document.documentElement.dataset['skin'] = skin; else delete document.documentElement.dataset['skin'];
       // The help menu explains the page the route names; a page guide ends when the page changes.
       const helpId = r.snapshot.data['helpId'];
       if (this.tour.helpId() !== (isHelpId(helpId) ? helpId : null)) this.tour.endIfNotTour();

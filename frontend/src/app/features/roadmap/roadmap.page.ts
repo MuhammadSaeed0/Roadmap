@@ -50,6 +50,12 @@ export default class RoadmapPage {
     });
   }
 
+  /** From the phase rail: open the phase and bring it into view. */
+  protected jump(id: number): void {
+    this.expanded.update(s => new Set([...s, id]));
+    setTimeout(() => document.getElementById('phase-' + id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+  }
+
   protected setAll(open: boolean): void {
     this.expanded.set(open ? new Set(this.data.value()?.phases.map(p => p.id)) : new Set());
   }

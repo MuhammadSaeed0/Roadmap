@@ -66,12 +66,14 @@ type Flags = { isWatched: boolean; isBookmarked: boolean };
         </div>
         <label class="sr-only" for="vl-search">{{ 'videoLibrary.search' | t }}</label>
         <input id="vl-search" class="input input-sm" type="search" [ngModel]="search()" (ngModelChange)="search.set($event)" [placeholder]="'videoLibrary.search' | t">
-        <label class="sr-only" for="vl-skill">{{ 'library.allSkills' | t }}</label>
-        <select id="vl-skill" class="input input-sm" [ngModel]="skill()" (ngModelChange)="skill.set($event)">
-          <option value="">{{ 'library.allSkills' | t }}</option>
-          @for (s of skills; track s) { <option [value]="s">{{ 'skills.' + s | t }}</option> }
-        </select>
         <label class="check-label small"><input type="checkbox" [ngModel]="unwatchedOnly()" (ngModelChange)="unwatchedOnly.set($event)"> {{ 'videoLibrary.unwatchedOnly' | t }}</label>
+      </div>
+
+      <div class="chip-rail" role="group" [attr.aria-label]="'library.allSkills' | t">
+        <button type="button" class="chip chip-btn" [class.active]="skill() === ''" [attr.aria-pressed]="skill() === ''" (click)="skill.set('')">{{ 'library.allSkills' | t }}</button>
+        @for (s of skills; track s) {
+          <button type="button" class="chip chip-btn" [class.active]="skill() === s" [attr.aria-pressed]="skill() === s" (click)="skill.set(s)">{{ 'skills.' + s | t }}</button>
+        }
       </div>
 
       @if (playing(); as p) {

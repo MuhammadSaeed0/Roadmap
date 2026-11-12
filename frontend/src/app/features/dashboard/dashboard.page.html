@@ -10,10 +10,51 @@
 } @else if (data.value(); as d) {
   <div class="grid grid-dashboard">
 
+    <div class="dash-col dash-left">
+    <!-- H. Quick actions -->
+    <section class="card span-5" aria-labelledby="actions-h" data-tour="dashboard-actions">
+      <h2 id="actions-h" class="card-title"><app-icon name="target" /> {{ 'dashboard.quickActions' | t }}</h2>
+      <div class="quick-grid">
+        @if (d.recommendation; as rec) {
+          <a class="quick-action" [routerLink]="['/topics', rec.topic.id]"><app-icon name="play" /> {{ 'dashboard.continueLearning' | t }}</a>
+        } @else {
+          <a class="quick-action" routerLink="/roadmap"><app-icon name="map" /> {{ 'nav.roadmap' | t }}</a>
+        }
+        @if (activeProject(); as p) {
+          <a class="quick-action" [routerLink]="['/projects', p.id]"><app-icon name="folder" /> {{ 'dashboard.resumeProject' | t }}</a>
+        }
+        <a class="quick-action" routerLink="/practice"><app-icon name="code" /> {{ 'dashboard.startPractice' | t }}</a>
+        <a class="quick-action" routerLink="/progress" [queryParams]="{ tab: 'review' }"><app-icon name="repeat" /> {{ 'dashboard.reviewWeak' | t }}</a>
+        <a class="quick-action" routerLink="/career"><app-icon name="briefcase" /> {{ 'dashboard.viewReadiness' | t }}</a>
+      </div>
+    </section>
+
+    <!-- F. Skills overview -->
+    <section class="card span-6" aria-labelledby="skills-h" data-tour="dashboard-skills">
+      <div class="card-head">
+        <h2 id="skills-h" class="card-title"><app-icon name="layers" /> {{ 'dashboard.skills' | t }}</h2>
+        <a routerLink="/progress" class="link-sm">{{ 'common.viewAll' | t }}</a>
+      </div>
+      <p class="muted small">{{ 'dashboard.skillsHint' | t }}</p>
+      <ul class="skill-list" role="list">
+        @for (s of d.skills; track s.skill) {
+          <li>
+            <div class="skill-row">
+              <span class="skill-name" [attr.data-skill]="s.skill">{{ 'skills.' + s.skill | t }}</span>
+              <span class="skill-meta">{{ s.done }}/{{ s.total }} · {{ s.percent | fmtNum }}%</span>
+            </div>
+            <app-progress-bar [value]="s.percent" [small]="true" [label]="'skills.' + s.skill | t" />
+          </li>
+        }
+      </ul>
+    </section>
+    </div>
+
+    <div class="dash-col dash-main">
     <!-- A. Welcome + B. overall progress -->
     <section class="card hero span-8" aria-labelledby="page-title" data-tour="dashboard-hero">
       <div class="hero-text">
-        <p class="eyebrow">{{ greetingKey() | t }} 👋</p>
+        <p class="eyebrow">{{ greetingKey() | t }}</p>
         <h1 id="page-title" tabindex="-1">{{ 'app.fullName' | t }}</h1>
         <p class="hero-journey">{{ 'dashboard.journey' | t }}</p>
         <p class="hero-percent">{{ 'dashboard.completed' | t: { pct: (d.overall.percent | fmtNum: 1) } }}</p>
@@ -33,26 +74,6 @@
           </dd>
         </div>
       </dl>
-    </section>
-
-    <!-- Today -->
-    <section class="card span-4 today-card" aria-labelledby="today-h" data-tour="dashboard-today">
-      <h2 id="today-h" class="card-title"><app-icon name="flame" /> {{ 'common.today' | t }}</h2>
-      <p class="streak">{{ d.streakDays > 0 ? ('dashboard.streak' | t: { n: d.streakDays }) : ('dashboard.noStreak' | t) }}</p>
-      <p class="small">{{ 'dashboard.todayGoal' | t: { done: d.minutesToday, goal: d.dailyGoalMinutes } }}</p>
-      <app-progress-bar [value]="todayPercent()" tone="success" [label]="'dashboard.todayGoal' | t: { done: d.minutesToday, goal: d.dailyGoalMinutes }" />
-      <ul class="mini-list" role="list">
-        <li><app-icon name="calendar" [size]="16" /> {{ 'dashboard.weekMinutes' | t: { n: d.minutesThisWeek } }}</li>
-        <li>
-          <app-icon name="repeat" [size]="16" />
-          <a routerLink="/progress" [queryParams]="{ tab: 'review' }">
-            {{ d.reviewsDue > 0 ? ('dashboard.reviewsDue' | t: { n: d.reviewsDue }) : ('dashboard.noReviews' | t) }}
-          </a>
-        </li>
-      </ul>
-      <button type="button" class="btn btn-secondary btn-block" (click)="logSession()">
-        <app-icon name="clock" [size]="16" /> {{ 'quickAdd.session' | t }}
-      </button>
     </section>
 
     <!-- C. Continue learning -->
@@ -120,24 +141,49 @@
       }
     </section>
 
-    <!-- F. Skills overview -->
-    <section class="card span-6" aria-labelledby="skills-h" data-tour="dashboard-skills">
-      <div class="card-head">
-        <h2 id="skills-h" class="card-title"><app-icon name="layers" /> {{ 'dashboard.skills' | t }}</h2>
-        <a routerLink="/progress" class="link-sm">{{ 'common.viewAll' | t }}</a>
-      </div>
-      <p class="muted small">{{ 'dashboard.skillsHint' | t }}</p>
-      <ul class="skill-list" role="list">
-        @for (s of d.skills; track s.skill) {
-          <li>
-            <div class="skill-row">
-              <span class="skill-name" [attr.data-skill]="s.skill">{{ 'skills.' + s.skill | t }}</span>
-              <span class="skill-meta">{{ s.done }}/{{ s.total }} · {{ s.percent | fmtNum }}%</span>
-            </div>
-            <app-progress-bar [value]="s.percent" [small]="true" [label]="'skills.' + s.skill | t" />
-          </li>
-        }
+    <!-- G. Recent activity -->
+    <section class="card span-7" aria-labelledby="activity-h" data-tour="dashboard-activity">
+      <h2 id="activity-h" class="card-title"><app-icon name="clock" /> {{ 'dashboard.recentActivity' | t }}</h2>
+      @if (d.recentActivity.length === 0) {
+        <p class="muted">{{ 'dashboard.noActivity' | t }}</p>
+      } @else {
+        <ul class="activity" role="list">
+          @for (a of d.recentActivity; track $index) {
+            <li>
+              <span class="activity-icon" [attr.data-kind]="a.kind"><app-icon [name]="activityIcon(a.kind)" [size]="15" /></span>
+              <span class="activity-text">
+                <span class="muted small">{{ 'activity.' + a.kind | t: { minutes: a.minutes } }}</span>
+                @if (activityLink(a); as link) {
+                  <a [routerLink]="link" [queryParams]="activityQuery(a)">{{ a | loc: 'title' }}</a>
+                } @else { <span>{{ a | loc: 'title' }}</span> }
+              </span>
+              <time class="muted small" [attr.datetime]="a.at">{{ i18n.formatRelative(a.at) }}</time>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+    </div>
+
+    <div class="dash-col dash-right">
+    <!-- Today -->
+    <section class="card span-4 today-card" aria-labelledby="today-h" data-tour="dashboard-today">
+      <h2 id="today-h" class="card-title"><app-icon name="flame" /> {{ 'common.today' | t }}</h2>
+      <p class="streak">{{ d.streakDays > 0 ? ('dashboard.streak' | t: { n: d.streakDays }) : ('dashboard.noStreak' | t) }}</p>
+      <p class="small">{{ 'dashboard.todayGoal' | t: { done: d.minutesToday, goal: d.dailyGoalMinutes } }}</p>
+      <app-progress-bar [value]="todayPercent()" tone="success" [label]="'dashboard.todayGoal' | t: { done: d.minutesToday, goal: d.dailyGoalMinutes }" />
+      <ul class="mini-list" role="list">
+        <li><app-icon name="calendar" [size]="16" /> {{ 'dashboard.weekMinutes' | t: { n: d.minutesThisWeek } }}</li>
+        <li>
+          <app-icon name="repeat" [size]="16" />
+          <a routerLink="/progress" [queryParams]="{ tab: 'review' }">
+            {{ d.reviewsDue > 0 ? ('dashboard.reviewsDue' | t: { n: d.reviewsDue }) : ('dashboard.noReviews' | t) }}
+          </a>
+        </li>
       </ul>
+      <button type="button" class="btn btn-secondary btn-block" (click)="logSession()">
+        <app-icon name="clock" [size]="16" /> {{ 'quickAdd.session' | t }}
+      </button>
     </section>
 
     <!-- E. Projects -->
@@ -162,46 +208,6 @@
         }
       </ul>
     </section>
-
-    <!-- G. Recent activity -->
-    <section class="card span-7" aria-labelledby="activity-h" data-tour="dashboard-activity">
-      <h2 id="activity-h" class="card-title"><app-icon name="clock" /> {{ 'dashboard.recentActivity' | t }}</h2>
-      @if (d.recentActivity.length === 0) {
-        <p class="muted">{{ 'dashboard.noActivity' | t }}</p>
-      } @else {
-        <ul class="activity" role="list">
-          @for (a of d.recentActivity; track $index) {
-            <li>
-              <span class="activity-icon" [attr.data-kind]="a.kind"><app-icon [name]="activityIcon(a.kind)" [size]="15" /></span>
-              <span class="activity-text">
-                <span class="muted small">{{ 'activity.' + a.kind | t: { minutes: a.minutes } }}</span>
-                @if (activityLink(a); as link) {
-                  <a [routerLink]="link" [queryParams]="activityQuery(a)">{{ a | loc: 'title' }}</a>
-                } @else { <span>{{ a | loc: 'title' }}</span> }
-              </span>
-              <time class="muted small" [attr.datetime]="a.at">{{ i18n.formatRelative(a.at) }}</time>
-            </li>
-          }
-        </ul>
-      }
-    </section>
-
-    <!-- H. Quick actions -->
-    <section class="card span-5" aria-labelledby="actions-h" data-tour="dashboard-actions">
-      <h2 id="actions-h" class="card-title"><app-icon name="target" /> {{ 'dashboard.quickActions' | t }}</h2>
-      <div class="quick-grid">
-        @if (d.recommendation; as rec) {
-          <a class="quick-action" [routerLink]="['/topics', rec.topic.id]"><app-icon name="play" /> {{ 'dashboard.continueLearning' | t }}</a>
-        } @else {
-          <a class="quick-action" routerLink="/roadmap"><app-icon name="map" /> {{ 'nav.roadmap' | t }}</a>
-        }
-        @if (activeProject(); as p) {
-          <a class="quick-action" [routerLink]="['/projects', p.id]"><app-icon name="folder" /> {{ 'dashboard.resumeProject' | t }}</a>
-        }
-        <a class="quick-action" routerLink="/practice"><app-icon name="code" /> {{ 'dashboard.startPractice' | t }}</a>
-        <a class="quick-action" routerLink="/progress" [queryParams]="{ tab: 'review' }"><app-icon name="repeat" /> {{ 'dashboard.reviewWeak' | t }}</a>
-        <a class="quick-action" routerLink="/career"><app-icon name="briefcase" /> {{ 'dashboard.viewReadiness' | t }}</a>
-      </div>
-    </section>
+    </div>
   </div>
 }
