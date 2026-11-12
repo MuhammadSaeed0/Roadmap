@@ -9,8 +9,8 @@ const appRoutes: Routes = [
   { path: 'topics/:id', loadComponent: () => import('./features/topics/topic-detail.page'), data: { titleKey: 'nav.library', helpId: 'topic', skin: 'threads' } },
   { path: 'projects', loadComponent: () => import('./features/projects/projects.page'), data: { titleKey: 'nav.projects', helpId: 'projects', skin: 'gram' } },
   { path: 'projects/:id', loadComponent: () => import('./features/projects/project-detail.page'), data: { titleKey: 'nav.projects', helpId: 'project', skin: 'gram' } },
-  // The challenges live in the Code Playground now; old links open that tab.
-  { path: 'challenges', redirectTo: () => inject(Router).createUrlTree(['/playground'], { queryParams: { tab: 'challenges' } }) },
+  // The challenges live in the Practice Lab now; old links open that tab.
+  { path: 'challenges', redirectTo: () => inject(Router).createUrlTree(['/practice'], { queryParams: { tab: 'challenges' } }) },
   { path: 'practice', loadComponent: () => import('./features/practice/practice.page'), data: { titleKey: 'nav.practice', helpId: 'practice', skin: 'gram' } },
   { path: 'practice/:id', loadComponent: () => import('./features/practice/exercise-detail.page'), data: { titleKey: 'nav.practice', helpId: 'exercise', skin: 'gram' } },
   { path: 'playground', loadComponent: () => import('./features/playground/playground.page'), data: { titleKey: 'nav.playground', helpId: 'playground', skin: 'gram' } },

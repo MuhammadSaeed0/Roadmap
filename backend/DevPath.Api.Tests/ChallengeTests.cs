@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DevPath.Api.Tests;
 
-/// <summary>Challenges with points, submission history, the leaderboard and written tutorials, through the HTTP API.</summary>
+/// <summary>Challenges with points, submission history and written tutorials, through the HTTP API.</summary>
 public class ChallengeTests(ApiFactory factory) : IClassFixture<ApiFactory>
 {
     private static async Task<JsonNode> Json(HttpResponseMessage response)
@@ -94,25 +94,6 @@ public class ChallengeTests(ApiFactory factory) : IClassFixture<ApiFactory>
         var mine = (await Json(await a.GetAsync($"/api/practice/{id}/submissions"))).AsArray();
         Assert.Empty((await Json(await b.GetAsync($"/api/practice/{id}/submissions"))).AsArray());
         Assert.Equal(HttpStatusCode.NotFound, (await b.GetAsync($"/api/practice/submissions/{mine[0]!["id"]!.GetValue<long>()}")).StatusCode);
-    }
-
-    [Fact]
-    public async Task Leaderboard_ranks_learners_by_points_and_marks_the_caller()
-    {
-        var emailA = factory.NewEmail();
-        var a = await factory.CreateUserClientAsync(emailA);
-        var b = await factory.CreateUserClientAsync();
-        (await Submit(a, await ExerciseIdAsync("algo-lru-cache"), 4, 4, "// a")).EnsureSuccessStatusCode();
-        (await Submit(b, await ExerciseIdAsync("algo-reverse-words"), 4, 4, "// b")).EnsureSuccessStatusCode();
-
-        var board = (await Json(await a.GetAsync("/api/challenges/leaderboard"))).AsArray();
-        var me = board.Single(r => r!["isMe"]!.GetValue<bool>())!;
-        Assert.Equal(60, me["points"]!.GetValue<int>());
-        Assert.Equal("Test User", me["name"]!.GetValue<string>());
-        Assert.DoesNotContain(emailA, board.ToJsonString());
-        // Ranks follow points: nobody above the caller has fewer points.
-        Assert.All(board.Where(r => r!["rank"]!.GetValue<int>() < me["rank"]!.GetValue<int>()), r => Assert.True(r!["points"]!.GetValue<int>() >= 60));
-        Assert.Equal(1, (await Json(await b.GetAsync("/api/challenges/leaderboard"))).AsArray().Count(r => r!["isMe"]!.GetValue<bool>()));
     }
 
     [Fact]

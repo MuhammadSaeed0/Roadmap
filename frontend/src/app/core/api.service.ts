@@ -69,7 +69,6 @@ export class ApiService {
   exerciseSubmissions(id: number) { return this.get<M.Submission[]>(`/practice/${id}/submissions`); }
   submission(id: number) { return this.get<M.SubmissionDetail>(`/practice/submissions/${id}`); }
   challenges() { return this.get<M.Challenges>('/challenges'); }
-  leaderboard() { return this.get<M.LeaderboardRow[]>('/challenges/leaderboard'); }
   lessons(topicId: number) { return this.get<M.Lesson[]>(`/topics/${topicId}/lessons`); }
   saveExerciseCriteria(id: number, checked: number[]) { return this.put<M.ExerciseDetail>(`/practice/${id}/criteria`, { checked }); }
 

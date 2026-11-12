@@ -319,6 +319,5 @@ export interface Challenge {
 }
 export interface ChallengeDomain { key: string; total: number; solved: number; points: number; maxPoints: number; }
 export interface Challenges { items: Challenge[]; domains: ChallengeDomain[]; points: number; maxPoints: number; solved: number; }
-export interface LeaderboardRow { rank: number; name: string; points: number; solved: number; isMe: boolean; }
 export interface Submission { id: number; passed: number; total: number; createdAt: string; }
 export interface SubmissionDetail extends Submission { exerciseId: number; files: WorkspaceFile[]; }

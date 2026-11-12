@@ -7,10 +7,9 @@ namespace DevPath.Api.Services;
 
 /// <summary>
 /// Challenges: the Practice Lab exercises that have automatic checks, with points, a history of the learner's
-/// submissions and a leaderboard. The checks run in each learner's browser, so points are self-reported: the
-/// leaderboard is for motivation, not proof.
+/// submissions. The checks run in each learner's browser, so points are self-reported: a personal record, not proof.
 /// </summary>
-public class ChallengeService(AppDbContext db, ICurrentUser currentUser)
+public class ChallengeService(AppDbContext db)
 {
     public const string AlgorithmsDomain = "Algorithms";
 
@@ -61,29 +60,6 @@ public class ChallengeService(AppDbContext db, ICurrentUser currentUser)
             .OrderBy(d => d.Key == AlgorithmsDomain ? 0 : 1).ThenBy(d => d.Key)
             .ToList();
         return new ChallengesDto(items, domains, items.Where(i => i.Solved).Sum(i => i.Points), items.Sum(i => i.Points), items.Count(i => i.Solved));
-    }
-
-    /// <summary>Approved learners with at least one solved challenge, by points. Names only: no emails.</summary>
-    public async Task<IReadOnlyList<LeaderboardRowDto>> LeaderboardAsync(CancellationToken ct)
-    {
-        // Other accounts' progress is read on purpose here, and only as totals.
-        var solved = await db.PracticeProgress.IgnoreQueryFilters().AsNoTracking()
-            .Where(p => p.Status == PracticeStatus.Completed && p.BestScore == 100 && p.Exercise.Tests != null && p.Exercise.Tests != "")
-            .Select(p => new { p.UserId, p.Exercise.Difficulty })
-            .ToListAsync(ct);
-        var totals = solved.GroupBy(s => s.UserId)
-            .Select(g => new { UserId = g.Key, Points = g.Sum(s => PointsFor(s.Difficulty)), Solved = g.Count() })
-            .ToList();
-        var ids = totals.Select(t => t.UserId).ToList();
-        var names = await db.Users.AsNoTracking()
-            .Where(u => ids.Contains(u.Id) && u.Status == AccountStatus.Approved)
-            .ToDictionaryAsync(u => u.Id, u => u.FullName, ct);
-        var me = currentUser.Id;
-        return totals.Where(t => names.ContainsKey(t.UserId))
-            .OrderByDescending(t => t.Points).ThenByDescending(t => t.Solved).ThenBy(t => names[t.UserId], StringComparer.OrdinalIgnoreCase)
-            .Take(50)
-            .Select((t, i) => new LeaderboardRowDto(i + 1, names[t.UserId], t.Points, t.Solved, t.UserId == me))
-            .ToList();
     }
 
     public async Task<IReadOnlyList<SubmissionDto>> SubmissionsAsync(int exerciseId, CancellationToken ct)

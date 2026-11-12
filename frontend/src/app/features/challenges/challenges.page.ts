@@ -8,11 +8,8 @@ import { Challenge, Difficulty } from '../../core/models';
 import { IconComponent } from '../../shared/icon.component';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
 
-type Tab = 'challenges' | 'leaderboard';
-
 /**
- * Challenges: every exercise with automatic checks, by domain and difficulty, with points for each one solved,
- * and a leaderboard. The checks run in the browser, so the points are a personal record, not a verified grade.
+ * Challenges: every exercise with automatic checks, by domain and difficulty, with points for each one solved. The checks run in the browser, so the points are a personal record, not a verified grade.
  */
 @Component({
   selector: 'app-challenges-page',
@@ -30,7 +27,6 @@ type Tab = 'challenges' | 'leaderboard';
     .domain-head { display: flex; justify-content: space-between; gap: 8px; font-weight: 600; }
     .num { font-variant-numeric: tabular-nums; text-align: end; white-space: nowrap; }
     .solved-mark { color: var(--success); }
-    tr.me { background: var(--accent-soft); font-weight: 600; }
     td a { font-weight: 500; }
   `,
   template: `
@@ -38,17 +34,7 @@ type Tab = 'challenges' | 'leaderboard';
       <app-page-header [title]="'challenges.title' | t" [subtitle]="'challenges.subtitle' | t" />
     }
 
-    <div class="tabs" role="tablist" [attr.aria-label]="'challenges.title' | t">
-      <button type="button" role="tab" [attr.aria-selected]="tab() === 'challenges'" [class.active]="tab() === 'challenges'" (click)="tab.set('challenges')">
-        <app-icon name="code" [size]="15" /> {{ 'challenges.tabChallenges' | t }}
-      </button>
-      <button type="button" role="tab" [attr.aria-selected]="tab() === 'leaderboard'" [class.active]="tab() === 'leaderboard'" (click)="openLeaderboard()">
-        <app-icon name="award" [size]="15" /> {{ 'challenges.tabLeaderboard' | t }}
-      </button>
-    </div>
-
-    @if (tab() === 'challenges') {
-      @if (data.initialLoading()) {
+    @if (data.initialLoading()) {
         <div class="card"><app-skeleton [rows]="6" /></div>
       } @else if (data.error()) {
         <app-error-state [error]="data.error()" (retry)="data.reload()" />
@@ -120,42 +106,7 @@ type Tab = 'challenges' | 'leaderboard';
           </section>
         }
       }
-    } @else {
-      @if (board.initialLoading()) {
-        <div class="card"><app-skeleton [rows]="5" /></div>
-      } @else if (board.error()) {
-        <app-error-state [error]="board.error()" (retry)="board.reload()" />
-      } @else if ((board.value() ?? []).length === 0) {
-        <app-empty-state icon="award" [title]="'challenges.boardEmpty' | t" />
-      } @else {
-        <section class="card table-card">
-          <p class="small muted">{{ 'challenges.boardNote' | t }}</p>
-          <div class="table-scroll">
-            <table class="table">
-              <caption class="sr-only">{{ 'challenges.tabLeaderboard' | t }}</caption>
-              <thead>
-                <tr>
-                  <th scope="col" class="num">{{ 'challenges.colRank' | t }}</th>
-                  <th scope="col">{{ 'challenges.colName' | t }}</th>
-                  <th scope="col" class="num">{{ 'challenges.points' | t }}</th>
-                  <th scope="col" class="num">{{ 'challenges.solved' | t }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (r of board.value(); track r.rank) {
-                  <tr [class.me]="r.isMe">
-                    <td class="num">{{ r.rank }}</td>
-                    <th scope="row">{{ r.name }} @if (r.isMe) { <span class="chip chip-sm">{{ 'challenges.you' | t }}</span> }</th>
-                    <td class="num">{{ r.points | fmtNum }}</td>
-                    <td class="num">{{ r.solved }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-        </section>
-      }
-    }
+
   `,
 })
 export default class ChallengesPage {
@@ -164,8 +115,6 @@ export default class ChallengesPage {
   private readonly api = inject(ApiService);
   private readonly i18n = inject(I18nService);
   protected readonly data = createLoader(() => this.api.challenges());
-  protected readonly board = createLoader(() => this.api.leaderboard(), { immediate: false });
-  protected readonly tab = signal<Tab>('challenges');
   protected readonly domain = signal('');
   protected readonly difficulty = signal<Difficulty | ''>('');
   protected readonly unsolvedOnly = signal(false);
@@ -182,8 +131,4 @@ export default class ChallengesPage {
     return this.i18n.has(own) ? this.i18n.t(own) : this.i18n.t('skills.' + key);
   }
 
-  protected openLeaderboard(): void {
-    this.tab.set('leaderboard');
-    void this.board.reload();
-  }
 }

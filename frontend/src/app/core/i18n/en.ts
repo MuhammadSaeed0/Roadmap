@@ -334,6 +334,7 @@ export const en = {
     crCount: '{done} of {unlocked} unlocked change requests done', noCr: 'No change requests yet.',
   },
   practice: {
+    tabExercises: 'Exercises', tabChallenges: 'Challenges',
     title: 'Practice Lab', subtitle: 'Concepts, coding and debugging challenges, practical tasks, mini projects and full-stack challenges, with a code editor that runs in your browser. Try first — then reveal hints and the solution.',
     task: 'The task', showTask: 'Show the task', hideTask: 'Hide the task', problem: 'Problem', expected: 'Expected outcome', starterCode: 'Code', yourAttempt: 'Your attempt or explanation',
     attemptPlaceholder: 'Describe your approach, paste your code, or list the problems you found…',
@@ -527,14 +528,12 @@ export const en = {
   tutorial: { title: 'Tutorial', lessons: 'Lessons', example: 'Example', output: 'Output', tryIt: 'Try it in the playground' },
   challenges: {
     title: 'Challenges', subtitle: 'Exercises that check themselves. Solve them in the editor and earn points',
-    tabChallenges: 'Challenges', tabLeaderboard: 'Leaderboard', yourScore: 'Your score', points: 'points', solved: 'solved',
+    yourScore: 'Your score', points: 'points', solved: 'solved',
     domains: 'Domains',
     domainNames: { Algorithms: 'Algorithms', DataStructures: 'Data structures', Strings: 'Strings', Math: 'Math', ObjectOriented: 'Object-oriented', Linq: 'LINQ' }, unsolvedOnly: 'Not solved yet', empty: 'No challenges match these filters',
     selfReported: 'The checks run in your browser, so points are your own record, not a verified grade.',
     colChallenge: 'Challenge', colDomain: 'Domain', colDifficulty: 'Difficulty', colTime: 'Time', colStatus: 'Status',
     statusSolved: 'Solved', statusTried: 'Best run {score}%', statusNew: 'Not started',
-    colRank: 'Rank', colName: 'Name', you: 'You', boardEmpty: 'Nobody has solved a challenge yet',
-    boardNote: 'Learners with at least one solved challenge. Points are reported by each learner’s browser.',
   },
   settings: {
     title: 'Settings', appearance: 'Appearance', languageHelp: 'Arabic switches the whole interface to right-to-left.',
