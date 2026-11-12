@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import '../../core/i18n/workspace-strings';
@@ -10,19 +10,38 @@ import { ConfirmService, ToastService } from '../../core/ui-services';
 import { templatesFor } from '../../core/workspace/templates';
 import { IconComponent } from '../../shared/icon.component';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../../shared/ui.components';
+import ChallengesPage from '../challenges/challenges.page';
 
 export const WORKSPACE_ICONS: Record<WorkspaceKind, string> = {
   CSharp: 'code', Sql: 'database', JavaScript: 'terminal', TypeScript: 'terminal', Web: 'globe', Angular: 'layers',
 };
 const KINDS: WorkspaceKind[] = ['CSharp', 'Sql', 'Angular', 'TypeScript', 'JavaScript', 'Web'];
 
-/** Code Playground: pick an environment and a template, or reopen a saved project. */
+type PlaygroundTab = 'code' | 'challenges';
+
+/**
+ * Code Playground: pick an environment and a template, or reopen a saved project. The Challenges tab holds every
+ * exercise with automatic checks and the leaderboard; /challenges redirects to it.
+ */
 @Component({
   selector: 'app-playground-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, FormatDatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
+  imports: [RouterLink, IconComponent, ChallengesPage, TranslatePipe, LocalizePipe, FormatDatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
   template: `
     <app-page-header [title]="'playground.title' | t" [subtitle]="'playground.subtitle' | t" />
+
+    <div class="tabs" role="tablist" [attr.aria-label]="'playground.title' | t">
+      <button type="button" role="tab" [attr.aria-selected]="current() === 'code'" [class.active]="current() === 'code'" (click)="select('code')">
+        <app-icon name="terminal" [size]="15" /> {{ 'playground.tabCode' | t }}
+      </button>
+      <button type="button" role="tab" [attr.aria-selected]="current() === 'challenges'" [class.active]="current() === 'challenges'" (click)="select('challenges')">
+        <app-icon name="award" [size]="15" /> {{ 'playground.tabChallenges' | t }}
+      </button>
+    </div>
+
+    @if (current() === 'challenges') {
+      <app-challenges-page [embedded]="true" />
+    } @else {
     <p class="callout small" data-tour="playground-security"><app-icon name="shield" [size]="15" /> {{ 'playground.securityNote' | t }}</p>
 
     <section aria-labelledby="pg-env-h" data-tour="playground-environments">
@@ -72,10 +91,20 @@ const KINDS: WorkspaceKind[] = ['CSharp', 'Sql', 'Angular', 'TypeScript', 'JavaS
         }
       }
     </section>
+    }
   `,
 })
 export default class PlaygroundPage {
   private readonly api = inject(ApiService);
+  private readonly router = inject(Router);
+
+  /** ?tab=challenges, through the router's component input binding. */
+  readonly tab = input<string>();
+  protected readonly current = computed<PlaygroundTab>(() => this.tab() === 'challenges' ? 'challenges' : 'code');
+
+  protected select(tab: PlaygroundTab): void {
+    void this.router.navigate([], { queryParams: { tab: tab === 'code' ? null : tab }, queryParamsHandling: 'merge', replaceUrl: true });
+  }
   private readonly confirm = inject(ConfirmService);
   private readonly toast = inject(ToastService);
   private readonly i18n = inject(I18nService);

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -34,7 +34,9 @@ type Tab = 'challenges' | 'leaderboard';
     td a { font-weight: 500; }
   `,
   template: `
-    <app-page-header [title]="'challenges.title' | t" [subtitle]="'challenges.subtitle' | t" />
+    @if (!embedded()) {
+      <app-page-header [title]="'challenges.title' | t" [subtitle]="'challenges.subtitle' | t" />
+    }
 
     <div class="tabs" role="tablist" [attr.aria-label]="'challenges.title' | t">
       <button type="button" role="tab" [attr.aria-selected]="tab() === 'challenges'" [class.active]="tab() === 'challenges'" (click)="tab.set('challenges')">
@@ -157,6 +159,8 @@ type Tab = 'challenges' | 'leaderboard';
   `,
 })
 export default class ChallengesPage {
+  /** Shown inside the Code Playground's Challenges tab, which has its own header. */
+  readonly embedded = input(false);
   private readonly api = inject(ApiService);
   private readonly i18n = inject(I18nService);
   protected readonly data = createLoader(() => this.api.challenges());
