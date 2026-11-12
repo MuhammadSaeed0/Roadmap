@@ -40,6 +40,15 @@ export default class DashboardPage {
     return projects.find(p => p.status === 'active') ?? projects.find(p => p.status === 'notStarted') ?? projects[0];
   });
 
+  /** A learner who has not completed a topic or logged any activity yet is starting, not continuing. */
+  protected readonly learningKey = computed(() => {
+    const d = this.data.value();
+    return d && (d.overall.doneTopics > 0 || d.recentActivity.length > 0) ? 'dashboard.continueLearning' : 'dashboard.startLearning';
+  });
+
+  /** "Resume" only when a project is under way; before that the same link starts the first project. */
+  protected readonly projectKey = computed(() => this.activeProject()?.status === 'active' ? 'dashboard.resumeProject' : 'dashboard.startProject');
+
   protected readonly todayPercent = computed(() => {
     const d = this.data.value();
     return d ? Math.min(100, (d.minutesToday / Math.max(1, d.dailyGoalMinutes)) * 100) : 0;

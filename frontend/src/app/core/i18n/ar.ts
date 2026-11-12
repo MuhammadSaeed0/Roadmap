@@ -281,7 +281,7 @@ export const ar: Translations = {
     todayPlan: 'خطة التعلم لليوم', planIntro: 'كم لديك من الوقت اليوم؟', planEmpty: 'لم يتبقَّ شيء للتخطيط.',
     projects: 'تقدم المشاريع', skills: 'نظرة على المهارات', recentActivity: 'النشاط الأخير',
     noActivity: 'لا يوجد نشاط بعد — أكمل موضوعًا أو سجّل جلسة دراسة ليظهر هنا.',
-    quickActions: 'إجراءات سريعة', resumeProject: 'استئناف المشروع', startPractice: 'ابدأ التدريب',
+    quickActions: 'إجراءات سريعة', resumeProject: 'استئناف المشروع', startProject: 'ابدأ المشروع', startPractice: 'ابدأ التدريب',
     reviewWeak: 'راجع المواضيع الضعيفة', viewReadiness: 'عرض الجاهزية المهنية',
     streak: 'أيام متتالية: {n}', noStreak: 'ابدأ سلسلة أيام متتالية اليوم', weekMinutes: 'هذا الأسبوع: {n} دقيقة',
     todayGoal: '{done} من {goal} دقيقة اليوم', reviewsDue: 'مراجعات مستحقة: {n}', noReviews: 'لا توجد مراجعات مستحقة',
