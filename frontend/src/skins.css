@@ -329,3 +329,18 @@
 [data-skin='feed'] .hero h1 { font-size: 1.4rem; }
 [data-skin='bird'] .content .filter-bar.card { margin-inline: 16px; border-bottom: 0; }
 [data-skin='pro'] .level-hero app-progress-ring { display: block; margin-top: -64px; padding: 4px; border-radius: 50%; background: var(--surface); }
+
+/* ---------- The remaining pages reuse a skin ---------- */
+/* Settings (chatblue): one narrow column of grouped panels, like an app's settings screen. */
+[data-skin='chatblue'] .content:has(.account-details) { max-width: 760px; }
+[data-skin='chatblue'] .content:has(.account-details) .grid-2 { grid-template-columns: 1fr; }
+/* Administration (pro): the accounts table needs the full width. */
+[data-skin='pro'] .content:has(.admin-tabs) { max-width: 1440px; }
+/* Code Playground (tube): environments as flat tiles. */
+[data-skin='tube'] .env-card { border: 0; background: var(--surface-2); box-shadow: none; }
+[data-skin='tube'] .env-card:hover { background: var(--surface-3); }
+/* Project page (gram): tasks as flat rows. */
+[data-skin='gram'] .task { border-radius: var(--radius-sm); }
+[data-skin='gram'] .milestone-head:hover { background: var(--surface-2); }
+/* Account pages (feed): the form card on the feed's grey background. */
+[data-skin='feed'] .auth-card { border-radius: 8px; box-shadow: 0 2px 4px rgb(0 0 0 / 0.1), 0 8px 16px rgb(0 0 0 / 0.1); }
