@@ -10,6 +10,16 @@
 } @else if (data.error()) {
   <app-error-state [error]="data.error()" (retry)="data.reload()" />
 } @else if (data.value(); as roadmap) {
+  <nav class="story-rail" [attr.aria-label]="'roadmap.title' | t">
+    @for (phase of roadmap.phases; track phase.id) {
+      <button type="button" class="story" [class.current]="phase.id === roadmap.currentPhaseId" [class.done]="phase.percent >= 100"
+              (click)="jump(phase.id)" [attr.aria-label]="(phase | loc: 'title') + ' ' + (phase.percent | fmtNum) + '%'">
+        <span class="story-ring" [style.--pct]="phase.percent"><span class="story-num">{{ phase.order }}</span></span>
+        <span class="story-name">{{ phase | loc: 'title' }}</span>
+      </button>
+    }
+  </nav>
+
   <ol class="timeline" role="list" data-tour="roadmap-phases">
     @for (phase of roadmap.phases; track phase.id) {
       @let current = phase.id === roadmap.currentPhaseId;

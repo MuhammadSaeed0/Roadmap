@@ -66,12 +66,14 @@ type Flags = { isWatched: boolean; isBookmarked: boolean };
         </div>
         <label class="sr-only" for="vl-search">{{ 'videoLibrary.search' | t }}</label>
         <input id="vl-search" class="input input-sm" type="search" [ngModel]="search()" (ngModelChange)="search.set($event)" [placeholder]="'videoLibrary.search' | t">
-        <label class="sr-only" for="vl-skill">{{ 'library.allSkills' | t }}</label>
-        <select id="vl-skill" class="input input-sm" [ngModel]="skill()" (ngModelChange)="skill.set($event)">
-          <option value="">{{ 'library.allSkills' | t }}</option>
-          @for (s of skills; track s) { <option [value]="s">{{ 'skills.' + s | t }}</option> }
-        </select>
         <label class="check-label small"><input type="checkbox" [ngModel]="unwatchedOnly()" (ngModelChange)="unwatchedOnly.set($event)"> {{ 'videoLibrary.unwatchedOnly' | t }}</label>
+      </div>
+
+      <div class="chip-rail" role="group" [attr.aria-label]="'library.allSkills' | t">
+        <button type="button" class="chip chip-btn" [class.active]="skill() === ''" [attr.aria-pressed]="skill() === ''" (click)="skill.set('')">{{ 'library.allSkills' | t }}</button>
+        @for (s of skills; track s) {
+          <button type="button" class="chip chip-btn" [class.active]="skill() === s" [attr.aria-pressed]="skill() === s" (click)="skill.set(s)">{{ 'skills.' + s | t }}</button>
+        }
       </div>
 
       @if (playing(); as p) {
@@ -175,7 +177,8 @@ export default class VideoLibraryPage {
   protected readonly playing = signal<TopicVideo | null>(null);
   protected readonly busy = signal<string | null>(null);
   /** Phases opened by hand; while searching or filtering every matching phase is open. */
-  private readonly expanded = signal<Set<number> | null>(null);
+  /** Phases the learner opened or closed by hand. */
+  private readonly toggled = signal(new Map<number, boolean>());
   protected readonly watch = watchUrl;
   /** Only built from a video id the API validated, so trusting it as a resource URL is safe. */
   protected readonly playerUrl = computed<SafeResourceUrl | null>(() => {
@@ -214,20 +217,18 @@ export default class VideoLibraryPage {
 
   private readonly filtering = computed(() => !!(this.search().trim() || this.skill() || this.unwatchedOnly()));
 
+  /** A phase is open when the learner opened it; untouched phases are open while filtering, otherwise only the first one. */
   protected isOpen(id: number): boolean {
-    if (this.filtering()) return true;
-    const open = this.expanded();
-    return open ? open.has(id) : id === this.phases()[0]?.id;
+    return this.toggled().get(id) ?? (this.filtering() || id === this.phases()[0]?.id);
   }
 
   protected toggle(id: number): void {
-    const open = new Set(this.expanded() ?? (this.phases()[0] ? [this.phases()[0].id] : []));
-    if (this.isOpen(id)) open.delete(id); else open.add(id);
-    this.expanded.set(open);
+    const open = !this.isOpen(id);
+    this.toggled.update(m => new Map(m).set(id, open));
   }
 
   protected setAll(open: boolean): void {
-    this.expanded.set(new Set(open ? this.phases().map(p => p.id) : []));
+    this.toggled.set(new Map((this.data.value()?.phases ?? []).map(p => [p.id, open])));
   }
 
   protected setTab(tab: Tab): void {

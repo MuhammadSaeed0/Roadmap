@@ -9,8 +9,9 @@ export const ar: Translations = {
     dashboard: 'لوحة المعلومات', roadmap: 'خارطة طريقي', library: 'مكتبة التعلم', projects: 'المشاريع',
     practice: 'مختبر التدريب', interviews: 'التحضير للمقابلات', resources: 'المصادر', notes: 'ملاحظاتي',
     progress: 'التقدم والتحليلات', career: 'الجاهزية المهنية', settings: 'الإعدادات', search: 'بحث',
-    learn: 'تعلّم', build: 'ابنِ وتدرّب', track: 'تابع', manage: 'الإدارة', admin: 'لوحة الإدارة',
+    learn: 'تعلّم', build: 'ابنِ وتدرّب', track: 'تقدّمي', manage: 'الإدارة', admin: 'لوحة الإدارة',
     playground: 'ساحة البرمجة', videos: 'مكتبة الفيديوهات', cv: 'منشئ السيرة الذاتية', skills: 'مستوى المطوّر',
+    watch: 'شاهد واقرأ', prepare: 'المقابلات والملاحظات', account: 'الحساب',
   },
   common: {
     loading: 'جارٍ التحميل…', retry: 'إعادة المحاولة', save: 'حفظ', saving: 'جارٍ الحفظ…', cancel: 'إلغاء', delete: 'حذف',
@@ -241,7 +242,7 @@ export const ar: Translations = {
     CSharp: 'C#', DotNet: '.NET', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server',
     TypeScript: 'TypeScript', Angular: 'Angular', RestApi: 'واجهات REST', Testing: 'الاختبار', Git: 'Git', FullStackDesign: 'تصميم Full-Stack',
     DataStructures: 'هياكل البيانات', Algorithms: 'الخوارزميات', ObjectOrientedDesign: 'التصميم كائني التوجه',
-    SystemDesign: 'تصميم الأنظمة', Concurrency: 'التزامن', Behavioral: 'أسئلة سلوكية',
+    SystemDesign: 'تصميم الأنظمة', Concurrency: 'التزامن', Behavioral: 'أسئلة سلوكية', DevOps: 'السحابة و DevOps',
   },
   rating: { NeedReview: 'يحتاج مراجعة', Partial: 'فهمته جزئيًا', Confident: 'واثق', unrated: 'لم أتدرب عليه' },
   confidence: {
@@ -343,7 +344,7 @@ export const ar: Translations = {
     solution: 'الحل المقترح', markCompleted: 'تعليم كمكتمل', resetExercise: 'البدء من جديد', completed: 'مكتمل',
     disclaimer: 'تعمل تمارين C# وSQL وTypeScript وAngular هنا في متصفحك مباشرة، أما مهام الخادم فتنفّذها في بيئتك.',
     progressTitle: 'تقدّمك حسب التقنية', overall: 'أكملت {done} من {total} · {attempted} قيد العمل',
-    skillLine: 'أكملت {done} · بقي {left}', search: 'ابحث في التمارين…', allTypes: 'كل الأنواع', allDifficulties: 'كل المستويات', anyStatus: 'أي حالة',
+    skillLine: 'أكملت {done} · بقي {left}', groupLine: 'أكملت {done} من {total}', search: 'ابحث في التمارين…', allTypes: 'كل الأنواع', allDifficulties: 'كل المستويات', anyStatus: 'أي حالة',
     runnableOnly: 'تعمل في المتصفح', showing: 'يُعرض {n} من {total} تمرين', bestScore: 'أفضل نتيجة {score}%', technologies: 'التقنيات',
     runner: { CSharp: 'تشغيل C#', Sql: 'تشغيل SQL', JavaScript: 'تشغيل JS', TypeScript: 'تشغيل TS', Web: 'معاينة مباشرة', Angular: 'معاينة Angular' },
     scenario: 'السيناريو', requirements: 'المتطلبات', acceptance: 'معايير القبول', acceptanceHint: 'علّم كل معيار عندما يحققه حلّك.',

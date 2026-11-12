@@ -27,6 +27,7 @@
           @for (n of notes; track n.id) {
             <li role="option" [attr.aria-selected]="selectedId() === n.id">
               <button type="button" class="note-item" [class.active]="selectedId() === n.id" (click)="open(n)">
+                <span class="note-avatar" aria-hidden="true">{{ n.title.trim().charAt(0) || '•' }}</span>
                 <span class="note-item-title">{{ n.title }}</span>
                 <span class="note-item-excerpt">{{ excerpt(n) }}</span>
                 <span class="note-item-meta">

@@ -13,7 +13,7 @@ import { ThemeService, ToastService } from '../core/ui-services';
 import { IconComponent } from '../shared/icon.component';
 import { ConfirmDialogComponent, ToastHostComponent } from '../shared/ui.components';
 import { GlobalSearchComponent } from './global-search.component';
-import { SessionDialogComponent, SessionDialogService } from './session-dialog.component';
+import { SessionDialogComponent } from './session-dialog.component';
 import { HelpMenuComponent } from './tour/help-menu.component';
 import { TourOverlayComponent } from './tour/tour-overlay.component';
 import { TourWelcomeComponent } from './tour/tour-welcome.component';
@@ -22,12 +22,6 @@ interface NavItem { path: string; key: string; icon: string; }
 
 /** Up to this width the sidebar is a drawer (keep in step with the max-width: 960px rules in styles.css). */
 const NARROW_MAX = 960;
-const NAV_COLLAPSED_KEY = 'devpath.navCollapsed';
-
-function readNavCollapsed(): boolean {
-  try { return localStorage.getItem(NAV_COLLAPSED_KEY) === 'true'; } catch { return false; }
-}
-
 @Component({
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,49 +30,7 @@ function readNavCollapsed(): boolean {
   template: `
     <a class="skip-link" href="#main">{{ 'common.skipToContent' | t }}</a>
 
-    <div class="shell" [class.nav-open]="navOpen()" [class.nav-collapsed]="navCollapsed() && !narrow()" [class.auth-layout]="authLayout()">
-      @if (!authLayout()) {
-      <aside class="sidebar" id="sidebar" [attr.aria-label]="'common.menu' | t">
-        <div class="brand">
-          <a class="brand-link" routerLink="/" (click)="navOpen.set(false)" [attr.aria-label]="'nav.dashboard' | t" [title]="'nav.dashboard' | t">
-          <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 32 32" width="30" height="30"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="var(--accent)" /><stop offset="1" stop-color="var(--accent-2)" /></linearGradient></defs>
-              <rect width="32" height="32" rx="9" fill="url(#bg)" />
-              <path d="M9 21.5 14 16l-5-5.5M16.5 22h7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </span>
-          <span class="brand-text">
-            <strong>{{ 'app.name' | t }}</strong>
-            <small>{{ 'app.tagline' | t }}</small>
-          </span>
-          </a>
-          <button type="button" class="icon-btn nav-close" (click)="navOpen.set(false)" [attr.aria-label]="'common.closeMenu' | t">
-            <app-icon name="x" />
-          </button>
-        </div>
-
-        <nav class="nav" data-tour="nav">
-          @for (group of groups(); track group.key) {
-            <p class="nav-group">{{ group.key | t }}</p>
-            <ul role="list">
-              @for (item of group.items; track item.path) {
-                <li>
-                  <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/' }"
-                     (click)="navOpen.set(false)" #rla="routerLinkActive" [attr.aria-current]="rla.isActive ? 'page' : null"
-                     [attr.title]="navCollapsed() && !narrow() ? (item.key | t) : null">
-                    <app-icon [name]="item.icon" />
-                    <span>{{ item.key | t }}</span>
-                  </a>
-                </li>
-              }
-            </ul>
-          }
-        </nav>
-      </aside>
-      <div class="scrim" (click)="navOpen.set(false)" aria-hidden="true"></div>
-      }
-
+    <div class="shell" [class.auth-layout]="authLayout()">
       <div class="main-col">
         @if (authLayout()) {
           <header class="topbar auth-topbar">
@@ -91,35 +43,50 @@ function readNavCollapsed(): boolean {
           </header>
         } @else {
         <header class="topbar">
-          <!-- On a wide screen this folds the sidebar to icons (and back); on a narrow one it opens it as a drawer. -->
-          <button type="button" class="icon-btn menu-btn" data-tour="menu" (click)="toggleNav()" aria-controls="sidebar"
-                  [attr.aria-expanded]="narrow() ? navOpen() : !navCollapsed()"
-                  [attr.aria-label]="(narrow() ? 'common.menu' : navCollapsed() ? 'common.expandMenu' : 'common.collapseMenu') | t"
-                  [title]="(narrow() ? 'common.menu' : navCollapsed() ? 'common.expandMenu' : 'common.collapseMenu') | t">
-            <app-icon [name]="narrow() ? 'menu' : 'sidebar'" />
+          <a class="brand-link" routerLink="/" (click)="closeNav()" [attr.aria-label]="'nav.dashboard' | t" [title]="'nav.dashboard' | t">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="30" height="30">
+                <rect width="32" height="32" rx="9" fill="var(--bar-mark)" />
+                <path d="M9 21.5 14 16l-5-5.5M16.5 22h7" fill="none" stroke="var(--bar-mark-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <strong class="brand-name">{{ 'app.name' | t }}</strong>
+          </a>
+          <!-- Narrow screens: one button opens every group at once. -->
+          <button type="button" class="icon-btn menu-btn" data-tour="menu" (click)="navOpen.set(!navOpen())" aria-controls="topnav"
+                  [attr.aria-expanded]="navOpen()" [attr.aria-label]="'common.menu' | t" [title]="'common.menu' | t">
+            <app-icon [name]="navOpen() ? 'x' : 'menu'" />
           </button>
-          <div class="crumb">
-            <span class="crumb-root">{{ 'app.name' | t }}</span>
-            <app-icon name="chevron-right" [size]="14" />
-            <span class="crumb-current">{{ titleKey() | t }}</span>
-          </div>
+          <nav class="nav topnav" id="topnav" data-tour="nav" [class.open]="navOpen()" [attr.aria-label]="'common.menu' | t">
+            @for (group of groups(); track group.key) {
+              @if (group.items.length === 1) {
+                <a class="nav-trigger nav-link" [class.current]="group.key === activeGroup()" [routerLink]="group.items[0].path" (click)="closeNav()"
+                   [attr.aria-current]="group.key === activeGroup() ? 'page' : null">{{ group.items[0].key | t }}</a>
+              } @else {
+                <div class="menu-wrap nav-menu" [class.current]="group.key === activeGroup()">
+                  <button type="button" class="nav-trigger" (click)="toggleGroup(group.key)" aria-haspopup="true"
+                          [attr.aria-expanded]="openGroup() === group.key">
+                    {{ (group.key === activeGroup() ? activeLabel() : group.key) | t }} <app-icon name="chevron-down" [size]="14" />
+                  </button>
+                  <ul class="menu nav-panel" role="list" [class.show]="openGroup() === group.key">
+                    @for (item of group.items; track item.path) {
+                      <li>
+                        <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+                           (click)="closeNav()" #rla="routerLinkActive" [attr.aria-current]="rla.isActive ? 'page' : null">
+                          <app-icon [name]="item.icon" [size]="18" />
+                          <span>{{ item.key | t }}</span>
+                        </a>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+            }
+          </nav>
 
           <app-global-search class="topbar-search" data-tour="search" />
 
           <div class="topbar-actions">
-            <div class="menu-wrap" data-tour="quick-add">
-              <button type="button" class="btn btn-primary btn-sm quick-add" (click)="quickOpen.set(!quickOpen())"
-                      aria-haspopup="menu" [attr.aria-expanded]="quickOpen()">
-                <app-icon name="plus" [size]="16" /><span class="hide-sm">{{ 'quickAdd.title' | t }}</span>
-              </button>
-              @if (quickOpen()) {
-                <div class="menu" role="menu">
-                  <button type="button" role="menuitem" (click)="newNote()"><app-icon name="note" [size]="16" /> {{ 'quickAdd.note' | t }}</button>
-                  <button type="button" role="menuitem" (click)="logSession()"><app-icon name="clock" [size]="16" /> {{ 'quickAdd.session' | t }}</button>
-                </div>
-              }
-            </div>
-
             <ng-container *ngTemplateOutlet="prefs" />
 
             <app-help-menu class="help-in-topbar" />
@@ -193,17 +160,13 @@ export class ShellComponent {
   private readonly api = inject(ApiService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly sessions = inject(SessionDialogService);
   protected readonly auth = inject(AuthService);
   private readonly toast = inject(ToastService);
   protected readonly tour = inject(TourService);
 
   protected readonly navOpen = signal(false);
-  /** Wide screens: the sidebar folded to an icon rail for more room (remembered). Narrow screens use the drawer instead. */
-  protected readonly navCollapsed = signal(readNavCollapsed());
   private readonly narrowQuery = typeof matchMedia === 'function' ? matchMedia(`(max-width: ${NARROW_MAX}px)`) : null;
   protected readonly narrow = signal(this.narrowQuery?.matches ?? false);
-  protected readonly quickOpen = signal(false);
   protected readonly accountOpen = signal(false);
   /** Account pages (sign-in, sign-up…) hide the sidebar and the app's top bar. */
   // Set from the URL before the first navigation finishes, so neither layout flashes on load.
@@ -215,11 +178,19 @@ export class ShellComponent {
   protected readonly apiOffline = signal(false);
   protected readonly titleKey = signal('nav.dashboard');
 
+  /** Pages that belong together share a menu, and a skin (see app.routes.ts and skins.css). */
   private readonly baseGroups: { key: string; items: NavItem[] }[] = [
-    { key: 'nav.learn', items: [
+    { key: 'nav.track', items: [
       { path: '/', key: 'nav.dashboard', icon: 'dashboard' },
+      { path: '/progress', key: 'nav.progress', icon: 'chart' },
+      { path: '/skills', key: 'nav.skills', icon: 'award' },
+      { path: '/career', key: 'nav.career', icon: 'briefcase' },
+      { path: '/cv', key: 'nav.cv', icon: 'file' },
+    ] },
+    { key: 'nav.learn', items: [
       { path: '/roadmap', key: 'nav.roadmap', icon: 'map' },
-      { path: '/library', key: 'nav.library', icon: 'book' },
+    ] },
+    { key: 'nav.watch', items: [
       { path: '/videos', key: 'nav.videos', icon: 'video' },
       { path: '/resources', key: 'nav.resources', icon: 'link' },
     ] },
@@ -227,21 +198,21 @@ export class ShellComponent {
       { path: '/projects', key: 'nav.projects', icon: 'folder' },
       { path: '/practice', key: 'nav.practice', icon: 'code' },
       { path: '/playground', key: 'nav.playground', icon: 'terminal' },
+    ] },
+    { key: 'nav.prepare', items: [
       { path: '/interviews', key: 'nav.interviews', icon: 'chat' },
       { path: '/notes', key: 'nav.notes', icon: 'note' },
     ] },
-    { key: 'nav.track', items: [
-      { path: '/progress', key: 'nav.progress', icon: 'chart' },
-      { path: '/skills', key: 'nav.skills', icon: 'award' },
-      { path: '/career', key: 'nav.career', icon: 'briefcase' },
-      { path: '/cv', key: 'nav.cv', icon: 'file' },
-      { path: '/settings', key: 'nav.settings', icon: 'settings' },
-    ] },
   ];
-  /** Administrators also see the admin area (the API checks the role on every admin request). */
-  protected readonly groups = computed(() => this.auth.isAdmin()
-    ? [...this.baseGroups, { key: 'nav.manage', items: [{ path: '/admin', key: 'nav.admin', icon: 'shield' }] }]
-    : this.baseGroups);
+  protected readonly groups = computed(() => this.baseGroups);
+  /** The menu that is open (wide screens open one at a time). */
+  protected readonly openGroup = signal<string | null>(null);
+  private readonly url = signal('/');
+  /** The group of the page being shown, so its menu button is marked. Topic pages belong to the library. */
+  protected readonly activeGroup = computed(() => {
+    const path = this.url().split(/[?#]/)[0].replace(/^\/(topics|library)\b/, '/roadmap');
+    return this.groups().find(g => g.items.some(i => i.path === '/' ? path === '/' : path === i.path || path.startsWith(i.path + '/')))?.key ?? null;
+  });
 
   constructor() {
     const onWidth = (e: MediaQueryListEvent) => { this.narrow.set(e.matches); if (!e.matches) this.navOpen.set(false); };
@@ -253,12 +224,16 @@ export class ShellComponent {
       while (r.firstChild) r = r.firstChild;
       this.titleKey.set((r.snapshot.data['titleKey'] as string) ?? 'app.name');
       this.authLayout.set(r.snapshot.data['layout'] === 'auth');
+      // Each page borrows the look of a familiar app; styles in skins.css key off <html data-skin>.
+      const skin = r.snapshot.data['skin'] as string | undefined;
+      if (skin) document.documentElement.dataset['skin'] = skin; else delete document.documentElement.dataset['skin'];
       // The help menu explains the page the route names; a page guide ends when the page changes.
       const helpId = r.snapshot.data['helpId'];
       if (this.tour.helpId() !== (isHelpId(helpId) ? helpId : null)) this.tour.endIfNotTour();
       this.tour.helpId.set(isHelpId(helpId) ? helpId : null);
-      this.quickOpen.set(false);
       this.accountOpen.set(false);
+      this.url.set(this.router.url);
+      this.closeNav();
     });
 
     void this.checkHealth();
@@ -285,13 +260,19 @@ export class ShellComponent {
     });
   }
 
-  protected toggleNav(): void {
-    if (this.narrow()) {
-      this.navOpen.update(open => !open);
-      return;
-    }
-    this.navCollapsed.update(collapsed => !collapsed);
-    try { localStorage.setItem(NAV_COLLAPSED_KEY, String(this.navCollapsed())); } catch { /* not remembered */ }
+  /** While you are on a page, its group's button shows the page's name instead of the group's. */
+  protected readonly activeLabel = computed(() => {
+    const path = this.url().split(/[?#]/)[0].replace(/^\/(topics|library)\b/, '/roadmap');
+    const group = this.groups().find(g => g.key === this.activeGroup());
+    const items = [...(group?.items ?? [])].sort((a, b) => b.path.length - a.path.length);
+    return items.find(i => i.path === '/' ? path === '/' : path === i.path || path.startsWith(i.path + '/'))?.key ?? group?.key ?? '';
+  });
+
+  protected toggleGroup(key: string): void { this.openGroup.update(open => (open === key ? null : key)); }
+
+  protected closeNav(): void {
+    this.openGroup.set(null);
+    this.navOpen.set(false);
   }
 
   protected go(path: string): void {
@@ -320,26 +301,17 @@ export class ShellComponent {
     }
   }
 
-  protected newNote(): void {
-    this.quickOpen.set(false);
-    void this.router.navigate(['/notes'], { queryParams: { new: 1 } });
-  }
-
-  protected logSession(): void {
-    this.quickOpen.set(false);
-    this.sessions.open();
-  }
-
   @HostListener('document:click', ['$event'])
   protected onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-    if (!target.closest?.('.menu-wrap:not(.account-wrap):not(.help-wrap)')) this.quickOpen.set(false);
     if (!target.closest?.('.account-wrap')) this.accountOpen.set(false);
+    if (!target.closest?.('.nav-menu')) this.openGroup.set(null);
+    if (!target.closest?.('.topnav, .menu-btn')) this.navOpen.set(false);
   }
 
   @HostListener('document:keydown.escape')
   protected onEscape(): void {
-    this.quickOpen.set(false);
+    this.closeNav();
     this.accountOpen.set(false);
     this.navOpen.set(false);
   }

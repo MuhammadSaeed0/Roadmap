@@ -41,7 +41,8 @@
               "node_modules/@fontsource/ibm-plex-sans-arabic/600.css",
               "node_modules/@fontsource/ibm-plex-sans-arabic/700.css",
               "node_modules/@fontsource-variable/jetbrains-mono/index.css",
-              "src/styles.css"
+              "src/styles.css",
+              "src/skins.css"
             ]
           },
           "configurations": {
