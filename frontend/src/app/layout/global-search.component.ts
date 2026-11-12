@@ -22,7 +22,6 @@ const ICONS: Record<SearchCategory, string> = {
              [placeholder]="'search.placeholder' | t" [attr.aria-label]="'nav.search' | t"
              [value]="query()" (input)="onInput($any($event.target).value)"
              (keydown)="onKeydown($event)" (focus)="open.set(query().length >= 2)" />
-      <kbd class="search-kbd" aria-hidden="true">/</kbd>
 
       @if (open()) {
         <div class="search-panel" id="search-results" role="listbox">
@@ -123,13 +122,6 @@ export class GlobalSearchComponent {
     if (this.query().trim().length < 2) return;
     this.open.set(false);
     void this.router.navigate(['/search'], { queryParams: { q: this.query().trim() } });
-  }
-
-  @HostListener('document:keydown', ['$event'])
-  protected onGlobalKey(event: KeyboardEvent): void {
-    const target = event.target as HTMLElement;
-    const typing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable;
-    if (event.key === '/' && !typing) { event.preventDefault(); this.input().nativeElement.focus(); }
   }
 
   @HostListener('document:click', ['$event'])

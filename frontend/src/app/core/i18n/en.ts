@@ -533,7 +533,7 @@ export const en = {
   },
   search: {
     title: 'Search', placeholder: 'Search topics, projects, notes…', minChars: 'Type at least 2 characters.', noResults: 'No results for “{q}”.',
-    resultsFor: 'Results for “{q}”', shortcut: 'Press / to search',
+    resultsFor: 'Results for “{q}”',
     categories: { topics: 'Topics', projects: 'Projects', tasks: 'Project tasks', practice: 'Practice exercises', interview: 'Interview questions', resources: 'Resources', notes: 'Notes' },
   },
   quickAdd: { title: 'Quick add', note: 'New note', session: 'Log study session', topicLabel: 'Topic', chooseTopic: 'Choose a topic…' },
