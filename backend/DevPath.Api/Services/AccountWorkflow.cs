@@ -23,6 +23,15 @@ public class AccountWorkflow(
 
     public string? OwnerEmail => config["Admin:OwnerEmail"] is { Length: > 0 } e ? e.Trim() : null;
 
+    /// <summary>
+    /// When false (the default), confirming the email address is enough: the account is approved at once and an
+    /// administrator only steps in to reject or suspend. When true, new accounts wait in the approval queue.
+    /// </summary>
+    public bool RequireApproval => config.GetValue("Accounts:RequireApproval", false);
+
+    /// <summary>The status an account gets once its address is confirmed.</summary>
+    private AccountStatus AfterVerification => RequireApproval ? AccountStatus.PendingApproval : AccountStatus.Approved;
+
     public bool IsOwnerEmail(string? email) =>
         OwnerEmail is { } owner && string.Equals(owner, email?.Trim(), StringComparison.OrdinalIgnoreCase);
 
@@ -48,7 +57,7 @@ public class AccountWorkflow(
             throw new ApiProblemException(503, "email_unavailable", "The email couldn't be sent right now. Try again in a few minutes.");
     }
 
-    /// <summary>Redeems a verification token: confirms the address and moves the account to the approval queue.</summary>
+    /// <summary>Redeems a verification token: confirms the address and approves the account, or queues it when approval is required.</summary>
     public async Task<AppUser> VerifyEmailAsync(string? token, CancellationToken ct)
     {
         var userId = await tokens.RedeemAsync(token, AccountTokenPurpose.EmailVerification, ct);
@@ -58,7 +67,8 @@ public class AccountWorkflow(
         user.EmailVerifiedAt = now;
         if (user.Status == AccountStatus.PendingEmailVerification)
         {
-            user.Status = AccountStatus.PendingApproval;
+            user.Status = AfterVerification;
+            if (user.Status == AccountStatus.Approved) user.ApprovedAt ??= now;
             user.StatusChangedAt = now;
             user.StatusChangedById = null;
         }
@@ -101,7 +111,8 @@ public class AccountWorkflow(
             user.EmailVerifiedAt = now;
             if (user.Status == AccountStatus.PendingEmailVerification)
             {
-                user.Status = AccountStatus.PendingApproval;
+                user.Status = AfterVerification;
+                if (user.Status == AccountStatus.Approved) user.ApprovedAt ??= now;
                 user.StatusChangedAt = now;
                 user.StatusChangedById = null;
             }
@@ -122,6 +133,30 @@ public class AccountWorkflow(
         {
             db.Roles.Add(new IdentityRole(Roles.Admin) { NormalizedName = Roles.Admin.ToUpperInvariant() });
             await db.SaveChangesAsync(ct);
+        }
+
+        if (!RequireApproval)
+        {
+            // Approval was switched off: accounts that were waiting in the queue are let in.
+            var waiting = await db.Users.Where(u => u.Status == AccountStatus.PendingApproval).ToListAsync(ct);
+            if (waiting.Count > 0)
+            {
+                var now = clock.GetUtcNow().UtcDateTime;
+                foreach (var u in waiting)
+                {
+                    u.Status = AccountStatus.Approved;
+                    u.ApprovedAt ??= now;
+                    u.StatusChangedAt = now;
+                    u.StatusChangedById = null;
+                    db.AdminAudit.Add(new AdminAuditEntry
+                    {
+                        CreatedAt = now, ActorEmail = "system", Action = "approve", TargetUserId = u.Id, TargetEmail = u.Email ?? "",
+                        Details = "Approved automatically: approval is no longer required",
+                    });
+                }
+                await db.SaveChangesAsync(ct);
+                logger.LogInformation("Approved {Count} accounts that were waiting, because approval is no longer required.", waiting.Count);
+            }
         }
 
         if (OwnerEmail is not { } email)

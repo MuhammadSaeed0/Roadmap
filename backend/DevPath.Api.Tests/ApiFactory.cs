@@ -33,6 +33,8 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     private int _userCount;
 
     public FakeYouTubeClient YouTube { get; } = new();
+    /// <summary>The approval queue is on for the shared factory, so its tests cover it; OpenSignUpFactory turns it off.</summary>
+    protected virtual bool RequireApproval => true;
     public CapturingEmailSender Emails { get; } = new();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -44,6 +46,7 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
             ["Auth:AttemptsPerMinute"] = "100000",       // every test signs up; the limit itself is tested separately
             ["Admin:OwnerEmail"] = OwnerEmail,
             ["Frontend:BaseUrl"] = "https://devpath.test",
+            ["Accounts:RequireApproval"] = RequireApproval ? "true" : "false",
         }));
         builder.ConfigureServices(services =>
         {
