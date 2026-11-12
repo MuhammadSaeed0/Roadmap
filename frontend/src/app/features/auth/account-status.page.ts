@@ -24,10 +24,13 @@ import { AuthCardComponent, authErrorKey } from './auth-ui';
             <app-icon [name]="emailStep() === 'done' ? 'check-circle' : 'mail'" [size]="18" />
             <span>{{ 'status.stepEmail' | t }}</span>
           </div>
-          <div role="listitem" class="status-step" [attr.data-state]="approvalStep()">
-            <app-icon [name]="approvalStep() === 'blocked' ? 'alert' : approvalStep() === 'done' ? 'check-circle' : 'shield'" [size]="18" />
-            <span>{{ 'status.stepApproval' | t }}</span>
-          </div>
+          <!-- Approval is off by default; the step only shows for an account an administrator acted on. -->
+          @if (account.status !== 'PendingEmailVerification') {
+            <div role="listitem" class="status-step" [attr.data-state]="approvalStep()">
+              <app-icon [name]="approvalStep() === 'blocked' ? 'alert' : approvalStep() === 'done' ? 'check-circle' : 'shield'" [size]="18" />
+              <span>{{ 'status.stepApproval' | t }}</span>
+            </div>
+          }
         </div>
 
         <div class="callout" [class.callout-danger]="blocked()" [class.callout-info]="!blocked()" role="status">
