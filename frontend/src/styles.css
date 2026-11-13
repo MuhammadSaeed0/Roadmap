@@ -162,7 +162,7 @@ code, kbd, pre { font-family: var(--font-mono); }
 
 .topbar {
   position: sticky; top: 0; z-index: 20; height: var(--topbar-h); display: flex; align-items: center; gap: 16px;
-  padding-inline: 28px; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(10px);
+  padding-inline: 28px; background: color-mix(in srgb, var(--bg) 96%, transparent);
   border-bottom: 1px solid var(--border);
 }
 .topbar-search { flex: 1 1 auto; max-width: 520px; margin-inline: auto; }
