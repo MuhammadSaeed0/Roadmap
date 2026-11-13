@@ -190,7 +190,6 @@ export class ShellComponent {
       { path: '/', key: 'nav.dashboard', icon: 'dashboard' },
       { path: '/progress', key: 'nav.progress', icon: 'chart' },
       { path: '/skills', key: 'nav.skills', icon: 'award' },
-      { path: '/career', key: 'nav.career', icon: 'briefcase' },
       { path: '/cv', key: 'nav.cv', icon: 'file' },
     ] },
     { key: 'nav.learn', items: [
@@ -216,9 +215,9 @@ export class ShellComponent {
   /** The menu that is open (wide screens open one at a time). */
   protected readonly openGroup = signal<string | null>(null);
   private readonly url = signal('/');
-  /** The group of the page being shown, so its menu button is marked. Topic pages belong to the library. */
+  /** The group of the page being shown, so its menu button is marked. Topic pages belong to the roadmap. */
   protected readonly activeGroup = computed(() => {
-    const path = this.url().split(/[?#]/)[0].replace(/^\/(topics|library)\b/, '/roadmap');
+    const path = this.url().split(/[?#]/)[0].replace(/^\/topics\b/, '/roadmap');
     return this.groups().find(g => g.items.some(i => i.path === '/' ? path === '/' : path === i.path || path.startsWith(i.path + '/')))?.key ?? null;
   });
 
@@ -270,7 +269,7 @@ export class ShellComponent {
 
   /** While you are on a page, its group's button shows the page's name instead of the group's. */
   protected readonly activeLabel = computed(() => {
-    const path = this.url().split(/[?#]/)[0].replace(/^\/(topics|library)\b/, '/roadmap');
+    const path = this.url().split(/[?#]/)[0].replace(/^\/topics\b/, '/roadmap');
     const group = this.groups().find(g => g.key === this.activeGroup());
     const items = [...(group?.items ?? [])].sort((a, b) => b.path.length - a.path.length);
     return items.find(i => i.path === '/' ? path === '/' : path === i.path || path.startsWith(i.path + '/'))?.key ?? group?.key ?? '';

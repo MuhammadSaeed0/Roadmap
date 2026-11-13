@@ -40,7 +40,6 @@ export const content: TourContent = {
   pages: {
     dashboard: { title: 'Dashboard', summary: 'Your daily starting point: overall progress, today’s study time, the next topic to learn, a plan for the time you have, and shortcuts to everything else.' },
     roadmap: { title: 'My Roadmap', summary: 'The whole curriculum as 14 phases in order. Open a phase to see its topics, mark what you finish, and see which projects come after it.' },
-    library: { title: 'Learning Library', summary: 'Every topic in one searchable, filterable list, so you can find anything without going phase by phase.' },
     topic: { title: 'Topic', summary: 'Everything for one topic: the explanation, code, videos, a three-level quiz, practice tasks, resources and your notes, with your own progress on the side.' },
     projects: { title: 'Projects', summary: 'Four practical projects, from a console app to a full portfolio system. Each one unlocks after a roadmap phase and tracks its tasks, change requests and portfolio checklist.' },
     project: { title: 'Project', summary: 'One project in detail: milestones and their tasks, change requests that simulate real client feedback, requirements, the portfolio checklist and your repository link.' },
@@ -50,7 +49,6 @@ export const content: TourContent = {
     resources: { title: 'Resources', summary: 'Curated, mostly official documentation and tutorials for every skill, with a link checker.' },
     notes: { title: 'My Notes', summary: 'Your personal knowledge base. Notes can be searched and linked to a topic or project.' },
     progress: { title: 'Progress & Analytics', summary: 'Detailed progress by skill and phase, your weekly review, and the spaced-review queue of topics to revisit.' },
-    career: { title: 'Career Readiness', summary: 'An evidence-based view of how ready you are for a junior full-stack .NET + Angular role, built from your topics, projects, practice and interview answers.' },
     skills: { title: 'Developer Level', summary: 'Your developer level from Fresh to Expert, worked out from what you have demonstrated: quiz answers, exercises, projects and reviews. It shows your score in 14 competency areas, your weaknesses and exactly what the next level needs.' },
     cv: { title: 'CV Builder', summary: 'Create CVs from six professional templates, fill them with suggestions from your progress on DevPath, check them for ATS problems, and download them as PDF or Word.' },
     'cv-editor': { title: 'CV editor', summary: 'Edit your CV section by section beside a live preview of the real PDF. Changes are saved automatically.' },

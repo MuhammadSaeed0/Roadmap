@@ -5,8 +5,9 @@ import { accountStatusGuard, adminGuard, authGuard, guestGuard } from './core/au
 const appRoutes: Routes = [
   { path: '', loadComponent: () => import('./features/dashboard/dashboard.page'), data: { titleKey: 'nav.dashboard', helpId: 'dashboard', skin: 'snap' } },
   { path: 'roadmap', loadComponent: () => import('./features/roadmap/roadmap.page'), data: { titleKey: 'nav.roadmap', helpId: 'roadmap', skin: 'threads' } },
-  { path: 'library', loadComponent: () => import('./features/library/library.page'), data: { titleKey: 'nav.library', helpId: 'library', skin: 'threads' } },
-  { path: 'topics/:id', loadComponent: () => import('./features/topics/topic-detail.page'), data: { titleKey: 'nav.library', helpId: 'topic', skin: 'threads' } },
+  // The library is the roadmap's list view now; old links keep their filters.
+  { path: 'library', redirectTo: ({ queryParams }) => inject(Router).createUrlTree(['/roadmap'], { queryParams: { ...queryParams, view: 'list' } }) },
+  { path: 'topics/:id', loadComponent: () => import('./features/topics/topic-detail.page'), data: { titleKey: 'nav.roadmap', helpId: 'topic', skin: 'threads' } },
   { path: 'projects', loadComponent: () => import('./features/projects/projects.page'), data: { titleKey: 'nav.projects', helpId: 'projects', skin: 'gram' } },
   { path: 'projects/:id', loadComponent: () => import('./features/projects/project-detail.page'), data: { titleKey: 'nav.projects', helpId: 'project', skin: 'gram' } },
   // The challenges live in the Practice Lab now; old links open that tab.
@@ -23,7 +24,8 @@ const appRoutes: Routes = [
   { path: 'progress', loadComponent: () => import('./features/progress/progress.page'), data: { titleKey: 'nav.progress', helpId: 'progress', skin: 'snap' } },
   { path: 'cv', loadComponent: () => import('./features/cv/cv-dashboard.page'), data: { titleKey: 'nav.cv', helpId: 'cv', skin: 'snap' } },
   { path: 'cv/:id', loadComponent: () => import('./features/cv/cv-editor.page'), data: { titleKey: 'nav.cv', helpId: 'cv-editor', skin: 'snap' } },
-  { path: 'career', loadComponent: () => import('./features/career/career.page'), data: { titleKey: 'nav.career', helpId: 'career', skin: 'snap' } },
+  // Job readiness is a tab of the Developer Level page now; old links open that tab.
+  { path: 'career', redirectTo: () => inject(Router).createUrlTree(['/skills'], { queryParams: { tab: 'career' } }) },
   { path: 'skills', loadComponent: () => import('./features/skills/skill-level.page'), data: { titleKey: 'nav.skills', helpId: 'skills', skin: 'snap' } },
   { path: 'settings', loadComponent: () => import('./features/settings/settings.page'), data: { titleKey: 'nav.settings', helpId: 'settings', skin: 'bird' } },
   { path: 'search', loadComponent: () => import('./features/search/search.page'), data: { titleKey: 'nav.search', helpId: 'search', skin: 'bird' } },

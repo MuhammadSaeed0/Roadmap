@@ -301,6 +301,7 @@ export const ar: Translations = {
     interview: 'تدرّب على أسئلة المقابلات', go: 'انتقل',
   },
   roadmap: {
+    views: { phases: 'المراحل', list: 'قائمة' }, viewLabel: 'طريقة العرض',
     title: 'خارطة طريقي', subtitle: '14 مرحلة من أول برنامج C# إلى مشاريع Full-Stack، خطوة بخطوة.',
     current: 'المرحلة الحالية', topicsDone: 'المواضيع: {done} من {total}', remaining: 'متبقٍ {n} دقيقة', projectsIntro: 'طبّق ما تعلمته في أربعة مشاريع.',
     expandAll: 'توسيع الكل', collapseAll: 'طي الكل', locked: 'المتطلبات السابقة لم تكتمل',
@@ -458,6 +459,7 @@ export const ar: Translations = {
     portfolio: 'قائمة تحقق معرض الأعمال', portfolioIntro: 'علّم كل بند عندما يحتوي مستودعك عليه. لا حاجة للاتصال بـ GitHub.',
   },
   devLevel: {
+    tabs: { level: 'مستواك', career: 'الجاهزية للعمل' },
     title: 'مستوى المطوّر', subtitle: 'مستواك مما أثبتّه فعلًا من اختبارات وتمارين ومشاريع ومراجعات، لا من الوقت الذي قضيته.',
     currentLevel: 'المستوى الحالي', overall: 'الكفاءة الإجمالية', overallLine: 'الكفاءة الإجمالية {score} من 100', xpLine: '{xp} نقطة خبرة',
     progressTo: 'التقدم نحو {level}', topLevel: 'وصلت إلى أعلى مستوى. حافظ على مهاراتك بفحوص المهارات أدناه.',

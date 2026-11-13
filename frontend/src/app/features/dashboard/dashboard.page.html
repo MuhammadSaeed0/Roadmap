@@ -25,7 +25,7 @@
         }
         <a class="quick-action" routerLink="/practice"><app-icon name="code" /> {{ 'dashboard.startPractice' | t }}</a>
         <a class="quick-action" routerLink="/progress" [queryParams]="{ tab: 'review' }"><app-icon name="repeat" /> {{ 'dashboard.reviewWeak' | t }}</a>
-        <a class="quick-action" routerLink="/career"><app-icon name="briefcase" /> {{ 'dashboard.viewReadiness' | t }}</a>
+        <a class="quick-action" routerLink="/skills" [queryParams]="{ tab: 'career' }"><app-icon name="briefcase" /> {{ 'dashboard.viewReadiness' | t }}</a>
       </div>
     </section>
 

@@ -299,6 +299,7 @@ export const en = {
     interview: 'Practise interview questions', go: 'Go',
   },
   roadmap: {
+    views: { phases: 'Phases', list: 'List' }, viewLabel: 'View',
     title: 'My Roadmap', subtitle: '14 phases from your first C# program to full-stack projects, one step at a time.',
     current: 'Current phase', topicsDone: '{done} of {total} topics', remaining: '{n} min left', projectsIntro: 'Apply what you learned in four projects.',
     expandAll: 'Expand all', collapseAll: 'Collapse all', locked: 'Prerequisites not finished',
@@ -456,6 +457,7 @@ export const en = {
     portfolio: 'Portfolio checklist', portfolioIntro: 'Tick each item when your repository has it. No GitHub connection needed.',
   },
   devLevel: {
+    tabs: { level: 'Your level', career: 'Job readiness' },
     title: 'Developer Level', subtitle: 'Your level from what you have actually demonstrated: quizzes, exercises, projects and reviews, not time spent.',
     currentLevel: 'Current level', overall: 'Overall competency', overallLine: 'Overall competency {score}/100', xpLine: '{xp} XP',
     progressTo: 'Progress to {level}', topLevel: 'You have reached the top level. Keep your skills fresh with the skill checks below.',
