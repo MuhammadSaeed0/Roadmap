@@ -12,6 +12,7 @@ export const ar: Translations = {
     learn: 'تعلّم', build: 'ابنِ وتدرّب', track: 'تقدّمي', manage: 'الإدارة', admin: 'لوحة الإدارة',
     playground: 'ساحة البرمجة', videos: 'مكتبة الفيديوهات', cv: 'منشئ السيرة الذاتية', skills: 'مستوى المطوّر', challenges: 'التحديات',
     watch: 'شاهد واقرأ', prepare: 'المقابلات والملاحظات', account: 'الحساب',
+    discussions: 'النقاشات', paths: 'مسارات التعلم',
   },
   common: {
     loading: 'جارٍ التحميل…', retry: 'إعادة المحاولة', save: 'حفظ', saving: 'جارٍ الحفظ…', cancel: 'إلغاء', delete: 'حذف',
@@ -552,4 +553,25 @@ export const ar: Translations = {
   },
   quickAdd: { title: 'إضافة سريعة', note: 'ملاحظة جديدة', session: 'تسجيل جلسة دراسة', topicLabel: 'الموضوع', chooseTopic: 'اختر موضوعًا…' },
   notFound: { title: 'الصفحة غير موجودة', body: 'الصفحة التي تبحث عنها غير موجودة.', home: 'العودة إلى لوحة المعلومات' },
+  discussions: {
+    title: 'النقاشات', ask: 'اطرح سؤالاً', reply: 'ردّ', accept: 'قبول الإجابة', pin: 'تثبيت', unpin: 'إلغاء التثبيت',
+    sortNewest: 'الأحدث', sortVotes: 'الأعلى تصويتًا', noDiscussions: 'لا توجد نقاشات بعد.', beFirst: 'كن أول من يسأل!',
+    replies: 'الردود: {n}', accepted: 'إجابة مقبولة', deleted: 'مستخدم محذوف',
+    titleLabel: 'العنوان', bodyLabel: 'المحتوى', topicLabel: 'الموضوع', deleteConfirm: 'حذف هذا النقاش؟',
+    deleteReplyConfirm: 'حذف هذا الرد؟', allTopics: 'كل المواضيع',
+    votes: 'تصويت', upvote: 'تصويت مؤيد', downvote: 'تصويت معارض', pinned: 'مثبّت', noReplies: 'لا توجد ردود بعد. كن أول من يجيب.',
+    yourReply: 'إجابتك',
+  },
+  notifications: {
+    title: 'الإشعارات', noNotifications: 'لا توجد إشعارات بعد.',
+  },
+  paths: {
+    title: 'مسارات التعلم', create: 'إنشاء مسار', activate: 'تفعيل', deactivate: 'إلغاء التفعيل', activated: 'مفعّل',
+    builtIn: 'مدمج', custom: 'مخصص', topics: '{n} موضوع', progress: '{n}% مكتمل',
+    noPaths: 'لا توجد مسارات تعلم بعد.', nameLabel: 'اسم المسار', descriptionLabel: 'الوصف',
+    iconLabel: 'الأيقونة', topicsLabel: 'اختر المواضيع', deletePath: 'حذف هذا المسار؟',
+    myPaths: 'مساراتي',
+    subtitle: 'اتبع مسارًا جاهزًا داخل خارطة الطريق، أو ابنِ مسارك الخاص من المواضيع التي تحتاجها.',
+    noPathsHint: 'اختر المواضيع التي تهمك وتابعها كمسار واحد.', doneOf: 'أنجزت {done} من {total}', next: 'التالي',
+  },
 };

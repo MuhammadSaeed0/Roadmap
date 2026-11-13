@@ -37,6 +37,9 @@ export const SECTION_IDS = [
   'cv-new', 'cv-list', 'cv-templates', 'cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview',
   'settings-appearance', 'settings-learning', 'settings-account', 'settings-about', 'search-results',
   'admin-stats', 'admin-tabs', 'admin-users',
+  // Discussions and learning paths
+  'discussions-ask', 'discussions-filters', 'discussions-list', 'discussion-post', 'discussion-reply',
+  'paths-builtin', 'paths-mine', 'path-hero', 'path-topics', 'path-details', 'path-pick',
 ] as const;
 export type SectionId = (typeof SECTION_IDS)[number];
 
@@ -44,6 +47,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'library', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
   'resources', 'notes', 'progress', 'skills', 'career', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
+  'discussions', 'discussion', 'paths', 'path', 'path-create',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
 
@@ -72,6 +76,11 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   settings: ['settings-appearance', 'settings-learning', 'settings-account', 'settings-about'],
   search: ['search-results'],
   admin: ['admin-stats', 'admin-tabs', 'admin-users'],
+  discussions: ['discussions-ask', 'discussions-filters', 'discussions-list'],
+  discussion: ['discussion-post', 'discussion-reply'],
+  paths: ['paths-builtin', 'paths-mine'],
+  path: ['path-hero', 'path-topics'],
+  'path-create': ['path-details', 'path-pick'],
 };
 
 export interface TourContext { isAdmin: boolean; }

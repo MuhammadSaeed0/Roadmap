@@ -1,0 +1,29 @@
+/* ---------- Discussions ---------- */
+.discussion-form { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
+.discussion-list { display: flex; flex-direction: column; gap: 10px; list-style: none; margin: 0; padding: 0; }
+.discussion-list .card + .card { margin-top: 0; }
+.discussion-item { display: flex; gap: 16px; align-items: flex-start; color: inherit; text-decoration: none; padding: 16px 20px; transition: border-color 0.15s; }
+.discussion-item:hover { border-color: var(--accent); text-decoration: none; }
+.discussion-stats { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 56px; flex: none; }
+.discussion-score { font-size: 1.2rem; font-weight: 700; line-height: 1.1; }
+.discussion-replies {
+  display: inline-flex; align-items: center; gap: 3px; padding: 0 7px; border-radius: 6px;
+  border: 1px solid var(--border); font-size: 0.74rem; color: var(--muted);
+}
+.discussion-replies.is-answered { background: var(--success-soft); border-color: transparent; color: var(--success); }
+.discussion-main { display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1; }
+.discussion-title { display: flex; align-items: center; gap: 6px; font-size: 1rem; margin: 0; }
+.discussion-title .icon { color: var(--accent); }
+.discussion-heading { font-size: 1.25rem; margin: 0; overflow-wrap: anywhere; }
+.discussion-excerpt { margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.discussion-main > .row-gap { margin: 0; }
+.discussion-post { display: flex; gap: 16px; align-items: flex-start; }
+.discussion-post.is-accepted { border-color: var(--success); }
+.discussion-text { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.6; }
+.vote { display: flex; flex-direction: column; align-items: center; gap: 2px; flex: none; }
+.vote-score { font-weight: 700; font-size: 1.05rem; }
+
+@media (max-width: 640px) {
+  .discussion-item, .discussion-post { gap: 10px; padding: 14px; }
+  .discussion-stats { min-width: 40px; }
+}

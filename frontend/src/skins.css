@@ -361,8 +361,8 @@
 .topbar .lang-switch { border-color: var(--bar-line); background: none; }
 .topbar .lang-switch button { color: var(--bar-text); }
 .topbar .lang-switch button.active { background: var(--bar-text); color: var(--bar-bg); }
-.topbar-prefs > .icon-btn, .topbar .help-btn, .topbar .menu-btn { border-color: transparent; background: none; color: var(--bar-text); }
-.topbar-prefs > .icon-btn:hover, .topbar .help-btn:hover, .topbar .menu-btn:hover { background: var(--bar-hover); color: var(--bar-text); }
+.topbar-prefs > .icon-btn, .topbar .help-btn, .topbar .menu-btn, .topbar .bell-btn { border-color: transparent; background: none; color: var(--bar-text); }
+.topbar-prefs > .icon-btn:hover, .topbar .help-btn:hover, .topbar .menu-btn:hover, .topbar .bell-btn:hover { background: var(--bar-hover); color: var(--bar-text); }
 .topbar .avatar { background: var(--bar-text); color: var(--bar-bg); }
 .topbar .auth-brand .brand-text small { color: var(--bar-text); opacity: 0.8; }
 .topbar :focus-visible { outline-color: var(--bar-text); }
@@ -468,6 +468,8 @@
 :root[data-skin] .input, :root[data-skin] .segmented, :root[data-skin] .chip {
   background-color: color-mix(in srgb, var(--surface) 55%, transparent);
 }
+/* The native option list inherits the select's see-through background, so its text loses contrast. */
+:root[data-skin] select.input option, :root[data-skin] select.input optgroup { background-color: var(--surface); color: var(--text); }
 :root[data-skin] .chip-btn.active, :root[data-skin] .chip-rail .chip.active { background-color: var(--accent); color: var(--on-accent); }
 :root[data-skin] .btn-primary { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22); }
 :root[data-skin] .nav-panel a { color: var(--text-2); }

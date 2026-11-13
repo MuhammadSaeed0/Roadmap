@@ -10,6 +10,7 @@ export const en = {
     learn: 'Learn', build: 'Build & practise', track: 'My progress', manage: 'Manage', admin: 'Administration',
     playground: 'Code Playground', videos: 'Video Library', cv: 'CV Builder', skills: 'Developer Level', challenges: 'Challenges',
     watch: 'Watch & read', prepare: 'Interviews & notes', account: 'Account',
+    discussions: 'Discussions', paths: 'Learning Paths',
   },
   common: {
     loading: 'Loading…', retry: 'Try again', save: 'Save', saving: 'Saving…', cancel: 'Cancel', delete: 'Delete',
@@ -550,8 +551,28 @@ export const en = {
   },
   quickAdd: { title: 'Quick add', note: 'New note', session: 'Log study session', topicLabel: 'Topic', chooseTopic: 'Choose a topic…' },
   notFound: { title: 'Page not found', body: 'The page you’re looking for doesn’t exist.', home: 'Back to dashboard' },
+  discussions: {
+    title: 'Discussions', ask: 'Ask a question', reply: 'Reply', accept: 'Accept answer', pin: 'Pin', unpin: 'Unpin',
+    sortNewest: 'Newest', sortVotes: 'Top voted', noDiscussions: 'No discussions yet.', beFirst: 'Be the first to ask!',
+    replies: 'Replies: {n}', accepted: 'Accepted answer', deleted: 'Deleted user',
+    titleLabel: 'Title', bodyLabel: 'Body', topicLabel: 'Topic', deleteConfirm: 'Delete this discussion?',
+    deleteReplyConfirm: 'Delete this reply?', allTopics: 'All topics',
+    votes: 'votes', upvote: 'Upvote', downvote: 'Downvote', pinned: 'Pinned', noReplies: 'No replies yet. Be the first to answer.',
+    yourReply: 'Your answer',
+  },
+  notifications: {
+    title: 'Notifications', noNotifications: 'No notifications yet.',
+  },
+  paths: {
+    title: 'Learning Paths', create: 'Create path', activate: 'Activate', deactivate: 'Deactivate', activated: 'Active',
+    builtIn: 'Built-in', custom: 'Custom', topics: '{n} topics', progress: '{n}% complete',
+    noPaths: 'No learning paths yet.', nameLabel: 'Path name', descriptionLabel: 'Description',
+    iconLabel: 'Icon', topicsLabel: 'Pick topics', deletePath: 'Delete this path?',
+    myPaths: 'My paths',
+    subtitle: 'Follow a ready-made route through the roadmap, or build your own from the topics you need.',
+    noPathsHint: 'Pick the topics you care about and track them as one path.', doneOf: '{done} of {total} done', next: 'Next',
+  },
 };
-
 /** Same shape as `en`, but every leaf is any string (so Arabic can differ). */
 export type Widen<T> = { [K in keyof T]: T[K] extends string ? string : Widen<T[K]> };
 export type Translations = Widen<typeof en>;

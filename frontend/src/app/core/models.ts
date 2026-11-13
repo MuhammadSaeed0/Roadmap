@@ -321,3 +321,53 @@ export interface ChallengeDomain { key: string; total: number; solved: number; p
 export interface Challenges { items: Challenge[]; domains: ChallengeDomain[]; points: number; maxPoints: number; solved: number; }
 export interface Submission { id: number; passed: number; total: number; createdAt: string; }
 export interface SubmissionDetail extends Submission { exerciseId: number; files: WorkspaceFile[]; }
+
+// ---- Discussions ----
+export type NotificationKind = 'ReplyToDiscussion' | 'AnswerAccepted' | 'VoteMilestone';
+
+export interface DiscussionSummary {
+  id: number; topicId: number; topicTitleEn: string; topicTitleAr: string;
+  titleEn: string; titleAr: string; bodyEn: string; bodyAr: string;
+  authorName: string | null; score: number; isPinned: boolean; hasAcceptedReply: boolean;
+  replyCount: number; createdAt: string; myVote: number | null;
+}
+export interface ReplyDto {
+  id: number; discussionId: number; authorId: string | null; authorName: string | null;
+  bodyEn: string; bodyAr: string; score: number; isAccepted: boolean;
+  createdAt: string; updatedAt: string; myVote: number | null;
+}
+export interface DiscussionDetail {
+  id: number; topicId: number; topicTitleEn: string; topicTitleAr: string;
+  titleEn: string; titleAr: string; bodyEn: string; bodyAr: string;
+  authorId: string | null; authorName: string | null; score: number; isPinned: boolean;
+  acceptedReplyId: number | null; createdAt: string; updatedAt: string;
+  myVote: number | null; replies: ReplyDto[];
+}
+export interface PagedDiscussions { items: DiscussionSummary[]; page: number; pageSize: number; total: number; }
+
+export interface NotificationDto {
+  id: number; kind: string; discussionId: number | null;
+  actorName: string | null; messageEn: string; messageAr: string;
+  isRead: boolean; createdAt: string;
+}
+export interface PagedNotifications { items: NotificationDto[]; page: number; pageSize: number; total: number; }
+export interface UnreadCount { count: number; }
+
+// ---- Learning Paths ----
+export interface PathSummary {
+  id: number; slug: string; nameEn: string; nameAr: string;
+  descriptionEn: string; descriptionAr: string; iconName: string;
+  isBuiltIn: boolean; isPublic: boolean; creatorName: string | null;
+  topicCount: number; progressPercent: number; isActivated: boolean;
+}
+/** `status` is "Completed" or "Pending". */
+export interface PathTopicDto { topicId: number; titleEn: string; titleAr: string; sortOrder: number; status: string; }
+export interface PathPhaseDto { phaseId: number; phaseNameEn: string; phaseNameAr: string; sortOrder: number; topics: PathTopicDto[]; }
+/** Built-in paths list their phases; custom paths list individual topics. */
+export interface PathDetail {
+  id: number; slug: string; nameEn: string; nameAr: string;
+  descriptionEn: string; descriptionAr: string; iconName: string;
+  isBuiltIn: boolean; isPublic: boolean; creatorId: string | null; creatorName: string | null;
+  createdAt: string; isActivated: boolean;
+  phases: PathPhaseDto[]; topics: PathTopicDto[];
+}

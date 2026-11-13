@@ -65,6 +65,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     /// <summary>ASP.NET Core data-protection keys (they sign the auth cookie), kept in the database so they survive app restarts on shared hosting.</summary>
     public DbSet<Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey> DataProtectionKeys => Set<Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey>();
 
+    // Community
+    public DbSet<Discussion> Discussions => Set<Discussion>();
+    public DbSet<DiscussionReply> DiscussionReplies => Set<DiscussionReply>();
+    public DbSet<DiscussionVote> DiscussionVotes => Set<DiscussionVote>();
+    public DbSet<Notification> Notifications => Set<Notification>();
+
+    // Learning paths
+    public DbSet<LearningPath> LearningPaths => Set<LearningPath>();
+    public DbSet<LearningPathPhase> LearningPathPhases => Set<LearningPathPhase>();
+    public DbSet<LearningPathTopic> LearningPathTopics => Set<LearningPathTopic>();
+    public DbSet<UserLearningPath> UserLearningPaths => Set<UserLearningPath>();
+
     // Shared caches
     public DbSet<TopicVideoCache> TopicVideoCache => Set<TopicVideoCache>();
 
@@ -482,6 +494,89 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.Property(x => x.Level).HasMaxLength(32);
             e.Property(x => x.PreviousLevel).HasMaxLength(32);
             e.HasIndex(x => new { x.UserId, x.ChangedAt });
+        });
+
+        // ---------- Community discussions ----------
+        b.Entity<Discussion>(e =>
+        {
+            e.HasIndex(x => new { x.TopicId, x.IsPinned, x.CreatedAt });
+            e.HasIndex(x => new { x.TopicId, x.Score });
+            e.Property(x => x.TitleEn).HasMaxLength(200);
+            e.Property(x => x.TitleAr).HasMaxLength(200);
+            e.Property(x => x.BodyEn).HasMaxLength(4000);
+            e.Property(x => x.BodyAr).HasMaxLength(4000);
+            e.Property(x => x.AuthorId).HasMaxLength(450);
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.Author).WithMany().HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.SetNull);
+            e.HasOne(x => x.AcceptedReply).WithOne().HasForeignKey<Discussion>(x => x.AcceptedReplyId).OnDelete(DeleteBehavior.NoAction);
+        });
+
+        b.Entity<DiscussionReply>(e =>
+        {
+            e.HasIndex(x => new { x.DiscussionId, x.CreatedAt });
+            e.Property(x => x.BodyEn).HasMaxLength(4000);
+            e.Property(x => x.BodyAr).HasMaxLength(4000);
+            e.Property(x => x.AuthorId).HasMaxLength(450);
+            e.HasOne(x => x.Discussion).WithMany(d => d.Replies).HasForeignKey(x => x.DiscussionId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.Author).WithMany().HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.SetNull);
+        });
+
+        b.Entity<DiscussionVote>(e =>
+        {
+            OwnedByUser(e);
+            e.HasIndex(x => new { x.UserId, x.DiscussionId, x.ReplyId }).IsUnique().HasFilter(null);
+            e.HasOne<Discussion>().WithMany().HasForeignKey(x => x.DiscussionId).OnDelete(DeleteBehavior.NoAction);
+            e.HasOne<DiscussionReply>().WithMany().HasForeignKey(x => x.ReplyId).OnDelete(DeleteBehavior.NoAction);
+            e.ToTable(t => t.HasCheckConstraint("CK_DiscussionVote_Target",
+                "(DiscussionId IS NOT NULL AND ReplyId IS NULL) OR (DiscussionId IS NULL AND ReplyId IS NOT NULL)"));
+            e.ToTable(t => t.HasCheckConstraint("CK_DiscussionVote_Value", "Value IN (-1, 1)"));
+        });
+
+        b.Entity<Notification>(e =>
+        {
+            e.HasIndex(x => new { x.RecipientId, x.IsRead, x.CreatedAt });
+            e.Property(x => x.RecipientId).HasMaxLength(450);
+            e.Property(x => x.ActorId).HasMaxLength(450);
+            e.Property(x => x.MessageEn).HasMaxLength(300);
+            e.Property(x => x.MessageAr).HasMaxLength(300);
+            e.HasOne(x => x.Recipient).WithMany().HasForeignKey(x => x.RecipientId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.Discussion).WithMany().HasForeignKey(x => x.DiscussionId).OnDelete(DeleteBehavior.NoAction);
+            e.HasOne(x => x.Actor).WithMany().HasForeignKey(x => x.ActorId).OnDelete(DeleteBehavior.NoAction);
+        });
+
+        // ---------- Learning paths ----------
+        b.Entity<LearningPath>(e =>
+        {
+            e.HasIndex(x => x.Slug).IsUnique();
+            e.Property(x => x.Slug).HasMaxLength(80);
+            e.Property(x => x.NameEn).HasMaxLength(150);
+            e.Property(x => x.NameAr).HasMaxLength(150);
+            e.Property(x => x.DescriptionEn).HasMaxLength(1000);
+            e.Property(x => x.DescriptionAr).HasMaxLength(1000);
+            e.Property(x => x.IconName).HasMaxLength(40);
+            e.Property(x => x.CreatorId).HasMaxLength(450);
+            e.HasOne(x => x.Creator).WithMany().HasForeignKey(x => x.CreatorId).OnDelete(DeleteBehavior.SetNull);
+        });
+
+        b.Entity<LearningPathPhase>(e =>
+        {
+            e.HasIndex(x => new { x.LearningPathId, x.PhaseId }).IsUnique();
+            e.HasOne(x => x.LearningPath).WithMany(p => p.Phases).HasForeignKey(x => x.LearningPathId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.Phase).WithMany().HasForeignKey(x => x.PhaseId).OnDelete(DeleteBehavior.NoAction);
+        });
+
+        b.Entity<LearningPathTopic>(e =>
+        {
+            e.HasIndex(x => new { x.LearningPathId, x.TopicId }).IsUnique();
+            e.HasOne(x => x.LearningPath).WithMany(p => p.Topics).HasForeignKey(x => x.LearningPathId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.NoAction);
+        });
+
+        b.Entity<UserLearningPath>(e =>
+        {
+            OwnedByUser(e);
+            e.HasIndex(x => new { x.UserId, x.LearningPathId }).IsUnique();
+            e.HasOne(x => x.LearningPath).WithMany().HasForeignKey(x => x.LearningPathId).OnDelete(DeleteBehavior.NoAction);
         });
 
         // ---------- Shared caches ----------

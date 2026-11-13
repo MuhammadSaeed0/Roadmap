@@ -15,6 +15,7 @@ import { ConfirmDialogComponent, ToastHostComponent } from '../shared/ui.compone
 import { GlobalSearchComponent } from './global-search.component';
 import { SessionDialogComponent } from './session-dialog.component';
 import { HelpMenuComponent } from './tour/help-menu.component';
+import { NotificationBellComponent } from '../shared/notification-bell.component';
 import { TourOverlayComponent } from './tour/tour-overlay.component';
 import { TourWelcomeComponent } from './tour/tour-welcome.component';
 
@@ -26,7 +27,7 @@ const NARROW_MAX = 960;
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, RouterOutlet, RouterLink, RouterLinkActive, IconComponent, TranslatePipe, GlobalSearchComponent,
-    ToastHostComponent, ConfirmDialogComponent, SessionDialogComponent, HelpMenuComponent, TourOverlayComponent, TourWelcomeComponent],
+    ToastHostComponent, ConfirmDialogComponent, SessionDialogComponent, HelpMenuComponent, NotificationBellComponent, TourOverlayComponent, TourWelcomeComponent],
   template: `
     <a class="skip-link" href="#main">{{ 'common.skipToContent' | t }}</a>
 
@@ -93,6 +94,8 @@ const NARROW_MAX = 960;
             <ng-container *ngTemplateOutlet="prefs" />
 
             <app-help-menu class="help-in-topbar" />
+
+            <app-notification-bell />
 
             <div class="menu-wrap account-wrap" data-tour="account">
               <button type="button" class="avatar-btn" (click)="accountOpen.set(!accountOpen())" aria-haspopup="menu"
@@ -192,6 +195,7 @@ export class ShellComponent {
     ] },
     { key: 'nav.learn', items: [
       { path: '/roadmap', key: 'nav.roadmap', icon: 'map' },
+      { path: '/paths', key: 'nav.paths', icon: 'route' },
     ] },
     { key: 'nav.watch', items: [
       { path: '/videos', key: 'nav.videos', icon: 'video' },
@@ -204,6 +208,7 @@ export class ShellComponent {
     ] },
     { key: 'nav.prepare', items: [
       { path: '/interviews', key: 'nav.interviews', icon: 'chat' },
+      { path: '/discussions', key: 'nav.discussions', icon: 'message-square' },
       { path: '/notes', key: 'nav.notes', icon: 'note' },
     ] },
   ];

@@ -112,6 +112,11 @@ public record InterviewSeed(
     string QuestionEn, string QuestionAr, string AnswerEn, string AnswerAr,
     string? FollowUpEn, string? FollowUpAr);
 
+public record LearningPathSeed(
+    string Slug, string NameEn, string NameAr,
+    string DescriptionEn, string DescriptionAr,
+    string IconName, List<string> Phases);
+
 /// <summary>
 /// Loads code snippets from SeedData/snippets/{area}/{key}.{ext}.
 /// The file extension decides the language label (cs → csharp, ts → typescript ...).

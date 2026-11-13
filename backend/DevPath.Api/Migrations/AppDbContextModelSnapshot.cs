@@ -332,6 +332,153 @@ namespace DevPath.Api.Migrations
                     b.ToTable("CvDocuments");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.Discussion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AcceptedReplyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AuthorId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BodyAr")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("BodyEn")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsPinned")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TitleAr")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("TitleEn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AcceptedReplyId")
+                        .IsUnique()
+                        .HasFilter("[AcceptedReplyId] IS NOT NULL");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("TopicId", "Score");
+
+                    b.HasIndex("TopicId", "IsPinned", "CreatedAt");
+
+                    b.ToTable("Discussions");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.DiscussionReply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BodyAr")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("BodyEn")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DiscussionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("DiscussionId", "CreatedAt");
+
+                    b.ToTable("DiscussionReplies");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.DiscussionVote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DiscussionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReplyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<short>("Value")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiscussionId");
+
+                    b.HasIndex("ReplyId");
+
+                    b.HasIndex("UserId", "DiscussionId", "ReplyId")
+                        .IsUnique();
+
+                    b.ToTable("DiscussionVotes", t =>
+                        {
+                            t.HasCheckConstraint("CK_DiscussionVote_Target", "(DiscussionId IS NOT NULL AND ReplyId IS NULL) OR (DiscussionId IS NULL AND ReplyId IS NOT NULL)");
+
+                            t.HasCheckConstraint("CK_DiscussionVote_Value", "Value IN (-1, 1)");
+                        });
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.InterviewProgress", b =>
                 {
                     b.Property<string>("UserId")
@@ -422,6 +569,121 @@ namespace DevPath.Api.Migrations
                     b.HasIndex("Category", "TopicId");
 
                     b.ToTable("InterviewQuestions");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.LearningPath", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DescriptionAr")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("DescriptionEn")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("IconName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<bool>("IsBuiltIn")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
+
+                    b.ToTable("LearningPaths");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.LearningPathPhase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LearningPathId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PhaseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhaseId");
+
+                    b.HasIndex("LearningPathId", "PhaseId")
+                        .IsUnique();
+
+                    b.ToTable("LearningPathPhases");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.LearningPathTopic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LearningPathId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.HasIndex("LearningPathId", "TopicId")
+                        .IsUnique();
+
+                    b.ToTable("LearningPathTopics");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.LearningPreference", b =>
@@ -552,6 +814,58 @@ namespace DevPath.Api.Migrations
                         {
                             t.HasCheckConstraint("CK_Note_SingleLink", "(CASE WHEN TopicId IS NULL THEN 0 ELSE 1 END + CASE WHEN ProjectId IS NULL THEN 0 ELSE 1 END + CASE WHEN ProjectTaskId IS NULL THEN 0 ELSE 1 END + CASE WHEN InterviewQuestionId IS NULL THEN 0 ELSE 1 END) <= 1");
                         });
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.Notification", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("ActorId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DiscussionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("MessageAr")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("MessageEn")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("RecipientId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActorId");
+
+                    b.HasIndex("DiscussionId");
+
+                    b.HasIndex("RecipientId", "IsRead", "CreatedAt");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.Phase", b =>
@@ -1892,6 +2206,35 @@ namespace DevPath.Api.Migrations
                     b.ToTable("TopicVideoCache");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.UserLearningPath", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ActivatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LearningPathId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LearningPathId");
+
+                    b.HasIndex("UserId", "LearningPathId")
+                        .IsUnique();
+
+                    b.ToTable("UserLearningPaths");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.UserTopicVideo", b =>
                 {
                     b.Property<int>("Id")
@@ -2211,6 +2554,68 @@ namespace DevPath.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.Discussion", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.DiscussionReply", "AcceptedReply")
+                        .WithOne()
+                        .HasForeignKey("DevPath.Api.Models.Discussion", "AcceptedReplyId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("DevPath.Api.Models.AppUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("DevPath.Api.Models.Topic", "Topic")
+                        .WithMany()
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AcceptedReply");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.DiscussionReply", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.AppUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("DevPath.Api.Models.Discussion", "Discussion")
+                        .WithMany("Replies")
+                        .HasForeignKey("DiscussionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Discussion");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.DiscussionVote", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.Discussion", null)
+                        .WithMany()
+                        .HasForeignKey("DiscussionId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("DevPath.Api.Models.DiscussionReply", null)
+                        .WithMany()
+                        .HasForeignKey("ReplyId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.InterviewProgress", b =>
                 {
                     b.HasOne("DevPath.Api.Models.InterviewQuestion", "Question")
@@ -2235,6 +2640,54 @@ namespace DevPath.Api.Migrations
                         .HasForeignKey("TopicId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.LearningPath", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.AppUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Creator");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.LearningPathPhase", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.LearningPath", "LearningPath")
+                        .WithMany("Phases")
+                        .HasForeignKey("LearningPathId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.Phase", "Phase")
+                        .WithMany()
+                        .HasForeignKey("PhaseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("LearningPath");
+
+                    b.Navigation("Phase");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.LearningPathTopic", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.LearningPath", "LearningPath")
+                        .WithMany("Topics")
+                        .HasForeignKey("LearningPathId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.Topic", "Topic")
+                        .WithMany()
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("LearningPath");
 
                     b.Navigation("Topic");
                 });
@@ -2288,6 +2741,31 @@ namespace DevPath.Api.Migrations
                     b.Navigation("ProjectTask");
 
                     b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.Notification", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.AppUser", "Actor")
+                        .WithMany()
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("DevPath.Api.Models.Discussion", "Discussion")
+                        .WithMany()
+                        .HasForeignKey("DiscussionId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("DevPath.Api.Models.AppUser", "Recipient")
+                        .WithMany()
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Discussion");
+
+                    b.Navigation("Recipient");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.PlaygroundProject", b =>
@@ -2665,6 +3143,23 @@ namespace DevPath.Api.Migrations
                     b.Navigation("Topic");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.UserLearningPath", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.LearningPath", "LearningPath")
+                        .WithMany()
+                        .HasForeignKey("LearningPathId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LearningPath");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.UserTopicVideo", b =>
                 {
                     b.HasOne("DevPath.Api.Models.Topic", "Topic")
@@ -2759,9 +3254,21 @@ namespace DevPath.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.Discussion", b =>
+                {
+                    b.Navigation("Replies");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.InterviewQuestion", b =>
                 {
                     b.Navigation("ProgressRows");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.LearningPath", b =>
+                {
+                    b.Navigation("Phases");
+
+                    b.Navigation("Topics");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.Phase", b =>
