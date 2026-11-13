@@ -7,13 +7,14 @@ import { FormatDatePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
 import { ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
+import { TopicPickerComponent } from '../../shared/topic-picker.component';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../../shared/ui.components';
 
 @Component({
   selector: 'app-discussions-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './discussions.css',
-  imports: [RouterLink, IconComponent, TranslatePipe, FormatDatePipe,
+  imports: [RouterLink, IconComponent, TopicPickerComponent, TranslatePipe, FormatDatePipe,
     PageHeaderComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
   template: `
     <app-page-header [title]="'discussions.title' | t">
@@ -26,12 +27,9 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
       <section class="card discussion-form" data-tour="discussions-ask" [attr.aria-label]="'discussions.ask' | t">
         <div class="field">
           <label for="ask-topic">{{ 'discussions.topicLabel' | t }}</label>
-          <select id="ask-topic" class="input" (change)="askTopic.set(+$any($event.target).value)">
-            <option value="0" [selected]="!askTopic()">{{ 'quickAdd.chooseTopic' | t }}</option>
-            @for (t of topics(); track t.id) {
-              <option [value]="t.id" [selected]="askTopic() === t.id">{{ i18n.pick(t.titleEn, t.titleAr) }}</option>
-            }
-          </select>
+          <app-topic-picker inputId="ask-topic" [phases]="phases()" [value]="askTopic() || null"
+                            [placeholder]="'quickAdd.chooseTopic' | t" [label]="'discussions.topicLabel' | t"
+                            (valueChange)="askTopic.set($event ?? 0)" />
         </div>
         <div class="field">
           <label for="ask-title">{{ 'discussions.titleLabel' | t }}</label>
@@ -52,13 +50,9 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
 
     <section class="card filter-bar" data-tour="discussions-filters" [attr.aria-label]="'common.filters' | t">
       <div class="field grow">
-        <label for="disc-topic" class="sr-only">{{ 'discussions.topicLabel' | t }}</label>
-        <select id="disc-topic" class="input" (change)="setTopic($any($event.target).value)">
-          <option value="" [selected]="topicId() === null">{{ 'discussions.allTopics' | t }}</option>
-          @for (t of topics(); track t.id) {
-            <option [value]="t.id" [selected]="topicId() === t.id">{{ i18n.pick(t.titleEn, t.titleAr) }}</option>
-          }
-        </select>
+        <app-topic-picker inputId="disc-topic" [phases]="phases()" [value]="topicId()" [allowAll]="true"
+                          [allLabel]="'discussions.allTopics' | t" [placeholder]="'discussions.searchTopics' | t"
+                          [label]="'discussions.topicLabel' | t" (valueChange)="setTopic($event)" />
       </div>
       <div class="segmented" role="group" [attr.aria-label]="'discussions.sortNewest' | t">
         <button type="button" [class.active]="sort() === 'newest'" [attr.aria-pressed]="sort() === 'newest'" (click)="setSort('newest')">{{ 'discussions.sortNewest' | t }}</button>
@@ -128,15 +122,15 @@ export default class DiscussionsPage {
   private readonly pageSize = 20;
 
   private readonly roadmap = createLoader(() => this.api.roadmap());
-  protected readonly topics = computed(() => this.roadmap.value()?.phases.flatMap(p => p.topics) ?? []);
+  protected readonly phases = computed(() => (this.roadmap.value()?.phases ?? []).filter(p => p.topics.length > 0));
 
   protected readonly data = createLoader(() => this.api.discussions({ topicId: this.topicId(), sort: this.sort(), page: this.page() }));
   protected readonly discussions = computed(() => this.data.value()?.items ?? []);
   protected readonly totalPages = computed(() => Math.ceil((this.data.value()?.total ?? 0) / this.pageSize));
 
-  protected setTopic(value: string) {
-    this.topicId.set(value ? Number(value) : null);
-    if (value) this.askTopic.set(Number(value));
+  protected setTopic(id: number | null) {
+    this.topicId.set(id);
+    if (id) this.askTopic.set(id);
     this.page.set(1);
     void this.data.reload();
   }

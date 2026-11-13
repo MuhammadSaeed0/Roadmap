@@ -558,7 +558,7 @@ export const ar: Translations = {
     sortNewest: 'الأحدث', sortVotes: 'الأعلى تصويتًا', noDiscussions: 'لا توجد نقاشات بعد.', beFirst: 'كن أول من يسأل!',
     replies: 'الردود: {n}', accepted: 'إجابة مقبولة', deleted: 'مستخدم محذوف',
     titleLabel: 'العنوان', bodyLabel: 'المحتوى', topicLabel: 'الموضوع', deleteConfirm: 'حذف هذا النقاش؟',
-    deleteReplyConfirm: 'حذف هذا الرد؟', allTopics: 'كل المواضيع',
+    deleteReplyConfirm: 'حذف هذا الرد؟', allTopics: 'كل المواضيع', searchTopics: 'ابحث في المواضيع…',
     votes: 'تصويت', upvote: 'تصويت مؤيد', downvote: 'تصويت معارض', pinned: 'مثبّت', noReplies: 'لا توجد ردود بعد. كن أول من يجيب.',
     yourReply: 'إجابتك',
   },

@@ -556,7 +556,7 @@ export const en = {
     sortNewest: 'Newest', sortVotes: 'Top voted', noDiscussions: 'No discussions yet.', beFirst: 'Be the first to ask!',
     replies: 'Replies: {n}', accepted: 'Accepted answer', deleted: 'Deleted user',
     titleLabel: 'Title', bodyLabel: 'Body', topicLabel: 'Topic', deleteConfirm: 'Delete this discussion?',
-    deleteReplyConfirm: 'Delete this reply?', allTopics: 'All topics',
+    deleteReplyConfirm: 'Delete this reply?', allTopics: 'All topics', searchTopics: 'Search topics…',
     votes: 'votes', upvote: 'Upvote', downvote: 'Downvote', pinned: 'Pinned', noReplies: 'No replies yet. Be the first to answer.',
     yourReply: 'Your answer',
   },
