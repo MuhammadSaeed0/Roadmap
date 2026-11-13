@@ -28,6 +28,11 @@ public class AppUser : IdentityUser
     public DateTime? ApprovedAt { get; set; }
     public string? ApprovedById { get; set; }
     public DateTime? LastSignInAt { get; set; }
+
+    /// <summary>The name in the public profile address (/u/{handle}). Unique, lowercase; null until chosen.</summary>
+    public string? PublicHandle { get; set; }
+    /// <summary>Off by default: nothing about the account is visible to others until the owner turns this on.</summary>
+    public bool IsProfilePublic { get; set; }
 }
 
 public enum AccountStatus

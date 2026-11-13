@@ -353,6 +353,15 @@ export interface NotificationDto {
 export interface PagedNotifications { items: NotificationDto[]; page: number; pageSize: number; total: number; }
 export interface UnreadCount { count: number; }
 
+// ---- Public profile ----
+export interface ProfileSettings { isPublic: boolean; handle: string | null; }
+export interface PublicProfile {
+  handle: string; name: string; memberSince: string; level: string; xp: number;
+  topicsCompleted: number; acceptedAnswers: number; reviewedProjects: number;
+  paths: { id: number; nameEn: string; nameAr: string; iconName: string; percent: number }[];
+  projects: { id: number; titleEn: string; titleAr: string; techStack: string; repositoryUrl: string | null; peerReviewed: boolean }[];
+}
+
 // ---- Learning Paths ----
 export interface PathSummary {
   id: number; slug: string; nameEn: string; nameAr: string;

@@ -27,6 +27,7 @@ export const en = {
     title: 'Something went wrong', offline: 'Cannot reach the DevPath API.', server: 'The server had a problem. Please try again.',
     notFound: 'We couldn’t find that page or record.', generic: 'Unexpected error.',
     codes: {
+      invalid_handle: 'Use 3–30 lowercase letters, digits or single hyphens.', handle_taken: 'Another account already uses this name.',
       quiz_locked: 'Pass the previous level first.', quiz_not_available: 'This quiz level isn’t available for this topic.',
       quiz_invalid_answers: 'Answer every question once, then submit again.',
       not_found: 'That record no longer exists.', attempt_required: 'Write and save your own attempt before revealing the solution.',
@@ -555,6 +556,15 @@ export const en = {
   },
   quickAdd: { title: 'Quick add', note: 'New note', session: 'Log study session', topicLabel: 'Topic', chooseTopic: 'Choose a topic…' },
   notFound: { title: 'Page not found', body: 'The page you’re looking for doesn’t exist.', home: 'Back to dashboard' },
+  profile: {
+    title: 'Profile', settingsTitle: 'Public profile',
+    settingsIntro: 'Share your progress with a link: your level, completed paths and projects. Your email and notes are never shown. It stays private until you turn it on.',
+    handleLabel: 'Profile address', handleHint: '3–30 lowercase letters, digits or hyphens.', makePublic: 'Make my profile public',
+    view: 'View my profile', nowPublic: 'Your profile is public.', nowPrivate: 'Your profile is private.',
+    notFound: 'Profile not found', notFoundHint: 'This profile doesn’t exist or its owner keeps it private.',
+    memberSince: 'Learning on DevPath since {date}', xp: 'XP', topics: 'Topics completed', answers: 'Accepted answers',
+    reviewed: 'Peer-reviewed projects', projects: 'Completed projects', noProjects: 'No completed projects yet.', peerReviewed: 'Peer reviewed',
+  },
   discussions: {
     title: 'Discussions', ask: 'Ask a question', reply: 'Reply', accept: 'Accept answer', pin: 'Pin', unpin: 'Unpin',
     sortNewest: 'Newest', sortVotes: 'Top voted', noDiscussions: 'No discussions yet.', beFirst: 'Be the first to ask!',

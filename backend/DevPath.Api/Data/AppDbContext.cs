@@ -593,6 +593,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.Property(x => x.FullName).HasMaxLength(100);
             // Identity checks that emails are unique; the index makes the database guarantee it too.
             e.HasIndex(x => x.NormalizedEmail).IsUnique().HasFilter("[NormalizedEmail] IS NOT NULL");
+            e.Property(x => x.PublicHandle).HasMaxLength(30);
+            e.HasIndex(x => x.PublicHandle).IsUnique().HasFilter("[PublicHandle] IS NOT NULL");
         });
     }
 

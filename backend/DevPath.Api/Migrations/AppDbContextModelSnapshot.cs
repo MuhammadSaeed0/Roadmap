@@ -151,6 +151,9 @@ namespace DevPath.Api.Migrations
                     b.Property<bool>("IsOwner")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsProfilePublic")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastSignInAt")
                         .HasColumnType("datetime2");
 
@@ -176,6 +179,10 @@ namespace DevPath.Api.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("PublicHandle")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -218,6 +225,10 @@ namespace DevPath.Api.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PublicHandle")
+                        .IsUnique()
+                        .HasFilter("[PublicHandle] IS NOT NULL");
 
                     b.HasIndex("Status");
 

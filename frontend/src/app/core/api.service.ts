@@ -177,6 +177,11 @@ export class ApiService {
   deactivatePath(id: number) { return this.delete(`/paths/${id}/activate`); }
   activePaths() { return this.get<M.PathSummary[]>('/paths/active'); }
 
+  // ----- Public profile -----
+  profileSettings() { return this.get<M.ProfileSettings>('/profile'); }
+  updateProfileSettings(body: M.ProfileSettings) { return this.put<M.ProfileSettings>('/profile', body); }
+  publicProfile(handle: string) { return this.get<M.PublicProfile>(`/profiles/${encodeURIComponent(handle)}`); }
+
   // ----- plumbing -----
   private get<T>(path: string, query: Query = {}): Promise<T> {
     return this.run(this.http.get<T>(this.base + path, { params: toParams(query) }));
