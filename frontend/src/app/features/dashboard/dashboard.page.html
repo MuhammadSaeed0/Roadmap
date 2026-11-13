@@ -208,6 +208,33 @@
         }
       </ul>
     </section>
+
+    <!-- F. Active learning paths -->
+    @if (activePaths.value(); as paths) {
+      @if (paths.length > 0) {
+        <section class="card span-6" aria-labelledby="paths-h">
+          <div class="card-head">
+            <h2 id="paths-h" class="card-title"><app-icon name="route" /> {{ 'dashboard.activePaths' | t }}</h2>
+            <a routerLink="/paths" class="link-sm">{{ 'common.viewAll' | t }}</a>
+          </div>
+          <ul class="project-mini" role="list">
+            @for (p of paths; track p.id) {
+              <li>
+                <a [routerLink]="['/paths', p.id]" class="project-mini-link">
+                  <app-icon [name]="p.iconName" [size]="18" />
+                  <span class="project-mini-text">
+                    <span class="project-mini-title" dir="auto">{{ i18n.pick(p.nameEn, p.nameAr) }}</span>
+                    <span class="muted small">{{ 'paths.topics' | t: { n: p.topicCount } }}</span>
+                  </span>
+                  <span class="badge">{{ 'paths.progress' | t: { n: round(p.progressPercent) } }}</span>
+                </a>
+                <app-progress-bar [value]="p.progressPercent" [small]="true" [tone]="p.progressPercent >= 100 ? 'success' : 'accent'" [label]="i18n.pick(p.nameEn, p.nameAr)" />
+              </li>
+            }
+          </ul>
+        </section>
+      }
+    }
     </div>
   </div>
 }

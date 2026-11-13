@@ -76,6 +76,7 @@ public sealed class SkillCalculator(SkillRules rules)
         opportunities.AddRange(InterviewOpportunities(s, topics));
         opportunities.AddRange(ExerciseOpportunities(s, topics, categoryOf));
         opportunities.AddRange(ProjectOpportunities(s, topics, categoryOf));
+        opportunities.AddRange(DiscussionOpportunities(s));
         opportunities = ApplyDailyCap(opportunities);
 
         var categories = rules.Categories
@@ -325,6 +326,19 @@ public sealed class SkillCalculator(SkillRules rules)
                 Pts(p.PortfolioItem * project.PortfolioItemsDone, tier), portfolioMax, ["projects"], [], null,
                 project.TitleEn, project.TitleAr, new ItemRef("project", project.Id));
         }
+    }
+
+    /// <summary>
+    /// Accepted answers add XP only. They carry no category or technology: they exist only once earned, so counting
+    /// them in a competency score would raise its earned and available points together and inflate it.
+    /// </summary>
+    private IEnumerable<Opportunity> DiscussionOpportunities(SkillSnapshot s)
+    {
+        var p = rules.Points;
+        foreach (var a in (s.AcceptedAnswers ?? []).OrderBy(a => a.At).ThenBy(a => a.ReplyId).Take(p.DiscussionAcceptedCap))
+            yield return new Opportunity($"discussion-accept:{a.ReplyId}", XpActivity.DiscussionAnswerAccepted, EvidenceKind.Knowledge,
+                VerificationTier.Reviewed, Pts(p.DiscussionAccepted, VerificationTier.Reviewed), p.DiscussionAccepted, [], [],
+                a.At, a.TitleEn, a.TitleAr, null);
     }
 
     /// <summary>Limits self-reported points per day, so ticking a whole phase at once can't flood the score.</summary>

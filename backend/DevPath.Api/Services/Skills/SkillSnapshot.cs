@@ -16,7 +16,11 @@ public sealed record SkillSnapshot(
     IReadOnlyList<InterviewFact> Interviews,
     IReadOnlyList<ExerciseFact> Exercises,
     IReadOnlyList<ProjectFact> Projects,
-    int StudyMinutes);
+    int StudyMinutes,
+    IReadOnlyList<AcceptedAnswerFact>? AcceptedAnswers = null);
+
+/// <summary>A reply of the learner that another person accepted as the answer to their question.</summary>
+public sealed record AcceptedAnswerFact(int ReplyId, int TopicId, string TitleEn, string TitleAr, DateTime At);
 
 public sealed record TopicFact(
     int Id, string Slug, string PhaseSlug, int Position, SkillArea Skill, TopicPriority Priority, Difficulty? Difficulty,

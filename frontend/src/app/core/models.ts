@@ -224,7 +224,7 @@ export interface CareerReadiness {
 }
 
 export interface SearchHit { id: number; titleEn: string; titleAr: string; subtitleEn: string | null; subtitleAr: string | null; parentId: number | null; url: string | null; }
-export type SearchCategory = 'topics' | 'projects' | 'tasks' | 'practice' | 'interview' | 'resources' | 'notes';
+export type SearchCategory = 'topics' | 'projects' | 'tasks' | 'practice' | 'interview' | 'resources' | 'notes' | 'discussions';
 export interface SearchResult { query: string; groups: { category: SearchCategory; items: SearchHit[] }[]; }
 
 export interface LinkCheckResult { checked: number; verified: number; broken: number; unreachable: number; checkedAt: string; }

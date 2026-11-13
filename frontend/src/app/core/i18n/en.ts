@@ -255,6 +255,7 @@ export const en = {
   days: { Sunday: 'Sunday', Monday: 'Monday', Tuesday: 'Tuesday', Wednesday: 'Wednesday', Thursday: 'Thursday', Friday: 'Friday', Saturday: 'Saturday' },
   reasons: {
     inProgress: 'You already started it — finish what you began.',
+    activePath: 'It is part of a learning path you activated.',
     currentPhase: 'It belongs to your current phase.',
     earlierPhase: 'It was left behind in an earlier phase.',
     corePriority: 'It is a core topic for the job.',
@@ -280,6 +281,7 @@ export const en = {
     todayPlan: 'Today’s learning plan', planIntro: 'How much time do you have today?', planEmpty: 'Nothing left to plan.',
     projects: 'Project progress', skills: 'Skills overview', recentActivity: 'Recent activity',
     noActivity: 'No activity yet — complete a topic or log a study session to see it here.',
+    activePaths: 'Your learning paths',
     quickActions: 'Quick actions', resumeProject: 'Resume project', startProject: 'Start project', startPractice: 'Start practice',
     reviewWeak: 'Review weak topics', viewReadiness: 'View career readiness',
     streak: '{n}-day streak', noStreak: 'Start a streak today', weekMinutes: '{n} min this week',
@@ -501,7 +503,7 @@ export const en = {
     activities: {
       VideoWatched: 'Video watched', TopicCompleted: 'Topic completed', QuizQuestion: 'Quiz answer', QuizLevelPassed: 'Quiz level passed',
       InterviewQuestion: 'Interview question', ExerciseCompleted: 'Exercise completed', ExerciseQuality: 'Exercise quality',
-      ProjectTaskCompleted: 'Project task', ProjectCompleted: 'Project completed', ProjectReview: 'Project review', PortfolioItem: 'Portfolio checklist',
+      ProjectTaskCompleted: 'Project task', ProjectCompleted: 'Project completed', ProjectReview: 'Project review', PortfolioItem: 'Portfolio checklist', DiscussionAnswerAccepted: 'Accepted answer',
     },
     req: {
       xp: 'Total XP', overall: 'Overall competency', category: '{category} score', projectTasks: 'Project tasks completed',
@@ -547,7 +549,7 @@ export const en = {
   search: {
     title: 'Search', placeholder: 'Search topics, projects, notes…', minChars: 'Type at least 2 characters.', noResults: 'No results for “{q}”.',
     resultsFor: 'Results for “{q}”',
-    categories: { topics: 'Topics', projects: 'Projects', tasks: 'Project tasks', practice: 'Practice exercises', interview: 'Interview questions', resources: 'Resources', notes: 'Notes' },
+    categories: { topics: 'Topics', projects: 'Projects', tasks: 'Project tasks', practice: 'Practice exercises', interview: 'Interview questions', resources: 'Resources', notes: 'Notes', discussions: 'Discussions' },
   },
   quickAdd: { title: 'Quick add', note: 'New note', session: 'Log study session', topicLabel: 'Topic', chooseTopic: 'Choose a topic…' },
   notFound: { title: 'Page not found', body: 'The page you’re looking for doesn’t exist.', home: 'Back to dashboard' },
@@ -558,7 +560,8 @@ export const en = {
     titleLabel: 'Title', bodyLabel: 'Body', topicLabel: 'Topic', deleteConfirm: 'Delete this discussion?',
     deleteReplyConfirm: 'Delete this reply?', allTopics: 'All topics', searchTopics: 'Search topics…',
     votes: 'votes', upvote: 'Upvote', downvote: 'Downvote', pinned: 'Pinned', noReplies: 'No replies yet. Be the first to answer.',
-    yourReply: 'Your answer',
+    yourReply: 'Your answer', editReply: 'Edit reply', edited: 'edited',
+    codeHint: 'Put code between ``` lines to format it, for example ```csharp',
   },
   notifications: {
     title: 'Notifications', noNotifications: 'No notifications yet.',
@@ -568,7 +571,7 @@ export const en = {
     builtIn: 'Built-in', custom: 'Custom', topics: '{n} topics', progress: '{n}% complete',
     noPaths: 'No learning paths yet.', nameLabel: 'Path name', descriptionLabel: 'Description',
     iconLabel: 'Icon', topicsLabel: 'Pick topics', deletePath: 'Delete this path?',
-    myPaths: 'My paths',
+    myPaths: 'My paths', editPath: 'Edit path',
     subtitle: 'Follow a ready-made route through the roadmap, or build your own from the topics you need.',
     noPathsHint: 'Pick the topics you care about and track them as one path.', doneOf: '{done} of {total} done', next: 'Next',
   },

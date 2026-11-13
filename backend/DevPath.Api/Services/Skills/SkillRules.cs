@@ -98,6 +98,10 @@ public sealed class PointRules
     public required Dictionary<ProjectSize, int> ProjectCompletion { get; init; }
     public required Dictionary<ProjectSize, int> ProjectReview { get; init; }
     public int PortfolioItem { get; init; } = 5;
+    /// <summary>Points for each of your answers that another learner accepted.</summary>
+    public int DiscussionAccepted { get; init; } = 15;
+    /// <summary>Most accepted answers that earn points, so two accounts can't farm XP from each other.</summary>
+    public int DiscussionAcceptedCap { get; init; } = 20;
     /// <summary>Most self-reported points that count per day (0 = no limit).</summary>
     public int SelfReportedDailyCap { get; init; }
 }

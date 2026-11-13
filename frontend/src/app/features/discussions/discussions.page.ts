@@ -37,7 +37,8 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
         </div>
         <div class="field">
           <label for="ask-body">{{ 'discussions.bodyLabel' | t }}</label>
-          <textarea id="ask-body" class="input" rows="5" maxlength="4000" #bodyIn></textarea>
+          <textarea id="ask-body" class="input" rows="5" maxlength="4000" dir="auto" #bodyIn></textarea>
+          <span class="tiny muted">{{ 'discussions.codeHint' | t }}</span>
         </div>
         <div class="row-end">
           <button type="button" class="btn btn-ghost" (click)="showForm.set(false)">{{ 'common.cancel' | t }}</button>

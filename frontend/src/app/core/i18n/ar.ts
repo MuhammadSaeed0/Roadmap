@@ -256,6 +256,7 @@ export const ar: Translations = {
   projectStatus: { notStarted: 'لم يبدأ', active: 'نشط', completed: 'مكتمل' },
   days: { Sunday: 'الأحد', Monday: 'الإثنين', Tuesday: 'الثلاثاء', Wednesday: 'الأربعاء', Thursday: 'الخميس', Friday: 'الجمعة', Saturday: 'السبت' },
   reasons: {
+    activePath: 'جزء من مسار تعلم فعّلته.',
     inProgress: 'بدأته بالفعل، فأكمل ما بدأت.',
     currentPhase: 'ينتمي إلى مرحلتك الحالية.',
     earlierPhase: 'تأخر من مرحلة سابقة.',
@@ -282,6 +283,7 @@ export const ar: Translations = {
     todayPlan: 'خطة التعلم لليوم', planIntro: 'كم لديك من الوقت اليوم؟', planEmpty: 'لم يتبقَّ شيء للتخطيط.',
     projects: 'تقدم المشاريع', skills: 'نظرة على المهارات', recentActivity: 'النشاط الأخير',
     noActivity: 'لا يوجد نشاط بعد — أكمل موضوعًا أو سجّل جلسة دراسة ليظهر هنا.',
+    activePaths: 'مسارات تعلمك',
     quickActions: 'إجراءات سريعة', resumeProject: 'استئناف المشروع', startProject: 'ابدأ المشروع', startPractice: 'ابدأ التدريب',
     reviewWeak: 'راجع المواضيع الضعيفة', viewReadiness: 'عرض الجاهزية المهنية',
     streak: 'أيام متتالية: {n}', noStreak: 'ابدأ سلسلة أيام متتالية اليوم', weekMinutes: 'هذا الأسبوع: {n} دقيقة',
@@ -503,7 +505,7 @@ export const ar: Translations = {
     activities: {
       VideoWatched: 'مشاهدة فيديو', TopicCompleted: 'إكمال موضوع', QuizQuestion: 'إجابة اختبار', QuizLevelPassed: 'اجتياز مستوى اختبار',
       InterviewQuestion: 'سؤال مقابلة', ExerciseCompleted: 'إكمال تمرين', ExerciseQuality: 'جودة تمرين',
-      ProjectTaskCompleted: 'مهمة مشروع', ProjectCompleted: 'إكمال مشروع', ProjectReview: 'مراجعة مشروع', PortfolioItem: 'قائمة ملف الأعمال',
+      ProjectTaskCompleted: 'مهمة مشروع', ProjectCompleted: 'إكمال مشروع', ProjectReview: 'مراجعة مشروع', PortfolioItem: 'قائمة ملف الأعمال', DiscussionAnswerAccepted: 'إجابة مقبولة',
     },
     req: {
       xp: 'مجموع النقاط', overall: 'الكفاءة الإجمالية', category: 'درجة {category}', projectTasks: 'مهام المشاريع المكتملة',
@@ -549,7 +551,7 @@ export const ar: Translations = {
   search: {
     title: 'بحث', placeholder: 'ابحث في المواضيع والمشاريع والملاحظات…', minChars: 'اكتب حرفين على الأقل.', noResults: 'لا توجد نتائج لـ «{q}».',
     resultsFor: 'نتائج «{q}»',
-    categories: { topics: 'المواضيع', projects: 'المشاريع', tasks: 'مهام المشاريع', practice: 'التمارين', interview: 'أسئلة المقابلات', resources: 'المصادر', notes: 'الملاحظات' },
+    categories: { topics: 'المواضيع', projects: 'المشاريع', tasks: 'مهام المشاريع', practice: 'التمارين', interview: 'أسئلة المقابلات', resources: 'المصادر', notes: 'الملاحظات', discussions: 'النقاشات' },
   },
   quickAdd: { title: 'إضافة سريعة', note: 'ملاحظة جديدة', session: 'تسجيل جلسة دراسة', topicLabel: 'الموضوع', chooseTopic: 'اختر موضوعًا…' },
   notFound: { title: 'الصفحة غير موجودة', body: 'الصفحة التي تبحث عنها غير موجودة.', home: 'العودة إلى لوحة المعلومات' },
@@ -560,7 +562,8 @@ export const ar: Translations = {
     titleLabel: 'العنوان', bodyLabel: 'المحتوى', topicLabel: 'الموضوع', deleteConfirm: 'حذف هذا النقاش؟',
     deleteReplyConfirm: 'حذف هذا الرد؟', allTopics: 'كل المواضيع', searchTopics: 'ابحث في المواضيع…',
     votes: 'تصويت', upvote: 'تصويت مؤيد', downvote: 'تصويت معارض', pinned: 'مثبّت', noReplies: 'لا توجد ردود بعد. كن أول من يجيب.',
-    yourReply: 'إجابتك',
+    yourReply: 'إجابتك', editReply: 'تعديل الرد', edited: 'معدَّل',
+    codeHint: 'ضع الكود بين سطرين من ``` لتنسيقه، مثل ```csharp',
   },
   notifications: {
     title: 'الإشعارات', noNotifications: 'لا توجد إشعارات بعد.',
@@ -570,7 +573,7 @@ export const ar: Translations = {
     builtIn: 'مدمج', custom: 'مخصص', topics: '{n} موضوع', progress: '{n}% مكتمل',
     noPaths: 'لا توجد مسارات تعلم بعد.', nameLabel: 'اسم المسار', descriptionLabel: 'الوصف',
     iconLabel: 'الأيقونة', topicsLabel: 'اختر المواضيع', deletePath: 'حذف هذا المسار؟',
-    myPaths: 'مساراتي',
+    myPaths: 'مساراتي', editPath: 'تعديل المسار',
     subtitle: 'اتبع مسارًا جاهزًا داخل خارطة الطريق، أو ابنِ مسارك الخاص من المواضيع التي تحتاجها.',
     noPathsHint: 'اختر المواضيع التي تهمك وتابعها كمسار واحد.', doneOf: 'أنجزت {done} من {total}', next: 'التالي',
   },

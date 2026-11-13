@@ -31,6 +31,7 @@ const appRoutes: Routes = [
   { path: 'discussions/:id', loadComponent: () => import('./features/discussions/discussion-detail.page'), data: { titleKey: 'nav.discussions', helpId: 'discussion', skin: 'chatgreen' } },
   { path: 'paths', loadComponent: () => import('./features/paths/paths.page'), data: { titleKey: 'nav.paths', helpId: 'paths', skin: 'threads' } },
   { path: 'paths/new', loadComponent: () => import('./features/paths/path-create.page'), data: { titleKey: 'nav.paths', helpId: 'path-create', skin: 'threads' } },
+  { path: 'paths/:id/edit', loadComponent: () => import('./features/paths/path-create.page'), data: { titleKey: 'nav.paths', helpId: 'path-create', skin: 'threads' } },
   { path: 'paths/:id', loadComponent: () => import('./features/paths/path-detail.page'), data: { titleKey: 'nav.paths', helpId: 'path', skin: 'threads' } },
   { path: 'admin', loadComponent: () => import('./features/admin/admin.page'), canActivate: [adminGuard], data: { titleKey: 'nav.admin', helpId: 'admin', skin: 'bird' } },
   { path: '**', loadComponent: () => import('./features/not-found.page'), data: { titleKey: 'notFound.title', skin: 'bird' } },

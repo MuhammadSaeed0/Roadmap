@@ -10,12 +10,13 @@ import { ReplyDto } from '../../core/models';
 import { ConfirmService, ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../../shared/ui.components';
+import { DiscussionTextComponent } from './discussion-text.component';
 
 @Component({
   selector: 'app-discussion-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './discussions.css',
-  imports: [RouterLink, IconComponent, TranslatePipe, FormatDatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent],
+  imports: [RouterLink, IconComponent, DiscussionTextComponent, TranslatePipe, FormatDatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent],
   template: `
     @if (data.initialLoading()) {
       <div class="card"><app-skeleton [rows]="8" [height]="24" /></div>
@@ -35,21 +36,41 @@ import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../
                   [attr.aria-label]="'discussions.downvote' | t" [disabled]="voting()" (click)="vote(-1)"><app-icon name="chevron-down" [size]="20" /></button>
         </div>
         <div class="discussion-main">
-          <h2 class="discussion-heading" dir="auto">{{ i18n.pick(d.titleEn, d.titleAr) }}</h2>
-          <p class="row-gap tiny muted">
-            <a class="chip chip-sm chip-link" [routerLink]="['/topics', d.topicId]">{{ i18n.pick(d.topicTitleEn, d.topicTitleAr) }}</a>
-            <span>{{ d.authorName ?? ('discussions.deleted' | t) }}</span>
-            <span>{{ d.createdAt | fmtDate }}</span>
-            @if (d.isPinned) { <span class="badge"><app-icon name="pin" [size]="12" /> {{ 'discussions.pinned' | t }}</span> }
-          </p>
-          <div class="discussion-text" dir="auto">{{ i18n.pick(d.bodyEn, d.bodyAr) }}</div>
-          @if (isAuthor() || auth.isAdmin()) {
-            <div class="row-gap">
-              @if (auth.isAdmin()) {
-                <button type="button" class="btn btn-ghost btn-xs" (click)="togglePin()"><app-icon name="pin" [size]="13" /> {{ (d.isPinned ? 'discussions.unpin' : 'discussions.pin') | t }}</button>
-              }
-              <button type="button" class="btn btn-ghost btn-xs btn-danger-text" (click)="deleteDiscussion()"><app-icon name="trash" [size]="13" /> {{ 'common.delete' | t }}</button>
+          @if (editing() === 'question') {
+            <div class="field">
+              <label for="edit-title">{{ 'discussions.titleLabel' | t }}</label>
+              <input id="edit-title" class="input" maxlength="200" dir="auto" [value]="i18n.pick(d.titleEn, d.titleAr)" #editTitle />
             </div>
+            <div class="field">
+              <label for="edit-body">{{ 'discussions.bodyLabel' | t }}</label>
+              <textarea id="edit-body" class="input" rows="6" maxlength="4000" dir="auto" [value]="i18n.pick(d.bodyEn, d.bodyAr)" #editBody></textarea>
+              <span class="tiny muted">{{ 'discussions.codeHint' | t }}</span>
+            </div>
+            <div class="row-gap">
+              <button type="button" class="btn btn-primary btn-sm" [disabled]="saving()" (click)="saveQuestion(editTitle.value, editBody.value)">{{ 'common.save' | t }}</button>
+              <button type="button" class="btn btn-ghost btn-sm" (click)="editing.set(null)">{{ 'common.cancel' | t }}</button>
+            </div>
+          } @else {
+            <h2 class="discussion-heading" dir="auto">{{ i18n.pick(d.titleEn, d.titleAr) }}</h2>
+            <p class="row-gap tiny muted">
+              <a class="chip chip-sm chip-link" [routerLink]="['/topics', d.topicId]">{{ i18n.pick(d.topicTitleEn, d.topicTitleAr) }}</a>
+              <span>{{ d.authorName ?? ('discussions.deleted' | t) }}</span>
+              <span>{{ d.createdAt | fmtDate }}</span>
+              @if (d.updatedAt > d.createdAt) { <span>{{ 'discussions.edited' | t }}</span> }
+              @if (d.isPinned) { <span class="badge"><app-icon name="pin" [size]="12" /> {{ 'discussions.pinned' | t }}</span> }
+            </p>
+            <app-discussion-text [text]="i18n.pick(d.bodyEn, d.bodyAr)" />
+            @if (isAuthor() || auth.isAdmin()) {
+              <div class="row-gap">
+                @if (isAuthor()) {
+                  <button type="button" class="btn btn-ghost btn-xs" (click)="editing.set('question')"><app-icon name="edit" [size]="13" /> {{ 'common.edit' | t }}</button>
+                }
+                @if (auth.isAdmin()) {
+                  <button type="button" class="btn btn-ghost btn-xs" (click)="togglePin()"><app-icon name="pin" [size]="13" /> {{ (d.isPinned ? 'discussions.unpin' : 'discussions.pin') | t }}</button>
+                }
+                <button type="button" class="btn btn-ghost btn-xs btn-danger-text" (click)="deleteDiscussion()"><app-icon name="trash" [size]="13" /> {{ 'common.delete' | t }}</button>
+              </div>
+            }
           }
         </div>
       </article>
@@ -70,25 +91,37 @@ import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../
               <span>{{ r.authorName ?? ('discussions.deleted' | t) }}</span>
               <span>{{ r.createdAt | fmtDate }}</span>
             </p>
-            <div class="discussion-text" dir="auto">{{ i18n.pick(r.bodyEn, r.bodyAr) }}</div>
-            <div class="row-gap">
-              @if (isAuthor() && !d.acceptedReplyId && r.authorId !== d.authorId) {
-                <button type="button" class="btn btn-secondary btn-xs" (click)="accept(r.id)"><app-icon name="check" [size]="13" /> {{ 'discussions.accept' | t }}</button>
-              }
-              @if (r.authorId === auth.account()?.id || auth.isAdmin()) {
-                <button type="button" class="btn btn-ghost btn-xs btn-danger-text" (click)="deleteReply(r.id)"><app-icon name="trash" [size]="13" /> {{ 'common.delete' | t }}</button>
-              }
-            </div>
+            @if (editing() === r.id) {
+              <textarea class="input" rows="5" maxlength="4000" dir="auto" [attr.aria-label]="'discussions.editReply' | t" [value]="i18n.pick(r.bodyEn, r.bodyAr)" #editReply></textarea>
+              <div class="row-gap">
+                <button type="button" class="btn btn-primary btn-sm" [disabled]="saving()" (click)="saveReply(r.id, editReply.value)">{{ 'common.save' | t }}</button>
+                <button type="button" class="btn btn-ghost btn-sm" (click)="editing.set(null)">{{ 'common.cancel' | t }}</button>
+              </div>
+            } @else {
+              <app-discussion-text [text]="i18n.pick(r.bodyEn, r.bodyAr)" />
+              <div class="row-gap">
+                @if (isAuthor() && !d.acceptedReplyId && r.authorId !== d.authorId) {
+                  <button type="button" class="btn btn-secondary btn-xs" (click)="accept(r.id)"><app-icon name="check" [size]="13" /> {{ 'discussions.accept' | t }}</button>
+                }
+                @if (r.authorId === auth.account()?.id) {
+                  <button type="button" class="btn btn-ghost btn-xs" (click)="editing.set(r.id)"><app-icon name="edit" [size]="13" /> {{ 'common.edit' | t }}</button>
+                }
+                @if (r.authorId === auth.account()?.id || auth.isAdmin()) {
+                  <button type="button" class="btn btn-ghost btn-xs btn-danger-text" (click)="deleteReply(r.id)"><app-icon name="trash" [size]="13" /> {{ 'common.delete' | t }}</button>
+                }
+              </div>
+            }
           </div>
         </article>
       } @empty {
-        <p class="muted small">{{ 'discussions.noReplies' | t }}</p>
+        <p class="muted">{{ 'discussions.noReplies' | t }}</p>
       }
 
       <section class="card section-gap" data-tour="discussion-reply" [attr.aria-label]="'discussions.reply' | t">
         <div class="field">
           <label for="reply-body">{{ 'discussions.yourReply' | t }}</label>
-          <textarea id="reply-body" class="input" rows="4" maxlength="4000" #replyIn></textarea>
+          <textarea id="reply-body" class="input" rows="4" maxlength="4000" dir="auto" #replyIn></textarea>
+          <span class="tiny muted">{{ 'discussions.codeHint' | t }}</span>
         </div>
         <div class="row-end">
           <button type="button" class="btn btn-primary" [disabled]="replying()" (click)="submitReply(replyIn)">
@@ -112,6 +145,29 @@ export default class DiscussionDetailPage {
   protected readonly data = createLoader(() => this.api.discussion(this.id));
   protected readonly replying = signal(false);
   protected readonly voting = signal(false);
+  protected readonly saving = signal(false);
+  /** What is being edited: the question, a reply id, or nothing. */
+  protected readonly editing = signal<'question' | number | null>(null);
+
+  protected async saveQuestion(title: string, body: string) {
+    if (!title.trim() || !body.trim()) { this.toast.error(this.i18n.t('errors.codes.required')); return; }
+    this.saving.set(true);
+    try {
+      const updated = await this.api.updateDiscussion(this.id, { titleEn: title.trim(), titleAr: title.trim(), bodyEn: body.trim(), bodyAr: body.trim() });
+      this.data.set(updated);
+      this.editing.set(null);
+    } catch (e) { this.fail(e); } finally { this.saving.set(false); }
+  }
+
+  protected async saveReply(replyId: number, body: string) {
+    if (!body.trim()) { this.toast.error(this.i18n.t('errors.codes.required')); return; }
+    this.saving.set(true);
+    try {
+      const updated = await this.api.updateReply(this.id, replyId, { bodyEn: body.trim(), bodyAr: body.trim() });
+      this.data.update(v => ({ ...v, replies: v.replies.map(x => x.id === replyId ? { ...x, bodyEn: updated.bodyEn, bodyAr: updated.bodyAr, updatedAt: updated.updatedAt } : x) }));
+      this.editing.set(null);
+    } catch (e) { this.fail(e); } finally { this.saving.set(false); }
+  }
 
   protected readonly isAuthor = computed(() => {
     const d = this.data.value();

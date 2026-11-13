@@ -26,6 +26,8 @@ export default class DashboardPage {
   private readonly sessions = inject(SessionDialogService);
 
   protected readonly data = createLoader(() => this.api.dashboard());
+  protected readonly activePaths = createLoader(() => this.api.activePaths());
+  protected readonly round = Math.round;
   protected readonly planMinutes = signal(60);
   protected readonly plan = createLoader(() => this.api.studyPlan(this.planMinutes()));
   protected readonly planOptions = [30, 60, 120];

@@ -19,7 +19,21 @@ public class RecommendationService(
     {
         var pref = await preferences.GetEntityAsync(ct);
         var needs = await projects.GetProjectNeedsAsync(ct);
-        return RecommendationEngine.Rank(new RecommendationInput(state, needs, pref.AllowSkippingPrerequisites, pref.FocusSkill, minutes));
+        var pathTopics = await ActivePathTopicIdsAsync(ct);
+        return RecommendationEngine.Rank(new RecommendationInput(state, needs, pref.AllowSkippingPrerequisites, pref.FocusSkill, minutes, pathTopics));
+    }
+
+    /// <summary>Topic ids of the learner's activated paths (UserLearningPaths is filtered to the current user).</summary>
+    private async Task<IReadOnlySet<int>?> ActivePathTopicIdsAsync(CancellationToken ct)
+    {
+        var pathIds = await db.UserLearningPaths.Select(u => u.LearningPathId).ToListAsync(ct);
+        if (pathIds.Count == 0) return null;
+        var fromPhases = await (from pp in db.LearningPathPhases
+                                join t in db.Topics on pp.PhaseId equals t.PhaseId
+                                where pathIds.Contains(pp.LearningPathId)
+                                select t.Id).ToListAsync(ct);
+        var picked = await db.LearningPathTopics.Where(lt => pathIds.Contains(lt.LearningPathId)).Select(lt => lt.TopicId).ToListAsync(ct);
+        return fromPhases.Concat(picked).ToHashSet();
     }
 
     internal async Task<IReadOnlyList<RecommendationDto>> ToDtosAsync(LearningState state, IReadOnlyList<ScoredTopic> items, CancellationToken ct)

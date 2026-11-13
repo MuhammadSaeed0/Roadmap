@@ -13,7 +13,7 @@ namespace DevPath.Api.Services.Skills;
 /// Reconciling is idempotent: each source's rows already add up to what it is worth, so a second run writes nothing.
 /// Existing progress is credited the first time the dashboard is opened, with no migration of old data.
 /// </summary>
-public class SkillAssessmentService(AppDbContext db, SkillRules rules, TimeProvider clock, ILogger<SkillAssessmentService> logger)
+public class SkillAssessmentService(AppDbContext db, SkillRules rules, TimeProvider clock, ICurrentUser currentUser, ILogger<SkillAssessmentService> logger)
 {
     private readonly SkillCalculator calculator = new(rules);
 
@@ -240,6 +240,16 @@ public class SkillAssessmentService(AppDbContext db, SkillRules rules, TimeProvi
         var reviews = await db.ProjectAssessments.AsNoTracking().ToDictionaryAsync(a => a.ProjectId, ct);
         var studyMinutes = await db.StudySessions.SumAsync(s => (int?)s.ActualMinutes, ct) ?? 0;
 
+        // Discussions are shared between accounts (no per-user query filter), so filter on the author explicitly.
+        // Accepting your own reply earns nothing.
+        var userId = currentUser.Id;
+        var accepted = userId is null ? [] : await db.Discussions.AsNoTracking()
+            .Where(d => d.AcceptedReplyId != null && d.AuthorId != userId)
+            .Join(db.DiscussionReplies, d => d.AcceptedReplyId, r => (int?)r.Id, (d, r) => new { d, r })
+            .Where(x => x.r.AuthorId == userId)
+            .Select(x => new AcceptedAnswerFact(x.r.Id, x.d.TopicId, x.d.TitleEn, x.d.TitleAr, x.d.UpdatedAt))
+            .ToListAsync(ct);
+
         return new SkillSnapshot(
             topics, watched, curated, notes, questions, answers, attempts,
             interviews.Select(q => new InterviewFact(q.Id, q.TopicId, q.Category, q.Difficulty, q.Rating, q.At)).ToList(),
@@ -253,6 +263,6 @@ public class SkillAssessmentService(AppDbContext db, SkillRules rules, TimeProvi
                 p.Tasks.Select(t => new ProjectTaskFact(t.Id, t.EstimatedMinutes, t.IsChangeRequest, t.TopicIds, t.Done, t.CompletedAt, t.TitleEn, t.TitleAr)).ToList(),
                 p.PortfolioDone, checklistTotal,
                 reviews.TryGetValue(p.Id, out var r) ? new ProjectReviewFact(ParseScores(r.Scores), r.Verification, r.UpdatedAt) : null)).ToList(),
-            studyMinutes);
+            studyMinutes, accepted);
     }
 }

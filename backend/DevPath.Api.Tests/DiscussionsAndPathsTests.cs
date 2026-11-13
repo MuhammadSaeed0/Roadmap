@@ -159,7 +159,68 @@ public class DiscussionsAndPathsTests(ApiFactory factory) : IClassFixture<ApiFac
         Assert.True((await Json(await _b.GetAsync($"/api/discussions/{id}")))["isPinned"]!.GetValue<bool>());
     }
 
+    /// <summary>Opens the developer level (which reconciles the ledger) and sums the rows of one source.</summary>
+    private static async Task<int> XpOf(HttpClient client, string sourceKey)
+    {
+        (await client.GetAsync("/api/skill-level")).EnsureSuccessStatusCode();
+        var items = (await Json(await client.GetAsync("/api/skill-level/history?pageSize=100")))["items"]!.AsArray();
+        return items.Where(i => i!["sourceKey"]!.GetValue<string>() == sourceKey).Sum(i => i!["points"]!.GetValue<int>());
+    }
+
+    [Fact]
+    public async Task An_accepted_answer_earns_its_author_points_once_and_loses_them_when_unaccepted()
+    {
+        var c = await factory.CreateUserClientAsync();
+        var id = await AskAsync(_a, title: "Which collection keeps insertion order?");
+        var bReply = await ReplyAsync(_b, id);
+        var cReply = await ReplyAsync(c, id);
+
+        (await _a.PostAsJsonAsync($"/api/discussions/{id}/accept", new { replyId = bReply })).EnsureSuccessStatusCode();
+        Assert.Equal(15, await XpOf(_b, $"discussion-accept:{bReply}"));
+        Assert.Equal(15, await XpOf(_b, $"discussion-accept:{bReply}"));   // a second visit writes nothing new
+
+        (await _a.PostAsJsonAsync($"/api/discussions/{id}/accept", new { replyId = cReply })).EnsureSuccessStatusCode();
+        Assert.Equal(0, await XpOf(_b, $"discussion-accept:{bReply}"));
+        Assert.Equal(15, await XpOf(c, $"discussion-accept:{cReply}"));
+    }
+
+    [Fact]
+    public async Task Accepting_your_own_reply_earns_nothing()
+    {
+        var id = await AskAsync(_a, title: "Answering myself");
+        var mine = await ReplyAsync(_a, id);
+        (await _a.PostAsJsonAsync($"/api/discussions/{id}/accept", new { replyId = mine })).EnsureSuccessStatusCode();
+        Assert.Equal(0, await XpOf(_a, $"discussion-accept:{mine}"));
+    }
+
+    [Fact]
+    public async Task Discussions_appear_in_global_search()
+    {
+        var title = $"Searchable question {Guid.NewGuid():N}";
+        var id = await AskAsync(_a, title: title);
+        var result = await Json(await _b.GetAsync($"/api/search?q={Uri.EscapeDataString(title)}"));
+        var group = Assert.Single(result["groups"]!.AsArray(), g => g!["category"]!.GetValue<string>() == "discussions");
+        Assert.Equal(id, Assert.Single(group!["items"]!.AsArray())!["id"]!.GetValue<int>());
+    }
+
     // ---------- Learning paths ----------
+
+    [Fact]
+    public async Task An_active_path_steers_the_next_recommendation()
+    {
+        var client = await factory.CreateUserClientAsync();
+        var ranked = (await Json(await client.GetAsync("/api/recommendations?take=10"))).AsArray();
+        Assert.True(ranked.Count >= 2, $"expected at least two eligible topics, got {ranked.Count}");
+        var target = ranked[^1]!["topic"]!["id"]!.GetValue<int>();
+        Assert.NotEqual(target, ranked[0]!["topic"]!["id"]!.GetValue<int>());
+
+        var path = await Json(await client.PostAsJsonAsync("/api/paths", new { nameEn = "Focus", nameAr = "Focus", topicIds = new[] { target } }));
+        (await client.PostAsync($"/api/paths/{path["id"]!.GetValue<int>()}/activate", null)).EnsureSuccessStatusCode();
+
+        var first = (await Json(await client.GetAsync("/api/recommendations?take=1"))).AsArray()[0]!;
+        Assert.Equal(target, first["topic"]!["id"]!.GetValue<int>());
+        Assert.Contains(first["reasons"]!.AsArray(), r => r!["code"]!.GetValue<string>() == "activePath");
+    }
 
     [Fact]
     public async Task Built_in_paths_are_listed_for_everyone_and_cannot_be_changed()

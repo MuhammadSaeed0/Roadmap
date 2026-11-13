@@ -46,7 +46,8 @@ import { ErrorStateComponent, PageHeaderComponent, ProgressRingComponent, Skelet
               <a class="btn btn-ghost btn-sm" [routerLink]="['/topics', next.topicId]">{{ 'paths.next' | t }}: {{ i18n.pick(next.titleEn, next.titleAr) }}</a>
             }
             @if (isOwner()) {
-              <button type="button" class="btn btn-ghost btn-sm btn-danger-text push-end" (click)="remove()"><app-icon name="trash" [size]="14" /> {{ 'common.delete' | t }}</button>
+              <a class="btn btn-ghost btn-sm push-end" [routerLink]="['/paths', p.id, 'edit']"><app-icon name="edit" [size]="14" /> {{ 'common.edit' | t }}</a>
+              <button type="button" class="btn btn-ghost btn-sm btn-danger-text" (click)="remove()"><app-icon name="trash" [size]="14" /> {{ 'common.delete' | t }}</button>
             }
           </div>
         </div>
