@@ -121,9 +121,23 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
         if (d is null) return NotFound();
         if (d.AuthorId != currentUser.Id && !User.IsInRole(Roles.Admin)) return Forbid();
 
-        db.Discussions.Remove(d);
-        await db.SaveChangesAsync(ct);
+        await InTransactionAsync(async () =>
+        {
+            await SharedRowCleanup.BeforeDeletingDiscussionAsync(db, id, ct);
+            await db.Discussions.Where(x => x.Id == id).ExecuteDeleteAsync(ct);   // replies cascade
+        }, ct);
         return NoContent();
+    }
+
+    private async Task InTransactionAsync(Func<Task> work, CancellationToken ct)
+    {
+        var strategy = db.Database.CreateExecutionStrategy();
+        await strategy.ExecuteAsync(async () =>
+        {
+            await using var tx = await db.Database.BeginTransactionAsync(ct);
+            await work();
+            await tx.CommitAsync(ct);
+        });
     }
 
     // ---------- Replies ----------
@@ -182,8 +196,11 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
         if (reply is null) return NotFound();
         if (reply.AuthorId != currentUser.Id && !User.IsInRole(Roles.Admin)) return Forbid();
 
-        db.DiscussionReplies.Remove(reply);
-        await db.SaveChangesAsync(ct);
+        await InTransactionAsync(async () =>
+        {
+            await SharedRowCleanup.BeforeDeletingReplyAsync(db, replyId, ct);
+            await db.DiscussionReplies.Where(r => r.Id == replyId).ExecuteDeleteAsync(ct);
+        }, ct);
         return NoContent();
     }
 

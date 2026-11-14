@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json.Nodes;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DevPath.Api.Tests;
 
@@ -57,6 +59,60 @@ public class DiscussionsAndPathsTests(ApiFactory factory) : IClassFixture<ApiFac
         Assert.Equal(HttpStatusCode.OK, (await _a.PutAsJsonAsync($"/api/discussions/{id}", edit)).StatusCode);
         Assert.Equal(HttpStatusCode.NoContent, (await _a.DeleteAsync($"/api/discussions/{id}")).StatusCode);
         Assert.Equal(HttpStatusCode.NotFound, (await _b.GetAsync($"/api/discussions/{id}")).StatusCode);
+    }
+
+    [Fact]
+    public async Task A_discussion_with_votes_replies_notifications_and_an_accepted_answer_can_be_deleted()
+    {
+        var id = await AskAsync(_a);
+        var replyId = await ReplyAsync(_b, id);   // notifies A
+        (await _b.PostAsJsonAsync($"/api/discussions/{id}/vote", new { value = 1 })).EnsureSuccessStatusCode();
+        (await _a.PostAsJsonAsync($"/api/discussions/{id}/replies/{replyId}/vote", new { value = 1 })).EnsureSuccessStatusCode();
+        (await _a.PostAsJsonAsync($"/api/discussions/{id}/accept", new { replyId })).EnsureSuccessStatusCode();   // notifies B
+
+        Assert.Equal(HttpStatusCode.NoContent, (await _a.DeleteAsync($"/api/discussions/{id}")).StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, (await _a.GetAsync($"/api/discussions/{id}")).StatusCode);
+        Assert.DoesNotContain((await Json(await _b.GetAsync("/api/notifications")))["items"]!.AsArray(), n => n!["discussionId"]?.GetValue<int>() == id);
+    }
+
+    [Fact]
+    public async Task An_accepted_reply_with_votes_can_be_deleted()
+    {
+        var id = await AskAsync(_a);
+        var replyId = await ReplyAsync(_b, id);
+        (await _a.PostAsJsonAsync($"/api/discussions/{id}/replies/{replyId}/vote", new { value = 1 })).EnsureSuccessStatusCode();
+        (await _a.PostAsJsonAsync($"/api/discussions/{id}/accept", new { replyId })).EnsureSuccessStatusCode();
+
+        Assert.Equal(HttpStatusCode.NoContent, (await _b.DeleteAsync($"/api/discussions/{id}/replies/{replyId}")).StatusCode);
+        var detail = await Json(await _a.GetAsync($"/api/discussions/{id}"));
+        Assert.Null(detail["acceptedReplyId"]);
+        Assert.Empty(detail["replies"]!.AsArray());
+    }
+
+    [Fact]
+    public async Task An_account_that_posted_voted_and_made_paths_can_be_deleted()
+    {
+        var (admin, _) = await factory.CreateAdminClientAsync();
+        var email = factory.NewEmail();
+        var leaving = await factory.CreateUserClientAsync(email);
+        var id = await AskAsync(_a);
+        var replyId = await ReplyAsync(leaving, id);   // a notification with the leaving account as its actor
+        (await leaving.PostAsJsonAsync($"/api/discussions/{id}/vote", new { value = 1 })).EnsureSuccessStatusCode();
+        var path = await Json(await leaving.PostAsJsonAsync("/api/paths", new { nameEn = "Mine", nameAr = "Mine", topicIds = new[] { 1 } }));
+        (await leaving.PostAsync($"/api/paths/{path["id"]!.GetValue<int>()}/activate", null)).EnsureSuccessStatusCode();
+
+        using (var scope = factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<DevPath.Api.Data.AppDbContext>();
+            var userId = (await db.Users.SingleAsync(u => u.Email == email)).Id;
+            Assert.Equal(HttpStatusCode.NoContent, (await admin.DeleteAsync($"/api/admin/users/{userId}")).StatusCode);
+            Assert.False(await db.LearningPaths.AnyAsync(p => p.CreatorId == userId || p.Id == path["id"]!.GetValue<int>()));
+        }
+
+        // The question and the reply stay, credited to a deleted user.
+        var detail = await Json(await _a.GetAsync($"/api/discussions/{id}"));
+        var reply = Assert.Single(detail["replies"]!.AsArray(), r => r!["id"]!.GetValue<int>() == replyId);
+        Assert.Null(reply!["authorId"]);
     }
 
     [Fact]
