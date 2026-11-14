@@ -2,7 +2,7 @@
 // Placeholders use {name} and are filled by I18nService.t(key, params).
 
 export const en = {
-  app: { name: 'DevPath', fullName: 'DevPath — Full-Stack Developer Academy', tagline: 'Full-Stack Developer Academy' },
+  app: { name: 'DevPath', fullName: 'DevPath' },
   nav: {
     dashboard: 'Dashboard', roadmap: 'My Roadmap', library: 'Learning Library', projects: 'Projects',
     practice: 'Practice Lab', interviews: 'Interview Preparation', resources: 'Resources', notes: 'My Notes',

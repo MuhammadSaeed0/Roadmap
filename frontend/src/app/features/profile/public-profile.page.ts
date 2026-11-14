@@ -31,7 +31,7 @@ import { EmptyStateComponent, ProgressBarComponent, SkeletonComponent } from '..
       <div class="card"><app-skeleton [rows]="6" /></div>
     } @else if (data.error() || !data.value()) {
       <app-empty-state icon="user" [title]="'profile.notFound' | t" [message]="'profile.notFoundHint' | t">
-        <a routerLink="/" class="btn btn-secondary btn-sm">DevPath</a>
+        <a routerLink="/" class="btn btn-secondary btn-sm">{{ 'app.name' | t }}</a>
       </app-empty-state>
     } @else if (data.value(); as p) {
       <section class="card hero">
