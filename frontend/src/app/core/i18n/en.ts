@@ -276,7 +276,6 @@ export const en = {
   },
   dashboard: {
     morning: 'Good morning', afternoon: 'Good afternoon', evening: 'Good evening',
-    journey: 'Your path from your first line of code to full-stack .NET + Angular developer.',
     completed: 'You have completed {pct}% of your roadmap.',
     weightedNote: 'Weighted: core topics count more than optional ones, and supporting skills such as Git count a little less.',
     overall: 'Overall progress', completedTopics: 'Completed topics', remainingTopics: 'Remaining topics',
@@ -285,13 +284,13 @@ export const en = {
     startLearning: 'Start learning', allDone: 'You have finished every available topic. Time to polish your portfolio!',
     todayPlan: 'Today’s learning plan', planIntro: 'How much time do you have today?', planEmpty: 'Nothing left to plan.',
     projects: 'Project progress', skills: 'Skills overview', recentActivity: 'Recent activity',
-    noActivity: 'No activity yet — complete a topic or log a study session to see it here.',
     activePaths: 'Your learning paths',
     quickActions: 'Quick actions', resumeProject: 'Resume project', startProject: 'Start project', startPractice: 'Start practice',
     reviewWeak: 'Review weak topics', viewReadiness: 'View career readiness',
     streak: '{n}-day streak', noStreak: 'Start a streak today', weekMinutes: '{n} min this week',
     todayGoal: '{done} of {goal} min today', reviewsDue: '{n} reviews due', noReviews: 'No reviews due',
-    skillsHint: 'Each skill is tracked separately.',
+    greetingName: '{greeting}, {name}', weightInfo: 'How is this percentage calculated?',
+    firstSession: 'Log your first study session to start a streak.',
   },
   activity: {
     topicCompleted: 'Completed topic', topicSkipped: 'Marked as already known', noteCreated: 'Created note',

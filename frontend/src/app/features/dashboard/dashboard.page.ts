@@ -1,13 +1,18 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
+import { AuthService } from '../../core/auth.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { DurationPipe, FormatNumberPipe, LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
 import { Activity, StudyPlanItem } from '../../core/models';
 import { SessionDialogService } from '../../layout/session-dialog.component';
+import { isolateLatin } from '../../shared/bidi';
 import { IconComponent } from '../../shared/icon.component';
 import { EmptyStateComponent, ErrorStateComponent, ProgressBarComponent, ProgressRingComponent, SkeletonComponent } from '../../shared/ui.components';
+
+/** Plan steps that belong to a topic; consecutive ones on the same topic are grouped. */
+const TOPIC_STEPS = new Set(['learn', 'practice', 'challenge']);
 
 const PLAN_ICONS: Record<string, string> = {
   learn: 'book', practice: 'code', exercise: 'code', challenge: 'target', review: 'repeat', project: 'folder', interview: 'chat',
@@ -19,11 +24,13 @@ const PLAN_ICONS: Record<string, string> = {
   imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, DurationPipe, FormatNumberPipe,
     ProgressRingComponent, ProgressBarComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
   templateUrl: './dashboard.page.html',
+  styleUrl: './dashboard.page.css',
 })
 export default class DashboardPage {
   private readonly api = inject(ApiService);
   protected readonly i18n = inject(I18nService);
   private readonly sessions = inject(SessionDialogService);
+  private readonly auth = inject(AuthService);
 
   protected readonly data = createLoader(() => this.api.dashboard());
   protected readonly activePaths = createLoader(() => this.api.activePaths());
@@ -35,6 +42,32 @@ export default class DashboardPage {
   protected readonly greetingKey = computed(() => {
     const h = new Date().getHours();
     return h < 12 ? 'dashboard.morning' : h < 18 ? 'dashboard.afternoon' : 'dashboard.evening';
+  });
+
+  /** "Good morning, Mohamed": the greeting with the learner's first name, or the greeting alone. */
+  protected readonly greeting = computed(() => {
+    const hello = this.i18n.t(this.greetingKey());
+    const account = this.auth.account();
+    const first = account?.fullName.trim().split(/\s+/)[0];
+    return first ? this.i18n.t('dashboard.greetingName', { greeting: hello, name: first }) : hello;
+  });
+
+  protected readonly showWeightNote = signal(false);
+
+  /**
+   * Today's plan, with consecutive steps on the same topic grouped under one heading so the topic's
+   * name isn't repeated on every step. A step on its own keeps its title on the row.
+   */
+  protected readonly planRows = computed(() => {
+    const items = this.plan.value()?.items ?? [];
+    const topicOf = (i: StudyPlanItem | undefined) => i && TOPIC_STEPS.has(i.kind) ? i.topicId : null;
+    return items.map((item, n) => {
+      const topic = topicOf(item);
+      const grouped = topic !== null && (topicOf(items[n - 1]) === topic || topicOf(items[n + 1]) === topic);
+      const startsGroup = grouped && topicOf(items[n - 1]) !== topic;
+      const title = this.text(item.titleEn, item.titleAr, this.planTitle(item));
+      return { item, groupTitle: startsGroup ? title : null, title: grouped ? null : title };
+    });
   });
 
   protected readonly activeProject = computed(() => {
@@ -74,7 +107,7 @@ export default class DashboardPage {
     switch (item.kind) {
       case 'exercise': return { link: ['/practice', item.exerciseId] };
       case 'practice': return { link: ['/topics', item.topicId], fragment: 'practice' };
-      case 'challenge': return { link: ['/topics', item.topicId], fragment: 'challenge' };
+      case 'challenge': return { link: ['/topics', item.topicId], fragment: 'practice' };
       case 'review': return { link: ['/progress'], query: { tab: 'review' } };
       case 'project': return { link: ['/projects', item.projectId], fragment: `task-${item.projectTaskId}` };
       case 'interview': return { link: ['/interviews'], query: { category: item.interviewCategory, mode: 'practice' } };
@@ -105,6 +138,14 @@ export default class DashboardPage {
   protected activityQuery(a: Activity): Record<string, unknown> | null {
     return a.kind === 'noteCreated' || a.kind === 'noteUpdated' ? { id: a.entityId } : null;
   }
+
+  /** Text in the current language, with English terms inside Arabic kept in order (for [innerHTML]). */
+  protected text(en: string, ar: string, override?: string): string {
+    return isolateLatin(override ?? this.i18n.pick(en, ar), this.i18n.lang());
+  }
+
+  /** Already translated text, with English terms inside Arabic kept in order (for [innerHTML]). */
+  protected iso(text: string): string { return isolateLatin(text, this.i18n.lang()); }
 
   protected logSession(topicId: number | null = null): void { this.sessions.open(topicId); }
 }

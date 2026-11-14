@@ -278,7 +278,6 @@ export const ar: Translations = {
   },
   dashboard: {
     morning: 'صباح الخير', afternoon: 'مساء الخير', evening: 'مساء الخير',
-    journey: 'رحلتك من أول سطر كود إلى مطور Full-Stack باستخدام .NET وAngular.',
     completed: 'أكملت {pct}% من خارطة طريقك.',
     weightedNote: 'نسبة موزونة: المواضيع الأساسية لها وزن أكبر من الاختيارية، والمهارات المساندة مثل Git وزنها أقل قليلًا.',
     overall: 'التقدم الإجمالي', completedTopics: 'المواضيع المكتملة', remainingTopics: 'المواضيع المتبقية',
@@ -287,13 +286,13 @@ export const ar: Translations = {
     startLearning: 'ابدأ التعلم', allDone: 'أنهيت كل المواضيع المتاحة. حان وقت صقل معرض أعمالك!',
     todayPlan: 'خطة التعلم لليوم', planIntro: 'كم لديك من الوقت اليوم؟', planEmpty: 'لم يتبقَّ شيء للتخطيط.',
     projects: 'تقدم المشاريع', skills: 'نظرة على المهارات', recentActivity: 'النشاط الأخير',
-    noActivity: 'لا يوجد نشاط بعد — أكمل موضوعًا أو سجّل جلسة دراسة ليظهر هنا.',
     activePaths: 'مسارات تعلمك',
     quickActions: 'إجراءات سريعة', resumeProject: 'استئناف المشروع', startProject: 'ابدأ المشروع', startPractice: 'ابدأ التدريب',
     reviewWeak: 'راجع المواضيع الضعيفة', viewReadiness: 'عرض الجاهزية المهنية',
     streak: 'أيام متتالية: {n}', noStreak: 'ابدأ سلسلة أيام متتالية اليوم', weekMinutes: 'هذا الأسبوع: {n} دقيقة',
     todayGoal: '{done} من {goal} دقيقة اليوم', reviewsDue: 'مراجعات مستحقة: {n}', noReviews: 'لا توجد مراجعات مستحقة',
-    skillsHint: 'تُتابَع كل مهارة بشكل مستقل.',
+    greetingName: '{greeting}، {name}', weightInfo: 'كيف تُحسب هذه النسبة؟',
+    firstSession: 'سجّل أول جلسة دراسة لتبدأ سلسلة أيامك.',
   },
   activity: {
     topicCompleted: 'أكملت موضوعًا', topicSkipped: 'حددته كمعروف مسبقًا', noteCreated: 'أنشأت ملاحظة',

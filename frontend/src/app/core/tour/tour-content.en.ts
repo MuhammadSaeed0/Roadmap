@@ -74,14 +74,14 @@ export const content: TourContent = {
     account: { title: 'Your account', body: 'Your name and email, Settings and Sign out. Administrators also find the admin area here.' },
     help: { title: 'Help, any time', body: 'Open Help to restart this tour, get a walk through the page you’re on, click any section to learn what it does, or read quick tips. Press ? to open quick help.' },
 
-    'dashboard-hero': { title: 'Your overall progress', body: 'The ring shows how much of the roadmap you’ve completed. It’s weighted: core topics count more than optional ones. Below: topics done and left, time left and your current phase.' },
+    'dashboard-hero': { title: 'Your overall progress', body: 'The ring shows how much of the roadmap you’ve completed, with your current phase, topics done and left, and the time left. The info button explains how the percentage is weighted.' },
     'dashboard-today': { title: 'Today', body: 'Your study streak, minutes studied today against your daily goal, this week’s total and how many topics are due for review. Log a study session from here too.' },
     'dashboard-continue': { title: 'Continue learning', body: 'The topic DevPath recommends next, with the reasons it was picked: it’s in your current phase, it’s core for the job, it unlocks other topics, it matches your focus skill… Start learning opens it.' },
     'dashboard-plan': { title: 'Today’s plan', body: 'Choose how much time you have (30, 60 or 120 minutes) and get a plan that mixes learning, review, practice and project work to fit it.' },
     'dashboard-skills': { title: 'Skills overview', body: 'Progress for each skill separately, from C# to Angular and testing, so you can see which areas are behind.' },
     'dashboard-projects': { title: 'Projects', body: 'The four practical projects and how far along each one is. Click one to open it.' },
-    'dashboard-activity': { title: 'Recent activity', body: 'What you did lately: completed topics, study sessions, practice and project tasks, with links back to each.' },
-    'dashboard-actions': { title: 'Quick actions', body: 'Shortcuts to continue learning, resume your active project, start a practice exercise, review weak topics or check your career readiness.' },
+    'dashboard-activity': { title: 'Recent activity', body: 'What you did lately: completed topics, study sessions, practice and project tasks, with links back to each. It appears once you have some activity.' },
+    'dashboard-actions': { title: 'Quick actions', body: 'Shortcuts to resume your active project, start a practice exercise, review weak topics or check your career readiness.' },
 
     'roadmap-header': { title: 'Roadmap controls', body: 'Expand or collapse all 14 phases at once.' },
     'roadmap-phases': { title: 'Phases and topics', body: 'The curriculum in order, with your progress in each phase and the current one marked. Open a phase to see its topics and mark each one complete when you finish it. Locked topics need their prerequisites first.' },
