@@ -319,8 +319,8 @@ export const ar: Translations = {
   },
   topic: {
     whatIsIt: 'ما هو؟', whyMatters: 'لماذا يهم؟', howWorks: 'كيف يعمل؟', realWorld: 'مثال من الواقع',
-    codeExample: 'مثال برمجي', practiceTask: 'مهمة تطبيقية', challenge: 'تحدٍّ مستقل', resources: 'مصادر مقترحة',
-    prerequisites: 'المتطلبات السابقة', unlocks: 'يفتح المواضيع', samePhase: 'المزيد في هذه المرحلة', relatedProjects: 'مشاريع مرتبطة',
+    practiceTask: 'مهمة تطبيقية', challenge: 'تحدٍّ مستقل', resources: 'مصادر مقترحة',
+    prerequisites: 'المتطلبات السابقة', unlocks: 'يفتح المواضيع', relatedProjects: 'مشاريع مرتبطة',
     interviewQs: 'أسئلة المقابلات', exercises: 'تمارين تدريبية', notes: 'الملاحظات', yourProgress: 'تقدمك',
     status: 'الحالة', knowledge: 'المعرفة السابقة', markComplete: 'تعليم كمكتمل', markInProgress: 'ابدأ',
     markKnown: 'أعرف هذا مسبقًا', reopen: 'إعادة فتح', prereqWarning: 'بعض المتطلبات السابقة لم تكتمل بعد، لكن يمكنك دراسة هذا الموضوع.',
@@ -332,6 +332,10 @@ export const ar: Translations = {
     tasks: 'المهام: {n}', none: 'لا يوجد', deleteSession: 'هل تريد حذف جلسة الدراسة هذه؟', notFound: 'هذا الموضوع غير موجود.', minutes: '{n} دقيقة', breadcrumb: 'خارطة الطريق',
     objectives: 'في نهاية الموضوع ستستطيع', marketDemand: 'الطلب في سوق العمل', demandLine: 'في {postings} من {total} إعلان وظيفة ({required} كشرط أساسي)',
     demandSource: 'من إعلانات وظائف .NET المنشورة بين {from} و{to}.',
+    onThisPage: 'في هذه الصفحة', overview: 'نظرة عامة', practice: 'تدرّب', tocQuiz: 'الاختبار', related: 'مرتبط بالموضوع',
+    previous: 'الموضوع السابق', next: 'الموضوع التالي', moreTopics: 'الموضوع السابق والتالي',
+    addToReviewShort: 'أضف للمراجعة', studied: 'درست {time}', logSessionShort: 'سجّل جلسة',
+    showSessions: 'عرض الجلسات ({n})', allQuestions: 'عرض كل الأسئلة ({n})',
   },
   projects: {
     title: 'المشاريع', subtitle: 'أربعة مشاريع عملية، من تطبيق Console إلى نظامك الرئيسي في معرض الأعمال.',

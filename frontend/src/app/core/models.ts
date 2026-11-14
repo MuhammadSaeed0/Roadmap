@@ -73,7 +73,7 @@ export interface TopicDetail {
   howEn: string; howAr: string; exampleEn: string; exampleAr: string; codeSample: string | null; codeLanguage: string | null;
   practiceTaskEn: string; practiceTaskAr: string; challengeEn: string; challengeAr: string;
   status: TopicStatus; knowledge: KnowledgeLevel; confidence: number | null; completedAt: string | null;
-  prerequisitesMet: boolean; prerequisites: TopicRef[]; unlocks: TopicRef[]; samePhase: TopicRef[];
+  prerequisitesMet: boolean; prerequisites: TopicRef[]; unlocks: TopicRef[]; previous: TopicRef | null; next: TopicRef | null;
   resources: Resource[];
   projects: { projectId: number; slug: string; titleEn: string; titleAr: string; taskCount: number }[];
   interviewQuestions: { id: number; questionEn: string; questionAr: string; difficulty: Difficulty; rating: InterviewRating | null }[];

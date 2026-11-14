@@ -53,7 +53,7 @@ export function lessonBlocks(body: string): Block[] {
       font-family: var(--font-mono); font-size: 0.86rem; white-space: pre-wrap; direction: ltr; text-align: left; }
     .lesson-foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
     @media (max-width: 860px) {
-      .tutorial-layout { grid-template-columns: 1fr; gap: 12px; }
+      .tutorial-layout { grid-template-columns: minmax(0, 1fr); gap: 12px; }
       .lesson-nav { flex-direction: row; overflow-x: auto; }
       .lesson-nav button { width: auto; white-space: nowrap; }
     }

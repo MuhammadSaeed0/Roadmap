@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
@@ -9,7 +9,6 @@ import { createLoader } from '../../core/loader';
 import { KnowledgeLevel, Note, TopicDetail, TopicStatus } from '../../core/models';
 import { ConfirmService, ToastService } from '../../core/ui-services';
 import { SessionDialogService } from '../../layout/session-dialog.component';
-import { CodeBlockComponent } from '../../shared/code-block.component';
 import { IconComponent } from '../../shared/icon.component';
 import { statusIcon } from '../../shared/status';
 import { ConfidencePickerComponent, ErrorStateComponent, SkeletonComponent } from '../../shared/ui.components';
@@ -22,8 +21,9 @@ import { TopicVideosComponent } from './topic-videos.component';
   selector: 'app-topic-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, ReactiveFormsModule, IconComponent, TranslatePipe, LocalizePipe, DurationPipe, FormatDatePipe,
-    CodeBlockComponent, ConfidencePickerComponent, SkeletonComponent, ErrorStateComponent, TopicVideosComponent, TopicQuizComponent, TopicDiscussionsComponent, TopicTutorialComponent],
+    ConfidencePickerComponent, SkeletonComponent, ErrorStateComponent, TopicVideosComponent, TopicQuizComponent, TopicDiscussionsComponent, TopicTutorialComponent],
   templateUrl: './topic-detail.page.html',
+  styleUrl: './topic-detail.page.css',
 })
 export default class TopicDetailPage {
   private readonly api = inject(ApiService);
@@ -48,17 +48,32 @@ export default class TopicDetailPage {
     content: ['', Validators.maxLength(20000)],
   });
 
-  /** Sections of the learning content, in the order defined by the curriculum. */
-  protected readonly sections = computed(() => {
+  /** The short answers under the overview's opening summary. */
+  protected readonly facts = computed(() => {
     const t = this.data.value();
     if (!t) return [];
     return [
-      { id: 'what', icon: 'info', title: 'topic.whatIsIt', text: this.i18n.pick(t.summaryEn, t.summaryAr) },
-      { id: 'why', icon: 'target', title: 'topic.whyMatters', text: this.i18n.pick(t.whyEn, t.whyAr) },
-      { id: 'how', icon: 'layers', title: 'topic.howWorks', text: this.i18n.pick(t.howEn, t.howAr) },
-      { id: 'example', icon: 'briefcase', title: 'topic.realWorld', text: this.i18n.pick(t.exampleEn, t.exampleAr) },
-    ];
+      { icon: 'target', title: 'topic.whyMatters', text: this.i18n.pick(t.whyEn, t.whyAr) },
+      { icon: 'layers', title: 'topic.howWorks', text: this.i18n.pick(t.howEn, t.howAr) },
+      { icon: 'briefcase', title: 'topic.realWorld', text: this.i18n.pick(t.exampleEn, t.exampleAr) },
+    ].filter(f => f.text.trim().length > 0);
   });
+
+  /** The sections of the page, in the order they appear, for the "On this page" list. */
+  protected readonly toc = [
+    { id: 'overview', icon: 'info', title: 'topic.overview' },
+    { id: 'tutorial', icon: 'book', title: 'tutorial.title' },
+    { id: 'videos', icon: 'video', title: 'videos.title' },
+    { id: 'quiz', icon: 'target', title: 'topic.tocQuiz' },
+    { id: 'practice', icon: 'edit', title: 'topic.practice' },
+    { id: 'discussions', icon: 'message-square', title: 'discussions.title' },
+    { id: 'resources', icon: 'link', title: 'topic.resources' },
+    { id: 'notes', icon: 'note', title: 'topic.notes' },
+  ];
+  protected readonly activeSection = signal('overview');
+  protected readonly allQuestions = signal(false);
+  private readonly host = inject(ElementRef<HTMLElement>).nativeElement as HTMLElement;
+  private observer: IntersectionObserver | null = null;
 
   /** What the learner should be able to do after the topic, in the current language. */
   protected readonly objectives = computed(() => {
@@ -71,8 +86,16 @@ export default class TopicDetailPage {
     // Reload when the route id changes (e.g. clicking a related topic).
     effect(() => {
       this.topicId();
-      untracked(() => { void this.data.reload(); void this.notes.reload(); this.showNoteForm.set(false); });
+      untracked(() => {
+        void this.data.reload(); void this.notes.reload();
+        this.showNoteForm.set(false); this.allQuestions.set(false); this.activeSection.set('overview');
+      });
     });
+    // Highlight the section being read once the sections are on the page.
+    effect(() => {
+      if (this.data.value()) untracked(() => setTimeout(() => this.watchSections()));
+    });
+    inject(DestroyRef).onDestroy(() => this.observer?.disconnect());
     effect(() => {
       if (this.sessions.savedCount() > 0) untracked(() => void this.data.reload());
     });
@@ -111,6 +134,30 @@ export default class TopicDetailPage {
       await this.data.reload();
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
+    }
+  }
+
+  /** Scrolls to a section without changing the route. */
+  protected goTo(event: Event, id: string): void {
+    event.preventDefault();
+    this.host.querySelector<HTMLElement>('#' + id)?.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
+    this.activeSection.set(id);
+  }
+
+  private watchSections(): void {
+    this.observer?.disconnect();
+    if (typeof IntersectionObserver === 'undefined') return;
+    const visible = new Set<string>();
+    this.observer = new IntersectionObserver(entries => {
+      for (const e of entries) {
+        if (e.isIntersecting) visible.add(e.target.id); else visible.delete(e.target.id);
+      }
+      const first = this.toc.find(s => visible.has(s.id));
+      if (first) this.activeSection.set(first.id);
+    }, { rootMargin: '-80px 0px -55% 0px' });
+    for (const s of this.toc) {
+      const el = this.host.querySelector('#' + s.id);
+      if (el) this.observer.observe(el);
     }
   }
 

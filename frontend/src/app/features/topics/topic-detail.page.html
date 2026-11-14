@@ -4,54 +4,73 @@
 } @else if (data.error()) {
   <app-error-state [error]="data.error()" (retry)="data.reload()" />
 } @else if (data.value(); as t) {
-  <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | t">
-    <a routerLink="/roadmap">{{ 'topic.breadcrumb' | t }}</a>
-    <app-icon name="chevron-right" [size]="13" />
-    <a routerLink="/roadmap" [fragment]="'phase-' + t.phase.id">{{ t.phase | loc: 'title' }}</a>
-  </nav>
+  <div class="topic-page">
+    <div class="topic-top">
+      <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | t">
+        <a routerLink="/roadmap">{{ 'topic.breadcrumb' | t }}</a>
+        <app-icon name="chevron-right" [size]="13" />
+        <a routerLink="/roadmap" [fragment]="'phase-' + t.phase.id">{{ t.phase | loc: 'title' }}</a>
+      </nav>
 
-  <header class="topic-header" data-tour="topic-header">
-    <div>
-      <div class="chips">
-        <span class="chip">{{ 'skills.' + t.skill | t }}</span>
-        <span class="chip" [attr.data-priority]="t.priority">{{ 'priority.' + t.priority | t }}</span>
-        <span class="chip chip-ghost"><app-icon name="clock" [size]="13" /> {{ t.estimatedMinutes | duration }}</span>
-        @if (t.difficulty) { <span class="chip chip-ghost">{{ 'difficulty.' + t.difficulty | t }}</span> }
-        <span class="badge" [attr.data-status]="t.status"><app-icon [name]="statusIcon(t.status)" [size]="13" /> {{ 'topicStatus.' + t.status | t }}</span>
-      </div>
-      <h1 id="page-title" tabindex="-1">{{ t | loc: 'title' }}</h1>
-      @if (t.completedAt) { <p class="muted small">{{ 'topic.completedOn' | t: { date: (t.completedAt | fmtDate) } }}</p> }
+      <header class="topic-header" data-tour="topic-header">
+        <div class="chips">
+          <span class="chip">{{ 'skills.' + t.skill | t }}</span>
+          <span class="chip" [attr.data-priority]="t.priority">{{ 'priority.' + t.priority | t }}</span>
+          <span class="chip chip-ghost"><app-icon name="clock" [size]="13" /> {{ t.estimatedMinutes | duration }}</span>
+          @if (t.difficulty) { <span class="chip chip-ghost">{{ 'difficulty.' + t.difficulty | t }}</span> }
+          <span class="badge" [attr.data-status]="t.status"><app-icon [name]="statusIcon(t.status)" [size]="13" /> {{ 'topicStatus.' + t.status | t }}</span>
+        </div>
+        <h1 id="page-title" tabindex="-1">{{ t | loc: 'title' }}</h1>
+        @if (t.completedAt) { <p class="muted small">{{ 'topic.completedOn' | t: { date: (t.completedAt | fmtDate) } }}</p> }
+      </header>
+
+      @if (!t.prerequisitesMet && t.status === 'NotStarted') {
+        <p class="callout callout-warn"><app-icon name="lock" /> {{ 'topic.prereqWarning' | t }}</p>
+      }
     </div>
-  </header>
 
-  @if (!t.prerequisitesMet && t.status === 'NotStarted') {
-    <p class="callout callout-warn"><app-icon name="lock" /> {{ 'topic.prereqWarning' | t }}</p>
-  }
+    <nav class="topic-toc" [attr.aria-label]="'topic.onThisPage' | t">
+      <p class="toc-title">{{ 'topic.onThisPage' | t }}</p>
+      <ul role="list">
+        @for (s of toc; track s.id) {
+          <li><a [href]="'#' + s.id" [class.active]="activeSection() === s.id" [attr.aria-current]="activeSection() === s.id ? 'location' : null"
+                 (click)="goTo($event, s.id)"><app-icon [name]="s.icon" [size]="15" /><span>{{ s.title | t }}</span></a></li>
+        }
+      </ul>
+      <div class="toc-steps">
+        @if (t.previous; as p) {
+          <a class="step-link" [routerLink]="['/topics', p.id]">
+            <span class="step-dir"><app-icon name="chevron-left" [size]="13" /> {{ 'topic.previous' | t }}</span>
+            <span class="step-name">{{ p | loc: 'title' }}</span>
+          </a>
+        }
+        @if (t.next; as n) {
+          <a class="step-link" [routerLink]="['/topics', n.id]">
+            <span class="step-dir">{{ 'topic.next' | t }} <app-icon name="chevron-right" [size]="13" /></span>
+            <span class="step-name">{{ n | loc: 'title' }}</span>
+          </a>
+        }
+      </div>
+    </nav>
 
-  <div class="detail-layout">
-    <article class="detail-main">
-      @if (objectives().length > 0) {
-        <section class="card content-section" id="objectives">
-          <h2 class="section-title"><app-icon name="check" /> {{ 'topic.objectives' | t }}</h2>
-          <ul class="objective-list">
-            @for (o of objectives(); track $index) { <li>{{ o }}</li> }
-          </ul>
-        </section>
-      }
-
-      @for (s of sections(); track s.id) {
-        <section class="card content-section" [id]="s.id" data-tour="topic-content">
-          <h2 class="section-title"><app-icon [name]="s.icon" /> {{ s.title | t }}</h2>
-          <p class="prose">{{ s.text }}</p>
-        </section>
-      }
-
-      @if (t.codeSample) {
-        <section class="card content-section" id="code">
-          <h2 class="section-title"><app-icon name="code" /> {{ 'topic.codeExample' | t }}</h2>
-          <app-code-block [code]="t.codeSample" [language]="t.codeLanguage" />
-        </section>
-      }
+    <article class="topic-main">
+      <section class="card content-section overview" id="overview" aria-labelledby="overview-h" data-tour="topic-content">
+        <h2 id="overview-h" class="section-title"><app-icon name="info" /> {{ 'topic.overview' | t }}</h2>
+        <p class="lead">{{ t | loc: 'summary' }}</p>
+        @if (objectives().length > 0) {
+          <div class="objectives" id="objectives">
+            <h3 class="sub-head">{{ 'topic.objectives' | t }}</h3>
+            <ul class="check-list" role="list">
+              @for (o of objectives(); track $index) { <li><app-icon name="check" [size]="15" /><span>{{ o }}</span></li> }
+            </ul>
+          </div>
+        }
+        <dl class="facts">
+          @for (f of facts(); track f.title) {
+            <div class="fact"><dt><app-icon [name]="f.icon" [size]="15" /> {{ f.title | t }}</dt><dd>{{ f.text }}</dd></div>
+          }
+        </dl>
+      </section>
 
       <app-topic-tutorial [topicId]="t.id" />
 
@@ -59,21 +78,34 @@
 
       <app-topic-quiz [topicId]="t.id" />
 
-      <app-topic-discussions [topicId]="t.id" />
+      <section class="card content-section" id="practice" aria-labelledby="practice-h">
+        <h2 id="practice-h" class="section-title"><app-icon name="edit" /> {{ 'topic.practice' | t }}</h2>
+        <div class="tasks">
+          <div class="task">
+            <h3 class="sub-head"><app-icon name="edit" [size]="15" /> {{ 'topic.practiceTask' | t }}</h3>
+            <p class="prose">{{ t | loc: 'practiceTask' }}</p>
+          </div>
+          <div class="task challenge">
+            <h3 class="sub-head"><app-icon name="flame" [size]="15" /> {{ 'topic.challenge' | t }}</h3>
+            <p class="prose">{{ t | loc: 'challenge' }}</p>
+          </div>
+        </div>
+        @if (t.exercises.length > 0) {
+          <h3 class="sub-head">{{ 'topic.exercises' | t }}</h3>
+          <ul class="rows" role="list">
+            @for (e of t.exercises; track e.id) {
+              <li><app-icon [name]="statusIcon(e.status)" [size]="15" class="status-icon" [attr.data-status]="e.status" />
+                <a [routerLink]="['/practice', e.id]">{{ e | loc: 'title' }}</a>
+                <span class="meta">{{ 'exerciseType.' + e.type | t }}</span></li>
+            }
+          </ul>
+        }
+      </section>
 
-      <div class="two-col">
-        <section class="card content-section task-card" id="practice">
-          <h2 class="section-title"><app-icon name="edit" /> {{ 'topic.practiceTask' | t }}</h2>
-          <p class="prose">{{ t | loc: 'practiceTask' }}</p>
-        </section>
-        <section class="card content-section task-card challenge" id="challenge">
-          <h2 class="section-title"><app-icon name="flame" /> {{ 'topic.challenge' | t }}</h2>
-          <p class="prose">{{ t | loc: 'challenge' }}</p>
-        </section>
-      </div>
+      <div id="discussions" class="content-section"><app-topic-discussions [topicId]="t.id" /></div>
 
-      <section class="card content-section" id="resources">
-        <h2 class="section-title"><app-icon name="link" /> {{ 'topic.resources' | t }}</h2>
+      <section class="card content-section" id="resources" aria-labelledby="resources-h">
+        <h2 id="resources-h" class="section-title"><app-icon name="link" /> {{ 'topic.resources' | t }}</h2>
         @if (t.resources.length === 0) {
           <p class="muted">{{ 'topic.noResources' | t }}</p>
         } @else {
@@ -131,11 +163,28 @@
           </ul>
         }
       </section>
+
+      @if (t.previous || t.next) {
+        <nav class="pager" [attr.aria-label]="'topic.moreTopics' | t">
+          @if (t.previous; as p) {
+            <a class="pager-link" [routerLink]="['/topics', p.id]">
+              <span class="step-dir"><app-icon name="chevron-left" [size]="14" /> {{ 'topic.previous' | t }}</span>
+              <span class="pager-name">{{ p | loc: 'title' }}</span>
+            </a>
+          }
+          @if (t.next; as n) {
+            <a class="pager-link next" [routerLink]="['/topics', n.id]">
+              <span class="step-dir">{{ 'topic.next' | t }} <app-icon name="chevron-right" [size]="14" /></span>
+              <span class="pager-name">{{ n | loc: 'title' }}</span>
+            </a>
+          }
+        </nav>
+      }
     </article>
 
-    <aside class="detail-side">
-      <section class="card progress-panel" aria-labelledby="yp-h" data-tour="topic-progress">
-        <h2 id="yp-h" class="card-title">{{ 'topic.yourProgress' | t }}</h2>
+    <aside class="topic-side">
+      <section class="card progress-card" aria-labelledby="yp-h" data-tour="topic-progress">
+        <h2 id="yp-h" class="side-title">{{ 'topic.yourProgress' | t }}</h2>
         <div class="btn-stack">
           @if (t.status === 'Completed' || t.status === 'Skipped') {
             <button type="button" class="btn btn-secondary btn-block" [disabled]="saving()" (click)="update({ status: 'InProgress' })">
@@ -145,14 +194,16 @@
             <button type="button" class="btn btn-primary btn-block" [disabled]="saving()" (click)="update({ status: 'Completed' })">
               <app-icon name="check" [size]="15" /> {{ 'topic.markComplete' | t }}
             </button>
-            @if (t.status === 'NotStarted') {
-              <button type="button" class="btn btn-secondary btn-block" [disabled]="saving()" (click)="update({ status: 'InProgress' })">
-                <app-icon name="play" [size]="15" /> {{ 'topic.markInProgress' | t }}
+            <div class="btn-pair">
+              @if (t.status === 'NotStarted') {
+                <button type="button" class="btn btn-secondary btn-sm" [disabled]="saving()" (click)="update({ status: 'InProgress' })">
+                  <app-icon name="play" [size]="14" /> {{ 'topic.markInProgress' | t }}
+                </button>
+              }
+              <button type="button" class="btn btn-ghost btn-sm" [disabled]="saving()" (click)="markKnown()">
+                <app-icon name="skip" [size]="14" /> {{ 'topic.markKnown' | t }}
               </button>
-            }
-            <button type="button" class="btn btn-ghost btn-block" [disabled]="saving()" (click)="markKnown()">
-              <app-icon name="skip" [size]="15" /> {{ 'topic.markKnown' | t }}
-            </button>
+            </div>
           }
         </div>
 
@@ -168,28 +219,31 @@
           <app-confidence-picker [value]="t.confidence" [disabled]="saving()" (changed)="update({ confidence: $event })" />
         </div>
 
-        <div class="side-block">
-          <p class="label"><app-icon name="repeat" [size]="15" /> {{ 'topic.review' | t }}</p>
+        <div class="side-row">
+          <span class="side-label"><app-icon name="repeat" [size]="15" />
+            @if (t.review; as r) {
+              {{ r.isDue ? ('topic.reviewDue' | t) : ('topic.nextReview' | t: { date: (r.nextReviewOn | fmtDate) }) }}
+            } @else {
+              {{ 'topic.review' | t }}
+            }
+          </span>
           @if (t.review; as r) {
-            <p class="small">{{ r.isDue ? ('topic.reviewDue' | t) : ('topic.nextReview' | t: { date: (r.nextReviewOn | fmtDate) }) }}</p>
-            <div class="row-gap">
-              <a routerLink="/progress" [queryParams]="{ tab: 'review' }" class="btn btn-secondary btn-sm">{{ 'review.reviewNow' | t }}</a>
-              <button type="button" class="btn btn-ghost btn-sm" (click)="toggleReview(t)">{{ 'topic.removeFromReview' | t }}</button>
-            </div>
+            <span class="side-actions">
+              @if (r.isDue) { <a routerLink="/progress" [queryParams]="{ tab: 'review' }" class="btn btn-secondary btn-xs">{{ 'review.reviewNow' | t }}</a> }
+              <button type="button" class="btn btn-ghost btn-xs" (click)="toggleReview(t)">{{ 'topic.removeFromReview' | t }}</button>
+            </span>
           } @else {
-            <button type="button" class="btn btn-secondary btn-sm" (click)="toggleReview(t)">{{ 'topic.addToReview' | t }}</button>
+            <button type="button" class="btn btn-ghost btn-xs" (click)="toggleReview(t)"><app-icon name="plus" [size]="13" /> {{ 'topic.addToReviewShort' | t }}</button>
           }
         </div>
 
-        <div class="side-block">
-          <div class="card-head">
-            <p class="label"><app-icon name="clock" [size]="15" /> {{ 'topic.sessions' | t }}</p>
-            <button type="button" class="btn btn-ghost btn-xs" (click)="logSession()"><app-icon name="plus" [size]="13" /> {{ 'topic.logSession' | t }}</button>
-          </div>
-          <p class="small muted">{{ 'topic.totalStudied' | t: { minutes: t.totalMinutesStudied } }}</p>
-          @if (t.sessions.length === 0) {
-            <p class="small muted">{{ 'topic.noSessions' | t }}</p>
-          } @else {
+        <div class="side-row">
+          <span class="side-label"><app-icon name="clock" [size]="15" /> {{ 'topic.studied' | t: { time: (t.totalMinutesStudied | duration) } }}</span>
+          <button type="button" class="btn btn-ghost btn-xs" (click)="logSession()"><app-icon name="plus" [size]="13" /> {{ 'topic.logSessionShort' | t }}</button>
+        </div>
+        @if (t.sessions.length > 0) {
+          <details class="sessions">
+            <summary>{{ 'topic.showSessions' | t: { n: t.sessions.length } }}</summary>
             <ul class="session-list" role="list">
               @for (s of t.sessions; track s.id) {
                 <li>
@@ -200,13 +254,59 @@
                 </li>
               }
             </ul>
+          </details>
+        }
+      </section>
+
+      <section class="card related-card" aria-labelledby="rel-h" data-tour="topic-related">
+        <h2 id="rel-h" class="side-title">{{ 'topic.related' | t }}</h2>
+
+        <h3 class="side-sub">{{ 'topic.prerequisites' | t }}</h3>
+        @if (t.prerequisites.length === 0) {
+          <p class="muted small">{{ 'topic.none' | t }}</p>
+        } @else {
+          <ul class="rows" role="list">
+            @for (p of t.prerequisites; track p.id) {
+              <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]">{{ p | loc: 'title' }}</a></li>
+            }
+          </ul>
+        }
+
+        @if (t.unlocks.length > 0) {
+          <h3 class="side-sub">{{ 'topic.unlocks' | t }}</h3>
+          <ul class="rows" role="list">
+            @for (p of t.unlocks; track p.id) {
+              <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]">{{ p | loc: 'title' }}</a></li>
+            }
+          </ul>
+        }
+
+        @if (t.projects.length > 0) {
+          <h3 class="side-sub">{{ 'topic.relatedProjects' | t }}</h3>
+          <ul class="rows" role="list">
+            @for (p of t.projects; track p.projectId) {
+              <li><app-icon name="folder" [size]="15" /><a [routerLink]="['/projects', p.projectId]">{{ p | loc: 'title' }}</a>
+                <span class="meta">{{ 'topic.tasks' | t: { n: p.taskCount } }}</span></li>
+            }
+          </ul>
+        }
+
+        @if (t.interviewQuestions.length > 0) {
+          <h3 class="side-sub">{{ 'topic.interviewQs' | t }}</h3>
+          <ul class="rows" role="list">
+            @for (q of allQuestions() ? t.interviewQuestions : t.interviewQuestions.slice(0, 5); track q.id) {
+              <li><app-icon name="chat" [size]="15" /><a routerLink="/interviews" [queryParams]="{ question: q.id }">{{ q | loc: 'question' }}</a></li>
+            }
+          </ul>
+          @if (t.interviewQuestions.length > 5 && !allQuestions()) {
+            <button type="button" class="btn btn-ghost btn-xs more-link" (click)="allQuestions.set(true)">{{ 'topic.allQuestions' | t: { n: t.interviewQuestions.length } }}</button>
           }
-        </div>
+        }
       </section>
 
       @if (t.demand.length > 0) {
         <section class="card demand-card" aria-labelledby="demand-h">
-          <h2 id="demand-h" class="card-title"><app-icon name="briefcase" [size]="16" /> {{ 'topic.marketDemand' | t }}</h2>
+          <h2 id="demand-h" class="side-title"><app-icon name="briefcase" [size]="16" /> {{ 'topic.marketDemand' | t }}</h2>
           <ul class="demand-list" role="list">
             @for (d of t.demand; track d.technology) {
               <li>
@@ -217,68 +317,6 @@
             }
           </ul>
           <p class="muted small">{{ 'topic.demandSource' | t: { from: (t.demand[0].periodFrom | fmtDate: 'short'), to: (t.demand[0].periodTo | fmtDate: 'short') } }}</p>
-        </section>
-      }
-
-      <section class="card" aria-labelledby="rel-h" data-tour="topic-related">
-        <h2 id="rel-h" class="card-title">{{ 'topic.prerequisites' | t }}</h2>
-        @if (t.prerequisites.length === 0) { <p class="muted small">{{ 'topic.none' | t }}</p> }
-        <ul class="link-list" role="list">
-          @for (p of t.prerequisites; track p.id) {
-            <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]">{{ p | loc: 'title' }}</a></li>
-          }
-        </ul>
-        @if (t.unlocks.length > 0) {
-          <h3 class="sub-title">{{ 'topic.unlocks' | t }}</h3>
-          <ul class="link-list" role="list">
-            @for (p of t.unlocks; track p.id) {
-              <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]">{{ p | loc: 'title' }}</a></li>
-            }
-          </ul>
-        }
-        @if (t.samePhase.length > 0) {
-          <h3 class="sub-title">{{ 'topic.samePhase' | t }}</h3>
-          <ul class="link-list" role="list">
-            @for (p of t.samePhase; track p.id) {
-              <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]">{{ p | loc: 'title' }}</a></li>
-            }
-          </ul>
-        }
-      </section>
-
-      @if (t.projects.length > 0) {
-        <section class="card" aria-labelledby="proj-h">
-          <h2 id="proj-h" class="card-title">{{ 'topic.relatedProjects' | t }}</h2>
-          <ul class="link-list" role="list">
-            @for (p of t.projects; track p.projectId) {
-              <li><app-icon name="folder" [size]="15" /><a [routerLink]="['/projects', p.projectId]">{{ p | loc: 'title' }}</a>
-                <span class="muted small">{{ 'topic.tasks' | t: { n: p.taskCount } }}</span></li>
-            }
-          </ul>
-        </section>
-      }
-
-      @if (t.exercises.length > 0) {
-        <section class="card" aria-labelledby="ex-h">
-          <h2 id="ex-h" class="card-title">{{ 'topic.exercises' | t }}</h2>
-          <ul class="link-list" role="list">
-            @for (e of t.exercises; track e.id) {
-              <li><app-icon [name]="statusIcon(e.status)" [size]="15" class="status-icon" [attr.data-status]="e.status" />
-                <a [routerLink]="['/practice', e.id]">{{ e | loc: 'title' }}</a>
-                <span class="muted small">{{ 'exerciseType.' + e.type | t }}</span></li>
-            }
-          </ul>
-        </section>
-      }
-
-      @if (t.interviewQuestions.length > 0) {
-        <section class="card" aria-labelledby="iq-h">
-          <h2 id="iq-h" class="card-title">{{ 'topic.interviewQs' | t }}</h2>
-          <ul class="link-list" role="list">
-            @for (q of t.interviewQuestions; track q.id) {
-              <li><app-icon name="chat" [size]="15" /><a routerLink="/interviews" [queryParams]="{ question: q.id }">{{ q | loc: 'question' }}</a></li>
-            }
-          </ul>
         </section>
       }
     </aside>

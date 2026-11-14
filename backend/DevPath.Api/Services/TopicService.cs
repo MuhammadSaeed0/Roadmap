@@ -99,6 +99,8 @@ public class TopicService(
 
         var state = await stateLoader.LoadAsync(ct);
         var me = state.ById[id];
+        var ordered = state.Topics.OrderBy(t => t.PhaseOrder).ThenBy(t => t.Order).ThenBy(t => t.Id).ToList();
+        var position = ordered.FindIndex(t => t.Id == id);
         TopicRefDto Ref(int topicId) => ProgressCalculator.ToRef(state.ById[topicId]);
 
         var projectLinks = await db.ProjectTaskTopics.AsNoTracking()
@@ -142,7 +144,8 @@ public class TopicService(
             me.Status, me.Knowledge, me.Confidence, me.CompletedAt, state.PrerequisitesMet(me),
             me.PrerequisiteIds.Select(Ref).ToList(),
             state.Dependents.GetValueOrDefault(id, []).Select(Ref).ToList(),
-            state.Topics.Where(t => t.PhaseId == me.PhaseId && t.Id != id).Select(ProgressCalculator.ToRef).ToList(),
+            position > 0 ? ProgressCalculator.ToRef(ordered[position - 1]) : null,
+            position < ordered.Count - 1 ? ProgressCalculator.ToRef(ordered[position + 1]) : null,
             resourceList.OrderBy(r => r.Type).ThenBy(r => r.Id).ToList(),
             projectLinks, questions, exercises,
             sessions.Take(10).ToList(), sessions.Sum(s => s.ActualMinutes), noteCount,

@@ -317,8 +317,8 @@ export const en = {
   },
   topic: {
     whatIsIt: 'What is it?', whyMatters: 'Why does it matter?', howWorks: 'How does it work?', realWorld: 'Real-world example',
-    codeExample: 'Code example', practiceTask: 'Practice task', challenge: 'Independent challenge', resources: 'Recommended resources',
-    prerequisites: 'Prerequisites', unlocks: 'Unlocks', samePhase: 'More in this phase', relatedProjects: 'Related projects',
+    practiceTask: 'Practice task', challenge: 'Independent challenge', resources: 'Recommended resources',
+    prerequisites: 'Prerequisites', unlocks: 'Unlocks', relatedProjects: 'Related projects',
     interviewQs: 'Interview questions', exercises: 'Practice exercises', notes: 'Notes', yourProgress: 'Your progress',
     status: 'Status', knowledge: 'Prior knowledge', markComplete: 'Mark as completed', markInProgress: 'Start',
     markKnown: 'I already know this', reopen: 'Reopen', prereqWarning: 'Some prerequisites aren’t finished yet. You can still study this topic.',
@@ -330,6 +330,10 @@ export const en = {
     tasks: '{n} tasks', none: 'None', deleteSession: 'Delete this study session?', notFound: 'This topic doesn’t exist.', minutes: '{n} min', breadcrumb: 'Roadmap',
     objectives: 'By the end you can', marketDemand: 'Job market demand', demandLine: 'In {postings} of {total} job postings ({required} as a requirement)',
     demandSource: 'From .NET job postings published between {from} and {to}.',
+    onThisPage: 'On this page', overview: 'Overview', practice: 'Practice', tocQuiz: 'Quiz', related: 'Related',
+    previous: 'Previous topic', next: 'Next topic', moreTopics: 'Previous and next topics',
+    addToReviewShort: 'Add to review', studied: 'Studied {time}', logSessionShort: 'Log session',
+    showSessions: 'Show {n} sessions', allQuestions: 'Show all {n} questions',
   },
   projects: {
     title: 'Projects', subtitle: 'Four practical projects, from a console app to your main portfolio system.',

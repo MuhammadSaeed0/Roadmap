@@ -58,7 +58,9 @@ public record TopicDetailDto(
     string PracticeTaskEn, string PracticeTaskAr, string ChallengeEn, string ChallengeAr,
     TopicStatus Status, KnowledgeLevel Knowledge, int? Confidence, DateTime? CompletedAt,
     bool PrerequisitesMet,
-    IReadOnlyList<TopicRefDto> Prerequisites, IReadOnlyList<TopicRefDto> Unlocks, IReadOnlyList<TopicRefDto> SamePhase,
+    IReadOnlyList<TopicRefDto> Prerequisites, IReadOnlyList<TopicRefDto> Unlocks,
+    /// <summary>The topics before and after this one across the whole roadmap (phase order, then topic order).</summary>
+    TopicRefDto? Previous, TopicRefDto? Next,
     IReadOnlyList<ResourceDto> Resources, IReadOnlyList<TopicProjectLinkDto> Projects,
     IReadOnlyList<InterviewRefDto> InterviewQuestions, IReadOnlyList<ExerciseRefDto> Exercises,
     IReadOnlyList<StudySessionDto> Sessions, int TotalMinutesStudied, int NoteCount, ReviewStateDto? Review,

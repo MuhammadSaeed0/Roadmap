@@ -89,12 +89,12 @@ export const content: TourContent = {
     'library-list': { title: 'All topics', body: 'Each row shows the topic’s skill, priority, estimated time and your status. Click a title to open the topic.' },
 
     'topic-header': { title: 'About this topic', body: 'The topic’s skill, priority, estimated time and your status. The breadcrumb takes you back to its phase on the roadmap.' },
-    'topic-content': { title: 'Learn the topic', body: 'What it is, why it matters, how it works and a real-world example, followed by code, a practice task, a challenge and links to resources.' },
+    'topic-content': { title: 'Learn the topic', body: 'Start with the overview: what the topic is, what you will be able to do, why it matters and how it works. Use “On this page” to jump to the lessons, videos, quiz, practice and resources.' },
     'topic-videos': { title: 'Videos', body: 'Curated YouTube videos for this topic. Play them here, mark them as watched or saved, or add your own by pasting a YouTube link.' },
     'topic-quiz': { title: 'Check your understanding', body: 'A quiz in three levels: this topic, this topic mixed with earlier ones, then a wider review. Pass a level to unlock the next one.' },
     'topic-progress': { title: 'Your progress', body: 'Set the status (start, complete or already known), what you already knew, and your confidence from 0 to 5. Add the topic to spaced review, and see your study sessions for it.' },
     'topic-notes': { title: 'Your notes', body: 'Notes you wrote for this topic. Add one here and it’s linked to the topic automatically.' },
-    'topic-related': { title: 'Related', body: 'Prerequisites to learn first, plus the projects, practice exercises and interview questions that use this topic.' },
+    'topic-related': { title: 'Related', body: 'Prerequisites to learn first, the topics this one unlocks, and the projects and interview questions that use it. The previous and next topics on the roadmap are under “On this page” and at the end of the page.' },
 
     'projects-list': { title: 'Your projects', body: 'Each card shows the tech stack, overall progress, tasks done, the current milestone, change requests and the portfolio checklist. A project is meant to start after the roadmap phase named on its card.' },
     'project-hero': { title: 'Project overview', body: 'What you’re building, the tech stack, overall progress and the phase it follows.' },
