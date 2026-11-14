@@ -11,6 +11,8 @@
   gap: 0 24px;
   align-items: start;
 }
+/* Arabic lays grid columns out from the right, so the side panel is listed first to stay on the right there too. */
+:host-context([dir='rtl']) .topic-page { grid-template-columns: 320px minmax(0, 1fr); grid-template-areas: 'side top' 'side main'; }
 .topic-top { grid-area: top; min-width: 0; }
 .topic-main { grid-area: main; }
 .topic-side { grid-area: side; }
@@ -24,6 +26,7 @@
   position: sticky;
   top: calc(var(--topbar-h) + 16px);
   max-height: calc(100vh - var(--topbar-h) - 32px);
+  overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -52,7 +55,7 @@
 @media (prefers-reduced-motion: reduce) { .panel-toggle .chev { transition: none; } }
 
 /* On this page */
-.toc-list { list-style: none; margin: 0 -8px; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.toc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
 .toc-list a {
   display: grid; grid-template-columns: 16px minmax(0, 1fr); align-items: center; gap: 10px;
   min-height: 34px; padding: 6px 10px; border-radius: var(--radius-sm);
@@ -72,7 +75,7 @@
 .step-link:hover { border-color: var(--accent); }
 .step-link:only-child { grid-column: 1 / -1; }
 .step-dir { display: inline-flex; align-items: center; gap: 4px; font-size: 0.75rem; color: var(--muted); }
-.step-name { font-size: 0.84rem; line-height: 1.35; }
+.step-name { font-size: 0.84rem; line-height: 1.4; overflow-wrap: anywhere; }
 
 /* Content */
 .topic-main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
@@ -102,6 +105,7 @@
 
 /* Lists with an icon: the icon keeps its own column, so long titles wrap under the text, not under the icon. */
 .rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.rows li > a { overflow-wrap: anywhere; }
 .rows li { display: grid; grid-template-columns: 16px minmax(0, 1fr); column-gap: 10px; align-items: start; font-size: 0.9rem; line-height: 1.45; }
 .rows li > .icon { margin-top: 2px; color: var(--muted); }
 .rows li > .status-icon[data-status='Completed'] { color: var(--success); }

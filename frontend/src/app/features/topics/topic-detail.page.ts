@@ -9,6 +9,7 @@ import { createLoader } from '../../core/loader';
 import { KnowledgeLevel, Note, TopicDetail, TopicStatus } from '../../core/models';
 import { ConfirmService, ToastService } from '../../core/ui-services';
 import { SessionDialogService } from '../../layout/session-dialog.component';
+import { isolateLatin } from '../../shared/bidi';
 import { IconComponent } from '../../shared/icon.component';
 import { statusIcon } from '../../shared/status';
 import { ConfidencePickerComponent, ErrorStateComponent, SkeletonComponent } from '../../shared/ui.components';
@@ -148,6 +149,15 @@ export default class TopicDetailPage {
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
     }
+  }
+
+  /** A title in the current language, with English terms inside Arabic kept in order. */
+  protected title(item: { titleEn: string; titleAr: string }): string {
+    return isolateLatin(this.i18n.pick(item.titleEn, item.titleAr), this.i18n.lang());
+  }
+
+  protected question(item: { questionEn: string; questionAr: string }): string {
+    return isolateLatin(this.i18n.pick(item.questionEn, item.questionAr), this.i18n.lang());
   }
 
   protected isClosed(id: string): boolean { return this.closedPanels().has(id); }

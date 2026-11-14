@@ -71,7 +71,7 @@
           <ul class="rows" role="list">
             @for (e of t.exercises; track e.id) {
               <li><app-icon [name]="statusIcon(e.status)" [size]="15" class="status-icon" [attr.data-status]="e.status" />
-                <a [routerLink]="['/practice', e.id]">{{ e | loc: 'title' }}</a>
+                <a [routerLink]="['/practice', e.id]" [innerHTML]="title(e)"></a>
                 <span class="meta">{{ 'exerciseType.' + e.type | t }}</span></li>
             }
           </ul>
@@ -145,13 +145,13 @@
           @if (t.previous; as p) {
             <a class="pager-link" [routerLink]="['/topics', p.id]">
               <span class="step-dir"><app-icon name="chevron-left" [size]="14" /> {{ 'topic.previous' | t }}</span>
-              <span class="pager-name">{{ p | loc: 'title' }}</span>
+              <span class="pager-name" [innerHTML]="title(p)"></span>
             </a>
           }
           @if (t.next; as n) {
             <a class="pager-link next" [routerLink]="['/topics', n.id]">
               <span class="step-dir">{{ 'topic.next' | t }} <app-icon name="chevron-right" [size]="14" /></span>
-              <span class="pager-name">{{ n | loc: 'title' }}</span>
+              <span class="pager-name" [innerHTML]="title(n)"></span>
             </a>
           }
         </nav>
@@ -177,13 +177,13 @@
               @if (t.previous; as p) {
                 <a class="step-link" [routerLink]="['/topics', p.id]">
                   <span class="step-dir"><app-icon name="chevron-left" [size]="13" /> {{ 'topic.previous' | t }}</span>
-                  <span class="step-name">{{ p | loc: 'title' }}</span>
+                  <span class="step-name" [innerHTML]="title(p)"></span>
                 </a>
               }
               @if (t.next; as n) {
                 <a class="step-link" [routerLink]="['/topics', n.id]">
                   <span class="step-dir">{{ 'topic.next' | t }} <app-icon name="chevron-right" [size]="13" /></span>
-                  <span class="step-name">{{ n | loc: 'title' }}</span>
+                  <span class="step-name" [innerHTML]="title(n)"></span>
                 </a>
               }
             </div>
@@ -285,7 +285,7 @@
         } @else {
           <ul class="rows" role="list">
             @for (p of t.prerequisites; track p.id) {
-              <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]">{{ p | loc: 'title' }}</a></li>
+              <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]" [innerHTML]="title(p)"></a></li>
             }
           </ul>
         }
@@ -294,7 +294,7 @@
           <h3 class="side-sub">{{ 'topic.unlocks' | t }}</h3>
           <ul class="rows" role="list">
             @for (p of t.unlocks; track p.id) {
-              <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]">{{ p | loc: 'title' }}</a></li>
+              <li><app-icon [name]="statusIcon(p.status)" [size]="15" class="status-icon" [attr.data-status]="p.status" /><a [routerLink]="['/topics', p.id]" [innerHTML]="title(p)"></a></li>
             }
           </ul>
         }
@@ -303,7 +303,7 @@
           <h3 class="side-sub">{{ 'topic.relatedProjects' | t }}</h3>
           <ul class="rows" role="list">
             @for (p of t.projects; track p.projectId) {
-              <li><app-icon name="folder" [size]="15" /><a [routerLink]="['/projects', p.projectId]">{{ p | loc: 'title' }}</a>
+              <li><app-icon name="folder" [size]="15" /><a [routerLink]="['/projects', p.projectId]" [innerHTML]="title(p)"></a>
                 <span class="meta">{{ 'topic.tasks' | t: { n: p.taskCount } }}</span></li>
             }
           </ul>
@@ -313,7 +313,7 @@
           <h3 class="side-sub">{{ 'topic.interviewQs' | t }}</h3>
           <ul class="rows" role="list">
             @for (q of allQuestions() ? t.interviewQuestions : t.interviewQuestions.slice(0, 5); track q.id) {
-              <li><app-icon name="chat" [size]="15" /><a routerLink="/interviews" [queryParams]="{ question: q.id }">{{ q | loc: 'question' }}</a></li>
+              <li><app-icon name="chat" [size]="15" /><a routerLink="/interviews" [queryParams]="{ question: q.id }" [innerHTML]="question(q)"></a></li>
             }
           </ul>
           @if (t.interviewQuestions.length > 5 && !allQuestions()) {
