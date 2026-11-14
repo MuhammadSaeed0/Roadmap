@@ -147,7 +147,8 @@ export class TopicPickerComponent {
       const i = list.indexOf(this.active() as number | null);
       const next = e.key === 'ArrowDown' ? (i + 1) % list.length : (i <= 0 ? list.length - 1 : i - 1);
       this.active.set(list[next]);
-      document.getElementById(this.optionId(list[next]))?.scrollIntoView({ block: 'nearest' });
+      // Optional call: test DOMs (jsdom) have no scrollIntoView.
+      document.getElementById(this.optionId(list[next]))?.scrollIntoView?.({ block: 'nearest' });
     } else if (e.key === 'Enter' && this.open()) {
       e.preventDefault();
       const a = this.active();
