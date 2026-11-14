@@ -98,7 +98,7 @@ public class AccountEmails(IConfiguration config)
     {
         var link = Link("/verify-email", token);
         return Build("verification", to, name, "تأكيد بريدك الإلكتروني · Confirm your email — DevPath",
-            ar: ["شكرًا لتسجيلك في DevPath. اضغط الزر لتأكيد بريدك الإلكتروني. صلاحية الرابط 24 ساعة ويعمل مرة واحدة.",
+            ar: ["شكرًا لتسجيلك في مسار المبرمج. اضغط الزر لتأكيد بريدك الإلكتروني. صلاحية الرابط 24 ساعة ويعمل مرة واحدة.",
                  "بعد التأكيد سيراجع أحد المسؤولين حسابك، وسنرسل لك رسالة عند الموافقة."],
             en: ["Thanks for signing up to DevPath. Use the button to confirm your email address. The link works once and expires in 24 hours.",
                  "After that, an administrator reviews your account and we'll email you once it's approved."],
@@ -118,36 +118,36 @@ public class AccountEmails(IConfiguration config)
 
     public EmailMessage Approved(string to, string name) =>
         Build("approved", to, name, "تمت الموافقة على حسابك · Your account is approved — DevPath",
-            ar: ["تمت الموافقة على حسابك في DevPath، ويمكنك الآن استخدام كل ميزات المنصة."],
+            ar: ["تمت الموافقة على حسابك في مسار المبرمج، ويمكنك الآن استخدام كل ميزات المنصة."],
             en: ["Your DevPath account has been approved. You can now use everything in the app."],
             buttonAr: "ابدأ التعلم", buttonEn: "Start learning", link: Link("/"));
 
     public EmailMessage Rejected(string to, string name, string? reason) =>
         Build("rejected", to, name, "بخصوص طلب حسابك · About your account request — DevPath",
-            ar: ["نأسف، لم تتم الموافقة على طلب حسابك في DevPath.", .. Reason(reason, "السبب")],
+            ar: ["نأسف، لم تتم الموافقة على طلب حسابك في مسار المبرمج.", .. Reason(reason, "السبب")],
             en: ["Sorry, your DevPath account request was not approved.", .. Reason(reason, "Reason")],
             footerAr: "إن كنت تظن أن هذا خطأ فتواصل مع مسؤول المنصة.", footerEn: "If you think this is a mistake, contact the site administrator.");
 
     public EmailMessage Suspended(string to, string name, string? reason) =>
         Build("suspended", to, name, "تم إيقاف حسابك مؤقتًا · Your account is suspended — DevPath",
-            ar: ["تم إيقاف حسابك في DevPath مؤقتًا، ولن تتمكن من استخدام المنصة حتى يعيد أحد المسؤولين تفعيله.", .. Reason(reason, "السبب")],
+            ar: ["تم إيقاف حسابك في مسار المبرمج مؤقتًا، ولن تتمكن من استخدام المنصة حتى يعيد أحد المسؤولين تفعيله.", .. Reason(reason, "السبب")],
             en: ["Your DevPath account has been suspended. You can't use the app until an administrator reactivates it.", .. Reason(reason, "Reason")],
             footerAr: "إن كنت تظن أن هذا خطأ فتواصل مع مسؤول المنصة.", footerEn: "If you think this is a mistake, contact the site administrator.");
 
     public EmailMessage Reactivated(string to, string name) =>
         Build("reactivated", to, name, "تمت إعادة تفعيل حسابك · Your account is active again — DevPath",
-            ar: ["أعاد أحد المسؤولين تفعيل حسابك في DevPath."], en: ["An administrator reactivated your DevPath account."],
-            buttonAr: "افتح DevPath", buttonEn: "Open DevPath", link: Link("/"));
+            ar: ["أعاد أحد المسؤولين تفعيل حسابك في مسار المبرمج."], en: ["An administrator reactivated your DevPath account."],
+            buttonAr: "افتح مسار المبرمج", buttonEn: "Open DevPath", link: Link("/"));
 
     public EmailMessage Promoted(string to, string name) =>
         Build("admin-promoted", to, name, "أصبحت مسؤولًا · You are now an administrator — DevPath",
-            ar: ["منحك المسؤول الرئيسي صلاحيات المسؤول في DevPath. يمكنك الآن مراجعة الحسابات والموافقة عليها من لوحة الإدارة."],
+            ar: ["منحك المسؤول الرئيسي صلاحيات المسؤول في مسار المبرمج. يمكنك الآن مراجعة الحسابات والموافقة عليها من لوحة الإدارة."],
             en: ["The main administrator made you an administrator of DevPath. You can now review and approve accounts in the admin area."],
             buttonAr: "لوحة الإدارة", buttonEn: "Open the admin area", link: Link("/admin"));
 
     public EmailMessage Test(string to, string name) =>
         Build("test", to, name, "رسالة تجريبية · Test email — DevPath",
-            ar: ["هذه رسالة تجريبية من DevPath. وصولها يعني أن إعدادات البريد تعمل."],
+            ar: ["هذه رسالة تجريبية من مسار المبرمج. وصولها يعني أن إعدادات البريد تعمل."],
             en: ["This is a test email from DevPath. If you can read it, email delivery works."]);
 
     private static string[] Reason(string? reason, string label) =>
@@ -187,7 +187,7 @@ public class AccountEmails(IConfiguration config)
                       {Paragraphs(en)}{Button(buttonEn ?? "")}{Footer(footerEn)}{fallback}
                     </td></tr>
                   </table>
-                  <p style="margin:14px 0 0;font-size:12px;color:#9ca3af">DevPath — Full-Stack Developer Academy</p>
+                  <p style="margin:14px 0 0;font-size:12px;color:#9ca3af">DevPath · مسار المبرمج</p>
                 </td></tr>
               </table>
             </body></html>

@@ -1,4 +1,4 @@
-# DevPath — Full-Stack Developer Academy
+# DevPath
 
 A bilingual (English / العربية) learning platform with private accounts that takes beginners from their first line of code to **full-stack .NET + Angular developer**.
 It combines a personalised roadmap, four practical projects, a practice lab, interview preparation, notes, spaced review, analytics and a career-readiness view.

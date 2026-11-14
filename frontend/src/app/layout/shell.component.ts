@@ -36,7 +36,7 @@ const NARROW_MAX = 960;
         @if (authLayout()) {
           <header class="topbar auth-topbar">
             <span class="brand auth-brand">
-              <span class="brand-text"><strong>{{ 'app.name' | t }}</strong><small>{{ 'app.tagline' | t }}</small></span>
+              <span class="brand-text"><strong>{{ 'app.name' | t }}</strong></span>
             </span>
             <div class="topbar-actions">
               <ng-container *ngTemplateOutlet="prefs" />

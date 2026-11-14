@@ -20,12 +20,18 @@
 } @else if (data.error()) {
   <app-error-state [error]="data.error()" (retry)="data.reload()" />
 } @else if (data.value(); as roadmap) {
-  <nav class="story-rail" [attr.aria-label]="'roadmap.title' | t">
+  <nav class="phase-map" [attr.aria-label]="'roadmap.title' | t">
     @for (phase of roadmap.phases; track phase.id) {
-      <button type="button" class="story" [class.current]="phase.id === roadmap.currentPhaseId" [class.done]="phase.percent >= 100"
-              (click)="jump(phase.id)" [attr.aria-label]="(phase | loc: 'title') + ' ' + (phase.percent | fmtNum) + '%'">
-        <span class="story-ring" [style.--pct]="phase.percent"><span class="story-num">{{ phase.order }}</span></span>
-        <span class="story-name">{{ phase | loc: 'title' }}</span>
+      <button type="button" class="phase-tile" [class.current]="phase.id === roadmap.currentPhaseId" [class.done]="phase.percent >= 100"
+              (click)="jump(phase.id)" [attr.aria-current]="phase.id === roadmap.currentPhaseId ? 'step' : null"
+              [attr.aria-label]="(phase | loc: 'title') + ' ' + (phase.percent | fmtNum) + '%'">
+        <span class="phase-tile-ring" [style.--pct]="phase.percent" aria-hidden="true">
+          <span class="phase-tile-num">@if (phase.percent >= 100) { <app-icon name="check" [size]="16" /> } @else { {{ phase.order }} }</span>
+        </span>
+        <span class="phase-tile-text">
+          <span class="phase-tile-name">{{ phase | loc: 'title' }}</span>
+          <span class="phase-tile-meta">{{ phase.doneCount }}/{{ phase.topicCount }} · {{ phase.percent | fmtNum }}%</span>
+        </span>
       </button>
     }
   </nav>
