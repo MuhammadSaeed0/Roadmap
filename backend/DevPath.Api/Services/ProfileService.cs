@@ -127,7 +127,9 @@ public static class ProjectCompletion
         return required.GroupBy(t => t.ProjectId).Where(g => g.All(t => done.Contains(t.Id))).Select(g => g.Key).ToHashSet();
     }
 
-    /// <summary>Projects of the account that a peer reviewed. Peer reviews arrive in a later change; until then none.</summary>
+    /// <summary>Projects of the account that another learner reviewed.</summary>
     public static Task<List<int>> PeerReviewedProjectIdsAsync(AppDbContext db, string userId, CancellationToken ct) =>
-        Task.FromResult(new List<int>());
+        db.ProjectReviewRequests.AsNoTracking()
+            .Where(r => r.RequesterId == userId && r.Status == ReviewRequestStatus.Completed)
+            .Select(r => r.ProjectId).Distinct().ToListAsync(ct);
 }

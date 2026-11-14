@@ -250,6 +250,19 @@ public class SkillAssessmentService(AppDbContext db, SkillRules rules, TimeProvi
             .Select(x => new AcceptedAnswerFact(x.r.Id, x.d.TopicId, x.d.TitleEn, x.d.TitleAr, x.d.UpdatedAt))
             .ToListAsync(ct);
 
+        // Peer reviews are shared rows too. A completed review of your project replaces your self-review,
+        // and counts as Reviewed; reviews you completed for others earn you XP.
+        var peerReviews = userId is null ? [] : await db.ProjectReviewRequests.AsNoTracking()
+            .Where(r => r.RequesterId == userId && r.Status == ReviewRequestStatus.Completed)
+            .OrderBy(r => r.CompletedAt)
+            .Select(r => new { r.ProjectId, r.Scores, r.CompletedAt })
+            .ToListAsync(ct);
+        var latestPeerReview = peerReviews.GroupBy(r => r.ProjectId).ToDictionary(g => g.Key, g => g.Last());
+        var given = userId is null ? [] : await db.ProjectReviewRequests.AsNoTracking()
+            .Where(r => r.ReviewerId == userId && r.Status == ReviewRequestStatus.Completed && r.RequesterId != userId)
+            .Select(r => new ReviewGivenFact(r.Id, r.Project.TitleEn, r.Project.TitleAr, r.CompletedAt!.Value))
+            .ToListAsync(ct);
+
         return new SkillSnapshot(
             topics, watched, curated, notes, questions, answers, attempts,
             interviews.Select(q => new InterviewFact(q.Id, q.TopicId, q.Category, q.Difficulty, q.Rating, q.At)).ToList(),
@@ -262,7 +275,8 @@ public class SkillAssessmentService(AppDbContext db, SkillRules rules, TimeProvi
             projects.Select(p => new ProjectFact(p.Id, p.Slug, p.Order, p.TitleEn, p.TitleAr, p.HasRepository,
                 p.Tasks.Select(t => new ProjectTaskFact(t.Id, t.EstimatedMinutes, t.IsChangeRequest, t.TopicIds, t.Done, t.CompletedAt, t.TitleEn, t.TitleAr)).ToList(),
                 p.PortfolioDone, checklistTotal,
-                reviews.TryGetValue(p.Id, out var r) ? new ProjectReviewFact(ParseScores(r.Scores), r.Verification, r.UpdatedAt) : null)).ToList(),
-            studyMinutes, accepted);
+                latestPeerReview.TryGetValue(p.Id, out var peer) ? new ProjectReviewFact(ParseScores(peer.Scores ?? "{}"), VerificationTier.Reviewed, peer.CompletedAt!.Value)
+                : reviews.TryGetValue(p.Id, out var r) ? new ProjectReviewFact(ParseScores(r.Scores), r.Verification, r.UpdatedAt) : null)).ToList(),
+            studyMinutes, accepted, given);
     }
 }

@@ -63,6 +63,7 @@ export const content: TourContent = {
     paths: { title: 'Learning Paths', summary: 'Ready-made routes through the roadmap for a role, plus paths you build yourself from the topics you need.' },
     path: { title: 'Learning path', summary: 'The topics of one path, grouped by phase, with your progress through them. Activate it to keep it in view.' },
     'path-create': { title: 'Create path', summary: 'Name your path and pick up to 50 topics from any phase.' },
+    reviews: { title: 'Peer reviews', summary: 'Ask another learner to review a finished project against the rubric, and review theirs. A peer review counts more than your own.' },
   },
   sections: {
     nav: { title: 'Main menu', body: 'Every page of DevPath is in these menus, grouped by what you do there: My progress, Learn, Watch & read, Build & practise, Interviews & notes, and Account. The group you’re in is underlined, and each group has its own colour.' },
@@ -178,6 +179,8 @@ export const content: TourContent = {
     'path-topics': { title: 'Topics', body: 'Every topic in the path. A check means you completed it; click one to open it.' },
     'path-details': { title: 'Name and icon', body: 'Give the path a name you will recognise, an icon and an optional description.' },
     'path-pick': { title: 'Pick topics', body: 'Tick topics one by one or take a whole phase at once, up to 50 topics.' },
+    'reviews-tabs': { title: 'Three lists', body: 'Requests you can take (for projects you finished), the reviews you are doing, and the reviews you asked for.' },
+    'reviews-list': { title: 'Review a project', body: 'Open the repository, score each criterion from 0 to 4, add notes and submit. The author is notified.' },
   },
   tips: [
     'Press ? for quick help on the current page.',

@@ -73,6 +73,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
 
     // Learning paths
     public DbSet<LearningPath> LearningPaths => Set<LearningPath>();
+    public DbSet<ProjectReviewRequest> ProjectReviewRequests => Set<ProjectReviewRequest>();
     public DbSet<LearningPathPhase> LearningPathPhases => Set<LearningPathPhase>();
     public DbSet<LearningPathTopic> LearningPathTopics => Set<LearningPathTopic>();
     public DbSet<UserLearningPath> UserLearningPaths => Set<UserLearningPath>();
@@ -542,6 +543,21 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.HasOne(x => x.Recipient).WithMany().HasForeignKey(x => x.RecipientId).OnDelete(DeleteBehavior.Cascade);
             e.HasOne(x => x.Discussion).WithMany().HasForeignKey(x => x.DiscussionId).OnDelete(DeleteBehavior.NoAction);
             e.HasOne(x => x.Actor).WithMany().HasForeignKey(x => x.ActorId).OnDelete(DeleteBehavior.NoAction);
+        });
+
+        // ---------- Peer reviews ----------
+        b.Entity<ProjectReviewRequest>(e =>
+        {
+            e.Property(x => x.RequesterId).HasMaxLength(450);
+            e.Property(x => x.ReviewerId).HasMaxLength(450);
+            e.Property(x => x.RepositoryUrl).HasMaxLength(500);
+            e.Property(x => x.Scores).HasMaxLength(2000);
+            e.Property(x => x.Notes).HasMaxLength(4000);
+            e.HasIndex(x => new { x.Status, x.ProjectId });
+            e.HasIndex(x => new { x.RequesterId, x.ProjectId });
+            e.HasOne(x => x.Project).WithMany().HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.Requester).WithMany().HasForeignKey(x => x.RequesterId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.Reviewer).WithMany().HasForeignKey(x => x.ReviewerId).OnDelete(DeleteBehavior.NoAction);
         });
 
         // ---------- Learning paths ----------

@@ -27,7 +27,7 @@ const POLL_MS = 60_000;
           } @else {
             @for (n of items(); track n.id) {
               <a class="bell-item" [class.unread]="!n.isRead" role="menuitem"
-                 [routerLink]="n.discussionId ? ['/discussions', n.discussionId] : null" (click)="open.set(false)">
+                 [routerLink]="n.discussionId ? ['/discussions', n.discussionId] : n.projectId ? ['/projects', n.projectId] : null" (click)="open.set(false)">
                 <span>{{ i18n.pick(n.messageEn, n.messageAr) }}</span>
                 <small class="muted">{{ n.createdAt | fmtDate }}</small>
               </a>

@@ -177,6 +177,18 @@ export class ApiService {
   deactivatePath(id: number) { return this.delete(`/paths/${id}/activate`); }
   activePaths() { return this.get<M.PathSummary[]>('/paths/active'); }
 
+  // ----- Peer reviews -----
+  reviewRequests() { return this.get<M.ReviewRequestLists>('/review-requests'); }
+  /** The account's latest request for this project; null (204) when there is none. */
+  projectReviewRequest(projectId: number) { return this.get<M.ReviewRequest | null>(`/projects/${projectId}/review-request`); }
+  requestReview(projectId: number) { return this.post<M.ReviewRequest>(`/projects/${projectId}/review-request`, {}); }
+  claimReview(id: number) { return this.post<M.ReviewRequest>(`/review-requests/${id}/claim`, {}); }
+  releaseReview(id: number) { return this.post<M.ReviewRequest>(`/review-requests/${id}/release`, {}); }
+  submitReview(id: number, body: { scores: Record<string, number>; notes: string | null }) {
+    return this.put<M.ReviewRequest>(`/review-requests/${id}/review`, body);
+  }
+  cancelReview(id: number) { return this.delete(`/review-requests/${id}`); }
+
   // ----- Public profile -----
   profileSettings() { return this.get<M.ProfileSettings>('/profile'); }
   updateProfileSettings(body: M.ProfileSettings) { return this.put<M.ProfileSettings>('/profile', body); }

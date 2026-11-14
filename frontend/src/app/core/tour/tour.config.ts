@@ -40,6 +40,7 @@ export const SECTION_IDS = [
   // Discussions and learning paths
   'discussions-ask', 'discussions-filters', 'discussions-list', 'discussion-post', 'discussion-reply',
   'paths-builtin', 'paths-mine', 'path-hero', 'path-topics', 'path-details', 'path-pick',
+  'reviews-tabs', 'reviews-list',
 ] as const;
 export type SectionId = (typeof SECTION_IDS)[number];
 
@@ -47,7 +48,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
   'resources', 'notes', 'progress', 'skills', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
-  'discussions', 'discussion', 'paths', 'path', 'path-create',
+  'discussions', 'discussion', 'paths', 'path', 'path-create', 'reviews',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
 
@@ -79,6 +80,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   paths: ['paths-builtin', 'paths-mine'],
   path: ['path-hero', 'path-topics'],
   'path-create': ['path-details', 'path-pick'],
+  reviews: ['reviews-tabs', 'reviews-list'],
 };
 
 export interface TourContext { isAdmin: boolean; }

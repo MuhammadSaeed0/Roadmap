@@ -1,4 +1,5 @@
 using DevPath.Api.Data;
+using DevPath.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevPath.Api.Services;
@@ -32,6 +33,11 @@ public static class SharedRowCleanup
     public static async Task BeforeDeletingAccountAsync(AppDbContext db, string userId, CancellationToken ct)
     {
         await db.Notifications.Where(n => n.ActorId == userId).ExecuteUpdateAsync(s => s.SetProperty(n => n.ActorId, (string?)null), ct);
+        await db.ProjectReviewRequests.Where(r => r.ReviewerId == userId && r.Status == ReviewRequestStatus.Claimed)
+            .ExecuteUpdateAsync(s => s.SetProperty(r => r.Status, ReviewRequestStatus.Open)
+                .SetProperty(r => r.ReviewerId, (string?)null).SetProperty(r => r.ClaimedAt, (DateTime?)null), ct);
+        await db.ProjectReviewRequests.Where(r => r.ReviewerId == userId)
+            .ExecuteUpdateAsync(s => s.SetProperty(r => r.ReviewerId, (string?)null), ct);
         var ownPaths = db.LearningPaths.Where(p => p.CreatorId == userId && !p.IsBuiltIn).Select(p => p.Id);
         await db.UserLearningPaths.IgnoreQueryFilters().Where(u => ownPaths.Contains(u.LearningPathId)).ExecuteDeleteAsync(ct);
         await db.LearningPaths.Where(p => p.CreatorId == userId && !p.IsBuiltIn).ExecuteDeleteAsync(ct);

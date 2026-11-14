@@ -102,6 +102,10 @@ public sealed class PointRules
     public int DiscussionAccepted { get; init; } = 15;
     /// <summary>Most accepted answers that earn points, so two accounts can't farm XP from each other.</summary>
     public int DiscussionAcceptedCap { get; init; } = 20;
+    /// <summary>Points for each project review you completed for another learner.</summary>
+    public int PeerReviewGiven { get; init; } = 30;
+    /// <summary>Most reviews given that earn points.</summary>
+    public int PeerReviewGivenCap { get; init; } = 20;
     /// <summary>Most self-reported points that count per day (0 = no limit).</summary>
     public int SelfReportedDailyCap { get; init; }
 }

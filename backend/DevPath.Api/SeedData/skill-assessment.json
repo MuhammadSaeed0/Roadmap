@@ -21,6 +21,8 @@
     "portfolioItem": 5,
     "discussionAccepted": 15,
     "discussionAcceptedCap": 20,
+    "peerReviewGiven": 30,
+    "peerReviewGivenCap": 20,
     "selfReportedDailyCap": 600
   },
 

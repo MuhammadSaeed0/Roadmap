@@ -204,6 +204,7 @@ export class ShellComponent {
       { path: '/projects', key: 'nav.projects', icon: 'folder' },
       { path: '/practice', key: 'nav.practice', icon: 'code' },
       { path: '/playground', key: 'nav.playground', icon: 'terminal' },
+      { path: '/reviews', key: 'nav.reviews', icon: 'check-circle' },
     ] },
     { key: 'nav.prepare', items: [
       { path: '/interviews', key: 'nav.interviews', icon: 'chat' },

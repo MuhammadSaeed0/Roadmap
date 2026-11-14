@@ -46,7 +46,8 @@ public enum XpActivity
     ProjectCompleted,
     ProjectReview,
     PortfolioItem,
-    DiscussionAnswerAccepted
+    DiscussionAnswerAccepted,
+    ProjectReviewGiven
 }
 
 /// <summary>

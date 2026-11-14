@@ -31,6 +31,7 @@ const appRoutes: Routes = [
   { path: 'search', loadComponent: () => import('./features/search/search.page'), data: { titleKey: 'nav.search', helpId: 'search', skin: 'bird' } },
   { path: 'discussions', loadComponent: () => import('./features/discussions/discussions.page'), data: { titleKey: 'nav.discussions', helpId: 'discussions', skin: 'chatgreen' } },
   { path: 'discussions/:id', loadComponent: () => import('./features/discussions/discussion-detail.page'), data: { titleKey: 'nav.discussions', helpId: 'discussion', skin: 'chatgreen' } },
+  { path: 'reviews', loadComponent: () => import('./features/reviews/reviews.page'), data: { titleKey: 'nav.reviews', helpId: 'reviews', skin: 'gram' } },
   { path: 'paths', loadComponent: () => import('./features/paths/paths.page'), data: { titleKey: 'nav.paths', helpId: 'paths', skin: 'threads' } },
   { path: 'paths/new', loadComponent: () => import('./features/paths/path-create.page'), data: { titleKey: 'nav.paths', helpId: 'path-create', skin: 'threads' } },
   { path: 'paths/:id/edit', loadComponent: () => import('./features/paths/path-create.page'), data: { titleKey: 'nav.paths', helpId: 'path-create', skin: 'threads' } },

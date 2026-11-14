@@ -59,7 +59,9 @@ public enum NotificationKind
 {
     ReplyToDiscussion,
     AnswerAccepted,
-    VoteMilestone
+    VoteMilestone,
+    ReviewClaimed,
+    ReviewCompleted
 }
 
 public class Notification
@@ -70,6 +72,8 @@ public class Notification
     public NotificationKind Kind { get; set; }
     public int? DiscussionId { get; set; }
     public Discussion? Discussion { get; set; }
+    /// <summary>For peer-review notifications: the project they are about. No foreign key; it only builds a link.</summary>
+    public int? ProjectId { get; set; }
     public string? ActorId { get; set; }
     public AppUser? Actor { get; set; }
 

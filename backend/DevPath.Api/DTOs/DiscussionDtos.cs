@@ -46,7 +46,7 @@ public record AcceptReplyRequest([Required] int? ReplyId);
 // ---------- Notifications ----------
 
 public record NotificationDto(
-    long Id, string Kind, int? DiscussionId,
+    long Id, string Kind, int? DiscussionId, int? ProjectId,
     string? ActorName, string MessageEn, string MessageAr,
     bool IsRead, DateTime CreatedAt);
 

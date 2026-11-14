@@ -10,7 +10,7 @@ export const en = {
     learn: 'Learn', build: 'Build & practise', track: 'My progress', manage: 'Manage', admin: 'Administration',
     playground: 'Code Playground', videos: 'Video Library', cv: 'CV Builder', skills: 'Developer Level', challenges: 'Challenges',
     watch: 'Watch & read', prepare: 'Interviews & notes', account: 'Account',
-    discussions: 'Discussions', paths: 'Learning Paths',
+    discussions: 'Discussions', paths: 'Learning Paths', reviews: 'Peer reviews',
   },
   common: {
     loading: 'Loading…', retry: 'Try again', save: 'Save', saving: 'Saving…', cancel: 'Cancel', delete: 'Delete',
@@ -27,6 +27,10 @@ export const en = {
     title: 'Something went wrong', offline: 'Cannot reach the DevPath API.', server: 'The server had a problem. Please try again.',
     notFound: 'We couldn’t find that page or record.', generic: 'Unexpected error.',
     codes: {
+      project_not_finished: 'Finish every task of the project first.', repository_required: 'Add the project’s repository link first.',
+      review_pending: 'This project already has a review in progress.', own_review: 'You can’t review your own project.',
+      review_not_open: 'Someone else already took this request.', not_reviewer: 'Only the reviewer can do that.',
+      review_not_cancellable: 'This request can no longer be cancelled.', invalid_scores: 'Score every criterion from 0 to 4.',
       invalid_handle: 'Use 3–30 lowercase letters, digits or single hyphens.', handle_taken: 'Another account already uses this name.',
       quiz_locked: 'Pass the previous level first.', quiz_not_available: 'This quiz level isn’t available for this topic.',
       quiz_invalid_answers: 'Answer every question once, then submit again.',
@@ -506,7 +510,7 @@ export const en = {
     activities: {
       VideoWatched: 'Video watched', TopicCompleted: 'Topic completed', QuizQuestion: 'Quiz answer', QuizLevelPassed: 'Quiz level passed',
       InterviewQuestion: 'Interview question', ExerciseCompleted: 'Exercise completed', ExerciseQuality: 'Exercise quality',
-      ProjectTaskCompleted: 'Project task', ProjectCompleted: 'Project completed', ProjectReview: 'Project review', PortfolioItem: 'Portfolio checklist', DiscussionAnswerAccepted: 'Accepted answer',
+      ProjectTaskCompleted: 'Project task', ProjectCompleted: 'Project completed', ProjectReview: 'Project review', PortfolioItem: 'Portfolio checklist', DiscussionAnswerAccepted: 'Accepted answer', ProjectReviewGiven: 'Peer review given',
     },
     req: {
       xp: 'Total XP', overall: 'Overall competency', category: '{category} score', projectTasks: 'Project tasks completed',
@@ -564,6 +568,20 @@ export const en = {
     notFound: 'Profile not found', notFoundHint: 'This profile doesn’t exist or its owner keeps it private.',
     memberSince: 'Learning on DevPath since {date}', xp: 'XP', topics: 'Topics completed', answers: 'Accepted answers',
     reviewed: 'Peer-reviewed projects', projects: 'Completed projects', noProjects: 'No completed projects yet.', peerReviewed: 'Peer reviewed',
+  },
+  reviews: {
+    title: 'Peer reviews', subtitle: 'Review finished projects of other learners, and get yours reviewed. A peer review counts more than reviewing yourself.',
+    tabs: { open: 'Requests to review', reviewing: 'My reviews', requested: 'My requests' },
+    status: { Open: 'Waiting for a reviewer', Claimed: 'Being reviewed', Completed: 'Reviewed', Cancelled: 'Cancelled' },
+    empty: { open: 'No requests to review', reviewing: 'You are not reviewing anything', requested: 'You haven’t asked for a review' },
+    emptyHint: { open: 'Requests appear here for projects you have finished yourself.', reviewing: 'Take a request from the first tab.', requested: 'Finish a project, link its repository, then ask for a review on the project page.' },
+    by: 'By {name}', reviewer: 'Reviewer: {name}', howTo: 'Read the code in the repository, then score each criterion from 0 to 4.',
+    claim: 'Review this project', claimed: 'The project is yours to review.', release: 'Give it back', submit: 'Submit review', submitted: 'Review sent. Thank you!',
+    cancel: 'Cancel request', cancelConfirm: 'Cancel this review request?',
+    cardTitle: 'Peer review', cardIntro: 'Ask a learner who finished this project to review your code against the rubric.',
+    needFinished: 'Finish every task first.', needRepository: 'Add your repository link first.',
+    ask: 'Ask for a peer review', askAgain: 'Ask for another review', asked: 'Review requested. You will be notified when someone takes it.',
+    waiting: 'Your request is waiting for a reviewer.', inReview: '{name} is reviewing your project.', done: 'Reviewed by {name}.',
   },
   discussions: {
     title: 'Discussions', ask: 'Ask a question', reply: 'Reply', accept: 'Accept answer', pin: 'Pin', unpin: 'Unpin',

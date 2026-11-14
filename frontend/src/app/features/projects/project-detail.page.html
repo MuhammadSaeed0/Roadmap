@@ -104,6 +104,7 @@
       </section>
 
       <app-project-review [projectId]="d.summary.id" />
+      <app-peer-review-card [projectId]="d.summary.id" [finished]="d.summary.status === 'completed'" [hasRepository]="!!d.repositoryUrl" />
     </aside>
   </div>
 

@@ -12,7 +12,7 @@ export const ar: Translations = {
     learn: 'تعلّم', build: 'ابنِ وتدرّب', track: 'تقدّمي', manage: 'الإدارة', admin: 'لوحة الإدارة',
     playground: 'ساحة البرمجة', videos: 'مكتبة الفيديوهات', cv: 'منشئ السيرة الذاتية', skills: 'مستوى المطوّر', challenges: 'التحديات',
     watch: 'شاهد واقرأ', prepare: 'المقابلات والملاحظات', account: 'الحساب',
-    discussions: 'النقاشات', paths: 'مسارات التعلم',
+    discussions: 'النقاشات', paths: 'مسارات التعلم', reviews: 'مراجعات الأقران',
   },
   common: {
     loading: 'جارٍ التحميل…', retry: 'إعادة المحاولة', save: 'حفظ', saving: 'جارٍ الحفظ…', cancel: 'إلغاء', delete: 'حذف',
@@ -29,6 +29,10 @@ export const ar: Translations = {
     title: 'حدث خطأ ما', offline: 'تعذّر الوصول إلى واجهة DevPath البرمجية.', server: 'حدثت مشكلة في الخادم. حاول مرة أخرى.',
     notFound: 'لم نعثر على هذه الصفحة أو هذا السجل.', generic: 'خطأ غير متوقع.',
     codes: {
+      project_not_finished: 'أنهِ كل مهام المشروع أولًا.', repository_required: 'أضف رابط مستودع المشروع أولًا.',
+      review_pending: 'لهذا المشروع مراجعة جارية بالفعل.', own_review: 'لا يمكنك مراجعة مشروعك.',
+      review_not_open: 'أخذ شخص آخر هذا الطلب.', not_reviewer: 'لا يقوم بهذا إلا المراجِع.',
+      review_not_cancellable: 'لم يعد بالإمكان إلغاء هذا الطلب.', invalid_scores: 'قيّم كل معيار من 0 إلى 4.',
       invalid_handle: 'استخدم من 3 إلى 30 حرفًا إنجليزيًا صغيرًا أو رقمًا أو شرطة واحدة.', handle_taken: 'هذا الاسم مستخدم في حساب آخر.',
       quiz_locked: 'اجتز المستوى السابق أولًا.', quiz_not_available: 'هذا المستوى من الاختبار غير متاح لهذا الموضوع.',
       quiz_invalid_answers: 'أجب عن كل سؤال مرة واحدة ثم أرسل مرة أخرى.',
@@ -508,7 +512,7 @@ export const ar: Translations = {
     activities: {
       VideoWatched: 'مشاهدة فيديو', TopicCompleted: 'إكمال موضوع', QuizQuestion: 'إجابة اختبار', QuizLevelPassed: 'اجتياز مستوى اختبار',
       InterviewQuestion: 'سؤال مقابلة', ExerciseCompleted: 'إكمال تمرين', ExerciseQuality: 'جودة تمرين',
-      ProjectTaskCompleted: 'مهمة مشروع', ProjectCompleted: 'إكمال مشروع', ProjectReview: 'مراجعة مشروع', PortfolioItem: 'قائمة ملف الأعمال', DiscussionAnswerAccepted: 'إجابة مقبولة',
+      ProjectTaskCompleted: 'مهمة مشروع', ProjectCompleted: 'إكمال مشروع', ProjectReview: 'مراجعة مشروع', PortfolioItem: 'قائمة ملف الأعمال', DiscussionAnswerAccepted: 'إجابة مقبولة', ProjectReviewGiven: 'مراجعة لمشروع زميل',
     },
     req: {
       xp: 'مجموع النقاط', overall: 'الكفاءة الإجمالية', category: 'درجة {category}', projectTasks: 'مهام المشاريع المكتملة',
@@ -566,6 +570,20 @@ export const ar: Translations = {
     notFound: 'الملف غير موجود', notFoundHint: 'هذا الملف غير موجود أو أن صاحبه أبقاه خاصًا.',
     memberSince: 'يتعلّم على DevPath منذ {date}', xp: 'نقاط الخبرة', topics: 'مواضيع مكتملة', answers: 'إجابات مقبولة',
     reviewed: 'مشاريع روجعت من الأقران', projects: 'المشاريع المكتملة', noProjects: 'لا توجد مشاريع مكتملة بعد.', peerReviewed: 'روجع من الأقران',
+  },
+  reviews: {
+    title: 'مراجعات الأقران', subtitle: 'راجع المشاريع التي أنهاها متعلمون آخرون، واطلب مراجعة مشاريعك. مراجعة الأقران تُحتسب أكثر من تقييمك لنفسك.',
+    tabs: { open: 'طلبات للمراجعة', reviewing: 'مراجعاتي', requested: 'طلباتي' },
+    status: { Open: 'بانتظار مراجِع', Claimed: 'قيد المراجعة', Completed: 'تمت مراجعته', Cancelled: 'ملغى' },
+    empty: { open: 'لا توجد طلبات للمراجعة', reviewing: 'لا تراجع أي مشروع حاليًا', requested: 'لم تطلب أي مراجعة' },
+    emptyHint: { open: 'تظهر هنا طلبات المشاريع التي أنهيتها بنفسك.', reviewing: 'خذ طلبًا من التبويب الأول.', requested: 'أنهِ مشروعًا وأضف رابط مستودعه، ثم اطلب المراجعة من صفحة المشروع.' },
+    by: 'من {name}', reviewer: 'المراجِع: {name}', howTo: 'اقرأ الكود في المستودع، ثم قيّم كل معيار من 0 إلى 4.',
+    claim: 'راجع هذا المشروع', claimed: 'المشروع لك لمراجعته.', release: 'أعِده', submit: 'أرسل المراجعة', submitted: 'أُرسلت المراجعة، شكرًا لك!',
+    cancel: 'إلغاء الطلب', cancelConfirm: 'إلغاء طلب المراجعة هذا؟',
+    cardTitle: 'مراجعة الأقران', cardIntro: 'اطلب من متعلم أنهى هذا المشروع أن يراجع كودك حسب معايير التقييم.',
+    needFinished: 'أنهِ كل المهام أولًا.', needRepository: 'أضف رابط مستودعك أولًا.',
+    ask: 'اطلب مراجعة من الأقران', askAgain: 'اطلب مراجعة أخرى', asked: 'طُلبت المراجعة، وسيصلك إشعار عندما يأخذها أحد.',
+    waiting: 'طلبك بانتظار مراجِع.', inReview: 'يراجع {name} مشروعك الآن.', done: 'راجعه {name}.',
   },
   discussions: {
     title: 'النقاشات', ask: 'اطرح سؤالاً', reply: 'ردّ', accept: 'قبول الإجابة', pin: 'تثبيت', unpin: 'إلغاء التثبيت',

@@ -29,7 +29,7 @@ public class NotificationsController(AppDbContext db, ICurrentUser currentUser) 
             .Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
 
         var dtos = items.Select(n => new NotificationDto(
-            n.Id, n.Kind.ToString(), n.DiscussionId,
+            n.Id, n.Kind.ToString(), n.DiscussionId, n.ProjectId,
             n.Actor?.FullName, n.MessageEn, n.MessageAr,
             n.IsRead, n.CreatedAt)).ToList();
 
