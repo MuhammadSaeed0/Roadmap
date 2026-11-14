@@ -247,7 +247,7 @@ public class SkillAssessmentService(AppDbContext db, SkillRules rules, TimeProvi
             .Where(d => d.AcceptedReplyId != null && d.AuthorId != userId)
             .Join(db.DiscussionReplies, d => d.AcceptedReplyId, r => (int?)r.Id, (d, r) => new { d, r })
             .Where(x => x.r.AuthorId == userId)
-            .Select(x => new AcceptedAnswerFact(x.r.Id, x.d.TopicId, x.d.TitleEn, x.d.TitleAr, x.d.UpdatedAt))
+            .Select(x => new AcceptedAnswerFact(x.r.Id, x.d.TopicId, x.d.Title, x.d.Title, x.d.UpdatedAt))
             .ToListAsync(ct);
 
         // Peer reviews are shared rows too. A completed review of your project replaces your self-review,

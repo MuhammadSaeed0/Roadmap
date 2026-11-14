@@ -79,9 +79,9 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
               <div class="discussion-main">
                 <h3 class="discussion-title" dir="auto">
                   @if (d.isPinned) { <app-icon name="pin" [size]="14" /> }
-                  {{ i18n.pick(d.titleEn, d.titleAr) }}
+                  {{ d.title }}
                 </h3>
-                <p class="discussion-excerpt muted small" dir="auto">{{ i18n.pick(d.bodyEn, d.bodyAr) }}</p>
+                <p class="discussion-excerpt muted small" dir="auto">{{ d.body }}</p>
                 <p class="row-gap tiny muted">
                   <span class="chip chip-sm">{{ i18n.pick(d.topicTitleEn, d.topicTitleAr) }}</span>
                   <span>{{ d.authorName ?? ('discussions.deleted' | t) }}</span>
@@ -154,7 +154,7 @@ export default class DiscussionsPage {
     }
     this.posting.set(true);
     try {
-      const d = await this.api.createDiscussion({ topicId: this.askTopic(), titleEn: title, titleAr: title, bodyEn: body, bodyAr: body });
+      const d = await this.api.createDiscussion({ topicId: this.askTopic(), title: title.trim(), body: body.trim() });
       void this.router.navigate(['/discussions', d.id]);
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));

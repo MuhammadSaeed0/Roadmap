@@ -40,7 +40,7 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
 
         var dtos = items.Select(d => new DiscussionSummaryDto(
             d.Id, d.TopicId, d.Topic.TitleEn, d.Topic.TitleAr,
-            d.TitleEn, d.TitleAr, d.BodyEn, d.BodyAr,
+            d.Title, d.Body,
             d.Author?.FullName, d.Score, d.IsPinned, d.AcceptedReplyId.HasValue,
             replyCounts.GetValueOrDefault(d.Id), d.CreatedAt,
             myVotes.GetValueOrDefault(d.Id))).ToList();
@@ -68,13 +68,13 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
 
         var replies = d.Replies.Select(r => new ReplyDto(
             r.Id, r.DiscussionId, r.AuthorId, r.Author?.FullName,
-            r.BodyEn, r.BodyAr, r.Score, r.Id == d.AcceptedReplyId,
+            r.Body, r.Score, r.Id == d.AcceptedReplyId,
             r.CreatedAt, r.UpdatedAt,
             replyVotes.GetValueOrDefault(r.Id))).ToList();
 
         return Ok(new DiscussionDetailDto(
             d.Id, d.TopicId, d.Topic.TitleEn, d.Topic.TitleAr,
-            d.TitleEn, d.TitleAr, d.BodyEn, d.BodyAr,
+            d.Title, d.Body,
             d.AuthorId, d.Author?.FullName, d.Score, d.IsPinned,
             d.AcceptedReplyId, d.CreatedAt, d.UpdatedAt,
             (int?)discussionVote, replies));
@@ -91,8 +91,7 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
         {
             TopicId = request.TopicId!.Value,
             AuthorId = currentUser.Id,
-            TitleEn = request.TitleEn, TitleAr = request.TitleAr,
-            BodyEn = request.BodyEn, BodyAr = request.BodyAr,
+            Title = request.Title.Trim(), Body = request.Body.Trim(),
             CreatedAt = now, UpdatedAt = now
         };
         db.Discussions.Add(d);
@@ -107,8 +106,8 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
         if (d is null) return NotFound();
         if (d.AuthorId != currentUser.Id) return Forbid();
 
-        d.TitleEn = request.TitleEn; d.TitleAr = request.TitleAr;
-        d.BodyEn = request.BodyEn; d.BodyAr = request.BodyAr;
+        d.Title = request.Title.Trim();
+        d.Body = request.Body.Trim();
         d.UpdatedAt = clock.GetUtcNow().UtcDateTime;
         await db.SaveChangesAsync(ct);
         return Ok(await BuildDetailDto(id, ct));
@@ -152,7 +151,7 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
         var reply = new DiscussionReply
         {
             DiscussionId = id, AuthorId = currentUser.Id,
-            BodyEn = request.BodyEn, BodyAr = request.BodyAr,
+            Body = request.Body.Trim(),
             CreatedAt = now, UpdatedAt = now
         };
         db.DiscussionReplies.Add(reply);
@@ -173,7 +172,7 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
         }
 
         return CreatedAtAction(nameof(Get), new { id },
-            new ReplyDto(reply.Id, id, reply.AuthorId, null, reply.BodyEn, reply.BodyAr, 0, false, reply.CreatedAt, reply.UpdatedAt, null));
+            new ReplyDto(reply.Id, id, reply.AuthorId, null, reply.Body, 0, false, reply.CreatedAt, reply.UpdatedAt, null));
     }
 
     [HttpPut("{id:int}/replies/{replyId:int}")]
@@ -183,10 +182,10 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
         if (reply is null) return NotFound();
         if (reply.AuthorId != currentUser.Id) return Forbid();
 
-        reply.BodyEn = request.BodyEn; reply.BodyAr = request.BodyAr;
+        reply.Body = request.Body.Trim();
         reply.UpdatedAt = clock.GetUtcNow().UtcDateTime;
         await db.SaveChangesAsync(ct);
-        return Ok(new ReplyDto(reply.Id, id, reply.AuthorId, reply.Author?.FullName, reply.BodyEn, reply.BodyAr, reply.Score, false, reply.CreatedAt, reply.UpdatedAt, null));
+        return Ok(new ReplyDto(reply.Id, id, reply.AuthorId, reply.Author?.FullName, reply.Body, reply.Score, false, reply.CreatedAt, reply.UpdatedAt, null));
     }
 
     [HttpDelete("{id:int}/replies/{replyId:int}")]

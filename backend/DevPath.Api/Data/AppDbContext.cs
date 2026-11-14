@@ -502,10 +502,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
         {
             e.HasIndex(x => new { x.TopicId, x.IsPinned, x.CreatedAt });
             e.HasIndex(x => new { x.TopicId, x.Score });
-            e.Property(x => x.TitleEn).HasMaxLength(200);
-            e.Property(x => x.TitleAr).HasMaxLength(200);
-            e.Property(x => x.BodyEn).HasMaxLength(4000);
-            e.Property(x => x.BodyAr).HasMaxLength(4000);
+            e.Property(x => x.Title).HasMaxLength(200);
+            e.Property(x => x.Body).HasMaxLength(4000);
             e.Property(x => x.AuthorId).HasMaxLength(450);
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
             e.HasOne(x => x.Author).WithMany().HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.SetNull);
@@ -515,8 +513,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
         b.Entity<DiscussionReply>(e =>
         {
             e.HasIndex(x => new { x.DiscussionId, x.CreatedAt });
-            e.Property(x => x.BodyEn).HasMaxLength(4000);
-            e.Property(x => x.BodyAr).HasMaxLength(4000);
+            e.Property(x => x.Body).HasMaxLength(4000);
             e.Property(x => x.AuthorId).HasMaxLength(450);
             e.HasOne(x => x.Discussion).WithMany(d => d.Replies).HasForeignKey(x => x.DiscussionId).OnDelete(DeleteBehavior.Cascade);
             e.HasOne(x => x.Author).WithMany().HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.SetNull);

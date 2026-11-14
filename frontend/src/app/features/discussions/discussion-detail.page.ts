@@ -39,11 +39,11 @@ import { DiscussionTextComponent } from './discussion-text.component';
           @if (editing() === 'question') {
             <div class="field">
               <label for="edit-title">{{ 'discussions.titleLabel' | t }}</label>
-              <input id="edit-title" class="input" maxlength="200" dir="auto" [value]="i18n.pick(d.titleEn, d.titleAr)" #editTitle />
+              <input id="edit-title" class="input" maxlength="200" dir="auto" [value]="d.title" #editTitle />
             </div>
             <div class="field">
               <label for="edit-body">{{ 'discussions.bodyLabel' | t }}</label>
-              <textarea id="edit-body" class="input" rows="6" maxlength="4000" dir="auto" [value]="i18n.pick(d.bodyEn, d.bodyAr)" #editBody></textarea>
+              <textarea id="edit-body" class="input" rows="6" maxlength="4000" dir="auto" [value]="d.body" #editBody></textarea>
               <span class="tiny muted">{{ 'discussions.codeHint' | t }}</span>
             </div>
             <div class="row-gap">
@@ -51,7 +51,7 @@ import { DiscussionTextComponent } from './discussion-text.component';
               <button type="button" class="btn btn-ghost btn-sm" (click)="editing.set(null)">{{ 'common.cancel' | t }}</button>
             </div>
           } @else {
-            <h2 class="discussion-heading" dir="auto">{{ i18n.pick(d.titleEn, d.titleAr) }}</h2>
+            <h2 class="discussion-heading" dir="auto">{{ d.title }}</h2>
             <p class="row-gap tiny muted">
               <a class="chip chip-sm chip-link" [routerLink]="['/topics', d.topicId]">{{ i18n.pick(d.topicTitleEn, d.topicTitleAr) }}</a>
               <span>{{ d.authorName ?? ('discussions.deleted' | t) }}</span>
@@ -59,7 +59,7 @@ import { DiscussionTextComponent } from './discussion-text.component';
               @if (d.updatedAt > d.createdAt) { <span>{{ 'discussions.edited' | t }}</span> }
               @if (d.isPinned) { <span class="badge"><app-icon name="pin" [size]="12" /> {{ 'discussions.pinned' | t }}</span> }
             </p>
-            <app-discussion-text [text]="i18n.pick(d.bodyEn, d.bodyAr)" />
+            <app-discussion-text [text]="d.body" />
             @if (isAuthor() || auth.isAdmin()) {
               <div class="row-gap">
                 @if (isAuthor()) {
@@ -92,13 +92,13 @@ import { DiscussionTextComponent } from './discussion-text.component';
               <span>{{ r.createdAt | fmtDate }}</span>
             </p>
             @if (editing() === r.id) {
-              <textarea class="input" rows="5" maxlength="4000" dir="auto" [attr.aria-label]="'discussions.editReply' | t" [value]="i18n.pick(r.bodyEn, r.bodyAr)" #editReply></textarea>
+              <textarea class="input" rows="5" maxlength="4000" dir="auto" [attr.aria-label]="'discussions.editReply' | t" [value]="r.body" #editReply></textarea>
               <div class="row-gap">
                 <button type="button" class="btn btn-primary btn-sm" [disabled]="saving()" (click)="saveReply(r.id, editReply.value)">{{ 'common.save' | t }}</button>
                 <button type="button" class="btn btn-ghost btn-sm" (click)="editing.set(null)">{{ 'common.cancel' | t }}</button>
               </div>
             } @else {
-              <app-discussion-text [text]="i18n.pick(r.bodyEn, r.bodyAr)" />
+              <app-discussion-text [text]="r.body" />
               <div class="row-gap">
                 @if (isAuthor() && !d.acceptedReplyId && r.authorId !== d.authorId) {
                   <button type="button" class="btn btn-secondary btn-xs" (click)="accept(r.id)"><app-icon name="check" [size]="13" /> {{ 'discussions.accept' | t }}</button>
@@ -153,7 +153,7 @@ export default class DiscussionDetailPage {
     if (!title.trim() || !body.trim()) { this.toast.error(this.i18n.t('errors.codes.required')); return; }
     this.saving.set(true);
     try {
-      const updated = await this.api.updateDiscussion(this.id, { titleEn: title.trim(), titleAr: title.trim(), bodyEn: body.trim(), bodyAr: body.trim() });
+      const updated = await this.api.updateDiscussion(this.id, { title: title.trim(), body: body.trim() });
       this.data.set(updated);
       this.editing.set(null);
     } catch (e) { this.fail(e); } finally { this.saving.set(false); }
@@ -163,8 +163,8 @@ export default class DiscussionDetailPage {
     if (!body.trim()) { this.toast.error(this.i18n.t('errors.codes.required')); return; }
     this.saving.set(true);
     try {
-      const updated = await this.api.updateReply(this.id, replyId, { bodyEn: body.trim(), bodyAr: body.trim() });
-      this.data.update(v => ({ ...v, replies: v.replies.map(x => x.id === replyId ? { ...x, bodyEn: updated.bodyEn, bodyAr: updated.bodyAr, updatedAt: updated.updatedAt } : x) }));
+      const updated = await this.api.updateReply(this.id, replyId, { body: body.trim() });
+      this.data.update(v => ({ ...v, replies: v.replies.map(x => x.id === replyId ? { ...x, body: updated.body, updatedAt: updated.updatedAt } : x) }));
       this.editing.set(null);
     } catch (e) { this.fail(e); } finally { this.saving.set(false); }
   }
@@ -237,7 +237,7 @@ export default class DiscussionDetailPage {
     }
     this.replying.set(true);
     try {
-      await this.api.createReply(this.id, { bodyEn: body, bodyAr: body });
+      await this.api.createReply(this.id, { body });
       textarea.value = '';
       await this.data.reload();
     } catch (e) { this.fail(e); } finally { this.replying.set(false); }

@@ -327,18 +327,19 @@ export type NotificationKind = 'ReplyToDiscussion' | 'AnswerAccepted' | 'VoteMil
 
 export interface DiscussionSummary {
   id: number; topicId: number; topicTitleEn: string; topicTitleAr: string;
-  titleEn: string; titleAr: string; bodyEn: string; bodyAr: string;
+  /** Written by learners in any language; shown as typed, with dir="auto". */
+  title: string; body: string;
   authorName: string | null; score: number; isPinned: boolean; hasAcceptedReply: boolean;
   replyCount: number; createdAt: string; myVote: number | null;
 }
 export interface ReplyDto {
   id: number; discussionId: number; authorId: string | null; authorName: string | null;
-  bodyEn: string; bodyAr: string; score: number; isAccepted: boolean;
+  body: string; score: number; isAccepted: boolean;
   createdAt: string; updatedAt: string; myVote: number | null;
 }
 export interface DiscussionDetail {
   id: number; topicId: number; topicTitleEn: string; topicTitleAr: string;
-  titleEn: string; titleAr: string; bodyEn: string; bodyAr: string;
+  title: string; body: string;
   authorId: string | null; authorName: string | null; score: number; isPinned: boolean;
   acceptedReplyId: number | null; createdAt: string; updatedAt: string;
   myVote: number | null; replies: ReplyDto[];

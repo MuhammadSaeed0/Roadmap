@@ -28,14 +28,14 @@ public class DiscussionsAndPathsTests(ApiFactory factory) : IClassFixture<ApiFac
 
     private async Task<int> AskAsync(HttpClient client, int topicId = 1, string title = "How does LINQ defer execution?")
     {
-        var response = await client.PostAsJsonAsync("/api/discussions", new { topicId, titleEn = title, titleAr = title, bodyEn = "Please explain.", bodyAr = "Please explain." });
+        var response = await client.PostAsJsonAsync("/api/discussions", new { topicId, title, body = "Please explain." });
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         return (await Json(response))["id"]!.GetValue<int>();
     }
 
     private async Task<int> ReplyAsync(HttpClient client, int discussionId)
     {
-        var response = await client.PostAsJsonAsync($"/api/discussions/{discussionId}/replies", new { bodyEn = "It runs on enumeration.", bodyAr = "It runs on enumeration." });
+        var response = await client.PostAsJsonAsync($"/api/discussions/{discussionId}/replies", new { body = "It runs on enumeration." });
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         return (await Json(response))["id"]!.GetValue<int>();
     }
@@ -49,10 +49,10 @@ public class DiscussionsAndPathsTests(ApiFactory factory) : IClassFixture<ApiFac
         var id = await AskAsync(_a);
 
         var seenByB = await Json(await _b.GetAsync($"/api/discussions/{id}"));
-        Assert.Equal("How does LINQ defer execution?", seenByB["titleEn"]!.GetValue<string>());
+        Assert.Equal("How does LINQ defer execution?", seenByB["title"]!.GetValue<string>());
         Assert.Contains((await Json(await _b.GetAsync("/api/discussions?topicId=1")))["items"]!.AsArray(), d => d!["id"]!.GetValue<int>() == id);
 
-        var edit = new { titleEn = "hijacked", titleAr = "hijacked", bodyEn = "x", bodyAr = "x" };
+        var edit = new { title = "hijacked", body = "x" };
         Assert.Equal(HttpStatusCode.Forbidden, (await _b.PutAsJsonAsync($"/api/discussions/{id}", edit)).StatusCode);
         Assert.Equal(HttpStatusCode.Forbidden, (await _b.DeleteAsync($"/api/discussions/{id}")).StatusCode);
 
@@ -118,7 +118,7 @@ public class DiscussionsAndPathsTests(ApiFactory factory) : IClassFixture<ApiFac
     [Fact]
     public async Task A_discussion_needs_a_real_topic()
     {
-        var response = await _a.PostAsJsonAsync("/api/discussions", new { topicId = 999999, titleEn = "t", titleAr = "t", bodyEn = "b", bodyAr = "b" });
+        var response = await _a.PostAsJsonAsync("/api/discussions", new { topicId = 999999, title = "t", body = "b" });
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 

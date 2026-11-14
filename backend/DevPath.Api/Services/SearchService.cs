@@ -81,10 +81,9 @@ public class SearchService(AppDbContext db)
             .ToListAsync(ct));
 
         AddGroup("discussions", await db.Discussions.AsNoTracking()
-            .Where(x => EF.Functions.Like(x.TitleEn, p) || EF.Functions.Like(x.TitleAr, p)
-                     || EF.Functions.Like(x.BodyEn, p) || EF.Functions.Like(x.BodyAr, p))
+            .Where(x => EF.Functions.Like(x.Title, p) || EF.Functions.Like(x.Body, p))
             .OrderByDescending(x => x.Score).ThenByDescending(x => x.CreatedAt).Take(PerGroup)
-            .Select(x => new SearchHitDto(x.Id, x.TitleEn, x.TitleAr, x.Topic.TitleEn, x.Topic.TitleAr, null, null))
+            .Select(x => new SearchHitDto(x.Id, x.Title, x.Title, x.Topic.TitleEn, x.Topic.TitleAr, null, null))
             .ToListAsync(ct));
 
         return new SearchResultDto(query, groups);
