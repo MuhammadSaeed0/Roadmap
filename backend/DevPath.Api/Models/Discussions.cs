@@ -14,10 +14,9 @@ public class Discussion
     public string? AuthorId { get; set; }
     public AppUser? Author { get; set; }
 
-    public required string TitleEn { get; set; }
-    public required string TitleAr { get; set; }
-    public required string BodyEn { get; set; }
-    public required string BodyAr { get; set; }
+    /// <summary>Written by learners in whatever language they use; the page sets the text direction from the content.</summary>
+    public required string Title { get; set; }
+    public required string Body { get; set; }
 
     public int Score { get; set; }
     public bool IsPinned { get; set; }
@@ -38,8 +37,7 @@ public class DiscussionReply
     public string? AuthorId { get; set; }
     public AppUser? Author { get; set; }
 
-    public required string BodyEn { get; set; }
-    public required string BodyAr { get; set; }
+    public required string Body { get; set; }
     public int Score { get; set; }
 
     public DateTime CreatedAt { get; set; }

@@ -25,7 +25,7 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
           <ul class="link-list" role="list">
             @for (d of items(); track d.id) {
               <li>
-                <a [routerLink]="['/discussions', d.id]" dir="auto">{{ i18n.pick(d.titleEn, d.titleAr) }}</a>
+                <a [routerLink]="['/discussions', d.id]" dir="auto">{{ d.title }}</a>
                 <span class="muted small">
                   · {{ 'discussions.replies' | t:{ n: d.replyCount } }} · {{ d.createdAt | fmtDate }}
                   @if (d.hasAcceptedReply) { · {{ 'discussions.accepted' | t }} }
