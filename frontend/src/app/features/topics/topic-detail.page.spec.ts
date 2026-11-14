@@ -1,3 +1,4 @@
+import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ApiService } from '../../core/api.service';
@@ -59,7 +60,7 @@ describe('TopicDetailPage', () => {
 
   it('lists the sections, merges the summaries into one overview and links the next topic', async () => {
     const el = await render('en');
-    const toc = [...el.querySelectorAll('.topic-toc ul a')].map(a => a.getAttribute('href'));
+    const toc = [...el.querySelectorAll('.toc-list a')].map(a => a.getAttribute('href'));
     expect(toc).toEqual(['#overview', '#tutorial', '#videos', '#quiz', '#practice', '#discussions', '#resources', '#notes']);
     const overview = el.querySelector('#overview')!;
     expect(overview.querySelector('.lead')?.textContent).toContain('S');
@@ -69,6 +70,19 @@ describe('TopicDetailPage', () => {
     const next = [...el.querySelectorAll('.pager-link')];
     expect(next.length).toBe(1);
     expect(next[0].textContent).toContain('Docker');
+  });
+
+  it('folds a side panel and remembers it', async () => {
+    localStorage.removeItem('devpath.topicPanels');
+    const el = await render('en');
+    const toggle = el.querySelector<HTMLButtonElement>('.toc-panel .panel-toggle')!;
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    toggle.click();
+    TestBed.inject(ApplicationRef).tick();
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(el.querySelector('.toc-list')).toBeNull();
+    expect(JSON.parse(localStorage.getItem('devpath.topicPanels') ?? '[]')).toEqual(['toc']);
+    localStorage.removeItem('devpath.topicPanels');
   });
 
   it('hides the objectives and demand when a topic has none', async () => {

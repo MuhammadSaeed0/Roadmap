@@ -17,6 +17,17 @@ import { TopicDiscussionsComponent } from './topic-discussions.component';
 import { TopicTutorialComponent } from './topic-tutorial.component';
 import { TopicVideosComponent } from './topic-videos.component';
 
+const PANELS_KEY = 'devpath.topicPanels';
+
+function readClosedPanels(): ReadonlySet<string> {
+  try {
+    const saved = JSON.parse(localStorage.getItem(PANELS_KEY) ?? '[]');
+    return new Set(Array.isArray(saved) ? saved.filter((v): v is string => typeof v === 'string') : []);
+  } catch {
+    return new Set();
+  }
+}
+
 @Component({
   selector: 'app-topic-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -72,6 +83,8 @@ export default class TopicDetailPage {
   ];
   protected readonly activeSection = signal('overview');
   protected readonly allQuestions = signal(false);
+  /** Side panels the learner folded away; remembered in this browser for every topic. */
+  protected readonly closedPanels = signal<ReadonlySet<string>>(readClosedPanels());
   private readonly host = inject(ElementRef<HTMLElement>).nativeElement as HTMLElement;
   private observer: IntersectionObserver | null = null;
 
@@ -135,6 +148,15 @@ export default class TopicDetailPage {
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
     }
+  }
+
+  protected isClosed(id: string): boolean { return this.closedPanels().has(id); }
+
+  protected togglePanel(id: string): void {
+    const next = new Set(this.closedPanels());
+    if (!next.delete(id)) next.add(id);
+    this.closedPanels.set(next);
+    try { localStorage.setItem(PANELS_KEY, JSON.stringify([...next])); } catch { /* storage unavailable: keep it for this visit only */ }
   }
 
   /** Scrolls to a section without changing the route. */
