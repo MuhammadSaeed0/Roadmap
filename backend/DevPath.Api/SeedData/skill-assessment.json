@@ -19,6 +19,10 @@
     "projectCompletion": { "Small": 100, "Medium": 250, "Advanced": 500 },
     "projectReview": { "Small": 50, "Medium": 100, "Advanced": 150 },
     "portfolioItem": 5,
+    "discussionAccepted": 15,
+    "discussionAcceptedCap": 20,
+    "peerReviewGiven": 30,
+    "peerReviewGivenCap": 20,
     "selfReportedDailyCap": 600
   },
 

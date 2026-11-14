@@ -11,7 +11,9 @@ public record RecommendationInput(
     IReadOnlyDictionary<int, ProjectNeed> ProjectNeeds,
     bool AllowSkippingPrerequisites,
     SkillArea? FocusSkill,
-    int? AvailableMinutes);
+    int? AvailableMinutes,
+    /// <summary>Topics of the learning paths the learner activated; null when none is active.</summary>
+    IReadOnlySet<int>? PathTopicIds = null);
 
 public record ScoredTopic(TopicState Topic, double Score, IReadOnlyList<ReasonDto> Reasons);
 
@@ -43,6 +45,7 @@ public static class RecommendationEngine
     public const double FitsTimeBonus = 5;
     public const double TooLongPenalty = 20;
     public const double SkippedPrerequisitePenalty = 15;
+    public const double ActivePathBonus = 35;
 
     public static IReadOnlyList<ScoredTopic> Rank(RecommendationInput input)
     {
@@ -67,11 +70,15 @@ public static class RecommendationEngine
 
             if (t.Status == TopicStatus.InProgress) Add(InProgressBonus, "inProgress");
 
+            var inPath = input.PathTopicIds?.Contains(t.Id) == true;
+            if (inPath) Add(ActivePathBonus, "activePath");
+
             if (current is not null)
             {
                 if (t.PhaseId == current.Id) Add(CurrentPhaseBonus, "currentPhase");
                 else if (t.PhaseOrder < current.Order) Add(EarlierPhaseBonus, "earlierPhase");
-                else score -= LaterPhasePenaltyPerStep * (t.PhaseOrder - current.Order);
+                // An active path decides what comes next, so its later phases are not pushed back.
+                else if (!inPath) score -= LaterPhasePenaltyPerStep * (t.PhaseOrder - current.Order);
             }
 
             switch (t.Priority)
@@ -113,9 +120,10 @@ public static class RecommendationEngine
             results.Add(new ScoredTopic(t, score, reasons));
         }
 
-        // Deterministic ordering: score, then roadmap order.
+        // Deterministic ordering: an activated path's topics first (the learner chose that route), then score, then roadmap order.
         return results
-            .OrderByDescending(r => r.Score)
+            .OrderByDescending(r => input.PathTopicIds?.Contains(r.Topic.Id) == true)
+            .ThenByDescending(r => r.Score)
             .ThenBy(r => r.Topic.PhaseOrder)
             .ThenBy(r => r.Topic.Order)
             .ToList();

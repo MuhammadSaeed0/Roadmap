@@ -6,18 +6,19 @@ import { createLoader } from '../../core/loader';
 import { KnowledgeLevel, Phase, SKILLS, SkillArea, TopicPriority, TopicStatus } from '../../core/models';
 import { IconComponent } from '../../shared/icon.component';
 import { statusIcon } from '../../shared/status';
-import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../../shared/ui.components';
+import { EmptyStateComponent, ErrorStateComponent, SkeletonComponent } from '../../shared/ui.components';
 
 interface Filters { q: string; skill: SkillArea | ''; status: TopicStatus | ''; phaseId: string; priority: TopicPriority | ''; knowledge: KnowledgeLevel | ''; page: number; pageSize: number; }
 
 @Component({
-  selector: 'app-library-page',
+  selector: 'app-library-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, DurationPipe, PageHeaderComponent,
+  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, DurationPipe,
     SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
-  templateUrl: './library.page.html',
+  templateUrl: './library-list.component.html',
 })
-export default class LibraryPage {
+/** Every topic in one searchable, filterable list: the roadmap's "List" view. */
+export class LibraryListComponent {
   private readonly api = inject(ApiService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -80,6 +81,7 @@ export default class LibraryPage {
   private syncUrl(): void {
     const f = this.filters();
     const queryParams: Record<string, string | number | null> = {
+      view: 'list',
       q: f.q || null, skill: f.skill || null, status: f.status || null, phaseId: f.phaseId || null,
       priority: f.priority || null, knowledge: f.knowledge || null, page: f.page > 1 ? f.page : null, pageSize: f.pageSize !== 20 ? f.pageSize : null,
     };

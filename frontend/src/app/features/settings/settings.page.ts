@@ -1,3 +1,4 @@
+import { ProfileSettingsComponent } from './profile-settings.component';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -14,7 +15,7 @@ import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../
 @Component({
   selector: 'app-settings-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RouterLink, IconComponent, TranslatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent],
+  imports: [ProfileSettingsComponent, ReactiveFormsModule, RouterLink, IconComponent, TranslatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent],
   template: `
     <app-page-header [title]="'settings.title' | t" />
     <div class="grid grid-2">
@@ -89,6 +90,8 @@ import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../
           <button type="button" class="btn btn-ghost" (click)="signOut()"><app-icon name="log-out" [size]="16" /> {{ 'auth.signOut' | t }}</button>
         </div>
       </section>
+
+      <app-profile-settings />
 
       <section class="card" aria-labelledby="ab-h" data-tour="settings-about">
         <h2 id="ab-h" class="card-title"><app-icon name="database" /> {{ 'settings.about' | t }}</h2>

@@ -15,6 +15,7 @@ import { ConfirmDialogComponent, ToastHostComponent } from '../shared/ui.compone
 import { GlobalSearchComponent } from './global-search.component';
 import { SessionDialogComponent } from './session-dialog.component';
 import { HelpMenuComponent } from './tour/help-menu.component';
+import { NotificationBellComponent } from '../shared/notification-bell.component';
 import { TourOverlayComponent } from './tour/tour-overlay.component';
 import { TourWelcomeComponent } from './tour/tour-welcome.component';
 
@@ -26,7 +27,7 @@ const NARROW_MAX = 960;
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, RouterOutlet, RouterLink, RouterLinkActive, IconComponent, TranslatePipe, GlobalSearchComponent,
-    ToastHostComponent, ConfirmDialogComponent, SessionDialogComponent, HelpMenuComponent, TourOverlayComponent, TourWelcomeComponent],
+    ToastHostComponent, ConfirmDialogComponent, SessionDialogComponent, HelpMenuComponent, NotificationBellComponent, TourOverlayComponent, TourWelcomeComponent],
   template: `
     <a class="skip-link" href="#main">{{ 'common.skipToContent' | t }}</a>
 
@@ -93,6 +94,8 @@ const NARROW_MAX = 960;
             <ng-container *ngTemplateOutlet="prefs" />
 
             <app-help-menu class="help-in-topbar" />
+
+            <app-notification-bell />
 
             <div class="menu-wrap account-wrap" data-tour="account">
               <button type="button" class="avatar-btn" (click)="accountOpen.set(!accountOpen())" aria-haspopup="menu"
@@ -187,11 +190,11 @@ export class ShellComponent {
       { path: '/', key: 'nav.dashboard', icon: 'dashboard' },
       { path: '/progress', key: 'nav.progress', icon: 'chart' },
       { path: '/skills', key: 'nav.skills', icon: 'award' },
-      { path: '/career', key: 'nav.career', icon: 'briefcase' },
       { path: '/cv', key: 'nav.cv', icon: 'file' },
     ] },
     { key: 'nav.learn', items: [
       { path: '/roadmap', key: 'nav.roadmap', icon: 'map' },
+      { path: '/paths', key: 'nav.paths', icon: 'route' },
     ] },
     { key: 'nav.watch', items: [
       { path: '/videos', key: 'nav.videos', icon: 'video' },
@@ -201,9 +204,11 @@ export class ShellComponent {
       { path: '/projects', key: 'nav.projects', icon: 'folder' },
       { path: '/practice', key: 'nav.practice', icon: 'code' },
       { path: '/playground', key: 'nav.playground', icon: 'terminal' },
+      { path: '/reviews', key: 'nav.reviews', icon: 'check-circle' },
     ] },
     { key: 'nav.prepare', items: [
       { path: '/interviews', key: 'nav.interviews', icon: 'chat' },
+      { path: '/discussions', key: 'nav.discussions', icon: 'message-square' },
       { path: '/notes', key: 'nav.notes', icon: 'note' },
     ] },
   ];
@@ -211,9 +216,9 @@ export class ShellComponent {
   /** The menu that is open (wide screens open one at a time). */
   protected readonly openGroup = signal<string | null>(null);
   private readonly url = signal('/');
-  /** The group of the page being shown, so its menu button is marked. Topic pages belong to the library. */
+  /** The group of the page being shown, so its menu button is marked. Topic pages belong to the roadmap. */
   protected readonly activeGroup = computed(() => {
-    const path = this.url().split(/[?#]/)[0].replace(/^\/(topics|library)\b/, '/roadmap');
+    const path = this.url().split(/[?#]/)[0].replace(/^\/topics\b/, '/roadmap');
     return this.groups().find(g => g.items.some(i => i.path === '/' ? path === '/' : path === i.path || path.startsWith(i.path + '/')))?.key ?? null;
   });
 
@@ -265,7 +270,7 @@ export class ShellComponent {
 
   /** While you are on a page, its group's button shows the page's name instead of the group's. */
   protected readonly activeLabel = computed(() => {
-    const path = this.url().split(/[?#]/)[0].replace(/^\/(topics|library)\b/, '/roadmap');
+    const path = this.url().split(/[?#]/)[0].replace(/^\/topics\b/, '/roadmap');
     const group = this.groups().find(g => g.key === this.activeGroup());
     const items = [...(group?.items ?? [])].sort((a, b) => b.path.length - a.path.length);
     return items.find(i => i.path === '/' ? path === '/' : path === i.path || path.startsWith(i.path + '/'))?.key ?? group?.key ?? '';

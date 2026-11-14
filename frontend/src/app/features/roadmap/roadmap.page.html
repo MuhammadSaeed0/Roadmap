@@ -1,11 +1,21 @@
 <app-page-header [title]="'roadmap.title' | t" [subtitle]="'roadmap.subtitle' | t">
   <div class="row-gap" data-tour="roadmap-header">
-    <button type="button" class="btn btn-secondary btn-sm" (click)="setAll(true)">{{ 'roadmap.expandAll' | t }}</button>
-    <button type="button" class="btn btn-ghost btn-sm" (click)="setAll(false)">{{ 'roadmap.collapseAll' | t }}</button>
+    <div class="segmented" role="group" [attr.aria-label]="'roadmap.viewLabel' | t">
+      <button type="button" [class.active]="view() === 'phases'" [attr.aria-pressed]="view() === 'phases'" (click)="setView('phases')">
+        <app-icon name="map" [size]="15" /> {{ 'roadmap.views.phases' | t }}</button>
+      <button type="button" [class.active]="view() === 'list'" [attr.aria-pressed]="view() === 'list'" (click)="setView('list')">
+        <app-icon name="format" [size]="15" /> {{ 'roadmap.views.list' | t }}</button>
+    </div>
+    @if (view() === 'phases') {
+      <button type="button" class="btn btn-secondary btn-sm" (click)="setAll(true)">{{ 'roadmap.expandAll' | t }}</button>
+      <button type="button" class="btn btn-ghost btn-sm" (click)="setAll(false)">{{ 'roadmap.collapseAll' | t }}</button>
+    }
   </div>
 </app-page-header>
 
-@if (data.initialLoading()) {
+@if (view() === 'list') {
+  <app-library-list />
+} @else if (data.initialLoading()) {
   @for (i of [1, 2, 3, 4]; track i) { <div class="card"><app-skeleton [rows]="2" [height]="22" /></div> }
 } @else if (data.error()) {
   <app-error-state [error]="data.error()" (retry)="data.reload()" />

@@ -14,6 +14,7 @@ import { IconComponent } from '../../shared/icon.component';
 import { statusIcon } from '../../shared/status';
 import { ConfidencePickerComponent, ErrorStateComponent, SkeletonComponent } from '../../shared/ui.components';
 import { TopicQuizComponent } from './topic-quiz.component';
+import { TopicDiscussionsComponent } from './topic-discussions.component';
 import { TopicTutorialComponent } from './topic-tutorial.component';
 import { TopicVideosComponent } from './topic-videos.component';
 
@@ -21,7 +22,7 @@ import { TopicVideosComponent } from './topic-videos.component';
   selector: 'app-topic-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, ReactiveFormsModule, IconComponent, TranslatePipe, LocalizePipe, DurationPipe, FormatDatePipe,
-    CodeBlockComponent, ConfidencePickerComponent, SkeletonComponent, ErrorStateComponent, TopicVideosComponent, TopicQuizComponent, TopicTutorialComponent],
+    CodeBlockComponent, ConfidencePickerComponent, SkeletonComponent, ErrorStateComponent, TopicVideosComponent, TopicQuizComponent, TopicDiscussionsComponent, TopicTutorialComponent],
   templateUrl: './topic-detail.page.html',
 })
 export default class TopicDetailPage {

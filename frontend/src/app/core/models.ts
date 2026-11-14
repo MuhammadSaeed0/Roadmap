@@ -224,7 +224,7 @@ export interface CareerReadiness {
 }
 
 export interface SearchHit { id: number; titleEn: string; titleAr: string; subtitleEn: string | null; subtitleAr: string | null; parentId: number | null; url: string | null; }
-export type SearchCategory = 'topics' | 'projects' | 'tasks' | 'practice' | 'interview' | 'resources' | 'notes';
+export type SearchCategory = 'topics' | 'projects' | 'tasks' | 'practice' | 'interview' | 'resources' | 'notes' | 'discussions';
 export interface SearchResult { query: string; groups: { category: SearchCategory; items: SearchHit[] }[]; }
 
 export interface LinkCheckResult { checked: number; verified: number; broken: number; unreachable: number; checkedAt: string; }
@@ -321,3 +321,72 @@ export interface ChallengeDomain { key: string; total: number; solved: number; p
 export interface Challenges { items: Challenge[]; domains: ChallengeDomain[]; points: number; maxPoints: number; solved: number; }
 export interface Submission { id: number; passed: number; total: number; createdAt: string; }
 export interface SubmissionDetail extends Submission { exerciseId: number; files: WorkspaceFile[]; }
+
+// ---- Discussions ----
+export type NotificationKind = 'ReplyToDiscussion' | 'AnswerAccepted' | 'VoteMilestone';
+
+export interface DiscussionSummary {
+  id: number; topicId: number; topicTitleEn: string; topicTitleAr: string;
+  titleEn: string; titleAr: string; bodyEn: string; bodyAr: string;
+  authorName: string | null; score: number; isPinned: boolean; hasAcceptedReply: boolean;
+  replyCount: number; createdAt: string; myVote: number | null;
+}
+export interface ReplyDto {
+  id: number; discussionId: number; authorId: string | null; authorName: string | null;
+  bodyEn: string; bodyAr: string; score: number; isAccepted: boolean;
+  createdAt: string; updatedAt: string; myVote: number | null;
+}
+export interface DiscussionDetail {
+  id: number; topicId: number; topicTitleEn: string; topicTitleAr: string;
+  titleEn: string; titleAr: string; bodyEn: string; bodyAr: string;
+  authorId: string | null; authorName: string | null; score: number; isPinned: boolean;
+  acceptedReplyId: number | null; createdAt: string; updatedAt: string;
+  myVote: number | null; replies: ReplyDto[];
+}
+export interface PagedDiscussions { items: DiscussionSummary[]; page: number; pageSize: number; total: number; }
+
+export interface NotificationDto {
+  id: number; kind: string; discussionId: number | null; projectId: number | null;
+  actorName: string | null; messageEn: string; messageAr: string;
+  isRead: boolean; createdAt: string;
+}
+export interface PagedNotifications { items: NotificationDto[]; page: number; pageSize: number; total: number; }
+export interface UnreadCount { count: number; }
+
+// ---- Peer reviews ----
+export type ReviewStatus = 'Open' | 'Claimed' | 'Completed' | 'Cancelled';
+export interface ReviewRequest {
+  id: number; projectId: number; projectTitleEn: string; projectTitleAr: string; techStack: string;
+  requesterName: string; repositoryUrl: string; status: ReviewStatus; reviewerName: string | null;
+  isMine: boolean; isReviewer: boolean; scores: Record<string, number> | null; notes: string | null;
+  createdAt: string; claimedAt: string | null; completedAt: string | null;
+}
+export interface ReviewRequestLists { criteria: string[]; open: ReviewRequest[]; requested: ReviewRequest[]; reviewing: ReviewRequest[]; }
+
+// ---- Public profile ----
+export interface ProfileSettings { isPublic: boolean; handle: string | null; }
+export interface PublicProfile {
+  handle: string; name: string; memberSince: string; level: string; xp: number;
+  topicsCompleted: number; acceptedAnswers: number; reviewedProjects: number;
+  paths: { id: number; nameEn: string; nameAr: string; iconName: string; percent: number }[];
+  projects: { id: number; titleEn: string; titleAr: string; techStack: string; repositoryUrl: string | null; peerReviewed: boolean }[];
+}
+
+// ---- Learning Paths ----
+export interface PathSummary {
+  id: number; slug: string; nameEn: string; nameAr: string;
+  descriptionEn: string; descriptionAr: string; iconName: string;
+  isBuiltIn: boolean; isPublic: boolean; creatorName: string | null;
+  topicCount: number; progressPercent: number; isActivated: boolean;
+}
+/** `status` is "Completed" or "Pending". */
+export interface PathTopicDto { topicId: number; titleEn: string; titleAr: string; sortOrder: number; status: string; }
+export interface PathPhaseDto { phaseId: number; phaseNameEn: string; phaseNameAr: string; sortOrder: number; topics: PathTopicDto[]; }
+/** Built-in paths list their phases; custom paths list individual topics. */
+export interface PathDetail {
+  id: number; slug: string; nameEn: string; nameAr: string;
+  descriptionEn: string; descriptionAr: string; iconName: string;
+  isBuiltIn: boolean; isPublic: boolean; creatorId: string | null; creatorName: string | null;
+  createdAt: string; isActivated: boolean;
+  phases: PathPhaseDto[]; topics: PathTopicDto[];
+}

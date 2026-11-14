@@ -173,6 +173,7 @@ public class AdminService(
         await InTransactionAsync(async () =>
         {
             await AuditAsync(actor, "delete_user", target, target.FullName, ct);
+            await SharedRowCleanup.BeforeDeletingAccountAsync(db, target.Id, ct);
             var deleted = await users.DeleteAsync(target);
             if (!deleted.Succeeded) throw new ApiProblemException(409, "delete_failed", "The account couldn't be deleted. Reload and try again.");
         }, ct);

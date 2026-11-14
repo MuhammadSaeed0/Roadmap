@@ -37,13 +37,18 @@ export const SECTION_IDS = [
   'cv-new', 'cv-list', 'cv-templates', 'cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview',
   'settings-appearance', 'settings-learning', 'settings-account', 'settings-about', 'search-results',
   'admin-stats', 'admin-tabs', 'admin-users',
+  // Discussions and learning paths
+  'discussions-ask', 'discussions-filters', 'discussions-list', 'discussion-post', 'discussion-reply',
+  'paths-builtin', 'paths-mine', 'path-hero', 'path-topics', 'path-details', 'path-pick',
+  'reviews-tabs', 'reviews-list',
 ] as const;
 export type SectionId = (typeof SECTION_IDS)[number];
 
 /** Pages with a guide. Routes name theirs in `data.helpId` (see app.routes.ts), so /topics/:id etc. work. */
 export const HELP_IDS = [
-  'dashboard', 'roadmap', 'library', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
-  'resources', 'notes', 'progress', 'skills', 'career', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
+  'dashboard', 'roadmap', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
+  'resources', 'notes', 'progress', 'skills', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
+  'discussions', 'discussion', 'paths', 'path', 'path-create', 'reviews',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
 
@@ -51,8 +56,7 @@ export type HelpId = (typeof HELP_IDS)[number];
 export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   dashboard: ['dashboard-hero', 'dashboard-today', 'dashboard-continue', 'dashboard-plan', 'dashboard-skills',
     'dashboard-projects', 'dashboard-activity', 'dashboard-actions'],
-  roadmap: ['roadmap-header', 'roadmap-phases'],
-  library: ['library-filters', 'library-list'],
+  roadmap: ['roadmap-header', 'roadmap-phases', 'library-filters', 'library-list'],
   topic: ['topic-header', 'topic-content', 'topic-tutorial', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-notes', 'topic-related'],
   projects: ['projects-list'],
   project: ['project-hero', 'project-milestones', 'project-changes', 'project-portfolio', 'project-repo', 'project-review'],
@@ -65,13 +69,18 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   resources: ['resources-verify', 'resources-filters', 'resources-list'],
   notes: ['notes-new', 'notes-list', 'notes-editor'],
   progress: ['progress-tabs', 'progress-panel'],
-  skills: ['skills-level', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history'],
-  career: ['career-gaps', 'career-areas', 'career-portfolio'],
+  skills: ['skills-level', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history', 'career-gaps', 'career-areas', 'career-portfolio'],
   cv: ['cv-new', 'cv-list', 'cv-templates'],
   'cv-editor': ['cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview'],
   settings: ['settings-appearance', 'settings-learning', 'settings-account', 'settings-about'],
   search: ['search-results'],
   admin: ['admin-stats', 'admin-tabs', 'admin-users'],
+  discussions: ['discussions-ask', 'discussions-filters', 'discussions-list'],
+  discussion: ['discussion-post', 'discussion-reply'],
+  paths: ['paths-builtin', 'paths-mine'],
+  path: ['path-hero', 'path-topics'],
+  'path-create': ['path-details', 'path-pick'],
+  reviews: ['reviews-tabs', 'reviews-list'],
 };
 
 export interface TourContext { isAdmin: boolean; }
@@ -94,7 +103,7 @@ export const MAIN_TOUR: readonly MainStep[] = [
   { id: 'dashboard-continue', route: '/', targets: ['dashboard-continue'] },
   { id: 'dashboard-plan', route: '/', targets: ['dashboard-plan'] },
   { id: 'roadmap-phases', route: '/roadmap', targets: ['roadmap-phases', 'roadmap-header'] },
-  { id: 'library-filters', route: '/library', targets: ['library-filters'] },
+  { id: 'library-filters', route: '/roadmap?view=list', targets: ['library-filters'] },
   { id: 'videos-filters', route: '/videos', targets: ['videos-filters'] },
   { id: 'projects-list', route: '/projects', targets: ['projects-list'] },
   { id: 'practice-types', route: '/practice', targets: ['practice-types'] },
@@ -104,7 +113,7 @@ export const MAIN_TOUR: readonly MainStep[] = [
   { id: 'notes-list', route: '/notes', targets: ['notes-list'] },
   { id: 'progress-tabs', route: '/progress', targets: ['progress-tabs'] },
   { id: 'skills-level', route: '/skills', targets: ['skills-level'] },
-  { id: 'career-gaps', route: '/career', targets: ['career-gaps'] },
+  { id: 'career-gaps', route: '/skills?tab=career', targets: ['career-gaps'] },
   { id: 'cv-templates', route: '/cv', targets: ['cv-templates', 'cv-new'] },
   { id: 'settings-learning', route: '/settings', targets: ['settings-learning'] },
   { id: 'admin-stats', route: '/admin', targets: ['admin-stats'], when: ctx => ctx.isAdmin },

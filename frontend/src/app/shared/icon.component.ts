@@ -78,10 +78,19 @@ const PATHS: Record<string, string> = {
   'file-plus': 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M12 18v-6 M9 15h6',
   format: 'M21 10H7 M21 6H3 M21 14H3 M21 18H7',
   flask: 'M9 3h6 M10 3v6L4.5 19A1.5 1.5 0 0 0 5.8 21h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3 M7 15h10',
+  'message-square': 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z',
+  route: 'M6 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M18 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M9 16h6a3 3 0 0 0 0-6h-1 M15 8h-2',
+  pin: 'M12 17v5 M9 10.76V6h6v4.76a2 2 0 0 0 .55 1.38L17 14H7l1.45-1.86A2 2 0 0 0 9 10.76z',
+  'arrow-left': 'M19 12H5 M12 19l-7-7 7-7',
+  'arrow-up': 'M12 19V5 M5 12l7-7 7 7',
+  bell: 'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9z M13.73 21a2 2 0 0 1-3.46 0',
+  server: 'M4 3h16a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z M4 13h16a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1z M7 7h.01 M7 17h.01',
+  plug: 'M12 22v-5 M9 8V2 M15 8V2 M18 8v4a6 6 0 0 1-12 0V8z',
+  monitor: 'M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z M8 21h8 M12 17v4',
 };
 
 /** Arrows and chevrons point "forward", so they are mirrored in right-to-left mode. */
-const DIRECTIONAL = new Set(['chevron-right', 'chevron-left', 'arrow-right', 'log-out']);
+const DIRECTIONAL = new Set(['chevron-right', 'chevron-left', 'arrow-right', 'arrow-left', 'log-out']);
 
 @Component({
   selector: 'app-icon',

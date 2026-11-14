@@ -59,6 +59,7 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
             await SyncQuizzesAsync(content.Quizzes, topics, ct);
             await SyncTutorialsAsync(content.Tutorials, topics, ct);
             await SyncMarketDemandAsync(content.MarketDemand, topics, ct);
+            await SeedLearningPathsAsync(content.LearningPaths, phases, ct);
 
             await tx.CommitAsync(ct);
         });
@@ -471,6 +472,51 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
         }
         await db.SaveChangesAsync(ct);
     }
+
+    private async Task SeedLearningPathsAsync(List<LearningPathSeed> seeds, Dictionary<string, Phase> phases, CancellationToken ct)
+    {
+        if (seeds.Count == 0) return;
+        var existing = await db.LearningPaths.Include(p => p.Phases)
+            .Where(p => p.IsBuiltIn).ToDictionaryAsync(p => p.Slug, ct);
+
+        foreach (var s in seeds)
+        {
+            if (!existing.TryGetValue(s.Slug, out var lp))
+            {
+                lp = new LearningPath { Slug = s.Slug, NameEn = s.NameEn, NameAr = s.NameAr, IsBuiltIn = true, IsPublic = true, CreatedAt = DateTime.UtcNow };
+                db.LearningPaths.Add(lp);
+            }
+            lp.NameEn = s.NameEn;
+            lp.NameAr = s.NameAr;
+            lp.DescriptionEn = s.DescriptionEn;
+            lp.DescriptionAr = s.DescriptionAr;
+            lp.IconName = s.IconName;
+
+            await db.SaveChangesAsync(ct);
+
+            var existingPhases = lp.Phases.ToDictionary(pp => pp.PhaseId);
+            var wantedPhaseIds = s.Phases
+                .Where(phases.ContainsKey)
+                .Select((slug, i) => (Id: phases[slug].Id, Order: i))
+                .ToList();
+
+            var wantedSet = wantedPhaseIds.Select(p => p.Id).ToHashSet();
+            db.LearningPathPhases.RemoveRange(existingPhases.Values.Where(pp => !wantedSet.Contains(pp.PhaseId)));
+
+            foreach (var (phaseId, order) in wantedPhaseIds)
+            {
+                if (existingPhases.TryGetValue(phaseId, out var pp))
+                {
+                    pp.SortOrder = order;
+                }
+                else
+                {
+                    db.LearningPathPhases.Add(new LearningPathPhase { LearningPathId = lp.Id, PhaseId = phaseId, SortOrder = order });
+                }
+            }
+        }
+        await db.SaveChangesAsync(ct);
+    }
 }
 
 /// <summary>All seed files loaded into memory, plus integrity checks.</summary>
@@ -487,6 +533,7 @@ public class SeedContent
     public List<QuizSeed> Quizzes { get; private init; } = [];
     public List<TutorialSeed> Tutorials { get; private init; } = [];
     public MarketDemandSeed? MarketDemand { get; private init; }
+    public List<LearningPathSeed> LearningPaths { get; private init; } = [];
 
     public static SeedContent Load(string dir, JsonSerializerOptions options)
     {
@@ -524,6 +571,9 @@ public class SeedContent
             MarketDemand = File.Exists(Path.Combine(dir, "market-demand.json"))
                 ? Read<MarketDemandSeed>(Path.Combine(dir, "market-demand.json"))
                 : null,
+            LearningPaths = File.Exists(Path.Combine(dir, "learning-paths.json"))
+                ? Read<List<LearningPathSeed>>(Path.Combine(dir, "learning-paths.json"))
+                : [],
         };
     }
 

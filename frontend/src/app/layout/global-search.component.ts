@@ -6,7 +6,7 @@ import { SearchCategory, SearchHit, SearchResult } from '../core/models';
 import { IconComponent } from '../shared/icon.component';
 
 const ICONS: Record<SearchCategory, string> = {
-  topics: 'book', projects: 'folder', tasks: 'check-circle', practice: 'code', interview: 'chat', resources: 'link', notes: 'note',
+  topics: 'book', projects: 'folder', tasks: 'check-circle', practice: 'code', interview: 'chat', resources: 'link', notes: 'note', discussions: 'message-square',
 };
 
 /** Search-as-you-type in the top bar. Press "/" anywhere to focus it. */
@@ -139,6 +139,7 @@ export function navigateToHit(router: Router, category: SearchCategory, hit: Sea
     case 'practice': void router.navigate(['/practice', hit.id]); break;
     case 'interview': void router.navigate(['/interviews'], { queryParams: { question: hit.id } }); break;
     case 'notes': void router.navigate(['/notes'], { queryParams: { id: hit.id } }); break;
+    case 'discussions': void router.navigate(['/discussions', hit.id]); break;
     case 'resources': if (hit.url) window.open(hit.url, '_blank', 'noopener,noreferrer'); break;
   }
 }

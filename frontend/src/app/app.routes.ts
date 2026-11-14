@@ -5,8 +5,9 @@ import { accountStatusGuard, adminGuard, authGuard, guestGuard } from './core/au
 const appRoutes: Routes = [
   { path: '', loadComponent: () => import('./features/dashboard/dashboard.page'), data: { titleKey: 'nav.dashboard', helpId: 'dashboard', skin: 'snap' } },
   { path: 'roadmap', loadComponent: () => import('./features/roadmap/roadmap.page'), data: { titleKey: 'nav.roadmap', helpId: 'roadmap', skin: 'threads' } },
-  { path: 'library', loadComponent: () => import('./features/library/library.page'), data: { titleKey: 'nav.library', helpId: 'library', skin: 'threads' } },
-  { path: 'topics/:id', loadComponent: () => import('./features/topics/topic-detail.page'), data: { titleKey: 'nav.library', helpId: 'topic', skin: 'threads' } },
+  // The library is the roadmap's list view now; old links keep their filters.
+  { path: 'library', redirectTo: ({ queryParams }) => inject(Router).createUrlTree(['/roadmap'], { queryParams: { ...queryParams, view: 'list' } }) },
+  { path: 'topics/:id', loadComponent: () => import('./features/topics/topic-detail.page'), data: { titleKey: 'nav.roadmap', helpId: 'topic', skin: 'threads' } },
   { path: 'projects', loadComponent: () => import('./features/projects/projects.page'), data: { titleKey: 'nav.projects', helpId: 'projects', skin: 'gram' } },
   { path: 'projects/:id', loadComponent: () => import('./features/projects/project-detail.page'), data: { titleKey: 'nav.projects', helpId: 'project', skin: 'gram' } },
   // The challenges live in the Practice Lab now; old links open that tab.
@@ -23,10 +24,18 @@ const appRoutes: Routes = [
   { path: 'progress', loadComponent: () => import('./features/progress/progress.page'), data: { titleKey: 'nav.progress', helpId: 'progress', skin: 'snap' } },
   { path: 'cv', loadComponent: () => import('./features/cv/cv-dashboard.page'), data: { titleKey: 'nav.cv', helpId: 'cv', skin: 'snap' } },
   { path: 'cv/:id', loadComponent: () => import('./features/cv/cv-editor.page'), data: { titleKey: 'nav.cv', helpId: 'cv-editor', skin: 'snap' } },
-  { path: 'career', loadComponent: () => import('./features/career/career.page'), data: { titleKey: 'nav.career', helpId: 'career', skin: 'snap' } },
+  // Job readiness is a tab of the Developer Level page now; old links open that tab.
+  { path: 'career', redirectTo: () => inject(Router).createUrlTree(['/skills'], { queryParams: { tab: 'career' } }) },
   { path: 'skills', loadComponent: () => import('./features/skills/skill-level.page'), data: { titleKey: 'nav.skills', helpId: 'skills', skin: 'snap' } },
   { path: 'settings', loadComponent: () => import('./features/settings/settings.page'), data: { titleKey: 'nav.settings', helpId: 'settings', skin: 'bird' } },
   { path: 'search', loadComponent: () => import('./features/search/search.page'), data: { titleKey: 'nav.search', helpId: 'search', skin: 'bird' } },
+  { path: 'discussions', loadComponent: () => import('./features/discussions/discussions.page'), data: { titleKey: 'nav.discussions', helpId: 'discussions', skin: 'chatgreen' } },
+  { path: 'discussions/:id', loadComponent: () => import('./features/discussions/discussion-detail.page'), data: { titleKey: 'nav.discussions', helpId: 'discussion', skin: 'chatgreen' } },
+  { path: 'reviews', loadComponent: () => import('./features/reviews/reviews.page'), data: { titleKey: 'nav.reviews', helpId: 'reviews', skin: 'gram' } },
+  { path: 'paths', loadComponent: () => import('./features/paths/paths.page'), data: { titleKey: 'nav.paths', helpId: 'paths', skin: 'threads' } },
+  { path: 'paths/new', loadComponent: () => import('./features/paths/path-create.page'), data: { titleKey: 'nav.paths', helpId: 'path-create', skin: 'threads' } },
+  { path: 'paths/:id/edit', loadComponent: () => import('./features/paths/path-create.page'), data: { titleKey: 'nav.paths', helpId: 'path-create', skin: 'threads' } },
+  { path: 'paths/:id', loadComponent: () => import('./features/paths/path-detail.page'), data: { titleKey: 'nav.paths', helpId: 'path', skin: 'threads' } },
   { path: 'admin', loadComponent: () => import('./features/admin/admin.page'), canActivate: [adminGuard], data: { titleKey: 'nav.admin', helpId: 'admin', skin: 'bird' } },
   { path: '**', loadComponent: () => import('./features/not-found.page'), data: { titleKey: 'notFound.title', skin: 'bird' } },
 ];
@@ -45,6 +54,8 @@ const authRoutes: Routes = [
 // `titleKey` is the translation key shown in the top bar breadcrumb; `helpId` names the page's guide in the Help menu (core/tour).
 export const routes: Routes = [
   ...authRoutes.map((route) => ({ ...route, canActivate: [guestGuard], data: { ...route.data, layout: 'auth', skin: 'bird' } })),
+  // A public profile: readable by anyone, signed in or not.
+  { path: 'u/:handle', loadComponent: () => import('./features/profile/public-profile.page'), data: { titleKey: 'profile.title', layout: 'auth', skin: 'bird' } },
   // Opened from the verification email; works whether or not this browser is signed in.
   { path: 'verify-email', loadComponent: () => import('./features/auth/verify-email.page'), data: { titleKey: 'verify.title', layout: 'auth', skin: 'bird' } },
   // Where signed-in accounts wait for verification or approval, or learn that they were rejected or suspended.

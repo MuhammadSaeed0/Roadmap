@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, signal, untracked } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { ApiError } from '../../core/api-error';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -7,6 +8,7 @@ import { DurationPipe, FormatNumberPipe, LocalizePipe, TranslatePipe } from '../
 import { createLoader } from '../../core/loader';
 import { Phase, TopicStatus, TopicSummary } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
+import { LibraryListComponent } from '../library/library-list.component';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, PageHeaderComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
 import { statusIcon } from '../../shared/status';
@@ -14,7 +16,7 @@ import { statusIcon } from '../../shared/status';
 @Component({
   selector: 'app-roadmap-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, DurationPipe, FormatNumberPipe,
+  imports: [RouterLink, IconComponent, LibraryListComponent, TranslatePipe, LocalizePipe, DurationPipe, FormatNumberPipe,
     PageHeaderComponent, ProgressBarComponent, SkeletonComponent, ErrorStateComponent],
   templateUrl: './roadmap.page.html',
 })
@@ -22,6 +24,10 @@ export default class RoadmapPage {
   private readonly api = inject(ApiService);
   private readonly i18n = inject(I18nService);
   private readonly toast = inject(ToastService);
+  private readonly router = inject(Router);
+
+  /** "phases" (the timeline) or "list" (every topic, searchable and filterable). Kept in ?view= so links and the back button work. */
+  protected readonly view = signal<'phases' | 'list'>('phases');
 
   protected readonly data = createLoader(() => this.api.roadmap());
   protected readonly expanded = signal(new Set<number>());
@@ -29,6 +35,8 @@ export default class RoadmapPage {
   protected readonly statusIcon = statusIcon;
 
   constructor() {
+    inject(ActivatedRoute).queryParamMap.pipe(takeUntilDestroyed())
+      .subscribe(q => this.view.set(q.get('view') === 'list' ? 'list' : 'phases'));
     // Open the current phase the first time data arrives.
     effect(() => {
       const roadmap = this.data.value();
@@ -74,5 +82,10 @@ export default class RoadmapPage {
     } finally {
       this.busy.set(null);
     }
+  }
+
+  protected setView(view: 'phases' | 'list'): void {
+    // Switching drops the list's filters; they belong to the list view only.
+    void this.router.navigate([], { queryParams: view === 'list' ? { view } : {}, replaceUrl: true });
   }
 }

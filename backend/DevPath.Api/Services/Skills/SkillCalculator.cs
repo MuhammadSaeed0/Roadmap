@@ -76,6 +76,8 @@ public sealed class SkillCalculator(SkillRules rules)
         opportunities.AddRange(InterviewOpportunities(s, topics));
         opportunities.AddRange(ExerciseOpportunities(s, topics, categoryOf));
         opportunities.AddRange(ProjectOpportunities(s, topics, categoryOf));
+        opportunities.AddRange(DiscussionOpportunities(s));
+        opportunities.AddRange(ReviewGivenOpportunities(s));
         opportunities = ApplyDailyCap(opportunities);
 
         var categories = rules.Categories
@@ -325,6 +327,29 @@ public sealed class SkillCalculator(SkillRules rules)
                 Pts(p.PortfolioItem * project.PortfolioItemsDone, tier), portfolioMax, ["projects"], [], null,
                 project.TitleEn, project.TitleAr, new ItemRef("project", project.Id));
         }
+    }
+
+    /// <summary>
+    /// Accepted answers add XP only. They carry no category or technology: they exist only once earned, so counting
+    /// them in a competency score would raise its earned and available points together and inflate it.
+    /// </summary>
+    private IEnumerable<Opportunity> DiscussionOpportunities(SkillSnapshot s)
+    {
+        var p = rules.Points;
+        foreach (var a in (s.AcceptedAnswers ?? []).OrderBy(a => a.At).ThenBy(a => a.ReplyId).Take(p.DiscussionAcceptedCap))
+            yield return new Opportunity($"discussion-accept:{a.ReplyId}", XpActivity.DiscussionAnswerAccepted, EvidenceKind.Knowledge,
+                VerificationTier.Reviewed, Pts(p.DiscussionAccepted, VerificationTier.Reviewed), p.DiscussionAccepted, [], [],
+                a.At, a.TitleEn, a.TitleAr, null);
+    }
+
+    /// <summary>Reviewing someone else's project adds XP only, like accepted answers (see above).</summary>
+    private IEnumerable<Opportunity> ReviewGivenOpportunities(SkillSnapshot s)
+    {
+        var p = rules.Points;
+        foreach (var r in (s.ReviewsGiven ?? []).OrderBy(r => r.At).ThenBy(r => r.RequestId).Take(p.PeerReviewGivenCap))
+            yield return new Opportunity($"review-given:{r.RequestId}", XpActivity.ProjectReviewGiven, EvidenceKind.Quality,
+                VerificationTier.Evidenced, Pts(p.PeerReviewGiven, VerificationTier.Evidenced), p.PeerReviewGiven, [], [],
+                r.At, r.ProjectTitleEn, r.ProjectTitleAr, null);
     }
 
     /// <summary>Limits self-reported points per day, so ticking a whole phase at once can't flood the score.</summary>

@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "backend-developer",
+    "nameEn": "Backend Developer",
+    "nameAr": "مطور خلفيات",
+    "descriptionEn": "Master server-side development with C#, ASP.NET Core, Entity Framework, SQL Server and testing.",
+    "descriptionAr": "أتقن تطوير الخوادم مع C# و ASP.NET Core و Entity Framework و SQL Server والاختبار.",
+    "iconName": "server",
+    "phases": ["csharp-fundamentals", "object-oriented-programming", "modern-csharp", "aspnet-core", "ef-core", "sql-server-for-dotnet", "testing"]
+  },
+  {
+    "slug": "full-stack-developer",
+    "nameEn": "Full-Stack Developer",
+    "nameAr": "مطور متكامل",
+    "descriptionEn": "The complete roadmap: backend, frontend, integration, testing and deployment.",
+    "descriptionAr": "المسار الكامل: الخلفيات والواجهات والتكامل والاختبار والنشر.",
+    "iconName": "layers",
+    "phases": ["csharp-fundamentals", "object-oriented-programming", "modern-csharp", "aspnet-core", "ef-core", "sql-server-for-dotnet", "typescript", "angular", "full-stack-integration", "testing", "git-github", "professional-skills", "cloud-devops", "full-stack-projects"]
+  },
+  {
+    "slug": "api-specialist",
+    "nameEn": "API Specialist",
+    "nameAr": "متخصص APIs",
+    "descriptionEn": "Focus on building robust APIs: data access, ASP.NET Core, testing, security and deployment.",
+    "descriptionAr": "ركّز على بناء واجهات برمجة قوية: الوصول للبيانات وASP.NET Core والاختبار والأمان والنشر.",
+    "iconName": "plug",
+    "phases": ["sql-server-for-dotnet", "ef-core", "aspnet-core", "testing", "professional-skills", "cloud-devops"]
+  },
+  {
+    "slug": "frontend-developer",
+    "nameEn": "Frontend Developer",
+    "nameAr": "مطور واجهات",
+    "descriptionEn": "Build modern web interfaces with TypeScript and Angular.",
+    "descriptionAr": "ابنِ واجهات ويب حديثة مع TypeScript و Angular.",
+    "iconName": "monitor",
+    "phases": ["typescript", "angular", "full-stack-integration", "testing"]
+  },
+  {
+    "slug": "database-expert",
+    "nameEn": "Database Expert",
+    "nameAr": "خبير قواعد بيانات",
+    "descriptionEn": "Deep dive into SQL Server and Entity Framework Core for performance and advanced queries.",
+    "descriptionAr": "تعمّق في SQL Server و Entity Framework Core للأداء والاستعلامات المتقدمة.",
+    "iconName": "database",
+    "phases": ["sql-server-for-dotnet", "ef-core"]
+  }
+]

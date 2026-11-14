@@ -196,6 +196,8 @@ builder.Services.AddScoped<CareerReadinessService>();
 builder.Services.AddSingleton(_ => DevPath.Api.Services.Skills.SkillRules.Load());
 builder.Services.AddScoped<DevPath.Api.Services.Skills.SkillAssessmentService>();
 builder.Services.AddScoped<SearchService>();
+builder.Services.AddScoped<ProfileService>();
+builder.Services.AddScoped<PeerReviewService>();
 builder.Services.AddScoped<TopicVideoService>();
 builder.Services.AddScoped<QuizService>();
 builder.Services.AddScoped<PlaygroundService>();

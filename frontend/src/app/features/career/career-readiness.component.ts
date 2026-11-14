@@ -8,7 +8,7 @@ import { createLoader } from '../../core/loader';
 import { PortfolioItem, Reason, ReadinessArea } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
-import { ErrorStateComponent, PageHeaderComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
+import { ErrorStateComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
 
 const AREA_ICONS: Record<string, string> = {
   coreTopics: 'book', confidence: 'target', projects: 'folder', features: 'layers',
@@ -16,12 +16,12 @@ const AREA_ICONS: Record<string, string> = {
 };
 
 @Component({
-  selector: 'app-career-page',
+  selector: 'app-career-readiness',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, FormatNumberPipe, PageHeaderComponent,
+  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, FormatNumberPipe,
     ProgressBarComponent, SkeletonComponent, ErrorStateComponent],
   template: `
-    <app-page-header [title]="'career.title' | t" [subtitle]="'career.subtitle' | t" />
+    <p class="muted">{{ 'career.subtitle' | t }}</p>
     <p class="callout callout-info"><app-icon name="info" /> {{ 'career.disclaimer' | t }}</p>
 
     @if (data.initialLoading()) {
@@ -95,7 +95,8 @@ const AREA_ICONS: Record<string, string> = {
     }
   `,
 })
-export default class CareerPage {
+/** Job readiness: eight evidence-based areas, the top gaps and the portfolio checklist. A tab of the Developer Level page. */
+export class CareerReadinessComponent {
   private readonly api = inject(ApiService);
   private readonly i18n = inject(I18nService);
   private readonly toast = inject(ToastService);

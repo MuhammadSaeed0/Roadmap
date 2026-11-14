@@ -133,6 +133,67 @@ export class ApiService {
     return this.put<void>(`/videos/${encodeURIComponent(videoId)}/progress`, { topicId, ...flags });
   }
 
+  // ----- Discussions -----
+  discussions(query: Query = {}) { return this.get<M.PagedDiscussions>('/discussions', query); }
+  discussion(id: number) { return this.get<M.DiscussionDetail>(`/discussions/${id}`); }
+  createDiscussion(body: { topicId: number; titleEn: string; titleAr: string; bodyEn: string; bodyAr: string }) {
+    return this.post<M.DiscussionDetail>('/discussions', body);
+  }
+  updateDiscussion(id: number, body: { titleEn: string; titleAr: string; bodyEn: string; bodyAr: string }) {
+    return this.put<M.DiscussionDetail>(`/discussions/${id}`, body);
+  }
+  deleteDiscussion(id: number) { return this.delete(`/discussions/${id}`); }
+  createReply(discussionId: number, body: { bodyEn: string; bodyAr: string }) {
+    return this.post<M.ReplyDto>(`/discussions/${discussionId}/replies`, body);
+  }
+  updateReply(discussionId: number, replyId: number, body: { bodyEn: string; bodyAr: string }) {
+    return this.put<M.ReplyDto>(`/discussions/${discussionId}/replies/${replyId}`, body);
+  }
+  deleteReply(discussionId: number, replyId: number) { return this.delete(`/discussions/${discussionId}/replies/${replyId}`); }
+  acceptReply(discussionId: number, replyId: number) { return this.post<void>(`/discussions/${discussionId}/accept`, { replyId }); }
+  voteDiscussion(discussionId: number, value: number) { return this.post<{ score: number }>(`/discussions/${discussionId}/vote`, { value }); }
+  voteReply(discussionId: number, replyId: number, value: number) {
+    return this.post<{ score: number }>(`/discussions/${discussionId}/replies/${replyId}/vote`, { value });
+  }
+  pinDiscussion(id: number) { return this.post<{ isPinned: boolean }>(`/discussions/${id}/pin`, {}); }
+
+  // ----- Notifications -----
+  notifications(query: Query = {}) { return this.get<M.PagedNotifications>('/notifications', query); }
+  unreadCount() { return this.get<M.UnreadCount>('/notifications/count'); }
+  markNotificationsRead(ids: number[]) { return this.post<void>('/notifications/read', { ids }); }
+  markAllNotificationsRead() { return this.post<void>('/notifications/read-all', {}); }
+
+  // ----- Learning Paths -----
+  paths() { return this.get<M.PathSummary[]>('/paths'); }
+  path(id: number) { return this.get<M.PathDetail>(`/paths/${id}`); }
+  createPath(body: { nameEn: string; nameAr: string; descriptionEn: string; descriptionAr: string; iconName: string; topicIds: number[] }) {
+    return this.post<M.PathDetail>('/paths', body);
+  }
+  updatePath(id: number, body: { nameEn: string; nameAr: string; descriptionEn: string; descriptionAr: string; iconName: string; topicIds: number[] }) {
+    return this.put<M.PathDetail>(`/paths/${id}`, body);
+  }
+  deletePath(id: number) { return this.delete(`/paths/${id}`); }
+  activatePath(id: number) { return this.post<void>(`/paths/${id}/activate`, {}); }
+  deactivatePath(id: number) { return this.delete(`/paths/${id}/activate`); }
+  activePaths() { return this.get<M.PathSummary[]>('/paths/active'); }
+
+  // ----- Peer reviews -----
+  reviewRequests() { return this.get<M.ReviewRequestLists>('/review-requests'); }
+  /** The account's latest request for this project; null (204) when there is none. */
+  projectReviewRequest(projectId: number) { return this.get<M.ReviewRequest | null>(`/projects/${projectId}/review-request`); }
+  requestReview(projectId: number) { return this.post<M.ReviewRequest>(`/projects/${projectId}/review-request`, {}); }
+  claimReview(id: number) { return this.post<M.ReviewRequest>(`/review-requests/${id}/claim`, {}); }
+  releaseReview(id: number) { return this.post<M.ReviewRequest>(`/review-requests/${id}/release`, {}); }
+  submitReview(id: number, body: { scores: Record<string, number>; notes: string | null }) {
+    return this.put<M.ReviewRequest>(`/review-requests/${id}/review`, body);
+  }
+  cancelReview(id: number) { return this.delete(`/review-requests/${id}`); }
+
+  // ----- Public profile -----
+  profileSettings() { return this.get<M.ProfileSettings>('/profile'); }
+  updateProfileSettings(body: M.ProfileSettings) { return this.put<M.ProfileSettings>('/profile', body); }
+  publicProfile(handle: string) { return this.get<M.PublicProfile>(`/profiles/${encodeURIComponent(handle)}`); }
+
   // ----- plumbing -----
   private get<T>(path: string, query: Query = {}): Promise<T> {
     return this.run(this.http.get<T>(this.base + path, { params: toParams(query) }));

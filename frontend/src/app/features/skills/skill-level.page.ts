@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ApiService } from '../../core/api.service';
 import { ApiError } from '../../core/api-error';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -7,6 +8,7 @@ import { FormatDatePipe, FormatNumberPipe, LocalizePipe, TranslatePipe } from '.
 import { createLoader } from '../../core/loader';
 import { EvidenceScore, ItemRef, SkillAction, SkillRequirement, XpTransaction } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
+import { CareerReadinessComponent } from '../career/career-readiness.component';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, PageHeaderComponent, ProgressBarComponent, ProgressRingComponent, SkeletonComponent } from '../../shared/ui.components';
 
@@ -20,7 +22,7 @@ type Tone = 'danger' | 'warning' | 'accent' | 'success';
 @Component({
   selector: 'app-skill-level-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, FormatNumberPipe, FormatDatePipe, PageHeaderComponent,
+  imports: [RouterLink, IconComponent, CareerReadinessComponent, TranslatePipe, LocalizePipe, FormatNumberPipe, FormatDatePipe, PageHeaderComponent,
     ProgressBarComponent, ProgressRingComponent, SkeletonComponent, ErrorStateComponent],
   styles: `
     /* One even gap between every block of the page (the global .card + .card rule misses a card followed by a grid). */
@@ -70,6 +72,17 @@ type Tone = 'danger' | 'warning' | 'accent' | 'success';
   `,
   template: `
     <app-page-header [title]="'devLevel.title' | t" [subtitle]="'devLevel.subtitle' | t" />
+
+    <div class="tabs" role="tablist" [attr.aria-label]="'devLevel.title' | t">
+      @for (t of tabs; track t) {
+        <button type="button" role="tab" [id]="'skills-tab-' + t" [attr.aria-selected]="tab() === t" [attr.aria-controls]="'skills-panel-' + t"
+                [class.active]="tab() === t" (click)="setTab(t)">{{ 'devLevel.tabs.' + t | t }}</button>
+      }
+    </div>
+
+    @if (tab() === 'career') {
+      <div role="tabpanel" id="skills-panel-career" aria-labelledby="skills-tab-career"><app-career-readiness /></div>
+    } @else {
 
     @if (data.initialLoading()) {
       <div class="grid grid-2">@for (i of [1, 2, 3, 4]; track i) { <div class="card"><app-skeleton [rows]="4" /></div> }</div>
@@ -302,10 +315,25 @@ type Tone = 'danger' | 'warning' | 'accent' | 'success';
         </section>
       </div>
     }
+    }
   `,
 })
 export default class SkillLevelPage {
   private readonly api = inject(ApiService);
+  private readonly router = inject(Router);
+  protected readonly tabs = ['level', 'career'] as const;
+  protected readonly tab = signal<'level' | 'career'>('level');
+
+  constructor() {
+    // /career redirects here with ?tab=career, and the tour can switch tabs while the page is open.
+    inject(ActivatedRoute).queryParamMap.pipe(takeUntilDestroyed())
+      .subscribe(q => this.tab.set(q.get('tab') === 'career' ? 'career' : 'level'));
+  }
+
+  protected setTab(tab: 'level' | 'career'): void {
+    void this.router.navigate([], { queryParams: { tab: tab === 'level' ? null : tab }, replaceUrl: true });
+  }
+
   private readonly i18n = inject(I18nService);
   private readonly toast = inject(ToastService);
   protected readonly data = createLoader(() => this.api.skillLevel());

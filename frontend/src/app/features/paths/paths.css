@@ -1,0 +1,33 @@
+/* ---------- Learning paths ---------- */
+.path-card { display: flex; flex-direction: column; gap: 10px; color: inherit; text-decoration: none; transition: border-color 0.15s; }
+.path-card:hover { border-color: var(--accent); text-decoration: none; }
+.path-card.is-active { border-color: var(--success); }
+.path-card-head { display: flex; align-items: center; gap: 10px; }
+.path-card-title { font-size: 1rem; margin: 0; }
+.path-card-desc { margin: 0; flex: 1; }
+.path-card-foot { display: flex; flex-direction: column; gap: 6px; margin-top: auto; }
+.path-icon {
+  display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; flex: none;
+  background: var(--accent-soft); color: var(--accent-text);
+}
+.path-hero { display: flex; gap: 20px; align-items: center; margin-bottom: 16px; }
+.path-hero-text { display: flex; flex-direction: column; gap: 10px; min-width: 0; flex: 1; }
+.path-hero-text p { margin: 0; }
+.path-step {
+  display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; font-size: 0.78rem;
+  background: var(--surface-2); color: var(--text-2);
+}
+.path-topics { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 4px 16px; list-style: none; margin: 0; padding: 0; }
+.path-topic { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: var(--radius-xs); color: var(--text); text-decoration: none; font-size: 0.92rem; }
+.path-topic:hover { background: var(--surface-2); text-decoration: none; }
+.path-topic .icon { color: var(--muted); flex: none; }
+.path-topic.is-done .icon { color: var(--success); }
+.path-form { margin-bottom: 14px; }
+.path-pick { border: 0; border-top: 1px solid var(--border); margin: 0; padding: 12px 0; }
+.path-pick legend { width: 100%; padding: 0; }
+.path-pick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px 16px; margin-top: 10px; font-size: 0.9rem; }
+.path-pick-grid .check-label { align-items: flex-start; }
+
+@media (max-width: 640px) {
+  .path-hero { flex-direction: column; align-items: flex-start; }
+}

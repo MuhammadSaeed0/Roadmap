@@ -10,6 +10,7 @@ export const en = {
     learn: 'Learn', build: 'Build & practise', track: 'My progress', manage: 'Manage', admin: 'Administration',
     playground: 'Code Playground', videos: 'Video Library', cv: 'CV Builder', skills: 'Developer Level', challenges: 'Challenges',
     watch: 'Watch & read', prepare: 'Interviews & notes', account: 'Account',
+    discussions: 'Discussions', paths: 'Learning Paths', reviews: 'Peer reviews',
   },
   common: {
     loading: 'Loading…', retry: 'Try again', save: 'Save', saving: 'Saving…', cancel: 'Cancel', delete: 'Delete',
@@ -26,6 +27,11 @@ export const en = {
     title: 'Something went wrong', offline: 'Cannot reach the DevPath API.', server: 'The server had a problem. Please try again.',
     notFound: 'We couldn’t find that page or record.', generic: 'Unexpected error.',
     codes: {
+      project_not_finished: 'Finish every task of the project first.', repository_required: 'Add the project’s repository link first.',
+      review_pending: 'This project already has a review in progress.', own_review: 'You can’t review your own project.',
+      review_not_open: 'Someone else already took this request.', not_reviewer: 'Only the reviewer can do that.',
+      review_not_cancellable: 'This request can no longer be cancelled.', invalid_scores: 'Score every criterion from 0 to 4.',
+      invalid_handle: 'Use 3–30 lowercase letters, digits or single hyphens.', handle_taken: 'Another account already uses this name.',
       quiz_locked: 'Pass the previous level first.', quiz_not_available: 'This quiz level isn’t available for this topic.',
       quiz_invalid_answers: 'Answer every question once, then submit again.',
       not_found: 'That record no longer exists.', attempt_required: 'Write and save your own attempt before revealing the solution.',
@@ -254,6 +260,7 @@ export const en = {
   days: { Sunday: 'Sunday', Monday: 'Monday', Tuesday: 'Tuesday', Wednesday: 'Wednesday', Thursday: 'Thursday', Friday: 'Friday', Saturday: 'Saturday' },
   reasons: {
     inProgress: 'You already started it — finish what you began.',
+    activePath: 'It is part of a learning path you activated.',
     currentPhase: 'It belongs to your current phase.',
     earlierPhase: 'It was left behind in an earlier phase.',
     corePriority: 'It is a core topic for the job.',
@@ -279,6 +286,7 @@ export const en = {
     todayPlan: 'Today’s learning plan', planIntro: 'How much time do you have today?', planEmpty: 'Nothing left to plan.',
     projects: 'Project progress', skills: 'Skills overview', recentActivity: 'Recent activity',
     noActivity: 'No activity yet — complete a topic or log a study session to see it here.',
+    activePaths: 'Your learning paths',
     quickActions: 'Quick actions', resumeProject: 'Resume project', startProject: 'Start project', startPractice: 'Start practice',
     reviewWeak: 'Review weak topics', viewReadiness: 'View career readiness',
     streak: '{n}-day streak', noStreak: 'Start a streak today', weekMinutes: '{n} min this week',
@@ -296,6 +304,7 @@ export const en = {
     interview: 'Practise interview questions', go: 'Go',
   },
   roadmap: {
+    views: { phases: 'Phases', list: 'List' }, viewLabel: 'View',
     title: 'My Roadmap', subtitle: '14 phases from your first C# program to full-stack projects, one step at a time.',
     current: 'Current phase', topicsDone: '{done} of {total} topics', remaining: '{n} min left', projectsIntro: 'Apply what you learned in four projects.',
     expandAll: 'Expand all', collapseAll: 'Collapse all', locked: 'Prerequisites not finished',
@@ -453,6 +462,7 @@ export const en = {
     portfolio: 'Portfolio checklist', portfolioIntro: 'Tick each item when your repository has it. No GitHub connection needed.',
   },
   devLevel: {
+    tabs: { level: 'Your level', career: 'Job readiness' },
     title: 'Developer Level', subtitle: 'Your level from what you have actually demonstrated: quizzes, exercises, projects and reviews, not time spent.',
     currentLevel: 'Current level', overall: 'Overall competency', overallLine: 'Overall competency {score}/100', xpLine: '{xp} XP',
     progressTo: 'Progress to {level}', topLevel: 'You have reached the top level. Keep your skills fresh with the skill checks below.',
@@ -500,7 +510,7 @@ export const en = {
     activities: {
       VideoWatched: 'Video watched', TopicCompleted: 'Topic completed', QuizQuestion: 'Quiz answer', QuizLevelPassed: 'Quiz level passed',
       InterviewQuestion: 'Interview question', ExerciseCompleted: 'Exercise completed', ExerciseQuality: 'Exercise quality',
-      ProjectTaskCompleted: 'Project task', ProjectCompleted: 'Project completed', ProjectReview: 'Project review', PortfolioItem: 'Portfolio checklist',
+      ProjectTaskCompleted: 'Project task', ProjectCompleted: 'Project completed', ProjectReview: 'Project review', PortfolioItem: 'Portfolio checklist', DiscussionAnswerAccepted: 'Accepted answer', ProjectReviewGiven: 'Peer review given',
     },
     req: {
       xp: 'Total XP', overall: 'Overall competency', category: '{category} score', projectTasks: 'Project tasks completed',
@@ -546,12 +556,56 @@ export const en = {
   search: {
     title: 'Search', placeholder: 'Search topics, projects, notes…', minChars: 'Type at least 2 characters.', noResults: 'No results for “{q}”.',
     resultsFor: 'Results for “{q}”',
-    categories: { topics: 'Topics', projects: 'Projects', tasks: 'Project tasks', practice: 'Practice exercises', interview: 'Interview questions', resources: 'Resources', notes: 'Notes' },
+    categories: { topics: 'Topics', projects: 'Projects', tasks: 'Project tasks', practice: 'Practice exercises', interview: 'Interview questions', resources: 'Resources', notes: 'Notes', discussions: 'Discussions' },
   },
   quickAdd: { title: 'Quick add', note: 'New note', session: 'Log study session', topicLabel: 'Topic', chooseTopic: 'Choose a topic…' },
   notFound: { title: 'Page not found', body: 'The page you’re looking for doesn’t exist.', home: 'Back to dashboard' },
+  profile: {
+    title: 'Profile', settingsTitle: 'Public profile',
+    settingsIntro: 'Share your progress with a link: your level, completed paths and projects. Your email and notes are never shown. It stays private until you turn it on.',
+    handleLabel: 'Profile address', handleHint: '3–30 lowercase letters, digits or hyphens.', makePublic: 'Make my profile public',
+    view: 'View my profile', nowPublic: 'Your profile is public.', nowPrivate: 'Your profile is private.',
+    notFound: 'Profile not found', notFoundHint: 'This profile doesn’t exist or its owner keeps it private.',
+    memberSince: 'Learning on DevPath since {date}', xp: 'XP', topics: 'Topics completed', answers: 'Accepted answers',
+    reviewed: 'Peer-reviewed projects', projects: 'Completed projects', noProjects: 'No completed projects yet.', peerReviewed: 'Peer reviewed',
+  },
+  reviews: {
+    title: 'Peer reviews', subtitle: 'Review finished projects of other learners, and get yours reviewed. A peer review counts more than reviewing yourself.',
+    tabs: { open: 'Requests to review', reviewing: 'My reviews', requested: 'My requests' },
+    status: { Open: 'Waiting for a reviewer', Claimed: 'Being reviewed', Completed: 'Reviewed', Cancelled: 'Cancelled' },
+    empty: { open: 'No requests to review', reviewing: 'You are not reviewing anything', requested: 'You haven’t asked for a review' },
+    emptyHint: { open: 'Requests appear here for projects you have finished yourself.', reviewing: 'Take a request from the first tab.', requested: 'Finish a project, link its repository, then ask for a review on the project page.' },
+    by: 'By {name}', reviewer: 'Reviewer: {name}', howTo: 'Read the code in the repository, then score each criterion from 0 to 4.',
+    claim: 'Review this project', claimed: 'The project is yours to review.', release: 'Give it back', submit: 'Submit review', submitted: 'Review sent. Thank you!',
+    cancel: 'Cancel request', cancelConfirm: 'Cancel this review request?',
+    cardTitle: 'Peer review', cardIntro: 'Ask a learner who finished this project to review your code against the rubric.',
+    needFinished: 'Finish every task first.', needRepository: 'Add your repository link first.',
+    ask: 'Ask for a peer review', askAgain: 'Ask for another review', asked: 'Review requested. You will be notified when someone takes it.',
+    waiting: 'Your request is waiting for a reviewer.', inReview: '{name} is reviewing your project.', done: 'Reviewed by {name}.',
+  },
+  discussions: {
+    title: 'Discussions', ask: 'Ask a question', reply: 'Reply', accept: 'Accept answer', pin: 'Pin', unpin: 'Unpin',
+    sortNewest: 'Newest', sortVotes: 'Top voted', noDiscussions: 'No discussions yet.', beFirst: 'Be the first to ask!',
+    replies: 'Replies: {n}', accepted: 'Accepted answer', deleted: 'Deleted user',
+    titleLabel: 'Title', bodyLabel: 'Body', topicLabel: 'Topic', deleteConfirm: 'Delete this discussion?',
+    deleteReplyConfirm: 'Delete this reply?', allTopics: 'All topics', searchTopics: 'Search topics…',
+    votes: 'votes', upvote: 'Upvote', downvote: 'Downvote', pinned: 'Pinned', noReplies: 'No replies yet. Be the first to answer.',
+    yourReply: 'Your answer', editReply: 'Edit reply', edited: 'edited',
+    codeHint: 'Put code between ``` lines to format it, for example ```csharp',
+  },
+  notifications: {
+    title: 'Notifications', noNotifications: 'No notifications yet.',
+  },
+  paths: {
+    title: 'Learning Paths', create: 'Create path', activate: 'Activate', deactivate: 'Deactivate', activated: 'Active',
+    builtIn: 'Built-in', custom: 'Custom', topics: '{n} topics', progress: '{n}% complete',
+    noPaths: 'No learning paths yet.', nameLabel: 'Path name', descriptionLabel: 'Description',
+    iconLabel: 'Icon', topicsLabel: 'Pick topics', deletePath: 'Delete this path?',
+    myPaths: 'My paths', editPath: 'Edit path',
+    subtitle: 'Follow a ready-made route through the roadmap, or build your own from the topics you need.',
+    noPathsHint: 'Pick the topics you care about and track them as one path.', doneOf: '{done} of {total} done', next: 'Next',
+  },
 };
-
 /** Same shape as `en`, but every leaf is any string (so Arabic can differ). */
 export type Widen<T> = { [K in keyof T]: T[K] extends string ? string : Widen<T[K]> };
 export type Translations = Widen<typeof en>;
