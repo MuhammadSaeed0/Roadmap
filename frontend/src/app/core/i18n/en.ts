@@ -394,14 +394,12 @@ export const en = {
   },
   progress: {
     title: 'Progress & Analytics', tabs: { overview: 'Overview', weekly: 'Weekly review', review: 'Review queue' },
-    overall: 'Weighted roadmap progress', bySkill: 'Progress by technology', byPhase: 'Progress by phase',
-    confidence: 'Confidence distribution', projects: 'Project completion', practice: 'Practice completion',
+    confidence: 'Confidence distribution', practice: 'Practice completion',
     interviews: 'Interview preparation', weeklyStudy: 'Study time by week', achievements: 'Recent achievements',
     noAchievements: 'Achievements appear as you complete topics, milestones and exercises.', weakAreas: 'Weak areas needing review',
-    noWeak: 'No weak areas right now.', formula: 'How is the percentage calculated?',
-    formulaText: 'Each topic has a weight = priority weight × skill weight. Progress = weight of finished topics ÷ total weight. The weights are configurable in appsettings.json.',
+    noWeak: 'No weak areas right now.',
     separate: 'Topic completion, confidence, projects and interview preparation are shown separately on purpose — one combined number would hide gaps.',
-    totalStudied: 'Total study time', avgConfidence: 'Avg. confidence {n}/5',
+    totalStudied: 'Total study time',
   },
   weekly: {
     title: 'Week of {start}', previous: 'Previous week', next: 'Next week', minutes: 'Time studied', vsLast: 'Last week: {n} min',

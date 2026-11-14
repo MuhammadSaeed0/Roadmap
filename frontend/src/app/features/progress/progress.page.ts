@@ -3,14 +3,14 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { ApiError } from '../../core/api-error';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { DurationPipe, FormatDatePipe, FormatNumberPipe, LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
+import { DurationPipe, FormatDatePipe, LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
 import { Achievement, Reason, ReviewItem } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import {
   ConfidencePickerComponent, EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, ProgressBarComponent,
-  ProgressRingComponent, SkeletonComponent,
+  SkeletonComponent,
 } from '../../shared/ui.components';
 
 type Tab = 'overview' | 'weekly' | 'review';
@@ -22,8 +22,8 @@ function isoDate(d: Date): string {
 @Component({
   selector: 'app-progress-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, FormatNumberPipe, FormatDatePipe, DurationPipe,
-    PageHeaderComponent, ProgressRingComponent, ProgressBarComponent, ConfidencePickerComponent, SkeletonComponent,
+  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, FormatDatePipe, DurationPipe,
+    PageHeaderComponent, ProgressBarComponent, ConfidencePickerComponent, SkeletonComponent,
     ErrorStateComponent, EmptyStateComponent],
   templateUrl: './progress.page.html',
 })

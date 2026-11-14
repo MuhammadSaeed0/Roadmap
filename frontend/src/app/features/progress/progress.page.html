@@ -17,52 +17,6 @@
     } @else if (report.value(); as r) {
       <p class="callout"><app-icon name="info" /> {{ 'progress.separate' | t }}</p>
       <div class="grid grid-dashboard">
-        <section class="card span-4 center-card" aria-labelledby="ov-h">
-          <h2 id="ov-h" class="card-title">{{ 'progress.overall' | t }}</h2>
-          <app-progress-ring [value]="r.overall.percent" [size]="150" [stroke]="12" [label]="'progress.overall' | t" />
-          <p class="small muted">{{ 'roadmap.topicsDone' | t: { done: r.overall.doneTopics, total: r.overall.totalTopics } }}</p>
-          <p class="small">{{ 'progress.totalStudied' | t }}: <strong>{{ r.totalMinutesStudied | duration }}</strong></p>
-          <details class="formula">
-            <summary>{{ 'progress.formula' | t }}</summary>
-            <p class="small">{{ 'progress.formulaText' | t }}</p>
-            <table class="mini-table">
-              <tbody>
-                @for (s of r.skills; track s.skill) { <tr><th scope="row">{{ 'skills.' + s.skill | t }}</th><td dir="ltr">× {{ s.weight }}</td></tr> }
-                <tr><th scope="row">{{ 'priority.Core' | t }} / {{ 'priority.Important' | t }} / {{ 'priority.Optional' | t }}</th>
-                  <td dir="ltr">{{ r.formula.priorityWeights['Core'] }} / {{ r.formula.priorityWeights['Important'] }} / {{ r.formula.priorityWeights['Optional'] }}</td></tr>
-              </tbody>
-            </table>
-          </details>
-        </section>
-
-        <section class="card span-8" aria-labelledby="sk-h">
-          <h2 id="sk-h" class="card-title"><app-icon name="layers" /> {{ 'progress.bySkill' | t }}</h2>
-          <ul class="skill-list two-col-list" role="list">
-            @for (s of r.skills; track s.skill) {
-              <li>
-                <div class="skill-row">
-                  <span class="skill-name">{{ 'skills.' + s.skill | t }}</span>
-                  <span class="skill-meta">{{ s.done }}/{{ s.total }} · {{ s.percent | fmtNum }}%</span>
-                </div>
-                <app-progress-bar [value]="s.percent" [small]="true" [label]="'skills.' + s.skill | t" />
-                @if (s.averageConfidence !== null) { <span class="tiny muted">{{ 'progress.avgConfidence' | t: { n: (s.averageConfidence | fmtNum: 1) } }}</span> }
-              </li>
-            }
-          </ul>
-        </section>
-
-        <section class="card span-6" aria-labelledby="ph-h">
-          <h2 id="ph-h" class="card-title"><app-icon name="map" /> {{ 'progress.byPhase' | t }}</h2>
-          <ul class="skill-list" role="list">
-            @for (p of r.phases; track p.id) {
-              <li>
-                <div class="skill-row"><span>{{ p.order }}. {{ p | loc: 'title' }}</span><span class="skill-meta">{{ p.done }}/{{ p.total }}</span></div>
-                <app-progress-bar [value]="p.percent" [small]="true" [tone]="p.percent >= 100 ? 'success' : 'accent'" [label]="p | loc: 'title'" />
-              </li>
-            }
-          </ul>
-        </section>
-
         <section class="card span-6" aria-labelledby="conf-h">
           <h2 id="conf-h" class="card-title"><app-icon name="target" /> {{ 'progress.confidence' | t }}</h2>
           <ul class="hbars" role="list">
@@ -78,6 +32,7 @@
 
         <section class="card span-6" aria-labelledby="wk-h">
           <h2 id="wk-h" class="card-title"><app-icon name="calendar" /> {{ 'progress.weeklyStudy' | t }}</h2>
+          <p class="small muted">{{ 'progress.totalStudied' | t }}: <strong>{{ r.totalMinutesStudied | duration }}</strong></p>
           <div class="vbars" role="img" [attr.aria-label]="'progress.weeklyStudy' | t">
             @for (w of weekBars(); track w.weekStart) {
               <div class="vbar" [title]="(w.weekStart | fmtDate: 'short') + ': ' + (w.minutes | duration)">
@@ -89,17 +44,8 @@
           </div>
         </section>
 
-        <section class="card span-6" aria-labelledby="pp-h">
-          <h2 id="pp-h" class="card-title"><app-icon name="folder" /> {{ 'progress.projects' | t }}</h2>
-          <ul class="skill-list" role="list">
-            @for (p of r.projects; track p.id) {
-              <li>
-                <div class="skill-row"><a [routerLink]="['/projects', p.id]">{{ p | loc: 'title' }}</a><span class="skill-meta">{{ p.completedTasks }}/{{ p.totalTasks }}</span></div>
-                <app-progress-bar [value]="p.percent" [small]="true" [tone]="p.percent >= 100 ? 'success' : 'accent'" [label]="p | loc: 'title'" />
-              </li>
-            }
-          </ul>
-          <h3 class="sub-title">{{ 'progress.practice' | t }}</h3>
+        <section class="card span-6" aria-labelledby="pr-h">
+          <h2 id="pr-h" class="card-title"><app-icon name="code" /> {{ 'progress.practice' | t }}</h2>
           <ul class="skill-list" role="list">
             @for (s of r.practice; track s.type) {
               <li>
@@ -110,7 +56,7 @@
           </ul>
         </section>
 
-        <section class="card span-4" aria-labelledby="iv-h">
+        <section class="card span-6" aria-labelledby="iv-h">
           <h2 id="iv-h" class="card-title"><app-icon name="chat" /> {{ 'progress.interviews' | t }}</h2>
           <div class="stacked-bar" role="img" [attr.aria-label]="'progress.interviews' | t">
             <span data-rating="Confident" [style.flex-grow]="r.interview.confident"></span>
@@ -126,7 +72,7 @@
           </ul>
         </section>
 
-        <section class="card span-4" aria-labelledby="ach-h">
+        <section class="card span-6" aria-labelledby="ach-h">
           <h2 id="ach-h" class="card-title"><app-icon name="award" /> {{ 'progress.achievements' | t }}</h2>
           @if (r.achievements.length === 0) {
             <p class="muted small">{{ 'progress.noAchievements' | t }}</p>
@@ -140,7 +86,7 @@
           }
         </section>
 
-        <section class="card span-4" aria-labelledby="weak-h">
+        <section class="card span-6" aria-labelledby="weak-h">
           <h2 id="weak-h" class="card-title"><app-icon name="alert" /> {{ 'progress.weakAreas' | t }}</h2>
           @if (r.weakAreas.length === 0) {
             <p class="muted small">{{ 'progress.noWeak' | t }}</p>
