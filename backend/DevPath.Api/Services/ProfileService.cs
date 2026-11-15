@@ -78,11 +78,26 @@ public partial class ProfileService(AppDbContext db, ICurrentUser currentUser)
         var projects = await db.Projects.AsNoTracking().Where(p => completedProjects.Contains(p.Id)).OrderBy(p => p.Order)
             .Select(p => new { p.Id, p.TitleEn, p.TitleAr, p.TechStack }).ToListAsync(ct);
 
+        // Library projects whose every step the owner finished (progress rows are read across the user filter).
+        var stepsDone = db.GuidedStepProgress.IgnoreQueryFilters().Where(r => r.UserId == id);
+        var library = await db.GuidedProjects.AsNoTracking()
+            .Select(p => new
+            {
+                p.Id, p.TitleEn, p.TitleAr, p.TechStack, p.Level,
+                Steps = p.Steps.Count,
+                Done = stepsDone.Count(r => r.Step.ProjectId == p.Id),
+                Repo = db.GuidedProjectRepositories.IgnoreQueryFilters().Where(r => r.UserId == id && r.ProjectId == p.Id).Select(r => r.Url).FirstOrDefault(),
+            })
+            .Where(p => p.Steps > 0 && p.Done == p.Steps)
+            .ToListAsync(ct);
+
         return new PublicProfileDto(
             user.PublicHandle!, user.FullName, user.CreatedAt, level, xp, completedTopics.Count, acceptedAnswers, reviewed.Count,
             paths,
             projects.Select(p => new PublicProjectDto(p.Id, p.TitleEn, p.TitleAr, p.TechStack,
-                SafeUrl(repositories.GetValueOrDefault(p.Id)), reviewed.Contains(p.Id))).ToList());
+                SafeUrl(repositories.GetValueOrDefault(p.Id)), reviewed.Contains(p.Id))).ToList(),
+            library.OrderBy(g => g.Level).ThenBy(g => g.Id)
+                .Select(g => new PublicLibraryProjectDto(g.Id, g.TitleEn, g.TitleAr, g.TechStack, g.Level.ToString(), SafeUrl(g.Repo))).ToList());
     }
 
     /// <summary>Built-in paths the learner has started, with their share of completed topics.</summary>

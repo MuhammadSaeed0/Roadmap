@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { Dashboard, StudyPlan } from '../../core/models';
+import { CurrentGuidedProject, Dashboard, StudyPlan } from '../../core/models';
 import DashboardPage from './dashboard.page';
 
 const dashboard = {
@@ -21,11 +21,12 @@ const plan = {
   items: [step('learn', 5, 'Lambda expressions'), step('practice', 5, 'Lambda expressions'), step('review', null, 'Review: LINQ')],
 } as unknown as StudyPlan;
 
-async function render(fullName: string): Promise<HTMLElement> {
+async function render(fullName: string, library: CurrentGuidedProject | null = null): Promise<HTMLElement> {
   TestBed.configureTestingModule({
     providers: [
       provideRouter([]),
-      { provide: ApiService, useValue: { dashboard: () => Promise.resolve(dashboard), activePaths: () => Promise.resolve([]), studyPlan: () => Promise.resolve(plan) } },
+      { provide: ApiService, useValue: { dashboard: () => Promise.resolve(dashboard), activePaths: () => Promise.resolve([]), studyPlan: () => Promise.resolve(plan),
+        currentGuidedProject: () => Promise.resolve(library) } },
       { provide: AuthService, useValue: { account: signal({ fullName }) } },
     ],
   });
@@ -48,6 +49,20 @@ describe('DashboardPage', () => {
     expect([...el.querySelectorAll('.plan-group')].map(g => g.textContent)).toEqual(['Lambda expressions']);
     const titles = [...el.querySelectorAll('.plan-item .plan-title')].map(t => t.textContent?.trim());
     expect(titles).toEqual(['Learn the concept', 'Do the practice task', 'Review: LINQ']);
+  });
+
+  it('shows the current library project with its next step, and hides the card when there is none', async () => {
+    const el = await render('Mohamed', {
+      id: 12, skill: 'CSharp', level: 'Beginner', titleEn: 'Console to-do list', titleAr: 'قائمة مهام', stepCount: 8, doneSteps: 3,
+      nextStepTitleEn: 'Save tasks to a file', nextStepTitleAr: 'احفظ المهام في ملف',
+    });
+    const card = el.querySelector('[data-tour="dashboard-library"]')!;
+    expect(card.textContent).toContain('Your current library project');
+    expect(card.textContent).toContain('Next step: Save tasks to a file');
+    expect(card.textContent).toContain('3/8');
+    expect(card.querySelector('a.proj-link')?.getAttribute('href')).toBe('/project-library/12');
+    TestBed.resetTestingModule();
+    expect((await render('Mohamed')).querySelector('[data-tour="dashboard-library"]')).toBeNull();
   });
 
   it('hides recent activity until there is some', async () => {

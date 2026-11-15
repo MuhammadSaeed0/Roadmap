@@ -18,7 +18,11 @@ public sealed record SkillSnapshot(
     IReadOnlyList<ProjectFact> Projects,
     int StudyMinutes,
     IReadOnlyList<AcceptedAnswerFact>? AcceptedAnswers = null,
-    IReadOnlyList<ReviewGivenFact>? ReviewsGiven = null);
+    IReadOnlyList<ReviewGivenFact>? ReviewsGiven = null,
+    IReadOnlyList<GuidedProjectFact>? GuidedProjects = null);
+
+/// <summary>A Project library project whose every step the learner finished.</summary>
+public sealed record GuidedProjectFact(int Id, Difficulty Level, string TitleEn, string TitleAr, DateTime? CompletedAt, bool HasRepository);
 
 /// <summary>A project review the learner completed for someone else.</summary>
 public sealed record ReviewGivenFact(int RequestId, string ProjectTitleEn, string ProjectTitleAr, DateTime At);

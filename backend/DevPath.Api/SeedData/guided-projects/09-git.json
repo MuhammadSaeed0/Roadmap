@@ -176,6 +176,11 @@
     ],
     "key": "git-portfolio-repo-history"
    }
+  ],
+  "topics": [
+   "git-fundamentals",
+   "git-readme",
+   "git-portfolio-hygiene"
   ]
  },
  {
@@ -340,6 +345,12 @@
     ],
     "key": "git-branches-conflicts-finish"
    }
+  ],
+  "topics": [
+   "git-branching",
+   "git-merging",
+   "git-conflicts",
+   "git-pull-requests"
   ]
  },
  {
@@ -538,6 +549,11 @@
     ],
     "key": "git-team-workflow-finish"
    }
+  ],
+  "topics": [
+   "git-pull-requests",
+   "git-commit-quality",
+   "git-repo-organization"
   ]
  },
  {
@@ -723,6 +739,11 @@
     ],
     "key": "git-history-surgery-finish"
    }
+  ],
+  "topics": [
+   "git-merging",
+   "git-commit-quality",
+   "git-conflicts"
   ]
  },
  {
@@ -906,6 +927,11 @@
     ],
     "key": "git-automation-finish"
    }
+  ],
+  "topics": [
+   "git-commit-quality",
+   "git-repo-organization",
+   "devops-ci-cd"
   ]
  },
  {
@@ -1102,6 +1128,10 @@
     ],
     "key": "git-internals-finish"
    }
+  ],
+  "topics": [
+   "git-fundamentals",
+   "cs-collections"
   ]
  }
 ]

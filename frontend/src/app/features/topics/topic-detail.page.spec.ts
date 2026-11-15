@@ -21,6 +21,7 @@ const topic: TopicDetail = {
   objectivesAr: ['كتابة مسار عمل', 'إبقاء الأسرار خارج المستودع'],
   difficulty: 'Intermediate',
   demand: [{ technology: 'CI/CD', postings: 17, required: 15, share: 47.2, totalPostings: 36, run: '2026-11-06', periodFrom: '2026-08-06', periodTo: '2026-11-06' }],
+  guidedProjects: [],
 };
 
 async function render(lang: 'en' | 'ar', data: TopicDetail = topic): Promise<HTMLElement> {
@@ -70,6 +71,23 @@ describe('TopicDetailPage', () => {
     const next = [...el.querySelectorAll('.pager-link')];
     expect(next.length).toBe(1);
     expect(next[0].textContent).toContain('Docker');
+  });
+
+  it('suggests library projects that practise the topic', async () => {
+    const el = await render('en', { ...topic, guidedProjects: [
+      { id: 61, skill: 'DevOps', level: 'Beginner', titleEn: 'CI pipeline', titleAr: 'خط CI', stepCount: 8, doneSteps: 8 },
+      { id: 62, skill: 'DevOps', level: 'Intermediate', titleEn: 'Continuous deployment', titleAr: 'نشر مستمر', stepCount: 9, doneSteps: 0 },
+    ] });
+    const practice = el.querySelector('#practice')!;
+    expect(practice.querySelector('[data-tour="topic-guided"]')?.textContent).toContain('Practise with a project');
+    const links = [...practice.querySelectorAll('a[href^="/project-library/"]')];
+    expect(links.map(a => a.getAttribute('href'))).toEqual(['/project-library/61', '/project-library/62']);
+    expect(practice.querySelector('[data-status="Completed"]')).not.toBeNull();
+  });
+
+  it('has no project suggestions when no project uses the topic', async () => {
+    const el = await render('en');
+    expect(el.querySelector('[data-tour="topic-guided"]')).toBeNull();
   });
 
   it('folds a side panel and remembers it', async () => {

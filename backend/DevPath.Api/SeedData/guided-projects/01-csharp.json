@@ -178,6 +178,12 @@
     ],
     "key": "cs-todo-console-test"
    }
+  ],
+  "topics": [
+   "cs-variables-types",
+   "cs-conditions",
+   "cs-loops",
+   "cs-collections"
   ]
  },
  {
@@ -357,6 +363,12 @@
     ],
     "key": "cs-gradebook-finish"
    }
+  ],
+  "topics": [
+   "cs-methods",
+   "cs-collections",
+   "oop-classes-objects",
+   "linq-fundamentals"
   ]
  },
  {
@@ -557,6 +569,12 @@
     ],
     "key": "cs-library-system-finish"
    }
+  ],
+  "topics": [
+   "oop-classes-objects",
+   "oop-interfaces",
+   "oop-object-modeling",
+   "linq-fundamentals"
   ]
  },
  {
@@ -755,6 +773,12 @@
     ],
     "key": "cs-expense-tracker-finish"
    }
+  ],
+  "topics": [
+   "cs-records",
+   "cs-exceptions",
+   "linq-advanced",
+   "cs-pattern-matching"
   ]
  },
  {
@@ -970,6 +994,11 @@
     ],
     "key": "cs-link-checker-finish"
    }
+  ],
+  "topics": [
+   "cs-async-await",
+   "cs-cancellation-tokens",
+   "cs-exceptions"
   ]
  },
  {
@@ -1183,6 +1212,12 @@
     ],
     "key": "cs-kv-store-finish"
    }
+  ],
+  "topics": [
+   "cs-async-await",
+   "cs-cancellation-tokens",
+   "cs-collections",
+   "cs-pattern-matching"
   ]
  }
 ]

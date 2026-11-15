@@ -33,6 +33,8 @@ public class GuidedProject
     public string StretchAr { get; set; } = "";
 
     public List<GuidedProjectStep> Steps { get; set; } = [];
+    /// <summary>Roadmap topics the project practises; its topic pages suggest it.</summary>
+    public List<GuidedProjectTopic> TopicLinks { get; set; } = [];
 }
 
 /// <summary>One step of a guided project: what to do, an optional code sketch, and hints revealed one at a time.</summary>
@@ -57,6 +59,24 @@ public class GuidedProjectStep
 
     /// <summary>Per-user rows, filtered to the signed-in user (at most one).</summary>
     public List<GuidedStepProgress> ProgressRows { get; set; } = [];
+}
+
+public class GuidedProjectTopic
+{
+    public int ProjectId { get; set; }
+    public GuidedProject Project { get; set; } = null!;
+    public int TopicId { get; set; }
+    public Topic Topic { get; set; } = null!;
+}
+
+/// <summary>The learner's repository for a library project they built.</summary>
+public class GuidedProjectRepository : IUserOwned
+{
+    public string UserId { get; set; } = "";
+    public int ProjectId { get; set; }
+    public GuidedProject Project { get; set; } = null!;
+    public required string Url { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }
 
 /// <summary>A step the learner marked as done.</summary>

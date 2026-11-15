@@ -80,6 +80,7 @@ export interface TopicDetail {
   exercises: { id: number; type: ExerciseType; titleEn: string; titleAr: string; difficulty: Difficulty; status: PracticeStatus }[];
   sessions: StudySession[]; totalMinutesStudied: number; noteCount: number; review: ReviewState | null;
   objectivesEn: string[]; objectivesAr: string[]; difficulty: Difficulty | null; demand: TopicDemand[];
+  guidedProjects: GuidedProjectRef[];
 }
 
 /** How often a technology taught by a topic appeared in the job postings of the latest market research run. */
@@ -371,6 +372,7 @@ export interface PublicProfile {
   topicsCompleted: number; acceptedAnswers: number; reviewedProjects: number;
   paths: { id: number; nameEn: string; nameAr: string; iconName: string; percent: number }[];
   projects: { id: number; titleEn: string; titleAr: string; techStack: string; repositoryUrl: string | null; peerReviewed: boolean }[];
+  libraryProjects: { id: number; titleEn: string; titleAr: string; techStack: string; level: Difficulty; repositoryUrl: string | null }[];
 }
 
 // ---- Learning Paths ----
@@ -408,4 +410,13 @@ export interface GuidedProjectDetail {
   goalsEn: string[]; goalsAr: string[]; requirementsEn: string[]; requirementsAr: string[];
   acceptanceEn: string[]; acceptanceAr: string[]; stretchEn: string[]; stretchAr: string[];
   steps: GuidedStep[]; sameSkill: GuidedProjectSummary[];
+  repositoryUrl: string | null;
+}
+/** A library project suggested on a topic page. */
+export interface GuidedProjectRef {
+  id: number; skill: SkillArea; level: Difficulty; titleEn: string; titleAr: string; stepCount: number; doneSteps: number;
+}
+/** The library project the learner is working on (GET /guided-projects/current). */
+export interface CurrentGuidedProject extends GuidedProjectRef {
+  nextStepTitleEn: string; nextStepTitleAr: string;
 }

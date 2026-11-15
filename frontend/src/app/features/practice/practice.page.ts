@@ -17,15 +17,17 @@ export const TYPE_ICONS: Record<ExerciseType, string> = {
 
 type Filters = { q: string; skill: SkillArea | ''; type: ExerciseType | ''; difficulty: Difficulty | ''; status: PracticeStatus | ''; runnable: boolean };
 
+import { ProjectPlacesComponent } from '../../shared/project-places.component';
 @Component({
   selector: 'app-practice-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, RouterLink, IconComponent, ChallengesPage, TranslatePipe, LocalizePipe, DurationPipe, PageHeaderComponent,
+  imports: [ProjectPlacesComponent, FormsModule, RouterLink, IconComponent, ChallengesPage, TranslatePipe, LocalizePipe, DurationPipe, PageHeaderComponent,
     ProgressBarComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
   template: `
     <app-page-header [title]="'practice.title' | t" [subtitle]="'practice.subtitle' | t">
       <a routerLink="/playground" class="btn btn-secondary btn-sm"><app-icon name="terminal" [size]="15" /> {{ 'nav.playground' | t }}</a>
     </app-page-header>
+    <app-project-places current="practice" />
 
     <div class="tabs" role="tablist" [attr.aria-label]="'practice.title' | t">
       <button type="button" role="tab" [attr.aria-selected]="current() === 'exercises'" [class.active]="current() === 'exercises'" (click)="select('exercises')">

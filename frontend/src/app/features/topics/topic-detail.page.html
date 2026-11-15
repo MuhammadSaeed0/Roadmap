@@ -76,6 +76,17 @@
             }
           </ul>
         }
+        @if (t.guidedProjects.length > 0) {
+          <h3 class="sub-head" data-tour="topic-guided"><app-icon name="layers" [size]="15" /> {{ 'topic.guidedProjects' | t }}</h3>
+          <ul class="rows" role="list">
+            @for (g of t.guidedProjects; track g.id) {
+              <li>@let gs = g.doneSteps === g.stepCount ? 'Completed' : g.doneSteps > 0 ? 'InProgress' : 'NotStarted';
+                <app-icon [name]="statusIcon(gs)" [size]="15" class="status-icon" [attr.data-status]="gs" />
+                <a [routerLink]="['/project-library', g.id]" [innerHTML]="title(g)"></a>
+                <span class="meta">{{ 'guides.levels.' + g.level | t }}</span></li>
+            }
+          </ul>
+        }
       </section>
 
       <div id="discussions" class="content-section"><app-topic-discussions [topicId]="t.id" /></div>

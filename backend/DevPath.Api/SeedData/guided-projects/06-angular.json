@@ -178,6 +178,11 @@
     ],
     "key": "ng-habit-tracker-finish"
    }
+  ],
+  "topics": [
+   "ng-standalone-components",
+   "ng-inputs-outputs",
+   "ng-signals"
   ]
  },
  {
@@ -359,6 +364,11 @@
     ],
     "key": "ng-show-finder-finish"
    }
+  ],
+  "topics": [
+   "ng-routing",
+   "ng-http-client",
+   "ng-loading-error-states"
   ]
  },
  {
@@ -557,6 +567,11 @@
     ],
     "key": "ng-budget-planner-finish"
    }
+  ],
+  "topics": [
+   "ng-reactive-forms",
+   "ng-services",
+   "ng-signals"
   ]
  },
  {
@@ -755,6 +770,12 @@
     ],
     "key": "ng-admin-panel-finish"
    }
+  ],
+  "topics": [
+   "ng-http-client",
+   "ng-rxjs",
+   "ng-routing",
+   "ng-search-pagination"
   ]
  },
  {
@@ -968,6 +989,11 @@
     ],
     "key": "ng-component-library-finish"
    }
+  ],
+  "topics": [
+   "ng-reusable-components",
+   "ng-component-communication",
+   "ng-reactive-forms"
   ]
  },
  {
@@ -1166,6 +1192,11 @@
     ],
     "key": "ng-live-dashboard-finish"
    }
+  ],
+  "topics": [
+   "ng-signals",
+   "ng-rxjs",
+   "ng-app-organization"
   ]
  }
 ]

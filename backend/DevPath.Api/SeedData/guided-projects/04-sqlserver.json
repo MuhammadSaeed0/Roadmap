@@ -178,6 +178,12 @@
     ],
     "key": "sql-library-db-finish"
    }
+  ],
+  "topics": [
+   "db-relational-basics",
+   "sql-tables-keys",
+   "sql-select-basics",
+   "sql-joins"
   ]
  },
  {
@@ -355,6 +361,11 @@
     ],
     "key": "sql-sales-reports-finish"
    }
+  ],
+  "topics": [
+   "sql-select-basics",
+   "sql-joins",
+   "sql-aggregates"
   ]
  },
  {
@@ -538,6 +549,11 @@
     ],
     "key": "sql-school-enrollment-finish"
    }
+  ],
+  "topics": [
+   "sql-stored-procedures",
+   "sql-transactions",
+   "sql-concurrency"
   ]
  },
  {
@@ -717,6 +733,11 @@
     ],
     "key": "sql-hr-analytics-finish"
    }
+  ],
+  "topics": [
+   "sql-aggregates",
+   "sql-joins",
+   "sql-query-efficiency"
   ]
  },
  {
@@ -915,6 +936,12 @@
     ],
     "key": "sql-performance-lab-finish"
    }
+  ],
+  "topics": [
+   "sql-indexing",
+   "sql-execution-plans",
+   "sql-isolation-levels",
+   "sql-deadlocks"
   ]
  },
  {
@@ -1111,6 +1138,11 @@
     ],
     "key": "sql-data-warehouse-finish"
    }
+  ],
+  "topics": [
+   "sql-modify-data",
+   "sql-stored-procedures",
+   "sql-indexing"
   ]
  }
 ]

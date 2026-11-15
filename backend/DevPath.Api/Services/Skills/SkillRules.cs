@@ -106,6 +106,8 @@ public sealed class PointRules
     public int PeerReviewGiven { get; init; } = 30;
     /// <summary>Most reviews given that earn points.</summary>
     public int PeerReviewGivenCap { get; init; } = 20;
+    /// <summary>XP for finishing every step of a Project library project, by its level. XP only: no competency category.</summary>
+    public Dictionary<Difficulty, int> GuidedProject { get; init; } = new() { [Difficulty.Beginner] = 40, [Difficulty.Intermediate] = 80, [Difficulty.Advanced] = 150 };
     /// <summary>Most self-reported points that count per day (0 = no limit).</summary>
     public int SelfReportedDailyCap { get; init; }
 }

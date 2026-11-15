@@ -215,6 +215,30 @@
         </ul>
       </section>
 
+      <!-- Current Project library project -->
+      @if (library.value(); as g) {
+        <section class="card" aria-labelledby="library-h" data-tour="dashboard-library">
+          <div class="card-head">
+            <h2 id="library-h" class="card-title"><app-icon name="layers" /> {{ 'dashboard.libraryProject' | t }}</h2>
+            <a routerLink="/project-library" class="link-sm">{{ 'common.viewAll' | t }}</a>
+          </div>
+          <ul class="proj-list" role="list">
+            <li>
+              <a [routerLink]="['/project-library', g.id]" class="proj-link">
+                <span class="proj-text">
+                  <span class="proj-title" [innerHTML]="text(g.titleEn, g.titleAr)"></span>
+                  <span class="proj-next">{{ 'dashboard.libraryNext' | t }}: <span [innerHTML]="text(g.nextStepTitleEn, g.nextStepTitleAr)"></span></span>
+                </span>
+              </a>
+              <div class="proj-progress">
+                <app-progress-bar [value]="g.doneSteps / g.stepCount * 100" [small]="true" tone="accent" [label]="i18n.pick(g.titleEn, g.titleAr)" />
+                <span class="proj-pct">{{ g.doneSteps }}/{{ g.stepCount }}</span>
+              </div>
+            </li>
+          </ul>
+        </section>
+      }
+
       <!-- Active learning paths -->
       @if (activePaths.value(); as paths) {
         @if (paths.length > 0) {

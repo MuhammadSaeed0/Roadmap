@@ -286,6 +286,7 @@ export const en = {
     todayPlan: 'Today’s learning plan', planIntro: 'How much time do you have today?', planEmpty: 'Nothing left to plan.',
     projects: 'Project progress', skills: 'Skills overview', recentActivity: 'Recent activity',
     activePaths: 'Your learning paths',
+    libraryProject: 'Your current library project', libraryNext: 'Next step',
     quickActions: 'Quick actions', resumeProject: 'Resume project', startProject: 'Start project', startPractice: 'Start practice',
     reviewWeak: 'Review weak topics', viewReadiness: 'View career readiness',
     streak: '{n}-day streak', noStreak: 'Start a streak today', weekMinutes: '{n} min this week',
@@ -315,6 +316,11 @@ export const en = {
     allSkills: 'All skills', allStatuses: 'All statuses', allPhases: 'All phases', allPriorities: 'All priorities', allKnowledge: 'Any knowledge level',
     empty: 'No topics match these filters.',
   },
+  places: {
+    projects: { name: 'Main Projects', what: 'four portfolio projects tied to the roadmap phases.', link: 'Main Projects: your portfolio' },
+    library: { name: 'Project library', what: 'extra step-by-step projects for every skill, at your own pace.', link: 'Project library: extra projects' },
+    practice: { name: 'Practice Lab', what: 'short exercises and challenges that check your code in the browser.', link: 'Practice Lab: quick exercises' },
+  },
   guides: {
     title: 'Project library',
     subtitle: 'Build real projects at your own pace. Every skill has simple, medium and advanced projects, each with step-by-step instructions and hints.',
@@ -329,12 +335,14 @@ export const en = {
     openGroups: 'Open all skills', closeGroups: 'Close all skills',
     allDone: 'You finished every step. Go through “Done when” once more, then try the extra challenges.',
     nextStep: 'Next step', expandAll: 'Open all steps', collapseAll: 'Close all steps',
+    repoTitle: 'Your repository', repoSaved: 'Repository saved',
+    repoHelp: 'Link the repository you built. The link makes this project’s XP verified and adds it to your CV suggestions and public profile.',
   },
   topic: {
     whatIsIt: 'What is it?', whyMatters: 'Why does it matter?', howWorks: 'How does it work?', realWorld: 'Real-world example',
     practiceTask: 'Practice task', challenge: 'Independent challenge', resources: 'Recommended resources',
     prerequisites: 'Prerequisites', unlocks: 'Unlocks', relatedProjects: 'Related projects',
-    interviewQs: 'Interview questions', exercises: 'Practice exercises', notes: 'Notes', yourProgress: 'Your progress',
+    interviewQs: 'Interview questions', exercises: 'Practice exercises', guidedProjects: 'Practise with a project', notes: 'Notes', yourProgress: 'Your progress',
     status: 'Status', knowledge: 'Prior knowledge', markComplete: 'Mark as completed', markInProgress: 'Start',
     markKnown: 'I already know this', reopen: 'Reopen', prereqWarning: 'Some prerequisites aren’t finished yet. You can still study this topic.',
     review: 'Spaced review', addToReview: 'Add to review queue', inReview: 'In your review queue', reviewDue: 'Review due now',
@@ -527,7 +535,7 @@ export const en = {
     activities: {
       VideoWatched: 'Video watched', TopicCompleted: 'Topic completed', QuizQuestion: 'Quiz answer', QuizLevelPassed: 'Quiz level passed',
       InterviewQuestion: 'Interview question', ExerciseCompleted: 'Exercise completed', ExerciseQuality: 'Exercise quality',
-      ProjectTaskCompleted: 'Project task', ProjectCompleted: 'Project completed', ProjectReview: 'Project review', PortfolioItem: 'Portfolio checklist', DiscussionAnswerAccepted: 'Accepted answer', ProjectReviewGiven: 'Peer review given',
+      ProjectTaskCompleted: 'Project task', ProjectCompleted: 'Project completed', ProjectReview: 'Project review', PortfolioItem: 'Portfolio checklist', DiscussionAnswerAccepted: 'Accepted answer', ProjectReviewGiven: 'Peer review given', GuidedProjectCompleted: 'Library project finished',
     },
     req: {
       xp: 'Total XP', overall: 'Overall competency', category: '{category} score', projectTasks: 'Project tasks completed',
@@ -585,6 +593,7 @@ export const en = {
     notFound: 'Profile not found', notFoundHint: 'This profile doesn’t exist or its owner keeps it private.',
     memberSince: 'Learning on DevPath since {date}', xp: 'XP', topics: 'Topics completed', answers: 'Accepted answers',
     reviewed: 'Peer-reviewed projects', projects: 'Completed projects', noProjects: 'No completed projects yet.', peerReviewed: 'Peer reviewed',
+    libraryProjects: 'Project library',
   },
   reviews: {
     title: 'Peer reviews', subtitle: 'Review finished projects of other learners, and get yours reviewed. A peer review counts more than reviewing yourself.',

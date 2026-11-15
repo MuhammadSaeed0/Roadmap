@@ -180,6 +180,9 @@ export class ApiService {
   // ----- Project library -----
   guidedProjects() { return this.get<M.GuidedProjectSummary[]>('/guided-projects'); }
   guidedProject(id: number) { return this.get<M.GuidedProjectDetail>(`/guided-projects/${id}`); }
+  /** Null (204) when the learner has no library project in progress. */
+  currentGuidedProject() { return this.get<M.CurrentGuidedProject | null>('/guided-projects/current'); }
+  setGuidedRepository(id: number, repositoryUrl: string | null) { return this.put<void>(`/guided-projects/${id}/repository`, { repositoryUrl }); }
   setGuidedStep(id: number, stepId: number, done: boolean) { return this.put<void>(`/guided-projects/${id}/steps/${stepId}`, { done }); }
 
   // ----- Peer reviews -----

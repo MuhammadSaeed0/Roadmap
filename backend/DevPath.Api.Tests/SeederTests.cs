@@ -193,6 +193,8 @@ public class SeederTests : IAsyncLifetime
             Edit(file, n => RemoveWhere(n.AsArray(), q => slugs.Contains((string)q["topic"]!)));
         foreach (var file in Directory.GetFiles(Path.Combine(dir, "tutorials")))
             Edit(file, n => RemoveWhere(n.AsArray(), t => slugs.Contains((string)t["topic"]!)));
+        foreach (var file in Directory.GetFiles(Path.Combine(dir, "guided-projects")))
+            Edit(file, n => { foreach (var p in n.AsArray()) if (p!["topics"] is System.Text.Json.Nodes.JsonArray t) RemoveWhere(t, s => slugs.Contains((string)s!)); });
         Edit(Path.Combine(dir, "videos.json"), n => { foreach (var s in slugs) n.AsObject().Remove(s); });
         Edit(Path.Combine(dir, "market-demand.json"), n => { foreach (var s in slugs) n["topics"]!.AsObject().Remove(s); });
         Edit(Path.Combine(dir, "resources.json"), n =>

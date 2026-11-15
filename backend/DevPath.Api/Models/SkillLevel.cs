@@ -47,7 +47,9 @@ public enum XpActivity
     ProjectReview,
     PortfolioItem,
     DiscussionAnswerAccepted,
-    ProjectReviewGiven
+    ProjectReviewGiven,
+    /// <summary>Every step of a Project library project is done.</summary>
+    GuidedProjectCompleted
 }
 
 /// <summary>
