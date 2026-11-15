@@ -1,0 +1,1177 @@
+[
+ {
+  "key": "aspnet-notes-api",
+  "skill": "AspNetCore",
+  "level": "Beginner",
+  "hours": 4,
+  "titleEn": "Notes API with minimal APIs",
+  "titleAr": "واجهة API للملاحظات بـ minimal APIs",
+  "summaryEn": "Your first web API: create, read, update and delete notes over HTTP, tried out in Swagger and with a .http file.",
+  "summaryAr": "أول واجهة API لك: إنشاء الملاحظات وقراءتها وتعديلها وحذفها عبر HTTP، مع تجربتها في Swagger وفي ملف .http.",
+  "techStack": "C# · ASP.NET Core minimal APIs · OpenAPI",
+  "goalsEn": [
+   "Create and run an ASP.NET Core project",
+   "Map GET, POST, PUT and DELETE endpoints",
+   "Return the right status codes (200, 201, 204, 400, 404)",
+   "Test an API with Swagger and .http files"
+  ],
+  "goalsAr": [
+   "إنشاء مشروع ASP.NET Core وتشغيله",
+   "تعريف نقاط GET وPOST وPUT وDELETE",
+   "إعادة رموز الحالة الصحيحة (200 و201 و204 و400 و404)",
+   "اختبار الـ API باستخدام Swagger وملفات .http"
+  ],
+  "requirementsEn": [
+   "GET /notes lists all notes",
+   "GET /notes/{id} returns one note or 404",
+   "POST /notes creates a note and returns 201 with its location",
+   "PUT /notes/{id} updates, DELETE /notes/{id} removes",
+   "An empty title returns 400"
+  ],
+  "requirementsAr": [
+   "GET /notes تعرض كل الملاحظات",
+   "GET /notes/{id} تعيد ملاحظة واحدة أو 404",
+   "POST /notes تنشئ ملاحظة وتعيد 201 مع مكانها",
+   "PUT /notes/{id} تعدّل، وDELETE /notes/{id} تحذف",
+   "العنوان الفارغ يعيد 400"
+  ],
+  "acceptanceEn": [
+   "Every endpoint works from Swagger UI",
+   "Status codes match the requirements exactly",
+   "A .http file in the repository exercises every endpoint"
+  ],
+  "acceptanceAr": [
+   "كل نقطة تعمل من واجهة Swagger",
+   "رموز الحالة تطابق المتطلبات تمامًا",
+   "ملف .http في المستودع يجرّب كل النقاط"
+  ],
+  "stretchEn": [
+   "Add search: GET /notes?search=word",
+   "Add a createdAt and updatedAt to each note",
+   "Save notes to a JSON file so they survive a restart"
+  ],
+  "stretchAr": [
+   "أضف البحث: GET /notes?search=word",
+   "أضف createdAt وupdatedAt لكل ملاحظة",
+   "احفظ الملاحظات في ملف JSON لتبقى بعد إعادة التشغيل"
+  ],
+  "steps": [
+   {
+    "titleEn": "Create the web project",
+    "titleAr": "أنشئ مشروع الويب",
+    "bodyEn": "Run `dotnet new webapi -n NotesApi` and open the folder. Delete the weather forecast sample from `Program.cs` so you start clean.\n\nRun it with `dotnet run` and open the URL it prints followed by `/openapi/v1.json`, or add Swagger UI (next step), to make sure the app answers.",
+    "bodyAr": "شغّل `dotnet new webapi -n NotesApi` وافتح المجلد. احذف مثال توقعات الطقس من `Program.cs` لتبدأ من صفحة نظيفة.\n\nشغّله بـ `dotnet run` وافتح الرابط الذي يطبعه متبوعًا بـ `/openapi/v1.json`، أو أضف واجهة Swagger (في الخطوة التالية)، لتتأكد أن التطبيق يستجيب.",
+    "hintsEn": [
+     "The port is in `Properties/launchSettings.json`.",
+     "If the browser warns about the certificate, run `dotnet dev-certs https --trust` once."
+    ],
+    "hintsAr": [
+     "رقم المنفذ موجود في `Properties/launchSettings.json`.",
+     "إذا حذّر المتصفح من الشهادة فشغّل `dotnet dev-certs https --trust` مرة واحدة."
+    ],
+    "key": "aspnet-notes-api-setup"
+   },
+   {
+    "titleEn": "Add a page to try the API",
+    "titleAr": "أضف صفحة لتجربة الـ API",
+    "bodyEn": "Add the package `Swashbuckle.AspNetCore` and call `builder.Services.AddSwaggerGen()` and, in development, `app.UseSwagger(); app.UseSwaggerUI();`.\n\nOpen `/swagger` in the browser. Every endpoint you add will appear here with a \"Try it out\" button.",
+    "bodyAr": "أضف الحزمة `Swashbuckle.AspNetCore` واستدعِ `builder.Services.AddSwaggerGen()`، وفي بيئة التطوير `app.UseSwagger(); app.UseSwaggerUI();`.\n\nافتح `/swagger` في المتصفح. كل نقطة تضيفها ستظهر هنا مع زر \"Try it out\".",
+    "hintsEn": [
+     "`dotnet add package Swashbuckle.AspNetCore`.",
+     "Also call `builder.Services.AddEndpointsApiExplorer()` so minimal APIs show up."
+    ],
+    "hintsAr": [
+     "`dotnet add package Swashbuckle.AspNetCore`.",
+     "استدعِ أيضًا `builder.Services.AddEndpointsApiExplorer()` لتظهر الـ minimal APIs."
+    ],
+    "key": "aspnet-notes-api-swagger"
+   },
+   {
+    "titleEn": "The note model and an in-memory store",
+    "titleAr": "نموذج الملاحظة ومخزن في الذاكرة",
+    "bodyEn": "Create `record Note(int Id, string Title, string Body)` and a request type `record NoteInput(string Title, string Body)` — clients send the input, the server chooses the id.\n\nKeep the notes in a `List<Note>` registered as a singleton service, with a counter for the next id.",
+    "bodyAr": "أنشئ `record Note(int Id, string Title, string Body)` ونوع طلب `record NoteInput(string Title, string Body)`، فالعميل يرسل المدخلات والخادم يختار الرقم.\n\nاحتفظ بالملاحظات في `List<Note>` مسجلة كخدمة singleton، مع عدّاد للرقم التالي.",
+    "hintsEn": [
+     "A small `NoteStore` class with Add, Get, Update, Delete keeps Program.cs readable.",
+     "A singleton is shared by all requests — add a `lock` if you want to be safe with parallel requests."
+    ],
+    "hintsAr": [
+     "class صغير باسم `NoteStore` فيه Add وGet وUpdate وDelete يُبقي Program.cs مقروءًا.",
+     "الـ singleton مشترك بين كل الطلبات، فأضف `lock` إن أردت الأمان مع الطلبات المتوازية."
+    ],
+    "key": "aspnet-notes-api-model"
+   },
+   {
+    "titleEn": "GET all and GET by id",
+    "titleAr": "GET للكل وGET بالرقم",
+    "bodyEn": "Map `app.MapGet(\"/notes\", (NoteStore store) => store.All())`. For one note, return `Results.Ok(note)` when found and `Results.NotFound()` when not.\n\nTry both in Swagger: an existing id and one that does not exist.",
+    "bodyAr": "عرّف `app.MapGet(\"/notes\", (NoteStore store) => store.All())`. ولملاحظة واحدة أعد `Results.Ok(note)` إن وُجدت و`Results.NotFound()` إن لم توجد.\n\nجرّب الاثنين في Swagger: رقمًا موجودًا وآخر غير موجود.",
+    "hintsEn": [
+     "The service is injected just by adding it as a parameter of the handler.",
+     "Use a route constraint: `/notes/{id:int}`."
+    ],
+    "hintsAr": [
+     "تُحقن الخدمة بمجرد إضافتها كمعامل في دالة المعالجة.",
+     "استخدم قيدًا في المسار: `/notes/{id:int}`."
+    ],
+    "code": "app.MapGet(\"/notes/{id:int}\", (int id, NoteStore store) =>\n    store.Get(id) is { } note ? Results.Ok(note) : Results.NotFound());",
+    "language": "csharp",
+    "key": "aspnet-notes-api-read"
+   },
+   {
+    "titleEn": "POST with validation",
+    "titleAr": "POST مع التحقق",
+    "bodyEn": "Map `POST /notes` that takes a `NoteInput`. If the title is empty, return `Results.ValidationProblem(...)` (400). Otherwise add the note and return `Results.Created($\"/notes/{note.Id}\", note)` (201).\n\nThe Location header tells the client where the new note lives.",
+    "bodyAr": "عرّف `POST /notes` تستقبل `NoteInput`. إذا كان العنوان فارغًا فأعد `Results.ValidationProblem(...)` (400)، وإلا أضف الملاحظة وأعد `Results.Created($\"/notes/{note.Id}\", note)` (201).\n\nترويسة Location تخبر العميل بمكان الملاحظة الجديدة.",
+    "hintsEn": [
+     "ValidationProblem takes a dictionary: `new Dictionary<string, string[]> { [\"title\"] = [\"Title is required.\"] }`.",
+     "Look at the response headers in Swagger to see Location."
+    ],
+    "hintsAr": [
+     "ValidationProblem تستقبل dictionary: `new Dictionary<string, string[]> { [\"title\"] = [\"Title is required.\"] }`.",
+     "انظر إلى ترويسات الرد في Swagger لترى Location."
+    ],
+    "key": "aspnet-notes-api-create"
+   },
+   {
+    "titleEn": "PUT and DELETE",
+    "titleAr": "PUT وDELETE",
+    "bodyEn": "`PUT /notes/{id}` validates the input like POST, returns 404 for an unknown id and `Results.NoContent()` (204) after updating. `DELETE /notes/{id}` returns 404 or 204.\n\nRecords are immutable: replace the note in the list with `note with { Title = ..., Body = ... }`.",
+    "bodyAr": "`PUT /notes/{id}` تتحقق من المدخلات مثل POST، وتعيد 404 لرقم غير معروف و`Results.NoContent()` (204) بعد التعديل. و`DELETE /notes/{id}` تعيد 404 أو 204.\n\nالـ records غير قابلة للتعديل، فاستبدل الملاحظة في القائمة بـ `note with { Title = ..., Body = ... }`.",
+    "hintsEn": [
+     "Put the validation in one helper and use it from POST and PUT.",
+     "Deleting the same note twice should give 204 then 404."
+    ],
+    "hintsAr": [
+     "ضع التحقق في دالة مساعدة واحدة واستخدمها من POST وPUT.",
+     "حذف الملاحظة نفسها مرتين يعطي 204 ثم 404."
+    ],
+    "key": "aspnet-notes-api-update-delete"
+   },
+   {
+    "titleEn": "A .http file for every endpoint",
+    "titleAr": "ملف .http لكل النقاط",
+    "bodyEn": "Create `NotesApi.http` with one request per endpoint, separated by `###`. VS Code (REST Client) and Visual Studio can send them with one click.\n\nInclude the error cases too: an empty title, an unknown id.",
+    "bodyAr": "أنشئ `NotesApi.http` فيه طلب لكل نقطة، مفصولة بـ `###`. يستطيع VS Code (مع REST Client) وVisual Studio إرسالها بنقرة واحدة.\n\nأضف حالات الخطأ أيضًا: العنوان الفارغ، والرقم غير الموجود.",
+    "hintsEn": [
+     "Define the base URL once: `@host = https://localhost:7123`.",
+     "A POST needs `Content-Type: application/json` and a blank line before the body."
+    ],
+    "hintsAr": [
+     "عرّف الرابط الأساسي مرة واحدة: `@host = https://localhost:7123`.",
+     "طلب POST يحتاج `Content-Type: application/json` وسطرًا فارغًا قبل المحتوى."
+    ],
+    "code": "@host = https://localhost:7123\n\nPOST {{host}}/notes\nContent-Type: application/json\n\n{ \"title\": \"First note\", \"body\": \"Hello\" }\n\n###\nGET {{host}}/notes/1",
+    "language": "http",
+    "key": "aspnet-notes-api-http-file"
+   },
+   {
+    "titleEn": "Check the status codes and publish",
+    "titleAr": "تحقق من رموز الحالة وانشر",
+    "bodyEn": "Send every request in the .http file and compare each status code with the requirements. Restart the app and notice the notes are gone — that is expected with an in-memory store (the stretch goal fixes it).\n\nPush to GitHub with a README listing the endpoints in a table.",
+    "bodyAr": "أرسل كل طلب في ملف .http وقارن كل رمز حالة بالمتطلبات. أعد تشغيل التطبيق ولاحظ أن الملاحظات اختفت، وهذا متوقع مع مخزن في الذاكرة (التحدي الإضافي يحل ذلك).\n\nارفعه إلى GitHub مع README يعرض النقاط في جدول.",
+    "hintsEn": [
+     "A table with Method, Path, Body and Responses is the standard way to document an API.",
+     "Add the .http file to the repository; it is living documentation."
+    ],
+    "hintsAr": [
+     "الجدول بأعمدة Method وPath وBody وResponses هو الطريقة المعتادة لتوثيق الـ API.",
+     "أضف ملف .http إلى المستودع، فهو توثيق حي."
+    ],
+    "key": "aspnet-notes-api-finish"
+   }
+  ]
+ },
+ {
+  "key": "aspnet-url-shortener",
+  "skill": "AspNetCore",
+  "level": "Beginner",
+  "hours": 5,
+  "titleEn": "URL shortener",
+  "titleAr": "مختصر الروابط",
+  "summaryEn": "Turn long links into short codes, redirect visitors from the short link to the original one, and count the clicks.",
+  "summaryAr": "حوّل الروابط الطويلة إلى رموز قصيرة، ووجّه الزوار من الرابط القصير إلى الأصلي، واحسب عدد النقرات.",
+  "techStack": "C# · ASP.NET Core minimal APIs · static files",
+  "goalsEn": [
+   "Generate random codes and avoid collisions",
+   "Redirect with the right HTTP status",
+   "Validate URLs on the server",
+   "Serve a small HTML page from wwwroot"
+  ],
+  "goalsAr": [
+   "توليد رموز عشوائية وتجنب التكرار",
+   "التحويل برمز HTTP الصحيح",
+   "التحقق من الروابط على الخادم",
+   "تقديم صفحة HTML صغيرة من wwwroot"
+  ],
+  "requirementsEn": [
+   "POST /api/links with a URL returns a short code",
+   "GET /{code} redirects to the original URL",
+   "Unknown codes return 404",
+   "GET /api/links/{code} shows the URL and the click count",
+   "A simple HTML form to shorten a link",
+   "Links are saved to a JSON file"
+  ],
+  "requirementsAr": [
+   "POST /api/links مع رابط يعيد رمزًا قصيرًا",
+   "GET /{code} يحوّل إلى الرابط الأصلي",
+   "الرموز غير المعروفة تعيد 404",
+   "GET /api/links/{code} يعرض الرابط وعدد النقرات",
+   "نموذج HTML بسيط لاختصار رابط",
+   "تُحفظ الروابط في ملف JSON"
+  ],
+  "acceptanceEn": [
+   "Invalid URLs such as \"hello\" or \"javascript:alert(1)\" are rejected",
+   "Opening the short link in a browser lands on the original page",
+   "Each visit increases the click count by one"
+  ],
+  "acceptanceAr": [
+   "الروابط غير الصحيحة مثل \"hello\" أو \"javascript:alert(1)\" تُرفض",
+   "فتح الرابط القصير في المتصفح يوصل إلى الصفحة الأصلية",
+   "كل زيارة تزيد عدد النقرات بواحد"
+  ],
+  "stretchEn": [
+   "Let users choose a custom code",
+   "Add an expiry date to links",
+   "Show a QR code for each short link"
+  ],
+  "stretchAr": [
+   "اسمح للمستخدم باختيار رمز مخصص",
+   "أضف تاريخ انتهاء للروابط",
+   "اعرض رمز QR لكل رابط قصير"
+  ],
+  "steps": [
+   {
+    "titleEn": "Create the project",
+    "titleAr": "أنشئ المشروع",
+    "bodyEn": "Create `dotnet new web -n Shortener` (the empty template). Add `app.UseDefaultFiles(); app.UseStaticFiles();` and a `wwwroot/index.html` with a heading so you can see the page at `/`.\n\nPlan the URLs: `/api/...` is for the API, everything else at the root is a short code.",
+    "bodyAr": "أنشئ `dotnet new web -n Shortener` (القالب الفارغ). وأضف `app.UseDefaultFiles(); app.UseStaticFiles();` وملف `wwwroot/index.html` فيه عنوان لترى الصفحة على `/`.\n\nخطّط للروابط: `/api/...` للـ API، وكل ما عدا ذلك في الجذر رمز قصير.",
+    "hintsEn": [
+     "Create the wwwroot folder yourself; the empty template does not have it.",
+     "UseDefaultFiles must come before UseStaticFiles."
+    ],
+    "hintsAr": [
+     "أنشئ مجلد wwwroot بنفسك، فالقالب الفارغ لا يحتويه.",
+     "يجب أن يأتي UseDefaultFiles قبل UseStaticFiles."
+    ],
+    "key": "aspnet-url-shortener-setup"
+   },
+   {
+    "titleEn": "Model and store",
+    "titleAr": "النموذج والمخزن",
+    "bodyEn": "Create `class ShortLink { string Code; string Url; DateTime CreatedAt; int Clicks; }` and a `LinkStore` singleton with a `Dictionary<string, ShortLink>` plus Load/Save to `links.json`.\n\nLoad the file in the constructor, save after every change.",
+    "bodyAr": "أنشئ `class ShortLink { string Code; string Url; DateTime CreatedAt; int Clicks; }` وخدمة singleton باسم `LinkStore` فيها `Dictionary<string, ShortLink>` مع Load وSave إلى `links.json`.\n\nحمّل الملف في الـ constructor، واحفظ بعد كل تغيير.",
+    "hintsEn": [
+     "Use a `lock` around changes: two clicks can arrive at the same time.",
+     "Use `StringComparer.Ordinal` so \"AbC\" and \"abc\" are different codes."
+    ],
+    "hintsAr": [
+     "استخدم `lock` حول التغييرات، فقد تصل نقرتان في الوقت نفسه.",
+     "استخدم `StringComparer.Ordinal` ليكون \"AbC\" و\"abc\" رمزين مختلفين."
+    ],
+    "key": "aspnet-url-shortener-model"
+   },
+   {
+    "titleEn": "Generate short codes",
+    "titleAr": "ولّد الرموز القصيرة",
+    "bodyEn": "Write `string NewCode()` that picks 6 random characters from `a-z A-Z 0-9` using `Random.Shared` (or `RandomNumberGenerator` for unpredictable codes). If the code already exists, try again.\n\n62^6 is about 56 billion combinations, so collisions are rare but must still be handled.",
+    "bodyAr": "اكتب `string NewCode()` تختار 6 أحرف عشوائية من `a-z A-Z 0-9` باستخدام `Random.Shared` (أو `RandomNumberGenerator` لرموز لا يمكن توقعها). وإذا كان الرمز موجودًا فأعد المحاولة.\n\n62 أُس 6 تساوي نحو 56 مليار احتمال، فالتكرار نادر لكن يجب التعامل معه.",
+    "hintsEn": [
+     "`string.Create(6, chars, (span, c) => { ... })` or a simple char array both work.",
+     "`RandomNumberGenerator.GetItems(alphabet, 6)` does it in one call in .NET 8+."
+    ],
+    "hintsAr": [
+     "`string.Create(6, chars, (span, c) => { ... })` أو مصفوفة أحرف بسيطة كلاهما يعمل.",
+     "`RandomNumberGenerator.GetItems(alphabet, 6)` تفعل ذلك في استدعاء واحد في .NET 8 وما بعده."
+    ],
+    "key": "aspnet-url-shortener-codes"
+   },
+   {
+    "titleEn": "Validate the URL",
+    "titleAr": "تحقق من الرابط",
+    "bodyEn": "Accept only absolute http or https URLs: `Uri.TryCreate(input, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)`.\n\nThis blocks `javascript:` links, which could run code in your visitors' browsers.",
+    "bodyAr": "اقبل فقط الروابط الكاملة بـ http أو https: `Uri.TryCreate(input, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)`.\n\nهذا يمنع روابط `javascript:` التي قد تشغّل كودًا في متصفحات زوارك.",
+    "hintsEn": [
+     "Trim the input first; users paste spaces.",
+     "Return 400 with a clear message for invalid URLs."
+    ],
+    "hintsAr": [
+     "احذف المسافات من المدخل أولًا، فالمستخدمون يلصقون مسافات.",
+     "أعد 400 برسالة واضحة للروابط غير الصحيحة."
+    ],
+    "key": "aspnet-url-shortener-validate"
+   },
+   {
+    "titleEn": "Create and inspect links",
+    "titleAr": "إنشاء الروابط وفحصها",
+    "bodyEn": "`POST /api/links` with `{ \"url\": \"...\" }` validates, creates a link and returns 201 with the code and the full short URL (`$\"{request.Scheme}://{request.Host}/{code}\"`).\n\n`GET /api/links/{code}` returns the link with its click count, or 404.",
+    "bodyAr": "`POST /api/links` مع `{ \"url\": \"...\" }` تتحقق، وتنشئ رابطًا، وتعيد 201 مع الرمز والرابط القصير كاملًا (`$\"{request.Scheme}://{request.Host}/{code}\"`).\n\nو`GET /api/links/{code}` تعيد الرابط مع عدد نقراته، أو 404.",
+    "hintsEn": [
+     "Inject `HttpRequest request` into the handler to build the full URL.",
+     "Return a small DTO, not the internal class."
+    ],
+    "hintsAr": [
+     "احقن `HttpRequest request` في دالة المعالجة لتبني الرابط الكامل.",
+     "أعد DTO صغيرًا، لا الـ class الداخلي."
+    ],
+    "key": "aspnet-url-shortener-api"
+   },
+   {
+    "titleEn": "Redirect and count",
+    "titleAr": "التحويل والعدّ",
+    "bodyEn": "Map `GET /{code}` last. Find the link, increase `Clicks`, save, and return `Results.Redirect(link.Url)` (302). Unknown codes return 404.\n\nUse 302 (temporary) instead of 301 (permanent): browsers cache 301 and would skip your server, so clicks would stop being counted.",
+    "bodyAr": "عرّف `GET /{code}` في الأخير. ابحث عن الرابط، وزد `Clicks`، واحفظ، ثم أعد `Results.Redirect(link.Url)` (302). والرموز غير المعروفة تعيد 404.\n\nاستخدم 302 (مؤقت) بدل 301 (دائم)، فالمتصفحات تخزن 301 وتتجاوز خادمك، فيتوقف عدّ النقرات.",
+    "hintsEn": [
+     "Constrain the code: `/{code:regex(^[a-zA-Z0-9]{{6}}$)}` so `/favicon.ico` does not hit it.",
+     "Static files are matched before endpoints, so index.html still works."
+    ],
+    "hintsAr": [
+     "قيّد الرمز: `/{code:regex(^[a-zA-Z0-9]{{6}}$)}` حتى لا يصل إليه `/favicon.ico`.",
+     "الملفات الثابتة تُطابق قبل النقاط، فيبقى index.html يعمل."
+    ],
+    "key": "aspnet-url-shortener-redirect"
+   },
+   {
+    "titleEn": "A small HTML page",
+    "titleAr": "صفحة HTML صغيرة",
+    "bodyEn": "In `index.html`, add a form with a URL input and a button. Use `fetch('/api/links', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url }) })` and show the short link with a \"Copy\" button, or the error message.\n\nUse `navigator.clipboard.writeText(shortUrl)` to copy.",
+    "bodyAr": "في `index.html` أضف نموذجًا فيه حقل للرابط وزر. استخدم `fetch('/api/links', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url }) })` واعرض الرابط القصير مع زر \"نسخ\"، أو رسالة الخطأ.\n\nاستخدم `navigator.clipboard.writeText(shortUrl)` للنسخ.",
+    "hintsEn": [
+     "Call `event.preventDefault()` in the submit handler so the page does not reload.",
+     "Use `<input type=\"url\" required>` for browser validation too — the server still validates."
+    ],
+    "hintsAr": [
+     "استدعِ `event.preventDefault()` في معالج الإرسال حتى لا تُعاد تحميل الصفحة.",
+     "استخدم `<input type=\"url\" required>` لتحقق المتصفح أيضًا، ويبقى الخادم يتحقق."
+    ],
+    "key": "aspnet-url-shortener-page"
+   },
+   {
+    "titleEn": "Test and publish",
+    "titleAr": "اختبر وانشر",
+    "bodyEn": "Shorten a real link, open the short link in a private window, then check the click count. Try \"hello\", \"ftp://x\" and \"javascript:alert(1)\".\n\nPush to GitHub with a screenshot of the page and the API table in the README.",
+    "bodyAr": "اختصر رابطًا حقيقيًا، وافتح الرابط القصير في نافذة خاصة، ثم تحقق من عدد النقرات. وجرّب \"hello\" و\"ftp://x\" و\"javascript:alert(1)\".\n\nارفعه إلى GitHub مع صورة للصفحة وجدول الـ API في README.",
+    "hintsEn": [
+     "Add `links.json` to .gitignore.",
+     "Mention in the README that a real service would need rate limiting against abuse."
+    ],
+    "hintsAr": [
+     "أضف `links.json` إلى .gitignore.",
+     "اذكر في README أن الخدمة الحقيقية تحتاج تحديدًا لمعدل الطلبات لمنع الإساءة."
+    ],
+    "key": "aspnet-url-shortener-finish"
+   }
+  ]
+ },
+ {
+  "key": "aspnet-bookstore-api",
+  "skill": "AspNetCore",
+  "level": "Intermediate",
+  "hours": 12,
+  "titleEn": "Bookstore REST API",
+  "titleAr": "واجهة REST لمتجر كتب",
+  "summaryEn": "A well-structured REST API for a bookstore with controllers, a SQL database through EF Core, validation, filtering, sorting, pagination and consistent errors.",
+  "summaryAr": "واجهة REST منظمة لمتجر كتب، فيها controllers وقاعدة بيانات SQL عبر EF Core، مع التحقق والتصفية والترتيب والتقسيم إلى صفحات وأخطاء موحدة.",
+  "techStack": "C# · ASP.NET Core Web API · EF Core · SQL Server · FluentValidation",
+  "goalsEn": [
+   "Structure an API with controllers, services and DTOs",
+   "Validate requests and return ProblemDetails",
+   "Implement filtering, sorting and pagination",
+   "Document and version an API"
+  ],
+  "goalsAr": [
+   "تنظيم الـ API بـ controllers وservices وDTOs",
+   "التحقق من الطلبات وإعادة ProblemDetails",
+   "تنفيذ التصفية والترتيب والتقسيم إلى صفحات",
+   "توثيق الـ API وإدارة إصداراته"
+  ],
+  "requirementsEn": [
+   "Resources: authors, books, categories, with relations",
+   "Full CRUD for books and authors",
+   "GET /books supports ?search, ?categoryId, ?minPrice, ?maxPrice, ?sort, ?page, ?pageSize",
+   "Validation errors and 404s use the ProblemDetails format",
+   "Responses never expose entities directly",
+   "Swagger documents every endpoint and response"
+  ],
+  "requirementsAr": [
+   "الموارد: المؤلفون والكتب والفئات مع العلاقات بينها",
+   "عمليات CRUD كاملة للكتب والمؤلفين",
+   "GET /books تدعم ?search و?categoryId و?minPrice و?maxPrice و?sort و?page و?pageSize",
+   "أخطاء التحقق و404 تستخدم صيغة ProblemDetails",
+   "الردود لا تكشف الكيانات مباشرة أبدًا",
+   "Swagger يوثّق كل نقطة وكل رد"
+  ],
+  "acceptanceEn": [
+   "GET /books?page=2&pageSize=10 returns 10 items and the total count",
+   "Sorting by price desc and by title works",
+   "Creating a book with a negative price returns 400 with a field error",
+   "Deleting an author who still has books returns 409 Conflict"
+  ],
+  "acceptanceAr": [
+   "GET /books?page=2&pageSize=10 تعيد 10 عناصر والعدد الكلي",
+   "الترتيب حسب السعر تنازليًا وحسب العنوان يعمل",
+   "إنشاء كتاب بسعر سالب يعيد 400 مع خطأ على الحقل",
+   "حذف مؤلف ما زالت له كتب يعيد 409 Conflict"
+  ],
+  "stretchEn": [
+   "Add ETags and conditional GET",
+   "Add output caching for the book list",
+   "Add API versioning with /v1 and /v2"
+  ],
+  "stretchAr": [
+   "أضف ETags وGET الشرطي",
+   "أضف output caching لقائمة الكتب",
+   "أضف إدارة الإصدارات بـ /v1 و/v2"
+  ],
+  "steps": [
+   {
+    "titleEn": "Project and folders",
+    "titleAr": "المشروع والمجلدات",
+    "bodyEn": "Create `dotnet new webapi --use-controllers -n Bookstore.Api`. Add folders: `Entities`, `Data`, `Dtos`, `Services`, `Controllers`.\n\nAdd the packages `Microsoft.EntityFrameworkCore.SqlServer` and `Microsoft.EntityFrameworkCore.Design`, and install the tool with `dotnet tool install --global dotnet-ef`.",
+    "bodyAr": "أنشئ `dotnet new webapi --use-controllers -n Bookstore.Api`. وأضف المجلدات: `Entities` و`Data` و`Dtos` و`Services` و`Controllers`.\n\nأضف الحزمتين `Microsoft.EntityFrameworkCore.SqlServer` و`Microsoft.EntityFrameworkCore.Design`، وثبّت الأداة بـ `dotnet tool install --global dotnet-ef`.",
+    "hintsEn": [
+     "LocalDB or a SQL Server in Docker both work for development.",
+     "Keep the connection string in appsettings.Development.json, never hard-coded."
+    ],
+    "hintsAr": [
+     "LocalDB أو SQL Server داخل Docker كلاهما يصلح للتطوير.",
+     "ضع نص الاتصال في appsettings.Development.json، ولا تكتبه داخل الكود."
+    ],
+    "key": "aspnet-bookstore-api-setup"
+   },
+   {
+    "titleEn": "Entities and the DbContext",
+    "titleAr": "الكيانات والـ DbContext",
+    "bodyEn": "Create `Author` (Id, Name, Bio), `Category` (Id, Name) and `Book` (Id, Title, Isbn, Price, PublishedOn, AuthorId, CategoryId). Configure them in `BookstoreDbContext.OnModelCreating`: max lengths, a unique index on Isbn, `decimal(10,2)` for Price and `DeleteBehavior.Restrict` from Author to Book.\n\nSeed three categories with `HasData`, then run `dotnet ef migrations add Initial` and `dotnet ef database update`.",
+    "bodyAr": "أنشئ `Author` (Id وName وBio) و`Category` (Id وName) و`Book` (Id وTitle وIsbn وPrice وPublishedOn وAuthorId وCategoryId). واضبطها في `BookstoreDbContext.OnModelCreating`: الأطوال القصوى، وفهرس فريد على Isbn، و`decimal(10,2)` للسعر، و`DeleteBehavior.Restrict` من Author إلى Book.\n\nأضف ثلاث فئات أولية بـ `HasData`، ثم شغّل `dotnet ef migrations add Initial` و`dotnet ef database update`.",
+    "hintsEn": [
+     "Restrict is what lets you return 409 later instead of silently deleting books.",
+     "Open the database in VS Code or SSMS to check the tables."
+    ],
+    "hintsAr": [
+     "Restrict هو ما يسمح لك لاحقًا بإعادة 409 بدل حذف الكتب بصمت.",
+     "افتح قاعدة البيانات في VS Code أو SSMS لتتحقق من الجداول."
+    ],
+    "key": "aspnet-bookstore-api-entities"
+   },
+   {
+    "titleEn": "DTOs instead of entities",
+    "titleAr": "DTOs بدل الكيانات",
+    "bodyEn": "Create request and response records: `BookDto(int Id, string Title, string Isbn, decimal Price, DateOnly PublishedOn, string AuthorName, string CategoryName)`, `CreateBookRequest(...)`, `UpdateBookRequest(...)`.\n\nEntities can change shape (new columns, navigation properties); DTOs are your public contract and protect you from over-posting.",
+    "bodyAr": "أنشئ records للطلبات والردود: `BookDto(int Id, string Title, string Isbn, decimal Price, DateOnly PublishedOn, string AuthorName, string CategoryName)` و`CreateBookRequest(...)` و`UpdateBookRequest(...)`.\n\nالكيانات قد يتغير شكلها (أعمدة جديدة، وخصائص تنقّل)، أما الـ DTOs فهي عقدك العام، وتحميك من إرسال حقول غير مقصودة (over-posting).",
+    "hintsEn": [
+     "Project with `Select(b => new BookDto(...))` so EF only reads the columns you need.",
+     "Never accept an Id in the create request."
+    ],
+    "hintsAr": [
+     "اعمل projection بـ `Select(b => new BookDto(...))` ليقرأ EF الأعمدة التي تحتاجها فقط.",
+     "لا تقبل Id في طلب الإنشاء أبدًا."
+    ],
+    "key": "aspnet-bookstore-api-dtos"
+   },
+   {
+    "titleEn": "A service per resource",
+    "titleAr": "service لكل مورد",
+    "bodyEn": "Write `BookService` with `ListAsync(query)`, `GetAsync(id)`, `CreateAsync(request)`, `UpdateAsync(id, request)`, `DeleteAsync(id)`. Register it with `AddScoped`.\n\nThe controller should only translate HTTP to service calls and results to status codes.",
+    "bodyAr": "اكتب `BookService` فيه `ListAsync(query)` و`GetAsync(id)` و`CreateAsync(request)` و`UpdateAsync(id, request)` و`DeleteAsync(id)`. وسجّله بـ `AddScoped`.\n\nيجب أن يقتصر دور الـ controller على ترجمة HTTP إلى استدعاءات للـ service، وترجمة النتائج إلى رموز حالة.",
+    "hintsEn": [
+     "Pass `CancellationToken` from the action to every EF call.",
+     "Return null from GetAsync for \"not found\" and let the controller map it to 404."
+    ],
+    "hintsAr": [
+     "مرّر `CancellationToken` من الـ action إلى كل استدعاء لـ EF.",
+     "أعد null من GetAsync عند \"غير موجود\" ودع الـ controller يحوّلها إلى 404."
+    ],
+    "key": "aspnet-bookstore-api-service"
+   },
+   {
+    "titleEn": "Controllers and status codes",
+    "titleAr": "الـ controllers ورموز الحالة",
+    "bodyEn": "Create `BooksController` and `AuthorsController` with `[ApiController]` and `[Route(\"api/[controller]\")]`. Return `ActionResult<T>`: `Ok`, `CreatedAtAction(nameof(Get), new { id }, dto)`, `NoContent`, `NotFound`.\n\nAdd `[ProducesResponseType]` attributes so Swagger documents each possible response.",
+    "bodyAr": "أنشئ `BooksController` و`AuthorsController` مع `[ApiController]` و`[Route(\"api/[controller]\")]`. وأعد `ActionResult<T>`: `Ok` و`CreatedAtAction(nameof(Get), new { id }, dto)` و`NoContent` و`NotFound`.\n\nأضف خصائص `[ProducesResponseType]` ليوثّق Swagger كل رد ممكن.",
+    "hintsEn": [
+     "`[ApiController]` already returns 400 automatically when model binding fails.",
+     "Deleting an author with books: catch the case in the service and return a Conflict result."
+    ],
+    "hintsAr": [
+     "`[ApiController]` يعيد 400 تلقائيًا عند فشل ربط النموذج.",
+     "حذف مؤلف له كتب: اكتشف الحالة في الـ service وأعد نتيجة Conflict."
+    ],
+    "key": "aspnet-bookstore-api-controllers"
+   },
+   {
+    "titleEn": "Validation with FluentValidation",
+    "titleAr": "التحقق باستخدام FluentValidation",
+    "bodyEn": "Add `FluentValidation.DependencyInjectionExtensions`. Write `CreateBookRequestValidator`: title required and at most 200 characters, ISBN of 10 or 13 digits, price above 0, published date not in the future, author and category must exist.\n\nRun the validator in the service or an endpoint filter and turn failures into `ValidationProblem` responses.",
+    "bodyAr": "أضف `FluentValidation.DependencyInjectionExtensions`. واكتب `CreateBookRequestValidator`: العنوان مطلوب وبحد أقصى 200 حرف، وISBN من 10 أو 13 رقمًا، والسعر أكبر من 0، وتاريخ النشر ليس في المستقبل، والمؤلف والفئة يجب أن يكونا موجودين.\n\nشغّل الـ validator في الـ service أو في endpoint filter، وحوّل الإخفاقات إلى ردود `ValidationProblem`.",
+    "hintsEn": [
+     "`result.ToDictionary()` gives the errors in the shape ValidationProblem expects.",
+     "Checks that need the database (author exists) use `MustAsync`."
+    ],
+    "hintsAr": [
+     "`result.ToDictionary()` يعطي الأخطاء بالشكل الذي تتوقعه ValidationProblem.",
+     "التحققات التي تحتاج قاعدة البيانات (وجود المؤلف) تستخدم `MustAsync`."
+    ],
+    "key": "aspnet-bookstore-api-validation"
+   },
+   {
+    "titleEn": "Filtering, sorting and pagination",
+    "titleAr": "التصفية والترتيب والتقسيم إلى صفحات",
+    "bodyEn": "Create `BookQuery` with Search, CategoryId, MinPrice, MaxPrice, Sort, Page (default 1) and PageSize (default 20, max 100). Build the query step by step: `if (q.Search is not null) query = query.Where(...)`.\n\nReturn `PagedResult<BookDto>(items, page, pageSize, totalCount)`. Count before `Skip`/`Take`.",
+    "bodyAr": "أنشئ `BookQuery` فيه Search وCategoryId وMinPrice وMaxPrice وSort وPage (الافتراضي 1) وPageSize (الافتراضي 20 وأقصاه 100). وابنِ الاستعلام خطوة خطوة: `if (q.Search is not null) query = query.Where(...)`.\n\nأعد `PagedResult<BookDto>(items, page, pageSize, totalCount)`. واحسب العدد قبل `Skip` و`Take`.",
+    "hintsEn": [
+     "Bind it with `[FromQuery] BookQuery query`.",
+     "Sort with a switch: `\"price_desc\" => query.OrderByDescending(b => b.Price)`, and always add a final `ThenBy(b => b.Id)` for stable pages."
+    ],
+    "hintsAr": [
+     "اربطه بـ `[FromQuery] BookQuery query`.",
+     "رتّب باستخدام switch مثل: `\"price_desc\" => query.OrderByDescending(b => b.Price)`، وأضف دائمًا `ThenBy(b => b.Id)` في النهاية لتبقى الصفحات ثابتة."
+    ],
+    "key": "aspnet-bookstore-api-query"
+   },
+   {
+    "titleEn": "Consistent errors",
+    "titleAr": "أخطاء موحدة",
+    "bodyEn": "Call `builder.Services.AddProblemDetails()` and `app.UseExceptionHandler()` so unexpected exceptions become a 500 ProblemDetails without a stack trace. Map a unique-index violation (duplicate ISBN) to 409.\n\nEvery error response from your API now has the same JSON shape: type, title, status, detail, errors.",
+    "bodyAr": "استدعِ `builder.Services.AddProblemDetails()` و`app.UseExceptionHandler()` لتتحول الاستثناءات غير المتوقعة إلى ProblemDetails برمز 500 دون كشف تفاصيل الخطأ الداخلية. وحوّل مخالفة الفهرس الفريد (ISBN مكرر) إلى 409.\n\nالآن كل رد خطأ من الـ API له شكل JSON واحد: type وtitle وstatus وdetail وerrors.",
+    "hintsEn": [
+     "A `DbUpdateException` with SqlException number 2601 or 2627 means a unique violation.",
+     "Checking `AnyAsync(b => b.Isbn == isbn)` first gives a friendlier message, but keep the index as a safety net."
+    ],
+    "hintsAr": [
+     "`DbUpdateException` مع SqlException رقمه 2601 أو 2627 يعني مخالفة قيد التفرد.",
+     "التحقق المسبق بـ `AnyAsync(b => b.Isbn == isbn)` يعطي رسالة أوضح، لكن أبقِ الفهرس كشبكة أمان."
+    ],
+    "key": "aspnet-bookstore-api-errors"
+   },
+   {
+    "titleEn": "Integration tests and docs",
+    "titleAr": "اختبارات التكامل والتوثيق",
+    "bodyEn": "Add an xUnit project with `Microsoft.AspNetCore.Mvc.Testing` and test the important paths with `WebApplicationFactory`: create, page 2, sort, validation error, 409 on author delete.\n\nWrite the README: entities diagram, endpoints, query parameters, error format, how to run migrations.",
+    "bodyAr": "أضف مشروع xUnit مع `Microsoft.AspNetCore.Mvc.Testing` واختبر المسارات المهمة بـ `WebApplicationFactory`: الإنشاء، والصفحة 2، والترتيب، وخطأ التحقق، و409 عند حذف المؤلف.\n\nاكتب README: مخطط الكيانات، والنقاط، ومعاملات الاستعلام، وصيغة الأخطاء، وطريقة تشغيل الـ migrations.",
+    "hintsEn": [
+     "Use SQLite in-memory or Testcontainers for the test database.",
+     "Add `public partial class Program { }` so the test project can reference Program."
+    ],
+    "hintsAr": [
+     "استخدم SQLite في الذاكرة أو Testcontainers لقاعدة بيانات الاختبار.",
+     "أضف `public partial class Program { }` ليستطيع مشروع الاختبار الإشارة إلى Program."
+    ],
+    "key": "aspnet-bookstore-api-finish"
+   }
+  ]
+ },
+ {
+  "key": "aspnet-auth-api",
+  "skill": "AspNetCore",
+  "level": "Intermediate",
+  "hours": 12,
+  "titleEn": "Task API with JWT authentication",
+  "titleAr": "واجهة مهام مع مصادقة JWT",
+  "summaryEn": "A secure task API: users register and log in, receive a JWT, and can only see and change their own tasks; admins can see everything.",
+  "summaryAr": "واجهة مهام آمنة: يسجّل المستخدمون ويدخلون، ويحصلون على JWT، ولا يرون ولا يعدّلون إلا مهامهم، والمشرفون يرون كل شيء.",
+  "techStack": "C# · ASP.NET Core · Identity · JWT · EF Core",
+  "goalsEn": [
+   "Store passwords safely with ASP.NET Core Identity",
+   "Issue and validate JWT access tokens",
+   "Protect endpoints with policies and roles",
+   "Prevent users from reading other users' data"
+  ],
+  "goalsAr": [
+   "تخزين كلمات المرور بأمان باستخدام ASP.NET Core Identity",
+   "إصدار رموز JWT والتحقق منها",
+   "حماية النقاط بالسياسات والأدوار",
+   "منع المستخدمين من قراءة بيانات غيرهم"
+  ],
+  "requirementsEn": [
+   "POST /auth/register and POST /auth/login",
+   "Login returns an access token that expires after 15 minutes",
+   "Task CRUD under /tasks, limited to the owner",
+   "An Admin role that can list all users' tasks",
+   "Refresh tokens to get a new access token",
+   "Swagger with an Authorize button"
+  ],
+  "requirementsAr": [
+   "POST /auth/register وPOST /auth/login",
+   "الدخول يعيد رمز وصول تنتهي صلاحيته بعد 15 دقيقة",
+   "عمليات CRUD للمهام تحت /tasks، مقصورة على المالك",
+   "دور Admin يستطيع عرض مهام كل المستخدمين",
+   "رموز تجديد للحصول على رمز وصول جديد",
+   "Swagger مع زر Authorize"
+  ],
+  "acceptanceEn": [
+   "Calling /tasks without a token returns 401",
+   "User A asking for user B's task gets 404, not the task",
+   "A normal user calling the admin endpoint gets 403",
+   "An expired token is rejected; the refresh token gives a new one"
+  ],
+  "acceptanceAr": [
+   "استدعاء /tasks بدون رمز يعيد 401",
+   "المستخدم A إذا طلب مهمة المستخدم B يحصل على 404 لا على المهمة",
+   "المستخدم العادي إذا استدعى نقطة المشرف يحصل على 403",
+   "الرمز المنتهي يُرفض، ورمز التجديد يعطي رمزًا جديدًا"
+  ],
+  "stretchEn": [
+   "Add email confirmation",
+   "Lock the account after 5 failed logins",
+   "Revoke all refresh tokens on password change"
+  ],
+  "stretchAr": [
+   "أضف تأكيد البريد الإلكتروني",
+   "اقفل الحساب بعد 5 محاولات دخول فاشلة",
+   "ألغِ كل رموز التجديد عند تغيير كلمة المرور"
+  ],
+  "steps": [
+   {
+    "titleEn": "Project, database and Identity",
+    "titleAr": "المشروع وقاعدة البيانات وIdentity",
+    "bodyEn": "Create a Web API project and add `Microsoft.AspNetCore.Identity.EntityFrameworkCore`, `Microsoft.AspNetCore.Authentication.JwtBearer` and the EF Core SQL Server packages.\n\nMake `AppDbContext : IdentityDbContext<AppUser>` and register `AddIdentityCore<AppUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>()`. Create the first migration.",
+    "bodyAr": "أنشئ مشروع Web API وأضف `Microsoft.AspNetCore.Identity.EntityFrameworkCore` و`Microsoft.AspNetCore.Authentication.JwtBearer` وحزم EF Core الخاصة بـ SQL Server.\n\nاجعل `AppDbContext : IdentityDbContext<AppUser>` وسجّل `AddIdentityCore<AppUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>()`. ثم أنشئ أول migration.",
+    "hintsEn": [
+     "AddIdentityCore (not AddIdentity) avoids cookie authentication you do not need in an API.",
+     "Look at the AspNetUsers table: passwords are stored as hashes, never as text."
+    ],
+    "hintsAr": [
+     "AddIdentityCore (لا AddIdentity) يتجنب مصادقة الكوكيز التي لا تحتاجها في الـ API.",
+     "انظر إلى جدول AspNetUsers: كلمات المرور تُخزن كـ hash، لا كنص أبدًا."
+    ],
+    "key": "aspnet-auth-api-setup"
+   },
+   {
+    "titleEn": "Register and login",
+    "titleAr": "التسجيل والدخول",
+    "bodyEn": "`POST /auth/register` calls `userManager.CreateAsync(user, password)` and returns the Identity errors as a ValidationProblem when it fails. `POST /auth/login` finds the user by email and checks `userManager.CheckPasswordAsync`.\n\nReturn the same \"Invalid email or password\" for a wrong email and a wrong password, so attackers cannot discover which emails exist.",
+    "bodyAr": "`POST /auth/register` تستدعي `userManager.CreateAsync(user, password)` وتعيد أخطاء Identity كـ ValidationProblem عند الفشل. و`POST /auth/login` تبحث عن المستخدم بالبريد وتتحقق بـ `userManager.CheckPasswordAsync`.\n\nأعد الرسالة نفسها \"البريد أو كلمة المرور غير صحيحة\" للبريد الخاطئ ولكلمة المرور الخاطئة، حتى لا يكتشف المهاجم أي البريدات موجودة.",
+    "hintsEn": [
+     "Configure password rules in `AddIdentityCore(o => o.Password.RequiredLength = 10)`.",
+     "Normalise emails to lower case before saving."
+    ],
+    "hintsAr": [
+     "اضبط قواعد كلمة المرور في `AddIdentityCore(o => o.Password.RequiredLength = 10)`.",
+     "حوّل البريد إلى أحرف صغيرة قبل الحفظ."
+    ],
+    "key": "aspnet-auth-api-register"
+   },
+   {
+    "titleEn": "Issue a JWT",
+    "titleAr": "أصدر JWT",
+    "bodyEn": "Write `TokenService.CreateAccessToken(AppUser user, IList<string> roles)`. Add claims: `sub` (user id), `email`, and one `role` claim per role. Sign it with a symmetric key from configuration and set `expires` to 15 minutes.\n\nKeep the signing key in user secrets (`dotnet user-secrets set Jwt:Key ...`), at least 32 random bytes, never in the repository.",
+    "bodyAr": "اكتب `TokenService.CreateAccessToken(AppUser user, IList<string> roles)`. وأضف claims: `sub` (رقم المستخدم)، و`email`، وclaim باسم `role` لكل دور. ووقّعه بمفتاح متماثل من الإعدادات، واجعل `expires` بعد 15 دقيقة.\n\nاحفظ مفتاح التوقيع في user secrets عبر (`dotnet user-secrets set Jwt:Key ...`)، بطول 32 بايت عشوائيًا على الأقل، ولا تضعه في المستودع أبدًا.",
+    "hintsEn": [
+     "Use `JwtSecurityTokenHandler` or the newer `JsonWebTokenHandler`.",
+     "Paste a token into jwt.io to see its claims — and remember anyone can read them, so never put secrets inside."
+    ],
+    "hintsAr": [
+     "استخدم `JwtSecurityTokenHandler` أو الأحدث `JsonWebTokenHandler`.",
+     "الصق رمزًا في jwt.io لترى الـ claims، وتذكّر أن أي أحد يستطيع قراءتها، فلا تضع أسرارًا داخلها."
+    ],
+    "key": "aspnet-auth-api-jwt"
+   },
+   {
+    "titleEn": "Validate tokens",
+    "titleAr": "تحقق من الرموز",
+    "bodyEn": "Register `AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(...)` with `TokenValidationParameters`: validate issuer, audience, lifetime and signing key, and set `ClockSkew` to 30 seconds.\n\nAdd `app.UseAuthentication(); app.UseAuthorization();` in that order, and a fallback policy that requires an authenticated user, so new endpoints are protected by default.",
+    "bodyAr": "سجّل `AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(...)` مع `TokenValidationParameters`: تحقق من المُصدِر والجمهور والصلاحية الزمنية ومفتاح التوقيع، واجعل `ClockSkew` ثلاثين ثانية.\n\nأضف `app.UseAuthentication(); app.UseAuthorization();` بهذا الترتيب، وسياسة احتياطية تشترط مستخدمًا مصادقًا، لتكون النقاط الجديدة محمية افتراضيًا.",
+    "hintsEn": [
+     "`builder.Services.AddAuthorizationBuilder().SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build())`.",
+     "Mark register and login with `[AllowAnonymous]`."
+    ],
+    "hintsAr": [
+     "`builder.Services.AddAuthorizationBuilder().SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build())`.",
+     "علّم التسجيل والدخول بـ `[AllowAnonymous]`."
+    ],
+    "key": "aspnet-auth-api-validate"
+   },
+   {
+    "titleEn": "Tasks owned by users",
+    "titleAr": "مهام يملكها المستخدمون",
+    "bodyEn": "Create `TaskItem` with an `OwnerId`. In the tasks service, read the current user id from `User.FindFirstValue(ClaimTypes.NameIdentifier)` and add `.Where(t => t.OwnerId == userId)` to every query.\n\nFor another user's task, return 404 instead of 403: you should not even confirm it exists.",
+    "bodyAr": "أنشئ `TaskItem` فيه `OwnerId`. وفي service المهام اقرأ رقم المستخدم الحالي من `User.FindFirstValue(ClaimTypes.NameIdentifier)` وأضف `.Where(t => t.OwnerId == userId)` إلى كل استعلام.\n\nلمهمة مستخدم آخر أعد 404 بدل 403، فلا يجب أن تؤكد حتى وجودها.",
+    "hintsEn": [
+     "An `ICurrentUser` service that reads `IHttpContextAccessor` keeps controllers clean.",
+     "EF global query filters are another way to enforce ownership everywhere."
+    ],
+    "hintsAr": [
+     "خدمة `ICurrentUser` تقرأ من `IHttpContextAccessor` تُبقي الـ controllers نظيفة.",
+     "الـ global query filters في EF طريقة أخرى لفرض الملكية في كل مكان."
+    ],
+    "key": "aspnet-auth-api-tasks"
+   },
+   {
+    "titleEn": "Admin role and policies",
+    "titleAr": "دور المشرف والسياسات",
+    "bodyEn": "At start-up, create the \"Admin\" role if missing and add it to an admin account from configuration. Add `GET /admin/tasks` protected with `[Authorize(Roles = \"Admin\")]` or a named policy `AdminOnly`.\n\nTest both: a normal user gets 403, the admin gets the list.",
+    "bodyAr": "عند بدء التطبيق أنشئ الدور \"Admin\" إن لم يوجد، وأضفه إلى حساب مشرف من الإعدادات. ثم أضف `GET /admin/tasks` محمية بـ `[Authorize(Roles = \"Admin\")]` أو بسياسة مسماة `AdminOnly`.\n\nاختبر الحالتين: المستخدم العادي يحصل على 403، والمشرف يحصل على القائمة.",
+    "hintsEn": [
+     "Roles are inside the token, so a user must log in again after being made admin.",
+     "Policies (`RequireRole`, `RequireClaim`) are easier to change later than role strings everywhere."
+    ],
+    "hintsAr": [
+     "الأدوار داخل الرمز، فعلى المستخدم أن يدخل مرة أخرى بعد أن يصبح مشرفًا.",
+     "السياسات (`RequireRole` و`RequireClaim`) أسهل في التعديل لاحقًا من كتابة أسماء الأدوار في كل مكان."
+    ],
+    "key": "aspnet-auth-api-roles"
+   },
+   {
+    "titleEn": "Refresh tokens",
+    "titleAr": "رموز التجديد",
+    "bodyEn": "On login, also create a random refresh token (64 bytes from `RandomNumberGenerator`), store its hash with an expiry of 7 days, and return it. `POST /auth/refresh` checks it, deletes it (one use only) and returns a new access token and refresh token.\n\nStoring only a hash means a database leak does not give attackers working tokens.",
+    "bodyAr": "عند الدخول أنشئ أيضًا رمز تجديد عشوائيًا (64 بايت من `RandomNumberGenerator`)، واحفظ الـ hash الخاص به مع صلاحية 7 أيام، وأعده. ونقطة `POST /auth/refresh` تتحقق منه، وتحذفه (يُستخدم مرة واحدة)، وتعيد رمز وصول ورمز تجديد جديدين.\n\nحفظ الـ hash فقط يعني أن تسرب قاعدة البيانات لا يعطي المهاجم رموزًا صالحة.",
+    "hintsEn": [
+     "SHA-256 of the token is enough here because the token is long and random.",
+     "Rotating refresh tokens on every use lets you detect theft: a reused token means someone copied it."
+    ],
+    "hintsAr": [
+     "SHA-256 للرمز يكفي هنا لأن الرمز طويل وعشوائي.",
+     "تدوير رمز التجديد عند كل استخدام يكشف السرقة: الرمز المستخدم مرتين يعني أن أحدًا نسخه."
+    ],
+    "key": "aspnet-auth-api-refresh"
+   },
+   {
+    "titleEn": "Swagger with authorization",
+    "titleAr": "Swagger مع التفويض",
+    "bodyEn": "Add a security definition for Bearer tokens to Swagger so the UI shows an \"Authorize\" button. Log in from Swagger, paste the token, and call the protected endpoints.\n\nThis makes the API easy to try for anyone reviewing your project.",
+    "bodyAr": "أضف تعريفًا أمنيًا لرموز Bearer في Swagger ليظهر زر \"Authorize\" في الواجهة. ادخل من Swagger، والصق الرمز، ثم استدعِ النقاط المحمية.\n\nهذا يجعل الـ API سهل التجربة لأي شخص يراجع مشروعك.",
+    "hintsEn": [
+     "`c.AddSecurityDefinition(\"Bearer\", new OpenApiSecurityScheme { Type = SecuritySchemeType.Http, Scheme = \"bearer\" })`.",
+     "Add a matching security requirement so the token is sent with every call."
+    ],
+    "hintsAr": [
+     "`c.AddSecurityDefinition(\"Bearer\", new OpenApiSecurityScheme { Type = SecuritySchemeType.Http, Scheme = \"bearer\" })`.",
+     "أضف متطلبًا أمنيًا مطابقًا ليُرسل الرمز مع كل استدعاء."
+    ],
+    "key": "aspnet-auth-api-swagger"
+   },
+   {
+    "titleEn": "Security tests and README",
+    "titleAr": "اختبارات الأمان وREADME",
+    "bodyEn": "Write integration tests for every acceptance criterion: no token → 401, other user's task → 404, normal user on admin route → 403, refresh works once and fails the second time.\n\nDocument the auth flow in the README with a sequence of requests (register, login, call, refresh).",
+    "bodyAr": "اكتب اختبارات تكامل لكل معيار قبول: بلا رمز ← 401، ومهمة مستخدم آخر ← 404، ومستخدم عادي على مسار المشرف ← 403، والتجديد ينجح مرة ويفشل في الثانية.\n\nوثّق مسار المصادقة في README بتسلسل الطلبات (التسجيل، والدخول، والاستدعاء، والتجديد).",
+    "hintsEn": [
+     "In tests, create users through the real register endpoint so you test the whole flow.",
+     "Never log tokens or passwords, even in development."
+    ],
+    "hintsAr": [
+     "في الاختبارات أنشئ المستخدمين عبر نقطة التسجيل الحقيقية لتختبر المسار كاملًا.",
+     "لا تسجّل الرموز أو كلمات المرور في السجلات أبدًا، حتى في التطوير."
+    ],
+    "key": "aspnet-auth-api-finish"
+   }
+  ]
+ },
+ {
+  "key": "aspnet-realtime-chat",
+  "skill": "AspNetCore",
+  "level": "Advanced",
+  "hours": 16,
+  "titleEn": "Real-time chat with SignalR",
+  "titleAr": "دردشة فورية باستخدام SignalR",
+  "summaryEn": "A chat server with rooms, online presence, typing indicators and message history, using SignalR for real-time messaging and a database for persistence.",
+  "summaryAr": "خادم دردشة بغرف، وحالة الاتصال، ومؤشر الكتابة، وسجل الرسائل، باستخدام SignalR للرسائل الفورية وقاعدة بيانات للحفظ.",
+  "techStack": "C# · ASP.NET Core · SignalR · EF Core · JavaScript client",
+  "goalsEn": [
+   "Build real-time features with SignalR hubs and groups",
+   "Authenticate WebSocket connections",
+   "Track presence across several connections per user",
+   "Page through message history efficiently"
+  ],
+  "goalsAr": [
+   "بناء ميزات فورية بـ hubs وgroups في SignalR",
+   "مصادقة اتصالات WebSocket",
+   "تتبع حالة الاتصال مع عدة اتصالات لكل مستخدم",
+   "التنقل في سجل الرسائل بكفاءة"
+  ],
+  "requirementsEn": [
+   "Users log in and join rooms",
+   "Messages are delivered instantly to everyone in the room",
+   "Messages are saved and the last 50 load on join",
+   "Older messages load on scroll (keyset pagination)",
+   "Online users per room and a typing indicator",
+   "Rate limit: at most 5 messages per 5 seconds per user"
+  ],
+  "requirementsAr": [
+   "يدخل المستخدمون وينضمون إلى الغرف",
+   "تصل الرسائل فورًا لكل من في الغرفة",
+   "تُحفظ الرسائل وتُحمّل آخر 50 عند الانضمام",
+   "تُحمّل الرسائل الأقدم عند التمرير (keyset pagination)",
+   "المستخدمون المتصلون في كل غرفة ومؤشر الكتابة",
+   "تحديد المعدل: 5 رسائل كحد أقصى كل 5 ثوانٍ لكل مستخدم"
+  ],
+  "acceptanceEn": [
+   "Two browsers in the same room see each other's messages in under a second",
+   "A user with two tabs stays online until both close",
+   "An anonymous connection is refused",
+   "Sending a 6th message within 5 seconds returns an error to the sender only"
+  ],
+  "acceptanceAr": [
+   "متصفحان في الغرفة نفسها يرى كل منهما رسائل الآخر في أقل من ثانية",
+   "المستخدم الذي فتح تبويبين يبقى متصلًا حتى يغلق الاثنين",
+   "الاتصال المجهول يُرفض",
+   "إرسال رسالة سادسة خلال 5 ثوانٍ يعيد خطأ للمرسل وحده"
+  ],
+  "stretchEn": [
+   "Scale out with a Redis backplane",
+   "Add read receipts",
+   "Add direct messages between two users"
+  ],
+  "stretchAr": [
+   "وسّع على عدة خوادم باستخدام Redis backplane",
+   "أضف إيصالات القراءة",
+   "أضف رسائل مباشرة بين مستخدمين"
+  ],
+  "steps": [
+   {
+    "titleEn": "Design hub methods and events",
+    "titleAr": "صمّم دوال الـ hub والأحداث",
+    "bodyEn": "List what the client can call (JoinRoom, LeaveRoom, SendMessage, Typing) and what the server pushes (MessageReceived, UserJoined, UserLeft, PresenceChanged, UserTyping).\n\nUse a strongly typed hub: `Hub<IChatClient>` where `IChatClient` declares the server-to-client methods, so typos become compile errors.",
+    "bodyAr": "اكتب ما يستطيع العميل استدعاءه (JoinRoom وLeaveRoom وSendMessage وTyping) وما يرسله الخادم (MessageReceived وUserJoined وUserLeft وPresenceChanged وUserTyping).\n\nاستخدم hub محدد الأنواع: `Hub<IChatClient>` حيث يعرّف `IChatClient` دوال الخادم إلى العميل، فتصبح الأخطاء الإملائية أخطاء ترجمة.",
+    "hintsEn": [
+     "Write the contract in the README first; the JavaScript client will follow it.",
+     "Keep payloads small DTOs, never entities."
+    ],
+    "hintsAr": [
+     "اكتب العقد في README أولًا، وسيتبعه عميل JavaScript.",
+     "اجعل الحمولات DTOs صغيرة، لا كيانات أبدًا."
+    ],
+    "key": "aspnet-realtime-chat-design"
+   },
+   {
+    "titleEn": "Project, auth and data",
+    "titleAr": "المشروع والمصادقة والبيانات",
+    "bodyEn": "Start from a Web API with JWT login (you can reuse the \"Task API with JWT\" project). Add entities `Room` and `Message` (Id, RoomId, UserId, Text, SentAt) with an index on `(RoomId, Id)`.\n\nRegister `builder.Services.AddSignalR()` and map `app.MapHub<ChatHub>(\"/hubs/chat\")`.",
+    "bodyAr": "ابدأ من Web API فيه دخول بـ JWT (تستطيع إعادة استخدام مشروع \"واجهة مهام مع مصادقة JWT\"). وأضف الكيانين `Room` و`Message` (Id وRoomId وUserId وText وSentAt) مع فهرس على `(RoomId, Id)`.\n\nسجّل `builder.Services.AddSignalR()` وعرّف `app.MapHub<ChatHub>(\"/hubs/chat\")`.",
+    "hintsEn": [
+     "The index on (RoomId, Id) makes \"latest messages of a room\" fast.",
+     "Seed three rooms so you can test right away."
+    ],
+    "hintsAr": [
+     "الفهرس على (RoomId, Id) يجعل \"آخر رسائل الغرفة\" سريعًا.",
+     "أضف ثلاث غرف أولية لتختبر مباشرة."
+    ],
+    "key": "aspnet-realtime-chat-setup"
+   },
+   {
+    "titleEn": "Authenticate the WebSocket",
+    "titleAr": "صادِق اتصال WebSocket",
+    "bodyEn": "Browsers cannot send an Authorization header on WebSockets, so SignalR sends the token as `access_token` in the query string. In `JwtBearerEvents.OnMessageReceived`, read it when the path starts with `/hubs`.\n\nPut `[Authorize]` on the hub. Inside it, `Context.UserIdentifier` is the user id.",
+    "bodyAr": "المتصفحات لا تستطيع إرسال ترويسة Authorization مع WebSockets، لذا يرسل SignalR الرمز كـ `access_token` في رابط الطلب. وفي `JwtBearerEvents.OnMessageReceived` اقرأه عندما يبدأ المسار بـ `/hubs`.\n\nضع `[Authorize]` على الـ hub. وداخله تكون `Context.UserIdentifier` هي رقم المستخدم.",
+    "hintsEn": [
+     "Only accept the query-string token for /hubs paths, never for normal API calls.",
+     "Make sure your logs do not record query strings with tokens."
+    ],
+    "hintsAr": [
+     "اقبل الرمز من الرابط فقط لمسارات /hubs، لا لاستدعاءات الـ API العادية أبدًا.",
+     "تأكد أن سجلاتك لا تسجل روابط الطلبات التي فيها رموز."
+    ],
+    "code": "options.Events = new JwtBearerEvents\n{\n    OnMessageReceived = ctx =>\n    {\n        var token = ctx.Request.Query[\"access_token\"];\n        if (!string.IsNullOrEmpty(token) && ctx.HttpContext.Request.Path.StartsWithSegments(\"/hubs\"))\n            ctx.Token = token;\n        return Task.CompletedTask;\n    }\n};",
+    "language": "csharp",
+    "key": "aspnet-realtime-chat-ws-auth"
+   },
+   {
+    "titleEn": "Join rooms with groups",
+    "titleAr": "الانضمام إلى الغرف بالمجموعات",
+    "bodyEn": "`JoinRoom(roomId)` checks the room exists, calls `Groups.AddToGroupAsync(Context.ConnectionId, $\"room:{roomId}\")`, notifies the group with `UserJoined`, and returns the last 50 messages to the caller.\n\n`LeaveRoom` removes the connection from the group. Groups are per connection, not per user.",
+    "bodyAr": "`JoinRoom(roomId)` تتحقق من وجود الغرفة، وتستدعي `Groups.AddToGroupAsync(Context.ConnectionId, $\"room:{roomId}\")`، وتُعلم المجموعة بـ `UserJoined`، وتعيد آخر 50 رسالة للمستدعي.\n\nو`LeaveRoom` تزيل الاتصال من المجموعة. المجموعات مرتبطة بالاتصال لا بالمستخدم.",
+    "hintsEn": [
+     "Hub methods can return values; the client awaits them with `connection.invoke`.",
+     "Return messages oldest first so the client can append them in order."
+    ],
+    "hintsAr": [
+     "دوال الـ hub تستطيع إعادة قيم، والعميل ينتظرها بـ `connection.invoke`.",
+     "أعد الرسائل من الأقدم إلى الأحدث ليضيفها العميل بالترتيب."
+    ],
+    "key": "aspnet-realtime-chat-rooms"
+   },
+   {
+    "titleEn": "Send and save messages",
+    "titleAr": "إرسال الرسائل وحفظها",
+    "bodyEn": "`SendMessage(roomId, text)` trims and validates the text (1–1000 characters), checks the caller joined the room, saves the message, then broadcasts `MessageReceived` to the room group.\n\nHubs are transient: inject `IServiceScopeFactory` or a scoped service through the constructor — SignalR creates a scope per invocation, so a DbContext in the constructor is fine.",
+    "bodyAr": "`SendMessage(roomId, text)` تزيل المسافات وتتحقق من النص (من 1 إلى 1000 حرف)، وتتأكد أن المستدعي انضم إلى الغرفة، وتحفظ الرسالة، ثم تبثّ `MessageReceived` لمجموعة الغرفة.\n\nالـ hubs قصيرة العمر، وSignalR ينشئ scope لكل استدعاء، فحقن DbContext في الـ constructor مقبول.",
+    "hintsEn": [
+     "Save first, broadcast second: everyone receives the real id and timestamp.",
+     "Throw `HubException` with a friendly message for validation errors; the client receives the message."
+    ],
+    "hintsAr": [
+     "احفظ أولًا ثم ابثّ ثانيًا، فيستلم الجميع الرقم والوقت الحقيقيين.",
+     "ارمِ `HubException` برسالة واضحة لأخطاء التحقق، فيستلم العميل الرسالة."
+    ],
+    "key": "aspnet-realtime-chat-send"
+   },
+   {
+    "titleEn": "Presence with several connections",
+    "titleAr": "حالة الاتصال مع عدة اتصالات",
+    "bodyEn": "Create a singleton `PresenceTracker` with `ConcurrentDictionary<string, HashSet<string>>` (user → connection ids). In `OnConnectedAsync` add the connection; in `OnDisconnectedAsync` remove it, and when a user has no connections left, broadcast `PresenceChanged(userId, false)`.\n\nLock around the HashSet changes — the dictionary is thread-safe, the sets inside it are not.",
+    "bodyAr": "أنشئ singleton باسم `PresenceTracker` فيه `ConcurrentDictionary<string, HashSet<string>>` (المستخدم ← أرقام الاتصالات). وفي `OnConnectedAsync` أضف الاتصال، وفي `OnDisconnectedAsync` احذفه، وعندما لا يتبقى للمستخدم أي اتصال ابثّ `PresenceChanged(userId, false)`.\n\nاستخدم lock حول تغييرات الـ HashSet، فالـ dictionary آمن مع الخيوط المتعددة، أما المجموعات داخله فليست كذلك.",
+    "hintsEn": [
+     "Return a bool from Add/Remove that says \"this was the first/last connection\".",
+     "This tracker only works on one server; the Redis stretch goal fixes that."
+    ],
+    "hintsAr": [
+     "أعد bool من Add وRemove يقول \"هذا أول/آخر اتصال\".",
+     "هذا المتتبع يعمل على خادم واحد فقط، وتحدي Redis الإضافي يحل ذلك."
+    ],
+    "key": "aspnet-realtime-chat-presence"
+   },
+   {
+    "titleEn": "Typing indicator and rate limiting",
+    "titleAr": "مؤشر الكتابة وتحديد المعدل",
+    "bodyEn": "`Typing(roomId)` sends `UserTyping` to the room except the caller (`Clients.OthersInGroup(...)`). The client throttles it to once every 2 seconds and hides the indicator after 3 seconds without updates.\n\nFor rate limiting, keep per-user timestamps of recent messages in a singleton and reject the 6th within 5 seconds with a `HubException`.",
+    "bodyAr": "`Typing(roomId)` ترسل `UserTyping` للغرفة ما عدا المستدعي (`Clients.OthersInGroup(...)`). والعميل يحدّها إلى مرة كل ثانيتين، ويخفي المؤشر بعد 3 ثوانٍ بلا تحديث.\n\nولتحديد المعدل احتفظ في singleton بأوقات آخر رسائل كل مستخدم، وارفض السادسة خلال 5 ثوانٍ بـ `HubException`.",
+    "hintsEn": [
+     "A `Queue<DateTime>` per user: drop timestamps older than 5 seconds, then check the count.",
+     "Typing events are not saved anywhere."
+    ],
+    "hintsAr": [
+     "`Queue<DateTime>` لكل مستخدم: احذف الأوقات الأقدم من 5 ثوانٍ، ثم تحقق من العدد.",
+     "أحداث الكتابة لا تُحفظ في أي مكان."
+    ],
+    "key": "aspnet-realtime-chat-typing-limit"
+   },
+   {
+    "titleEn": "Load older messages",
+    "titleAr": "تحميل الرسائل الأقدم",
+    "bodyEn": "Add `GET /api/rooms/{id}/messages?before={messageId}&take=50`. Use keyset pagination: `Where(m => m.RoomId == id && m.Id < before).OrderByDescending(m => m.Id).Take(50)`.\n\nUnlike `Skip`, keyset pages stay correct while new messages arrive and stay fast on huge rooms.",
+    "bodyAr": "أضف `GET /api/rooms/{id}/messages?before={messageId}&take=50`. واستخدم keyset pagination: `Where(m => m.RoomId == id && m.Id < before).OrderByDescending(m => m.Id).Take(50)`.\n\nعلى عكس `Skip`، تبقى صفحات keyset صحيحة أثناء وصول رسائل جديدة، وسريعة في الغرف الضخمة.",
+    "hintsEn": [
+     "Reverse the result before returning so it is oldest first.",
+     "Return `hasMore` so the client knows when to stop."
+    ],
+    "hintsAr": [
+     "اعكس النتيجة قبل إعادتها لتكون من الأقدم إلى الأحدث.",
+     "أعد `hasMore` ليعرف العميل متى يتوقف."
+    ],
+    "key": "aspnet-realtime-chat-history"
+   },
+   {
+    "titleEn": "A JavaScript client",
+    "titleAr": "عميل JavaScript",
+    "bodyEn": "Create `wwwroot/index.html` with a login form, a room list, the message list and an input. Use `@microsoft/signalr` from a CDN: `new signalR.HubConnectionBuilder().withUrl('/hubs/chat', { accessTokenFactory: () => token }).withAutomaticReconnect().build()`.\n\nHandle `onreconnected` by joining the current room again — groups are lost when a connection drops.",
+    "bodyAr": "أنشئ `wwwroot/index.html` فيه نموذج دخول، وقائمة الغرف، وقائمة الرسائل، وحقل الإدخال. واستخدم `@microsoft/signalr` من CDN: `new signalR.HubConnectionBuilder().withUrl('/hubs/chat', { accessTokenFactory: () => token }).withAutomaticReconnect().build()`.\n\nعالج `onreconnected` بالانضمام إلى الغرفة الحالية مرة أخرى، فالمجموعات تضيع عند انقطاع الاتصال.",
+    "hintsEn": [
+     "Insert message text with `textContent`, never `innerHTML`, to avoid XSS.",
+     "Scroll to the bottom on new messages only if the user was already at the bottom."
+    ],
+    "hintsAr": [
+     "أدخل نص الرسالة بـ `textContent`، لا بـ `innerHTML` أبدًا، لتتجنب XSS.",
+     "مرّر إلى الأسفل عند الرسائل الجديدة فقط إن كان المستخدم في الأسفل أصلًا."
+    ],
+    "key": "aspnet-realtime-chat-client"
+   },
+   {
+    "titleEn": "Test and publish",
+    "titleAr": "اختبر وانشر",
+    "bodyEn": "Test the hub with `Microsoft.AspNetCore.SignalR.Client` inside integration tests: two clients join a room, one sends, the other receives. Test the anonymous connection and the rate limit.\n\nRecord a short GIF of two browsers chatting for the README, and document the hub contract.",
+    "bodyAr": "اختبر الـ hub بـ `Microsoft.AspNetCore.SignalR.Client` داخل اختبارات التكامل: عميلان ينضمان إلى غرفة، أحدهما يرسل والآخر يستقبل. واختبر الاتصال المجهول وتحديد المعدل.\n\nسجّل صورة GIF قصيرة لمتصفحين يتحادثان لـ README، ووثّق عقد الـ hub.",
+    "hintsEn": [
+     "Use `TaskCompletionSource` in tests to await the received message with a timeout.",
+     "WebApplicationFactory gives you `Server.CreateHandler()` to connect the SignalR client in-memory."
+    ],
+    "hintsAr": [
+     "استخدم `TaskCompletionSource` في الاختبارات لانتظار الرسالة المستلمة مع مهلة زمنية.",
+     "WebApplicationFactory تعطيك `Server.CreateHandler()` لتوصل عميل SignalR في الذاكرة."
+    ],
+    "key": "aspnet-realtime-chat-finish"
+   }
+  ]
+ },
+ {
+  "key": "aspnet-job-queue",
+  "skill": "AspNetCore",
+  "level": "Advanced",
+  "hours": 14,
+  "titleEn": "Background job service",
+  "titleAr": "خدمة مهام خلفية",
+  "summaryEn": "An API that accepts long-running jobs (like generating reports), runs them in the background with retries and cancellation, and reports progress, with health checks, rate limiting and structured logs.",
+  "summaryAr": "واجهة API تستقبل مهامًا طويلة (مثل توليد التقارير)، وتشغّلها في الخلفية مع إعادة المحاولة والإلغاء، وتُبلغ عن التقدم، مع فحوص صحة وتحديد للمعدل وسجلات منظمة.",
+  "techStack": "C# · ASP.NET Core · BackgroundService · Channels · EF Core · Serilog",
+  "goalsEn": [
+   "Run work outside the request with hosted services",
+   "Design a durable job state machine",
+   "Retry with backoff and handle cancellation and shutdown",
+   "Operate a service: health checks, rate limits, logs"
+  ],
+  "goalsAr": [
+   "تشغيل العمل خارج الطلب بالخدمات المستضافة (hosted services)",
+   "تصميم آلة حالات متينة للمهام",
+   "إعادة المحاولة مع تأخير متزايد، والتعامل مع الإلغاء والإيقاف",
+   "تشغيل الخدمة: فحوص الصحة، وتحديد المعدل، والسجلات"
+  ],
+  "requirementsEn": [
+   "POST /jobs returns 202 Accepted with a job id and a Location",
+   "GET /jobs/{id} shows status (Queued, Running, Succeeded, Failed, Cancelled) and progress",
+   "Jobs survive a restart (stored in the database)",
+   "Failed jobs retry 3 times with exponential backoff",
+   "DELETE /jobs/{id} cancels a queued or running job",
+   "Health checks, rate limiting and structured logs"
+  ],
+  "requirementsAr": [
+   "POST /jobs تعيد 202 Accepted مع رقم المهمة وLocation",
+   "GET /jobs/{id} تعرض الحالة (Queued وRunning وSucceeded وFailed وCancelled) والتقدم",
+   "تبقى المهام بعد إعادة التشغيل (محفوظة في قاعدة البيانات)",
+   "المهام الفاشلة يُعاد تشغيلها 3 مرات مع تأخير يتضاعف",
+   "DELETE /jobs/{id} تلغي مهمة في الطابور أو قيد التشغيل",
+   "فحوص الصحة وتحديد المعدل والسجلات المنظمة"
+  ],
+  "acceptanceEn": [
+   "The POST answers in under 100 ms even when the job takes a minute",
+   "Stopping the app while a job runs marks it so it resumes or restarts after the next start",
+   "A job that always throws ends as Failed after 3 attempts with the error saved",
+   "More than 10 POSTs per minute from one client get 429"
+  ],
+  "acceptanceAr": [
+   "POST تجيب في أقل من 100 مللي ثانية حتى لو استغرقت المهمة دقيقة",
+   "إيقاف التطبيق أثناء تشغيل مهمة يجعلها تُستأنف أو تُعاد بعد البدء التالي",
+   "المهمة التي ترمي استثناء دائمًا تنتهي Failed بعد 3 محاولات مع حفظ الخطأ",
+   "أكثر من 10 طلبات POST في الدقيقة من عميل واحد تحصل على 429"
+  ],
+  "stretchEn": [
+   "Push progress to the browser with Server-Sent Events",
+   "Run several workers in parallel with a configurable limit",
+   "Add a dashboard page listing recent jobs"
+  ],
+  "stretchAr": [
+   "أرسل التقدم إلى المتصفح بـ Server-Sent Events",
+   "شغّل عدة عمال بالتوازي مع حد قابل للضبط",
+   "أضف صفحة لوحة تعرض آخر المهام"
+  ],
+  "steps": [
+   {
+    "titleEn": "Design the job lifecycle",
+    "titleAr": "صمّم دورة حياة المهمة",
+    "bodyEn": "Draw the states and the allowed transitions: Queued → Running → Succeeded / Failed / Cancelled, and Running → Queued for a retry. Decide which fields a job needs: Id, Type, Payload (JSON), Status, Attempts, Progress, Error, CreatedAt, StartedAt, FinishedAt, NextAttemptAt.\n\nWrite the diagram in the README; every later step follows it.",
+    "bodyAr": "ارسم الحالات والانتقالات المسموحة: Queued ← Running ← Succeeded / Failed / Cancelled، ومن Running إلى Queued عند إعادة المحاولة. وحدّد الحقول التي تحتاجها المهمة: Id وType وPayload (JSON) وStatus وAttempts وProgress وError وCreatedAt وStartedAt وFinishedAt وNextAttemptAt.\n\nاكتب المخطط في README، فكل خطوة لاحقة تتبعه.",
+    "hintsEn": [
+     "Put the transition rules in methods on the Job entity (Start, Succeed, Fail, Cancel) that throw on an invalid transition.",
+     "A Mermaid state diagram renders directly on GitHub."
+    ],
+    "hintsAr": [
+     "ضع قواعد الانتقال في دوال على كيان Job (Start وSucceed وFail وCancel) ترمي استثناء عند انتقال غير مسموح.",
+     "مخطط حالات Mermaid يظهر مباشرة على GitHub."
+    ],
+    "key": "aspnet-job-queue-states"
+   },
+   {
+    "titleEn": "Accept jobs with 202",
+    "titleAr": "استقبل المهام بـ 202",
+    "bodyEn": "`POST /jobs` validates the request, saves a Queued job and returns `Results.AcceptedAtRoute(\"GetJob\", new { id }, dto)`. It does not run anything itself.\n\n`GET /jobs/{id}` returns the status, progress and timestamps. Clients poll it (or use the SSE stretch goal).",
+    "bodyAr": "`POST /jobs` تتحقق من الطلب، وتحفظ مهمة بحالة Queued، وتعيد `Results.AcceptedAtRoute(\"GetJob\", new { id }, dto)`، ولا تشغّل أي شيء بنفسها.\n\nو`GET /jobs/{id}` تعيد الحالة والتقدم والأوقات، والعملاء يستعلمون عنها دوريًا (أو يستخدمون تحدي SSE الإضافي).",
+    "hintsEn": [
+     "Use a Guid as job id so ids cannot be guessed in sequence.",
+     "Start with one job type, \"report\", whose payload says how many rows to generate."
+    ],
+    "hintsAr": [
+     "استخدم Guid كرقم للمهمة حتى لا يمكن تخمين الأرقام بالتسلسل.",
+     "ابدأ بنوع مهمة واحد \"report\" تحدد حمولته عدد الأسطر التي تُولَّد."
+    ],
+    "key": "aspnet-job-queue-api"
+   },
+   {
+    "titleEn": "Wake the worker with a channel",
+    "titleAr": "أيقظ العامل بقناة",
+    "bodyEn": "The database is the source of truth, but polling it every second is wasteful. Register a singleton `Channel<Guid>`: the POST writes the new job id to it, and the worker waits on it.\n\nThe worker also checks the database on start and every 30 seconds, so nothing is lost if the process restarts with jobs still queued.",
+    "bodyAr": "قاعدة البيانات هي مصدر الحقيقة، لكن الاستعلام منها كل ثانية هدر. سجّل singleton من النوع `Channel<Guid>`: الـ POST يكتب فيه رقم المهمة الجديدة، والعامل ينتظر عليه.\n\nويفحص العامل قاعدة البيانات أيضًا عند البدء وكل 30 ثانية، فلا يضيع شيء إن أُعيد تشغيل العملية والمهام ما زالت في الطابور.",
+    "hintsEn": [
+     "`await reader.WaitToReadAsync(ct)` combined with a timeout gives you \"wake on signal or every 30 s\".",
+     "A bounded channel with `DropOldest` is fine: the signal is only a hint."
+    ],
+    "hintsAr": [
+     "`await reader.WaitToReadAsync(ct)` مع مهلة زمنية يعطيك \"استيقظ عند الإشارة أو كل 30 ثانية\".",
+     "قناة محدودة مع `DropOldest` مناسبة، فالإشارة مجرد تلميح."
+    ],
+    "key": "aspnet-job-queue-signal"
+   },
+   {
+    "titleEn": "The BackgroundService",
+    "titleAr": "الـ BackgroundService",
+    "bodyEn": "Write `JobWorker : BackgroundService`. In `ExecuteAsync`, loop: claim the next due job, run it, save the outcome. Create a new DI scope per job with `IServiceScopeFactory` because the worker is a singleton and DbContext is scoped.\n\nClaim atomically so two workers never take the same job: an `UPDATE ... SET Status='Running' WHERE Id=@id AND Status='Queued'` that must affect exactly one row.",
+    "bodyAr": "اكتب `JobWorker : BackgroundService`. وفي `ExecuteAsync` كرّر: احجز المهمة المستحقة التالية، وشغّلها، واحفظ النتيجة. وأنشئ DI scope جديدًا لكل مهمة بـ `IServiceScopeFactory`، لأن العامل singleton بينما DbContext من نوع scoped.\n\nاحجز بشكل ذري حتى لا تأخذ عاملتان المهمة نفسها: أمر `UPDATE ... SET Status='Running' WHERE Id=@id AND Status='Queued'` يجب أن يؤثر في صف واحد بالضبط.",
+    "hintsEn": [
+     "EF Core `ExecuteUpdateAsync` returns the number of affected rows — perfect for claiming.",
+     "Wrap each job in try/catch: one bad job must never kill the worker loop."
+    ],
+    "hintsAr": [
+     "`ExecuteUpdateAsync` في EF Core تعيد عدد الصفوف المتأثرة، وهذا مثالي للحجز.",
+     "ضع كل مهمة داخل try/catch، فمهمة سيئة واحدة يجب ألا توقف حلقة العامل."
+    ],
+    "code": "var claimed = await db.Jobs\n    .Where(j => j.Id == id && j.Status == JobStatus.Queued)\n    .ExecuteUpdateAsync(s => s\n        .SetProperty(j => j.Status, JobStatus.Running)\n        .SetProperty(j => j.StartedAt, now), ct);\nif (claimed == 0) return; // someone else took it",
+    "language": "csharp",
+    "key": "aspnet-job-queue-worker"
+   },
+   {
+    "titleEn": "Job handlers and progress",
+    "titleAr": "معالجات المهام والتقدم",
+    "bodyEn": "Define `IJobHandler { string Type; Task RunAsync(JobContext ctx, CancellationToken ct); }` and register handlers by type. `JobContext` exposes the payload and `ReportProgressAsync(int percent)`, which saves progress at most once per second.\n\nWrite `ReportJobHandler` that \"generates\" rows with `Task.Delay` and reports progress, and a `FailingJobHandler` for testing retries.",
+    "bodyAr": "عرّف `IJobHandler { string Type; Task RunAsync(JobContext ctx, CancellationToken ct); }` وسجّل المعالجات حسب النوع. و`JobContext` يقدّم الحمولة و`ReportProgressAsync(int percent)` التي تحفظ التقدم مرة في الثانية كحد أقصى.\n\nاكتب `ReportJobHandler` \"يولّد\" أسطرًا بـ `Task.Delay` ويُبلغ عن التقدم، و`FailingJobHandler` لاختبار إعادة المحاولة.",
+    "hintsEn": [
+     "Resolve the handler with `scope.ServiceProvider.GetServices<IJobHandler>().Single(h => h.Type == job.Type)`.",
+     "Throttling progress writes protects the database from thousands of tiny updates."
+    ],
+    "hintsAr": [
+     "احصل على المعالج بـ `scope.ServiceProvider.GetServices<IJobHandler>().Single(h => h.Type == job.Type)`.",
+     "تقليل كتابات التقدم يحمي قاعدة البيانات من آلاف التحديثات الصغيرة."
+    ],
+    "key": "aspnet-job-queue-handlers"
+   },
+   {
+    "titleEn": "Retries with backoff",
+    "titleAr": "إعادة المحاولة مع تأخير",
+    "bodyEn": "When a handler throws, increase `Attempts`. If attempts < 3, set Status back to Queued with `NextAttemptAt = now + 2^attempts × 5 seconds` plus a little random jitter. Otherwise mark it Failed and save the exception message (not the stack trace) in `Error`.\n\nThe worker only claims jobs whose `NextAttemptAt` is null or in the past.",
+    "bodyAr": "عندما يرمي المعالج استثناء زد `Attempts`. فإن كانت المحاولات أقل من 3 فأعد الحالة إلى Queued مع `NextAttemptAt = now + 2^attempts × 5 seconds` وقليل من التأخير العشوائي (jitter)، وإلا فعلّمها Failed واحفظ رسالة الاستثناء (لا تفاصيل المكدس) في `Error`.\n\nالعامل لا يحجز إلا المهام التي `NextAttemptAt` فيها null أو في الماضي.",
+    "hintsEn": [
+     "Jitter stops many failed jobs from retrying at exactly the same moment.",
+     "Log the full exception with the job id; store only the short message for users."
+    ],
+    "hintsAr": [
+     "التأخير العشوائي يمنع كثيرًا من المهام الفاشلة من إعادة المحاولة في اللحظة نفسها.",
+     "سجّل الاستثناء كاملًا مع رقم المهمة، واحفظ للمستخدمين الرسالة القصيرة فقط."
+    ],
+    "key": "aspnet-job-queue-retries"
+   },
+   {
+    "titleEn": "Cancellation and graceful shutdown",
+    "titleAr": "الإلغاء والإيقاف الهادئ",
+    "bodyEn": "Keep a `ConcurrentDictionary<Guid, CancellationTokenSource>` of running jobs. `DELETE /jobs/{id}` marks a queued job Cancelled directly, or cancels the token of a running one; the worker then saves Cancelled.\n\nOn shutdown, `stoppingToken` fires: let the current job notice it, put it back to Queued (it was interrupted, not failed), and exit. Set `HostOptions.ShutdownTimeout` to give it time.",
+    "bodyAr": "احتفظ بـ `ConcurrentDictionary<Guid, CancellationTokenSource>` للمهام قيد التشغيل. ونقطة `DELETE /jobs/{id}` تعلّم المهمة التي في الطابور Cancelled مباشرة، أو تلغي token المهمة قيد التشغيل، ثم يحفظ العامل الحالة Cancelled.\n\nعند الإيقاف يُطلق `stoppingToken`: دع المهمة الحالية تلاحظه، وأعدها إلى Queued (فقد قوطعت ولم تفشل)، ثم اخرج. واضبط `HostOptions.ShutdownTimeout` ليكون لديها وقت.",
+    "hintsEn": [
+     "Link the per-job token with stoppingToken via `CancellationTokenSource.CreateLinkedTokenSource`.",
+     "Check `stoppingToken.IsCancellationRequested` in the catch to tell shutdown from a user cancel."
+    ],
+    "hintsAr": [
+     "اربط token كل مهمة بـ stoppingToken عبر `CancellationTokenSource.CreateLinkedTokenSource`.",
+     "افحص `stoppingToken.IsCancellationRequested` داخل catch لتفرّق بين الإيقاف وإلغاء المستخدم."
+    ],
+    "key": "aspnet-job-queue-cancel"
+   },
+   {
+    "titleEn": "Health checks, rate limiting, logs",
+    "titleAr": "فحوص الصحة وتحديد المعدل والسجلات",
+    "bodyEn": "Add `AddHealthChecks().AddDbContextCheck<AppDbContext>()` and a custom check that reports Degraded when more than 100 jobs are queued; map `/health`. Add `AddRateLimiter` with a fixed window of 10 POSTs per minute per IP and apply it to POST /jobs.\n\nAdd Serilog with JSON output and include the job id in every log line of a job with `LogContext.PushProperty(\"JobId\", id)`.",
+    "bodyAr": "أضف `AddHealthChecks().AddDbContextCheck<AppDbContext>()` وفحصًا مخصصًا يُبلغ Degraded عندما يتجاوز عدد المهام في الطابور 100، وعرّف `/health`. وأضف `AddRateLimiter` بنافذة ثابتة من 10 طلبات POST في الدقيقة لكل IP وطبّقه على POST /jobs.\n\nأضف Serilog بإخراج JSON، وضع رقم المهمة في كل سطر سجل للمهمة بـ `LogContext.PushProperty(\"JobId\", id)`.",
+    "hintsEn": [
+     "`RequireRateLimiting(\"jobs\")` on the endpoint applies the named policy.",
+     "Rejected requests should get 429 with a Retry-After header."
+    ],
+    "hintsAr": [
+     "`RequireRateLimiting(\"jobs\")` على النقطة تطبّق السياسة المسماة.",
+     "الطلبات المرفوضة يجب أن تحصل على 429 مع ترويسة Retry-After."
+    ],
+    "key": "aspnet-job-queue-ops"
+   },
+   {
+    "titleEn": "Test and document",
+    "titleAr": "اختبر ووثّق",
+    "bodyEn": "Integration tests: POST returns 202 quickly; the report job ends Succeeded; the failing job ends Failed with 3 attempts (use a fake TimeProvider or a tiny backoff in tests); cancelling works; the 11th POST gets 429.\n\nDocument the API, the state machine, configuration options and what happens on restart.",
+    "bodyAr": "اختبارات التكامل: POST تعيد 202 بسرعة، ومهمة التقرير تنتهي Succeeded، والمهمة الفاشلة تنتهي Failed بعد 3 محاولات (استخدم TimeProvider وهميًا أو تأخيرًا صغيرًا في الاختبارات)، والإلغاء يعمل، والطلب الحادي عشر يحصل على 429.\n\nوثّق الـ API، وآلة الحالات، وخيارات الإعدادات، وما يحدث عند إعادة التشغيل.",
+    "hintsEn": [
+     "Poll the job status in tests with a short loop and a timeout instead of fixed sleeps.",
+     "Make backoff and limits configurable so tests can shrink them."
+    ],
+    "hintsAr": [
+     "في الاختبارات استعلم عن حالة المهمة بحلقة قصيرة مع مهلة بدل الانتظار الثابت.",
+     "اجعل التأخير والحدود قابلة للضبط لتصغّرها الاختبارات."
+    ],
+    "key": "aspnet-job-queue-finish"
+   }
+  ]
+ }
+]

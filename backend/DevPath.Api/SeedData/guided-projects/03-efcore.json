@@ -1,0 +1,1165 @@
+[
+ {
+  "key": "ef-recipe-book",
+  "skill": "EfCore",
+  "level": "Beginner",
+  "hours": 5,
+  "titleEn": "Recipe book with EF Core and SQLite",
+  "titleAr": "كتاب وصفات باستخدام EF Core وSQLite",
+  "summaryEn": "A console recipe book that stores recipes in a SQLite database through EF Core: your first DbContext, migration and CRUD queries.",
+  "summaryAr": "كتاب وصفات في الطرفية يخزن الوصفات في قاعدة بيانات SQLite عبر EF Core: أول DbContext وأول migration وأول استعلامات CRUD.",
+  "techStack": "C# · EF Core · SQLite · .NET console",
+  "goalsEn": [
+   "Create a DbContext and an entity",
+   "Create and apply migrations",
+   "Insert, query, update and delete with EF Core",
+   "Understand what SQL EF Core sends"
+  ],
+  "goalsAr": [
+   "إنشاء DbContext وكيان",
+   "إنشاء الـ migrations وتطبيقها",
+   "الإضافة والاستعلام والتعديل والحذف باستخدام EF Core",
+   "فهم أوامر SQL التي يرسلها EF Core"
+  ],
+  "requirementsEn": [
+   "A recipe has a name, minutes, servings, ingredients text and steps text",
+   "Menu: list, add, view, edit, delete, search by name",
+   "Data is stored in recipes.db",
+   "The database is created with migrations, not EnsureCreated"
+  ],
+  "requirementsAr": [
+   "للوصفة اسم، ودقائق، وعدد حصص، ونص المكونات، ونص الخطوات",
+   "القائمة: عرض، وإضافة، وتفاصيل، وتعديل، وحذف، وبحث بالاسم",
+   "تُخزن البيانات في recipes.db",
+   "تُنشأ قاعدة البيانات بالـ migrations لا بـ EnsureCreated"
+  ],
+  "acceptanceEn": [
+   "Adding a recipe, closing the app and opening it again shows the recipe",
+   "Search finds \"Pasta\" when you type \"pas\"",
+   "The SQL that EF sends is visible in the console when logging is on"
+  ],
+  "acceptanceAr": [
+   "إضافة وصفة ثم إغلاق التطبيق وفتحه مرة أخرى يُظهر الوصفة",
+   "البحث يجد \"Pasta\" عندما تكتب \"pas\"",
+   "أوامر SQL التي يرسلها EF تظهر في الطرفية عند تفعيل السجل"
+  ],
+  "stretchEn": [
+   "Add a Category table and filter by category",
+   "Add a \"favourite\" flag",
+   "Export all recipes to Markdown files"
+  ],
+  "stretchAr": [
+   "أضف جدول Category وصفِّ حسب الفئة",
+   "أضف علامة \"مفضلة\"",
+   "صدّر كل الوصفات إلى ملفات Markdown"
+  ],
+  "steps": [
+   {
+    "titleEn": "Project and packages",
+    "titleAr": "المشروع والحزم",
+    "bodyEn": "Create `dotnet new console -n RecipeBook` and add `Microsoft.EntityFrameworkCore.Sqlite` and `Microsoft.EntityFrameworkCore.Design`. Install the EF tool once: `dotnet tool install --global dotnet-ef`.\n\nSQLite needs no server: the whole database is one file.",
+    "bodyAr": "أنشئ `dotnet new console -n RecipeBook` وأضف `Microsoft.EntityFrameworkCore.Sqlite` و`Microsoft.EntityFrameworkCore.Design`. وثبّت أداة EF مرة واحدة: `dotnet tool install --global dotnet-ef`.\n\nSQLite لا يحتاج خادمًا، فقاعدة البيانات كلها ملف واحد.",
+    "hintsEn": [
+     "Check the tool with `dotnet ef --version`.",
+     "Use the same major version for all EF Core packages."
+    ],
+    "hintsAr": [
+     "تحقق من الأداة بـ `dotnet ef --version`.",
+     "استخدم الإصدار الرئيسي نفسه لكل حزم EF Core."
+    ],
+    "key": "ef-recipe-book-setup"
+   },
+   {
+    "titleEn": "The Recipe entity",
+    "titleAr": "كيان Recipe",
+    "bodyEn": "Create `class Recipe` with `Id`, `Name`, `Minutes`, `Servings`, `Ingredients`, `Steps`. EF Core treats a property called `Id` as the primary key automatically.\n\nKeep ingredients and steps as text with one item per line for now.",
+    "bodyAr": "أنشئ `class Recipe` فيه `Id` و`Name` و`Minutes` و`Servings` و`Ingredients` و`Steps`. يعتبر EF Core الخاصية المسماة `Id` مفتاحًا أساسيًا تلقائيًا.\n\nاحفظ المكونات والخطوات حاليًا كنص بعنصر في كل سطر.",
+    "hintsEn": [
+     "Give string properties a default of \"\" to avoid null warnings.",
+     "Use `required` for Name so you never forget it."
+    ],
+    "hintsAr": [
+     "أعط الخصائص النصية قيمة افتراضية \"\" لتجنب تحذيرات null.",
+     "استخدم `required` للاسم حتى لا تنساه أبدًا."
+    ],
+    "key": "ef-recipe-book-entity"
+   },
+   {
+    "titleEn": "The DbContext",
+    "titleAr": "الـ DbContext",
+    "bodyEn": "Create `class RecipeContext : DbContext` with `public DbSet<Recipe> Recipes => Set<Recipe>();`. Override `OnConfiguring` to call `options.UseSqlite(\"Data Source=recipes.db\")`.\n\nIn `OnModelCreating`, limit Name to 100 characters and make it required.",
+    "bodyAr": "أنشئ `class RecipeContext : DbContext` فيه `public DbSet<Recipe> Recipes => Set<Recipe>();`. وأعد تعريف `OnConfiguring` لتستدعي `options.UseSqlite(\"Data Source=recipes.db\")`.\n\nوفي `OnModelCreating` حدّد طول الاسم بـ 100 حرف واجعله مطلوبًا.",
+    "hintsEn": [
+     "`modelBuilder.Entity<Recipe>().Property(r => r.Name).HasMaxLength(100).IsRequired();`",
+     "In web apps the options come from DI; OnConfiguring is fine for a console app."
+    ],
+    "hintsAr": [
+     "`modelBuilder.Entity<Recipe>().Property(r => r.Name).HasMaxLength(100).IsRequired();`",
+     "في تطبيقات الويب تأتي الإعدادات من DI، أما في تطبيق الطرفية فـ OnConfiguring مناسبة."
+    ],
+    "key": "ef-recipe-book-context"
+   },
+   {
+    "titleEn": "Create the database with a migration",
+    "titleAr": "أنشئ قاعدة البيانات بـ migration",
+    "bodyEn": "Run `dotnet ef migrations add InitialCreate`, open the generated file and read it: it describes the table in C#. Then run `dotnet ef database update` to create `recipes.db`.\n\nMigrations keep a history of schema changes, so later changes (a new column) do not delete your data.",
+    "bodyAr": "شغّل `dotnet ef migrations add InitialCreate`، وافتح الملف الناتج واقرأه، فهو يصف الجدول بلغة C#. ثم شغّل `dotnet ef database update` لإنشاء `recipes.db`.\n\nالـ migrations تحفظ تاريخ تغييرات المخطط، فالتغييرات اللاحقة (عمود جديد) لا تحذف بياناتك.",
+    "hintsEn": [
+     "Open recipes.db with \"DB Browser for SQLite\" or the SQLite VS Code extension to see the table.",
+     "You can also call `db.Database.Migrate()` at start-up to apply migrations automatically."
+    ],
+    "hintsAr": [
+     "افتح recipes.db بـ \"DB Browser for SQLite\" أو إضافة SQLite في VS Code لترى الجدول.",
+     "تستطيع أيضًا استدعاء `db.Database.Migrate()` عند البدء لتطبيق الـ migrations تلقائيًا."
+    ],
+    "key": "ef-recipe-book-migration"
+   },
+   {
+    "titleEn": "Add and list recipes",
+    "titleAr": "أضف الوصفات واعرضها",
+    "bodyEn": "Write the menu loop. \"Add\" asks for the fields, creates a `Recipe`, calls `db.Recipes.Add(recipe)` and `db.SaveChanges()`. \"List\" prints `db.Recipes.OrderBy(r => r.Name).ToList()`.\n\nUse one `using var db = new RecipeContext();` per action — a short-lived context is the normal pattern.",
+    "bodyAr": "اكتب حلقة القائمة. خيار \"إضافة\" يطلب الحقول، وينشئ `Recipe`، ويستدعي `db.Recipes.Add(recipe)` ثم `db.SaveChanges()`. وخيار \"عرض\" يطبع `db.Recipes.OrderBy(r => r.Name).ToList()`.\n\nاستخدم `using var db = new RecipeContext();` واحدًا لكل إجراء، فالـ context قصير العمر هو النمط المعتاد.",
+    "hintsEn": [
+     "After SaveChanges, `recipe.Id` holds the id the database generated.",
+     "For multi-line ingredients, read lines until the user enters an empty one."
+    ],
+    "hintsAr": [
+     "بعد SaveChanges تحمل `recipe.Id` الرقم الذي ولّدته قاعدة البيانات.",
+     "للمكونات متعددة الأسطر اقرأ الأسطر حتى يُدخل المستخدم سطرًا فارغًا."
+    ],
+    "key": "ef-recipe-book-add-list"
+   },
+   {
+    "titleEn": "View, edit and delete",
+    "titleAr": "التفاصيل والتعديل والحذف",
+    "bodyEn": "\"View\" uses `db.Recipes.Find(id)` and prints everything. \"Edit\" loads the recipe, changes the properties the user typed (Enter keeps the old value) and calls `SaveChanges` — EF tracks the changes for you. \"Delete\" calls `db.Recipes.Remove(recipe)`.\n\nHandle a missing id with a message.",
+    "bodyAr": "خيار \"التفاصيل\" يستخدم `db.Recipes.Find(id)` ويطبع كل شيء. و\"تعديل\" يحمّل الوصفة، ويغير الخصائص التي كتبها المستخدم (الضغط على Enter يُبقي القيمة القديمة)، ثم يستدعي `SaveChanges`، فـ EF يتتبع التغييرات بنفسه. و\"حذف\" يستدعي `db.Recipes.Remove(recipe)`.\n\nتعامل مع الرقم غير الموجود برسالة.",
+    "hintsEn": [
+     "Find returns null when nothing matches.",
+     "Ask \"Are you sure? (y/n)\" before deleting."
+    ],
+    "hintsAr": [
+     "Find تعيد null عندما لا يطابق شيء.",
+     "اسأل \"هل أنت متأكد؟ (y/n)\" قبل الحذف."
+    ],
+    "key": "ef-recipe-book-view-edit-delete"
+   },
+   {
+    "titleEn": "Search and see the SQL",
+    "titleAr": "البحث ورؤية SQL",
+    "bodyEn": "Add search with `db.Recipes.Where(r => r.Name.Contains(term))`. Then turn on logging in `OnConfiguring` with `.LogTo(Console.WriteLine, LogLevel.Information)` and look at the SQL for each action.\n\nSeeing the SQL is the best way to learn what EF Core does — and to spot slow queries later.",
+    "bodyAr": "أضف البحث بـ `db.Recipes.Where(r => r.Name.Contains(term))`. ثم فعّل السجل في `OnConfiguring` بـ `.LogTo(Console.WriteLine, LogLevel.Information)` وانظر إلى SQL لكل إجراء.\n\nرؤية SQL أفضل طريقة لتعلم ما يفعله EF Core، ولاكتشاف الاستعلامات البطيئة لاحقًا.",
+    "hintsEn": [
+     "Make logging optional (an environment variable) so the menu stays readable.",
+     "In SQLite, Contains becomes `instr(...)` or `LIKE`; check which one you get."
+    ],
+    "hintsAr": [
+     "اجعل السجل اختياريًا (بمتغير بيئة) لتبقى القائمة مقروءة.",
+     "في SQLite يتحول Contains إلى `instr(...)` أو `LIKE`، فتحقق مما تحصل عليه."
+    ],
+    "key": "ef-recipe-book-search-log"
+   },
+   {
+    "titleEn": "Change the schema and publish",
+    "titleAr": "غيّر المخطط وانشر",
+    "bodyEn": "Practise a schema change: add `DateTime CreatedAt` to Recipe, run `dotnet ef migrations add AddCreatedAt` and `dotnet ef database update`. Your existing recipes are still there.\n\nPush to GitHub (ignore `*.db`) with a README explaining how to create the database.",
+    "bodyAr": "تدرّب على تغيير المخطط: أضف `DateTime CreatedAt` إلى Recipe، وشغّل `dotnet ef migrations add AddCreatedAt` ثم `dotnet ef database update`. وصفاتك الحالية ما زالت موجودة.\n\nارفعه إلى GitHub (مع تجاهل `*.db`) مع README يشرح طريقة إنشاء قاعدة البيانات.",
+    "hintsEn": [
+     "A new non-null column needs a default value for existing rows: `HasDefaultValueSql(\"CURRENT_TIMESTAMP\")`.",
+     "Commit the Migrations folder — it is part of your code."
+    ],
+    "hintsAr": [
+     "العمود الجديد غير القابل لـ null يحتاج قيمة افتراضية للصفوف الموجودة: `HasDefaultValueSql(\"CURRENT_TIMESTAMP\")`.",
+     "ارفع مجلد Migrations، فهو جزء من الكود."
+    ],
+    "key": "ef-recipe-book-finish"
+   }
+  ]
+ },
+ {
+  "key": "ef-contacts",
+  "skill": "EfCore",
+  "level": "Beginner",
+  "hours": 5,
+  "titleEn": "Contact manager with related tables",
+  "titleAr": "مدير جهات اتصال بجداول مترابطة",
+  "summaryEn": "A contact manager where each contact has several phone numbers and email addresses: learn one-to-many relationships, Include and cascade delete.",
+  "summaryAr": "مدير جهات اتصال لكل جهة فيه عدة أرقام هواتف وعناوين بريد: تعلّم علاقات واحد إلى متعدد، وInclude، والحذف المتتالي.",
+  "techStack": "C# · EF Core · SQLite · .NET console",
+  "goalsEn": [
+   "Model one-to-many relationships",
+   "Load related data with Include",
+   "Understand cascade delete",
+   "Add a unique index and handle its errors"
+  ],
+  "goalsAr": [
+   "تمثيل علاقات واحد إلى متعدد",
+   "تحميل البيانات المرتبطة بـ Include",
+   "فهم الحذف المتتالي",
+   "إضافة فهرس فريد ومعالجة أخطائه"
+  ],
+  "requirementsEn": [
+   "Contact: first name, last name, company",
+   "Each contact has 0..n phones (label + number) and 0..n emails",
+   "Add, view, edit, delete contacts and their phones/emails",
+   "Search by name, company, phone or email",
+   "Email addresses are unique across all contacts"
+  ],
+  "requirementsAr": [
+   "جهة الاتصال: الاسم الأول، والأخير، والشركة",
+   "لكل جهة 0 أو أكثر من الهواتف (تسمية ورقم) و0 أو أكثر من البريد",
+   "إضافة جهات الاتصال وهواتفها وبريدها وعرضها وتعديلها وحذفها",
+   "البحث بالاسم أو الشركة أو الهاتف أو البريد",
+   "عناوين البريد فريدة بين كل الجهات"
+  ],
+  "acceptanceEn": [
+   "Deleting a contact also deletes its phones and emails",
+   "Searching a phone number finds the contact",
+   "Adding an email that already exists shows a friendly message"
+  ],
+  "acceptanceAr": [
+   "حذف جهة اتصال يحذف هواتفها وبريدها أيضًا",
+   "البحث برقم هاتف يجد جهة الاتصال",
+   "إضافة بريد موجود مسبقًا يعرض رسالة واضحة"
+  ],
+  "stretchEn": [
+   "Add groups (many-to-many: a contact in several groups)",
+   "Import contacts from a vCard file",
+   "Add birthdays and list upcoming ones"
+  ],
+  "stretchAr": [
+   "أضف المجموعات (متعدد إلى متعدد: جهة في عدة مجموعات)",
+   "استورد جهات الاتصال من ملف vCard",
+   "أضف أعياد الميلاد واعرض القادمة منها"
+  ],
+  "steps": [
+   {
+    "titleEn": "Project and model",
+    "titleAr": "المشروع والنموذج",
+    "bodyEn": "Create a console app with the EF Core SQLite packages (as in the recipe book). Create `Contact` (Id, FirstName, LastName, Company), `Phone` (Id, Label, Number, ContactId) and `Email` (Id, Address, ContactId).\n\nGive Contact two collections: `List<Phone> Phones` and `List<Email> Emails`, and give Phone and Email a `Contact` navigation property.",
+    "bodyAr": "أنشئ تطبيق طرفية بحزم EF Core الخاصة بـ SQLite (كما في كتاب الوصفات). وأنشئ `Contact` (Id وFirstName وLastName وCompany) و`Phone` (Id وLabel وNumber وContactId) و`Email` (Id وAddress وContactId).\n\nأعط Contact مجموعتين: `List<Phone> Phones` و`List<Email> Emails`، وأعط Phone وEmail خاصية تنقّل `Contact`.",
+    "hintsEn": [
+     "A property named `ContactId` plus a `Contact` navigation is enough for EF to find the relationship.",
+     "Initialise collections with `= new()`."
+    ],
+    "hintsAr": [
+     "خاصية باسم `ContactId` مع خاصية تنقل `Contact` تكفي ليكتشف EF العلاقة.",
+     "هيّئ المجموعات بـ `= new()`."
+    ],
+    "key": "ef-contacts-setup"
+   },
+   {
+    "titleEn": "Configure relations and the unique email",
+    "titleAr": "اضبط العلاقات والبريد الفريد",
+    "bodyEn": "In `OnModelCreating`, configure `HasMany(c => c.Phones).WithOne(p => p.Contact).OnDelete(DeleteBehavior.Cascade)` (the same for emails) and `HasIndex(e => e.Address).IsUnique()`.\n\nCreate the migration and look at the foreign keys and the index it generates.",
+    "bodyAr": "في `OnModelCreating` اضبط `HasMany(c => c.Phones).WithOne(p => p.Contact).OnDelete(DeleteBehavior.Cascade)` (والأمر نفسه للبريد) و`HasIndex(e => e.Address).IsUnique()`.\n\nأنشئ الـ migration وانظر إلى المفاتيح الأجنبية والفهرس اللذين يولّدهما.",
+    "hintsEn": [
+     "Cascade is the default for required relationships; writing it makes your intent explicit.",
+     "Store emails in lower case so \"A@x.com\" and \"a@x.com\" count as the same."
+    ],
+    "hintsAr": [
+     "Cascade هو الافتراضي للعلاقات المطلوبة، وكتابته توضح نيتك.",
+     "احفظ البريد بأحرف صغيرة ليُعدّ \"A@x.com\" و\"a@x.com\" بريدًا واحدًا."
+    ],
+    "key": "ef-contacts-configure"
+   },
+   {
+    "titleEn": "Add a contact with children",
+    "titleAr": "أضف جهة اتصال مع بياناتها الفرعية",
+    "bodyEn": "Ask for the names, then loop to add phones and emails. Add them to the contact's lists and call `db.Contacts.Add(contact)` once: EF inserts the contact and all its phones and emails in one `SaveChanges`, with the right foreign keys.",
+    "bodyAr": "اطلب الأسماء، ثم كرّر لإضافة الهواتف والبريد. أضفها إلى قوائم جهة الاتصال واستدعِ `db.Contacts.Add(contact)` مرة واحدة، فـ EF يضيف الجهة وكل هواتفها وبريدها في `SaveChanges` واحد، مع المفاتيح الأجنبية الصحيحة.",
+    "hintsEn": [
+     "Look at the SQL log: one INSERT for the contact, then one per phone and email, in a transaction.",
+     "Validate the email format with `MailAddress.TryCreate`."
+    ],
+    "hintsAr": [
+     "انظر إلى سجل SQL: أمر INSERT للجهة، ثم واحد لكل هاتف وبريد، داخل transaction.",
+     "تحقق من صيغة البريد بـ `MailAddress.TryCreate`."
+    ],
+    "key": "ef-contacts-add"
+   },
+   {
+    "titleEn": "View with Include",
+    "titleAr": "العرض باستخدام Include",
+    "bodyEn": "Load one contact with `db.Contacts.Include(c => c.Phones).Include(c => c.Emails).FirstOrDefault(c => c.Id == id)` and print everything.\n\nTry it without Include first: the lists are empty, because EF does not load related data unless you ask.",
+    "bodyAr": "حمّل جهة اتصال واحدة بـ `db.Contacts.Include(c => c.Phones).Include(c => c.Emails).FirstOrDefault(c => c.Id == id)` واطبع كل شيء.\n\nجرّبه أولًا بدون Include: القوائم فارغة، لأن EF لا يحمّل البيانات المرتبطة إلا إذا طلبتها.",
+    "hintsEn": [
+     "For the list screen, project only what you show: `Select(c => new { c.Id, c.FirstName, PhoneCount = c.Phones.Count })`.",
+     "Two Includes of collections can multiply rows; `AsSplitQuery()` avoids it."
+    ],
+    "hintsAr": [
+     "في شاشة القائمة اجلب فقط ما تعرضه: `Select(c => new { c.Id, c.FirstName, PhoneCount = c.Phones.Count })`.",
+     "استخدام Include لمجموعتين قد يضاعف الصفوف، و`AsSplitQuery()` يتجنب ذلك."
+    ],
+    "key": "ef-contacts-include"
+   },
+   {
+    "titleEn": "Edit phones and emails",
+    "titleAr": "عدّل الهواتف والبريد",
+    "bodyEn": "For a loaded contact, let the user add a phone (`contact.Phones.Add(...)`), remove one (`contact.Phones.Remove(phone)`), or change a number. One `SaveChanges` applies everything.\n\nRemoving a phone from the list of a required relationship deletes the row — check the SQL log.",
+    "bodyAr": "لجهة اتصال محمّلة، اسمح للمستخدم بإضافة هاتف (`contact.Phones.Add(...)`)، أو حذف هاتف (`contact.Phones.Remove(phone)`)، أو تغيير رقم. واستدعاء `SaveChanges` واحد يطبّق كل شيء.\n\nحذف هاتف من قائمة علاقة مطلوبة يحذف الصف، فتحقق من سجل SQL.",
+    "hintsEn": [
+     "The contact must be loaded with Include for this to work on its children.",
+     "Show numbered phones so the user can pick which one to remove."
+    ],
+    "hintsAr": [
+     "يجب أن تكون جهة الاتصال محمّلة بـ Include ليعمل هذا على بياناتها الفرعية.",
+     "اعرض الهواتف مرقّمة ليختار المستخدم أيها يحذف."
+    ],
+    "key": "ef-contacts-edit"
+   },
+   {
+    "titleEn": "Handle duplicate emails",
+    "titleAr": "تعامل مع البريد المكرر",
+    "bodyEn": "Before adding an email, check `db.Emails.Any(e => e.Address == address)` and show a message. Also catch `DbUpdateException` around `SaveChanges` — the index is the real guarantee if two programs write at once.",
+    "bodyAr": "قبل إضافة بريد تحقق من `db.Emails.Any(e => e.Address == address)` واعرض رسالة. والتقط أيضًا `DbUpdateException` حول `SaveChanges`، فالفهرس هو الضمان الحقيقي إن كتب برنامجان في الوقت نفسه.",
+    "hintsEn": [
+     "Normalise (trim + lower case) before both the check and the save.",
+     "Show which contact already uses that email."
+    ],
+    "hintsAr": [
+     "وحّد البريد (حذف المسافات والأحرف الصغيرة) قبل التحقق وقبل الحفظ.",
+     "اعرض جهة الاتصال التي تستخدم هذا البريد."
+    ],
+    "key": "ef-contacts-unique"
+   },
+   {
+    "titleEn": "Search across tables",
+    "titleAr": "البحث عبر الجداول",
+    "bodyEn": "Write one query that finds contacts whose name or company contains the term, or who have a phone or email containing it: `Where(c => c.FirstName.Contains(t) || ... || c.Phones.Any(p => p.Number.Contains(t)) || c.Emails.Any(e => e.Address.Contains(t)))`.\n\nLook at the SQL: `Any` becomes `EXISTS` subqueries.",
+    "bodyAr": "اكتب استعلامًا واحدًا يجد جهات الاتصال التي يحتوي اسمها أو شركتها على النص، أو التي لها هاتف أو بريد يحتوي عليه: `Where(c => c.FirstName.Contains(t) || ... || c.Phones.Any(p => p.Number.Contains(t)) || c.Emails.Any(e => e.Address.Contains(t)))`.\n\nانظر إلى SQL: يتحول `Any` إلى استعلامات `EXISTS` فرعية.",
+    "hintsEn": [
+     "Strip spaces and dashes from phone numbers when saving so searches match.",
+     "Order results by last name, then first name."
+    ],
+    "hintsAr": [
+     "احذف المسافات والشرطات من أرقام الهواتف عند الحفظ لتتطابق عمليات البحث.",
+     "رتّب النتائج بالاسم الأخير ثم الأول."
+    ],
+    "key": "ef-contacts-search"
+   },
+   {
+    "titleEn": "Delete, test and publish",
+    "titleAr": "الحذف والاختبار والنشر",
+    "bodyEn": "Delete a contact and check in the database file that its phones and emails are gone too. Go through all acceptance criteria.\n\nWrite a README with an entity diagram (Contact 1 — n Phone, Contact 1 — n Email) and push to GitHub.",
+    "bodyAr": "احذف جهة اتصال وتحقق في ملف قاعدة البيانات أن هواتفها وبريدها حُذفت أيضًا. وراجع كل معايير القبول.\n\nاكتب README فيه مخطط الكيانات (Contact 1 — n Phone وContact 1 — n Email) وارفعه إلى GitHub.",
+    "hintsEn": [
+     "SQLite only enforces foreign keys when they are enabled; EF Core turns them on for you.",
+     "A Mermaid erDiagram renders on GitHub."
+    ],
+    "hintsAr": [
+     "SQLite لا يفرض المفاتيح الأجنبية إلا عند تفعيلها، وEF Core يفعّلها لك.",
+     "مخطط Mermaid من نوع erDiagram يظهر على GitHub."
+    ],
+    "key": "ef-contacts-finish"
+   }
+  ]
+ },
+ {
+  "key": "ef-inventory",
+  "skill": "EfCore",
+  "level": "Intermediate",
+  "hours": 11,
+  "titleEn": "Inventory across warehouses",
+  "titleAr": "المخزون عبر عدة مستودعات",
+  "summaryEn": "A stock system for several warehouses: products, stock levels per warehouse, stock movements, transfers in transactions and protection against two people changing the same stock at once.",
+  "summaryAr": "نظام مخزون لعدة مستودعات: المنتجات، وكمية كل منتج في كل مستودع، وحركات المخزون، والتحويلات داخل transactions، والحماية من تعديل شخصين للمخزون نفسه في الوقت نفسه.",
+  "techStack": "C# · EF Core · SQL Server · .NET console or Web API",
+  "goalsEn": [
+   "Model many-to-many with a payload (stock per product and warehouse)",
+   "Use explicit transactions",
+   "Handle concurrency with row versions",
+   "Write reporting queries with GroupBy"
+  ],
+  "goalsAr": [
+   "تمثيل علاقة متعدد إلى متعدد مع بيانات إضافية (الكمية لكل منتج ومستودع)",
+   "استخدام transactions صريحة",
+   "معالجة التزامن بـ row versions",
+   "كتابة استعلامات تقارير بـ GroupBy"
+  ],
+  "requirementsEn": [
+   "Products (SKU, name, price) and warehouses (code, city)",
+   "Stock(ProductId, WarehouseId, Quantity) with a composite key",
+   "Receive, ship and adjust stock; every change writes a StockMovement",
+   "Transfer between warehouses: both sides or nothing",
+   "Quantity can never go below zero",
+   "Reports: stock value per warehouse, low-stock products"
+  ],
+  "requirementsAr": [
+   "المنتجات (SKU والاسم والسعر) والمستودعات (الرمز والمدينة)",
+   "Stock(ProductId, WarehouseId, Quantity) بمفتاح مركّب",
+   "الاستلام والشحن والتسوية، وكل تغيير يكتب StockMovement",
+   "التحويل بين المستودعات: الطرفان معًا أو لا شيء",
+   "الكمية لا تنزل تحت الصفر أبدًا",
+   "التقارير: قيمة المخزون لكل مستودع، والمنتجات منخفضة المخزون"
+  ],
+  "acceptanceEn": [
+   "A transfer that fails halfway leaves both warehouses unchanged",
+   "Two simultaneous updates of the same stock: one succeeds, the other gets a concurrency error and retries",
+   "Shipping more than available is refused",
+   "The movement history explains every quantity"
+  ],
+  "acceptanceAr": [
+   "التحويل الذي يفشل في منتصفه يترك المستودعين بلا تغيير",
+   "تعديلان متزامنان للمخزون نفسه: أحدهما ينجح والآخر يحصل على خطأ تزامن ثم يعيد المحاولة",
+   "شحن كمية أكبر من المتاح يُرفض",
+   "سجل الحركات يفسّر كل كمية"
+  ],
+  "stretchEn": [
+   "Add purchase orders that receive stock when delivered",
+   "Add a check constraint Quantity >= 0 in the database",
+   "Expose it as a Web API with Swagger"
+  ],
+  "stretchAr": [
+   "أضف أوامر شراء تستلم المخزون عند التوصيل",
+   "أضف قيد check في قاعدة البيانات Quantity >= 0",
+   "قدّمه كـ Web API مع Swagger"
+  ],
+  "steps": [
+   {
+    "titleEn": "Model the domain",
+    "titleAr": "مثّل المجال",
+    "bodyEn": "Create `Product`, `Warehouse`, `Stock` (ProductId, WarehouseId, Quantity, RowVersion) and `StockMovement` (Id, ProductId, WarehouseId, Change, Reason, CreatedAt, Reference).\n\nStock is the join between products and warehouses that carries data (the quantity), so it is its own entity with a composite key.",
+    "bodyAr": "أنشئ `Product` و`Warehouse` و`Stock` (ProductId وWarehouseId وQuantity وRowVersion) و`StockMovement` (Id وProductId وWarehouseId وChange وReason وCreatedAt وReference).\n\nStock هو الربط بين المنتجات والمستودعات الذي يحمل بيانات (الكمية)، لذا فهو كيان مستقل بمفتاح مركّب.",
+    "hintsEn": [
+     "Composite key: `HasKey(s => new { s.ProductId, s.WarehouseId })`.",
+     "Movements are append-only: never update or delete them."
+    ],
+    "hintsAr": [
+     "المفتاح المركّب: `HasKey(s => new { s.ProductId, s.WarehouseId })`.",
+     "الحركات تُضاف فقط، فلا تعدّلها ولا تحذفها أبدًا."
+    ],
+    "key": "ef-inventory-model"
+   },
+   {
+    "titleEn": "Configuration and seed data",
+    "titleAr": "الإعدادات والبيانات الأولية",
+    "bodyEn": "Configure a unique index on Product.Sku and Warehouse.Code, `decimal(18,2)` for Price, and `IsRowVersion()` on Stock.RowVersion (a `byte[]`). Seed 3 warehouses and 10 products with `HasData`.\n\nCreate the migration and the database on SQL Server (LocalDB or Docker).",
+    "bodyAr": "اضبط فهرسًا فريدًا على Product.Sku وWarehouse.Code، و`decimal(18,2)` للسعر، و`IsRowVersion()` على Stock.RowVersion (من نوع `byte[]`). وأضف 3 مستودعات و10 منتجات أولية بـ `HasData`.\n\nأنشئ الـ migration وقاعدة البيانات على SQL Server (LocalDB أو Docker).",
+    "hintsEn": [
+     "SQL Server updates a rowversion column automatically on every change.",
+     "HasData needs fixed ids."
+    ],
+    "hintsAr": [
+     "SQL Server يحدّث عمود rowversion تلقائيًا عند كل تغيير.",
+     "HasData يحتاج أرقامًا ثابتة."
+    ],
+    "key": "ef-inventory-configure"
+   },
+   {
+    "titleEn": "A StockService with movements",
+    "titleAr": "StockService مع الحركات",
+    "bodyEn": "Write `StockService.ChangeAsync(productId, warehouseId, change, reason, reference)`: load or create the Stock row, check `Quantity + change >= 0`, update the quantity and add a StockMovement — in the same SaveChanges.\n\nReceive (+), ship (−) and adjust (±) all call this one method.",
+    "bodyAr": "اكتب `StockService.ChangeAsync(productId, warehouseId, change, reason, reference)`: حمّل صف Stock أو أنشئه، وتحقق من `Quantity + change >= 0`، وحدّث الكمية، وأضف StockMovement، كل ذلك في SaveChanges واحد.\n\nالاستلام (+) والشحن (−) والتسوية (±) كلها تستدعي هذه الدالة الواحدة.",
+    "hintsEn": [
+     "Return a result instead of throwing for \"not enough stock\".",
+     "Keep Reason as an enum: Receive, Ship, Adjust, TransferIn, TransferOut."
+    ],
+    "hintsAr": [
+     "أعد نتيجة بدل رمي استثناء عند \"مخزون غير كافٍ\".",
+     "اجعل Reason من نوع enum: Receive وShip وAdjust وTransferIn وTransferOut."
+    ],
+    "key": "ef-inventory-service"
+   },
+   {
+    "titleEn": "Transfers in a transaction",
+    "titleAr": "التحويلات داخل transaction",
+    "bodyEn": "`TransferAsync(productId, from, to, qty)` must take from one warehouse and add to the other atomically. Open `await using var tx = await db.Database.BeginTransactionAsync()`, do both changes, save, and `CommitAsync`. Any exception rolls everything back.\n\nTest it by throwing on purpose between the two changes.",
+    "bodyAr": "`TransferAsync(productId, from, to, qty)` يجب أن تأخذ من مستودع وتضيف إلى الآخر بشكل ذري. افتح `await using var tx = await db.Database.BeginTransactionAsync()`، ونفّذ التغييرين، واحفظ، ثم `CommitAsync`. وأي استثناء يلغي كل شيء.\n\nاختبرها برمي استثناء متعمد بين التغييرين.",
+    "hintsEn": [
+     "Actually one SaveChanges is already one transaction; the explicit transaction matters when you call SaveChanges more than once.",
+     "Use the same Reference (e.g. a transfer id) on both movements."
+    ],
+    "hintsAr": [
+     "في الحقيقة SaveChanges واحد هو transaction واحد أصلًا، والـ transaction الصريحة مهمة عندما تستدعي SaveChanges أكثر من مرة.",
+     "استخدم Reference نفسه (مثل رقم التحويل) في الحركتين."
+    ],
+    "key": "ef-inventory-transfer"
+   },
+   {
+    "titleEn": "Optimistic concurrency",
+    "titleAr": "التزامن المتفائل",
+    "bodyEn": "With the row version, EF adds `WHERE RowVersion = @old` to the UPDATE. If someone changed the row in between, nothing is updated and EF throws `DbUpdateConcurrencyException`.\n\nCatch it, reload the current values (`entry.ReloadAsync()`), re-check the rule and retry up to 3 times.",
+    "bodyAr": "مع الـ row version يضيف EF الشرط `WHERE RowVersion = @old` إلى أمر UPDATE. فإذا غيّر أحد الصف في الأثناء لا يُحدَّث شيء، ويرمي EF الاستثناء `DbUpdateConcurrencyException`.\n\nالتقطه، وأعد تحميل القيم الحالية (`entry.ReloadAsync()`)، وتحقق من القاعدة مرة أخرى، وأعد المحاولة حتى 3 مرات.",
+    "hintsEn": [
+     "Simulate it: load the same stock in two DbContexts, change both, save both.",
+     "Without the retry, the second user would see an error; without the row version, one change would silently be lost."
+    ],
+    "hintsAr": [
+     "حاكِ ذلك: حمّل المخزون نفسه في DbContext مختلفين، وغيّر الاثنين، واحفظ الاثنين.",
+     "بدون إعادة المحاولة سيرى المستخدم الثاني خطأ، وبدون الـ row version سيضيع أحد التغييرين بصمت."
+    ],
+    "key": "ef-inventory-concurrency"
+   },
+   {
+    "titleEn": "Reports with GroupBy",
+    "titleAr": "التقارير بـ GroupBy",
+    "bodyEn": "Stock value per warehouse: `db.Stock.GroupBy(s => s.Warehouse.Code).Select(g => new { g.Key, Value = g.Sum(s => s.Quantity * s.Product.Price) })`. Low stock: products whose total quantity is below a threshold.\n\nCheck the SQL: both should run as a single query on the server, not load everything into memory.",
+    "bodyAr": "قيمة المخزون لكل مستودع: `db.Stock.GroupBy(s => s.Warehouse.Code).Select(g => new { g.Key, Value = g.Sum(s => s.Quantity * s.Product.Price) })`. والمخزون المنخفض: المنتجات التي مجموع كميتها أقل من حد معين.\n\nتحقق من SQL: يجب أن يعمل كلاهما كاستعلام واحد على الخادم، لا بتحميل كل شيء في الذاكرة.",
+    "hintsEn": [
+     "If EF cannot translate a GroupBy, it throws — rewrite it rather than adding ToList() before it.",
+     "Add an index on StockMovement(ProductId, CreatedAt) for history queries."
+    ],
+    "hintsAr": [
+     "إذا لم يستطع EF ترجمة GroupBy فإنه يرمي استثناء، فأعد كتابته بدل إضافة ToList() قبله.",
+     "أضف فهرسًا على StockMovement(ProductId, CreatedAt) لاستعلامات السجل."
+    ],
+    "key": "ef-inventory-reports"
+   },
+   {
+    "titleEn": "Movement history and reconciliation",
+    "titleAr": "سجل الحركات والمطابقة",
+    "bodyEn": "Show the history of a product in a warehouse, newest first, with a running balance. Add a \"verify\" command: for every Stock row, the sum of its movements must equal its quantity.\n\nThis check catches bugs where a quantity changed without a movement.",
+    "bodyAr": "اعرض سجل منتج في مستودع، من الأحدث إلى الأقدم، مع الرصيد المتراكم. وأضف أمر \"تحقق\": لكل صف Stock يجب أن يساوي مجموع حركاته الكمية الحالية.\n\nهذا الفحص يكشف الأخطاء التي تتغير فيها الكمية دون حركة.",
+    "hintsEn": [
+     "Compute the running balance in C# after loading the page of movements.",
+     "Run verify after your tests to catch mistakes."
+    ],
+    "hintsAr": [
+     "احسب الرصيد المتراكم في C# بعد تحميل صفحة الحركات.",
+     "شغّل التحقق بعد اختباراتك لتكتشف الأخطاء."
+    ],
+    "key": "ef-inventory-history"
+   },
+   {
+    "titleEn": "Menu or API",
+    "titleAr": "قائمة أو API",
+    "bodyEn": "Expose the operations through a console menu or minimal API endpoints: products, warehouses, receive, ship, transfer, history, reports, verify.\n\nKeep all rules in the service; the UI only collects input and prints results.",
+    "bodyAr": "قدّم العمليات عبر قائمة طرفية أو نقاط minimal API: المنتجات، والمستودعات، والاستلام، والشحن، والتحويل، والسجل، والتقارير، والتحقق.\n\nأبقِ كل القواعد في الـ service، والواجهة تجمع المدخلات وتطبع النتائج فقط.",
+    "hintsEn": [
+     "If you build an API, map \"not enough stock\" to 409 and concurrency failures after retries to 409 too.",
+     "Return quantities per warehouse in the product details."
+    ],
+    "hintsAr": [
+     "إذا بنيت API فحوّل \"مخزون غير كافٍ\" إلى 409، وكذلك فشل التزامن بعد إعادة المحاولات.",
+     "أعد الكميات لكل مستودع في تفاصيل المنتج."
+    ],
+    "key": "ef-inventory-ui"
+   },
+   {
+    "titleEn": "Tests and documentation",
+    "titleAr": "الاختبارات والتوثيق",
+    "bodyEn": "Write tests against a real SQL Server (Testcontainers) or LocalDB — row versions and transactions behave differently in the in-memory provider. Test: failing transfer, concurrent updates, negative quantity, verify.\n\nDocument the model and the rules in the README.",
+    "bodyAr": "اكتب اختبارات على SQL Server حقيقي (Testcontainers) أو LocalDB، فالـ row versions والـ transactions تتصرف بشكل مختلف في مزود الذاكرة. اختبر: التحويل الفاشل، والتعديلات المتزامنة، والكمية السالبة، والتحقق.\n\nوثّق النموذج والقواعد في README.",
+    "hintsEn": [
+     "The EF in-memory provider does not support transactions or row versions — avoid it here.",
+     "Create a fresh database per test class to keep tests independent."
+    ],
+    "hintsAr": [
+     "مزود الذاكرة في EF لا يدعم الـ transactions ولا الـ row versions، فتجنبه هنا.",
+     "أنشئ قاعدة بيانات جديدة لكل class اختبار لتبقى الاختبارات مستقلة."
+    ],
+    "key": "ef-inventory-finish"
+   }
+  ]
+ },
+ {
+  "key": "ef-blog-data",
+  "skill": "EfCore",
+  "level": "Intermediate",
+  "hours": 10,
+  "titleEn": "Blog data layer that stays fast",
+  "titleAr": "طبقة بيانات مدونة تبقى سريعة",
+  "summaryEn": "The data layer of a blog with posts, tags, comments and authors, built to stay fast: projections, no-tracking queries, avoiding N+1, indexes and pagination, measured with logs.",
+  "summaryAr": "طبقة بيانات لمدونة فيها مقالات ووسوم وتعليقات وكتّاب، مبنية لتبقى سريعة: projections، واستعلامات بلا تتبع، وتجنب N+1، والفهارس، والتقسيم إلى صفحات، مع القياس بالسجلات.",
+  "techStack": "C# · EF Core · SQL Server · Bogus",
+  "goalsEn": [
+   "Model many-to-many (posts and tags) with skip navigations",
+   "Detect and fix the N+1 problem",
+   "Use projections, AsNoTracking and split queries",
+   "Choose indexes from real query patterns"
+  ],
+  "goalsAr": [
+   "تمثيل علاقة متعدد إلى متعدد (المقالات والوسوم) بـ skip navigations",
+   "اكتشاف مشكلة N+1 وحلها",
+   "استخدام projections وAsNoTracking والاستعلامات المقسمة",
+   "اختيار الفهارس من أنماط الاستعلام الحقيقية"
+  ],
+  "requirementsEn": [
+   "Authors, Posts (title, slug, body, published date), Tags, Comments",
+   "Home page query: latest 10 published posts with author name, tags and comment count",
+   "Post page by slug with comments",
+   "Tag page with pagination",
+   "Seed 50 authors, 5,000 posts and 50,000 comments with Bogus",
+   "Every query logs its SQL and duration"
+  ],
+  "requirementsAr": [
+   "الكتّاب، والمقالات (العنوان والـ slug والمحتوى وتاريخ النشر)، والوسوم، والتعليقات",
+   "استعلام الصفحة الرئيسية: آخر 10 مقالات منشورة مع اسم الكاتب والوسوم وعدد التعليقات",
+   "صفحة المقال بالـ slug مع التعليقات",
+   "صفحة الوسم مع التقسيم إلى صفحات",
+   "بيانات أولية: 50 كاتبًا و5000 مقال و50000 تعليق باستخدام Bogus",
+   "كل استعلام يسجل SQL ومدته"
+  ],
+  "acceptanceEn": [
+   "The home page query runs as one SQL statement",
+   "Loading the home page never loads post bodies or comment texts",
+   "Post by slug uses an index seek",
+   "You can show the before/after timing of each optimisation in the README"
+  ],
+  "acceptanceAr": [
+   "استعلام الصفحة الرئيسية يعمل كأمر SQL واحد",
+   "تحميل الصفحة الرئيسية لا يحمّل محتوى المقالات ولا نصوص التعليقات أبدًا",
+   "البحث عن المقال بالـ slug يستخدم index seek",
+   "تستطيع عرض التوقيت قبل كل تحسين وبعده في README"
+  ],
+  "stretchEn": [
+   "Use compiled queries for the hottest query",
+   "Add full-text search",
+   "Cache the home page for 30 seconds"
+  ],
+  "stretchAr": [
+   "استخدم compiled queries لأكثر استعلام استخدامًا",
+   "أضف البحث في النص الكامل",
+   "خزّن الصفحة الرئيسية مؤقتًا لمدة 30 ثانية"
+  ],
+  "steps": [
+   {
+    "titleEn": "Model the blog",
+    "titleAr": "مثّل المدونة",
+    "bodyEn": "Create `Author`, `Post` (with `AuthorId`, `Slug`, `PublishedAt` nullable for drafts), `Tag` and `Comment`. For tags use skip navigations: `Post.Tags` and `Tag.Posts` — EF creates the join table for you.\n\nAdd a unique index on Post.Slug and Tag.Name.",
+    "bodyAr": "أنشئ `Author` و`Post` (فيه `AuthorId` و`Slug` و`PublishedAt` قابل لـ null للمسودات) و`Tag` و`Comment`. وللوسوم استخدم skip navigations: `Post.Tags` و`Tag.Posts`، وEF ينشئ جدول الربط بنفسه.\n\nأضف فهرسًا فريدًا على Post.Slug وTag.Name.",
+    "hintsEn": [
+     "Drafts have PublishedAt == null; published posts have a date.",
+     "Limit Title and Slug lengths so they can be indexed."
+    ],
+    "hintsAr": [
+     "المسودات قيمة PublishedAt فيها null، والمقالات المنشورة لها تاريخ.",
+     "حدّد أطوال Title وSlug لتصلح للفهرسة."
+    ],
+    "key": "ef-blog-data-model"
+   },
+   {
+    "titleEn": "Generate realistic data",
+    "titleAr": "ولّد بيانات واقعية",
+    "bodyEn": "Add the `Bogus` package and write a seeder that creates 50 authors, 30 tags, 5,000 posts (each with 1–4 tags) and 50,000 comments. Insert in batches of 1,000 with `AddRange` + `SaveChanges`, and use `ChangeTracker.Clear()` between batches.\n\nPerformance problems only show up with realistic amounts of data.",
+    "bodyAr": "أضف الحزمة `Bogus` واكتب seeder ينشئ 50 كاتبًا و30 وسمًا و5000 مقال (لكل مقال من 1 إلى 4 وسوم) و50000 تعليق. وأدخلها على دفعات من 1000 بـ `AddRange` و`SaveChanges`، واستخدم `ChangeTracker.Clear()` بين الدفعات.\n\nمشاكل الأداء لا تظهر إلا مع كميات واقعية من البيانات.",
+    "hintsEn": [
+     "Use `Randomizer.Seed = new Random(42)` so the data is the same every run.",
+     "Clearing the tracker keeps memory flat during the seed."
+    ],
+    "hintsAr": [
+     "استخدم `Randomizer.Seed = new Random(42)` لتكون البيانات نفسها في كل تشغيل.",
+     "تفريغ المتتبع يُبقي استهلاك الذاكرة ثابتًا أثناء الإدخال."
+    ],
+    "key": "ef-blog-data-seed"
+   },
+   {
+    "titleEn": "Measure every query",
+    "titleAr": "قِس كل استعلام",
+    "bodyEn": "Turn on SQL logging with `LogTo` filtered to `RelationalEventId.CommandExecuted`, which includes the duration. Wrap each scenario in a `Stopwatch` and print the number of commands executed.\n\nWrite each number down: you will compare after each optimisation.",
+    "bodyAr": "فعّل سجل SQL بـ `LogTo` مصفّى على `RelationalEventId.CommandExecuted`، فهو يتضمن المدة. وضع كل سيناريو داخل `Stopwatch` واطبع عدد الأوامر المنفذة.\n\nدوّن كل رقم، فستقارن بعد كل تحسين.",
+    "hintsEn": [
+     "A small counter: an interceptor (`DbCommandInterceptor`) that increments on every command.",
+     "Run each scenario twice and use the second timing (the first warms up)."
+    ],
+    "hintsAr": [
+     "عدّاد صغير: interceptor من نوع `DbCommandInterceptor` يزيد العدد عند كل أمر.",
+     "شغّل كل سيناريو مرتين واعتمد توقيت المرة الثانية (الأولى للتسخين)."
+    ],
+    "key": "ef-blog-data-measure"
+   },
+   {
+    "titleEn": "Write the naive version and find N+1",
+    "titleAr": "اكتب النسخة الساذجة واكتشف N+1",
+    "bodyEn": "Write the home page the naive way: load 10 posts, then for each post read `post.Author.Name`, `post.Tags` and `post.Comments.Count` with lazy loading turned on (or separate queries in a loop).\n\nCount the commands: 1 + 10 × 3. That is the N+1 problem — it gets worse as the page grows.",
+    "bodyAr": "اكتب الصفحة الرئيسية بالطريقة الساذجة: حمّل 10 مقالات، ثم لكل مقال اقرأ `post.Author.Name` و`post.Tags` و`post.Comments.Count` مع تفعيل التحميل الكسول (أو باستعلامات منفصلة داخل حلقة).\n\nعُدّ الأوامر: 1 + 10 × 3. هذه هي مشكلة N+1، وتسوء كلما كبرت الصفحة.",
+    "hintsEn": [
+     "Lazy loading needs `Microsoft.EntityFrameworkCore.Proxies` and virtual navigations — enable it only for this experiment.",
+     "Save the naive code in a separate method so you can compare."
+    ],
+    "hintsAr": [
+     "التحميل الكسول يحتاج `Microsoft.EntityFrameworkCore.Proxies` وخصائص تنقّل virtual، ففعّله لهذه التجربة فقط.",
+     "احفظ الكود الساذج في دالة منفصلة لتقارن."
+    ],
+    "key": "ef-blog-data-n-plus-one"
+   },
+   {
+    "titleEn": "Fix it with a projection",
+    "titleAr": "أصلحها بـ projection",
+    "bodyEn": "Rewrite the home page as one query: `Where(p => p.PublishedAt != null).OrderByDescending(p => p.PublishedAt).Take(10).Select(p => new PostCard(p.Title, p.Slug, p.PublishedAt, p.Author.Name, p.Tags.Select(t => t.Name).ToList(), p.Comments.Count))`.\n\nEF builds one SQL statement that reads only those columns. Compare commands and time with the naive version.",
+    "bodyAr": "أعد كتابة الصفحة الرئيسية كاستعلام واحد: `Where(p => p.PublishedAt != null).OrderByDescending(p => p.PublishedAt).Take(10).Select(p => new PostCard(p.Title, p.Slug, p.PublishedAt, p.Author.Name, p.Tags.Select(t => t.Name).ToList(), p.Comments.Count))`.\n\nيبني EF أمر SQL واحدًا يقرأ تلك الأعمدة فقط. قارن عدد الأوامر والوقت بالنسخة الساذجة.",
+    "hintsEn": [
+     "Projections are not tracked, so no AsNoTracking is needed.",
+     "The body column is never read — check the SQL."
+    ],
+    "hintsAr": [
+     "الـ projections لا تُتتبع، فلا حاجة لـ AsNoTracking.",
+     "عمود المحتوى لا يُقرأ أبدًا، فتحقق من SQL."
+    ],
+    "key": "ef-blog-data-projection"
+   },
+   {
+    "titleEn": "The post page: tracking and split queries",
+    "titleAr": "صفحة المقال: التتبع والاستعلامات المقسمة",
+    "bodyEn": "Load a post by slug with its author, tags and the latest 20 comments. Compare `Include` of both collections (a cartesian explosion: rows = tags × comments) with `AsSplitQuery()` and with a projection that takes 20 comments.\n\nUse `AsNoTracking()` for read-only pages.",
+    "bodyAr": "حمّل مقالًا بالـ slug مع كاتبه ووسومه وآخر 20 تعليقًا. وقارن بين `Include` للمجموعتين (انفجار ديكارتي: الصفوف = الوسوم × التعليقات) و`AsSplitQuery()` وprojection يأخذ 20 تعليقًا.\n\nاستخدم `AsNoTracking()` للصفحات المخصصة للقراءة فقط.",
+    "hintsEn": [
+     "Filtered include: `Include(p => p.Comments.OrderByDescending(c => c.CreatedAt).Take(20))`.",
+     "Look at the number of rows returned in each variant."
+    ],
+    "hintsAr": [
+     "الـ Include المصفّى: `Include(p => p.Comments.OrderByDescending(c => c.CreatedAt).Take(20))`.",
+     "انظر إلى عدد الصفوف المُعادة في كل حالة."
+    ],
+    "key": "ef-blog-data-post-page"
+   },
+   {
+    "titleEn": "Indexes from query patterns",
+    "titleAr": "الفهارس من أنماط الاستعلام",
+    "bodyEn": "List the WHERE and ORDER BY columns of your queries: PublishedAt for the home page, Slug for the post page, (PostId, CreatedAt) for comments. Add the missing indexes with `HasIndex` and a migration.\n\nCheck the execution plan in SSMS or Azure Data Studio: you want \"Index Seek\", not \"Table Scan\".",
+    "bodyAr": "اكتب أعمدة WHERE وORDER BY في استعلاماتك: PublishedAt للصفحة الرئيسية، وSlug لصفحة المقال، و(PostId, CreatedAt) للتعليقات. وأضف الفهارس الناقصة بـ `HasIndex` وmigration.\n\nافحص خطة التنفيذ في SSMS أو Azure Data Studio: تريد \"Index Seek\" لا \"Table Scan\".",
+    "hintsEn": [
+     "Copy the SQL from the log into SSMS and press \"Include Actual Execution Plan\".",
+     "Foreign keys get indexes automatically in EF Core; composite ones you add yourself."
+    ],
+    "hintsAr": [
+     "انسخ SQL من السجل إلى SSMS واضغط \"Include Actual Execution Plan\".",
+     "المفاتيح الأجنبية تحصل على فهارس تلقائيًا في EF Core، أما المركّبة فتضيفها بنفسك."
+    ],
+    "key": "ef-blog-data-indexes"
+   },
+   {
+    "titleEn": "Tag pages with pagination",
+    "titleAr": "صفحات الوسوم مع التقسيم",
+    "bodyEn": "Implement the tag page twice: offset pagination (`Skip((page-1)*size).Take(size)`) and keyset pagination (`Where(p => p.PublishedAt < lastDate || (p.PublishedAt == lastDate && p.Id < lastId))`).\n\nMeasure page 1 and page 200 of both. Explain in the README when each one fits.",
+    "bodyAr": "نفّذ صفحة الوسم مرتين: التقسيم بالإزاحة (`Skip((page-1)*size).Take(size)`) والتقسيم بالمفتاح (`Where(p => p.PublishedAt < lastDate || (p.PublishedAt == lastDate && p.Id < lastId))`).\n\nقِس الصفحة 1 والصفحة 200 في الطريقتين، واشرح في README متى تناسب كل واحدة.",
+    "hintsEn": [
+     "Offset is simple and allows \"jump to page 7\"; keyset stays fast deep in the list.",
+     "Keyset needs a stable order with a unique tie-breaker (Id)."
+    ],
+    "hintsAr": [
+     "الإزاحة بسيطة وتسمح بـ\"اقفز إلى الصفحة 7\"، والمفتاح يبقى سريعًا في عمق القائمة.",
+     "التقسيم بالمفتاح يحتاج ترتيبًا ثابتًا مع عمود فاصل فريد (Id)."
+    ],
+    "key": "ef-blog-data-pagination"
+   },
+   {
+    "titleEn": "Write the performance report",
+    "titleAr": "اكتب تقرير الأداء",
+    "bodyEn": "Build a table in the README: scenario, commands before/after, time before/after, what you changed and why. This is exactly the kind of evidence interviewers love.\n\nPush the code with the seeder so anyone can reproduce your numbers.",
+    "bodyAr": "ابنِ جدولًا في README: السيناريو، وعدد الأوامر قبل/بعد، والوقت قبل/بعد، وما غيّرته ولماذا. هذا بالضبط نوع الأدلة التي يحبها من يجري المقابلات.\n\nارفع الكود مع الـ seeder ليستطيع أي أحد إعادة إنتاج أرقامك.",
+    "hintsEn": [
+     "State the machine and data size next to the timings.",
+     "Mention one optimisation you tried that did not help — honest reports are more convincing."
+    ],
+    "hintsAr": [
+     "اذكر مواصفات الجهاز وحجم البيانات بجانب التوقيتات.",
+     "اذكر تحسينًا جربته ولم يُفد، فالتقارير الصادقة أكثر إقناعًا."
+    ],
+    "key": "ef-blog-data-finish"
+   }
+  ]
+ },
+ {
+  "key": "ef-multitenant-audit",
+  "skill": "EfCore",
+  "level": "Advanced",
+  "hours": 15,
+  "titleEn": "Multi-tenant data layer with auditing",
+  "titleAr": "طبقة بيانات متعددة المستأجرين مع تدقيق",
+  "summaryEn": "The data layer of a SaaS app where many companies share one database: tenant isolation with global query filters, soft delete, automatic audit logs with interceptors and value objects.",
+  "summaryAr": "طبقة بيانات لتطبيق SaaS تتشارك فيه عدة شركات قاعدة بيانات واحدة: عزل المستأجرين بـ global query filters، والحذف الناعم، وسجلات تدقيق تلقائية بالـ interceptors، والـ value objects.",
+  "techStack": "C# · EF Core · SQL Server · ASP.NET Core",
+  "goalsEn": [
+   "Isolate tenants safely with global query filters",
+   "Implement soft delete and restore",
+   "Write SaveChanges and command interceptors",
+   "Map value objects with complex types or owned types"
+  ],
+  "goalsAr": [
+   "عزل المستأجرين بأمان بـ global query filters",
+   "تنفيذ الحذف الناعم والاستعادة",
+   "كتابة interceptors لـ SaveChanges وللأوامر",
+   "تمثيل الـ value objects بـ complex types أو owned types"
+  ],
+  "requirementsEn": [
+   "Tenants, Users, Customers, Invoices (with Money and Address value objects)",
+   "Every tenant-owned entity has TenantId set automatically",
+   "Queries only ever return the current tenant's rows",
+   "Delete sets IsDeleted instead of removing; admins can restore",
+   "Every insert/update/delete writes an AuditEntry with old and new values",
+   "CreatedAt/By and UpdatedAt/By filled automatically"
+  ],
+  "requirementsAr": [
+   "المستأجرون، والمستخدمون، والعملاء، والفواتير (مع value objects للمال والعنوان)",
+   "كل كيان يملكه المستأجر يحصل على TenantId تلقائيًا",
+   "الاستعلامات لا تعيد إلا صفوف المستأجر الحالي",
+   "الحذف يضبط IsDeleted بدل الإزالة، ويستطيع المشرفون الاستعادة",
+   "كل إضافة وتعديل وحذف يكتب AuditEntry بالقيم القديمة والجديدة",
+   "CreatedAt/By وUpdatedAt/By تُملأ تلقائيًا"
+  ],
+  "acceptanceEn": [
+   "A test proves tenant A can never read, update or delete tenant B's invoice, even by id",
+   "Deleted customers disappear from queries but are still in the table",
+   "Changing an invoice total writes one audit entry with the old and the new value",
+   "Forgetting to set TenantId is impossible: saving throws if no tenant is known"
+  ],
+  "acceptanceAr": [
+   "اختبار يثبت أن المستأجر A لا يستطيع أبدًا قراءة فاتورة المستأجر B أو تعديلها أو حذفها، حتى بالرقم",
+   "العملاء المحذوفون يختفون من الاستعلامات لكنهم ما زالوا في الجدول",
+   "تغيير إجمالي فاتورة يكتب سجل تدقيق واحدًا بالقيمة القديمة والجديدة",
+   "نسيان ضبط TenantId مستحيل، فالحفظ يرمي استثناء إن لم يُعرف المستأجر"
+  ],
+  "stretchEn": [
+   "Add a database-per-tenant option behind the same interface",
+   "Use SQL Server row-level security as a second safety net",
+   "Show an audit timeline page for an invoice"
+  ],
+  "stretchAr": [
+   "أضف خيار قاعدة بيانات لكل مستأجر خلف الواجهة نفسها",
+   "استخدم row-level security في SQL Server كشبكة أمان ثانية",
+   "اعرض صفحة خط زمني للتدقيق لكل فاتورة"
+  ],
+  "steps": [
+   {
+    "titleEn": "Know the current tenant",
+    "titleAr": "اعرف المستأجر الحالي",
+    "bodyEn": "Define `ITenantContext { Guid? TenantId; }`. In a web app, a middleware reads the tenant from the signed-in user's claim (never from a header the client controls) and sets it for the request.\n\nRegister it as scoped and inject it into the DbContext constructor.",
+    "bodyAr": "عرّف `ITenantContext { Guid? TenantId; }`. وفي تطبيق الويب يقرأ middleware المستأجرَ من claim المستخدم المسجّل (لا من ترويسة يتحكم بها العميل أبدًا) ويضبطه للطلب.\n\nسجّله كـ scoped واحقنه في constructor الـ DbContext.",
+    "hintsEn": [
+     "Background jobs need a way to set the tenant explicitly (a \"run as tenant\" scope).",
+     "A null tenant should mean \"no access\", never \"everything\"."
+    ],
+    "hintsAr": [
+     "المهام الخلفية تحتاج طريقة لضبط المستأجر صراحة (scope بعنوان \"شغّل كمستأجر\").",
+     "المستأجر null يجب أن يعني \"لا وصول\"، لا \"كل شيء\" أبدًا."
+    ],
+    "key": "ef-multitenant-audit-tenant-context"
+   },
+   {
+    "titleEn": "Base interfaces for entities",
+    "titleAr": "interfaces أساسية للكيانات",
+    "bodyEn": "Create `ITenantOwned { Guid TenantId }`, `ISoftDeletable { bool IsDeleted; DateTime? DeletedAt }` and `IAuditable { CreatedAt, CreatedBy, UpdatedAt, UpdatedBy }`. Customer and Invoice implement all three.\n\nInterfaces let one piece of code handle every entity of a kind, instead of repeating the logic.",
+    "bodyAr": "أنشئ `ITenantOwned { Guid TenantId }` و`ISoftDeletable { bool IsDeleted; DateTime? DeletedAt }` و`IAuditable { CreatedAt, CreatedBy, UpdatedAt, UpdatedBy }`. والعميل والفاتورة ينفذان الثلاثة.\n\nالـ interfaces تسمح لكود واحد بمعالجة كل الكيانات من نوع معين بدل تكرار المنطق.",
+    "hintsEn": [
+     "Keep setters for these properties internal or private where possible.",
+     "Users and Tenants themselves are not tenant-owned in the same way — think about it."
+    ],
+    "hintsAr": [
+     "اجعل الـ setters لهذه الخصائص internal أو private حيثما أمكن.",
+     "المستخدمون والمستأجرون أنفسهم ليسوا مملوكين للمستأجر بالطريقة نفسها، ففكّر في ذلك."
+    ],
+    "key": "ef-multitenant-audit-base-types"
+   },
+   {
+    "titleEn": "Global query filters for every entity",
+    "titleAr": "Global query filters لكل كيان",
+    "bodyEn": "In `OnModelCreating`, loop over `modelBuilder.Model.GetEntityTypes()` and, for every type implementing ITenantOwned and ISoftDeletable, build the filter `e => e.TenantId == _tenant.TenantId && !e.IsDeleted` with expression trees.\n\nThe filter references a DbContext field, so EF re-evaluates it for every query with the current tenant.",
+    "bodyAr": "في `OnModelCreating` مرّ على `modelBuilder.Model.GetEntityTypes()`، ولكل نوع ينفذ ITenantOwned وISoftDeletable ابنِ المرشح `e => e.TenantId == _tenant.TenantId && !e.IsDeleted` باستخدام expression trees.\n\nالمرشح يشير إلى حقل في الـ DbContext، فيعيد EF حسابه في كل استعلام بالمستأجر الحالي.",
+    "hintsEn": [
+     "A generic helper `void ApplyFilters<T>(ModelBuilder b) where T : class, ITenantOwned, ISoftDeletable` called via reflection is simpler than raw expression trees.",
+     "EF 10 supports named filters, so you can disable only the soft-delete filter for admins."
+    ],
+    "hintsAr": [
+     "دالة عامة `void ApplyFilters<T>(ModelBuilder b) where T : class, ITenantOwned, ISoftDeletable` تُستدعى بالـ reflection أبسط من expression trees الخام.",
+     "EF 10 يدعم المرشحات المسماة، فتستطيع تعطيل مرشح الحذف الناعم وحده للمشرفين."
+    ],
+    "key": "ef-multitenant-audit-filters"
+   },
+   {
+    "titleEn": "A SaveChanges interceptor",
+    "titleAr": "Interceptor لـ SaveChanges",
+    "bodyEn": "Write `TenantAuditInterceptor : SaveChangesInterceptor`. In `SavingChangesAsync`, walk `ChangeTracker.Entries()`:\n- Added ITenantOwned: set TenantId, or throw if no tenant is known.\n- Added/Modified IAuditable: set Created*/Updated*.\n- Deleted ISoftDeletable: change the state to Modified and set IsDeleted and DeletedAt.",
+    "bodyAr": "اكتب `TenantAuditInterceptor : SaveChangesInterceptor`. وفي `SavingChangesAsync` مرّ على `ChangeTracker.Entries()`:\n- كيان ITenantOwned مُضاف: اضبط TenantId، أو ارمِ استثناء إن لم يُعرف المستأجر.\n- كيان IAuditable مُضاف أو معدّل: اضبط حقول Created*/Updated*.\n- كيان ISoftDeletable محذوف: غيّر حالته إلى Modified واضبط IsDeleted وDeletedAt.",
+    "hintsEn": [
+     "Also refuse a Modified entity whose TenantId changed — moving data between tenants must be impossible.",
+     "Register the interceptor with `options.AddInterceptors(...)` from DI."
+    ],
+    "hintsAr": [
+     "ارفض أيضًا الكيان المعدّل الذي تغيّر TenantId فيه، فنقل البيانات بين المستأجرين يجب أن يكون مستحيلًا.",
+     "سجّل الـ interceptor بـ `options.AddInterceptors(...)` من DI."
+    ],
+    "key": "ef-multitenant-audit-save-interceptor"
+   },
+   {
+    "titleEn": "Audit entries with old and new values",
+    "titleAr": "سجلات تدقيق بالقيم القديمة والجديدة",
+    "bodyEn": "In the same interceptor, before saving, create an `AuditEntry` (TenantId, EntityName, EntityId, Action, UserId, At, ChangesJson) for each changed entity. For Modified entities include only properties where `IsModified` is true, with `OriginalValue` and `CurrentValue`.\n\nIds of Added entities are only known after saving: collect them and fill the id in `SavedChangesAsync`.",
+    "bodyAr": "في الـ interceptor نفسه، وقبل الحفظ، أنشئ `AuditEntry` (TenantId وEntityName وEntityId وAction وUserId وAt وChangesJson) لكل كيان تغيّر. وللكيانات المعدّلة ضمّن فقط الخصائص التي `IsModified` فيها true، مع `OriginalValue` و`CurrentValue`.\n\nأرقام الكيانات المضافة لا تُعرف إلا بعد الحفظ، فاجمعها واملأ الرقم في `SavedChangesAsync`.",
+    "hintsEn": [
+     "Exclude secrets (password hashes) from audit JSON with an attribute like `[NotAudited]`.",
+     "Guids generated client-side avoid the second save for ids."
+    ],
+    "hintsAr": [
+     "استبعد الأسرار (مثل hash كلمات المرور) من JSON التدقيق بخاصية مثل `[NotAudited]`.",
+     "الـ Guids المولّدة في التطبيق تتجنب الحفظ الثاني لأجل الأرقام."
+    ],
+    "key": "ef-multitenant-audit-audit"
+   },
+   {
+    "titleEn": "Value objects: Money and Address",
+    "titleAr": "Value objects: المال والعنوان",
+    "bodyEn": "Create `record Money(decimal Amount, string Currency)` and `record Address(string Street, string City, string Country)`. Map them with `ComplexProperty` (EF 8+) so they are stored as columns of the owning table.\n\nValue objects make invalid states hard: Money validates a positive amount and a 3-letter currency in its constructor.",
+    "bodyAr": "أنشئ `record Money(decimal Amount, string Currency)` و`record Address(string Street, string City, string Country)`. وامثّلهما بـ `ComplexProperty` (من EF 8 وما بعده) لتُخزن كأعمدة في جدول الكيان المالك.\n\nالـ value objects تجعل الحالات غير الصحيحة صعبة: Money يتحقق في الـ constructor من مبلغ موجب وعملة من 3 أحرف.",
+    "hintsEn": [
+     "Complex types have no identity and are compared by value — perfect for money and addresses.",
+     "Check the column names EF generates (Total_Amount, Total_Currency)."
+    ],
+    "hintsAr": [
+     "الـ complex types بلا هوية وتُقارن بالقيمة، وهذا مثالي للمال والعناوين.",
+     "تحقق من أسماء الأعمدة التي يولّدها EF مثل (Total_Amount وTotal_Currency)."
+    ],
+    "key": "ef-multitenant-audit-value-objects"
+   },
+   {
+    "titleEn": "Restore and admin queries",
+    "titleAr": "الاستعادة واستعلامات المشرف",
+    "bodyEn": "Add `RestoreAsync(customerId)` for admins: query with `IgnoreQueryFilters()` (or only the soft-delete named filter), but still add the tenant condition yourself.\n\n`IgnoreQueryFilters` is powerful and dangerous: search the code for it and make sure every use re-applies the tenant check.",
+    "bodyAr": "أضف `RestoreAsync(customerId)` للمشرفين: استعلم بـ `IgnoreQueryFilters()` (أو بمرشح الحذف الناعم المسمى فقط)، لكن أضف شرط المستأجر بنفسك.\n\n`IgnoreQueryFilters` قوية وخطيرة، فابحث عنها في الكود وتأكد أن كل استخدام لها يعيد تطبيق فحص المستأجر.",
+    "hintsEn": [
+     "Wrap the dangerous call in one method so it exists in only one place.",
+     "A unique index that should ignore deleted rows needs a filter: `HasFilter(\"[IsDeleted] = 0\")`."
+    ],
+    "hintsAr": [
+     "غلّف الاستدعاء الخطير في دالة واحدة ليوجد في مكان واحد فقط.",
+     "الفهرس الفريد الذي يجب أن يتجاهل الصفوف المحذوفة يحتاج مرشحًا: `HasFilter(\"[IsDeleted] = 0\")`."
+    ],
+    "key": "ef-multitenant-audit-admin"
+   },
+   {
+    "titleEn": "Raw SQL and the filters",
+    "titleAr": "SQL الخام والمرشحات",
+    "bodyEn": "`FromSql` queries are composed with global filters, but `ExecuteSqlRaw` and `ExecuteUpdate`/`ExecuteDelete` bypass the interceptor. Write a test that shows what happens with `ExecuteDeleteAsync` on soft-deletable entities, and decide on a rule (for example: only use bulk operations in a dedicated, reviewed class).\n\nKnowing where a safety net has holes is part of building one.",
+    "bodyAr": "استعلامات `FromSql` تُدمج مع المرشحات العامة، لكن `ExecuteSqlRaw` و`ExecuteUpdate`/`ExecuteDelete` تتجاوز الـ interceptor. اكتب اختبارًا يوضح ما يحدث عند `ExecuteDeleteAsync` على كيانات قابلة للحذف الناعم، وقرر قاعدة (مثلًا: لا تُستخدم العمليات الجماعية إلا في class مخصص ومراجَع).\n\nمعرفة الثغرات في شبكة الأمان جزء من بنائها.",
+    "hintsEn": [
+     "ExecuteDelete on a filtered DbSet does apply the query filter to which rows are deleted — but it deletes them for real.",
+     "Document the rule in the README and in a code comment."
+    ],
+    "hintsAr": [
+     "ExecuteDelete على DbSet مصفّى يطبّق المرشح على الصفوف التي تُحذف، لكنه يحذفها فعلًا.",
+     "وثّق القاعدة في README وفي تعليق داخل الكود."
+    ],
+    "key": "ef-multitenant-audit-raw-sql"
+   },
+   {
+    "titleEn": "Isolation tests",
+    "titleAr": "اختبارات العزل",
+    "bodyEn": "Write tests on a real SQL Server: create two tenants with data, then as tenant A try to get, list, update and delete tenant B's invoice by id. Every attempt must fail or see nothing. Test that saving without a tenant throws, soft delete, restore and audit entries.\n\nThese tests are the proof that the design works; keep them running in CI.",
+    "bodyAr": "اكتب اختبارات على SQL Server حقيقي: أنشئ مستأجرين لكل منهما بيانات، ثم حاول كمستأجر A أن تجلب فاتورة المستأجر B وتسردها وتعدّلها وتحذفها بالرقم. كل محاولة يجب أن تفشل أو لا ترى شيئًا. واختبر أن الحفظ بلا مستأجر يرمي استثناء، والحذف الناعم، والاستعادة، وسجلات التدقيق.\n\nهذه الاختبارات هي الدليل على أن التصميم يعمل، فأبقها تعمل في CI.",
+    "hintsEn": [
+     "A test helper `UseTenant(Guid id)` that creates a DbContext for a tenant keeps tests short.",
+     "Testcontainers.MsSql starts a real SQL Server in Docker for tests."
+    ],
+    "hintsAr": [
+     "دالة مساعدة للاختبار `UseTenant(Guid id)` تنشئ DbContext لمستأجر تجعل الاختبارات قصيرة.",
+     "Testcontainers.MsSql يشغّل SQL Server حقيقيًا في Docker للاختبارات."
+    ],
+    "key": "ef-multitenant-audit-tests"
+   },
+   {
+    "titleEn": "Document the design",
+    "titleAr": "وثّق التصميم",
+    "bodyEn": "Explain in the README: how the tenant is resolved, where filters come from, what the interceptor does, the known holes (bulk operations, raw SQL) and how the tests prove isolation.\n\nAdd a small API (customers and invoices) on top so reviewers can try it with two accounts.",
+    "bodyAr": "اشرح في README: كيف يُحدَّد المستأجر، ومن أين تأتي المرشحات، وما يفعله الـ interceptor، والثغرات المعروفة (العمليات الجماعية وSQL الخام)، وكيف تثبت الاختبارات العزل.\n\nأضف API صغيرًا (العملاء والفواتير) فوقها ليجربها المراجعون بحسابين.",
+    "hintsEn": [
+     "A sequence diagram \"request → middleware → DbContext filter → SQL\" makes the design clear.",
+     "Seed two demo tenants with clearly different data."
+    ],
+    "hintsAr": [
+     "مخطط تسلسلي \"طلب ← middleware ← مرشح DbContext ← SQL\" يوضح التصميم.",
+     "أضف مستأجرين تجريبيين ببيانات مختلفة بوضوح."
+    ],
+    "key": "ef-multitenant-audit-finish"
+   }
+  ]
+ },
+ {
+  "key": "ef-event-store",
+  "skill": "EfCore",
+  "level": "Advanced",
+  "hours": 15,
+  "titleEn": "Order system with an outbox and read models",
+  "titleAr": "نظام طلبات مع outbox ونماذج قراءة",
+  "summaryEn": "An order system where every state change is stored as an event, published reliably with the transactional outbox pattern, and projected into fast read models.",
+  "summaryAr": "نظام طلبات يُخزَّن فيه كل تغيير في الحالة كحدث، ويُنشر بشكل موثوق بنمط transactional outbox، ويُعرض في نماذج قراءة سريعة.",
+  "techStack": "C# · EF Core · SQL Server · BackgroundService · System.Text.Json",
+  "goalsEn": [
+   "Store domain events and rebuild state from them",
+   "Publish events reliably with an outbox in the same transaction",
+   "Build idempotent projections into read tables",
+   "Version events without breaking old data"
+  ],
+  "goalsAr": [
+   "تخزين أحداث المجال وإعادة بناء الحالة منها",
+   "نشر الأحداث بشكل موثوق باستخدام outbox في الـ transaction نفسها",
+   "بناء projections قابلة للتكرار بأمان (idempotent) في جداول قراءة",
+   "إدارة إصدارات الأحداث دون كسر البيانات القديمة"
+  ],
+  "requirementsEn": [
+   "Order lifecycle: Created, ItemAdded, ItemRemoved, Submitted, Paid, Shipped, Cancelled",
+   "Events are stored in an append-only Events table with a per-order version",
+   "An outbox row is written in the same transaction as the events",
+   "A background publisher sends outbox messages and marks them processed",
+   "Projections build OrderSummary and DailySales tables",
+   "Rebuilding a projection from scratch gives the same result"
+  ],
+  "requirementsAr": [
+   "دورة حياة الطلب: Created وItemAdded وItemRemoved وSubmitted وPaid وShipped وCancelled",
+   "تُخزن الأحداث في جدول Events يُضاف إليه فقط، مع رقم إصدار لكل طلب",
+   "يُكتب صف outbox في الـ transaction نفسها مع الأحداث",
+   "ناشر خلفي يرسل رسائل الـ outbox ويعلّمها كمعالجة",
+   "الـ projections تبني جدولي OrderSummary وDailySales",
+   "إعادة بناء projection من البداية تعطي النتيجة نفسها"
+  ],
+  "acceptanceEn": [
+   "Two concurrent commands on the same order: one fails with a version conflict",
+   "Killing the app after saving but before publishing still publishes later",
+   "Processing the same event twice does not double the daily sales",
+   "Rebuild of DailySales equals the incrementally built table"
+  ],
+  "acceptanceAr": [
+   "أمران متزامنان على الطلب نفسه: أحدهما يفشل بتعارض في الإصدار",
+   "إيقاف التطبيق بعد الحفظ وقبل النشر لا يمنع النشر لاحقًا",
+   "معالجة الحدث نفسه مرتين لا تضاعف المبيعات اليومية",
+   "إعادة بناء DailySales تساوي الجدول المبني تدريجيًا"
+  ],
+  "stretchEn": [
+   "Add snapshots every 50 events",
+   "Publish to a real broker (RabbitMQ) instead of a log",
+   "Add an upcaster for a v2 of ItemAdded"
+  ],
+  "stretchAr": [
+   "أضف snapshots كل 50 حدثًا",
+   "انشر إلى وسيط حقيقي (RabbitMQ) بدل السجل",
+   "أضف upcaster للإصدار الثاني من ItemAdded"
+  ],
+  "steps": [
+   {
+    "titleEn": "Define events and the aggregate",
+    "titleAr": "عرّف الأحداث والـ aggregate",
+    "bodyEn": "Write events as records: `OrderCreated(Guid OrderId, Guid CustomerId)`, `ItemAdded(Guid OrderId, string Sku, int Qty, decimal UnitPrice)`, and so on. Write an `Order` aggregate with `Apply(event)` methods that change its state, and command methods (`AddItem`, `Submit`) that check rules and raise events.\n\nRules live in commands; `Apply` never fails.",
+    "bodyAr": "اكتب الأحداث كـ records: `OrderCreated(Guid OrderId, Guid CustomerId)` و`ItemAdded(Guid OrderId, string Sku, int Qty, decimal UnitPrice)` وهكذا. واكتب aggregate باسم `Order` فيه دوال `Apply(event)` تغيّر حالته، ودوال أوامر (`AddItem` و`Submit`) تتحقق من القواعد وتطلق الأحداث.\n\nالقواعد تعيش في الأوامر، و`Apply` لا تفشل أبدًا.",
+    "hintsEn": [
+     "Keep a list of uncommitted events on the aggregate; the repository saves them.",
+     "Example rule: items can only be added before Submitted."
+    ],
+    "hintsAr": [
+     "احتفظ بقائمة الأحداث غير المحفوظة في الـ aggregate، والـ repository يحفظها.",
+     "مثال قاعدة: لا تُضاف العناصر إلا قبل Submitted."
+    ],
+    "key": "ef-event-store-events"
+   },
+   {
+    "titleEn": "The event table",
+    "titleAr": "جدول الأحداث",
+    "bodyEn": "Create `StoredEvent` (Id, StreamId, Version, Type, Data JSON, OccurredAt) with a unique index on (StreamId, Version). Saving events for an order with expected version N inserts versions N+1, N+2...\n\nIf another command already wrote version N+1, the unique index rejects the insert: that is your optimistic concurrency check.",
+    "bodyAr": "أنشئ `StoredEvent` (Id وStreamId وVersion وType وData بصيغة JSON وOccurredAt) مع فهرس فريد على (StreamId, Version). وحفظ أحداث طلب بالإصدار المتوقع N يُدخل الإصدارات N+1 وN+2...\n\nإذا كتب أمر آخر الإصدار N+1 قبلك فإن الفهرس الفريد يرفض الإدخال، وهذا هو فحص التزامن المتفائل.",
+    "hintsEn": [
+     "Serialize with a type name map (`\"ItemAdded.v1\"` → type) rather than the CLR type name, so you can rename classes later.",
+     "Catch the unique violation and throw a ConcurrencyException."
+    ],
+    "hintsAr": [
+     "احفظ بخريطة لأسماء الأنواع (`\"ItemAdded.v1\"` ← النوع) بدل اسم نوع CLR، لتستطيع إعادة تسمية الـ classes لاحقًا.",
+     "التقط مخالفة التفرد وارمِ ConcurrencyException."
+    ],
+    "key": "ef-event-store-store"
+   },
+   {
+    "titleEn": "Load an order from its events",
+    "titleAr": "حمّل الطلب من أحداثه",
+    "bodyEn": "`LoadAsync(orderId)` reads the events ordered by Version, deserializes each one and calls `Apply`. The aggregate's version is the last event's version.\n\nWrite a unit test: create, add two items, remove one, submit — then load from the store and check the state.",
+    "bodyAr": "`LoadAsync(orderId)` تقرأ الأحداث مرتبة بالإصدار، وتحوّل كل حدث من JSON، وتستدعي `Apply`. وإصدار الـ aggregate هو إصدار آخر حدث.\n\nاكتب اختبار وحدة: أنشئ، وأضف عنصرين، واحذف واحدًا، وأرسل، ثم حمّل من المخزن وتحقق من الحالة.",
+    "hintsEn": [
+     "Use `AsNoTracking` when reading events — they never change.",
+     "Throw NotFound when a stream has no events."
+    ],
+    "hintsAr": [
+     "استخدم `AsNoTracking` عند قراءة الأحداث، فهي لا تتغير أبدًا.",
+     "ارمِ NotFound عندما لا يكون للتدفق أي أحداث."
+    ],
+    "key": "ef-event-store-load"
+   },
+   {
+    "titleEn": "The transactional outbox",
+    "titleAr": "الـ transactional outbox",
+    "bodyEn": "When saving events, also insert an `OutboxMessage` (Id, Type, Payload, CreatedAt, ProcessedAt null) for each one — in the same SaveChanges, so both are committed or neither is.\n\nPublishing directly after SaveChanges is unsafe: the app can crash between the two, and the event is lost forever.",
+    "bodyAr": "عند حفظ الأحداث أدخل أيضًا `OutboxMessage` (Id وType وPayload وCreatedAt وProcessedAt بقيمة null) لكل حدث، في SaveChanges نفسه، فإما أن يُحفظ الاثنان معًا أو لا يُحفظ أي منهما.\n\nالنشر مباشرة بعد SaveChanges غير آمن: قد يتعطل التطبيق بين الخطوتين فيضيع الحدث إلى الأبد.",
+    "hintsEn": [
+     "Index OutboxMessage on (ProcessedAt, CreatedAt) for the publisher query.",
+     "The outbox message id can be the event id — handy for idempotency later."
+    ],
+    "hintsAr": [
+     "ضع فهرسًا على OutboxMessage بالأعمدة (ProcessedAt, CreatedAt) لاستعلام الناشر.",
+     "يمكن أن يكون رقم رسالة الـ outbox هو رقم الحدث، وهذا مفيد لاحقًا للتكرار الآمن."
+    ],
+    "key": "ef-event-store-outbox"
+   },
+   {
+    "titleEn": "The background publisher",
+    "titleAr": "الناشر الخلفي",
+    "bodyEn": "Write `OutboxPublisher : BackgroundService` that every second takes up to 100 unprocessed messages in order, hands them to an `IEventBus` (start with one that calls the projections in-process), and sets ProcessedAt.\n\nIf publishing fails, leave the message unprocessed; it will be retried. This gives \"at least once\" delivery.",
+    "bodyAr": "اكتب `OutboxPublisher : BackgroundService` يأخذ كل ثانية حتى 100 رسالة غير معالجة بالترتيب، ويسلّمها إلى `IEventBus` (ابدأ بواحد يستدعي الـ projections داخل العملية نفسها)، ثم يضبط ProcessedAt.\n\nإذا فشل النشر فاترك الرسالة غير معالجة لتُعاد لاحقًا. هذا يعطي توصيلًا \"مرة واحدة على الأقل\".",
+    "hintsEn": [
+     "\"At least once\" means consumers must handle duplicates — the next step.",
+     "Delete processed messages older than 7 days in the same loop."
+    ],
+    "hintsAr": [
+     "\"مرة واحدة على الأقل\" تعني أن المستهلكين يجب أن يتعاملوا مع التكرار، وهذه هي الخطوة التالية.",
+     "احذف الرسائل المعالجة الأقدم من 7 أيام في الحلقة نفسها."
+    ],
+    "key": "ef-event-store-publisher"
+   },
+   {
+    "titleEn": "Idempotent projections",
+    "titleAr": "Projections قابلة للتكرار بأمان",
+    "bodyEn": "Create read tables `OrderSummary` (OrderId, Status, ItemCount, Total, UpdatedAt) and `DailySales` (Date, Orders, Revenue). A projection handles each event type and updates the tables.\n\nMake it idempotent: keep a `ProcessedEvent(ProjectionName, EventId)` table and skip events already processed, inside the same transaction as the update.",
+    "bodyAr": "أنشئ جداول قراءة `OrderSummary` (OrderId وStatus وItemCount وTotal وUpdatedAt) و`DailySales` (Date وOrders وRevenue). وprojection تعالج كل نوع حدث وتحدّث الجداول.\n\nاجعلها قابلة للتكرار بأمان: احتفظ بجدول `ProcessedEvent(ProjectionName, EventId)` وتخطَّ الأحداث المعالجة سابقًا، داخل الـ transaction نفسها مع التحديث.",
+    "hintsEn": [
+     "Only Paid events add to DailySales revenue.",
+     "Test: deliver the same event twice and assert the revenue is counted once."
+    ],
+    "hintsAr": [
+     "أحداث Paid فقط تضيف إلى إيرادات DailySales.",
+     "اختبر: سلّم الحدث نفسه مرتين وتأكد أن الإيراد يُحسب مرة واحدة."
+    ],
+    "key": "ef-event-store-projections"
+   },
+   {
+    "titleEn": "Rebuild a projection",
+    "titleAr": "أعد بناء projection",
+    "bodyEn": "Add a command that truncates DailySales and its ProcessedEvent rows, then replays all events from the Events table in order through the projection.\n\nCompare the rebuilt table with the incrementally built one — they must be equal. This is the superpower of event sourcing: new read models from old history.",
+    "bodyAr": "أضف أمرًا يفرغ DailySales وصفوف ProcessedEvent الخاصة بها، ثم يعيد تشغيل كل الأحداث من جدول Events بالترتيب عبر الـ projection.\n\nقارن الجدول المُعاد بناؤه بالجدول المبني تدريجيًا، فيجب أن يتساويا. هذه هي القوة الخارقة لـ event sourcing: نماذج قراءة جديدة من تاريخ قديم.",
+    "hintsEn": [
+     "Read events in pages of 1,000 ordered by Id to keep memory flat.",
+     "Pause the publisher during a rebuild, or rebuild into a new table and swap."
+    ],
+    "hintsAr": [
+     "اقرأ الأحداث على صفحات من 1000 مرتبة بالرقم لتبقى الذاكرة ثابتة.",
+     "أوقف الناشر مؤقتًا أثناء إعادة البناء، أو أعد البناء في جدول جديد ثم بدّل."
+    ],
+    "key": "ef-event-store-rebuild"
+   },
+   {
+    "titleEn": "Version an event",
+    "titleAr": "أدِر إصدار حدث",
+    "bodyEn": "Pretend the business wants a discount on items: create `ItemAdded.v2` with `DiscountPercent`. Old v1 events in the store must still load. Write an upcaster that turns v1 JSON into v2 with discount 0 when reading.\n\nNever rewrite stored events; translate them on the way in.",
+    "bodyAr": "افترض أن العمل يريد خصمًا على العناصر: أنشئ `ItemAdded.v2` فيه `DiscountPercent`. يجب أن تبقى أحداث v1 القديمة في المخزن قابلة للتحميل. اكتب upcaster يحوّل JSON الإصدار الأول إلى الإصدار الثاني بخصم 0 عند القراءة.\n\nلا تعِد كتابة الأحداث المخزنة أبدًا، بل ترجمها عند قراءتها.",
+    "hintsEn": [
+     "Upcasting works on JsonNode before deserializing.",
+     "Keep one test fixture with real v1 JSON to make sure it always loads."
+    ],
+    "hintsAr": [
+     "الـ upcasting يعمل على JsonNode قبل التحويل إلى كائن.",
+     "احتفظ ببيانات اختبار فيها JSON حقيقي من الإصدار الأول لتتأكد أنه يُحمّل دائمًا."
+    ],
+    "key": "ef-event-store-versioning"
+   },
+   {
+    "titleEn": "Crash test and document",
+    "titleAr": "اختبار التعطل والتوثيق",
+    "bodyEn": "Prove reliability: add a test switch that kills the process right after SaveChanges, restart, and show the outbox message is published and the projections catch up. Test the concurrency conflict and duplicate delivery.\n\nDocument the flow with a diagram: command → events + outbox (one transaction) → publisher → projections → read tables.",
+    "bodyAr": "أثبت الموثوقية: أضف مفتاح اختبار يوقف العملية مباشرة بعد SaveChanges، ثم أعد التشغيل، وبيّن أن رسالة الـ outbox نُشرت وأن الـ projections لحقت بالحالة. واختبر تعارض التزامن والتوصيل المكرر.\n\nوثّق المسار بمخطط: أمر ← أحداث + outbox (transaction واحدة) ← ناشر ← projections ← جداول قراءة.",
+    "hintsEn": [
+     "`Environment.FailFast` is the most honest \"crash\" for this test.",
+     "Explain in the README why \"exactly once\" delivery is not possible and how idempotency replaces it."
+    ],
+    "hintsAr": [
+     "`Environment.FailFast` هو \"التعطل\" الأصدق لهذا الاختبار.",
+     "اشرح في README لماذا لا يمكن التوصيل \"مرة واحدة بالضبط\"، وكيف يحل التكرار الآمن محله."
+    ],
+    "key": "ef-event-store-finish"
+   }
+  ]
+ }
+]
