@@ -1,0 +1,1116 @@
+[
+ {
+  "key": "sql-library-db",
+  "skill": "SqlServer",
+  "level": "Beginner",
+  "hours": 4,
+  "titleEn": "Design a library database",
+  "titleAr": "صمّم قاعدة بيانات مكتبة",
+  "summaryEn": "Design the tables of a small library, create them with constraints, fill them with data and answer everyday questions with SELECT and JOIN.",
+  "summaryAr": "صمّم جداول مكتبة صغيرة، وأنشئها مع القيود، واملأها بالبيانات، وأجب عن الأسئلة اليومية باستخدام SELECT وJOIN.",
+  "techStack": "SQL Server · T-SQL · SSMS or Azure Data Studio",
+  "goalsEn": [
+   "Turn requirements into tables, keys and relationships",
+   "Use constraints: PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, DEFAULT",
+   "Insert, update and delete rows safely",
+   "Query with WHERE, ORDER BY and JOIN"
+  ],
+  "goalsAr": [
+   "تحويل المتطلبات إلى جداول ومفاتيح وعلاقات",
+   "استخدام القيود: PRIMARY KEY وFOREIGN KEY وUNIQUE وCHECK وDEFAULT",
+   "إضافة الصفوف وتعديلها وحذفها بأمان",
+   "الاستعلام بـ WHERE وORDER BY وJOIN"
+  ],
+  "requirementsEn": [
+   "Tables: Authors, Books, Members, Loans",
+   "Every table has a primary key; relations use foreign keys",
+   "ISBN and member email are unique; copies available is never negative",
+   "A script creates everything from scratch and inserts sample data",
+   "10 query answers saved in a queries.sql file"
+  ],
+  "requirementsAr": [
+   "الجداول: Authors وBooks وMembers وLoans",
+   "لكل جدول مفتاح أساسي، والعلاقات تستخدم مفاتيح أجنبية",
+   "ISBN وبريد العضو فريدان، والنسخ المتاحة لا تكون سالبة أبدًا",
+   "سكربت ينشئ كل شيء من الصفر ويضيف بيانات تجريبية",
+   "إجابات 10 استعلامات محفوظة في ملف queries.sql"
+  ],
+  "acceptanceEn": [
+   "Running the create script twice works (it drops or checks before creating)",
+   "Inserting a loan for a member that does not exist fails",
+   "Every query in queries.sql has a comment with the question it answers"
+  ],
+  "acceptanceAr": [
+   "تشغيل سكربت الإنشاء مرتين يعمل (يحذف أو يتحقق قبل الإنشاء)",
+   "إضافة إعارة لعضو غير موجود تفشل",
+   "كل استعلام في queries.sql له تعليق بالسؤال الذي يجيب عنه"
+  ],
+  "stretchEn": [
+   "Add a Categories table with a many-to-many to Books",
+   "Write a view of currently borrowed books",
+   "Draw the diagram in a database designer"
+  ],
+  "stretchAr": [
+   "أضف جدول Categories بعلاقة متعدد إلى متعدد مع Books",
+   "اكتب view للكتب المعارة حاليًا",
+   "ارسم المخطط في أداة تصميم قواعد البيانات"
+  ],
+  "steps": [
+   {
+    "titleEn": "Design on paper",
+    "titleAr": "صمّم على الورق",
+    "bodyEn": "Write the entities and their columns. Decide the relationships: an author writes many books (one-to-many), a member has many loans, a book has many loans.\n\nMark each primary key (PK) and foreign key (FK). Draw it — boxes and lines are enough.",
+    "bodyAr": "اكتب الكيانات وأعمدتها، وحدّد العلاقات: المؤلف يكتب كتبًا كثيرة (واحد إلى متعدد)، والعضو له إعارات كثيرة، والكتاب له إعارات كثيرة.\n\nعلّم كل مفتاح أساسي (PK) ومفتاح أجنبي (FK)، وارسمه، فالمربعات والخطوط تكفي.",
+    "hintsEn": [
+     "Loans is the table that links members and books, with its own dates.",
+     "Use singular column names like AuthorId, BookId."
+    ],
+    "hintsAr": [
+     "Loans هو الجدول الذي يربط الأعضاء بالكتب، وله تواريخه الخاصة.",
+     "استخدم أسماء أعمدة مفردة مثل AuthorId وBookId."
+    ],
+    "key": "sql-library-db-design"
+   },
+   {
+    "titleEn": "Create the database",
+    "titleAr": "أنشئ قاعدة البيانات",
+    "bodyEn": "Open SSMS or Azure Data Studio, connect to your SQL Server (LocalDB works: `(localdb)\\MSSQLLocalDB`) and run `CREATE DATABASE LibraryDb;` then `USE LibraryDb;`.\n\nSave every statement you run in a file `01-create.sql` — the scripts are your project.",
+    "bodyAr": "افتح SSMS أو Azure Data Studio، واتصل بـ SQL Server (يكفي LocalDB: `(localdb)\\MSSQLLocalDB`)، وشغّل `CREATE DATABASE LibraryDb;` ثم `USE LibraryDb;`.\n\nاحفظ كل أمر تشغّله في ملف `01-create.sql`، فالسكربتات هي مشروعك.",
+    "hintsEn": [
+     "`IF DB_ID('LibraryDb') IS NULL CREATE DATABASE LibraryDb;` makes it safe to run twice.",
+     "GO separates batches in SSMS scripts."
+    ],
+    "hintsAr": [
+     "`IF DB_ID('LibraryDb') IS NULL CREATE DATABASE LibraryDb;` يجعله آمنًا عند التشغيل مرتين.",
+     "GO يفصل بين الدفعات في سكربتات SSMS."
+    ],
+    "key": "sql-library-db-database"
+   },
+   {
+    "titleEn": "Create tables with constraints",
+    "titleAr": "أنشئ الجداول مع القيود",
+    "bodyEn": "Create Authors first (no dependencies), then Books (FK to Authors), Members, and Loans (FKs to Books and Members). Use `INT IDENTITY(1,1) PRIMARY KEY`, `NVARCHAR` for text (Arabic names need it), `UNIQUE` on Isbn and Email, `CHECK (CopiesAvailable >= 0)` and `DEFAULT SYSDATETIME()` for dates.",
+    "bodyAr": "أنشئ Authors أولًا (بلا اعتماديات)، ثم Books (مفتاح أجنبي إلى Authors)، ثم Members، ثم Loans (مفتاحان أجنبيان إلى Books وMembers). واستخدم `INT IDENTITY(1,1) PRIMARY KEY`، و`NVARCHAR` للنصوص (الأسماء العربية تحتاجه)، و`UNIQUE` على Isbn وEmail، و`CHECK (CopiesAvailable >= 0)`، و`DEFAULT SYSDATETIME()` للتواريخ.",
+    "hintsEn": [
+     "Name constraints yourself (`CONSTRAINT FK_Books_Authors ...`) so error messages are readable.",
+     "DueDate can be a computed default, or set in the INSERT."
+    ],
+    "hintsAr": [
+     "سمِّ القيود بنفسك (`CONSTRAINT FK_Books_Authors ...`) لتكون رسائل الأخطاء مقروءة.",
+     "DueDate يمكن أن يكون قيمة افتراضية محسوبة، أو يُضبط في أمر INSERT."
+    ],
+    "code": "CREATE TABLE Books (\n    BookId          INT IDENTITY(1,1) CONSTRAINT PK_Books PRIMARY KEY,\n    Title           NVARCHAR(200) NOT NULL,\n    Isbn            CHAR(13)      NOT NULL CONSTRAINT UQ_Books_Isbn UNIQUE,\n    AuthorId        INT           NOT NULL CONSTRAINT FK_Books_Authors REFERENCES Authors(AuthorId),\n    PublishedYear   SMALLINT      NULL,\n    CopiesAvailable INT           NOT NULL CONSTRAINT CK_Books_Copies CHECK (CopiesAvailable >= 0) DEFAULT 1\n);",
+    "language": "sql",
+    "key": "sql-library-db-tables"
+   },
+   {
+    "titleEn": "Insert sample data",
+    "titleAr": "أضف بيانات تجريبية",
+    "bodyEn": "Write `02-seed.sql` with 5 authors, 15 books, 6 members and 10 loans (some returned, some not, one overdue). Use multi-row `INSERT INTO ... VALUES (...), (...)`.\n\nThen try to break the rules on purpose: a duplicate ISBN, a negative copy count, a loan for member 999. Read each error message.",
+    "bodyAr": "اكتب `02-seed.sql` فيه 5 مؤلفين و15 كتابًا و6 أعضاء و10 إعارات (بعضها مُرجع، وبعضها لا، وواحدة متأخرة). واستخدم الإدخال متعدد الصفوف `INSERT INTO ... VALUES (...), (...)`.\n\nثم حاول كسر القواعد عن قصد: ISBN مكرر، وعدد نسخ سالب، وإعارة للعضو 999. واقرأ كل رسالة خطأ.",
+    "hintsEn": [
+     "Prefix Arabic strings with N: `N'نجيب محفوظ'`, or they turn into question marks.",
+     "Use DATEADD(day, -20, SYSDATETIME()) to make an overdue loan."
+    ],
+    "hintsAr": [
+     "ضع N قبل النصوص العربية: `N'نجيب محفوظ'`، وإلا تحولت إلى علامات استفهام.",
+     "استخدم DATEADD(day, -20, SYSDATETIME()) لصنع إعارة متأخرة."
+    ],
+    "key": "sql-library-db-data"
+   },
+   {
+    "titleEn": "Basic queries",
+    "titleAr": "استعلامات أساسية",
+    "bodyEn": "In `queries.sql`, answer with SELECT, WHERE and ORDER BY: all books published after 2000 sorted by title; members whose name starts with \"A\"; books with no copies available.\n\nWrite the question as a comment above each query.",
+    "bodyAr": "في `queries.sql` أجب باستخدام SELECT وWHERE وORDER BY: كل الكتب المنشورة بعد عام 2000 مرتبة بالعنوان، والأعضاء الذين يبدأ اسمهم بحرف \"A\"، والكتب التي لا توجد منها نسخ متاحة.\n\nاكتب السؤال كتعليق فوق كل استعلام.",
+    "hintsEn": [
+     "`LIKE N'A%'` matches names starting with A.",
+     "Never use `SELECT *` in your answers; list the columns you need."
+    ],
+    "hintsAr": [
+     "`LIKE N'A%'` يطابق الأسماء التي تبدأ بـ A.",
+     "لا تستخدم `SELECT *` في إجاباتك، واكتب الأعمدة التي تحتاجها."
+    ],
+    "key": "sql-library-db-select"
+   },
+   {
+    "titleEn": "Queries with JOIN",
+    "titleAr": "استعلامات بـ JOIN",
+    "bodyEn": "Answer: every book with its author name (INNER JOIN); books currently on loan with the member name and due date (two JOINs, ReturnedAt IS NULL); authors with no books (LEFT JOIN ... WHERE b.BookId IS NULL); overdue loans with days late.",
+    "bodyAr": "أجب: كل كتاب مع اسم مؤلفه (INNER JOIN)، والكتب المعارة حاليًا مع اسم العضو وتاريخ الاستحقاق (JOIN مرتين، مع ReturnedAt IS NULL)، والمؤلفون الذين ليس لهم كتب (LEFT JOIN ... WHERE b.BookId IS NULL)، والإعارات المتأخرة مع أيام التأخير.",
+    "hintsEn": [
+     "Give tables short aliases: `FROM Books b JOIN Authors a ON a.AuthorId = b.AuthorId`.",
+     "`DATEDIFF(day, l.DueDate, SYSDATETIME())` gives days late."
+    ],
+    "hintsAr": [
+     "أعط الجداول أسماء مختصرة: `FROM Books b JOIN Authors a ON a.AuthorId = b.AuthorId`.",
+     "`DATEDIFF(day, l.DueDate, SYSDATETIME())` يعطي أيام التأخير."
+    ],
+    "key": "sql-library-db-joins"
+   },
+   {
+    "titleEn": "Borrow and return with UPDATE",
+    "titleAr": "الاستعارة والإرجاع بـ UPDATE",
+    "bodyEn": "Write the statements for borrowing (INSERT into Loans and decrease CopiesAvailable) and returning (set ReturnedAt and increase CopiesAvailable). Run them inside `BEGIN TRANSACTION ... COMMIT` so both changes happen together.\n\nAlways write the WHERE of an UPDATE or DELETE before running it.",
+    "bodyAr": "اكتب أوامر الاستعارة (INSERT في Loans وإنقاص CopiesAvailable) والإرجاع (ضبط ReturnedAt وزيادة CopiesAvailable). وشغّلها داخل `BEGIN TRANSACTION ... COMMIT` ليحدث التغييران معًا.\n\nاكتب دائمًا شرط WHERE لأمر UPDATE أو DELETE قبل تشغيله.",
+    "hintsEn": [
+     "Run a SELECT with the same WHERE first to see which rows will change.",
+     "If borrowing would make copies negative, the CHECK constraint stops it — roll back."
+    ],
+    "hintsAr": [
+     "شغّل SELECT بالشرط نفسه أولًا لترى الصفوف التي ستتغير.",
+     "إذا كانت الاستعارة ستجعل النسخ سالبة فالقيد CHECK يمنعها، فألغِ الـ transaction."
+    ],
+    "key": "sql-library-db-changes"
+   },
+   {
+    "titleEn": "Make the scripts repeatable and publish",
+    "titleAr": "اجعل السكربتات قابلة للتكرار وانشر",
+    "bodyEn": "Make `01-create.sql` safe to run again: drop tables in reverse order with `DROP TABLE IF EXISTS`, then create them. Run the scripts in order on an empty server to prove they work.\n\nPush the scripts to GitHub with the diagram (a picture or Mermaid) and a README that lists the questions.",
+    "bodyAr": "اجعل `01-create.sql` آمنًا عند التشغيل مرة أخرى: احذف الجداول بالترتيب العكسي بـ `DROP TABLE IF EXISTS` ثم أنشئها. وشغّل السكربتات بالترتيب على خادم فارغ لتثبت أنها تعمل.\n\nارفع السكربتات إلى GitHub مع المخطط (صورة أو Mermaid) وREADME يعرض الأسئلة.",
+    "hintsEn": [
+     "Drop Loans before Books and Members, because it references them.",
+     "Number the files so the order is obvious: 01-create, 02-seed, 03-queries."
+    ],
+    "hintsAr": [
+     "احذف Loans قبل Books وMembers لأنه يشير إليهما.",
+     "رقّم الملفات ليكون الترتيب واضحًا: 01-create و02-seed و03-queries."
+    ],
+    "key": "sql-library-db-finish"
+   }
+  ]
+ },
+ {
+  "key": "sql-sales-reports",
+  "skill": "SqlServer",
+  "level": "Beginner",
+  "hours": 5,
+  "titleEn": "Sales reports for a small shop",
+  "titleAr": "تقارير مبيعات لمتجر صغير",
+  "summaryEn": "Answer real business questions on a shop database: totals per month, best products, customers who stopped buying — with GROUP BY, HAVING and date functions.",
+  "summaryAr": "أجب عن أسئلة عمل حقيقية على قاعدة بيانات متجر: المجاميع لكل شهر، وأفضل المنتجات، والعملاء الذين توقفوا عن الشراء، باستخدام GROUP BY وHAVING ودوال التاريخ.",
+  "techStack": "SQL Server · T-SQL · aggregates",
+  "goalsEn": [
+   "Summarise data with COUNT, SUM, AVG, MIN, MAX",
+   "Group with GROUP BY and filter groups with HAVING",
+   "Work with dates: YEAR, MONTH, DATEADD, EOMONTH, FORMAT",
+   "Handle NULLs and avoid double counting in joins"
+  ],
+  "goalsAr": [
+   "تلخيص البيانات بـ COUNT وSUM وAVG وMIN وMAX",
+   "التجميع بـ GROUP BY وتصفية المجموعات بـ HAVING",
+   "التعامل مع التواريخ: YEAR وMONTH وDATEADD وEOMONTH وFORMAT",
+   "التعامل مع NULL وتجنب العدّ المزدوج في الـ joins"
+  ],
+  "requirementsEn": [
+   "A shop schema: Customers, Products, Categories, Orders, OrderItems",
+   "A seed script with a year of orders",
+   "12 report queries, each answering one business question",
+   "Results checked by hand for at least two reports"
+  ],
+  "requirementsAr": [
+   "مخطط متجر: Customers وProducts وCategories وOrders وOrderItems",
+   "سكربت بيانات أولية فيه طلبات سنة كاملة",
+   "12 استعلام تقرير، كل منها يجيب عن سؤال عمل واحد",
+   "نتائج تقريرين على الأقل مُتحقق منها يدويًا"
+  ],
+  "acceptanceEn": [
+   "Monthly revenue shows all 12 months, even a month with no orders (0)",
+   "Top 5 products by revenue match a manual calculation",
+   "The \"inactive customers\" report lists customers with no order in the last 90 days, including those who never ordered"
+  ],
+  "acceptanceAr": [
+   "الإيراد الشهري يعرض الأشهر الاثني عشر كلها، حتى الشهر الذي بلا طلبات (0)",
+   "أعلى 5 منتجات بالإيراد تطابق الحساب اليدوي",
+   "تقرير \"العملاء غير النشطين\" يعرض من لم يطلب خلال آخر 90 يومًا، ومنهم من لم يطلب أبدًا"
+  ],
+  "stretchEn": [
+   "Show month-over-month growth in percent",
+   "Build a pivot table of revenue by category and month",
+   "Export a report to CSV with bcp or SSMS"
+  ],
+  "stretchAr": [
+   "اعرض النمو من شهر لآخر بالنسبة المئوية",
+   "ابنِ جدولًا محوريًا للإيراد حسب الفئة والشهر",
+   "صدّر تقريرًا إلى CSV باستخدام bcp أو SSMS"
+  ],
+  "steps": [
+   {
+    "titleEn": "Create the shop schema",
+    "titleAr": "أنشئ مخطط المتجر",
+    "bodyEn": "Create Categories, Products (CategoryId, Price), Customers (City, CreatedAt), Orders (CustomerId, OrderDate, Status) and OrderItems (OrderId, ProductId, Quantity, UnitPrice).\n\nUnitPrice is copied into the order item: if the product price changes later, old orders must keep the price that was paid.",
+    "bodyAr": "أنشئ Categories، وProducts (CategoryId وPrice)، وCustomers (City وCreatedAt)، وOrders (CustomerId وOrderDate وStatus)، وOrderItems (OrderId وProductId وQuantity وUnitPrice).\n\nيُنسخ UnitPrice إلى عنصر الطلب: إذا تغير سعر المنتج لاحقًا يجب أن تحتفظ الطلبات القديمة بالسعر المدفوع.",
+    "hintsEn": [
+     "Use DECIMAL(10,2) for money.",
+     "Status can be a small set: Pending, Paid, Cancelled — with a CHECK constraint."
+    ],
+    "hintsAr": [
+     "استخدم DECIMAL(10,2) للمال.",
+     "الحالة مجموعة صغيرة: Pending وPaid وCancelled، مع قيد CHECK."
+    ],
+    "key": "sql-sales-reports-schema"
+   },
+   {
+    "titleEn": "Generate a year of data",
+    "titleAr": "ولّد بيانات سنة",
+    "bodyEn": "Insert 5 categories, 30 products and 50 customers by hand or with a script. For orders, use a loop (`WHILE`) that creates about 600 orders on random days of the last year with 1–4 random items each.\n\nLeave one month nearly empty and a few customers without orders — real data has gaps.",
+    "bodyAr": "أدخل 5 فئات و30 منتجًا و50 عميلًا يدويًا أو بسكربت. وللطلبات استخدم حلقة (`WHILE`) تنشئ نحو 600 طلب في أيام عشوائية من السنة الماضية، لكل طلب من 1 إلى 4 عناصر عشوائية.\n\nاترك شهرًا شبه فارغ، وبعض العملاء بلا طلبات، فالبيانات الحقيقية فيها فجوات.",
+    "hintsEn": [
+     "`ABS(CHECKSUM(NEWID())) % 365` gives a random number from 0 to 364.",
+     "Wrap the seed loop in a transaction; it runs much faster."
+    ],
+    "hintsAr": [
+     "`ABS(CHECKSUM(NEWID())) % 365` يعطي رقمًا عشوائيًا من 0 إلى 364.",
+     "ضع حلقة الإدخال داخل transaction، فهي تعمل أسرع بكثير."
+    ],
+    "key": "sql-sales-reports-seed"
+   },
+   {
+    "titleEn": "Totals and averages",
+    "titleAr": "المجاميع والمتوسطات",
+    "bodyEn": "Reports 1–3: total revenue of paid orders; number of orders and average order value; the cheapest and the most expensive product per category (GROUP BY CategoryId).\n\nRevenue is `SUM(oi.Quantity * oi.UnitPrice)` over paid orders only.",
+    "bodyAr": "التقارير 1 إلى 3: إجمالي إيراد الطلبات المدفوعة، وعدد الطلبات ومتوسط قيمة الطلب، وأرخص منتج وأغلاه في كل فئة (GROUP BY CategoryId).\n\nالإيراد هو `SUM(oi.Quantity * oi.UnitPrice)` على الطلبات المدفوعة فقط.",
+    "hintsEn": [
+     "Average order value = revenue / number of paid orders, not AVG over items.",
+     "Every column in SELECT must be in GROUP BY or inside an aggregate."
+    ],
+    "hintsAr": [
+     "متوسط قيمة الطلب = الإيراد ÷ عدد الطلبات المدفوعة، لا AVG على العناصر.",
+     "كل عمود في SELECT يجب أن يكون في GROUP BY أو داخل دالة تجميع."
+    ],
+    "key": "sql-sales-reports-aggregates"
+   },
+   {
+    "titleEn": "Monthly revenue with every month",
+    "titleAr": "الإيراد الشهري بكل الأشهر",
+    "bodyEn": "Report 4: revenue per month. Grouping by `YEAR(OrderDate), MONTH(OrderDate)` skips empty months. Build a list of the 12 months first (a small CTE or a numbers table) and LEFT JOIN the sales to it, using `ISNULL(revenue, 0)`.",
+    "bodyAr": "التقرير 4: الإيراد لكل شهر. التجميع بـ `YEAR(OrderDate), MONTH(OrderDate)` يتخطى الأشهر الفارغة. لذا ابنِ أولًا قائمة بالأشهر الاثني عشر (CTE صغير أو جدول أرقام)، ثم اربط المبيعات بها بـ LEFT JOIN مع `ISNULL(revenue, 0)`.",
+    "hintsEn": [
+     "`DATEFROMPARTS(year, month, 1)` builds the first day of a month.",
+     "`GENERATE_SERIES(0, 11)` exists in SQL Server 2022+."
+    ],
+    "hintsAr": [
+     "`DATEFROMPARTS(year, month, 1)` يبني أول يوم في الشهر.",
+     "`GENERATE_SERIES(0, 11)` متاحة في SQL Server 2022 وما بعده."
+    ],
+    "key": "sql-sales-reports-monthly"
+   },
+   {
+    "titleEn": "Best products and categories",
+    "titleAr": "أفضل المنتجات والفئات",
+    "bodyEn": "Reports 5–7: top 5 products by revenue (`TOP 5 ... ORDER BY revenue DESC`); revenue and share of total per category; products never sold (LEFT JOIN, `WHERE oi.OrderItemId IS NULL`).\n\nFor the share, divide each category's revenue by the total (a subquery or a window SUM).",
+    "bodyAr": "التقارير 5 إلى 7: أعلى 5 منتجات بالإيراد (`TOP 5 ... ORDER BY revenue DESC`)، والإيراد ونسبته من الإجمالي لكل فئة، والمنتجات التي لم تُبع أبدًا (LEFT JOIN مع `WHERE oi.OrderItemId IS NULL`).\n\nللنسبة اقسم إيراد كل فئة على الإجمالي (باستعلام فرعي أو SUM نافذية).",
+    "hintsEn": [
+     "Multiply by 100.0 (not 100) to avoid integer division.",
+     "Check the top 5 by hand for the first product: list its order items and add them up."
+    ],
+    "hintsAr": [
+     "اضرب في 100.0 لا في 100 لتتجنب القسمة الصحيحة.",
+     "تحقق من أعلى 5 يدويًا لأول منتج: اعرض عناصر طلباته واجمعها."
+    ],
+    "key": "sql-sales-reports-top"
+   },
+   {
+    "titleEn": "Filter groups with HAVING",
+    "titleAr": "صفِّ المجموعات بـ HAVING",
+    "bodyEn": "Reports 8–9: customers with more than 10 paid orders; cities where the average order value is above the overall average.\n\nWHERE filters rows before grouping; HAVING filters the groups after.",
+    "bodyAr": "التقريران 8 و9: العملاء الذين لديهم أكثر من 10 طلبات مدفوعة، والمدن التي يزيد متوسط قيمة الطلب فيها عن المتوسط العام.\n\nWHERE يصفّي الصفوف قبل التجميع، وHAVING يصفّي المجموعات بعده.",
+    "hintsEn": [
+     "The status filter (Paid) belongs in WHERE; the count filter in HAVING.",
+     "Compute the overall average in a variable or a subquery."
+    ],
+    "hintsAr": [
+     "شرط الحالة (Paid) مكانه WHERE، وشرط العدد مكانه HAVING.",
+     "احسب المتوسط العام في متغير أو استعلام فرعي."
+    ],
+    "key": "sql-sales-reports-having"
+   },
+   {
+    "titleEn": "Customer behaviour",
+    "titleAr": "سلوك العملاء",
+    "bodyEn": "Reports 10–12: inactive customers (no order in the last 90 days, including never); first and last order date per customer; new customers per month.\n\nThe never-ordered customers need a LEFT JOIN and `MAX(OrderDate) IS NULL`.",
+    "bodyAr": "التقارير 10 إلى 12: العملاء غير النشطين (بلا طلب في آخر 90 يومًا، ومنهم من لم يطلب أبدًا)، وتاريخ أول طلب وآخر طلب لكل عميل، والعملاء الجدد لكل شهر.\n\nالعملاء الذين لم يطلبوا أبدًا يحتاجون LEFT JOIN مع `MAX(OrderDate) IS NULL`.",
+    "hintsEn": [
+     "`HAVING MAX(o.OrderDate) < DATEADD(day, -90, SYSDATETIME()) OR MAX(o.OrderDate) IS NULL`.",
+     "Watch out: joining orders and items in the same query multiplies order counts — count DISTINCT order ids."
+    ],
+    "hintsAr": [
+     "`HAVING MAX(o.OrderDate) < DATEADD(day, -90, SYSDATETIME()) OR MAX(o.OrderDate) IS NULL`.",
+     "احذر: ربط الطلبات والعناصر في الاستعلام نفسه يضاعف عدد الطلبات، فاستخدم COUNT DISTINCT لأرقام الطلبات."
+    ],
+    "key": "sql-sales-reports-customers"
+   },
+   {
+    "titleEn": "Check, format and publish",
+    "titleAr": "تحقق ونسّق وانشر",
+    "bodyEn": "Verify two reports by hand and note how in the README. Format results for humans: `FORMAT(revenue, 'N2')`, month names with `DATENAME(month, ...)`.\n\nPublish the scripts and a README with each question, its query file and a screenshot of the result.",
+    "bodyAr": "تحقق من تقريرين يدويًا، واذكر الطريقة في README. ونسّق النتائج لتناسب البشر: `FORMAT(revenue, 'N2')`، وأسماء الأشهر بـ `DATENAME(month, ...)`.\n\nانشر السكربتات وREADME فيه كل سؤال، وملف الاستعلام الخاص به، وصورة للنتيجة.",
+    "hintsEn": [
+     "FORMAT is slow on large tables; use it only for the final display.",
+     "Keep one query per file or clear separators so each report is easy to find."
+    ],
+    "hintsAr": [
+     "FORMAT بطيئة على الجداول الكبيرة، فاستخدمها للعرض النهائي فقط.",
+     "اجعل كل استعلام في ملف، أو ضع فواصل واضحة، ليسهل إيجاد كل تقرير."
+    ],
+    "key": "sql-sales-reports-finish"
+   }
+  ]
+ },
+ {
+  "key": "sql-school-enrollment",
+  "skill": "SqlServer",
+  "level": "Intermediate",
+  "hours": 10,
+  "titleEn": "School enrollment with stored procedures",
+  "titleAr": "تسجيل طلاب المدرسة بالإجراءات المخزنة",
+  "summaryEn": "Move the rules of a school enrollment system into the database: stored procedures with transactions and error handling, views for reporting, and a trigger for an audit trail.",
+  "summaryAr": "انقل قواعد نظام تسجيل الطلاب إلى قاعدة البيانات: إجراءات مخزنة مع transactions ومعالجة أخطاء، وviews للتقارير، وtrigger لسجل التدقيق.",
+  "techStack": "SQL Server · T-SQL · stored procedures · views · triggers",
+  "goalsEn": [
+   "Write stored procedures with parameters and output",
+   "Use transactions with TRY/CATCH and THROW",
+   "Create views and inline table-valued functions",
+   "Write a safe AFTER trigger for auditing"
+  ],
+  "goalsAr": [
+   "كتابة إجراءات مخزنة بمعاملات ومخرجات",
+   "استخدام الـ transactions مع TRY/CATCH وTHROW",
+   "إنشاء views ودوال inline table-valued",
+   "كتابة trigger آمن من نوع AFTER للتدقيق"
+  ],
+  "requirementsEn": [
+   "Students, Courses (capacity, prerequisite), Sections, Enrollments",
+   "usp_Enroll checks capacity, prerequisite, schedule clash and duplicates",
+   "usp_Drop removes an enrollment and frees a seat",
+   "A view of section occupancy and a function for a student's timetable",
+   "Every grade change is logged by a trigger"
+  ],
+  "requirementsAr": [
+   "الطلاب، والمقررات (السعة والمتطلب السابق)، والشُّعب، والتسجيلات",
+   "usp_Enroll يتحقق من السعة والمتطلب السابق وتعارض الجدول والتكرار",
+   "usp_Drop يحذف التسجيل ويحرر مقعدًا",
+   "view لإشغال الشُّعب، ودالة لجدول الطالب",
+   "كل تغيير في الدرجة يسجله trigger"
+  ],
+  "acceptanceEn": [
+   "Enrolling into a full section raises a clear error and changes nothing",
+   "Two enrollments of the same student in clashing times are refused",
+   "Updating 3 grades in one statement writes 3 audit rows",
+   "Application code only calls procedures, never writes to the tables directly"
+  ],
+  "acceptanceAr": [
+   "التسجيل في شعبة ممتلئة يرفع خطأ واضحًا ولا يغير شيئًا",
+   "تسجيلان للطالب نفسه في أوقات متعارضة يُرفضان",
+   "تعديل 3 درجات بأمر واحد يكتب 3 صفوف تدقيق",
+   "كود التطبيق يستدعي الإجراءات فقط، ولا يكتب في الجداول مباشرة"
+  ],
+  "stretchEn": [
+   "Add a waiting list that enrolls the next student when a seat frees up",
+   "Grant EXECUTE only to an app role, no table permissions",
+   "Write tSQLt unit tests for usp_Enroll"
+  ],
+  "stretchAr": [
+   "أضف قائمة انتظار تسجّل الطالب التالي عند تحرر مقعد",
+   "امنح صلاحية EXECUTE فقط لدور التطبيق، بلا صلاحيات على الجداول",
+   "اكتب اختبارات وحدة بـ tSQLt لـ usp_Enroll"
+  ],
+  "steps": [
+   {
+    "titleEn": "Schema",
+    "titleAr": "المخطط",
+    "bodyEn": "Create Students, Courses (Code, Title, Credits, PrerequisiteCourseId nullable), Sections (CourseId, Term, DayOfWeek, StartTime, EndTime, Capacity), Enrollments (StudentId, SectionId, EnrolledAt, Grade nullable) with a unique key on (StudentId, SectionId).\n\nAdd sample data: 20 students, 8 courses, 12 sections, a few completed enrollments with grades.",
+    "bodyAr": "أنشئ Students، وCourses (Code وTitle وCredits وPrerequisiteCourseId القابل لـ null)، وSections (CourseId وTerm وDayOfWeek وStartTime وEndTime وCapacity)، وEnrollments (StudentId وSectionId وEnrolledAt وGrade القابل لـ null) مع مفتاح فريد على (StudentId, SectionId).\n\nأضف بيانات تجريبية: 20 طالبًا و8 مقررات و12 شعبة، وبعض التسجيلات المكتملة بدرجات.",
+    "hintsEn": [
+     "Use the TIME type for start and end times.",
+     "A passed prerequisite = an enrollment in any section of that course with Grade >= 60."
+    ],
+    "hintsAr": [
+     "استخدم النوع TIME لأوقات البداية والنهاية.",
+     "المتطلب السابق المجتاز = تسجيل في أي شعبة لذلك المقرر بدرجة 60 فأكثر."
+    ],
+    "key": "sql-school-enrollment-schema"
+   },
+   {
+    "titleEn": "usp_Enroll: the happy path",
+    "titleAr": "usp_Enroll: المسار الناجح",
+    "bodyEn": "Create `usp_Enroll @StudentId INT, @SectionId INT` that inserts the enrollment and returns the new id through an OUTPUT parameter. Add `SET NOCOUNT ON; SET XACT_ABORT ON;` at the top.\n\nXACT_ABORT makes any runtime error roll back the whole transaction — the safe default for procedures.",
+    "bodyAr": "أنشئ `usp_Enroll @StudentId INT, @SectionId INT` يُدخل التسجيل ويعيد الرقم الجديد عبر معامل OUTPUT. وأضف `SET NOCOUNT ON; SET XACT_ABORT ON;` في البداية.\n\nXACT_ABORT يجعل أي خطأ أثناء التشغيل يلغي الـ transaction كلها، وهو الافتراضي الآمن للإجراءات.",
+    "hintsEn": [
+     "Use `CREATE OR ALTER PROCEDURE` so you can re-run the script.",
+     "`SCOPE_IDENTITY()` returns the id just inserted."
+    ],
+    "hintsAr": [
+     "استخدم `CREATE OR ALTER PROCEDURE` لتستطيع إعادة تشغيل السكربت.",
+     "`SCOPE_IDENTITY()` يعيد الرقم المُدخل للتو."
+    ],
+    "key": "sql-school-enrollment-enroll"
+   },
+   {
+    "titleEn": "Business rules with THROW",
+    "titleAr": "قواعد العمل مع THROW",
+    "bodyEn": "Inside a `BEGIN TRY ... BEGIN TRANSACTION` block, check each rule and `THROW 50001, N'Section is full.', 1;` when it fails:\n- the section exists and is not full;\n- the student is not already enrolled;\n- the prerequisite is passed;\n- no other section of the student in the same term overlaps in day and time.\n\nIn CATCH, roll back if `@@TRANCOUNT > 0` and re-throw with `THROW;`.",
+    "bodyAr": "داخل كتلة `BEGIN TRY ... BEGIN TRANSACTION` تحقق من كل قاعدة واستخدم `THROW 50001, N'Section is full.', 1;` عند فشلها:\n- الشعبة موجودة وغير ممتلئة،\n- الطالب غير مسجل مسبقًا،\n- المتطلب السابق مجتاز،\n- لا توجد شعبة أخرى للطالب في الفصل نفسه تتداخل في اليوم والوقت.\n\nوفي CATCH ألغِ الـ transaction إذا كان `@@TRANCOUNT > 0` وأعد رمي الخطأ بـ `THROW;`.",
+    "hintsEn": [
+     "Two time ranges overlap when `a.Start < b.End AND b.Start < a.End`.",
+     "Use a different error number per rule (50001–50004) so the app can show the right message."
+    ],
+    "hintsAr": [
+     "يتداخل مداران زمنيان عندما `a.Start < b.End AND b.Start < a.End`.",
+     "استخدم رقم خطأ مختلفًا لكل قاعدة (من 50001 إلى 50004) ليعرض التطبيق الرسالة المناسبة."
+    ],
+    "key": "sql-school-enrollment-rules"
+   },
+   {
+    "titleEn": "Make the capacity check safe",
+    "titleAr": "اجعل فحص السعة آمنًا",
+    "bodyEn": "Two students can take the last seat at the same moment: both count 29 of 30, both insert. Lock the section row while checking: `SELECT ... FROM Sections WITH (UPDLOCK, HOLDLOCK) WHERE SectionId = @SectionId`.\n\nTest it with two SSMS windows: begin a transaction in the first, call the procedure in the second and see it wait.",
+    "bodyAr": "قد يأخذ طالبان آخر مقعد في اللحظة نفسها: كلاهما يعدّ 29 من 30، وكلاهما يُدخل. لذا اقفل صف الشعبة أثناء الفحص: `SELECT ... FROM Sections WITH (UPDLOCK, HOLDLOCK) WHERE SectionId = @SectionId`.\n\nاختبره بنافذتين في SSMS: ابدأ transaction في الأولى، واستدعِ الإجراء في الثانية، وشاهده ينتظر.",
+    "hintsEn": [
+     "UPDLOCK makes the second caller wait instead of reading the old count.",
+     "Keep transactions short so locks are held briefly."
+    ],
+    "hintsAr": [
+     "UPDLOCK يجعل المستدعي الثاني ينتظر بدل قراءة العدد القديم.",
+     "اجعل الـ transactions قصيرة لتُمسك الأقفال لفترة وجيزة."
+    ],
+    "key": "sql-school-enrollment-race"
+   },
+   {
+    "titleEn": "usp_Drop and usp_SetGrade",
+    "titleAr": "usp_Drop وusp_SetGrade",
+    "bodyEn": "`usp_Drop` deletes an enrollment that has no grade yet (a graded one cannot be dropped). `usp_SetGrade @EnrollmentId, @Grade` checks 0–100 and updates.\n\nReturn friendly errors with THROW like in usp_Enroll.",
+    "bodyAr": "`usp_Drop` يحذف تسجيلًا ليس له درجة بعد (التسجيل الذي له درجة لا يمكن حذفه). و`usp_SetGrade @EnrollmentId, @Grade` يتحقق من المدى 0 إلى 100 ثم يعدّل.\n\nأعد أخطاء واضحة بـ THROW كما في usp_Enroll.",
+    "hintsEn": [
+     "A CHECK constraint on Grade is a second line of defence.",
+     "Return the number of affected rows to the caller."
+    ],
+    "hintsAr": [
+     "قيد CHECK على Grade خط دفاع ثانٍ.",
+     "أعد عدد الصفوف المتأثرة للمستدعي."
+    ],
+    "key": "sql-school-enrollment-drop-grade"
+   },
+   {
+    "titleEn": "Views and a table-valued function",
+    "titleAr": "Views ودالة table-valued",
+    "bodyEn": "Create `vw_SectionOccupancy` (course, section, capacity, enrolled, free seats). Create an inline function `fn_StudentTimetable(@StudentId, @Term)` that returns the student's sections with days and times.\n\nUse them in queries like normal tables: `SELECT * FROM fn_StudentTimetable(5, '2026-F') ORDER BY DayOfWeek, StartTime`.",
+    "bodyAr": "أنشئ `vw_SectionOccupancy` (المقرر والشعبة والسعة والمسجلون والمقاعد الشاغرة). وأنشئ دالة inline باسم `fn_StudentTimetable(@StudentId, @Term)` تعيد شُعب الطالب بأيامها وأوقاتها.\n\nاستخدمهما في الاستعلامات كأنهما جداول عادية: `SELECT * FROM fn_StudentTimetable(5, '2026-F') ORDER BY DayOfWeek, StartTime`.",
+    "hintsEn": [
+     "Inline functions (a single RETURN SELECT) are as fast as views; multi-statement ones are not.",
+     "Views cannot take parameters; that is what the function is for."
+    ],
+    "hintsAr": [
+     "الدوال inline (أمر RETURN SELECT واحد) سريعة كالـ views، أما متعددة الأوامر فليست كذلك.",
+     "الـ views لا تستقبل معاملات، ولهذا وُجدت الدالة."
+    ],
+    "key": "sql-school-enrollment-views"
+   },
+   {
+    "titleEn": "An audit trigger",
+    "titleAr": "Trigger للتدقيق",
+    "bodyEn": "Create GradeAudit (EnrollmentId, OldGrade, NewGrade, ChangedAt, ChangedBy). Write `AFTER UPDATE` trigger on Enrollments that inserts one row per changed grade by joining the `inserted` and `deleted` pseudo-tables.\n\nA trigger fires once per statement, not per row — it must handle many rows at once.",
+    "bodyAr": "أنشئ GradeAudit (EnrollmentId وOldGrade وNewGrade وChangedAt وChangedBy). واكتب trigger من نوع `AFTER UPDATE` على Enrollments يُدخل صفًا لكل درجة تغيرت بربط الجدولين الافتراضيين `inserted` و`deleted`.\n\nالـ trigger يعمل مرة لكل أمر لا لكل صف، فيجب أن يعالج صفوفًا كثيرة دفعة واحدة.",
+    "hintsEn": [
+     "Compare with `ISNULL(i.Grade, -1) <> ISNULL(d.Grade, -1)` to catch changes from or to NULL.",
+     "`SUSER_SNAME()` gives the login that made the change."
+    ],
+    "hintsAr": [
+     "قارن بـ `ISNULL(i.Grade, -1) <> ISNULL(d.Grade, -1)` لتلتقط التغييرات من NULL أو إليه.",
+     "`SUSER_SNAME()` يعطي اسم الدخول الذي أجرى التغيير."
+    ],
+    "code": "CREATE OR ALTER TRIGGER trg_Enrollments_GradeAudit ON Enrollments AFTER UPDATE AS\nBEGIN\n    SET NOCOUNT ON;\n    INSERT INTO GradeAudit (EnrollmentId, OldGrade, NewGrade, ChangedAt, ChangedBy)\n    SELECT i.EnrollmentId, d.Grade, i.Grade, SYSDATETIME(), SUSER_SNAME()\n    FROM inserted i JOIN deleted d ON d.EnrollmentId = i.EnrollmentId\n    WHERE ISNULL(i.Grade, -1) <> ISNULL(d.Grade, -1);\nEND",
+    "language": "sql",
+    "key": "sql-school-enrollment-trigger"
+   },
+   {
+    "titleEn": "Test script and documentation",
+    "titleAr": "سكربت الاختبار والتوثيق",
+    "bodyEn": "Write `tests.sql` that runs each rule and prints PASS/FAIL: enroll into a full section inside TRY/CATCH and check `ERROR_NUMBER() = 50001`, a clash, a missing prerequisite, a multi-row grade update with 3 audit rows.\n\nDocument each procedure (parameters, errors) in the README.",
+    "bodyAr": "اكتب `tests.sql` يشغّل كل قاعدة ويطبع PASS أو FAIL: التسجيل في شعبة ممتلئة داخل TRY/CATCH مع التحقق من `ERROR_NUMBER() = 50001`، والتعارض، والمتطلب الناقص، وتعديل درجات متعدد الصفوف ينتج 3 صفوف تدقيق.\n\nوثّق كل إجراء (المعاملات والأخطاء) في README.",
+    "hintsEn": [
+     "Wrap tests in a transaction you roll back at the end, so the data stays clean.",
+     "A table of error numbers and messages helps app developers."
+    ],
+    "hintsAr": [
+     "ضع الاختبارات داخل transaction تلغيها في النهاية لتبقى البيانات نظيفة.",
+     "جدول بأرقام الأخطاء ورسائلها يساعد مطوري التطبيق."
+    ],
+    "key": "sql-school-enrollment-finish"
+   }
+  ]
+ },
+ {
+  "key": "sql-hr-analytics",
+  "skill": "SqlServer",
+  "level": "Intermediate",
+  "hours": 9,
+  "titleEn": "HR analytics with window functions",
+  "titleAr": "تحليلات الموارد البشرية بدوال النافذة",
+  "summaryEn": "Answer HR questions that plain GROUP BY cannot: salary ranks, raises over time, running headcount, the org chart and gaps — with window functions and CTEs.",
+  "summaryAr": "أجب عن أسئلة الموارد البشرية التي لا يستطيعها GROUP BY العادي: ترتيب الرواتب، والزيادات عبر الزمن، وعدد الموظفين المتراكم، والهيكل التنظيمي، والفجوات، باستخدام دوال النافذة والـ CTEs.",
+  "techStack": "SQL Server · T-SQL · window functions · CTEs",
+  "goalsEn": [
+   "Rank rows within groups with ROW_NUMBER, RANK, DENSE_RANK",
+   "Compare rows with LAG and LEAD",
+   "Compute running totals and moving averages",
+   "Walk hierarchies with recursive CTEs"
+  ],
+  "goalsAr": [
+   "ترتيب الصفوف داخل المجموعات بـ ROW_NUMBER وRANK وDENSE_RANK",
+   "مقارنة الصفوف بـ LAG وLEAD",
+   "حساب المجاميع المتراكمة والمتوسطات المتحركة",
+   "التنقل في التسلسلات الهرمية بـ CTEs العودية"
+  ],
+  "requirementsEn": [
+   "Tables: Departments, Employees (ManagerId, HireDate, TerminationDate), SalaryHistory",
+   "10 analytical queries, each with the business question",
+   "An org chart query that shows the path from the CEO to each employee",
+   "Top 3 earners per department, raises in percent, headcount per month"
+  ],
+  "requirementsAr": [
+   "الجداول: Departments وEmployees (ManagerId وHireDate وTerminationDate) وSalaryHistory",
+   "10 استعلامات تحليلية، لكل منها سؤال العمل",
+   "استعلام للهيكل التنظيمي يعرض المسار من المدير العام إلى كل موظف",
+   "أعلى 3 رواتب في كل قسم، والزيادات بالنسبة المئوية، وعدد الموظفين لكل شهر"
+  ],
+  "acceptanceEn": [
+   "\"Top 3 per department\" handles ties the way you documented (RANK vs ROW_NUMBER)",
+   "Each employee's raise is compared with their own previous salary",
+   "The org chart shows every employee exactly once with the right level"
+  ],
+  "acceptanceAr": [
+   "\"أعلى 3 في كل قسم\" يتعامل مع التساوي بالطريقة التي وثّقتها (RANK مقابل ROW_NUMBER)",
+   "زيادة كل موظف تُقارن براتبه السابق هو",
+   "الهيكل التنظيمي يعرض كل موظف مرة واحدة بالمستوى الصحيح"
+  ],
+  "stretchEn": [
+   "Find employees who earn more than their manager",
+   "Detect gaps and islands in attendance data",
+   "Compute a 3-month moving average of hiring"
+  ],
+  "stretchAr": [
+   "جد الموظفين الذين يكسبون أكثر من مديرهم",
+   "اكتشف الفجوات والجزر في بيانات الحضور",
+   "احسب متوسطًا متحركًا لثلاثة أشهر للتوظيف"
+  ],
+  "steps": [
+   {
+    "titleEn": "Schema and data",
+    "titleAr": "المخطط والبيانات",
+    "bodyEn": "Create Departments, Employees (EmployeeId, Name, DepartmentId, ManagerId FK to Employees, HireDate, TerminationDate nullable) and SalaryHistory (EmployeeId, Salary, EffectiveFrom).\n\nSeed about 60 employees in 4 levels (CEO → directors → managers → staff), each with 1–4 salary changes over the years. Include equal salaries in one department to test ties.",
+    "bodyAr": "أنشئ Departments، وEmployees (EmployeeId وName وDepartmentId وManagerId كمفتاح أجنبي إلى Employees وHireDate وTerminationDate القابل لـ null)، وSalaryHistory (EmployeeId وSalary وEffectiveFrom).\n\nأضف نحو 60 موظفًا في 4 مستويات (المدير العام ← المديرون التنفيذيون ← المديرون ← الموظفون)، لكل منهم من 1 إلى 4 تغييرات في الراتب عبر السنوات. وضع رواتب متساوية في أحد الأقسام لتختبر التساوي.",
+    "hintsEn": [
+     "The current salary is the row with the latest EffectiveFrom per employee.",
+     "Only the CEO has ManagerId NULL."
+    ],
+    "hintsAr": [
+     "الراتب الحالي هو الصف صاحب أحدث EffectiveFrom لكل موظف.",
+     "المدير العام وحده قيمة ManagerId له NULL."
+    ],
+    "key": "sql-hr-analytics-schema"
+   },
+   {
+    "titleEn": "Current salary with ROW_NUMBER",
+    "titleAr": "الراتب الحالي بـ ROW_NUMBER",
+    "bodyEn": "Query 1: each employee's current salary. Number the salary rows per employee, newest first: `ROW_NUMBER() OVER (PARTITION BY EmployeeId ORDER BY EffectiveFrom DESC)`, and keep row 1.\n\nPut it in a CTE called CurrentSalary — the next queries will reuse it.",
+    "bodyAr": "الاستعلام 1: الراتب الحالي لكل موظف. رقّم صفوف الراتب لكل موظف من الأحدث: `ROW_NUMBER() OVER (PARTITION BY EmployeeId ORDER BY EffectiveFrom DESC)`، واحتفظ بالصف 1.\n\nضعه في CTE باسم CurrentSalary، فالاستعلامات التالية ستعيد استخدامه.",
+    "hintsEn": [
+     "Window functions cannot be used in WHERE directly; filter in an outer query.",
+     "You could also make it a view."
+    ],
+    "hintsAr": [
+     "دوال النافذة لا تُستخدم في WHERE مباشرة، فصفِّ في استعلام خارجي.",
+     "تستطيع أيضًا جعله view."
+    ],
+    "key": "sql-hr-analytics-current"
+   },
+   {
+    "titleEn": "Top earners per department",
+    "titleAr": "أعلى الرواتب في كل قسم",
+    "bodyEn": "Query 2: top 3 earners per department. Compare `ROW_NUMBER`, `RANK` and `DENSE_RANK` on the department with equal salaries and explain the difference in a comment.\n\nQuery 3: each employee's salary as a percentage of their department's average (`AVG(Salary) OVER (PARTITION BY DepartmentId)`).",
+    "bodyAr": "الاستعلام 2: أعلى 3 رواتب في كل قسم. قارن بين `ROW_NUMBER` و`RANK` و`DENSE_RANK` على القسم ذي الرواتب المتساوية، واشرح الفرق في تعليق.\n\nالاستعلام 3: راتب كل موظف كنسبة من متوسط قسمه (`AVG(Salary) OVER (PARTITION BY DepartmentId)`).",
+    "hintsEn": [
+     "RANK leaves gaps after ties (1, 1, 3); DENSE_RANK does not (1, 1, 2).",
+     "A window aggregate keeps every row, unlike GROUP BY."
+    ],
+    "hintsAr": [
+     "RANK يترك فجوات بعد التساوي (1، 1، 3)، وDENSE_RANK لا يتركها (1، 1، 2).",
+     "التجميع النافذي يُبقي كل الصفوف، على عكس GROUP BY."
+    ],
+    "key": "sql-hr-analytics-ranking"
+   },
+   {
+    "titleEn": "Raises with LAG",
+    "titleAr": "الزيادات بـ LAG",
+    "bodyEn": "Query 4: every salary change with the previous salary and the raise in percent: `LAG(Salary) OVER (PARTITION BY EmployeeId ORDER BY EffectiveFrom)`. Query 5: employees who never had a raise in the last 2 years.\n\nThe first row of each employee has no previous salary; show NULL, not 0%.",
+    "bodyAr": "الاستعلام 4: كل تغيير في الراتب مع الراتب السابق ونسبة الزيادة: `LAG(Salary) OVER (PARTITION BY EmployeeId ORDER BY EffectiveFrom)`. والاستعلام 5: الموظفون الذين لم يحصلوا على زيادة في آخر سنتين.\n\nالصف الأول لكل موظف ليس له راتب سابق، فاعرض NULL لا 0%.",
+    "hintsEn": [
+     "Raise % = (Salary - Prev) * 100.0 / Prev.",
+     "LEAD looks at the next row — useful for \"salary valid until\" dates."
+    ],
+    "hintsAr": [
+     "نسبة الزيادة = (الراتب - السابق) × 100.0 ÷ السابق.",
+     "LEAD ينظر إلى الصف التالي، وهو مفيد لتواريخ \"الراتب ساري حتى\"."
+    ],
+    "key": "sql-hr-analytics-lag"
+   },
+   {
+    "titleEn": "Running totals over time",
+    "titleAr": "المجاميع المتراكمة عبر الزمن",
+    "bodyEn": "Query 6: headcount at the end of each month. Build hires (+1) and terminations (−1) as events, group by month, then `SUM(change) OVER (ORDER BY month ROWS UNBOUNDED PRECEDING)`.\n\nQuery 7: total payroll cost per month and its running total for the year.",
+    "bodyAr": "الاستعلام 6: عدد الموظفين في نهاية كل شهر. اعتبر التعيينات (+1) وإنهاء الخدمة (−1) أحداثًا، وجمّعها حسب الشهر، ثم `SUM(change) OVER (ORDER BY month ROWS UNBOUNDED PRECEDING)`.\n\nالاستعلام 7: إجمالي تكلفة الرواتب لكل شهر ومجموعها المتراكم خلال السنة.",
+    "hintsEn": [
+     "UNION ALL the hires and the terminations into one event list.",
+     "Always write ROWS UNBOUNDED PRECEDING explicitly; the default RANGE frame is slower and surprising with ties."
+    ],
+    "hintsAr": [
+     "اجمع التعيينات وإنهاءات الخدمة بـ UNION ALL في قائمة أحداث واحدة.",
+     "اكتب ROWS UNBOUNDED PRECEDING صراحة دائمًا، فإطار RANGE الافتراضي أبطأ ومفاجئ مع التساوي."
+    ],
+    "key": "sql-hr-analytics-running"
+   },
+   {
+    "titleEn": "The org chart with a recursive CTE",
+    "titleAr": "الهيكل التنظيمي بـ CTE عودي",
+    "bodyEn": "Query 8: start with the CEO (anchor: ManagerId IS NULL), then join employees whose ManagerId is in the previous level (recursive part). Carry the level and a path string like `CEO > Sara > Omar`.\n\nOrder by the path to print a readable tree, indenting names with `REPLICATE(' ', Level * 2)`.",
+    "bodyAr": "الاستعلام 8: ابدأ بالمدير العام (نقطة الارتكاز: ManagerId IS NULL)، ثم اربط الموظفين الذين ManagerId لهم في المستوى السابق (الجزء العودي). واحمل معك المستوى ونص المسار مثل `CEO > Sara > Omar`.\n\nرتّب بالمسار لتطبع شجرة مقروءة، مع إزاحة الأسماء بـ `REPLICATE(' ', Level * 2)`.",
+    "hintsEn": [
+     "Cast the path to NVARCHAR(MAX) in both parts or SQL Server complains about types.",
+     "OPTION (MAXRECURSION 100) protects you from an accidental cycle."
+    ],
+    "hintsAr": [
+     "حوّل المسار إلى NVARCHAR(MAX) في الجزأين، وإلا اعترض SQL Server على الأنواع.",
+     "OPTION (MAXRECURSION 100) يحميك من حلقة غير مقصودة."
+    ],
+    "code": "WITH Org AS (\n    SELECT EmployeeId, Name, ManagerId, 0 AS Level, CAST(Name AS NVARCHAR(MAX)) AS Path\n    FROM Employees WHERE ManagerId IS NULL\n    UNION ALL\n    SELECT e.EmployeeId, e.Name, e.ManagerId, o.Level + 1, o.Path + N' > ' + e.Name\n    FROM Employees e JOIN Org o ON e.ManagerId = o.EmployeeId\n)\nSELECT REPLICATE(N'  ', Level) + Name AS Employee, Level, Path\nFROM Org ORDER BY Path;",
+    "language": "sql",
+    "key": "sql-hr-analytics-org-chart"
+   },
+   {
+    "titleEn": "Team sizes and managers",
+    "titleAr": "أحجام الفرق والمديرون",
+    "bodyEn": "Query 9: for each manager, the number of direct reports and the total number of people below them (all levels). Query 10: employees who earn more than their manager (self-join with CurrentSalary).\n\nFor \"all levels below\", run the recursive CTE from each manager, or carry the top manager id through the recursion.",
+    "bodyAr": "الاستعلام 9: لكل مدير عدد مرؤوسيه المباشرين والعدد الكلي للأشخاص تحته (بكل المستويات). والاستعلام 10: الموظفون الذين يكسبون أكثر من مديرهم (ربط ذاتي مع CurrentSalary).\n\nلـ\"كل المستويات تحته\" شغّل الـ CTE العودي من كل مدير، أو احمل رقم المدير الأعلى خلال العودية.",
+    "hintsEn": [
+     "A self-join needs two aliases: `Employees e JOIN Employees m ON m.EmployeeId = e.ManagerId`.",
+     "Check one manager by hand by counting the tree."
+    ],
+    "hintsAr": [
+     "الربط الذاتي يحتاج اسمين مستعارين: `Employees e JOIN Employees m ON m.EmployeeId = e.ManagerId`.",
+     "تحقق من مدير واحد يدويًا بعدّ الشجرة."
+    ],
+    "key": "sql-hr-analytics-team"
+   },
+   {
+    "titleEn": "Explain and publish",
+    "titleAr": "اشرح وانشر",
+    "bodyEn": "For each query, add the business question, the result of a small check and one sentence about the technique. Compare one window-function query with the same result written with a correlated subquery, and note the execution plan difference.\n\nPublish the scripts and a README.",
+    "bodyAr": "لكل استعلام أضف سؤال العمل، ونتيجة فحص صغير، وجملة عن الأسلوب المستخدم. وقارن استعلامًا بدالة نافذة مع النتيجة نفسها مكتوبة باستعلام فرعي مترابط، ودوّن الفرق في خطة التنفيذ.\n\nانشر السكربتات وREADME.",
+    "hintsEn": [
+     "Window functions usually read the table once; correlated subqueries can read it once per row.",
+     "Screenshots of results help reviewers who will not run SQL."
+    ],
+    "hintsAr": [
+     "دوال النافذة تقرأ الجدول عادة مرة واحدة، أما الاستعلامات الفرعية المترابطة فقد تقرؤه مرة لكل صف.",
+     "صور النتائج تساعد المراجعين الذين لن يشغّلوا SQL."
+    ],
+    "key": "sql-hr-analytics-finish"
+   }
+  ]
+ },
+ {
+  "key": "sql-performance-lab",
+  "skill": "SqlServer",
+  "level": "Advanced",
+  "hours": 14,
+  "titleEn": "Query performance lab",
+  "titleAr": "مختبر أداء الاستعلامات",
+  "summaryEn": "Take a slow database with millions of rows and make it fast: read execution plans, design indexes, fix bad queries, parameter sniffing and blocking, and measure every change.",
+  "summaryAr": "خذ قاعدة بيانات بطيئة فيها ملايين الصفوف واجعلها سريعة: اقرأ خطط التنفيذ، وصمّم الفهارس، وأصلح الاستعلامات السيئة ومشكلة parameter sniffing والحجب، وقِس كل تغيير.",
+  "techStack": "SQL Server · execution plans · indexes · Query Store · Extended Events",
+  "goalsEn": [
+   "Read actual execution plans and IO statistics",
+   "Design clustered, nonclustered, covering and filtered indexes",
+   "Recognise non-SARGable predicates and implicit conversions",
+   "Diagnose parameter sniffing and blocking with Query Store and DMVs"
+  ],
+  "goalsAr": [
+   "قراءة خطط التنفيذ الفعلية وإحصاءات IO",
+   "تصميم فهارس clustered وnonclustered وcovering وfiltered",
+   "التعرف على الشروط غير القابلة للبحث (non-SARGable) والتحويلات الضمنية",
+   "تشخيص parameter sniffing والحجب بـ Query Store وDMVs"
+  ],
+  "requirementsEn": [
+   "A generator script for 5 million orders and 20 million order lines",
+   "8 slow queries given as the starting point",
+   "A before/after table: logical reads, CPU and duration for each query",
+   "An index plan with the reason for each index, and no unused indexes",
+   "A reproduced and fixed parameter sniffing case",
+   "A reproduced and diagnosed blocking case"
+  ],
+  "requirementsAr": [
+   "سكربت مولّد لخمسة ملايين طلب وعشرين مليون سطر طلب",
+   "8 استعلامات بطيئة كنقطة بداية",
+   "جدول قبل/بعد: القراءات المنطقية والمعالج والمدة لكل استعلام",
+   "خطة فهارس مع سبب كل فهرس، وبلا فهارس غير مستخدمة",
+   "حالة parameter sniffing مُعاد إنتاجها ومُصلحة",
+   "حالة حجب مُعاد إنتاجها ومشخّصة"
+  ],
+  "acceptanceEn": [
+   "Every slow query improves by at least 10× in logical reads",
+   "No query uses a function on an indexed column in WHERE",
+   "You can explain each operator of one final plan",
+   "Write-heavy tables did not get more than 5 indexes"
+  ],
+  "acceptanceAr": [
+   "كل استعلام بطيء يتحسن 10 أضعاف على الأقل في القراءات المنطقية",
+   "لا يوجد استعلام يستخدم دالة على عمود مفهرس داخل WHERE",
+   "تستطيع شرح كل عملية في خطة نهائية واحدة",
+   "الجداول كثيفة الكتابة لم تحصل على أكثر من 5 فهارس"
+  ],
+  "stretchEn": [
+   "Try a columnstore index for the reporting queries",
+   "Partition the order lines by year",
+   "Set up an Extended Events session for queries over 1 second"
+  ],
+  "stretchAr": [
+   "جرّب فهرس columnstore لاستعلامات التقارير",
+   "قسّم أسطر الطلبات حسب السنة",
+   "أعدّ جلسة Extended Events للاستعلامات التي تتجاوز ثانية"
+  ],
+  "steps": [
+   {
+    "titleEn": "Generate a big dataset",
+    "titleAr": "ولّد بيانات كبيرة",
+    "bodyEn": "Create Customers (200k), Products (10k), Orders (5M) and OrderLines (20M) with a set-based generator: cross join a numbers table instead of a WHILE loop. Give dates a realistic spread over 5 years and statuses a skewed distribution (90% Completed, 1% Refunded).\n\nStart with only primary keys — no other indexes. Back up the database so you can reset.",
+    "bodyAr": "أنشئ Customers (200 ألف)، وProducts (10 آلاف)، وOrders (5 ملايين)، وOrderLines (20 مليونًا) بمولّد قائم على المجموعات: اربط جدول أرقام بـ cross join بدل حلقة WHILE. ووزّع التواريخ بشكل واقعي على 5 سنوات، والحالات بتوزيع غير متساوٍ (90% Completed و1% Refunded).\n\nابدأ بالمفاتيح الأساسية فقط، بلا فهارس أخرى. واحفظ نسخة احتياطية لقاعدة البيانات لتستطيع الإرجاع.",
+    "hintsEn": [
+     "A numbers table from `sys.all_objects` cross-joined with itself gives millions of rows fast.",
+     "Insert in chunks of 1M with `TABLOCK` for minimal logging."
+    ],
+    "hintsAr": [
+     "جدول أرقام من `sys.all_objects` مربوط بنفسه بـ cross join يعطي ملايين الصفوف بسرعة.",
+     "أدخل على دفعات من مليون مع `TABLOCK` لتقليل التسجيل."
+    ],
+    "key": "sql-performance-lab-generate"
+   },
+   {
+    "titleEn": "Measure a baseline",
+    "titleAr": "قِس خط الأساس",
+    "bodyEn": "Write the 8 slow queries (orders of a customer, last 30 days of sales, top products, search by email, orders by status, a report with YEAR(OrderDate) = 2024, an OR across columns, a query comparing VARCHAR to NVARCHAR). For each, run `SET STATISTICS IO, TIME ON` and save logical reads, CPU and elapsed time.\n\nTurn on Query Store: it records plans and runtime stats for you.",
+    "bodyAr": "اكتب الاستعلامات البطيئة الثمانية (طلبات عميل، ومبيعات آخر 30 يومًا، وأعلى المنتجات، والبحث بالبريد، والطلبات حسب الحالة، وتقرير فيه YEAR(OrderDate) = 2024، وشرط OR عبر عدة أعمدة، واستعلام يقارن VARCHAR بـ NVARCHAR). ولكل منها شغّل `SET STATISTICS IO, TIME ON` واحفظ القراءات المنطقية ووقت المعالج والوقت المنقضي.\n\nفعّل Query Store، فهو يسجل الخطط وإحصاءات التشغيل لك.",
+    "hintsEn": [
+     "Logical reads are the most stable metric; time varies with cache and machine load.",
+     "statisticsparser.com turns the STATISTICS output into a readable table."
+    ],
+    "hintsAr": [
+     "القراءات المنطقية أثبت مقياس، أما الوقت فيتغير مع الذاكرة المؤقتة وحمل الجهاز.",
+     "الموقع statisticsparser.com يحوّل مخرجات STATISTICS إلى جدول مقروء."
+    ],
+    "key": "sql-performance-lab-baseline"
+   },
+   {
+    "titleEn": "Read the execution plans",
+    "titleAr": "اقرأ خطط التنفيذ",
+    "bodyEn": "Open the actual plan of each query. Find: Clustered Index Scan on big tables, Key Lookups repeated millions of times, big differences between estimated and actual rows, yellow warnings (implicit conversion, spills).\n\nWrite one line per query: \"the problem is ...\". Do not change anything yet.",
+    "bodyAr": "افتح الخطة الفعلية لكل استعلام، وابحث عن: Clustered Index Scan على الجداول الكبيرة، وKey Lookups تتكرر ملايين المرات، والفروق الكبيرة بين الصفوف المقدّرة والفعلية، والتحذيرات الصفراء (التحويل الضمني، والانسكاب إلى القرص).\n\nاكتب سطرًا لكل استعلام: \"المشكلة هي ...\". ولا تغيّر شيئًا بعد.",
+    "hintsEn": [
+     "Read plans from right to left; the thickest arrows carry the most rows.",
+     "Hover over an operator to see estimated vs actual rows."
+    ],
+    "hintsAr": [
+     "اقرأ الخطط من اليمين إلى اليسار، والأسهم الأسمك تحمل أكثر الصفوف.",
+     "مرّر المؤشر فوق أي عملية لترى الصفوف المقدّرة مقابل الفعلية."
+    ],
+    "key": "sql-performance-lab-plans"
+   },
+   {
+    "titleEn": "Fix non-SARGable queries",
+    "titleAr": "أصلح الاستعلامات غير القابلة للبحث",
+    "bodyEn": "Rewrite queries so an index can seek: `YEAR(OrderDate) = 2024` becomes `OrderDate >= '2024-01-01' AND OrderDate < '2025-01-01'`; `ISNULL(Email, '') = @e` becomes `Email = @e`; match the parameter type to the column type to remove the implicit conversion; split the OR into a UNION ALL if it helps.\n\nMeasure again after each rewrite (indexes come next).",
+    "bodyAr": "أعد كتابة الاستعلامات ليتمكن الفهرس من البحث المباشر: `YEAR(OrderDate) = 2024` يصبح `OrderDate >= '2024-01-01' AND OrderDate < '2025-01-01'`، و`ISNULL(Email, '') = @e` يصبح `Email = @e`، وطابق نوع المعامل مع نوع العمود لتزيل التحويل الضمني، وقسّم OR إلى UNION ALL إن كان ذلك مفيدًا.\n\nقِس مرة أخرى بعد كل إعادة كتابة (الفهارس في الخطوة التالية).",
+    "hintsEn": [
+     "A function on the column hides it from the index; a function on the constant is fine.",
+     "NVARCHAR parameter vs VARCHAR column converts every row — check the plan warning."
+    ],
+    "hintsAr": [
+     "الدالة على العمود تخفيه عن الفهرس، أما الدالة على القيمة الثابتة فلا بأس بها.",
+     "معامل NVARCHAR مقابل عمود VARCHAR يحوّل كل صف، فتحقق من تحذير الخطة."
+    ],
+    "key": "sql-performance-lab-sargable"
+   },
+   {
+    "titleEn": "Design indexes deliberately",
+    "titleAr": "صمّم الفهارس بعناية",
+    "bodyEn": "For each query decide the key columns (equality columns first, then range/sort) and the INCLUDE columns (to avoid Key Lookups). Examples: `(CustomerId, OrderDate DESC) INCLUDE (Total, Status)`; a filtered index `WHERE Status = 'Refunded'` for the rare status.\n\nPrefer one index that serves several queries over one index per query. Note the reason for each index in a comment.",
+    "bodyAr": "لكل استعلام حدّد أعمدة المفتاح (أعمدة المساواة أولًا، ثم أعمدة المدى أو الترتيب) وأعمدة INCLUDE (لتتجنب Key Lookups). أمثلة: `(CustomerId, OrderDate DESC) INCLUDE (Total, Status)`، وفهرس مصفّى `WHERE Status = 'Refunded'` للحالة النادرة.\n\nفضّل فهرسًا واحدًا يخدم عدة استعلامات على فهرس لكل استعلام، واكتب سبب كل فهرس في تعليق.",
+    "hintsEn": [
+     "Missing-index suggestions in plans are hints, not answers — they ignore your other queries.",
+     "Every index slows down inserts and updates; check `sys.dm_db_index_usage_stats` later."
+    ],
+    "hintsAr": [
+     "اقتراحات الفهارس الناقصة في الخطط تلميحات لا إجابات، فهي تتجاهل استعلاماتك الأخرى.",
+     "كل فهرس يبطئ الإدخال والتعديل، فراجع `sys.dm_db_index_usage_stats` لاحقًا."
+    ],
+    "key": "sql-performance-lab-indexes"
+   },
+   {
+    "titleEn": "Reproduce parameter sniffing",
+    "titleAr": "أعد إنتاج parameter sniffing",
+    "bodyEn": "Create a procedure `usp_OrdersByStatus @Status`. Call it first with 'Refunded' (few rows → seek + lookups), then with 'Completed' (millions → the same plan is terrible). Find both runs in Query Store.\n\nTry the fixes and compare: `OPTION (RECOMPILE)`, `OPTIMIZE FOR UNKNOWN`, two procedures for the two cases, or forcing a plan in Query Store. Write down which you choose and why.",
+    "bodyAr": "أنشئ إجراء `usp_OrdersByStatus @Status`. استدعه أولًا بـ 'Refunded' (صفوف قليلة ← seek مع lookups)، ثم بـ 'Completed' (ملايين ← الخطة نفسها سيئة جدًا). وجد التشغيلين في Query Store.\n\nجرّب الحلول وقارن: `OPTION (RECOMPILE)`، و`OPTIMIZE FOR UNKNOWN`، وإجراءين للحالتين، أو فرض خطة في Query Store. ودوّن ما اخترته ولماذا.",
+    "hintsEn": [
+     "`DBCC FREEPROCCACHE` (only on your own machine!) resets cached plans between experiments.",
+     "RECOMPILE costs CPU on every call; fine for rare reports, bad for hot queries."
+    ],
+    "hintsAr": [
+     "`DBCC FREEPROCCACHE` (على جهازك فقط!) يمسح الخطط المخزنة بين التجارب.",
+     "RECOMPILE يكلّف المعالج في كل استدعاء، وهو مناسب للتقارير النادرة وسيئ للاستعلامات الكثيرة."
+    ],
+    "key": "sql-performance-lab-sniffing"
+   },
+   {
+    "titleEn": "Reproduce and diagnose blocking",
+    "titleAr": "أعد إنتاج الحجب وشخّصه",
+    "bodyEn": "In window 1, begin a transaction and update a customer's orders without committing. In window 2, run a report on those orders — it waits. In window 3, find the blocker with `sys.dm_exec_requests` (blocking_session_id) and `sys.dm_tran_locks`.\n\nThen turn on `READ_COMMITTED_SNAPSHOT` on a copy of the database and repeat: readers no longer wait for writers. Write down the trade-offs.",
+    "bodyAr": "في النافذة 1 ابدأ transaction وعدّل طلبات عميل دون اعتماد. وفي النافذة 2 شغّل تقريرًا على تلك الطلبات، فسينتظر. وفي النافذة 3 جد الحاجب بـ `sys.dm_exec_requests` (العمود blocking_session_id) و`sys.dm_tran_locks`.\n\nثم فعّل `READ_COMMITTED_SNAPSHOT` على نسخة من قاعدة البيانات وكرّر: القارئون لم يعودوا ينتظرون الكاتبين. ودوّن المقايضات.",
+    "hintsEn": [
+     "sp_WhoIsActive (a free community script) shows blocking chains nicely.",
+     "RCSI uses tempdb for row versions — watch its size."
+    ],
+    "hintsAr": [
+     "sp_WhoIsActive (سكربت مجتمعي مجاني) يعرض سلاسل الحجب بشكل جميل.",
+     "RCSI يستخدم tempdb لإصدارات الصفوف، فراقب حجمه."
+    ],
+    "key": "sql-performance-lab-blocking"
+   },
+   {
+    "titleEn": "Remove what does not help",
+    "titleAr": "احذف ما لا يفيد",
+    "bodyEn": "Run your workload a few times, then check `sys.dm_db_index_usage_stats`: indexes with many updates and no seeks or scans cost you without helping. Drop or merge them.\n\nAlso check for duplicate indexes (same leading key) and keep the wider one.",
+    "bodyAr": "شغّل حمل العمل عدة مرات، ثم راجع `sys.dm_db_index_usage_stats`: الفهارس التي فيها تعديلات كثيرة بلا seeks ولا scans تكلّفك دون فائدة، فاحذفها أو ادمجها.\n\nوابحث أيضًا عن الفهارس المكررة (المفتاح الأول نفسه) واحتفظ بالأوسع.",
+    "hintsEn": [
+     "Usage stats reset when SQL Server restarts — gather them over a real period in production.",
+     "Keep the unique and foreign-key-supporting indexes even if reads are low."
+    ],
+    "hintsAr": [
+     "إحصاءات الاستخدام تُمسح عند إعادة تشغيل SQL Server، فاجمعها على فترة حقيقية في بيئة الإنتاج.",
+     "أبقِ الفهارس الفريدة والداعمة للمفاتيح الأجنبية حتى لو كانت القراءات قليلة."
+    ],
+    "key": "sql-performance-lab-cleanup"
+   },
+   {
+    "titleEn": "Write the tuning report",
+    "titleAr": "اكتب تقرير الضبط",
+    "bodyEn": "Fill the before/after table for all 8 queries, add plan screenshots of the biggest win, the index list with reasons, the sniffing and blocking write-ups, and what you would watch in production.\n\nThis report is a strong portfolio piece for backend and database roles.",
+    "bodyAr": "املأ جدول قبل/بعد للاستعلامات الثمانية، وأضف صور خطط أكبر تحسن، وقائمة الفهارس مع أسبابها، وتقريري sniffing والحجب، وما ستراقبه في بيئة الإنتاج.\n\nهذا التقرير قطعة قوية في معرض الأعمال لوظائف الـ backend وقواعد البيانات.",
+    "hintsEn": [
+     "Keep the generator and all scripts so anyone can reproduce the numbers.",
+     "Mention SQL Server version and hardware; numbers depend on them."
+    ],
+    "hintsAr": [
+     "احتفظ بالمولّد وكل السكربتات ليعيد أي أحد إنتاج الأرقام.",
+     "اذكر إصدار SQL Server والعتاد، فالأرقام تعتمد عليهما."
+    ],
+    "key": "sql-performance-lab-finish"
+   }
+  ]
+ },
+ {
+  "key": "sql-data-warehouse",
+  "skill": "SqlServer",
+  "level": "Advanced",
+  "hours": 14,
+  "titleEn": "Sales data warehouse with history",
+  "titleAr": "مستودع بيانات للمبيعات مع التاريخ",
+  "summaryEn": "Build a small data warehouse from an operational shop database: a star schema, an incremental load with MERGE, slowly changing dimensions that keep history, and fast reports with columnstore.",
+  "summaryAr": "ابنِ مستودع بيانات صغيرًا من قاعدة بيانات متجر تشغيلية: مخطط نجمي، وتحميل تدريجي بـ MERGE، وأبعاد بطيئة التغير تحفظ التاريخ، وتقارير سريعة بـ columnstore.",
+  "techStack": "SQL Server · T-SQL · MERGE · columnstore · SQL Agent",
+  "goalsEn": [
+   "Model facts and dimensions in a star schema",
+   "Load incrementally and idempotently with MERGE",
+   "Keep history with Slowly Changing Dimension type 2",
+   "Speed up analytics with columnstore indexes"
+  ],
+  "goalsAr": [
+   "تمثيل الحقائق والأبعاد في مخطط نجمي",
+   "التحميل التدريجي والقابل للتكرار بأمان بـ MERGE",
+   "حفظ التاريخ بنوع Slowly Changing Dimension الثاني",
+   "تسريع التحليلات بفهارس columnstore"
+  ],
+  "requirementsEn": [
+   "Source: the shop database (or the sales-reports project schema)",
+   "DimDate, DimCustomer (SCD2 on City and Segment), DimProduct (SCD1), FactSales at order-line grain",
+   "A staging area and stored procedures for each load step",
+   "A watermark table so each run loads only new or changed rows",
+   "Reports: revenue by month, by customer city at the time of sale"
+  ],
+  "requirementsAr": [
+   "المصدر: قاعدة بيانات المتجر (أو مخطط مشروع تقارير المبيعات)",
+   "DimDate وDimCustomer (من النوع SCD2 على City وSegment) وDimProduct (من النوع SCD1) وFactSales بدقة سطر الطلب",
+   "منطقة staging وإجراءات مخزنة لكل خطوة تحميل",
+   "جدول watermark ليحمّل كل تشغيل الصفوف الجديدة أو المتغيرة فقط",
+   "التقارير: الإيراد لكل شهر، وحسب مدينة العميل وقت البيع"
+  ],
+  "acceptanceEn": [
+   "Running the load twice in a row adds nothing the second time",
+   "A customer who moved city has two dimension rows; old sales stay with the old city",
+   "The fact table has no row without valid dimension keys (unknown members are used instead)",
+   "Monthly revenue in the warehouse equals the same report on the source"
+  ],
+  "acceptanceAr": [
+   "تشغيل التحميل مرتين متتاليتين لا يضيف شيئًا في المرة الثانية",
+   "العميل الذي انتقل إلى مدينة أخرى له صفان في البعد، والمبيعات القديمة تبقى مع المدينة القديمة",
+   "جدول الحقائق لا يحتوي صفًا بلا مفاتيح أبعاد صحيحة (يُستخدم عضو \"غير معروف\" بدلًا من ذلك)",
+   "الإيراد الشهري في المستودع يساوي التقرير نفسه على المصدر"
+  ],
+  "stretchEn": [
+   "Schedule the load with SQL Server Agent",
+   "Add a Power BI report on top",
+   "Detect late-arriving facts and handle them"
+  ],
+  "stretchAr": [
+   "جدول التحميل بـ SQL Server Agent",
+   "أضف تقرير Power BI فوقه",
+   "اكتشف الحقائق المتأخرة في الوصول وتعامل معها"
+  ],
+  "steps": [
+   {
+    "titleEn": "Design the star schema",
+    "titleAr": "صمّم المخطط النجمي",
+    "bodyEn": "Choose the grain first: one fact row per order line. Facts are measures (quantity, revenue, discount); dimensions describe them (date, customer, product).\n\nDraw FactSales in the middle with surrogate keys to DimDate, DimCustomer and DimProduct, plus the source order id for tracing.",
+    "bodyAr": "اختر الدقة أولًا: صف حقيقة واحد لكل سطر طلب. الحقائق هي المقاييس (الكمية والإيراد والخصم)، والأبعاد تصفها (التاريخ والعميل والمنتج).\n\nارسم FactSales في المنتصف مع مفاتيح بديلة إلى DimDate وDimCustomer وDimProduct، ومعها رقم الطلب في المصدر للتتبع.",
+    "hintsEn": [
+     "Surrogate keys (INT IDENTITY) are separate from the source ids: SCD2 needs several rows per customer.",
+     "Never mix grains in one fact table."
+    ],
+    "hintsAr": [
+     "المفاتيح البديلة (INT IDENTITY) منفصلة عن أرقام المصدر، فـ SCD2 يحتاج عدة صفوف للعميل الواحد.",
+     "لا تخلط بين دقتين في جدول حقائق واحد."
+    ],
+    "key": "sql-data-warehouse-model"
+   },
+   {
+    "titleEn": "Build DimDate",
+    "titleAr": "ابنِ DimDate",
+    "bodyEn": "Generate one row per day for 10 years with DateKey as INT yyyymmdd, plus Year, Quarter, Month, MonthName, Week, DayOfWeek, IsWeekend and a holiday flag.\n\nReports group by these columns instead of calling date functions on the fact table.",
+    "bodyAr": "ولّد صفًا لكل يوم على مدى 10 سنوات، مع DateKey كعدد صحيح بصيغة yyyymmdd، وYear وQuarter وMonth وMonthName وWeek وDayOfWeek وIsWeekend وعلامة للعطلات.\n\nالتقارير تجمّع بهذه الأعمدة بدل استدعاء دوال التاريخ على جدول الحقائق.",
+    "hintsEn": [
+     "`CONVERT(INT, FORMAT(d, 'yyyyMMdd'))` or `YEAR(d)*10000 + MONTH(d)*100 + DAY(d)`.",
+     "Set DATEFIRST explicitly so weekdays are consistent."
+    ],
+    "hintsAr": [
+     "`CONVERT(INT, FORMAT(d, 'yyyyMMdd'))` أو `YEAR(d)*10000 + MONTH(d)*100 + DAY(d)`.",
+     "اضبط DATEFIRST صراحة لتكون أيام الأسبوع متسقة."
+    ],
+    "key": "sql-data-warehouse-date"
+   },
+   {
+    "titleEn": "Staging and the watermark",
+    "titleAr": "منطقة staging والـ watermark",
+    "bodyEn": "Create a `stg` schema with tables that mirror the source columns you need. Create `etl.Watermark (TableName, LastLoadedAt)`.\n\nStep 1 of the load copies source rows with `ModifiedAt > LastLoadedAt` into staging (truncate staging first). The source needs a ModifiedAt column — add one if it is missing.",
+    "bodyAr": "أنشئ schema باسم `stg` فيه جداول تعكس أعمدة المصدر التي تحتاجها. وأنشئ `etl.Watermark (TableName, LastLoadedAt)`.\n\nالخطوة 1 في التحميل تنسخ صفوف المصدر التي `ModifiedAt > LastLoadedAt` إلى منطقة staging (بعد تفريغها أولًا). يحتاج المصدر عمود ModifiedAt، فأضفه إن لم يوجد.",
+    "hintsEn": [
+     "Update the watermark only after the whole load succeeded.",
+     "Use the max ModifiedAt you actually loaded, not the current time, to avoid missing rows."
+    ],
+    "hintsAr": [
+     "حدّث الـ watermark فقط بعد نجاح التحميل كله.",
+     "استخدم أكبر قيمة ModifiedAt حمّلتها فعلًا، لا الوقت الحالي، لتتجنب ضياع صفوف."
+    ],
+    "key": "sql-data-warehouse-staging"
+   },
+   {
+    "titleEn": "DimProduct with MERGE (type 1)",
+    "titleAr": "DimProduct بـ MERGE (النوع الأول)",
+    "bodyEn": "Write `etl.usp_LoadDimProduct`: MERGE from staging into DimProduct on the source product id. WHEN MATCHED and something changed → UPDATE (overwrite, no history); WHEN NOT MATCHED → INSERT.\n\nInsert an \"Unknown\" member with key -1 once, for fact rows whose product is missing.",
+    "bodyAr": "اكتب `etl.usp_LoadDimProduct`: نفّذ MERGE من منطقة staging إلى DimProduct على رقم المنتج في المصدر. عند التطابق مع وجود تغيير ← UPDATE (استبدال بلا تاريخ)، وعند عدم التطابق ← INSERT.\n\nأدخل عضوًا \"غير معروف\" بالمفتاح -1 مرة واحدة، لصفوف الحقائق التي منتجها مفقود.",
+    "hintsEn": [
+     "Compare columns null-safely: `EXISTS (SELECT s.Name, s.Category EXCEPT SELECT d.Name, d.Category)`.",
+     "Use `SET IDENTITY_INSERT ON` to insert the -1 member."
+    ],
+    "hintsAr": [
+     "قارن الأعمدة بأمان مع NULL: `EXISTS (SELECT s.Name, s.Category EXCEPT SELECT d.Name, d.Category)`.",
+     "استخدم `SET IDENTITY_INSERT ON` لإدخال العضو -1."
+    ],
+    "key": "sql-data-warehouse-scd1"
+   },
+   {
+    "titleEn": "DimCustomer with history (type 2)",
+    "titleAr": "DimCustomer مع التاريخ (النوع الثاني)",
+    "bodyEn": "DimCustomer has ValidFrom, ValidTo (NULL for current) and IsCurrent. When City or Segment changes: close the current row (ValidTo = change date, IsCurrent = 0) and insert a new current row. Name changes overwrite in place (type 1).\n\nDo it in two statements inside one transaction: first expire changed rows, then insert new versions and brand-new customers.",
+    "bodyAr": "DimCustomer فيه ValidFrom وValidTo (قيمته NULL للصف الحالي) وIsCurrent. عندما تتغير City أو Segment: أغلق الصف الحالي (ValidTo = تاريخ التغيير وIsCurrent = 0) وأدخل صفًا حاليًا جديدًا. أما تغييرات الاسم فتستبدل القيمة في مكانها (النوع الأول).\n\nنفّذ ذلك بأمرين داخل transaction واحدة: أولًا أنهِ الصفوف المتغيرة، ثم أدخل الإصدارات الجديدة والعملاء الجدد كليًا.",
+    "hintsEn": [
+     "A unique filtered index on (CustomerSourceId) WHERE IsCurrent = 1 guarantees one current row.",
+     "Use the source ModifiedAt as the change date, not the load time."
+    ],
+    "hintsAr": [
+     "فهرس فريد مصفّى على (CustomerSourceId) بشرط IsCurrent = 1 يضمن صفًا حاليًا واحدًا.",
+     "استخدم ModifiedAt من المصدر كتاريخ للتغيير، لا وقت التحميل."
+    ],
+    "key": "sql-data-warehouse-scd2"
+   },
+   {
+    "titleEn": "Load the facts",
+    "titleAr": "حمّل الحقائق",
+    "bodyEn": "`etl.usp_LoadFactSales` looks up each staging order line's keys: DateKey from the order date, ProductKey, and the CustomerKey valid at the order date (`OrderDate >= ValidFrom AND (ValidTo IS NULL OR OrderDate < ValidTo)`). Missing keys become -1.\n\nMake it idempotent: delete fact rows for the order lines being loaded, then insert — or MERGE on the source line id.",
+    "bodyAr": "`etl.usp_LoadFactSales` يبحث عن مفاتيح كل سطر طلب في منطقة staging: DateKey من تاريخ الطلب، وProductKey، وCustomerKey الساري في تاريخ الطلب (`OrderDate >= ValidFrom AND (ValidTo IS NULL OR OrderDate < ValidTo)`). والمفاتيح المفقودة تصبح -1.\n\nاجعله قابلًا للتكرار بأمان: احذف صفوف الحقائق لأسطر الطلبات التي تُحمَّل ثم أدخلها، أو استخدم MERGE على رقم السطر في المصدر.",
+    "hintsEn": [
+     "Picking the customer version by date is what makes \"city at the time of sale\" correct.",
+     "Check row counts: staging lines = inserted fact rows."
+    ],
+    "hintsAr": [
+     "اختيار إصدار العميل حسب التاريخ هو ما يجعل \"المدينة وقت البيع\" صحيحة.",
+     "تحقق من الأعداد: أسطر staging = صفوف الحقائق المُدخلة."
+    ],
+    "key": "sql-data-warehouse-facts"
+   },
+   {
+    "titleEn": "One procedure for the whole load",
+    "titleAr": "إجراء واحد للتحميل كله",
+    "bodyEn": "Write `etl.usp_RunLoad` that runs the steps in order inside TRY/CATCH, logs start, end, row counts and errors to `etl.LoadLog`, and updates the watermark at the end.\n\nRun it twice: the second run must load zero rows. Change a customer's city in the source and run again to see SCD2 work.",
+    "bodyAr": "اكتب `etl.usp_RunLoad` يشغّل الخطوات بالترتيب داخل TRY/CATCH، ويسجل البداية والنهاية وأعداد الصفوف والأخطاء في `etl.LoadLog`، ويحدّث الـ watermark في النهاية.\n\nشغّله مرتين: يجب أن يحمّل التشغيل الثاني صفر صفوف. ثم غيّر مدينة عميل في المصدر وشغّله مرة أخرى لترى SCD2 يعمل.",
+    "hintsEn": [
+     "@@ROWCOUNT right after each statement gives the counts to log.",
+     "If a step fails, the watermark stays, so the next run retries the same rows."
+    ],
+    "hintsAr": [
+     "@@ROWCOUNT مباشرة بعد كل أمر يعطي الأعداد للتسجيل.",
+     "إذا فشلت خطوة يبقى الـ watermark كما هو، فيعيد التشغيل التالي الصفوف نفسها."
+    ],
+    "key": "sql-data-warehouse-orchestrate"
+   },
+   {
+    "titleEn": "Columnstore and reports",
+    "titleAr": "Columnstore والتقارير",
+    "bodyEn": "Create a clustered columnstore index on FactSales. Write the reports: revenue by year and month, by customer city at the time of sale, top products per quarter. Compare the time and reads with a rowstore copy of the table.\n\nColumnstore compresses columns and reads only the ones a query uses — ideal for big aggregations.",
+    "bodyAr": "أنشئ فهرس clustered columnstore على FactSales. واكتب التقارير: الإيراد حسب السنة والشهر، وحسب مدينة العميل وقت البيع، وأعلى المنتجات في كل ربع. وقارن الوقت والقراءات بنسخة rowstore من الجدول.\n\nالـ columnstore يضغط الأعمدة ولا يقرأ إلا ما يستخدمه الاستعلام، وهذا مثالي للتجميعات الكبيرة.",
+    "hintsEn": [
+     "Look for \"Batch\" execution mode in the plan.",
+     "Small trickle inserts land in the delta store; that is fine for a nightly load."
+    ],
+    "hintsAr": [
+     "ابحث عن وضع التنفيذ \"Batch\" في الخطة.",
+     "الإدخالات الصغيرة المتفرقة تذهب إلى delta store، وهذا مقبول للتحميل الليلي."
+    ],
+    "key": "sql-data-warehouse-columnstore"
+   },
+   {
+    "titleEn": "Reconcile and document",
+    "titleAr": "طابِق ووثّق",
+    "bodyEn": "Write a reconciliation query: monthly revenue from the source vs the warehouse; they must match. Add it to the end of usp_RunLoad as a check that fails the load on a mismatch.\n\nDocument the model (diagram), each procedure, how to run a load, and what SCD2 shows in an example.",
+    "bodyAr": "اكتب استعلام مطابقة: الإيراد الشهري من المصدر مقابل المستودع، ويجب أن يتساويا. وأضفه في نهاية usp_RunLoad كفحص يُفشل التحميل عند عدم التطابق.\n\nوثّق النموذج (بمخطط)، وكل إجراء، وطريقة تشغيل التحميل، وما يُظهره SCD2 في مثال.",
+    "hintsEn": [
+     "Reconciliation is how data teams earn trust — always build it.",
+     "Show one customer with two versions and the sales on each side of the move."
+    ],
+    "hintsAr": [
+     "المطابقة هي الطريقة التي تكسب بها فرق البيانات الثقة، فابنِها دائمًا.",
+     "اعرض عميلًا له إصداران، والمبيعات على جانبي الانتقال."
+    ],
+    "key": "sql-data-warehouse-finish"
+   }
+  ]
+ }
+]
