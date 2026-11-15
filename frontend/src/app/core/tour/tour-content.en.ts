@@ -138,7 +138,7 @@ export const content: TourContent = {
     'notes-list': { title: 'Your notes', body: 'Search your notes and pick one to read or edit. Notes opened from a topic or project are filtered to it.' },
     'notes-editor': { title: 'Editor', body: 'Write the title and content, link the note to a topic or project, then save. You’re warned about unsaved changes.' },
 
-    'progress-tabs': { title: 'Three views', body: 'Overview: progress by skill and phase, confidence, weekly study time, projects, interviews, achievements and weak areas. Weekly review: what you did this week, with suggestions. Review: the spaced-review queue.' },
+    'progress-tabs': { title: 'Three views', body: 'Weekly review: what you did this week, with suggestions. Review queue: the spaced-review topics. Study sessions: every session you logged, where you can delete a wrong one. Your overall progress is in Developer Level, Progress tab.' },
     'progress-panel': { title: 'This view', body: 'In the Review tab, rate how confident you are for each due topic; DevPath schedules the next review sooner for weak topics and later for strong ones.' },
 
     'career-gaps': { title: 'Top gaps', body: 'The few things that would raise your readiness the most right now, with links to act on them.' },
@@ -147,6 +147,7 @@ export const content: TourContent = {
     'challenges-list': { title: 'Challenges', body: 'Pick a domain or a difficulty, then open a challenge to solve it in the editor. A challenge counts as solved when every check passes.' },
     'topic-tutorial': { title: 'Tutorial', body: 'The topic explained in short lessons, each with an example and the output it prints. Move with Next and Previous, or jump from the list.' },
     'skills-level': { title: 'Your level', body: 'Your current level, your overall competency (0–100), your points and your progress to the next level. A warning appears when your points are ahead of the skills you have shown.' },
+    'skills-progress': { title: 'Progress', body: 'Confidence, weekly study time, practice, interview preparation, achievements and weak areas, each shown on its own.' },
     'skills-next': { title: 'Next level', body: 'Every requirement of the next level you have not met yet, with links to the quizzes, exercises and project tasks that close the gap.' },
     'skills-categories': { title: 'Competencies', body: 'Your score in each of the 14 areas, split into knowledge, practical work, projects and quality. A level needs a minimum in each key area.' },
     'skills-weak': { title: 'Weaknesses', body: 'Areas below 40 and topics where most of your quiz answers were wrong.' },

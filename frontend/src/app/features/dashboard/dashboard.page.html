@@ -128,7 +128,7 @@
       <section class="card" aria-labelledby="skills-h" data-tour="dashboard-skills">
         <div class="card-head">
           <h2 id="skills-h" class="card-title"><app-icon name="layers" /> {{ 'dashboard.skills' | t }}</h2>
-          <a routerLink="/progress" class="link-sm">{{ 'common.viewAll' | t }}</a>
+          <a routerLink="/skills" [queryParams]="{ tab: 'progress' }" class="link-sm">{{ 'common.viewAll' | t }}</a>
         </div>
         <ul class="skill-grid" role="list">
           @for (s of d.skills; track s.skill) {

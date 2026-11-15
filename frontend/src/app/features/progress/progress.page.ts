@@ -5,15 +5,15 @@ import { ApiError } from '../../core/api-error';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { DurationPipe, FormatDatePipe, LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
-import { Achievement, Reason, ReviewItem } from '../../core/models';
-import { ToastService } from '../../core/ui-services';
+import { Reason, ReviewItem, StudySession } from '../../core/models';
+import { ConfirmService, ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import {
-  ConfidencePickerComponent, EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, ProgressBarComponent,
-  SkeletonComponent,
+  ConfidencePickerComponent, EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, SkeletonComponent,
 } from '../../shared/ui.components';
 
-type Tab = 'overview' | 'weekly' | 'review';
+type Tab = 'weekly' | 'review' | 'sessions';
+const TABS: Tab[] = ['weekly', 'review', 'sessions'];
 
 function isoDate(d: Date): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -23,7 +23,7 @@ function isoDate(d: Date): string {
   selector: 'app-progress-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, FormatDatePipe, DurationPipe,
-    PageHeaderComponent, ProgressBarComponent, ConfidencePickerComponent, SkeletonComponent,
+    PageHeaderComponent, ConfidencePickerComponent, SkeletonComponent,
     ErrorStateComponent, EmptyStateComponent],
   templateUrl: './progress.page.html',
 })
@@ -33,37 +33,28 @@ export default class ProgressPage {
   private readonly router = inject(Router);
   protected readonly i18n = inject(I18nService);
   private readonly toast = inject(ToastService);
+  private readonly confirm = inject(ConfirmService);
 
-  protected readonly tab = signal<Tab>((this.route.snapshot.queryParamMap.get('tab') as Tab) ?? 'overview');
-  protected readonly tabs: Tab[] = ['overview', 'weekly', 'review'];
+  protected readonly tab = signal<Tab>(TABS.find(t => t === this.route.snapshot.queryParamMap.get('tab')) ?? 'weekly');
+  protected readonly tabs = TABS;
 
-  protected readonly report = createLoader(() => this.api.progress());
   protected readonly weekOf = signal<string | undefined>(undefined);
   protected readonly weekly = createLoader(() => this.api.weekly(this.weekOf()));
   protected readonly reviews = createLoader(() => this.api.reviews());
   protected readonly reviewing = signal<number | null>(null);
+  protected readonly sessions = createLoader(() => this.api.sessions());
+  protected readonly deleting = signal<number | null>(null);
 
-  /** Bar heights for the weekly chart, relative to the busiest week (minimum scale 60 min). */
-  protected readonly weekBars = computed(() => {
-    const weeks = this.report.value()?.weeklyStudy ?? [];
-    const max = Math.max(60, ...weeks.map(w => w.minutes));
-    return weeks.map(w => ({ ...w, pct: (w.minutes / max) * 100 }));
-  });
   protected readonly dayBars = computed(() => {
     const days = this.weekly.value()?.days ?? [];
     const max = Math.max(30, ...days.map(d => d.minutes));
     return days.map(d => ({ ...d, pct: (d.minutes / max) * 100 }));
   });
-  protected readonly confidenceBars = computed(() => {
-    const buckets = this.report.value()?.confidence ?? [];
-    const max = Math.max(1, ...buckets.map(b => b.count));
-    return buckets.map(b => ({ ...b, pct: (b.count / max) * 100 }));
-  });
   protected readonly isCurrentWeek = computed(() => !this.weekOf() || this.weekOf()! >= isoDate(new Date()));
 
   protected setTab(tab: Tab): void {
     this.tab.set(tab);
-    void this.router.navigate([], { queryParams: { tab: tab === 'overview' ? null : tab }, replaceUrl: true });
+    void this.router.navigate([], { queryParams: { tab: tab === 'weekly' ? null : tab }, replaceUrl: true });
   }
 
   protected shiftWeek(days: number): void {
@@ -79,7 +70,6 @@ export default class ProgressPage {
     return new Intl.DateTimeFormat(this.i18n.locale(), { weekday: 'short' }).format(new Date(`${date}T00:00:00`));
   }
 
-  protected achievementText(a: Achievement): string { return this.i18n.reason('achievements', a.code, a.params); }
   protected suggestionText(s: Reason): string { return this.i18n.reason('weekly.codes', s.code, s.params); }
   protected suggestionLink(s: Reason): { link: unknown[]; query?: Record<string, unknown> } | null {
     switch (s.code) {
@@ -97,11 +87,31 @@ export default class ProgressPage {
     try {
       await this.api.completeReview(item.topicId, confidence);
       this.toast.success(this.i18n.t('review.reviewed'));
-      await Promise.all([this.reviews.reload(), this.report.reload()]);
+      await this.reviews.reload();
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
     } finally {
       this.reviewing.set(null);
+    }
+  }
+
+  /** Deletes a logged study session after asking; its minutes leave the weekly totals. */
+  protected async deleteSession(s: StudySession): Promise<void> {
+    const ok = await this.confirm.ask({
+      title: this.i18n.t('sessions.deleteTitle'), message: this.i18n.t('sessions.deleteMessage'),
+      confirmText: this.i18n.t('sessions.delete'), danger: true,
+    });
+    if (!ok) return;
+    this.deleting.set(s.id);
+    try {
+      await this.api.deleteSession(s.id);
+      this.sessions.update(list => list.filter(x => x.id !== s.id));
+      this.toast.info(this.i18n.t('sessions.deleted'));
+      void this.weekly.reload();
+    } catch (e) {
+      this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
+    } finally {
+      this.deleting.set(null);
     }
   }
 

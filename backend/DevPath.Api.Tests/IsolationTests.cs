@@ -77,6 +77,22 @@ public class IsolationTests(ApiFactory factory) : IClassFixture<ApiFactory>, IAs
     }
 
     [Fact]
+    public async Task Deleting_a_session_removes_it_from_the_list_and_the_weekly_minutes()
+    {
+        var owner = await factory.CreateUserClientAsync();
+        var today = DateTime.Today.ToString("yyyy-MM-dd");
+        var keep = await owner.PostAsJsonAsync("/api/study-sessions", new { topicId = 2, actualMinutes = 20, sessionDate = today });
+        var wrong = await owner.PostAsJsonAsync("/api/study-sessions", new { topicId = 3, actualMinutes = 600, sessionDate = today });
+        keep.EnsureSuccessStatusCode();
+        var wrongId = (await Json(wrong))["id"]!.GetValue<int>();
+        Assert.Equal(620, (await Json(await owner.GetAsync("/api/progress/weekly")))["minutesStudied"]!.GetValue<int>());
+
+        Assert.Equal(HttpStatusCode.NoContent, (await owner.DeleteAsync($"/api/study-sessions/{wrongId}")).StatusCode);
+        Assert.Single((await Json(await owner.GetAsync("/api/study-sessions"))).AsArray());
+        Assert.Equal(20, (await Json(await owner.GetAsync("/api/progress/weekly")))["minutesStudied"]!.GetValue<int>());
+    }
+
+    [Fact]
     public async Task Projects_practice_interviews_and_preferences_are_per_account()
     {
         await _a.PutAsJsonAsync("/api/project-tasks/1/progress", new { status = "Completed" });

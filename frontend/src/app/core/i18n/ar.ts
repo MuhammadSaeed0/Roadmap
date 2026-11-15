@@ -9,7 +9,7 @@ export const ar: Translations = {
     guides: 'مكتبة المشاريع',
     dashboard: 'لوحة المعلومات', roadmap: 'خارطة طريقي', library: 'مكتبة التعلم', projects: 'المشاريع الرئيسية',
     practice: 'مختبر التدريب', interviews: 'التحضير للمقابلات', resources: 'المصادر', notes: 'ملاحظاتي',
-    progress: 'التقدم والتحليلات', career: 'الجاهزية المهنية', settings: 'الإعدادات', search: 'بحث',
+    progress: 'المراجعة والجلسات', career: 'الجاهزية المهنية', settings: 'الإعدادات', search: 'بحث',
     learn: 'تعلّم', build: 'ابنِ وتدرّب', track: 'تقدّمي', manage: 'الإدارة', admin: 'لوحة الإدارة',
     playground: 'ساحة البرمجة', videos: 'مكتبة الفيديوهات', cv: 'منشئ السيرة الذاتية', skills: 'مستوى المطوّر', challenges: 'التحديات',
     watch: 'شاهد واقرأ', prepare: 'المقابلات والملاحظات', account: 'الحساب',
@@ -422,13 +422,18 @@ export const ar: Translations = {
     selectNote: 'اختر ملاحظة أو أنشئ ملاحظة جديدة.', updated: 'آخر تحديث {date}', choose: 'اختر…', unsaved: 'لديك تغييرات غير محفوظة.',
   },
   progress: {
-    title: 'التقدم والتحليلات', tabs: { overview: 'نظرة عامة', weekly: 'المراجعة الأسبوعية', review: 'قائمة المراجعة' },
+    title: 'المراجعة والجلسات', tabs: { weekly: 'المراجعة الأسبوعية', review: 'قائمة المراجعة', sessions: 'جلسات الدراسة' },
     confidence: 'توزيع مستوى الثقة', practice: 'إنجاز التمارين',
     interviews: 'التحضير للمقابلات', weeklyStudy: 'وقت الدراسة أسبوعيًا', achievements: 'الإنجازات الأخيرة',
     noAchievements: 'تظهر الإنجازات عند إكمال المواضيع والمراحل والتمارين.', weakAreas: 'نقاط ضعف تحتاج إلى مراجعة',
     noWeak: 'لا توجد نقاط ضعف حاليًا.',
     separate: 'يُعرض إكمال المواضيع والثقة والمشاريع والتحضير للمقابلات بشكل منفصل عمدًا، فالرقم الواحد المجمّع يخفي الفجوات.',
     totalStudied: 'إجمالي وقت الدراسة',
+  },
+  sessions: {
+    title: 'جلسات الدراسة المسجّلة', total: '{n} جلسة', empty: 'لا توجد جلسات دراسة بعد. سجّل جلسة من زر + في أعلى الصفحة.',
+    general: 'دراسة عامة', delete: 'حذف', deleteTitle: 'حذف هذه الجلسة؟',
+    deleteMessage: 'ستُحذف دقائقها من وقت دراستك، ولا يمكن التراجع عن ذلك.', deleted: 'حُذفت الجلسة',
   },
   weekly: {
     title: 'أسبوع {start}', previous: 'الأسبوع السابق', next: 'الأسبوع التالي', minutes: 'وقت الدراسة', vsLast: 'الأسبوع الماضي: {n} دقيقة',
@@ -489,7 +494,7 @@ export const ar: Translations = {
     portfolio: 'قائمة تحقق معرض الأعمال', portfolioIntro: 'علّم كل بند عندما يحتوي مستودعك عليه. لا حاجة للاتصال بـ GitHub.',
   },
   devLevel: {
-    tabs: { level: 'مستواك', career: 'الجاهزية للعمل' },
+    tabs: { level: 'مستواك', progress: 'التقدم', career: 'الجاهزية للعمل' },
     title: 'مستوى المطوّر', subtitle: 'مستواك مما أثبتّه فعلًا من اختبارات وتمارين ومشاريع ومراجعات، لا من الوقت الذي قضيته.',
     currentLevel: 'المستوى الحالي', overall: 'الكفاءة الإجمالية', overallLine: 'الكفاءة الإجمالية {score} من 100', xpLine: '{xp} نقطة خبرة',
     progressTo: 'التقدم نحو {level}', topLevel: 'وصلت إلى أعلى مستوى. حافظ على مهاراتك بفحوص المهارات أدناه.',

@@ -7,7 +7,7 @@ export const en = {
     guides: 'Project library',
     dashboard: 'Dashboard', roadmap: 'My Roadmap', library: 'Learning Library', projects: 'Main Projects',
     practice: 'Practice Lab', interviews: 'Interview Preparation', resources: 'Resources', notes: 'My Notes',
-    progress: 'Progress & Analytics', career: 'Career Readiness', settings: 'Settings', search: 'Search',
+    progress: 'Reviews & Sessions', career: 'Career Readiness', settings: 'Settings', search: 'Search',
     learn: 'Learn', build: 'Build & practise', track: 'My progress', manage: 'Manage', admin: 'Administration',
     playground: 'Code Playground', videos: 'Video Library', cv: 'CV Builder', skills: 'Developer Level', challenges: 'Challenges',
     watch: 'Watch & read', prepare: 'Interviews & notes', account: 'Account',
@@ -420,13 +420,18 @@ export const en = {
     selectNote: 'Select a note or create a new one.', updated: 'Updated {date}', choose: 'Choose…', unsaved: 'You have unsaved changes.',
   },
   progress: {
-    title: 'Progress & Analytics', tabs: { overview: 'Overview', weekly: 'Weekly review', review: 'Review queue' },
+    title: 'Reviews & Sessions', tabs: { weekly: 'Weekly review', review: 'Review queue', sessions: 'Study sessions' },
     confidence: 'Confidence distribution', practice: 'Practice completion',
     interviews: 'Interview preparation', weeklyStudy: 'Study time by week', achievements: 'Recent achievements',
     noAchievements: 'Achievements appear as you complete topics, milestones and exercises.', weakAreas: 'Weak areas needing review',
     noWeak: 'No weak areas right now.',
     separate: 'Topic completion, confidence, projects and interview preparation are shown separately on purpose — one combined number would hide gaps.',
     totalStudied: 'Total study time',
+  },
+  sessions: {
+    title: 'Logged study sessions', total: '{n} sessions', empty: 'No study sessions yet. Log one with the + button at the top.',
+    general: 'General study', delete: 'Delete', deleteTitle: 'Delete this session?',
+    deleteMessage: 'Its minutes are removed from your study time. This can’t be undone.', deleted: 'Session deleted',
   },
   weekly: {
     title: 'Week of {start}', previous: 'Previous week', next: 'Next week', minutes: 'Time studied', vsLast: 'Last week: {n} min',
@@ -487,7 +492,7 @@ export const en = {
     portfolio: 'Portfolio checklist', portfolioIntro: 'Tick each item when your repository has it. No GitHub connection needed.',
   },
   devLevel: {
-    tabs: { level: 'Your level', career: 'Job readiness' },
+    tabs: { level: 'Your level', progress: 'Progress', career: 'Job readiness' },
     title: 'Developer Level', subtitle: 'Your level from what you have actually demonstrated: quizzes, exercises, projects and reviews, not time spent.',
     currentLevel: 'Current level', overall: 'Overall competency', overallLine: 'Overall competency {score}/100', xpLine: '{xp} XP',
     progressTo: 'Progress to {level}', topLevel: 'You have reached the top level. Keep your skills fresh with the skill checks below.',
