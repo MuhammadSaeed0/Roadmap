@@ -1,0 +1,1107 @@
+[
+ {
+  "key": "git-portfolio-repo",
+  "skill": "Git",
+  "level": "Beginner",
+  "hours": 3,
+  "titleEn": "Your portfolio repository from scratch",
+  "titleAr": "مستودع معرض أعمالك من الصفر",
+  "summaryEn": "Create a personal portfolio repository with Git and GitHub: commits with good messages, a .gitignore, a README profile, and a simple website published with GitHub Pages.",
+  "summaryAr": "أنشئ مستودعًا لمعرض أعمالك الشخصي بـ Git وGitHub: commits برسائل جيدة، و.gitignore، وملف README للملف الشخصي، وموقع بسيط منشور بـ GitHub Pages.",
+  "techStack": "Git · GitHub · Markdown · GitHub Pages",
+  "goalsEn": [
+   "Configure Git and understand the working tree, staging area and history",
+   "Write clear commit messages",
+   "Connect a local repository to GitHub and push",
+   "Publish a static site with GitHub Pages"
+  ],
+  "goalsAr": [
+   "إعداد Git وفهم شجرة العمل ومنطقة التجهيز والسجل",
+   "كتابة رسائل commit واضحة",
+   "ربط مستودع محلي بـ GitHub والرفع إليه",
+   "نشر موقع ثابت بـ GitHub Pages"
+  ],
+  "requirementsEn": [
+   "A GitHub profile README (repository named like your username)",
+   "A portfolio repository with index.html, style.css and an images folder",
+   "At least 8 small commits with meaningful messages",
+   "A .gitignore that keeps editor and OS files out",
+   "The site is live on https://<username>.github.io/<repo>"
+  ],
+  "requirementsAr": [
+   "ملف README للملف الشخصي على GitHub (مستودع بالاسم نفسه لاسم المستخدم)",
+   "مستودع لمعرض الأعمال فيه index.html وstyle.css ومجلد للصور",
+   "8 commits صغيرة على الأقل برسائل ذات معنى",
+   "ملف .gitignore يُبقي ملفات المحرر ونظام التشغيل خارج المستودع",
+   "الموقع منشور على https://<username>.github.io/<repo>"
+  ],
+  "acceptanceEn": [
+   "`git log --oneline` reads like a short story of the project",
+   "No .DS_Store, Thumbs.db or .vscode files are in the repository",
+   "The profile README shows on your GitHub profile page"
+  ],
+  "acceptanceAr": [
+   "`git log --oneline` يُقرأ كقصة قصيرة للمشروع",
+   "لا توجد ملفات .DS_Store أو Thumbs.db أو .vscode في المستودع",
+   "ملف README للملف الشخصي يظهر في صفحة ملفك على GitHub"
+  ],
+  "stretchEn": [
+   "Add a custom domain",
+   "Add a projects section that links to your other repositories",
+   "Sign your commits with an SSH key"
+  ],
+  "stretchAr": [
+   "أضف نطاقًا مخصصًا",
+   "أضف قسم مشاريع يربط بمستودعاتك الأخرى",
+   "وقّع commits الخاصة بك بمفتاح SSH"
+  ],
+  "steps": [
+   {
+    "titleEn": "Install and configure Git",
+    "titleAr": "ثبّت Git واضبطه",
+    "bodyEn": "Install Git and run `git config --global user.name \"Your Name\"`, `git config --global user.email \"you@example.com\"` and `git config --global init.defaultBranch main`. Create a GitHub account if you do not have one.\n\nUse the same email in Git and GitHub so your commits link to your profile.",
+    "bodyAr": "ثبّت Git وشغّل `git config --global user.name \"Your Name\"` و`git config --global user.email \"you@example.com\"` و`git config --global init.defaultBranch main`. وأنشئ حسابًا على GitHub إن لم يكن لديك.\n\nاستخدم البريد نفسه في Git وGitHub لترتبط commits بملفك الشخصي.",
+    "hintsEn": [
+     "GitHub offers a private \"noreply\" email if you do not want to publish yours.",
+     "Check your settings with `git config --list`."
+    ],
+    "hintsAr": [
+     "GitHub يقدّم بريد \"noreply\" خاصًا إن لم ترد نشر بريدك.",
+     "تحقق من إعداداتك بـ `git config --list`."
+    ],
+    "key": "git-portfolio-repo-configure"
+   },
+   {
+    "titleEn": "Create the repository and first commit",
+    "titleAr": "أنشئ المستودع وأول commit",
+    "bodyEn": "Make a folder `portfolio`, run `git init`, create `index.html` with your name and a heading. Run `git status` (the file is untracked), `git add index.html`, `git status` again (staged), then `git commit -m \"Add home page with name\"`.\n\nRepeat `git status` often: it always tells you what Git sees.",
+    "bodyAr": "أنشئ مجلد `portfolio`، وشغّل `git init`، وأنشئ `index.html` فيه اسمك وعنوان. شغّل `git status` (الملف غير متتبَّع)، ثم `git add index.html`، ثم `git status` مرة أخرى (مُجهّز)، ثم `git commit -m \"Add home page with name\"`.\n\nكرّر `git status` كثيرًا، فهو يخبرك دائمًا بما يراه Git.",
+    "hintsEn": [
+     "Three places: working tree (your files), staging area (next commit), repository (history).",
+     "Use the imperative mood: \"Add\", \"Fix\", \"Update\", not \"Added\"."
+    ],
+    "hintsAr": [
+     "ثلاثة أماكن: شجرة العمل (ملفاتك)، ومنطقة التجهيز (الـ commit التالي)، والمستودع (السجل).",
+     "استخدم صيغة الأمر: \"Add\" و\"Fix\" و\"Update\"، لا \"Added\"."
+    ],
+    "key": "git-portfolio-repo-init"
+   },
+   {
+    "titleEn": "Ignore files that do not belong",
+    "titleAr": "تجاهل الملفات التي لا تنتمي",
+    "bodyEn": "Create `.gitignore` with lines like `.DS_Store`, `Thumbs.db`, `.vscode/`, `*.log`. Commit it. Create a test file `debug.log` and check `git status` does not show it.\n\nIf you committed something by mistake, `git rm --cached file` removes it from Git but keeps it on disk.",
+    "bodyAr": "أنشئ `.gitignore` بأسطر مثل `.DS_Store` و`Thumbs.db` و`.vscode/` و`*.log`، واعمل له commit. وأنشئ ملف اختبار `debug.log` وتحقق أن `git status` لا يعرضه.\n\nإذا رفعت شيئًا بالخطأ فإن `git rm --cached file` يحذفه من Git ويُبقيه على القرص.",
+    "hintsEn": [
+     "github.com/github/gitignore has templates for every language.",
+     "Never commit passwords or keys — ignore files like `.env`."
+    ],
+    "hintsAr": [
+     "github.com/github/gitignore فيه قوالب لكل لغة.",
+     "لا ترفع كلمات المرور أو المفاتيح أبدًا، وتجاهل ملفات مثل `.env`."
+    ],
+    "key": "git-portfolio-repo-gitignore"
+   },
+   {
+    "titleEn": "Build the site in small commits",
+    "titleAr": "ابنِ الموقع بـ commits صغيرة",
+    "bodyEn": "Add sections one at a time — About, Skills, Projects, Contact — and the CSS. Commit after each meaningful change with a message that says what and why when it is not obvious.\n\nUse `git diff` before staging and `git diff --staged` before committing to review what you are saving.",
+    "bodyAr": "أضف الأقسام واحدًا تلو الآخر: نبذة عني، والمهارات، والمشاريع، والتواصل، ثم الـ CSS. واعمل commit بعد كل تغيير ذي معنى برسالة تقول ماذا تغيّر ولماذا إن لم يكن واضحًا.\n\nاستخدم `git diff` قبل التجهيز و`git diff --staged` قبل الـ commit لتراجع ما تحفظه.",
+    "hintsEn": [
+     "`git add -p` lets you stage parts of a file — great for keeping commits focused.",
+     "A commit should do one thing; if your message needs \"and\", consider two commits."
+    ],
+    "hintsAr": [
+     "`git add -p` يسمح لك بتجهيز أجزاء من ملف، وهو ممتاز لإبقاء الـ commits مركّزة.",
+     "الـ commit يجب أن يفعل شيئًا واحدًا، فإن احتاجت رسالتك إلى \"و\" ففكّر في commitين."
+    ],
+    "key": "git-portfolio-repo-build"
+   },
+   {
+    "titleEn": "Push to GitHub",
+    "titleAr": "ارفع إلى GitHub",
+    "bodyEn": "Create an empty repository `portfolio` on GitHub (no README, so histories do not clash). Connect it with `git remote add origin https://github.com/<you>/portfolio.git` and push with `git push -u origin main`.\n\nOpen the repository page and click through your commits.",
+    "bodyAr": "أنشئ مستودعًا فارغًا باسم `portfolio` على GitHub (بلا README حتى لا تتعارض السجلات). واربطه بـ `git remote add origin https://github.com/<you>/portfolio.git` وارفع بـ `git push -u origin main`.\n\nافتح صفحة المستودع وتصفح commits الخاصة بك.",
+    "hintsEn": [
+     "GitHub needs a personal access token or SSH key instead of your password.",
+     "`-u` remembers the remote branch, so next time `git push` is enough."
+    ],
+    "hintsAr": [
+     "GitHub يحتاج personal access token أو مفتاح SSH بدل كلمة مرورك.",
+     "`-u` يتذكر الفرع البعيد، فيكفي `git push` في المرة التالية."
+    ],
+    "key": "git-portfolio-repo-github"
+   },
+   {
+    "titleEn": "Publish with GitHub Pages",
+    "titleAr": "انشر بـ GitHub Pages",
+    "bodyEn": "In the repository Settings → Pages, choose \"Deploy from a branch\", branch `main`, folder `/ (root)`. After a minute the site is live at `https://<you>.github.io/portfolio/`.\n\nEvery push to main now updates the site.",
+    "bodyAr": "في إعدادات المستودع ← Pages اختر \"Deploy from a branch\"، والفرع `main`، والمجلد `/ (root)`. وبعد دقيقة يصبح الموقع منشورًا على `https://<you>.github.io/portfolio/`.\n\nكل push إلى main يحدّث الموقع الآن.",
+    "hintsEn": [
+     "Use relative paths (`images/me.jpg`), not `/images/me.jpg`, because the site lives under /portfolio/.",
+     "Check the Actions tab if the site does not update."
+    ],
+    "hintsAr": [
+     "استخدم مسارات نسبية (`images/me.jpg`) لا `/images/me.jpg`، لأن الموقع يعيش تحت /portfolio/.",
+     "تحقق من تبويب Actions إن لم يتحدث الموقع."
+    ],
+    "key": "git-portfolio-repo-pages"
+   },
+   {
+    "titleEn": "Profile README",
+    "titleAr": "ملف README للملف الشخصي",
+    "bodyEn": "Create a repository named exactly like your username. Its README.md appears on your profile. Write a short intro, what you are learning, links to your portfolio site and best projects.\n\nEdit it locally: clone it, change, commit, push — practise the full cycle again.",
+    "bodyAr": "أنشئ مستودعًا باسم مطابق لاسم المستخدم الخاص بك، وسيظهر ملف README.md الخاص به في ملفك الشخصي. اكتب مقدمة قصيرة، وما تتعلمه، وروابط موقع معرض أعمالك وأفضل مشاريعك.\n\nعدّله محليًا: انسخه، وغيّر، واعمل commit، وارفع، لتتدرب على الدورة الكاملة مرة أخرى.",
+    "hintsEn": [
+     "`git clone https://github.com/<you>/<you>.git`.",
+     "Keep it short and honest; recruiters skim."
+    ],
+    "hintsAr": [
+     "`git clone https://github.com/<you>/<you>.git`.",
+     "اجعله قصيرًا وصادقًا، فمسؤولو التوظيف يتصفحون بسرعة."
+    ],
+    "key": "git-portfolio-repo-profile"
+   },
+   {
+    "titleEn": "Explore your history",
+    "titleAr": "استكشف سجلك",
+    "bodyEn": "Try: `git log --oneline --graph`, `git show <hash>`, `git log -p index.html`, `git blame style.css`. Change a file, then undo the change with `git restore file`. Stage a file, then unstage it with `git restore --staged file`.\n\nKnowing how to look back and undo safely makes you confident with Git.",
+    "bodyAr": "جرّب: `git log --oneline --graph`، و`git show <hash>`، و`git log -p index.html`، و`git blame style.css`. وغيّر ملفًا ثم تراجع عن التغيير بـ `git restore file`. وجهّز ملفًا ثم ألغِ تجهيزه بـ `git restore --staged file`.\n\nمعرفة كيف تنظر إلى الوراء وتتراجع بأمان تجعلك واثقًا مع Git.",
+    "hintsEn": [
+     "Write a \"Git cheat sheet\" in the repository with the commands you used.",
+     "Never use `git push --force` on main."
+    ],
+    "hintsAr": [
+     "اكتب \"ورقة مرجعية لـ Git\" في المستودع بالأوامر التي استخدمتها.",
+     "لا تستخدم `git push --force` على main أبدًا."
+    ],
+    "key": "git-portfolio-repo-history"
+   }
+  ]
+ },
+ {
+  "key": "git-branches-conflicts",
+  "skill": "Git",
+  "level": "Beginner",
+  "hours": 4,
+  "titleEn": "Branches, pull requests and merge conflicts",
+  "titleAr": "الفروع وطلبات السحب وتعارضات الدمج",
+  "summaryEn": "Practise the daily workflow of a developer on your own project: feature branches, pull requests on GitHub, resolving merge conflicts on purpose, and keeping your branch up to date.",
+  "summaryAr": "تدرّب على سير العمل اليومي للمطور في مشروعك الخاص: فروع الميزات، وطلبات السحب على GitHub، وحل تعارضات الدمج عن قصد، وإبقاء فرعك محدّثًا.",
+  "techStack": "Git · GitHub pull requests · VS Code merge editor",
+  "goalsEn": [
+   "Create, switch and delete branches",
+   "Open, review and merge pull requests",
+   "Resolve merge conflicts calmly",
+   "Keep a branch up to date with main"
+  ],
+  "goalsAr": [
+   "إنشاء الفروع والتنقل بينها وحذفها",
+   "فتح طلبات السحب ومراجعتها ودمجها",
+   "حل تعارضات الدمج بهدوء",
+   "إبقاء الفرع محدّثًا مع main"
+  ],
+  "requirementsEn": [
+   "Use your portfolio repository (or any small project)",
+   "Three feature branches, each merged through a pull request",
+   "Create and resolve at least two merge conflicts on purpose",
+   "One pull request reviewed with comments and a requested change before merging",
+   "Branches deleted after merging"
+  ],
+  "requirementsAr": [
+   "استخدم مستودع معرض أعمالك (أو أي مشروع صغير)",
+   "ثلاثة فروع ميزات، يُدمج كل منها عبر طلب سحب",
+   "أنشئ تعارضَي دمج على الأقل عن قصد وحلّهما",
+   "طلب سحب واحد يُراجع بتعليقات وتغيير مطلوب قبل الدمج",
+   "حذف الفروع بعد الدمج"
+  ],
+  "acceptanceEn": [
+   "The network graph on GitHub shows the branches and merges",
+   "Each PR has a description of what and why",
+   "No conflict markers (<<<<<<<) are left anywhere in the code"
+  ],
+  "acceptanceAr": [
+   "مخطط الشبكة على GitHub يُظهر الفروع وعمليات الدمج",
+   "لكل طلب سحب وصف لما تغيّر ولماذا",
+   "لا توجد علامات تعارض (<<<<<<<) متروكة في أي مكان من الكود"
+  ],
+  "stretchEn": [
+   "Try a squash merge and compare the history",
+   "Use a PR template file",
+   "Ask a friend to review one of your PRs"
+  ],
+  "stretchAr": [
+   "جرّب الدمج بالضغط (squash merge) وقارن السجل",
+   "استخدم ملف قالب لطلبات السحب",
+   "اطلب من صديق مراجعة أحد طلبات السحب الخاصة بك"
+  ],
+  "steps": [
+   {
+    "titleEn": "Your first feature branch",
+    "titleAr": "أول فرع ميزة",
+    "bodyEn": "From an up-to-date main, run `git switch -c feature/contact-form`. Add a contact section, commit twice, and `git push -u origin feature/contact-form`.\n\n`git branch` lists branches; the star marks where you are. Main stays untouched while you work.",
+    "bodyAr": "من main المحدّث شغّل `git switch -c feature/contact-form`. وأضف قسم التواصل، واعمل commitين، ثم `git push -u origin feature/contact-form`.\n\n`git branch` يعرض الفروع، والنجمة تحدد مكانك. ويبقى main كما هو أثناء عملك.",
+    "hintsEn": [
+     "Name branches by type: feature/, fix/, docs/.",
+     "Switch back with `git switch main` and notice the contact section disappears from your files."
+    ],
+    "hintsAr": [
+     "سمِّ الفروع حسب النوع: feature/ وfix/ وdocs/.",
+     "ارجع بـ `git switch main` ولاحظ أن قسم التواصل يختفي من ملفاتك."
+    ],
+    "key": "git-branches-conflicts-branch"
+   },
+   {
+    "titleEn": "Open a pull request",
+    "titleAr": "افتح طلب سحب",
+    "bodyEn": "On GitHub, click \"Compare & pull request\". Write a title and a description: what changed, why, and how to check it (a screenshot helps). Look at the \"Files changed\" tab and read your own diff like a reviewer.\n\nMerge it with \"Create a merge commit\", then delete the branch on GitHub and locally (`git branch -d feature/contact-form`).",
+    "bodyAr": "على GitHub اضغط \"Compare & pull request\". واكتب عنوانًا ووصفًا: ما الذي تغيّر، ولماذا، وكيف يُتحقق منه (والصورة تساعد). وانظر إلى تبويب \"Files changed\" واقرأ الفرق الخاص بك كأنك مراجع.\n\nادمجه بـ \"Create a merge commit\"، ثم احذف الفرع على GitHub ومحليًا (`git branch -d feature/contact-form`).",
+    "hintsEn": [
+     "After merging on GitHub, run `git switch main` and `git pull` to get the merge locally.",
+     "Reviewing your own diff catches leftovers like console.log."
+    ],
+    "hintsAr": [
+     "بعد الدمج على GitHub شغّل `git switch main` و`git pull` لتحصل على الدمج محليًا.",
+     "مراجعة الفرق الخاص بك تكشف البقايا مثل console.log."
+    ],
+    "key": "git-branches-conflicts-pr"
+   },
+   {
+    "titleEn": "Create a conflict on purpose",
+    "titleAr": "أنشئ تعارضًا عن قصد",
+    "bodyEn": "Create `feature/new-title` and change the page heading. Switch to main and change the same heading differently, commit. Now `git merge feature/new-title`: Git stops with a conflict.\n\nOpen the file: between `<<<<<<<`, `=======` and `>>>>>>>` you see both versions. Conflicts are normal; they just need a decision.",
+    "bodyAr": "أنشئ `feature/new-title` وغيّر عنوان الصفحة. ثم انتقل إلى main وغيّر العنوان نفسه بشكل مختلف واعمل commit. الآن `git merge feature/new-title`: يتوقف Git بتعارض.\n\nافتح الملف: بين `<<<<<<<` و`=======` و`>>>>>>>` ترى النسختين. التعارضات طبيعية، وهي تحتاج قرارًا فقط.",
+    "hintsEn": [
+     "`git status` lists the conflicted files under \"Unmerged paths\".",
+     "`git merge --abort` gets you back to before the merge if you panic."
+    ],
+    "hintsAr": [
+     "`git status` يعرض الملفات المتعارضة تحت \"Unmerged paths\".",
+     "`git merge --abort` يعيدك إلى ما قبل الدمج إن ارتبكت."
+    ],
+    "key": "git-branches-conflicts-conflict"
+   },
+   {
+    "titleEn": "Resolve it",
+    "titleAr": "حلّه",
+    "bodyEn": "Edit the file to the final text you want (one version, the other, or a mix) and remove all markers. Or use VS Code's merge editor (Accept Current / Incoming / Both). Then `git add file` and `git commit` to finish the merge.\n\nRun or open the site to check the result still works.",
+    "bodyAr": "عدّل الملف إلى النص النهائي الذي تريده (نسخة، أو الأخرى، أو مزيج منهما) واحذف كل العلامات. أو استخدم محرر الدمج في VS Code (Accept Current / Incoming / Both). ثم `git add file` و`git commit` لإكمال الدمج.\n\nشغّل الموقع أو افتحه لتتحقق أن النتيجة ما زالت تعمل.",
+    "hintsEn": [
+     "Search the project for `<<<<<<<` before committing.",
+     "Resolving is about intent: ask what each side was trying to do."
+    ],
+    "hintsAr": [
+     "ابحث في المشروع عن `<<<<<<<` قبل الـ commit.",
+     "الحل يتعلق بالنية: اسأل ما الذي كانت كل جهة تحاول فعله."
+    ],
+    "key": "git-branches-conflicts-resolve"
+   },
+   {
+    "titleEn": "A conflict inside a pull request",
+    "titleAr": "تعارض داخل طلب سحب",
+    "bodyEn": "Open a PR from a branch that conflicts with main (change the same CSS rule on both). GitHub says \"This branch has conflicts\". Fix it locally: on your branch, `git merge main` (or `git rebase main`), resolve, commit, push. The PR updates and becomes mergeable.\n\nThis is how you will fix most conflicts in real teams.",
+    "bodyAr": "افتح طلب سحب من فرع يتعارض مع main (غيّر قاعدة CSS نفسها في الجهتين). سيقول GitHub \"This branch has conflicts\". أصلحه محليًا: على فرعك نفّذ `git merge main` (أو `git rebase main`)، وحلّ التعارض، واعمل commit، ثم ارفع. سيتحدث طلب السحب ويصبح قابلًا للدمج.\n\nهكذا ستصلح معظم التعارضات في الفرق الحقيقية.",
+    "hintsEn": [
+     "Run `git fetch` first so your local main reference is current: `git merge origin/main`.",
+     "Small, short-lived branches have fewer conflicts."
+    ],
+    "hintsAr": [
+     "شغّل `git fetch` أولًا ليكون مرجع main المحلي محدّثًا: `git merge origin/main`.",
+     "الفروع الصغيرة قصيرة العمر تتعارض أقل."
+    ],
+    "key": "git-branches-conflicts-pr-conflict"
+   },
+   {
+    "titleEn": "Review with requested changes",
+    "titleAr": "مراجعة مع طلب تغييرات",
+    "bodyEn": "Open a third PR. In \"Files changed\", leave line comments as if reviewing someone else (\"Use a variable for this colour\") and submit a review with \"Request changes\" (from a second account or ask a friend). Push a fix commit, reply to the comments, resolve them and merge.\n\nGood reviews are specific, kind and explain why.",
+    "bodyAr": "افتح طلب سحب ثالثًا. وفي \"Files changed\" اترك تعليقات على الأسطر كأنك تراجع عمل غيرك (\"استخدم متغيرًا لهذا اللون\")، وأرسل مراجعة بـ \"Request changes\" (من حساب ثانٍ أو اطلب من صديق). ثم ارفع commit للإصلاح، ورد على التعليقات، وأغلقها، وادمج.\n\nالمراجعات الجيدة محددة ولطيفة وتشرح السبب.",
+    "hintsEn": [
+     "You cannot \"Request changes\" on your own PR; use a comment review instead if you are alone.",
+     "GitHub \"suggestions\" let reviewers propose exact code you can apply with one click."
+    ],
+    "hintsAr": [
+     "لا تستطيع \"Request changes\" على طلب السحب الخاص بك، فاستخدم مراجعة بتعليقات إن كنت وحدك.",
+     "ميزة \"suggestions\" في GitHub تسمح للمراجعين باقتراح كود محدد تطبقه بنقرة واحدة."
+    ],
+    "key": "git-branches-conflicts-review"
+   },
+   {
+    "titleEn": "Clean up and reflect",
+    "titleAr": "نظّف وتأمّل",
+    "bodyEn": "Delete merged branches locally and remotely (`git fetch --prune`). Look at Insights → Network on GitHub to see your branches and merges. Write in the README what you learned about conflicts and reviews.\n\nThese are the exact skills team interviews ask about.",
+    "bodyAr": "احذف الفروع المدموجة محليًا وعن بعد (`git fetch --prune`). وانظر إلى Insights ← Network على GitHub لترى فروعك وعمليات الدمج. واكتب في README ما تعلمته عن التعارضات والمراجعات.\n\nهذه بالضبط المهارات التي تسأل عنها مقابلات العمل الجماعي.",
+    "hintsEn": [
+     "`git branch --merged` lists branches safe to delete.",
+     "Enable \"Automatically delete head branches\" in the repository settings."
+    ],
+    "hintsAr": [
+     "`git branch --merged` يعرض الفروع الآمنة للحذف.",
+     "فعّل \"Automatically delete head branches\" في إعدادات المستودع."
+    ],
+    "key": "git-branches-conflicts-finish"
+   }
+  ]
+ },
+ {
+  "key": "git-team-workflow",
+  "skill": "Git",
+  "level": "Intermediate",
+  "hours": 8,
+  "titleEn": "Set up a team workflow on GitHub",
+  "titleAr": "أعدّ سير عمل جماعيًا على GitHub",
+  "summaryEn": "Turn a repository into a well-run team project: branch protection, required reviews and checks, issue and PR templates, Conventional Commits, project boards, releases with tags and a changelog.",
+  "summaryAr": "حوّل مستودعًا إلى مشروع جماعي منظم جيدًا: حماية الفروع، والمراجعات والفحوص المطلوبة، وقوالب المشكلات وطلبات السحب، وConventional Commits، ولوحات المشاريع، والإصدارات بالوسوم وسجل التغييرات.",
+  "techStack": "Git · GitHub (branch protection, Issues, Projects, Actions, Releases)",
+  "goalsEn": [
+   "Protect main with rules that fit a team",
+   "Organise work with issues, labels and a project board",
+   "Use Conventional Commits and semantic versioning",
+   "Create releases with tags and release notes"
+  ],
+  "goalsAr": [
+   "حماية main بقواعد تناسب الفريق",
+   "تنظيم العمل بالمشكلات والتسميات ولوحة مشروع",
+   "استخدام Conventional Commits والإصدار الدلالي",
+   "إنشاء إصدارات بالوسوم وملاحظات الإصدار"
+  ],
+  "requirementsEn": [
+   "Main protected: PR required, 1 approval, CI must pass, no force pushes",
+   "Issue templates for bug and feature; a PR template with a checklist",
+   "Labels and a GitHub Project board with columns Todo / In progress / Review / Done",
+   "A CI workflow that builds and tests on every PR",
+   "At least 6 issues worked through branches and PRs that close them",
+   "Releases v0.1.0 and v0.2.0 with notes"
+  ],
+  "requirementsAr": [
+   "main محمي: طلب السحب مطلوب، وموافقة واحدة، ونجاح CI، ومنع الرفع بالقوة",
+   "قوالب مشكلات للأخطاء والميزات، وقالب طلب سحب فيه قائمة تحقق",
+   "تسميات ولوحة GitHub Project بأعمدة Todo وIn progress وReview وDone",
+   "مسار CI يبني ويختبر عند كل طلب سحب",
+   "6 مشكلات على الأقل تُنجز عبر فروع وطلبات سحب تغلقها",
+   "الإصداران v0.1.0 وv0.2.0 مع ملاحظات"
+  ],
+  "acceptanceEn": [
+   "A direct push to main is rejected",
+   "A PR with failing tests cannot be merged",
+   "Each merged PR closed its issue automatically (\"Closes #12\")",
+   "Release notes group changes into Features and Fixes"
+  ],
+  "acceptanceAr": [
+   "الرفع المباشر إلى main يُرفض",
+   "طلب السحب الذي تفشل اختباراته لا يمكن دمجه",
+   "كل طلب سحب مدموج أغلق مشكلته تلقائيًا (\"Closes #12\")",
+   "ملاحظات الإصدار تجمع التغييرات في Features وFixes"
+  ],
+  "stretchEn": [
+   "Add CODEOWNERS for automatic reviewers",
+   "Add Dependabot for dependency updates",
+   "Use a merge queue"
+  ],
+  "stretchAr": [
+   "أضف CODEOWNERS لتعيين المراجعين تلقائيًا",
+   "أضف Dependabot لتحديث الاعتماديات",
+   "استخدم merge queue"
+  ],
+  "steps": [
+   {
+    "titleEn": "Pick a project and invite a teammate",
+    "titleAr": "اختر مشروعًا وادعُ زميلًا",
+    "bodyEn": "Use one of your projects with tests (any track). Invite a friend as a collaborator, or create a second GitHub account to play the reviewer.\n\nWrite a CONTRIBUTING.md describing how work flows: issue → branch → PR → review → merge → release.",
+    "bodyAr": "استخدم أحد مشاريعك التي فيها اختبارات (من أي مسار). وادعُ صديقًا كمتعاون، أو أنشئ حساب GitHub ثانيًا لتلعب دور المراجع.\n\nاكتب CONTRIBUTING.md يصف سير العمل: مشكلة ← فرع ← طلب سحب ← مراجعة ← دمج ← إصدار.",
+    "hintsEn": [
+     "Keep CONTRIBUTING short: newcomers should read it in two minutes.",
+     "Include how to run the project and the tests."
+    ],
+    "hintsAr": [
+     "اجعل CONTRIBUTING قصيرًا، فالقادم الجديد يجب أن يقرأه في دقيقتين.",
+     "ضمّن طريقة تشغيل المشروع والاختبارات."
+    ],
+    "key": "git-team-workflow-repo"
+   },
+   {
+    "titleEn": "A CI workflow for pull requests",
+    "titleAr": "مسار CI لطلبات السحب",
+    "bodyEn": "Add `.github/workflows/ci.yml` that runs on `pull_request` and `push` to main: checkout, set up .NET/Node, restore, build, test. Open a PR to see the check appear.\n\nBranch protection will require this check, so give the job a stable name.",
+    "bodyAr": "أضف `.github/workflows/ci.yml` يعمل عند `pull_request` وعند `push` إلى main: checkout، ثم إعداد .NET أو Node، ثم الاستعادة، والبناء، والاختبار. وافتح طلب سحب لترى الفحص يظهر.\n\nحماية الفرع ستشترط هذا الفحص، فأعط المهمة اسمًا ثابتًا.",
+    "hintsEn": [
+     "Cache dependencies to keep CI fast.",
+     "Make the workflow fail on warnings if your build supports it."
+    ],
+    "hintsAr": [
+     "خزّن الاعتماديات مؤقتًا ليبقى CI سريعًا.",
+     "اجعل المسار يفشل عند التحذيرات إن كان بناؤك يدعم ذلك."
+    ],
+    "key": "git-team-workflow-ci"
+   },
+   {
+    "titleEn": "Protect the main branch",
+    "titleAr": "احمِ الفرع الرئيسي",
+    "bodyEn": "In Settings → Rules (rulesets) or Branches, protect `main`: require a pull request, 1 approval, dismiss stale approvals on new commits, require the CI check to pass, require branches to be up to date, block force pushes and deletion.\n\nTry `git push origin main` directly and see it rejected.",
+    "bodyAr": "في الإعدادات ← Rules (rulesets) أو Branches احمِ `main`: اشترط طلب سحب، وموافقة واحدة، وإلغاء الموافقات القديمة عند commits جديدة، ونجاح فحص CI، وأن تكون الفروع محدّثة، وامنع الرفع بالقوة والحذف.\n\nجرّب `git push origin main` مباشرة وشاهده يُرفض.",
+    "hintsEn": [
+     "Rulesets are the newer, more flexible form of branch protection.",
+     "Admins can bypass rules — decide whether to include administrators."
+    ],
+    "hintsAr": [
+     "الـ rulesets هي الصيغة الأحدث والأكثر مرونة لحماية الفروع.",
+     "المشرفون يستطيعون تجاوز القواعد، فقرر هل تشمل القواعد المشرفين."
+    ],
+    "key": "git-team-workflow-protect"
+   },
+   {
+    "titleEn": "Issue and PR templates",
+    "titleAr": "قوالب المشكلات وطلبات السحب",
+    "bodyEn": "Create `.github/ISSUE_TEMPLATE/bug_report.yml` and `feature_request.yml` (issue forms with fields: steps to reproduce, expected, actual), and `.github/pull_request_template.md` with sections What / Why / How to test and a checklist (tests added, docs updated).\n\nTemplates make every issue and PR contain what reviewers need.",
+    "bodyAr": "أنشئ `.github/ISSUE_TEMPLATE/bug_report.yml` و`feature_request.yml` (نماذج مشكلات بحقول: خطوات إعادة الإنتاج، والمتوقع، والفعلي)، و`.github/pull_request_template.md` بأقسام ماذا ولماذا وكيف يُختبر، مع قائمة تحقق (أُضيفت الاختبارات، وحُدّث التوثيق).\n\nالقوالب تجعل كل مشكلة وطلب سحب يحتويان ما يحتاجه المراجعون.",
+    "hintsEn": [
+     "Issue forms (YAML) can make fields required.",
+     "Add a `config.yml` to disable blank issues."
+    ],
+    "hintsAr": [
+     "نماذج المشكلات (YAML) تستطيع جعل الحقول مطلوبة.",
+     "أضف `config.yml` لتعطيل المشكلات الفارغة."
+    ],
+    "key": "git-team-workflow-templates"
+   },
+   {
+    "titleEn": "Labels and a project board",
+    "titleAr": "التسميات ولوحة المشروع",
+    "bodyEn": "Create labels: `bug`, `feature`, `docs`, `good first issue`, `priority: high`. Create a GitHub Project (board view) with Todo / In progress / Review / Done, and add 6 issues you will actually do.\n\nTurn on the built-in workflows so items move when PRs open and merge.",
+    "bodyAr": "أنشئ تسميات: `bug` و`feature` و`docs` و`good first issue` و`priority: high`. وأنشئ GitHub Project (بعرض اللوحة) بأعمدة Todo وIn progress وReview وDone، وأضف 6 مشكلات ستنجزها فعلًا.\n\nفعّل المسارات المدمجة لتتحرك العناصر عند فتح طلبات السحب ودمجها.",
+    "hintsEn": [
+     "Keep issues small enough to finish in a day or two.",
+     "Use milestones for v0.1.0 and v0.2.0."
+    ],
+    "hintsAr": [
+     "اجعل المشكلات صغيرة بما يكفي لإنجازها في يوم أو يومين.",
+     "استخدم milestones للإصدارين v0.1.0 وv0.2.0."
+    ],
+    "key": "git-team-workflow-board"
+   },
+   {
+    "titleEn": "Conventional Commits",
+    "titleAr": "Conventional Commits",
+    "bodyEn": "Write commit messages like `feat: add tag filter`, `fix(api): return 404 for missing book`, `docs: explain setup`, and `feat!:` or a `BREAKING CHANGE:` footer for breaking changes. Reference issues in PR descriptions with `Closes #12`.\n\nThe format lets tools generate changelogs and decide version numbers.",
+    "bodyAr": "اكتب رسائل الـ commits مثل `feat: add tag filter` و`fix(api): return 404 for missing book` و`docs: explain setup`، واستخدم `feat!:` أو تذييل `BREAKING CHANGE:` للتغييرات الكاسرة. واذكر المشكلات في أوصاف طلبات السحب بـ `Closes #12`.\n\nهذه الصيغة تسمح للأدوات بتوليد سجلات التغييرات وتحديد أرقام الإصدارات.",
+    "hintsEn": [
+     "With squash merging, the PR title becomes the commit — write PR titles in the same format.",
+     "feat → minor version, fix → patch, breaking → major."
+    ],
+    "hintsAr": [
+     "مع الدمج بالضغط يصبح عنوان طلب السحب هو الـ commit، فاكتب عناوين طلبات السحب بالصيغة نفسها.",
+     "feat ← إصدار فرعي (minor)، وfix ← رقعة (patch)، والكاسر ← رئيسي (major)."
+    ],
+    "key": "git-team-workflow-commits"
+   },
+   {
+    "titleEn": "Work through the issues",
+    "titleAr": "أنجز المشكلات",
+    "bodyEn": "For each issue: create a branch, commit, open a PR using the template with \"Closes #n\", get the review, address comments, merge when CI is green. Watch the board update itself.\n\nDo at least one PR where CI fails first and you fix it before merging.",
+    "bodyAr": "لكل مشكلة: أنشئ فرعًا، واعمل commit، وافتح طلب سحب بالقالب مع \"Closes #n\"، واحصل على المراجعة، وعالج التعليقات، وادمج عندما يكون CI أخضر. وشاهد اللوحة تتحدث بنفسها.\n\nنفّذ طلب سحب واحدًا على الأقل يفشل فيه CI أولًا ثم تصلحه قبل الدمج.",
+    "hintsEn": [
+     "Keep PRs under ~300 changed lines so reviews stay quick.",
+     "Re-request review after pushing fixes."
+    ],
+    "hintsAr": [
+     "أبقِ طلبات السحب تحت نحو 300 سطر متغير لتبقى المراجعات سريعة.",
+     "أعد طلب المراجعة بعد رفع الإصلاحات."
+    ],
+    "key": "git-team-workflow-work"
+   },
+   {
+    "titleEn": "Tags and releases",
+    "titleAr": "الوسوم والإصدارات",
+    "bodyEn": "When the v0.1.0 milestone is done, tag main: `git tag -a v0.1.0 -m \"First release\"` and `git push origin v0.1.0`. Create a GitHub Release from the tag with \"Generate release notes\", then edit them into Features and Fixes. Repeat for v0.2.0.\n\nConfigure `.github/release.yml` so generated notes group PRs by label automatically.",
+    "bodyAr": "عندما يكتمل الـ milestone الخاص بـ v0.1.0 ضع وسمًا على main: `git tag -a v0.1.0 -m \"First release\"` ثم `git push origin v0.1.0`. وأنشئ GitHub Release من الوسم بـ \"Generate release notes\"، ثم عدّلها إلى Features وFixes. وكرّر للإصدار v0.2.0.\n\nاضبط `.github/release.yml` لتجمع الملاحظات المولّدة طلبات السحب حسب التسمية تلقائيًا.",
+    "hintsEn": [
+     "Annotated tags (-a) store the author and date; prefer them for releases.",
+     "Keep a CHANGELOG.md in the repository too."
+    ],
+    "hintsAr": [
+     "الوسوم المشروحة (-a) تخزّن الكاتب والتاريخ، ففضّلها للإصدارات.",
+     "احتفظ بـ CHANGELOG.md في المستودع أيضًا."
+    ],
+    "key": "git-team-workflow-release"
+   },
+   {
+    "titleEn": "Document the workflow",
+    "titleAr": "وثّق سير العمل",
+    "bodyEn": "Update CONTRIBUTING.md with the final rules, add a section to the README with screenshots of the board, a protected-branch rejection and a release page.\n\nYou can now describe, with evidence, how you work in a team.",
+    "bodyAr": "حدّث CONTRIBUTING.md بالقواعد النهائية، وأضف قسمًا إلى README فيه صور للوحة، ولرفض الفرع المحمي، ولصفحة الإصدار.\n\nتستطيع الآن أن تصف بالأدلة كيف تعمل ضمن فريق.",
+    "hintsEn": [
+     "Recruiters often look at how candidates use issues and PRs.",
+     "Link a PR that shows a good review discussion."
+    ],
+    "hintsAr": [
+     "مسؤولو التوظيف كثيرًا ما ينظرون إلى طريقة استخدام المرشحين للمشكلات وطلبات السحب.",
+     "اربط طلب سحب يُظهر نقاش مراجعة جيدًا."
+    ],
+    "key": "git-team-workflow-finish"
+   }
+  ]
+ },
+ {
+  "key": "git-history-surgery",
+  "skill": "Git",
+  "level": "Intermediate",
+  "hours": 6,
+  "titleEn": "Rewrite, search and recover history",
+  "titleAr": "إعادة كتابة السجل والبحث فيه واستعادته",
+  "summaryEn": "A hands-on lab with the Git commands people fear: interactive rebase, squash and fixup, cherry-pick, revert, bisect to find a bug, and reflog to recover \"lost\" work.",
+  "summaryAr": "مختبر عملي لأوامر Git التي يخشاها الناس: الـ rebase التفاعلي، والـ squash والـ fixup، والـ cherry-pick، والـ revert، والـ bisect لإيجاد خطأ، والـ reflog لاستعادة العمل \"المفقود\".",
+  "techStack": "Git (rebase -i, cherry-pick, revert, bisect, reflog, stash)",
+  "goalsEn": [
+   "Clean up a branch before a PR with interactive rebase",
+   "Undo safely on shared branches with revert",
+   "Find the commit that introduced a bug with bisect",
+   "Recover lost commits and branches with reflog"
+  ],
+  "goalsAr": [
+   "تنظيف فرع قبل طلب السحب بالـ rebase التفاعلي",
+   "التراجع بأمان على الفروع المشتركة بـ revert",
+   "إيجاد الـ commit الذي أدخل خطأ بـ bisect",
+   "استعادة الـ commits والفروع المفقودة بـ reflog"
+  ],
+  "requirementsEn": [
+   "A lab repository with a script that creates a messy history",
+   "A branch cleaned with rebase -i (squash, reword, reorder, drop)",
+   "A hotfix cherry-picked to a release branch",
+   "A bad merged commit undone with revert",
+   "The bug-introducing commit found with `git bisect run`",
+   "A deleted branch recovered with reflog",
+   "LAB.md documenting each exercise with the commands"
+  ],
+  "requirementsAr": [
+   "مستودع مختبر فيه سكربت ينشئ سجلًا فوضويًا",
+   "فرع منظّف بـ rebase -i (squash وreword وإعادة ترتيب وdrop)",
+   "إصلاح عاجل منقول بـ cherry-pick إلى فرع إصدار",
+   "commit سيئ مدموج أُلغي أثره بـ revert",
+   "الـ commit الذي أدخل الخطأ وُجد بـ `git bisect run`",
+   "فرع محذوف استُعيد بـ reflog",
+   "LAB.md يوثّق كل تمرين مع الأوامر"
+  ],
+  "acceptanceEn": [
+   "The cleaned branch has 3 meaningful commits instead of 12 noisy ones",
+   "Bisect identifies the exact commit automatically with a test script",
+   "The recovered branch contains all its commits",
+   "You can explain when rebase is dangerous and when revert is the right choice"
+  ],
+  "acceptanceAr": [
+   "الفرع المنظّف فيه 3 commits ذات معنى بدل 12 commit مزعجة",
+   "الـ bisect يحدد الـ commit بالضبط تلقائيًا بسكربت اختبار",
+   "الفرع المستعاد يحتوي كل commits الخاصة به",
+   "تستطيع شرح متى يكون الـ rebase خطيرًا ومتى يكون الـ revert هو الخيار الصحيح"
+  ],
+  "stretchEn": [
+   "Use `git worktree` to work on two branches at once",
+   "Split one commit into two with rebase -i and `git reset`",
+   "Remove a leaked secret from history with git filter-repo"
+  ],
+  "stretchAr": [
+   "استخدم `git worktree` للعمل على فرعين في الوقت نفسه",
+   "قسّم commit واحدًا إلى اثنين بـ rebase -i و`git reset`",
+   "احذف سرًا مسرّبًا من السجل بـ git filter-repo"
+  ],
+  "steps": [
+   {
+    "titleEn": "Build the lab repository",
+    "titleAr": "ابنِ مستودع المختبر",
+    "bodyEn": "Write a small script (bash or PowerShell) that creates a repository with a tiny program (e.g. a function `add(a, b)` and a test script) and 30 commits, where commit 17 secretly breaks `add`. Add a feature branch with 12 noisy commits (\"wip\", \"fix typo\", \"oops\").\n\nRe-running the script gives you a fresh lab whenever you mess up — so experiment freely.",
+    "bodyAr": "اكتب سكربتًا صغيرًا (bash أو PowerShell) ينشئ مستودعًا فيه برنامج صغير (مثل دالة `add(a, b)` وسكربت اختبار) و30 commit، حيث يكسر الـ commit رقم 17 الدالة `add` سرًا. وأضف فرع ميزة فيه 12 commit مزعجة (\"wip\" و\"fix typo\" و\"oops\").\n\nإعادة تشغيل السكربت تعطيك مختبرًا جديدًا متى أفسدت شيئًا، فجرّب بحرية.",
+    "hintsEn": [
+     "Use `GIT_AUTHOR_DATE` and `GIT_COMMITTER_DATE` to give commits different dates.",
+     "Keep the lab out of your real projects."
+    ],
+    "hintsAr": [
+     "استخدم `GIT_AUTHOR_DATE` و`GIT_COMMITTER_DATE` لتعطي الـ commits تواريخ مختلفة.",
+     "أبقِ المختبر بعيدًا عن مشاريعك الحقيقية."
+    ],
+    "key": "git-history-surgery-lab"
+   },
+   {
+    "titleEn": "Clean a branch with interactive rebase",
+    "titleAr": "نظّف فرعًا بالـ rebase التفاعلي",
+    "bodyEn": "On the noisy branch run `git rebase -i main`. In the editor, mark commits with `squash`/`fixup` to merge them, `reword` to fix messages, reorder lines to reorder commits, and `drop` to remove one. Aim for 3 clear commits.\n\nThen learn the shortcut: `git commit --fixup <hash>` followed by `git rebase -i --autosquash main`.",
+    "bodyAr": "على الفرع المزعج شغّل `git rebase -i main`. وفي المحرر علّم الـ commits بـ `squash` أو `fixup` لدمجها، و`reword` لتصحيح الرسائل، وأعد ترتيب الأسطر لإعادة ترتيب الـ commits، و`drop` لحذف واحد. واستهدف 3 commits واضحة.\n\nثم تعلّم الاختصار: `git commit --fixup <hash>` متبوعًا بـ `git rebase -i --autosquash main`.",
+    "hintsEn": [
+     "Rebase rewrites commits — only do it on branches nobody else has pulled.",
+     "If it goes wrong mid-way, `git rebase --abort` restores the branch."
+    ],
+    "hintsAr": [
+     "الـ rebase يعيد كتابة الـ commits، فلا تفعله إلا على فروع لم يسحبها أحد غيرك.",
+     "إن ساءت الأمور في المنتصف فإن `git rebase --abort` يستعيد الفرع."
+    ],
+    "key": "git-history-surgery-rebase-i"
+   },
+   {
+    "titleEn": "Rebase onto an updated main",
+    "titleAr": "أعد البناء فوق main المحدّث",
+    "bodyEn": "Add two commits to main, then on your branch run `git rebase main`. Resolve a conflict during the rebase (`git add` then `git rebase --continue`). Compare the graph with a merge: `git log --graph --oneline --all`.\n\nAfter rebasing a pushed branch, push with `git push --force-with-lease`, never plain `--force`.",
+    "bodyAr": "أضف commitين إلى main، ثم على فرعك شغّل `git rebase main`. وحلّ تعارضًا أثناء الـ rebase (`git add` ثم `git rebase --continue`). وقارن المخطط مع الدمج: `git log --graph --oneline --all`.\n\nبعد عمل rebase لفرع مرفوع، ارفع بـ `git push --force-with-lease`، ولا تستخدم `--force` العادي أبدًا.",
+    "hintsEn": [
+     "--force-with-lease refuses if someone else pushed in the meantime.",
+     "Rebase gives a straight history; merge preserves exactly what happened. Teams choose one style."
+    ],
+    "hintsAr": [
+     "--force-with-lease يرفض إن رفع أحد آخر في الأثناء.",
+     "الـ rebase يعطي سجلًا مستقيمًا، والدمج يحفظ ما حدث بالضبط، والفرق تختار أسلوبًا واحدًا."
+    ],
+    "key": "git-history-surgery-rebase-update"
+   },
+   {
+    "titleEn": "Cherry-pick a hotfix",
+    "titleAr": "انقل إصلاحًا عاجلًا بـ cherry-pick",
+    "bodyEn": "Create `release/1.0` from an older commit. Fix a bug on main in one commit, then apply only that commit to the release branch: `git switch release/1.0` and `git cherry-pick <hash>`.\n\nCherry-pick copies a commit; the copy has a new hash. Use `-x` to record where it came from.",
+    "bodyAr": "أنشئ `release/1.0` من commit قديم. وأصلح خطأً على main في commit واحد، ثم طبّق هذا الـ commit فقط على فرع الإصدار: `git switch release/1.0` ثم `git cherry-pick <hash>`.\n\nالـ cherry-pick ينسخ commit، والنسخة لها hash جديد. استخدم `-x` لتسجيل مصدرها.",
+    "hintsEn": [
+     "Cherry-picking many commits often means the branching strategy needs a rethink.",
+     "Conflicts are resolved the same way as in merges."
+    ],
+    "hintsAr": [
+     "نقل commits كثيرة بـ cherry-pick غالبًا يعني أن استراتيجية الفروع تحتاج مراجعة.",
+     "التعارضات تُحل بالطريقة نفسها كما في الدمج."
+    ],
+    "key": "git-history-surgery-cherry-pick"
+   },
+   {
+    "titleEn": "Undo on a shared branch with revert",
+    "titleAr": "تراجع على فرع مشترك بـ revert",
+    "bodyEn": "Pretend a bad commit was merged to main and pushed. Undo it with `git revert <hash>`: Git creates a new commit that applies the opposite change. History stays intact for everyone.\n\nAlso revert a merge commit with `git revert -m 1 <merge-hash>` and note what `-m 1` means.",
+    "bodyAr": "افترض أن commit سيئًا دُمج في main ورُفع. تراجع عنه بـ `git revert <hash>`: ينشئ Git commit جديدًا يطبّق التغيير المعاكس، ويبقى السجل سليمًا للجميع.\n\nوتراجع أيضًا عن commit دمج بـ `git revert -m 1 <merge-hash>` ودوّن معنى `-m 1`.",
+    "hintsEn": [
+     "On shared branches: revert. On your private branch: reset or rebase are fine.",
+     "`-m 1` means \"keep the first parent\" (usually main) as the base."
+    ],
+    "hintsAr": [
+     "على الفروع المشتركة استخدم revert، وعلى فرعك الخاص لا بأس بـ reset أو rebase.",
+     "`-m 1` تعني \"احتفظ بالأب الأول\" (عادة main) كأساس."
+    ],
+    "key": "git-history-surgery-revert"
+   },
+   {
+    "titleEn": "Find the bug with bisect",
+    "titleAr": "جد الخطأ بـ bisect",
+    "bodyEn": "Run `git bisect start`, `git bisect bad` (now), `git bisect good <first-commit>`. Git checks out the middle commit; test it and answer good or bad until it names the culprit. Then automate it: `git bisect run ./test.sh` (exit 0 = good, 1 = bad).\n\nBinary search finds a bug in 1,000 commits in about 10 steps.",
+    "bodyAr": "شغّل `git bisect start`، ثم `git bisect bad` (الآن)، ثم `git bisect good <first-commit>`. يجلب Git الـ commit الأوسط، فاختبره وأجب good أو bad حتى يسمّي المسبب. ثم أتمت ذلك: `git bisect run ./test.sh` (الخروج بـ 0 = جيد، و1 = سيئ).\n\nالبحث الثنائي يجد خطأً بين 1000 commit في نحو 10 خطوات.",
+    "hintsEn": [
+     "Always finish with `git bisect reset` to return to your branch.",
+     "`git bisect skip` for commits that cannot be tested."
+    ],
+    "hintsAr": [
+     "أنهِ دائمًا بـ `git bisect reset` لتعود إلى فرعك.",
+     "`git bisect skip` للـ commits التي لا يمكن اختبارها."
+    ],
+    "key": "git-history-surgery-bisect"
+   },
+   {
+    "titleEn": "Recover with reflog",
+    "titleAr": "الاستعادة بـ reflog",
+    "bodyEn": "Do something scary: `git reset --hard HEAD~5` on a branch, then delete another branch with `git branch -D`. Now run `git reflog`: it lists every position HEAD had. Restore with `git reset --hard <hash>` or `git branch recovered <hash>`.\n\nCommitted work is almost never truly lost — for about 90 days, reflog remembers.",
+    "bodyAr": "افعل شيئًا مخيفًا: `git reset --hard HEAD~5` على فرع، ثم احذف فرعًا آخر بـ `git branch -D`. الآن شغّل `git reflog`: يعرض كل موضع كان فيه HEAD. واستعد بـ `git reset --hard <hash>` أو `git branch recovered <hash>`.\n\nالعمل الذي عملت له commit لا يضيع حقًا تقريبًا أبدًا، فالـ reflog يتذكر نحو 90 يومًا.",
+    "hintsEn": [
+     "Uncommitted changes are not in reflog — commit or stash often.",
+     "`git stash list` and `git stash pop` are the other safety tool; try them too."
+    ],
+    "hintsAr": [
+     "التغييرات غير المحفوظة في commit ليست في الـ reflog، فاعمل commit أو stash كثيرًا.",
+     "`git stash list` و`git stash pop` أداة الأمان الأخرى، فجرّبها أيضًا."
+    ],
+    "key": "git-history-surgery-reflog"
+   },
+   {
+    "titleEn": "Write LAB.md",
+    "titleAr": "اكتب LAB.md",
+    "bodyEn": "For each exercise write: the situation, the commands, what happened, and a one-line rule (e.g. \"never rebase shared branches\"). Add a decision table: \"I want to undo X\" → which command.\n\nPublish the lab script and LAB.md; it is a handy reference for you and others.",
+    "bodyAr": "لكل تمرين اكتب: الموقف، والأوامر، وما حدث، وقاعدة في سطر واحد (مثل \"لا تعمل rebase للفروع المشتركة أبدًا\"). وأضف جدول قرارات: \"أريد التراجع عن X\" ← أي أمر.\n\nانشر سكربت المختبر وLAB.md، فهو مرجع مفيد لك وللآخرين.",
+    "hintsEn": [
+     "Include screenshots of the graph before and after the rebase.",
+     "Practise each exercise twice from a fresh lab."
+    ],
+    "hintsAr": [
+     "ضمّن صورًا للمخطط قبل الـ rebase وبعده.",
+     "تدرّب على كل تمرين مرتين من مختبر جديد."
+    ],
+    "key": "git-history-surgery-finish"
+   }
+  ]
+ },
+ {
+  "key": "git-automation",
+  "skill": "Git",
+  "level": "Advanced",
+  "hours": 10,
+  "titleEn": "Automate the repository: hooks, linting and releases",
+  "titleAr": "أتمت المستودع: الخطافات والفحص والإصدارات",
+  "summaryEn": "Make the repository enforce its own rules: Git hooks that check commits locally, commit message linting, automatic semantic versioning and changelogs, and GitHub Actions bots for labelling and stale branches.",
+  "summaryAr": "اجعل المستودع يفرض قواعده بنفسه: خطافات Git تفحص الـ commits محليًا، وفحص رسائل الـ commits، والإصدار الدلالي التلقائي وسجلات التغييرات، وبوتات GitHub Actions للتسميات والفروع القديمة.",
+  "techStack": "Git hooks · Husky or Lefthook · commitlint · semantic-release or release-please · GitHub Actions",
+  "goalsEn": [
+   "Write and share Git hooks across a team",
+   "Enforce commit conventions locally and in CI",
+   "Automate versioning, changelogs and releases from commits",
+   "Build small repository automations with GitHub Actions"
+  ],
+  "goalsAr": [
+   "كتابة خطافات Git ومشاركتها عبر الفريق",
+   "فرض أعراف الـ commits محليًا وفي CI",
+   "أتمتة الإصدارات وسجلات التغييرات والإطلاقات من الـ commits",
+   "بناء أتمتات صغيرة للمستودع بـ GitHub Actions"
+  ],
+  "requirementsEn": [
+   "pre-commit: format and lint only staged files; block commits with secrets",
+   "commit-msg: reject messages that are not Conventional Commits",
+   "pre-push: run the fast tests",
+   "Hooks are installed automatically for every developer",
+   "Merges to main produce a version, a tag, a CHANGELOG entry and a GitHub Release automatically",
+   "Actions: label PRs by changed paths, comment a checklist on new PRs, mark stale branches"
+  ],
+  "requirementsAr": [
+   "pre-commit: نسّق وافحص الملفات المجهّزة فقط، وامنع الـ commits التي فيها أسرار",
+   "commit-msg: ارفض الرسائل التي ليست بصيغة Conventional Commits",
+   "pre-push: شغّل الاختبارات السريعة",
+   "تُثبّت الخطافات تلقائيًا لكل مطور",
+   "الدمج إلى main ينتج إصدارًا، ووسمًا، ومدخلًا في CHANGELOG، وGitHub Release تلقائيًا",
+   "Actions: وسم طلبات السحب حسب المسارات المتغيرة، والتعليق بقائمة تحقق على طلبات السحب الجديدة، وتعليم الفروع القديمة"
+  ],
+  "acceptanceEn": [
+   "Committing a file containing an AWS-style key is blocked",
+   "A commit \"updated stuff\" is rejected with a helpful message",
+   "Merging a `feat:` PR bumps the minor version; `fix:` bumps the patch",
+   "The same commit rules are checked again in CI (hooks can be skipped locally)"
+  ],
+  "acceptanceAr": [
+   "الـ commit لملف فيه مفتاح يشبه مفاتيح AWS يُمنع",
+   "الـ commit برسالة \"updated stuff\" يُرفض برسالة مفيدة",
+   "دمج طلب سحب `feat:` يرفع الإصدار الفرعي، و`fix:` يرفع الرقعة",
+   "قواعد الـ commits نفسها تُفحص مرة أخرى في CI (لأن الخطافات يمكن تخطيها محليًا)"
+  ],
+  "stretchEn": [
+   "Write your own hook in C# as a dotnet tool",
+   "Publish packages automatically on release",
+   "Add a monorepo setup with per-package versions"
+  ],
+  "stretchAr": [
+   "اكتب خطافك الخاص بـ C# كأداة dotnet",
+   "انشر الحزم تلقائيًا عند الإصدار",
+   "أضف إعداد monorepo بإصدارات لكل حزمة"
+  ],
+  "steps": [
+   {
+    "titleEn": "How Git hooks work",
+    "titleAr": "كيف تعمل خطافات Git",
+    "bodyEn": "Look in `.git/hooks`: sample scripts named after events. Write a tiny `pre-commit` script that prints the staged files (`git diff --cached --name-only`) and exits 1 to block the commit. Make it executable and try a commit.\n\nHooks in .git/hooks are not shared through the repository — that is why tools like Husky or Lefthook exist.",
+    "bodyAr": "انظر داخل `.git/hooks`: سكربتات أمثلة مسماة بأسماء الأحداث. واكتب سكربت `pre-commit` صغيرًا يطبع الملفات المجهّزة (`git diff --cached --name-only`) ويخرج بـ 1 ليمنع الـ commit. واجعله قابلًا للتنفيذ وجرّب commit.\n\nالخطافات في .git/hooks لا تُشارك عبر المستودع، ولهذا وُجدت أدوات مثل Husky وLefthook.",
+    "hintsEn": [
+     "`git config core.hooksPath .githooks` makes Git use a committed folder for hooks.",
+     "`git commit --no-verify` skips hooks — which is why CI must check too."
+    ],
+    "hintsAr": [
+     "`git config core.hooksPath .githooks` يجعل Git يستخدم مجلدًا مرفوعًا في المستودع للخطافات.",
+     "`git commit --no-verify` يتخطى الخطافات، ولهذا يجب أن يفحص CI أيضًا."
+    ],
+    "key": "git-automation-hooks-basics"
+   },
+   {
+    "titleEn": "Shared hooks with Lefthook or Husky",
+    "titleAr": "خطافات مشتركة بـ Lefthook أو Husky",
+    "bodyEn": "Add Lefthook (works for .NET and Node) or Husky (Node projects). Configure `pre-commit` to run the formatter and linter on staged files only (`dotnet format --include {staged_files}` or lint-staged), and `pre-push` to run fast unit tests.\n\nInstall automatically: a `prepare` npm script, or a `dotnet tool restore` + `lefthook install` step in the setup docs.",
+    "bodyAr": "أضف Lefthook (يعمل مع .NET وNode) أو Husky (لمشاريع Node). واضبط `pre-commit` ليشغّل أداة التنسيق والفحص على الملفات المجهّزة فقط (`dotnet format --include {staged_files}` أو lint-staged)، و`pre-push` ليشغّل اختبارات الوحدة السريعة.\n\nثبّتها تلقائيًا: بسكربت npm باسم `prepare`، أو بخطوة `dotnet tool restore` مع `lefthook install` في توثيق الإعداد.",
+    "hintsEn": [
+     "Hooks must be fast (a few seconds) or people will skip them.",
+     "Only check staged files, not the whole project."
+    ],
+    "hintsAr": [
+     "يجب أن تكون الخطافات سريعة (بضع ثوانٍ) وإلا سيتخطاها الناس.",
+     "افحص الملفات المجهّزة فقط، لا المشروع كله."
+    ],
+    "key": "git-automation-lefthook"
+   },
+   {
+    "titleEn": "Block secrets before they are committed",
+    "titleAr": "امنع الأسرار قبل أن تُرفع",
+    "bodyEn": "Add `gitleaks` (or a small regex script) to pre-commit to scan staged changes for keys, tokens and connection strings with passwords. Test it with a fake key like `AKIAIOSFODNN7EXAMPLE`.\n\nAlso enable GitHub secret scanning and push protection in the repository settings.",
+    "bodyAr": "أضف `gitleaks` (أو سكربت regex صغيرًا) إلى pre-commit ليفحص التغييرات المجهّزة بحثًا عن المفاتيح والرموز ونصوص الاتصال التي فيها كلمات مرور. واختبره بمفتاح وهمي مثل `AKIAIOSFODNN7EXAMPLE`.\n\nوفعّل أيضًا secret scanning وpush protection في إعدادات المستودع على GitHub.",
+    "hintsEn": [
+     "A leaked secret must be rotated even after you remove it from history.",
+     "Keep an allowlist file for false positives."
+    ],
+    "hintsAr": [
+     "السر المسرّب يجب تغييره حتى بعد حذفه من السجل.",
+     "احتفظ بملف قائمة سماح للإنذارات الكاذبة."
+    ],
+    "key": "git-automation-secrets"
+   },
+   {
+    "titleEn": "Lint commit messages",
+    "titleAr": "افحص رسائل الـ commits",
+    "bodyEn": "Add `@commitlint/cli` with `@commitlint/config-conventional` and run it in the `commit-msg` hook with the message file. Customise allowed types and scopes in `commitlint.config.js`.\n\nTry `git commit -m \"updated stuff\"` and read the error.",
+    "bodyAr": "أضف `@commitlint/cli` مع `@commitlint/config-conventional` وشغّله في خطاف `commit-msg` مع ملف الرسالة. وخصّص الأنواع والنطاقات المسموحة في `commitlint.config.js`.\n\nجرّب `git commit -m \"updated stuff\"` واقرأ الخطأ.",
+    "hintsEn": [
+     "In CI, lint the PR title (if you squash) or every commit in the PR range.",
+     "A commit message template (`git config commit.template`) helps people write the right format."
+    ],
+    "hintsAr": [
+     "في CI افحص عنوان طلب السحب (إن كنت تستخدم الدمج بالضغط) أو كل commit في نطاق طلب السحب.",
+     "قالب رسالة الـ commit (`git config commit.template`) يساعد الناس على كتابة الصيغة الصحيحة."
+    ],
+    "key": "git-automation-commitlint"
+   },
+   {
+    "titleEn": "Repeat the checks in CI",
+    "titleAr": "كرّر الفحوص في CI",
+    "bodyEn": "Hooks are convenience; CI is enforcement. Add a workflow on pull requests that runs the formatter in check mode, the linter, commitlint on the PR title/commits and gitleaks on the diff. Make it a required check.\n\nNow rules hold even for people who skip hooks.",
+    "bodyAr": "الخطافات للراحة، وCI للفرض. أضف مسار عمل لطلبات السحب يشغّل أداة التنسيق في وضع الفحص، وأداة الفحص، وcommitlint على عنوان طلب السحب أو الـ commits، وgitleaks على الفرق. واجعله فحصًا مطلوبًا.\n\nالآن تصمد القواعد حتى مع من يتخطى الخطافات.",
+    "hintsEn": [
+     "`dotnet format --verify-no-changes` fails when files are not formatted.",
+     "Run checks only on changed files to keep the job fast."
+    ],
+    "hintsAr": [
+     "`dotnet format --verify-no-changes` يفشل عندما لا تكون الملفات منسقة.",
+     "شغّل الفحوص على الملفات المتغيرة فقط لتبقى المهمة سريعة."
+    ],
+    "key": "git-automation-ci-checks"
+   },
+   {
+    "titleEn": "Automatic releases from commits",
+    "titleAr": "إصدارات تلقائية من الـ commits",
+    "bodyEn": "Add release-please (GitHub Action) or semantic-release. On each push to main it reads Conventional Commits since the last tag, decides the next version, updates CHANGELOG.md and the version file, and opens or updates a release PR; merging it creates the tag and the GitHub Release.\n\nTry it: merge a `fix:`, then a `feat:`, and watch the versions.",
+    "bodyAr": "أضف release-please (كـ GitHub Action) أو semantic-release. عند كل push إلى main يقرأ Conventional Commits منذ آخر وسم، ويحدد الإصدار التالي، ويحدّث CHANGELOG.md وملف الإصدار، ويفتح طلب سحب للإصدار أو يحدّثه، ودمجه ينشئ الوسم وGitHub Release.\n\nجرّبه: ادمج `fix:` ثم `feat:` وشاهد الإصدارات.",
+    "hintsEn": [
+     "release-please needs `contents: write` and `pull-requests: write` permissions.",
+     "For .NET, let it update `<Version>` in Directory.Build.props."
+    ],
+    "hintsAr": [
+     "release-please يحتاج صلاحيتي `contents: write` و`pull-requests: write`.",
+     "في .NET اجعله يحدّث `<Version>` داخل Directory.Build.props."
+    ],
+    "key": "git-automation-release"
+   },
+   {
+    "titleEn": "Small repository bots",
+    "titleAr": "بوتات صغيرة للمستودع",
+    "bodyEn": "Add workflows: `actions/labeler` to label PRs by changed paths (api/, client/, docs/); a workflow that comments a review checklist on new PRs with `actions/github-script`; a scheduled workflow that lists branches without commits for 30 days in an issue.\n\nEach automation saves a few minutes per PR across the whole team.",
+    "bodyAr": "أضف مسارات عمل: `actions/labeler` لوسم طلبات السحب حسب المسارات المتغيرة (api/ وclient/ وdocs/)، ومسارًا يعلّق بقائمة تحقق للمراجعة على طلبات السحب الجديدة بـ `actions/github-script`، ومسارًا مجدولًا يسرد في issue الفروع التي لم يُضف إليها commit منذ 30 يومًا.\n\nكل أتمتة توفر بضع دقائق لكل طلب سحب عبر الفريق كله.",
+    "hintsEn": [
+     "Use the least permissions each workflow needs (`permissions:` block).",
+     "Scheduled workflows use `on: schedule: - cron: '0 6 * * 1'`."
+    ],
+    "hintsAr": [
+     "امنح كل مسار عمل أقل الصلاحيات التي يحتاجها (كتلة `permissions:`).",
+     "المسارات المجدولة تستخدم `on: schedule: - cron: '0 6 * * 1'`."
+    ],
+    "key": "git-automation-bots"
+   },
+   {
+    "titleEn": "Document the automation",
+    "titleAr": "وثّق الأتمتة",
+    "bodyEn": "Write a \"Repository automation\" section in CONTRIBUTING.md: what runs locally, what runs in CI, how releases happen, and how to fix a rejected commit. Show screenshots of a blocked secret, a rejected message and a generated release.\n\nThis setup can be copied into every project you start from now on.",
+    "bodyAr": "اكتب قسم \"أتمتة المستودع\" في CONTRIBUTING.md: ما يعمل محليًا، وما يعمل في CI، وكيف تحدث الإصدارات، وكيف تصلح commit مرفوضًا. واعرض صورًا لسر ممنوع، ورسالة مرفوضة، وإصدار مولّد.\n\nهذا الإعداد يمكن نسخه إلى كل مشروع تبدأه من الآن.",
+    "hintsEn": [
+     "Turn the setup into a template repository on GitHub.",
+     "Explain how to skip hooks in an emergency and why CI still protects main."
+    ],
+    "hintsAr": [
+     "حوّل الإعداد إلى template repository على GitHub.",
+     "اشرح كيف تتخطى الخطافات في الطوارئ، ولماذا يبقى CI يحمي main."
+    ],
+    "key": "git-automation-finish"
+   }
+  ]
+ },
+ {
+  "key": "git-internals",
+  "skill": "Git",
+  "level": "Advanced",
+  "hours": 16,
+  "titleEn": "Build a tiny Git in C#",
+  "titleAr": "ابنِ Git صغيرًا بلغة C#",
+  "summaryEn": "Understand Git from the inside by building a small version of it: objects (blobs, trees, commits) hashed with SHA-1 and compressed with zlib, the index, refs, log, and checkout — compatible with real Git.",
+  "summaryAr": "افهم Git من الداخل ببناء نسخة صغيرة منه: الكائنات (blobs وtrees وcommits) بـ hash من نوع SHA-1 ومضغوطة بـ zlib، والـ index، والمراجع، والسجل، والـ checkout، ومتوافقة مع Git الحقيقي.",
+  "techStack": "C# · .NET console · SHA-1 · zlib (ZLibStream) · Git object format",
+  "goalsEn": [
+   "Understand content-addressable storage and Git's object model",
+   "Read and write Git objects byte for byte",
+   "Implement refs, HEAD and commit history",
+   "Verify your implementation against real Git"
+  ],
+  "goalsAr": [
+   "فهم التخزين القائم على المحتوى ونموذج كائنات Git",
+   "قراءة كائنات Git وكتابتها بايتًا ببايت",
+   "تنفيذ المراجع وHEAD وسجل الـ commits",
+   "التحقق من تنفيذك مقابل Git الحقيقي"
+  ],
+  "requirementsEn": [
+   "Commands: init, hash-object -w, cat-file -p, write-tree, commit-tree, commit, log, checkout <commit>, status (simple)",
+   "Objects stored in .mygit/objects with the real Git format and zlib compression",
+   "HEAD and branch refs in .mygit/refs/heads",
+   "Files you commit with your tool can be read by real Git (when pointed at the folder)",
+   "Tests that compare hashes with `git hash-object`"
+  ],
+  "requirementsAr": [
+   "الأوامر: init وhash-object -w وcat-file -p وwrite-tree وcommit-tree وcommit وlog وcheckout <commit> وstatus (بسيط)",
+   "الكائنات مخزنة في .mygit/objects بصيغة Git الحقيقية وضغط zlib",
+   "HEAD ومراجع الفروع في .mygit/refs/heads",
+   "الملفات التي ترفعها بأداتك يستطيع Git الحقيقي قراءتها (عند توجيهه إلى المجلد)",
+   "اختبارات تقارن الـ hashes مع `git hash-object`"
+  ],
+  "acceptanceEn": [
+   "`mygit hash-object file` prints exactly the same hash as `git hash-object file`",
+   "Renaming .mygit to .git lets `git log` show your commits",
+   "Checking out an older commit restores the files of that commit"
+  ],
+  "acceptanceAr": [
+   "`mygit hash-object file` يطبع الـ hash نفسه بالضبط الذي يطبعه `git hash-object file`",
+   "إعادة تسمية .mygit إلى .git تجعل `git log` يعرض commits الخاصة بك",
+   "الـ checkout لـ commit أقدم يستعيد ملفات ذلك الـ commit"
+  ],
+  "stretchEn": [
+   "Implement branches and a fast-forward merge",
+   "Read packfiles created by real Git",
+   "Implement a simple diff between two trees"
+  ],
+  "stretchAr": [
+   "نفّذ الفروع والدمج السريع (fast-forward)",
+   "اقرأ ملفات pack التي ينشئها Git الحقيقي",
+   "نفّذ فرقًا بسيطًا بين شجرتين"
+  ],
+  "steps": [
+   {
+    "titleEn": "Explore real Git objects",
+    "titleAr": "استكشف كائنات Git الحقيقية",
+    "bodyEn": "In a test repository, commit a file and explore: `git cat-file -t <hash>` (type), `git cat-file -p <hash>` (content) for the commit, its tree and the blob. Look in `.git/objects/ab/cdef...` — each object is a zlib-compressed file named by its hash.\n\nDraw the graph: commit → tree → blobs, commit → parent commit.",
+    "bodyAr": "في مستودع اختباري اعمل commit لملف واستكشف: `git cat-file -t <hash>` (النوع)، و`git cat-file -p <hash>` (المحتوى) للـ commit وشجرته والـ blob. وانظر داخل `.git/objects/ab/cdef...`، فكل كائن ملف مضغوط بـ zlib ومسمى بالـ hash الخاص به.\n\nارسم المخطط: commit ← tree ← blobs، وcommit ← الـ commit الأب.",
+    "hintsEn": [
+     "The first 2 hex characters are the folder, the other 38 the file name.",
+     "Read the \"Git Internals\" chapter of the Pro Git book alongside this project."
+    ],
+    "hintsAr": [
+     "أول حرفين ست عشريين هما المجلد، والـ 38 الباقية اسم الملف.",
+     "اقرأ فصل \"Git Internals\" من كتاب Pro Git بالتوازي مع هذا المشروع."
+    ],
+    "key": "git-internals-explore"
+   },
+   {
+    "titleEn": "init and the folder layout",
+    "titleAr": "init وتنظيم المجلدات",
+    "bodyEn": "Create a console app `mygit` with a command dispatcher. `init` creates `.mygit/objects`, `.mygit/refs/heads` and `.mygit/HEAD` containing `ref: refs/heads/main\\n`.\n\nKeep paths in one `Repository` class so every command uses the same layout.",
+    "bodyAr": "أنشئ تطبيق طرفية `mygit` مع موزّع للأوامر. والأمر `init` ينشئ `.mygit/objects` و`.mygit/refs/heads` و`.mygit/HEAD` الذي يحتوي `ref: refs/heads/main\\n`.\n\nاحتفظ بالمسارات في class واحد `Repository` لتستخدم كل الأوامر التنظيم نفسه.",
+    "hintsEn": [
+     "Find the repository root by walking up from the current folder until .mygit exists.",
+     "Use a \"\\n\" line ending explicitly, not Environment.NewLine."
+    ],
+    "hintsAr": [
+     "جد جذر المستودع بالصعود من المجلد الحالي حتى يوجد .mygit.",
+     "استخدم نهاية السطر \"\\n\" صراحة، لا Environment.NewLine."
+    ],
+    "key": "git-internals-init"
+   },
+   {
+    "titleEn": "hash-object: blobs",
+    "titleAr": "hash-object: الـ blobs",
+    "bodyEn": "A blob is stored as `\"blob \" + length + \"\\0\" + content` (bytes). The id is the SHA-1 of that whole byte array, as 40 hex characters. With `-w`, compress it with `ZLibStream` and write it to `objects/xx/yyyy...`.\n\nCompare with `git hash-object file` on the same file — the hashes must be identical.",
+    "bodyAr": "الـ blob يُخزن هكذا: `\"blob \" + length + \"\\0\" + content` (كبايتات). ورقمه هو SHA-1 لمصفوفة البايتات كاملة، في 40 حرفًا ست عشريًا. ومع `-w` اضغطه بـ `ZLibStream` واكتبه في `objects/xx/yyyy...`.\n\nقارن مع `git hash-object file` على الملف نفسه، فيجب أن يتطابق الـ hash.",
+    "hintsEn": [
+     "Length is the byte length, not the character count (UTF-8!).",
+     "`Convert.ToHexString(SHA1.HashData(bytes)).ToLowerInvariant()`."
+    ],
+    "hintsAr": [
+     "الطول هو عدد البايتات لا عدد الأحرف (انتبه إلى UTF-8!).",
+     "`Convert.ToHexString(SHA1.HashData(bytes)).ToLowerInvariant()`."
+    ],
+    "code": "static string WriteBlob(string root, byte[] content)\n{\n    var header = Encoding.ASCII.GetBytes($\"blob {content.Length}\\0\");\n    var full = header.Concat(content).ToArray();\n    var id = Convert.ToHexString(SHA1.HashData(full)).ToLowerInvariant();\n    var path = Path.Combine(root, \".mygit\", \"objects\", id[..2], id[2..]);\n    Directory.CreateDirectory(Path.GetDirectoryName(path)!);\n    using var file = File.Create(path);\n    using var zlib = new ZLibStream(file, CompressionLevel.Optimal);\n    zlib.Write(full);\n    return id;\n}",
+    "language": "csharp",
+    "key": "git-internals-blob"
+   },
+   {
+    "titleEn": "cat-file: read objects back",
+    "titleAr": "cat-file: اقرأ الكائنات",
+    "bodyEn": "Read an object: open the file, decompress with ZLibStream, split the header at the first `\\0`, parse type and size, and print the content for blobs. Also read objects written by real Git in a normal repository.\n\nThis proves your reading code understands the real format.",
+    "bodyAr": "لقراءة كائن: افتح الملف، وفك الضغط بـ ZLibStream، وقسّم العنوان عند أول `\\0`، وحلّل النوع والحجم، واطبع المحتوى للـ blobs. واقرأ أيضًا كائنات كتبها Git الحقيقي في مستودع عادي.\n\nهذا يثبت أن كود القراءة يفهم الصيغة الحقيقية.",
+    "hintsEn": [
+     "Read into a MemoryStream; objects are small enough for this project.",
+     "Validate that the size in the header matches the content length."
+    ],
+    "hintsAr": [
+     "اقرأ إلى MemoryStream، فالكائنات صغيرة بما يكفي لهذا المشروع.",
+     "تحقق أن الحجم في العنوان يطابق طول المحتوى."
+    ],
+    "key": "git-internals-cat-file"
+   },
+   {
+    "titleEn": "write-tree: trees",
+    "titleAr": "write-tree: الأشجار",
+    "bodyEn": "A tree lists entries sorted by name: for each, `mode + \" \" + name + \"\\0\" + 20 raw bytes of the hash`. Modes: `100644` file, `100755` executable, `40000` folder. Walk the working folder recursively (skip .mygit), write blobs for files and sub-trees for folders, then the tree itself.\n\nCompare your root tree hash with `git write-tree` after `git add .` in the same folder.",
+    "bodyAr": "الشجرة تسرد مدخلات مرتبة بالاسم: لكل مدخل `mode + \" \" + name + \"\\0\" + 20 raw bytes of the hash`. والأنماط: `100644` لملف، و`100755` لملف تنفيذي، و`40000` لمجلد. امشِ في مجلد العمل بشكل عودي (وتخطَّ .mygit)، واكتب blobs للملفات وأشجارًا فرعية للمجلدات، ثم الشجرة نفسها.\n\nقارن hash الشجرة الجذرية مع `git write-tree` بعد `git add .` في المجلد نفسه.",
+    "hintsEn": [
+     "The hash is stored as 20 raw bytes, not 40 hex characters — `Convert.FromHexString`.",
+     "Git sorts folder names as if they ended with \"/\"; this matters for names like \"a\" vs \"a.txt\"."
+    ],
+    "hintsAr": [
+     "الـ hash يُخزن كـ 20 بايتًا خامًا لا 40 حرفًا ست عشريًا، فاستخدم `Convert.FromHexString`.",
+     "Git يرتب أسماء المجلدات كأنها تنتهي بـ \"/\"، وهذا مهم لأسماء مثل \"a\" مقابل \"a.txt\"."
+    ],
+    "key": "git-internals-tree"
+   },
+   {
+    "titleEn": "commit-tree and commit",
+    "titleAr": "commit-tree وcommit",
+    "bodyEn": "A commit object is text: `tree <hash>\\n`, `parent <hash>\\n` (if any), `author Name <email> <unix-seconds> <+0200>\\n`, `committer ...\\n`, a blank line, then the message. `commit` = write-tree, read the current branch's hash as parent, write the commit, update `refs/heads/<branch>`.\n\nYour first commit has no parent line.",
+    "bodyAr": "كائن الـ commit نص: `tree <hash>\\n`، و`parent <hash>\\n` (إن وُجد)، و`author Name <email> <unix-seconds> <+0200>\\n`، و`committer ...\\n`، ثم سطر فارغ، ثم الرسالة. والأمر `commit` = write-tree، ثم قراءة hash الفرع الحالي كأب، ثم كتابة الـ commit، ثم تحديث `refs/heads/<branch>`.\n\nأول commit لك ليس فيه سطر parent.",
+    "hintsEn": [
+     "Read HEAD: if it starts with \"ref: \", follow the ref file; it may not exist yet before the first commit.",
+     "Format the timezone offset as +HHMM."
+    ],
+    "hintsAr": [
+     "اقرأ HEAD: إن بدأ بـ \"ref: \" فاتبع ملف المرجع، وقد لا يكون موجودًا قبل أول commit.",
+     "نسّق فرق المنطقة الزمنية بصيغة +HHMM."
+    ],
+    "key": "git-internals-commit"
+   },
+   {
+    "titleEn": "log: walk the history",
+    "titleAr": "log: امشِ في السجل",
+    "bodyEn": "Start from the commit HEAD points to, print hash, author, date and message, then follow the `parent` line until there is none. Format dates like Git.\n\nThen rename `.mygit` to `.git` in a copy of the folder and run `git log` — real Git should show your commits.",
+    "bodyAr": "ابدأ من الـ commit الذي يشير إليه HEAD، واطبع الـ hash والكاتب والتاريخ والرسالة، ثم اتبع سطر `parent` حتى لا يوجد. ونسّق التواريخ كما يفعل Git.\n\nثم أعد تسمية `.mygit` إلى `.git` في نسخة من المجلد وشغّل `git log`، فيجب أن يعرض Git الحقيقي commits الخاصة بك.",
+    "hintsEn": [
+     "`git fsck` on that copy checks every object you wrote is valid.",
+     "Merge commits have several parent lines; follow the first for a simple log."
+    ],
+    "hintsAr": [
+     "`git fsck` على تلك النسخة يتحقق أن كل كائن كتبته صحيح.",
+     "commits الدمج فيها عدة أسطر parent، فاتبع الأول لسجل بسيط."
+    ],
+    "key": "git-internals-log"
+   },
+   {
+    "titleEn": "checkout and status",
+    "titleAr": "checkout وstatus",
+    "bodyEn": "`checkout <commit>`: read the commit's tree recursively and write every blob to its path, delete tracked files that are not in the tree, and set HEAD to the commit hash (detached). Refuse if there are uncommitted changes.\n\n`status`: compare the working folder with the tree of HEAD by hashing files — list modified, added and deleted files.",
+    "bodyAr": "`checkout <commit>`: اقرأ شجرة الـ commit بشكل عودي واكتب كل blob في مساره، واحذف الملفات المتتبَّعة غير الموجودة في الشجرة، واضبط HEAD على hash الـ commit (منفصلًا). وارفض إن وُجدت تغييرات غير محفوظة.\n\n`status`: قارن مجلد العمل بشجرة HEAD بحساب hash الملفات، واعرض الملفات المعدلة والمضافة والمحذوفة.",
+    "hintsEn": [
+     "Real Git uses the index to make status fast; hashing everything is fine at this size.",
+     "Test checkout in a temporary copy so you never lose real files."
+    ],
+    "hintsAr": [
+     "Git الحقيقي يستخدم الـ index لجعل status سريعًا، وحساب hash لكل شيء مقبول بهذا الحجم.",
+     "اختبر الـ checkout في نسخة مؤقتة حتى لا تفقد ملفات حقيقية أبدًا."
+    ],
+    "key": "git-internals-checkout"
+   },
+   {
+    "titleEn": "Tests against real Git and write-up",
+    "titleAr": "اختبارات مقابل Git الحقيقي والشرح",
+    "bodyEn": "Write xUnit tests that create temp folders, run your commands and real `git` (via Process) on the same content, and compare hashes for blobs, trees and commits (fix author and dates with environment variables).\n\nIn the README, explain the object model with your own diagrams and what surprised you. This project makes Git questions in interviews easy.",
+    "bodyAr": "اكتب اختبارات xUnit تنشئ مجلدات مؤقتة، وتشغّل أوامرك و`git` الحقيقي (عبر Process) على المحتوى نفسه، وتقارن الـ hashes للـ blobs والأشجار والـ commits (ثبّت الكاتب والتواريخ بمتغيرات البيئة).\n\nواشرح في README نموذج الكائنات بمخططاتك الخاصة وما الذي فاجأك. هذا المشروع يجعل أسئلة Git في المقابلات سهلة.",
+    "hintsEn": [
+     "`GIT_AUTHOR_DATE` and `GIT_COMMITTER_DATE` make real Git produce deterministic commit hashes.",
+     "Skip the tests when git is not installed."
+    ],
+    "hintsAr": [
+     "`GIT_AUTHOR_DATE` و`GIT_COMMITTER_DATE` يجعلان Git الحقيقي ينتج hashes ثابتة للـ commits.",
+     "تخطَّ الاختبارات عندما لا يكون git مثبتًا."
+    ],
+    "key": "git-internals-finish"
+   }
+  ]
+ }
+]
