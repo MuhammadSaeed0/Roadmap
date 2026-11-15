@@ -9,6 +9,16 @@ import { IconComponent } from '../../shared/icon.component';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
 
 const LEVELS: Difficulty[] = ['Beginner', 'Intermediate', 'Advanced'];
+const GROUPS_KEY = 'devpath.guideGroups';
+
+function readOpenGroups(): ReadonlySet<string> {
+  try {
+    const saved = JSON.parse(localStorage.getItem(GROUPS_KEY) ?? '[]');
+    return new Set(Array.isArray(saved) ? saved.filter((v): v is string => typeof v === 'string') : []);
+  } catch {
+    return new Set();
+  }
+}
 
 /** The Project library: every guided project, grouped by skill, filtered by skill, level and text. */
 @Component({
@@ -43,12 +53,29 @@ const LEVELS: Difficulty[] = ['Beginner', 'Intermediate', 'Advanced'];
     } @else if (groups().length === 0) {
       <app-empty-state icon="search" [title]="'guides.empty' | t" />
     } @else {
-      <p class="muted small" aria-live="polite">{{ 'guides.showing' | t: { n: count() } }}</p>
-      <div data-tour="guides-list">
+      <div class="guide-list-head">
+        <p class="muted small" aria-live="polite">{{ 'guides.showing' | t: { n: count() } }}</p>
+        <button type="button" class="btn btn-ghost btn-sm" (click)="toggleAll()">
+          {{ (allOpen() ? 'guides.closeGroups' : 'guides.openGroups') | t }}
+        </button>
+      </div>
+      <div class="guide-groups" data-tour="guides-list">
         @for (g of groups(); track g.skill) {
-          <section class="guide-group" [attr.aria-labelledby]="'gs-' + g.skill">
-            <h2 class="section-title" [id]="'gs-' + g.skill">{{ 'skills.' + g.skill | t }}</h2>
-            <div class="guide-grid">
+          @let isOpen = isGroupOpen(g.skill);
+          <section class="guide-group card" [class.open]="isOpen">
+            <h2 class="guide-group-head">
+              <button type="button" class="guide-group-toggle" [attr.aria-expanded]="isOpen" [attr.aria-controls]="'gs-' + g.skill"
+                      (click)="toggleGroup(g.skill)">
+                <app-icon name="chevron-down" [size]="18" class="chev" />
+                <span class="guide-group-name">{{ 'skills.' + g.skill | t }}</span>
+                <span class="guide-group-meta">
+                  {{ 'guides.showing' | t: { n: g.items.length } }}
+                  @if (finishedIn(g.items) > 0) { · {{ finishedIn(g.items) }} {{ 'guides.finished' | t }} }
+                </span>
+              </button>
+            </h2>
+            @if (isOpen) {
+            <div class="guide-grid" [id]="'gs-' + g.skill">
               @for (p of g.items; track p.id) {
                 <a class="card guide-card" [routerLink]="['/project-library', p.id]">
                   <div class="guide-card-head">
@@ -70,6 +97,7 @@ const LEVELS: Difficulty[] = ['Beginner', 'Intermediate', 'Advanced'];
                 </a>
               }
             </div>
+            }
           </section>
         }
       </div>
@@ -106,6 +134,30 @@ export default class GuidesPage {
     .filter(g => g.items.length > 0));
 
   protected readonly count = computed(() => this.filtered().length);
+
+  /** Skill groups the learner opened, remembered in this browser. Searching or filtering by skill opens the matches. */
+  private readonly openGroups = signal<ReadonlySet<string>>(readOpenGroups());
+  private readonly filtering = computed(() => this.search().trim().length > 0 || this.skill() !== '');
+
+  protected isGroupOpen(skill: string): boolean { return this.filtering() || this.openGroups().has(skill); }
+  protected readonly allOpen = computed(() => this.groups().every(g => this.isGroupOpen(g.skill)));
+
+  protected toggleGroup(skill: string): void {
+    const next = new Set(this.openGroups());
+    if (this.isGroupOpen(skill)) next.delete(skill); else next.add(skill);
+    this.saveGroups(next);
+  }
+
+  protected toggleAll(): void {
+    this.saveGroups(this.allOpen() ? new Set() : new Set(this.groups().map(g => g.skill)));
+  }
+
+  protected finishedIn(items: GuidedProjectSummary[]): number { return items.filter(p => p.stepCount > 0 && p.doneSteps === p.stepCount).length; }
+
+  private saveGroups(groups: ReadonlySet<string>): void {
+    this.openGroups.set(groups);
+    try { localStorage.setItem(GROUPS_KEY, JSON.stringify([...groups])); } catch { /* storage unavailable */ }
+  }
 
   protected setSkill(value: string): void { this.skill.set(value as SkillArea | ''); this.syncUrl(); }
   protected setLevel(value: Difficulty | ''): void { this.level.set(value); this.syncUrl(); }

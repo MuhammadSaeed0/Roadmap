@@ -5,7 +5,7 @@ export const en = {
   app: { name: 'DevPath', fullName: 'DevPath' },
   nav: {
     guides: 'Project library',
-    dashboard: 'Dashboard', roadmap: 'My Roadmap', library: 'Learning Library', projects: 'Projects',
+    dashboard: 'Dashboard', roadmap: 'My Roadmap', library: 'Learning Library', projects: 'Main Projects',
     practice: 'Practice Lab', interviews: 'Interview Preparation', resources: 'Resources', notes: 'My Notes',
     progress: 'Progress & Analytics', career: 'Career Readiness', settings: 'Settings', search: 'Search',
     learn: 'Learn', build: 'Build & practise', track: 'My progress', manage: 'Manage', admin: 'Administration',
@@ -326,6 +326,7 @@ export const en = {
     stepsTitle: 'Step by step', step: 'Step {n}', markDone: 'Mark step as done', markUndone: 'Mark step as not done',
     hint: 'Show a hint ({n} of {total})', hintLabel: 'Hint {n}', code: 'Code sketch', yourProgress: 'Your progress',
     sameSkill: 'More projects in this skill', back: 'Project library', notFound: 'This project doesn’t exist.',
+    openGroups: 'Open all skills', closeGroups: 'Close all skills',
     allDone: 'You finished every step. Go through “Done when” once more, then try the extra challenges.',
     nextStep: 'Next step', expandAll: 'Open all steps', collapseAll: 'Close all steps',
   },
@@ -350,7 +351,7 @@ export const en = {
     showSessions: 'Show {n} sessions', allQuestions: 'Show all {n} questions',
   },
   projects: {
-    title: 'Projects', subtitle: 'Four practical projects, from a console app to your main portfolio system.',
+    title: 'Main Projects', subtitle: 'Four practical projects, from a console app to your main portfolio system.',
     tasks: '{done} of {total} tasks', startAfter: 'Start after: {phase}', currentMilestone: 'Current milestone',
     requirements: 'Requirements', milestones: 'Milestones', changeRequests: 'Change requests',
     crIntro: 'Realistic requests from a stakeholder. They unlock as the project progresses and teach you to change existing code safely. They are optional.',

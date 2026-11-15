@@ -7,7 +7,7 @@ export const ar: Translations = {
   app: { name: 'مسار المبرمج', fullName: 'مسار المبرمج' },
   nav: {
     guides: 'مكتبة المشاريع',
-    dashboard: 'لوحة المعلومات', roadmap: 'خارطة طريقي', library: 'مكتبة التعلم', projects: 'المشاريع',
+    dashboard: 'لوحة المعلومات', roadmap: 'خارطة طريقي', library: 'مكتبة التعلم', projects: 'المشاريع الرئيسية',
     practice: 'مختبر التدريب', interviews: 'التحضير للمقابلات', resources: 'المصادر', notes: 'ملاحظاتي',
     progress: 'التقدم والتحليلات', career: 'الجاهزية المهنية', settings: 'الإعدادات', search: 'بحث',
     learn: 'تعلّم', build: 'ابنِ وتدرّب', track: 'تقدّمي', manage: 'الإدارة', admin: 'لوحة الإدارة',
@@ -328,6 +328,7 @@ export const ar: Translations = {
     stepsTitle: 'خطوة بخطوة', step: 'الخطوة {n}', markDone: 'علّم الخطوة كمنجزة', markUndone: 'ألغِ إنجاز الخطوة',
     hint: 'اعرض تلميحًا ({n} من {total})', hintLabel: 'تلميح {n}', code: 'مسودة كود', yourProgress: 'تقدّمك',
     sameSkill: 'مشاريع أخرى في هذه المهارة', back: 'مكتبة المشاريع', notFound: 'هذا المشروع غير موجود.',
+    openGroups: 'افتح كل المهارات', closeGroups: 'أغلق كل المهارات',
     allDone: 'أنجزت كل الخطوات. راجع قائمة «يكتمل عندما» مرة أخرى، ثم جرّب التحديات الإضافية.',
     nextStep: 'الخطوة التالية', expandAll: 'افتح كل الخطوات', collapseAll: 'أغلق كل الخطوات',
   },
@@ -352,7 +353,7 @@ export const ar: Translations = {
     showSessions: 'عرض الجلسات ({n})', allQuestions: 'عرض كل الأسئلة ({n})',
   },
   projects: {
-    title: 'المشاريع', subtitle: 'أربعة مشاريع عملية، من تطبيق Console إلى نظامك الرئيسي في معرض الأعمال.',
+    title: 'المشاريع الرئيسية', subtitle: 'أربعة مشاريع عملية، من تطبيق Console إلى نظامك الرئيسي في معرض الأعمال.',
     tasks: 'المهام: {done} من {total}', startAfter: 'ابدأ بعد: {phase}', currentMilestone: 'المرحلة الحالية',
     requirements: 'المتطلبات', milestones: 'مراحل المشروع', changeRequests: 'طلبات التغيير',
     crIntro: 'طلبات واقعية من أصحاب المصلحة، تُفتح مع تقدم المشروع وتعلّمك تعديل الكود الموجود بأمان. وهي اختيارية.',
