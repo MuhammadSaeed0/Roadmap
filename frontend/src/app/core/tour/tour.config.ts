@@ -41,6 +41,8 @@ export const SECTION_IDS = [
   'discussions-ask', 'discussions-filters', 'discussions-list', 'discussion-post', 'discussion-reply',
   'paths-builtin', 'paths-mine', 'path-hero', 'path-topics', 'path-details', 'path-pick',
   'reviews-tabs', 'reviews-list',
+  // Project library
+  'guides-filters', 'guides-list', 'guide-overview', 'guide-steps', 'guide-progress',
 ] as const;
 export type SectionId = (typeof SECTION_IDS)[number];
 
@@ -48,7 +50,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
   'resources', 'notes', 'progress', 'skills', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
-  'discussions', 'discussion', 'paths', 'path', 'path-create', 'reviews',
+  'discussions', 'discussion', 'paths', 'path', 'path-create', 'reviews', 'guides', 'guide',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
 
@@ -81,6 +83,8 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   path: ['path-hero', 'path-topics'],
   'path-create': ['path-details', 'path-pick'],
   reviews: ['reviews-tabs', 'reviews-list'],
+  guides: ['guides-filters', 'guides-list'],
+  guide: ['guide-overview', 'guide-steps', 'guide-progress'],
 };
 
 export interface TourContext { isAdmin: boolean; }

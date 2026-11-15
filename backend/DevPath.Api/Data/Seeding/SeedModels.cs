@@ -87,6 +87,18 @@ public record LessonSeed(
     string Key, string TitleEn, string TitleAr, string BodyEn, string BodyAr,
     string? Code = null, string? Language = null, string? Output = null);
 
+/// <summary>One Project library entry in SeedData/guided-projects/*.json, with its steps in order.</summary>
+public record GuidedProjectSeed(
+    string Key, SkillArea Skill, Difficulty Level, int Hours,
+    string TitleEn, string TitleAr, string SummaryEn, string SummaryAr, string TechStack,
+    List<string> GoalsEn, List<string> GoalsAr, List<string> RequirementsEn, List<string> RequirementsAr,
+    List<string> AcceptanceEn, List<string> AcceptanceAr, List<string> StretchEn, List<string> StretchAr,
+    List<GuidedStepSeed> Steps);
+
+public record GuidedStepSeed(
+    string Key, string TitleEn, string TitleAr, string BodyEn, string BodyAr,
+    List<string> HintsEn, List<string> HintsAr, string? Code = null, string? Language = null);
+
 public record ChecklistSeed(string Key, string TitleEn, string TitleAr, string DescriptionEn, string DescriptionAr);
 
 /// <summary>

@@ -203,6 +203,7 @@ export class ShellComponent {
     { key: 'nav.build', items: [
       { path: '/projects', key: 'nav.projects', icon: 'folder' },
       { path: '/practice', key: 'nav.practice', icon: 'code' },
+      { path: '/project-library', key: 'nav.guides', icon: 'layers' },
       { path: '/playground', key: 'nav.playground', icon: 'terminal' },
       { path: '/reviews', key: 'nav.reviews', icon: 'check-circle' },
     ] },

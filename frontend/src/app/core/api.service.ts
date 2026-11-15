@@ -177,6 +177,11 @@ export class ApiService {
   deactivatePath(id: number) { return this.delete(`/paths/${id}/activate`); }
   activePaths() { return this.get<M.PathSummary[]>('/paths/active'); }
 
+  // ----- Project library -----
+  guidedProjects() { return this.get<M.GuidedProjectSummary[]>('/guided-projects'); }
+  guidedProject(id: number) { return this.get<M.GuidedProjectDetail>(`/guided-projects/${id}`); }
+  setGuidedStep(id: number, stepId: number, done: boolean) { return this.put<void>(`/guided-projects/${id}/steps/${stepId}`, { done }); }
+
   // ----- Peer reviews -----
   reviewRequests() { return this.get<M.ReviewRequestLists>('/review-requests'); }
   /** The account's latest request for this project; null (204) when there is none. */

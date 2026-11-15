@@ -64,6 +64,8 @@ export const content: TourContent = {
     path: { title: 'Learning path', summary: 'The topics of one path, grouped by phase, with your progress through them. Activate it to keep it in view.' },
     'path-create': { title: 'Create path', summary: 'Name your path and pick up to 50 topics from any phase.' },
     reviews: { title: 'Peer reviews', summary: 'Ask another learner to review a finished project against the rubric, and review theirs. A peer review counts more than your own.' },
+    guides: { title: 'Project library', summary: 'Extra projects for every skill at three levels, simple, medium and advanced. Each one takes you from an empty folder to a finished app with step-by-step instructions and hints.' },
+    guide: { title: 'Guided project', summary: 'One project from start to finish: what you will learn, what to build, the steps with hints you reveal one at a time, and how to know it is done. Tick each step off as you go.' },
   },
   sections: {
     nav: { title: 'Main menu', body: 'Every page of DevPath is in these menus, grouped by what you do there: My progress, Learn, Watch & read, Build & practise, Interviews & notes, and Account. The group you’re in is underlined, and each group has its own colour.' },
@@ -181,6 +183,11 @@ export const content: TourContent = {
     'path-pick': { title: 'Pick topics', body: 'Tick topics one by one or take a whole phase at once, up to 50 topics.' },
     'reviews-tabs': { title: 'Three lists', body: 'Requests you can take (for projects you finished), the reviews you are doing, and the reviews you asked for.' },
     'reviews-list': { title: 'Review a project', body: 'Open the repository, score each criterion from 0 to 4, add notes and submit. The author is notified.' },
+    'guides-filters': { title: 'Find a project', body: 'Filter by skill and level, or search by name or technology. Start with a simple project in the skill you are learning now.' },
+    'guides-list': { title: 'Projects', body: 'Each card shows the level, the estimated time, the number of steps and how many you have done. Open one to start.' },
+    'guide-overview': { title: 'Before you start', body: 'What you will learn, what the finished app must do, and the checks that tell you it is done. Read them once before step 1.' },
+    'guide-steps': { title: 'Step by step', body: 'Do the steps in order. Each one explains what to do; reveal hints one at a time only when you are stuck, then tick the step off.' },
+    'guide-progress': { title: 'Your progress', body: 'How many steps you have done, and more projects in the same skill so you can move up a level.' },
   },
   tips: [
     'Press ? for quick help on the current page.',

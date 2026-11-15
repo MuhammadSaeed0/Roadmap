@@ -6,6 +6,7 @@ import { Translations } from './en';
 export const ar: Translations = {
   app: { name: 'مسار المبرمج', fullName: 'مسار المبرمج' },
   nav: {
+    guides: 'مكتبة المشاريع',
     dashboard: 'لوحة المعلومات', roadmap: 'خارطة طريقي', library: 'مكتبة التعلم', projects: 'المشاريع',
     practice: 'مختبر التدريب', interviews: 'التحضير للمقابلات', resources: 'المصادر', notes: 'ملاحظاتي',
     progress: 'التقدم والتحليلات', career: 'الجاهزية المهنية', settings: 'الإعدادات', search: 'بحث',
@@ -315,6 +316,20 @@ export const ar: Translations = {
     title: 'مكتبة التعلم', subtitle: 'كل المواضيع في قائمة واحدة قابلة للبحث.', searchPlaceholder: 'ابحث في المواضيع…',
     allSkills: 'كل المهارات', allStatuses: 'كل الحالات', allPhases: 'كل المراحل', allPriorities: 'كل الأولويات', allKnowledge: 'أي مستوى معرفة',
     empty: 'لا توجد مواضيع تطابق هذه المرشحات.',
+  },
+  guides: {
+    title: 'مكتبة المشاريع',
+    subtitle: 'ابنِ مشاريع حقيقية بالسرعة التي تناسبك. لكل مهارة مشاريع بسيطة ومتوسطة ومتقدمة، ولكل مشروع خطوات مفصلة وتلميحات.',
+    search: 'ابحث في المشاريع أو التقنيات…', allSkills: 'كل المهارات', allLevels: 'كل المستويات',
+    levels: { Beginner: 'بسيط', Intermediate: 'متوسط', Advanced: 'متقدم' },
+    hours: 'حوالي {n} ساعة', steps: '{n} خطوات', progress: '{done} من {total} خطوات', showing: '{n} مشروعًا',
+    empty: 'لا توجد مشاريع تطابق هذه المرشحات.', started: 'قيد التنفيذ', finished: 'مكتمل',
+    goals: 'ما ستتعلمه', requirements: 'ما ستبنيه', acceptance: 'يكتمل عندما', stretch: 'تحديات إضافية',
+    stepsTitle: 'خطوة بخطوة', step: 'الخطوة {n}', markDone: 'علّم الخطوة كمنجزة', markUndone: 'ألغِ إنجاز الخطوة',
+    hint: 'اعرض تلميحًا ({n} من {total})', hintLabel: 'تلميح {n}', code: 'مسودة كود', yourProgress: 'تقدّمك',
+    sameSkill: 'مشاريع أخرى في هذه المهارة', back: 'مكتبة المشاريع', notFound: 'هذا المشروع غير موجود.',
+    allDone: 'أنجزت كل الخطوات. راجع قائمة «يكتمل عندما» مرة أخرى، ثم جرّب التحديات الإضافية.',
+    nextStep: 'الخطوة التالية', expandAll: 'افتح كل الخطوات', collapseAll: 'أغلق كل الخطوات',
   },
   topic: {
     whatIsIt: 'ما هو؟', whyMatters: 'لماذا يهم؟', howWorks: 'كيف يعمل؟', realWorld: 'مثال من الواقع',

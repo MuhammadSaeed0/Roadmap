@@ -391,3 +391,21 @@ export interface PathDetail {
   createdAt: string; isActivated: boolean;
   phases: PathPhaseDto[]; topics: PathTopicDto[];
 }
+
+/** A Project library card (GET /guided-projects). */
+export interface GuidedProjectSummary {
+  id: number; key: string; skill: SkillArea; level: Difficulty; estimatedHours: number;
+  titleEn: string; titleAr: string; summaryEn: string; summaryAr: string; techStack: string;
+  stepCount: number; doneSteps: number;
+}
+export interface GuidedStep {
+  id: number; key: string; order: number; titleEn: string; titleAr: string; bodyEn: string; bodyAr: string;
+  code: string | null; codeLanguage: string | null; hintsEn: string[]; hintsAr: string[]; done: boolean; completedAt: string | null;
+}
+export interface GuidedProjectDetail {
+  id: number; key: string; skill: SkillArea; level: Difficulty; estimatedHours: number;
+  titleEn: string; titleAr: string; summaryEn: string; summaryAr: string; techStack: string;
+  goalsEn: string[]; goalsAr: string[]; requirementsEn: string[]; requirementsAr: string[];
+  acceptanceEn: string[]; acceptanceAr: string[]; stretchEn: string[]; stretchAr: string[];
+  steps: GuidedStep[]; sameSkill: GuidedProjectSummary[];
+}

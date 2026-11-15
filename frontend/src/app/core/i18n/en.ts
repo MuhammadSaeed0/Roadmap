@@ -4,6 +4,7 @@
 export const en = {
   app: { name: 'DevPath', fullName: 'DevPath' },
   nav: {
+    guides: 'Project library',
     dashboard: 'Dashboard', roadmap: 'My Roadmap', library: 'Learning Library', projects: 'Projects',
     practice: 'Practice Lab', interviews: 'Interview Preparation', resources: 'Resources', notes: 'My Notes',
     progress: 'Progress & Analytics', career: 'Career Readiness', settings: 'Settings', search: 'Search',
@@ -313,6 +314,20 @@ export const en = {
     title: 'Learning Library', subtitle: 'Every topic in one searchable list.', searchPlaceholder: 'Search topics…',
     allSkills: 'All skills', allStatuses: 'All statuses', allPhases: 'All phases', allPriorities: 'All priorities', allKnowledge: 'Any knowledge level',
     empty: 'No topics match these filters.',
+  },
+  guides: {
+    title: 'Project library',
+    subtitle: 'Build real projects at your own pace. Every skill has simple, medium and advanced projects, each with step-by-step instructions and hints.',
+    search: 'Search projects or technologies…', allSkills: 'All skills', allLevels: 'All levels',
+    levels: { Beginner: 'Simple', Intermediate: 'Medium', Advanced: 'Advanced' },
+    hours: '~{n} h', steps: '{n} steps', progress: '{done} of {total} steps', showing: '{n} projects',
+    empty: 'No projects match these filters.', started: 'In progress', finished: 'Finished',
+    goals: 'What you will learn', requirements: 'What to build', acceptance: 'Done when', stretch: 'Extra challenges',
+    stepsTitle: 'Step by step', step: 'Step {n}', markDone: 'Mark step as done', markUndone: 'Mark step as not done',
+    hint: 'Show a hint ({n} of {total})', hintLabel: 'Hint {n}', code: 'Code sketch', yourProgress: 'Your progress',
+    sameSkill: 'More projects in this skill', back: 'Project library', notFound: 'This project doesn’t exist.',
+    allDone: 'You finished every step. Go through “Done when” once more, then try the extra challenges.',
+    nextStep: 'Next step', expandAll: 'Open all steps', collapseAll: 'Close all steps',
   },
   topic: {
     whatIsIt: 'What is it?', whyMatters: 'Why does it matter?', howWorks: 'How does it work?', realWorld: 'Real-world example',

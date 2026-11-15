@@ -36,6 +36,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<ProjectTaskVideo> ProjectTaskVideos => Set<ProjectTaskVideo>();
     public DbSet<QuizQuestion> QuizQuestions => Set<QuizQuestion>();
     public DbSet<TopicLesson> TopicLessons => Set<TopicLesson>();
+    public DbSet<GuidedProject> GuidedProjects => Set<GuidedProject>();
+    public DbSet<GuidedProjectStep> GuidedProjectSteps => Set<GuidedProjectStep>();
+    public DbSet<GuidedStepProgress> GuidedStepProgress => Set<GuidedStepProgress>();
 
     // User data
     public DbSet<TopicProgress> TopicProgress => Set<TopicProgress>();
@@ -451,6 +454,37 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.Property(x => x.TitleAr).HasMaxLength(200);
             e.Property(x => x.CodeLanguage).HasMaxLength(20);
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ---------- Project library ----------
+        b.Entity<GuidedProject>(e =>
+        {
+            e.HasIndex(x => x.Key).IsUnique();
+            e.HasIndex(x => new { x.Skill, x.Level, x.Order });
+            e.Property(x => x.Key).HasMaxLength(120);
+            e.Property(x => x.Skill).HasConversion<string>().HasMaxLength(30);
+            e.Property(x => x.Level).HasConversion<string>().HasMaxLength(20);
+            e.Property(x => x.TitleEn).HasMaxLength(200);
+            e.Property(x => x.TitleAr).HasMaxLength(200);
+            e.Property(x => x.TechStack).HasMaxLength(300);
+        });
+
+        b.Entity<GuidedProjectStep>(e =>
+        {
+            e.HasIndex(x => x.Key).IsUnique();
+            e.HasIndex(x => new { x.ProjectId, x.Order });
+            e.Property(x => x.Key).HasMaxLength(160);
+            e.Property(x => x.TitleEn).HasMaxLength(200);
+            e.Property(x => x.TitleAr).HasMaxLength(200);
+            e.Property(x => x.CodeLanguage).HasMaxLength(20);
+            e.HasOne(x => x.Project).WithMany(p => p.Steps).HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<GuidedStepProgress>(e =>
+        {
+            OwnedByUser(e);
+            e.HasKey(x => new { x.UserId, x.StepId });
+            e.HasOne(x => x.Step).WithMany(s => s.ProgressRows).HasForeignKey(x => x.StepId).OnDelete(DeleteBehavior.Cascade);
         });
 
         b.Entity<PracticeSubmission>(e =>

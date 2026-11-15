@@ -58,6 +58,7 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
             await SyncProjectTaskVideosAsync(content.TaskVideos, ct);
             await SyncQuizzesAsync(content.Quizzes, topics, ct);
             await SyncTutorialsAsync(content.Tutorials, topics, ct);
+            await SyncGuidedProjectsAsync(content.GuidedProjects, ct);
             await SyncMarketDemandAsync(content.MarketDemand, topics, ct);
             await SeedLearningPathsAsync(content.LearningPaths, phases, ct);
 
@@ -449,6 +450,66 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
         await db.SaveChangesAsync(ct);
     }
 
+    /// <summary>Project library entries and their steps are synchronised by key; anything that leaves the seed files is removed.</summary>
+    private async Task SyncGuidedProjectsAsync(List<GuidedProjectSeed> seeds, CancellationToken ct)
+    {
+        var projects = await db.GuidedProjects.ToDictionaryAsync(p => p.Key, ct);
+        var steps = await db.GuidedProjectSteps.ToDictionaryAsync(s => s.Key, ct);
+        static string Lines(List<string> items) => string.Join('\n', items);
+
+        var order = 0;
+        foreach (var s in seeds)
+        {
+            if (!projects.TryGetValue(s.Key, out var p))
+            {
+                p = new GuidedProject { Key = s.Key, TitleEn = s.TitleEn, TitleAr = s.TitleAr };
+                db.GuidedProjects.Add(p);
+            }
+            p.Skill = s.Skill;
+            p.Level = s.Level;
+            p.Order = ++order;
+            p.EstimatedHours = s.Hours;
+            p.TitleEn = s.TitleEn;
+            p.TitleAr = s.TitleAr;
+            p.SummaryEn = s.SummaryEn;
+            p.SummaryAr = s.SummaryAr;
+            p.TechStack = s.TechStack;
+            p.GoalsEn = Lines(s.GoalsEn);
+            p.GoalsAr = Lines(s.GoalsAr);
+            p.RequirementsEn = Lines(s.RequirementsEn);
+            p.RequirementsAr = Lines(s.RequirementsAr);
+            p.AcceptanceEn = Lines(s.AcceptanceEn);
+            p.AcceptanceAr = Lines(s.AcceptanceAr);
+            p.StretchEn = Lines(s.StretchEn);
+            p.StretchAr = Lines(s.StretchAr);
+
+            var stepOrder = 0;
+            foreach (var st in s.Steps)
+            {
+                if (!steps.TryGetValue(st.Key, out var step))
+                {
+                    step = new GuidedProjectStep { Key = st.Key, TitleEn = st.TitleEn, TitleAr = st.TitleAr, Project = p };
+                    db.GuidedProjectSteps.Add(step);
+                }
+                step.Project = p;
+                step.Order = ++stepOrder;
+                step.TitleEn = st.TitleEn;
+                step.TitleAr = st.TitleAr;
+                step.BodyEn = st.BodyEn;
+                step.BodyAr = st.BodyAr;
+                step.Code = st.Code;
+                step.CodeLanguage = st.Code is null ? null : st.Language ?? "csharp";
+                step.HintsEn = Lines(st.HintsEn);
+                step.HintsAr = Lines(st.HintsAr);
+            }
+        }
+        var stepKeys = seeds.SelectMany(p => p.Steps).Select(s => s.Key).ToHashSet();
+        db.GuidedProjectSteps.RemoveRange(steps.Values.Where(s => !stepKeys.Contains(s.Key)));
+        var projectKeys = seeds.Select(p => p.Key).ToHashSet();
+        db.GuidedProjects.RemoveRange(projects.Values.Where(p => !projectKeys.Contains(p.Key)));
+        await db.SaveChangesAsync(ct);
+    }
+
     private async Task SeedInterviewsAsync(List<InterviewSeed> seeds, Dictionary<string, Topic> topics, CancellationToken ct)
     {
         var existing = await db.InterviewQuestions.ToDictionaryAsync(q => q.Key, ct);
@@ -532,6 +593,7 @@ public class SeedContent
     public Dictionary<string, List<VideoSeed>> TaskVideos { get; private init; } = [];
     public List<QuizSeed> Quizzes { get; private init; } = [];
     public List<TutorialSeed> Tutorials { get; private init; } = [];
+    public List<GuidedProjectSeed> GuidedProjects { get; private init; } = [];
     public MarketDemandSeed? MarketDemand { get; private init; }
     public List<LearningPathSeed> LearningPaths { get; private init; } = [];
 
@@ -567,6 +629,7 @@ public class SeedContent
                 : [],
             Quizzes = Directory.Exists(Path.Combine(dir, "quizzes")) ? ReadAll<QuizSeed>("quizzes") : [],
             Tutorials = Directory.Exists(Path.Combine(dir, "tutorials")) ? ReadAll<TutorialSeed>("tutorials") : [],
+            GuidedProjects = Directory.Exists(Path.Combine(dir, "guided-projects")) ? ReadAll<GuidedProjectSeed>("guided-projects") : [],
             // Optional: written by tools/market-research/analyze.mjs for the latest research run.
             MarketDemand = File.Exists(Path.Combine(dir, "market-demand.json"))
                 ? Read<MarketDemandSeed>(Path.Combine(dir, "market-demand.json"))
@@ -683,6 +746,26 @@ public class SeedContent
             Ref(t.Topic, $"Tutorial '{t.Topic}'");
             foreach (var l in t.Lessons.Where(l => string.IsNullOrWhiteSpace(l.TitleAr) || string.IsNullOrWhiteSpace(l.BodyEn) || string.IsNullOrWhiteSpace(l.BodyAr)))
                 errors.Add($"Lesson '{l.Key}' needs a title and a body in both languages");
+        }
+        Unique(GuidedProjects.Select(p => p.Key), "guided project key");
+        Unique(GuidedProjects.SelectMany(p => p.Steps).Select(s => s.Key), "guided project step key");
+        foreach (var p in GuidedProjects)
+        {
+            if (p.Level is not (Difficulty.Beginner or Difficulty.Intermediate or Difficulty.Advanced))
+                errors.Add($"Guided project '{p.Key}' must be Beginner, Intermediate or Advanced");
+            if (p.Steps.Count < 3) errors.Add($"Guided project '{p.Key}' needs at least three steps");
+            if (string.IsNullOrWhiteSpace(p.TitleAr) || string.IsNullOrWhiteSpace(p.SummaryEn) || string.IsNullOrWhiteSpace(p.SummaryAr))
+                errors.Add($"Guided project '{p.Key}' needs a title and a summary in both languages");
+            foreach (var (en, ar, what) in new[] { (p.GoalsEn, p.GoalsAr, "goals"), (p.RequirementsEn, p.RequirementsAr, "requirements"),
+                         (p.AcceptanceEn, p.AcceptanceAr, "acceptance criteria"), (p.StretchEn, p.StretchAr, "extra challenges") })
+                if (en.Count != ar.Count) errors.Add($"Guided project '{p.Key}' has {en.Count} English and {ar.Count} Arabic {what}");
+            foreach (var st in p.Steps)
+            {
+                if (string.IsNullOrWhiteSpace(st.TitleAr) || string.IsNullOrWhiteSpace(st.BodyEn) || string.IsNullOrWhiteSpace(st.BodyAr))
+                    errors.Add($"Step '{st.Key}' needs a title and instructions in both languages");
+                if (st.HintsEn.Count == 0 || st.HintsEn.Count != st.HintsAr.Count)
+                    errors.Add($"Step '{st.Key}' needs at least one hint, with an Arabic text for each");
+            }
         }
         Unique(Quizzes.Select(q => q.Key), "quiz key");
         foreach (var q in Quizzes)
