@@ -1,3 +1,4 @@
+import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ApiService } from '../../core/api.service';
@@ -13,7 +14,8 @@ const topic: TopicDetail = {
   titleEn: 'CI/CD pipelines', titleAr: 'خطوط CI/CD', summaryEn: 'S', summaryAr: 'م', whyEn: 'W', whyAr: 'ل', howEn: 'H', howAr: 'ك',
   exampleEn: 'E', exampleAr: 'م', codeSample: null, codeLanguage: null, practiceTaskEn: 'P', practiceTaskAr: 'ت', challengeEn: 'C', challengeAr: 'ت',
   status: 'NotStarted', knowledge: 'Unassessed', confidence: null, completedAt: null, prerequisitesMet: true,
-  prerequisites: [], unlocks: [], samePhase: [], resources: [], projects: [], interviewQuestions: [], exercises: [],
+  prerequisites: [], unlocks: [], previous: null,
+  next: { id: 8, slug: 'docker', titleEn: 'Docker', titleAr: 'دوكر', status: 'NotStarted' } as TopicDetail['next'], resources: [], projects: [], interviewQuestions: [], exercises: [],
   sessions: [], totalMinutesStudied: 0, noteCount: 0, review: null,
   objectivesEn: ['Write a workflow', 'Keep secrets out of the repository'],
   objectivesAr: ['كتابة مسار عمل', 'إبقاء الأسرار خارج المستودع'],
@@ -54,6 +56,33 @@ describe('TopicDetailPage', () => {
     const objectives = [...el.querySelectorAll('#objectives li')].map(li => li.textContent ?? '');
     expect(objectives[0]).toContain('كتابة مسار عمل');
     expect(el.querySelector('.demand-card')?.textContent).toContain('الطلب في سوق العمل');
+  });
+
+  it('lists the sections, merges the summaries into one overview and links the next topic', async () => {
+    const el = await render('en');
+    const toc = [...el.querySelectorAll('.toc-list a')].map(a => a.getAttribute('href'));
+    expect(toc).toEqual(['#overview', '#tutorial', '#videos', '#quiz', '#practice', '#discussions', '#resources', '#notes']);
+    const overview = el.querySelector('#overview')!;
+    expect(overview.querySelector('.lead')?.textContent).toContain('S');
+    expect(overview.querySelectorAll('.fact').length).toBe(3);
+    expect(el.querySelector('#code')).toBeNull();
+    expect(el.querySelector('#practice')?.textContent).toContain('Independent challenge');
+    const next = [...el.querySelectorAll('.pager-link')];
+    expect(next.length).toBe(1);
+    expect(next[0].textContent).toContain('Docker');
+  });
+
+  it('folds a side panel and remembers it', async () => {
+    localStorage.removeItem('devpath.topicPanels');
+    const el = await render('en');
+    const toggle = el.querySelector<HTMLButtonElement>('.toc-panel .panel-toggle')!;
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    toggle.click();
+    TestBed.inject(ApplicationRef).tick();
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(el.querySelector('.toc-list')).toBeNull();
+    expect(JSON.parse(localStorage.getItem('devpath.topicPanels') ?? '[]')).toEqual(['toc']);
+    localStorage.removeItem('devpath.topicPanels');
   });
 
   it('hides the objectives and demand when a topic has none', async () => {

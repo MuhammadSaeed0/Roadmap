@@ -1,0 +1,78 @@
+/* The dashboard: main column | side column (today, projects, paths). The columns follow the space the page gets,
+   not the window, so the layout holds whether or not the app sidebar is open. Grid columns mirror on their own in Arabic. */
+:host { display: block; container-type: inline-size; }
+
+.dash { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+.dash-main, .dash-side { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.dash-main > .card, .dash-side > .card { margin: 0; }
+
+/* Header */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; }
+.hero h1 { margin: 0 0 8px; font-size: 1.5rem; line-height: 1.25; }
+.hero-line { display: flex; align-items: center; gap: 6px; margin: 0; font-weight: 600; }
+.hero-phase { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; font-size: 0.92rem; }
+.info-btn {
+  display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%;
+  background: none; color: var(--muted); cursor: pointer;
+}
+.info-btn:hover, .info-btn[aria-expanded='true'] { background: var(--surface-2); color: var(--text); }
+.info-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.weight-note { margin: 6px 0 0; max-width: 60ch; font-size: 0.84rem; color: var(--muted); }
+
+.hero-stats { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--border); }
+.hero-stats div { min-width: 0; }
+.hero-stats dt { font-size: 0.78rem; color: var(--muted); }
+.hero-stats dd { margin: 2px 0 0; font-size: 1.15rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Quick actions */
+.quick-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.quick-action {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 0.88rem; font-weight: 500;
+  text-decoration: none;
+}
+.quick-action .icon { color: var(--accent); }
+.quick-action:hover { border-color: var(--accent); text-decoration: none; }
+
+/* Continue learning */
+.reasons li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 8px; align-items: start; }
+.reasons li .icon { margin-top: 4px; }
+
+/* Today's plan: steps on one topic sit under the topic's name */
+.plan-group { margin: 6px 0 -2px; font-size: 0.9rem; font-weight: 600; }
+.plan-group:first-child { margin-top: 0; }
+
+/* Skills in two columns */
+.skill-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 28px; }
+.skill-grid li { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.skill-row { display: flex; justify-content: space-between; gap: 8px; font-size: 0.9rem; }
+.skill-name { font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.skill-meta { flex: none; color: var(--muted); font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+
+/* Projects and paths: a name, its stack on one line, then the progress */
+.proj-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+.proj-link { display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; }
+.proj-link:hover { text-decoration: none; }
+.proj-link:hover .proj-title { color: var(--accent-text); }
+.proj-link > .icon { flex: none; color: var(--accent); }
+.proj-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.proj-title {
+  font-weight: 600; line-height: 1.35;
+  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.proj-stack { font-size: 0.78rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.proj-link .badge { flex: none; }
+.proj-progress { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.proj-progress app-progress-bar { flex: 1; min-width: 0; }
+.proj-pct { flex: none; min-width: 3ch; font-size: 0.78rem; color: var(--muted); text-align: end; font-variant-numeric: tabular-nums; }
+
+/* Narrower: the side column moves under the main one */
+@container (max-width: 860px) {
+  .dash { grid-template-columns: minmax(0, 1fr); }
+}
+@container (max-width: 560px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .hero app-progress-ring { grid-row: 1; justify-self: start; }
+  .hero h1 { font-size: 1.3rem; }
+  .skill-grid { grid-template-columns: minmax(0, 1fr); }
+}

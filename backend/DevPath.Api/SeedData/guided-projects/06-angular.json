@@ -1,0 +1,1171 @@
+[
+ {
+  "key": "ng-habit-tracker",
+  "skill": "Angular",
+  "level": "Beginner",
+  "hours": 5,
+  "titleEn": "Habit tracker with signals",
+  "titleAr": "متتبع عادات باستخدام signals",
+  "summaryEn": "Track daily habits in an Angular app: add habits, tick them off for each day of the week, see streaks — built with standalone components and signals.",
+  "summaryAr": "تتبّع العادات اليومية في تطبيق Angular: أضف عادات، وعلّمها لكل يوم من أيام الأسبوع، وشاهد سلاسل الالتزام، مبني بمكونات standalone وsignals.",
+  "techStack": "Angular · TypeScript · signals · localStorage",
+  "goalsEn": [
+   "Create an Angular app with the CLI",
+   "Split the UI into standalone components with inputs and outputs",
+   "Manage state with signal, computed and effect",
+   "Use the new control flow (@if, @for)"
+  ],
+  "goalsAr": [
+   "إنشاء تطبيق Angular باستخدام الـ CLI",
+   "تقسيم الواجهة إلى مكونات standalone بـ inputs وoutputs",
+   "إدارة الحالة بـ signal وcomputed وeffect",
+   "استخدام بنية التحكم الجديدة (@if و@for)"
+  ],
+  "requirementsEn": [
+   "Add a habit with a name and an emoji or colour",
+   "A week grid: tick a habit for each day",
+   "Current streak per habit and a weekly completion percentage",
+   "Move to previous and next weeks",
+   "Delete a habit with confirmation",
+   "Everything saved in localStorage"
+  ],
+  "requirementsAr": [
+   "إضافة عادة باسم ورمز تعبيري أو لون",
+   "شبكة أسبوعية: علّم العادة لكل يوم",
+   "السلسلة الحالية لكل عادة ونسبة الإنجاز الأسبوعية",
+   "الانتقال إلى الأسابيع السابقة والتالية",
+   "حذف عادة مع تأكيد",
+   "كل شيء محفوظ في localStorage"
+  ],
+  "acceptanceEn": [
+   "Ticking a day updates the streak and the percentage immediately",
+   "Reloading the page keeps all habits and ticks",
+   "The app has at least 3 components that talk through inputs and outputs"
+  ],
+  "acceptanceAr": [
+   "تعليم يوم يحدّث السلسلة والنسبة فورًا",
+   "إعادة تحميل الصفحة تحفظ كل العادات والتعليمات",
+   "في التطبيق 3 مكونات على الأقل تتواصل عبر inputs وoutputs"
+  ],
+  "stretchEn": [
+   "Add a monthly calendar view",
+   "Allow habits that only apply on some weekdays",
+   "Add dark mode"
+  ],
+  "stretchAr": [
+   "أضف عرض تقويم شهري",
+   "اسمح بعادات لا تنطبق إلا على بعض أيام الأسبوع",
+   "أضف الوضع الداكن"
+  ],
+  "steps": [
+   {
+    "titleEn": "Create the app",
+    "titleAr": "أنشئ التطبيق",
+    "bodyEn": "Install the CLI with `npm install -g @angular/cli` and run `ng new habits --style=css --ssr=false`. Start it with `ng serve` and open http://localhost:4200.\n\nDelete the content of `app.component.html` so you start with an empty page.",
+    "bodyAr": "ثبّت الـ CLI بـ `npm install -g @angular/cli` وشغّل `ng new habits --style=css --ssr=false`. ثم ابدأه بـ `ng serve` وافتح http://localhost:4200.\n\nاحذف محتوى `app.component.html` لتبدأ بصفحة فارغة.",
+    "hintsEn": [
+     "Angular 17+ creates standalone components by default — no NgModule needed.",
+     "Keep `ng serve` running; it reloads on every save."
+    ],
+    "hintsAr": [
+     "Angular 17 وما بعده ينشئ مكونات standalone افتراضيًا، فلا حاجة إلى NgModule.",
+     "أبقِ `ng serve` يعمل، فهو يعيد التحميل مع كل حفظ."
+    ],
+    "key": "ng-habit-tracker-setup"
+   },
+   {
+    "titleEn": "Model and service",
+    "titleAr": "النموذج والخدمة",
+    "bodyEn": "Create `habit.ts` with `interface Habit { id: string; name: string; color: string; done: string[] }` where `done` holds dates as 'YYYY-MM-DD'. Create `HabitService` (`ng g service habit`) with `readonly habits = signal<Habit[]>([])` and methods `add`, `remove` and `toggle(id, date)`.\n\nEvery method replaces the array with a new one using `this.habits.update(list => ...)`.",
+    "bodyAr": "أنشئ `habit.ts` فيه `interface Habit { id: string; name: string; color: string; done: string[] }` حيث تحمل `done` التواريخ بصيغة 'YYYY-MM-DD'. وأنشئ `HabitService` (`ng g service habit`) فيه `readonly habits = signal<Habit[]>([])` ودوال `add` و`remove` و`toggle(id, date)`.\n\nكل دالة تستبدل المصفوفة بمصفوفة جديدة باستخدام `this.habits.update(list => ...)`.",
+    "hintsEn": [
+     "Strings like \"2026-11-15\" compare and sort correctly as text.",
+     "Format a date as YYYY-MM-DD with `d.toISOString().slice(0, 10)` — careful, that is UTC; build it from getFullYear/getMonth/getDate instead."
+    ],
+    "hintsAr": [
+     "النصوص مثل \"2026-11-15\" تُقارن وتُرتب بشكل صحيح كنص.",
+     "تنسيق التاريخ بـ `d.toISOString().slice(0, 10)` يعطي التوقيت العالمي، فابنِه بدلًا من ذلك من getFullYear وgetMonth وgetDate."
+    ],
+    "key": "ng-habit-tracker-model"
+   },
+   {
+    "titleEn": "Add-habit component",
+    "titleAr": "مكوّن إضافة عادة",
+    "bodyEn": "Generate `ng g component add-habit`. Use a simple form with a text input and a colour input; on submit, emit the values with an `output<{ name: string; color: string }>()` and clear the input.\n\nThe parent (AppComponent) listens with `(added)=\"service.add($event)\"`.",
+    "bodyAr": "ولّد `ng g component add-habit`. واستخدم نموذجًا بسيطًا فيه حقل نص وحقل لون، وعند الإرسال أطلق القيم بـ `output<{ name: string; color: string }>()` وافرغ الحقل.\n\nوالمكوّن الأب (AppComponent) يستمع بـ `(added)=\"service.add($event)\"`.",
+    "hintsEn": [
+     "Ignore empty names after trimming.",
+     "Use a `<form (submit)>` so Enter adds the habit."
+    ],
+    "hintsAr": [
+     "تجاهل الأسماء الفارغة بعد حذف المسافات.",
+     "استخدم `<form (submit)>` ليضيف الضغط على Enter العادة."
+    ],
+    "key": "ng-habit-tracker-form"
+   },
+   {
+    "titleEn": "The week grid",
+    "titleAr": "الشبكة الأسبوعية",
+    "bodyEn": "In AppComponent keep `weekStart = signal(startOfWeek(new Date()))` and `days = computed(() => 7 dates from weekStart)`. Create `HabitRowComponent` with `habit = input.required<Habit>()`, `days = input.required<string[]>()` and an output `toggled`.\n\nRender the row with `@for (day of days(); track day)` and a checkbox per day.",
+    "bodyAr": "في AppComponent احتفظ بـ `weekStart = signal(startOfWeek(new Date()))` و`days = computed(() => 7 dates from weekStart)`. وأنشئ `HabitRowComponent` فيه `habit = input.required<Habit>()` و`days = input.required<string[]>()` وoutput باسم `toggled`.\n\nارسم الصف بـ `@for (day of days(); track day)` مع مربع اختيار لكل يوم.",
+    "hintsEn": [
+     "A checkbox is checked when `habit().done.includes(day)`.",
+     "Add buttons for previous and next week that move weekStart by 7 days."
+    ],
+    "hintsAr": [
+     "مربع الاختيار مُعلَّم عندما `habit().done.includes(day)`.",
+     "أضف زرين للأسبوع السابق والتالي يحرّكان weekStart بسبعة أيام."
+    ],
+    "key": "ng-habit-tracker-week"
+   },
+   {
+    "titleEn": "Streaks and percentages with computed",
+    "titleAr": "السلاسل والنسب بـ computed",
+    "bodyEn": "Write a pure function `streak(done: string[], today: string): number` that counts consecutive days back from today (or yesterday if today is not ticked yet). In the row, `streak = computed(() => streak(this.habit().done, today))`.\n\nAdd a computed weekly percentage: ticked cells / (habits × 7).",
+    "bodyAr": "اكتب دالة نقية `streak(done: string[], today: string): number` تعدّ الأيام المتتالية رجوعًا من اليوم (أو من الأمس إن لم يُعلَّم اليوم بعد). وفي الصف `streak = computed(() => streak(this.habit().done, today))`.\n\nوأضف نسبة أسبوعية محسوبة: الخلايا المُعلَّمة ÷ (العادات × 7).",
+    "hintsEn": [
+     "computed values update automatically when the signals they read change.",
+     "Put date helpers in their own file so you can unit test them."
+    ],
+    "hintsAr": [
+     "القيم المحسوبة تتحدث تلقائيًا عندما تتغير الـ signals التي تقرؤها.",
+     "ضع دوال التاريخ المساعدة في ملف مستقل لتختبرها."
+    ],
+    "key": "ng-habit-tracker-stats"
+   },
+   {
+    "titleEn": "Save with an effect",
+    "titleAr": "احفظ باستخدام effect",
+    "bodyEn": "In HabitService's constructor, load the saved list from localStorage into the signal. Then add `effect(() => localStorage.setItem('habits', JSON.stringify(this.habits())))` — it runs every time the habits change.\n\nWrap reading in try/catch so broken data does not break the app.",
+    "bodyAr": "في constructor الخاص بـ HabitService حمّل القائمة المحفوظة من localStorage إلى الـ signal. ثم أضف `effect(() => localStorage.setItem('habits', JSON.stringify(this.habits())))`، وهو يعمل في كل مرة تتغير فيها العادات.\n\nضع القراءة داخل try/catch حتى لا تكسر البيانات التالفة التطبيق.",
+    "hintsEn": [
+     "Effects are for side effects like saving; never use them to set other signals.",
+     "Check the saved JSON in DevTools → Application → Local Storage."
+    ],
+    "hintsAr": [
+     "الـ effects للآثار الجانبية مثل الحفظ، ولا تستخدمها أبدًا لضبط signals أخرى.",
+     "افحص JSON المحفوظ في أدوات المطور ← Application ← Local Storage."
+    ],
+    "key": "ng-habit-tracker-persist"
+   },
+   {
+    "titleEn": "Delete with confirmation and empty state",
+    "titleAr": "الحذف مع التأكيد والحالة الفارغة",
+    "bodyEn": "Add a delete button to each row that asks `confirm('Delete this habit?')` and emits a `removed` output. When there are no habits, show a friendly empty state with `@if (habits().length === 0)`.\n\nStyle: a grid with the habit name in the first column and 7 day columns; highlight today.",
+    "bodyAr": "أضف زر حذف لكل صف يسأل `confirm('Delete this habit?')` ويطلق output باسم `removed`. وعندما لا توجد عادات اعرض حالة فارغة لطيفة بـ `@if (habits().length === 0)`.\n\nالتنسيق: شبكة فيها اسم العادة في العمود الأول و7 أعمدة للأيام، مع تمييز اليوم الحالي.",
+    "hintsEn": [
+     "CSS grid: `grid-template-columns: 180px repeat(7, 40px)`.",
+     "Use the habit colour for checked cells with a CSS variable: `[style.--c]=\"habit().color\"`."
+    ],
+    "hintsAr": [
+     "شبكة CSS: `grid-template-columns: 180px repeat(7, 40px)`.",
+     "استخدم لون العادة للخلايا المُعلَّمة بمتغير CSS: `[style.--c]=\"habit().color\"`."
+    ],
+    "key": "ng-habit-tracker-delete"
+   },
+   {
+    "titleEn": "Test and deploy",
+    "titleAr": "اختبر وانشر",
+    "bodyEn": "Write unit tests for `streak` and the date helpers with `ng test`. Check the acceptance criteria, then build with `ng build` and deploy the `dist/habits/browser` folder to Netlify or GitHub Pages.\n\nAdd the live link and a screenshot to the README.",
+    "bodyAr": "اكتب اختبارات وحدة لـ `streak` ولدوال التاريخ المساعدة بـ `ng test`. وتحقق من معايير القبول، ثم ابنِ بـ `ng build` وانشر المجلد `dist/habits/browser` على Netlify أو GitHub Pages.\n\nأضف الرابط المباشر وصورة للشاشة إلى README.",
+    "hintsEn": [
+     "For GitHub Pages use `ng build --base-href /repo-name/`.",
+     "Test streaks across a month boundary and a year boundary."
+    ],
+    "hintsAr": [
+     "لـ GitHub Pages استخدم `ng build --base-href /repo-name/`.",
+     "اختبر السلاسل عبر حدود الشهر وحدود السنة."
+    ],
+    "key": "ng-habit-tracker-finish"
+   }
+  ]
+ },
+ {
+  "key": "ng-show-finder",
+  "skill": "Angular",
+  "level": "Beginner",
+  "hours": 6,
+  "titleEn": "TV show finder with routing and HTTP",
+  "titleAr": "باحث المسلسلات مع التوجيه وHTTP",
+  "summaryEn": "Search TV shows from the free TVmaze API, open a details page with seasons and cast, and keep a watchlist — your first Angular app with routing and HttpClient.",
+  "summaryAr": "ابحث عن المسلسلات من الـ API المجاني TVmaze، وافتح صفحة تفاصيل فيها المواسم وطاقم التمثيل، واحتفظ بقائمة مشاهدة، وهو أول تطبيق Angular لك مع التوجيه وHttpClient.",
+  "techStack": "Angular · HttpClient · Router · signals · TVmaze API",
+  "goalsEn": [
+   "Call an API with HttpClient and typed responses",
+   "Configure routes with parameters and lazy loading",
+   "Show loading and error states",
+   "Bind route parameters to component inputs"
+  ],
+  "goalsAr": [
+   "استدعاء API بـ HttpClient مع ردود ذات أنواع",
+   "إعداد المسارات مع المعاملات والتحميل الكسول",
+   "عرض حالات التحميل والخطأ",
+   "ربط معاملات المسار بـ inputs المكوّن"
+  ],
+  "requirementsEn": [
+   "A search page with results as cards (image, name, year, rating)",
+   "A details page at /shows/:id with summary, seasons and cast",
+   "A watchlist page; add and remove from any page",
+   "The search term is in the URL (?q=) so results can be shared",
+   "Loading skeletons and an error message with retry"
+  ],
+  "requirementsAr": [
+   "صفحة بحث بنتائج على شكل بطاقات (صورة، واسم، وسنة، وتقييم)",
+   "صفحة تفاصيل على /shows/:id فيها الملخص والمواسم والطاقم",
+   "صفحة قائمة المشاهدة، والإضافة والحذف من أي صفحة",
+   "مصطلح البحث في الرابط (?q=) لتمكن مشاركة النتائج",
+   "هياكل تحميل ورسالة خطأ مع إعادة المحاولة"
+  ],
+  "acceptanceEn": [
+   "Opening /shows/169 directly in a new tab works",
+   "Refreshing the search page keeps the results for the same query",
+   "The details page is lazy loaded (its own chunk in the build output)",
+   "Shows without an image show a placeholder instead of a broken image"
+  ],
+  "acceptanceAr": [
+   "فتح /shows/169 مباشرة في تبويب جديد يعمل",
+   "تحديث صفحة البحث يحتفظ بالنتائج للاستعلام نفسه",
+   "صفحة التفاصيل تُحمَّل بشكل كسول (لها جزء مستقل في مخرجات البناء)",
+   "المسلسلات بلا صورة تعرض صورة بديلة بدل صورة مكسورة"
+  ],
+  "stretchEn": [
+   "Show the episodes of a season in an accordion",
+   "Add a \"next episode\" countdown for running shows",
+   "Cache responses with an HTTP interceptor"
+  ],
+  "stretchAr": [
+   "اعرض حلقات الموسم في قائمة قابلة للطي",
+   "أضف عدًا تنازليًا لـ\"الحلقة التالية\" للمسلسلات المستمرة",
+   "خزّن الردود مؤقتًا باستخدام HTTP interceptor"
+  ],
+  "steps": [
+   {
+    "titleEn": "App, routes and HttpClient",
+    "titleAr": "التطبيق والمسارات وHttpClient",
+    "bodyEn": "Create the app with `ng new shows`. In `app.config.ts` add `provideHttpClient(withFetch())` and `provideRouter(routes, withComponentInputBinding())`.\n\nDefine routes: `''` → search, `'shows/:id'` → details (lazy: `loadComponent: () => import(...)`), `'watchlist'` → watchlist, `'**'` → not found.",
+    "bodyAr": "أنشئ التطبيق بـ `ng new shows`. وفي `app.config.ts` أضف `provideHttpClient(withFetch())` و`provideRouter(routes, withComponentInputBinding())`.\n\nعرّف المسارات: `''` ← البحث، و`'shows/:id'` ← التفاصيل (بشكل كسول: `loadComponent: () => import(...)`)، و`'watchlist'` ← قائمة المشاهدة، و`'**'` ← غير موجود.",
+    "hintsEn": [
+     "withComponentInputBinding lets `id = input<string>()` receive the :id parameter.",
+     "Add a nav bar with `routerLink` and `routerLinkActive`."
+    ],
+    "hintsAr": [
+     "withComponentInputBinding يسمح لـ `id = input<string>()` باستقبال المعامل :id.",
+     "أضف شريط تنقل بـ `routerLink` و`routerLinkActive`."
+    ],
+    "key": "ng-show-finder-setup"
+   },
+   {
+    "titleEn": "A typed API service",
+    "titleAr": "خدمة API بأنواع",
+    "bodyEn": "Look at `https://api.tvmaze.com/search/shows?q=girls` and `https://api.tvmaze.com/shows/1?embed[]=seasons&embed[]=cast`. Write interfaces for the parts you use (Show, Season, CastMember).\n\nCreate `ShowsService` with `search(q): Observable<Show[]>` (map the `[{ score, show }]` response to shows) and `details(id)`.",
+    "bodyAr": "انظر إلى `https://api.tvmaze.com/search/shows?q=girls` و`https://api.tvmaze.com/shows/1?embed[]=seasons&embed[]=cast`. واكتب interfaces للأجزاء التي تستخدمها (Show وSeason وCastMember).\n\nأنشئ `ShowsService` فيه `search(q): Observable<Show[]>` (حوّل الرد `[{ score, show }]` إلى مسلسلات) و`details(id)`.",
+    "hintsEn": [
+     "`this.http.get<SearchResult[]>(url, { params: { q } })` encodes the query for you.",
+     "Mark fields that can be null in the API as `| null` (image, rating.average)."
+    ],
+    "hintsAr": [
+     "`this.http.get<SearchResult[]>(url, { params: { q } })` يرمّز الاستعلام لك.",
+     "علّم الحقول التي قد تكون null في الـ API بـ `| null` (مثل image وrating.average)."
+    ],
+    "key": "ng-show-finder-api"
+   },
+   {
+    "titleEn": "Search page synced with the URL",
+    "titleAr": "صفحة البحث متزامنة مع الرابط",
+    "bodyEn": "The search page reads `q` from the query string (an input bound by the router). The form navigates to `?q=term` instead of searching directly; the page reacts to the input change and loads results.\n\nThis makes refresh and sharing work for free.",
+    "bodyAr": "صفحة البحث تقرأ `q` من رابط الاستعلام (input يربطه الـ router). والنموذج ينتقل إلى `?q=term` بدل البحث مباشرة، والصفحة تتفاعل مع تغيّر الـ input وتحمّل النتائج.\n\nهذا يجعل التحديث والمشاركة يعملان تلقائيًا.",
+    "hintsEn": [
+     "`this.router.navigate([], { queryParams: { q } })` updates the URL.",
+     "`toSignal` or `rxResource` turn the request into signals for the template."
+    ],
+    "hintsAr": [
+     "`this.router.navigate([], { queryParams: { q } })` يحدّث الرابط.",
+     "`toSignal` أو `rxResource` يحوّلان الطلب إلى signals للقالب."
+    ],
+    "key": "ng-show-finder-search"
+   },
+   {
+    "titleEn": "Result cards and images",
+    "titleAr": "بطاقات النتائج والصور",
+    "bodyEn": "Create `ShowCardComponent` with `show = input.required<Show>()`. Show the image (`show().image?.medium`) or a placeholder, the name, the premiere year and the rating. The whole card is a `routerLink` to the details page.\n\nUse `NgOptimizedImage` (`ngSrc` with width and height) for faster loading.",
+    "bodyAr": "أنشئ `ShowCardComponent` فيه `show = input.required<Show>()`. واعرض الصورة (`show().image?.medium`) أو صورة بديلة، والاسم، وسنة العرض الأول، والتقييم. والبطاقة كلها `routerLink` إلى صفحة التفاصيل.\n\nاستخدم `NgOptimizedImage` (`ngSrc` مع العرض والارتفاع) لتحميل أسرع.",
+    "hintsEn": [
+     "The year is `premiered?.slice(0, 4)`.",
+     "Add `alt` text with the show name."
+    ],
+    "hintsAr": [
+     "السنة هي `premiered?.slice(0, 4)`.",
+     "أضف نص `alt` باسم المسلسل."
+    ],
+    "key": "ng-show-finder-cards"
+   },
+   {
+    "titleEn": "Loading and error states",
+    "titleAr": "حالات التحميل والخطأ",
+    "bodyEn": "Handle three states in the template: loading (skeleton cards), error (message + Retry button that reloads), and results (or \"No shows found\").\n\nWith `rxResource`, use `isLoading()`, `error()` and `value()`, and `reload()` for Retry.",
+    "bodyAr": "تعامل مع ثلاث حالات في القالب: التحميل (بطاقات هيكلية)، والخطأ (رسالة وزر إعادة المحاولة الذي يعيد التحميل)، والنتائج (أو \"لم يُعثر على مسلسلات\").\n\nمع `rxResource` استخدم `isLoading()` و`error()` و`value()`، و`reload()` لزر إعادة المحاولة.",
+    "hintsEn": [
+     "Test errors by switching DevTools to Offline.",
+     "Do not search for an empty query; show a hint instead."
+    ],
+    "hintsAr": [
+     "اختبر الأخطاء بتحويل أدوات المطور إلى وضع Offline.",
+     "لا تبحث باستعلام فارغ، واعرض تلميحًا بدلًا من ذلك."
+    ],
+    "key": "ng-show-finder-states"
+   },
+   {
+    "titleEn": "The details page",
+    "titleAr": "صفحة التفاصيل",
+    "bodyEn": "In `ShowDetailsComponent`, `id = input.required<string>()` comes from the route. Load the details whenever id changes and show the name, genres, rating, the summary, seasons (number, episodes, dates) and the first 12 cast members.\n\nThe summary is HTML from the API; bind it with `[innerHTML]` — Angular sanitizes it.",
+    "bodyAr": "في `ShowDetailsComponent` يأتي `id = input.required<string>()` من المسار. حمّل التفاصيل كلما تغير id، واعرض الاسم، والأنواع، والتقييم، والملخص، والمواسم (الرقم والحلقات والتواريخ)، وأول 12 عضوًا من طاقم التمثيل.\n\nالملخص HTML قادم من الـ API، فاربطه بـ `[innerHTML]`، وAngular يعقّمه.",
+    "hintsEn": [
+     "Embedded data is in `_embedded.seasons` and `_embedded.cast`.",
+     "Set the browser title with the `Title` service."
+    ],
+    "hintsAr": [
+     "البيانات المضمّنة موجودة في `_embedded.seasons` و`_embedded.cast`.",
+     "اضبط عنوان المتصفح بخدمة `Title`."
+    ],
+    "key": "ng-show-finder-details"
+   },
+   {
+    "titleEn": "The watchlist",
+    "titleAr": "قائمة المشاهدة",
+    "bodyEn": "Create `WatchlistService` with a signal of saved shows (id, name, image) persisted in localStorage, plus `has(id)`, `toggle(show)`. Add a toggle button on cards and on the details page, and a watchlist page that lists the saved shows.\n\nA shared service is the simplest way for unrelated components to share state.",
+    "bodyAr": "أنشئ `WatchlistService` فيه signal للمسلسلات المحفوظة (الرقم والاسم والصورة) محفوظة في localStorage، مع `has(id)` و`toggle(show)`. وأضف زر تبديل على البطاقات وفي صفحة التفاصيل، وصفحة لقائمة المشاهدة تعرض المسلسلات المحفوظة.\n\nالخدمة المشتركة أبسط طريقة لتتشارك المكونات غير المترابطة الحالة.",
+    "hintsEn": [
+     "Store only what you need to show the card, not the whole API response.",
+     "Show the watchlist count in the nav bar with a computed."
+    ],
+    "hintsAr": [
+     "احفظ فقط ما تحتاجه لعرض البطاقة، لا رد الـ API كاملًا.",
+     "اعرض عدد قائمة المشاهدة في شريط التنقل بـ computed."
+    ],
+    "key": "ng-show-finder-watchlist"
+   },
+   {
+    "titleEn": "Check the build and deploy",
+    "titleAr": "تحقق من البناء وانشر",
+    "bodyEn": "Run `ng build` and look at the output: the details page should be a separate lazy chunk. Deploy with a fallback to `index.html` for all routes (Netlify `_redirects`: `/* /index.html 200`) so deep links work.\n\nCredit TVmaze in the footer and add the link to the README.",
+    "bodyAr": "شغّل `ng build` وانظر إلى المخرجات: صفحة التفاصيل يجب أن تكون جزءًا كسولًا مستقلًا. وانشر مع توجيه احتياطي إلى `index.html` لكل المسارات (في Netlify ملف `_redirects` فيه `/* /index.html 200`) لتعمل الروابط العميقة.\n\nاذكر TVmaze في التذييل وأضف الرابط إلى README.",
+    "hintsEn": [
+     "Without the fallback, refreshing /shows/169 gives a 404 from the host.",
+     "TVmaze limits requests — do not search on every keystroke."
+    ],
+    "hintsAr": [
+     "بدون التوجيه الاحتياطي يعطي تحديث /shows/169 خطأ 404 من الاستضافة.",
+     "TVmaze يحدّ عدد الطلبات، فلا تبحث عند كل ضغطة مفتاح."
+    ],
+    "key": "ng-show-finder-finish"
+   }
+  ]
+ },
+ {
+  "key": "ng-budget-planner",
+  "skill": "Angular",
+  "level": "Intermediate",
+  "hours": 12,
+  "titleEn": "Budget planner with reactive forms and charts",
+  "titleAr": "مخطط ميزانية بالنماذج التفاعلية والمخططات",
+  "summaryEn": "A personal budget app: complex reactive forms with validation, a transactions table with filters, monthly budgets per category, and charts — all with clean services and tests.",
+  "summaryAr": "تطبيق ميزانية شخصية: نماذج تفاعلية معقدة مع التحقق، وجدول عمليات مع مرشحات، وميزانيات شهرية لكل فئة، ومخططات، كل ذلك بخدمات نظيفة واختبارات.",
+  "techStack": "Angular · Reactive Forms · signals · Chart.js · Vitest/Jasmine",
+  "goalsEn": [
+   "Build typed reactive forms with FormArray and custom validators",
+   "Derive filtered and grouped data with computed signals",
+   "Wrap a chart library in an Angular component",
+   "Test services and components"
+  ],
+  "goalsAr": [
+   "بناء نماذج تفاعلية بأنواع مع FormArray وvalidators مخصصة",
+   "اشتقاق بيانات مصفّاة ومجمّعة بـ computed signals",
+   "تغليف مكتبة مخططات في مكوّن Angular",
+   "اختبار الخدمات والمكونات"
+  ],
+  "requirementsEn": [
+   "Add and edit transactions: date, amount, type (income/expense), category, note",
+   "Split one transaction across several categories (FormArray)",
+   "Table with filters: month, category, type, text; sortable columns",
+   "Monthly budget per category with remaining amount",
+   "A doughnut chart of spending by category and a bar chart of the last 6 months",
+   "Export to CSV"
+  ],
+  "requirementsAr": [
+   "إضافة العمليات وتعديلها: التاريخ والمبلغ والنوع (دخل/مصروف) والفئة والملاحظة",
+   "تقسيم عملية واحدة على عدة فئات (FormArray)",
+   "جدول بمرشحات: الشهر والفئة والنوع والنص، مع أعمدة قابلة للترتيب",
+   "ميزانية شهرية لكل فئة مع المبلغ المتبقي",
+   "مخطط دائري للإنفاق حسب الفئة ومخطط أعمدة لآخر 6 أشهر",
+   "التصدير إلى CSV"
+  ],
+  "acceptanceEn": [
+   "A split whose parts do not add up to the total cannot be saved, with a clear message",
+   "Filters combine and the totals under the table follow them",
+   "Charts update when a transaction is added",
+   "Leaving the form with unsaved changes asks for confirmation"
+  ],
+  "acceptanceAr": [
+   "التقسيم الذي لا تساوي أجزاؤه الإجمالي لا يمكن حفظه، مع رسالة واضحة",
+   "المرشحات تتجمع، والمجاميع تحت الجدول تتبعها",
+   "المخططات تتحدث عند إضافة عملية",
+   "مغادرة النموذج مع تغييرات غير محفوظة تطلب تأكيدًا"
+  ],
+  "stretchEn": [
+   "Recurring transactions (monthly rent)",
+   "Import a bank CSV",
+   "Keep data in IndexedDB instead of localStorage"
+  ],
+  "stretchAr": [
+   "عمليات متكررة (مثل الإيجار الشهري)",
+   "استيراد CSV من البنك",
+   "حفظ البيانات في IndexedDB بدل localStorage"
+  ],
+  "steps": [
+   {
+    "titleEn": "Plan the structure",
+    "titleAr": "خطّط للبنية",
+    "bodyEn": "Create the app and folders by feature: `transactions/` (list, form), `budgets/`, `reports/`, and `core/` (models, storage). Define models: `Transaction { id, date, type, note, splits: { categoryId, amount }[] }`, `Category`, `Budget { categoryId, month, amount }`.\n\nRoutes: /transactions, /transactions/new, /transactions/:id, /budgets, /reports.",
+    "bodyAr": "أنشئ التطبيق والمجلدات حسب الميزة: `transactions/` (القائمة والنموذج)، و`budgets/`، و`reports/`، و`core/` (النماذج والتخزين). وعرّف النماذج: `Transaction { id, date, type, note, splits: { categoryId, amount }[] }` و`Category` و`Budget { categoryId, month, amount }`.\n\nالمسارات: /transactions و/transactions/new و/transactions/:id و/budgets و/reports.",
+    "hintsEn": [
+     "Store amounts in cents (integers) to avoid floating point errors.",
+     "Even a simple transaction has one split; this keeps the logic uniform."
+    ],
+    "hintsAr": [
+     "خزّن المبالغ بالسنتات (أعداد صحيحة) لتتجنب أخطاء الكسور العشرية.",
+     "حتى العملية البسيطة لها تقسيم واحد، وهذا يوحّد المنطق."
+    ],
+    "key": "ng-budget-planner-architecture"
+   },
+   {
+    "titleEn": "A store service with signals",
+    "titleAr": "خدمة مخزن بـ signals",
+    "bodyEn": "Create `BudgetStore` with private signals for transactions, categories and budgets, read-only views (`asReadonly()`), and methods to add, update and delete. Persist with an effect to localStorage, and seed default categories on first run.\n\nComponents never change the arrays themselves; they call store methods.",
+    "bodyAr": "أنشئ `BudgetStore` فيه signals خاصة للعمليات والفئات والميزانيات، وعروض للقراءة فقط (`asReadonly()`)، ودوال للإضافة والتعديل والحذف. واحفظ بـ effect إلى localStorage، وأضف الفئات الافتراضية عند أول تشغيل.\n\nالمكونات لا تغيّر المصفوفات بنفسها أبدًا، بل تستدعي دوال المخزن.",
+    "hintsEn": [
+     "Version the stored data (`{ version: 1, ... }`) so you can migrate later.",
+     "Generate ids with `crypto.randomUUID()`."
+    ],
+    "hintsAr": [
+     "ضع رقم إصدار للبيانات المخزنة (`{ version: 1, ... }`) لتستطيع ترحيلها لاحقًا.",
+     "ولّد الأرقام بـ `crypto.randomUUID()`."
+    ],
+    "key": "ng-budget-planner-store"
+   },
+   {
+    "titleEn": "A typed reactive form",
+    "titleAr": "نموذج تفاعلي بأنواع",
+    "bodyEn": "Build the transaction form with `inject(NonNullableFormBuilder).group({ date, type, note, total, splits: fb.array([...]) })`. Validators: date required, total > 0, each split needs a category and an amount > 0.\n\nAdd/remove split rows with buttons that call `splits.push(...)` / `splits.removeAt(i)`.",
+    "bodyAr": "ابنِ نموذج العملية بـ `inject(NonNullableFormBuilder).group({ date, type, note, total, splits: fb.array([...]) })`. والـ validators: التاريخ مطلوب، والإجمالي أكبر من 0، وكل تقسيم يحتاج فئة ومبلغًا أكبر من 0.\n\nأضف صفوف التقسيم واحذفها بأزرار تستدعي `splits.push(...)` و`splits.removeAt(i)`.",
+    "hintsEn": [
+     "Typed forms infer the value type — hover `form.getRawValue()`.",
+     "Show errors only after a field is touched or on submit."
+    ],
+    "hintsAr": [
+     "النماذج ذات الأنواع تستنتج نوع القيمة، فمرّر المؤشر فوق `form.getRawValue()`.",
+     "اعرض الأخطاء فقط بعد لمس الحقل أو عند الإرسال."
+    ],
+    "key": "ng-budget-planner-form"
+   },
+   {
+    "titleEn": "A cross-field validator",
+    "titleAr": "Validator عبر الحقول",
+    "bodyEn": "Write a group validator `splitsMatchTotal` that sums the split amounts and returns `{ splitsMismatch: { difference } }` when the sum differs from the total. Attach it to the form group and show the difference under the splits.\n\nUnit-test the validator with a FormGroup built in the test.",
+    "bodyAr": "اكتب validator للمجموعة باسم `splitsMatchTotal` يجمع مبالغ التقسيمات ويعيد `{ splitsMismatch: { difference } }` عندما يختلف المجموع عن الإجمالي. واربطه بمجموعة النموذج واعرض الفرق تحت التقسيمات.\n\nاختبر الـ validator باختبار وحدة مع FormGroup يُبنى داخل الاختبار.",
+    "hintsEn": [
+     "A ValidatorFn receives the AbstractControl; cast with `control.get('splits')`.",
+     "Offer a \"fill remainder\" button that puts the difference into the last split."
+    ],
+    "hintsAr": [
+     "الـ ValidatorFn تستقبل AbstractControl، فاحصل على التقسيمات بـ `control.get('splits')`.",
+     "قدّم زر \"املأ الباقي\" يضع الفرق في آخر تقسيم."
+    ],
+    "key": "ng-budget-planner-validator"
+   },
+   {
+    "titleEn": "Edit mode and an unsaved-changes guard",
+    "titleAr": "وضع التعديل وحارس التغييرات غير المحفوظة",
+    "bodyEn": "For /transactions/:id, load the transaction and `patchValue` the form, rebuilding the splits FormArray to the right length. Add a `canDeactivate` guard (a function) that asks for confirmation when the form is dirty and not saved.\n\nAfter saving, mark the form pristine and navigate back to the list.",
+    "bodyAr": "لـ /transactions/:id حمّل العملية واستخدم `patchValue` على النموذج، مع إعادة بناء FormArray للتقسيمات بالطول الصحيح. وأضف حارس `canDeactivate` (كدالة) يطلب تأكيدًا عندما يكون النموذج معدّلًا وغير محفوظ.\n\nبعد الحفظ علّم النموذج كـ pristine وارجع إلى القائمة.",
+    "hintsEn": [
+     "patchValue does not add FormArray controls; clear and push them first.",
+     "The guard can check a `hasUnsavedChanges()` method on the component."
+    ],
+    "hintsAr": [
+     "patchValue لا تضيف عناصر FormArray، فافرغها وادفع العناصر أولًا.",
+     "يستطيع الحارس فحص دالة `hasUnsavedChanges()` على المكوّن."
+    ],
+    "key": "ng-budget-planner-edit-guard"
+   },
+   {
+    "titleEn": "Filtered, sortable table",
+    "titleAr": "جدول مصفّى وقابل للترتيب",
+    "bodyEn": "Keep filter signals (month, categoryId, type, text) and a sort signal (column, direction). `rows = computed(...)` filters and sorts the transactions; `totals = computed(...)` sums income and expenses of the rows.\n\nPut the filters in the URL query string so the view survives refresh.",
+    "bodyAr": "احتفظ بـ signals للمرشحات (الشهر والفئة والنوع والنص) وsignal للترتيب (العمود والاتجاه). و`rows = computed(...)` تصفّي العمليات وترتبها، و`totals = computed(...)` تجمع الدخل والمصروفات للصفوف.\n\nضع المرشحات في رابط الاستعلام ليبقى العرض بعد التحديث.",
+    "hintsEn": [
+     "Format money with the `CurrencyPipe` and your locale.",
+     "Click a header to sort; click again to reverse; show an arrow and `aria-sort`."
+    ],
+    "hintsAr": [
+     "نسّق المال بـ `CurrencyPipe` وإعداداتك الإقليمية.",
+     "اضغط على عنوان العمود للترتيب، ومرة أخرى لعكسه، واعرض سهمًا و`aria-sort`."
+    ],
+    "key": "ng-budget-planner-table"
+   },
+   {
+    "titleEn": "Budgets per month",
+    "titleAr": "الميزانيات لكل شهر",
+    "bodyEn": "The budgets page shows, for a chosen month, every expense category with its budget (editable inline), spent amount, remaining and a progress bar that turns red above 100%.\n\nSpent per category = sum of the expense splits in that month for that category.",
+    "bodyAr": "صفحة الميزانيات تعرض، للشهر المختار، كل فئة مصروفات مع ميزانيتها (قابلة للتعديل في مكانها)، والمبلغ المصروف، والمتبقي، وشريط تقدم يتحول إلى الأحمر فوق 100%.\n\nالمصروف لكل فئة = مجموع تقسيمات المصروفات في ذلك الشهر لتلك الفئة.",
+    "hintsEn": [
+     "A computed Map<categoryId, spent> keeps the template simple.",
+     "Copy last month's budgets with one button."
+    ],
+    "hintsAr": [
+     "computed من نوع Map<categoryId, spent> يُبقي القالب بسيطًا.",
+     "انسخ ميزانيات الشهر الماضي بزر واحد."
+    ],
+    "key": "ng-budget-planner-budgets"
+   },
+   {
+    "titleEn": "Charts in a wrapper component",
+    "titleAr": "المخططات داخل مكوّن مغلِّف",
+    "bodyEn": "Install `chart.js`. Create `ChartComponent` with inputs `type` and `data`; create the chart in `afterNextRender` on a `<canvas>` (viewChild), update it in an effect when `data` changes, and destroy it in `DestroyRef.onDestroy`.\n\nUse it for a doughnut of spending by category (current month) and bars for the last 6 months of income vs expenses.",
+    "bodyAr": "ثبّت `chart.js`. وأنشئ `ChartComponent` بـ inputs هي `type` و`data`، وأنشئ المخطط في `afterNextRender` على `<canvas>` (عبر viewChild)، وحدّثه في effect عندما تتغير `data`، ودمّره في `DestroyRef.onDestroy`.\n\nاستخدمه لمخطط دائري للإنفاق حسب الفئة (الشهر الحالي) وأعمدة لآخر 6 أشهر من الدخل مقابل المصروفات.",
+    "hintsEn": [
+     "Register only the chart parts you use for a smaller bundle.",
+     "Give charts an aria-label and a table alternative for screen readers."
+    ],
+    "hintsAr": [
+     "سجّل أجزاء المخطط التي تستخدمها فقط لحزمة أصغر.",
+     "أعط المخططات aria-label وبديلًا جدوليًا لقارئات الشاشة."
+    ],
+    "key": "ng-budget-planner-charts"
+   },
+   {
+    "titleEn": "Export, tests and deploy",
+    "titleAr": "التصدير والاختبارات والنشر",
+    "bodyEn": "Add \"Export CSV\" that builds a CSV of the filtered rows and downloads it with a Blob link. Write tests: the store (add, update, persistence), the validator, and one component test for the form showing the mismatch error.\n\nDeploy and document the features with screenshots.",
+    "bodyAr": "أضف \"تصدير CSV\" يبني ملف CSV من الصفوف المصفّاة وينزّله برابط Blob. واكتب اختبارات: المخزن (الإضافة، والتعديل، والحفظ)، والـ validator، واختبار مكوّن للنموذج يُظهر خطأ عدم التطابق.\n\nانشره ووثّق الميزات بصور.",
+    "hintsEn": [
+     "Escape quotes in CSV fields by doubling them.",
+     "Add `\\uFEFF` at the start so Excel opens Arabic text correctly."
+    ],
+    "hintsAr": [
+     "اهرب علامات التنصيص في حقول CSV بمضاعفتها.",
+     "أضف `\\uFEFF` في البداية ليفتح Excel النص العربي بشكل صحيح."
+    ],
+    "key": "ng-budget-planner-finish"
+   }
+  ]
+ },
+ {
+  "key": "ng-admin-panel",
+  "skill": "Angular",
+  "level": "Intermediate",
+  "hours": 12,
+  "titleEn": "Admin panel for a REST API",
+  "titleAr": "لوحة إدارة لـ REST API",
+  "summaryEn": "An admin panel for products and orders on top of a REST API: server-side pagination and sorting, interceptors for auth and errors, route guards, resolvers and lazy-loaded feature areas.",
+  "summaryAr": "لوحة إدارة للمنتجات والطلبات فوق REST API: تقسيم وترتيب على الخادم، وinterceptors للمصادقة والأخطاء، وحراس المسارات، وresolvers، ومناطق ميزات تُحمَّل بشكل كسول.",
+  "techStack": "Angular · HttpClient interceptors · Router guards · RxJS · json-server (or your own API)",
+  "goalsEn": [
+   "Work with a real REST API: pagination, sorting, filtering on the server",
+   "Write functional interceptors for tokens, loading and errors",
+   "Protect routes with guards and preload data with resolvers",
+   "Combine streams with RxJS (switchMap, debounceTime, combineLatest)"
+  ],
+  "goalsAr": [
+   "العمل مع REST API حقيقي: التقسيم والترتيب والتصفية على الخادم",
+   "كتابة interceptors وظيفية للرموز والتحميل والأخطاء",
+   "حماية المسارات بالحراس وتحميل البيانات مسبقًا بالـ resolvers",
+   "دمج التدفقات بـ RxJS (switchMap وdebounceTime وcombineLatest)"
+  ],
+  "requirementsEn": [
+   "Login page; the token is attached to every API call",
+   "Products: list with server pagination, sorting, search; create, edit, delete",
+   "Orders: list with status filter; details page; change status",
+   "A global loading bar and error toasts from interceptors",
+   "Only users with the admin role can open the panel",
+   "Each area (products, orders) is lazy loaded"
+  ],
+  "requirementsAr": [
+   "صفحة دخول، والرمز يُرفق بكل استدعاء للـ API",
+   "المنتجات: قائمة بتقسيم وترتيب وبحث على الخادم، مع الإنشاء والتعديل والحذف",
+   "الطلبات: قائمة بمرشح الحالة، وصفحة تفاصيل، وتغيير الحالة",
+   "شريط تحميل عام ورسائل أخطاء من الـ interceptors",
+   "فقط المستخدمون بدور المشرف يستطيعون فتح اللوحة",
+   "كل منطقة (المنتجات والطلبات) تُحمَّل بشكل كسول"
+  ],
+  "acceptanceEn": [
+   "Typing in search sends one request 300 ms after typing stops and cancels the previous one",
+   "A 401 from the API logs the user out and redirects to login with a return URL",
+   "The orders details page shows data immediately (resolver) or an error page if the order is missing",
+   "Changing page, sort or search updates the URL"
+  ],
+  "acceptanceAr": [
+   "الكتابة في البحث ترسل طلبًا واحدًا بعد 300 مللي ثانية من التوقف وتلغي الطلب السابق",
+   "رد 401 من الـ API يُخرج المستخدم ويحوّله إلى الدخول مع رابط العودة",
+   "صفحة تفاصيل الطلب تعرض البيانات فورًا (resolver) أو صفحة خطأ إن كان الطلب غير موجود",
+   "تغيير الصفحة أو الترتيب أو البحث يحدّث الرابط"
+  ],
+  "stretchEn": [
+   "Bulk actions with checkboxes",
+   "Optimistic delete with undo",
+   "Use your own ASP.NET Core API instead of json-server"
+  ],
+  "stretchAr": [
+   "إجراءات جماعية بمربعات اختيار",
+   "حذف متفائل مع إمكانية التراجع",
+   "استخدم API الخاص بك بـ ASP.NET Core بدل json-server"
+  ],
+  "steps": [
+   {
+    "titleEn": "A fake but realistic API",
+    "titleAr": "API وهمي لكن واقعي",
+    "bodyEn": "Install `json-server` and create `db.json` with 200 products and 300 orders (a small Node script with faker can generate them). json-server supports `_page`, `_per_page`, `_sort` and `q` out of the box.\n\nOr use the Bookstore API from the ASP.NET Core track if you built it — even better.",
+    "bodyAr": "ثبّت `json-server` وأنشئ `db.json` فيه 200 منتج و300 طلب (سكربت Node صغير مع faker يستطيع توليدها). وjson-server يدعم `_page` و`_per_page` و`_sort` و`q` مباشرة.\n\nأو استخدم Bookstore API من مسار ASP.NET Core إن كنت بنيته، وهذا أفضل.",
+    "hintsEn": [
+     "Run it on port 3000 and add a proxy in Angular (`proxy.conf.json`) to avoid CORS.",
+     "For login, add a tiny custom route or a fixed token for development."
+    ],
+    "hintsAr": [
+     "شغّله على المنفذ 3000 وأضف proxy في Angular (`proxy.conf.json`) لتتجنب مشكلة CORS.",
+     "للدخول أضف مسارًا مخصصًا صغيرًا أو رمزًا ثابتًا للتطوير."
+    ],
+    "key": "ng-admin-panel-backend"
+   },
+   {
+    "titleEn": "Shell and lazy feature routes",
+    "titleAr": "الهيكل ومسارات الميزات الكسولة",
+    "bodyEn": "Create a shell layout (sidebar + top bar + router outlet). Routes: `login`, and `''` with the shell as parent and children `products` and `orders` loaded with `loadChildren: () => import('./products/routes')`.\n\nEach feature has its own routes file and components.",
+    "bodyAr": "أنشئ تخطيطًا هيكليًا (شريط جانبي + شريط علوي + router outlet). والمسارات: `login`، و`''` مع الهيكل كأب وأبناء `products` و`orders` يُحمَّلون بـ `loadChildren: () => import('./products/routes')`.\n\nلكل ميزة ملف مسارات ومكونات خاصة بها.",
+    "hintsEn": [
+     "`ng build` should show separate chunks for products and orders.",
+     "Add `withPreloading(PreloadAllModules)` once everything works."
+    ],
+    "hintsAr": [
+     "`ng build` يجب أن يعرض أجزاء مستقلة للمنتجات والطلبات.",
+     "أضف `withPreloading(PreloadAllModules)` بعد أن يعمل كل شيء."
+    ],
+    "key": "ng-admin-panel-layout"
+   },
+   {
+    "titleEn": "Auth service, interceptor and guard",
+    "titleAr": "خدمة المصادقة والـ interceptor والحارس",
+    "bodyEn": "`AuthService` stores the token and user (with roles) in a signal and localStorage. A functional `authInterceptor` adds `Authorization: Bearer` to API requests. An `adminGuard` (CanActivateFn) returns true for admins or a UrlTree to `/login?returnUrl=...`.\n\nAfter login, navigate to returnUrl.",
+    "bodyAr": "`AuthService` يحفظ الرمز والمستخدم (مع الأدوار) في signal وفي localStorage. وinterceptor وظيفي `authInterceptor` يضيف `Authorization: Bearer` لطلبات الـ API. وحارس `adminGuard` (من نوع CanActivateFn) يعيد true للمشرفين أو UrlTree إلى `/login?returnUrl=...`.\n\nبعد الدخول انتقل إلى returnUrl.",
+    "hintsEn": [
+     "Register interceptors with `provideHttpClient(withInterceptors([...]))`.",
+     "Only add the token to your API URL, never to third-party URLs."
+    ],
+    "hintsAr": [
+     "سجّل الـ interceptors بـ `provideHttpClient(withInterceptors([...]))`.",
+     "أضف الرمز إلى رابط الـ API الخاص بك فقط، لا إلى روابط أطراف أخرى أبدًا."
+    ],
+    "key": "ng-admin-panel-auth"
+   },
+   {
+    "titleEn": "Loading and error interceptors",
+    "titleAr": "Interceptors التحميل والأخطاء",
+    "bodyEn": "`loadingInterceptor` increments a counter signal in a `LoadingService` and decrements it in `finalize`; the shell shows a thin bar while the counter > 0. `errorInterceptor` catches errors: 401 → logout and redirect, 403 → toast \"Not allowed\", 0 → \"No connection\", 5xx → \"Server error\".\n\nRe-throw the error so the calling component can also react.",
+    "bodyAr": "`loadingInterceptor` يزيد عدّادًا من نوع signal في `LoadingService` وينقصه في `finalize`، والهيكل يعرض شريطًا رفيعًا ما دام العداد أكبر من 0. و`errorInterceptor` يلتقط الأخطاء: 401 ← خروج وتحويل، و403 ← رسالة \"غير مسموح\"، و0 ← \"لا يوجد اتصال\"، و5xx ← \"خطأ في الخادم\".\n\nأعد رمي الخطأ ليتمكن المكوّن المستدعي من التفاعل أيضًا.",
+    "hintsEn": [
+     "Allow a request to skip the loading bar with an `HttpContextToken`.",
+     "Deduplicate toasts if many requests fail at once."
+    ],
+    "hintsAr": [
+     "اسمح لطلب بتخطي شريط التحميل بـ `HttpContextToken`.",
+     "امنع تكرار الرسائل إذا فشلت طلبات كثيرة في الوقت نفسه."
+    ],
+    "key": "ng-admin-panel-errors"
+   },
+   {
+    "titleEn": "Product list with server-side paging",
+    "titleAr": "قائمة المنتجات بتقسيم على الخادم",
+    "bodyEn": "Read page, sort, direction and search from the query params. Build the request stream: `combineLatest` of the params → `debounceTime` only for search → `switchMap` to the API → map the response to `{ items, total }`.\n\nChanging the paginator or sort updates the URL, which triggers the stream. switchMap cancels outdated requests.",
+    "bodyAr": "اقرأ الصفحة والترتيب والاتجاه والبحث من معاملات الاستعلام. وابنِ تدفق الطلبات: `combineLatest` للمعاملات ← `debounceTime` للبحث فقط ← `switchMap` إلى الـ API ← حوّل الرد إلى `{ items, total }`.\n\nتغيير الصفحة أو الترتيب يحدّث الرابط، وهذا يطلق التدفق. وswitchMap يلغي الطلبات القديمة.",
+    "hintsEn": [
+     "json-server returns the total in the response; your own API should return it too.",
+     "Convert the final stream to a signal with `toSignal` for the template."
+    ],
+    "hintsAr": [
+     "json-server يعيد العدد الكلي في الرد، ويجب أن يعيده الـ API الخاص بك أيضًا.",
+     "حوّل التدفق النهائي إلى signal بـ `toSignal` للقالب."
+    ],
+    "key": "ng-admin-panel-list"
+   },
+   {
+    "titleEn": "Create, edit and delete products",
+    "titleAr": "إنشاء المنتجات وتعديلها وحذفها",
+    "bodyEn": "Create a product form page used for both new and edit (`products/new`, `products/:id/edit`). Validate on the client and show server validation errors (400 with field errors) next to the fields.\n\nDelete asks for confirmation, calls the API, then reloads the current page of the list (if it was the last item of a page, go back one page).",
+    "bodyAr": "أنشئ صفحة نموذج للمنتج تُستخدم للإضافة والتعديل (`products/new` و`products/:id/edit`). وتحقق في المتصفح، واعرض أخطاء التحقق من الخادم (400 مع أخطاء الحقول) بجانب الحقول.\n\nالحذف يطلب تأكيدًا، ويستدعي الـ API، ثم يعيد تحميل الصفحة الحالية من القائمة (وإن كان آخر عنصر في صفحة فارجع صفحة واحدة).",
+    "hintsEn": [
+     "Map server field errors with `control.setErrors({ server: message })`.",
+     "Disable the Save button while the request is running."
+    ],
+    "hintsAr": [
+     "اربط أخطاء حقول الخادم بـ `control.setErrors({ server: message })`.",
+     "عطّل زر الحفظ أثناء تنفيذ الطلب."
+    ],
+    "key": "ng-admin-panel-crud"
+   },
+   {
+    "titleEn": "Orders with a resolver",
+    "titleAr": "الطلبات مع resolver",
+    "bodyEn": "Build the orders list with a status filter (same pattern as products). For `orders/:id`, add a `ResolveFn<Order>` that loads the order before the page opens; on 404, redirect to a \"not found\" page.\n\nThe details page receives the order as an input (with component input binding) and can change the status with a select that calls the API.",
+    "bodyAr": "ابنِ قائمة الطلبات بمرشح للحالة (بالنمط نفسه للمنتجات). ولـ `orders/:id` أضف `ResolveFn<Order>` يحمّل الطلب قبل فتح الصفحة، وعند 404 حوّل إلى صفحة \"غير موجود\".\n\nصفحة التفاصيل تستقبل الطلب كـ input (مع ربط inputs المكوّن)، وتستطيع تغيير الحالة بقائمة اختيار تستدعي الـ API.",
+    "hintsEn": [
+     "In the resolver, `catchError(() => { router.navigate([...]); return EMPTY; })`.",
+     "Show a loading bar during navigation with Router events, since the page waits for the resolver."
+    ],
+    "hintsAr": [
+     "في الـ resolver استخدم `catchError(() => { router.navigate([...]); return EMPTY; })`.",
+     "اعرض شريط تحميل أثناء التنقل بأحداث الـ Router، لأن الصفحة تنتظر الـ resolver."
+    ],
+    "key": "ng-admin-panel-resolver"
+   },
+   {
+    "titleEn": "Test interceptors and guards",
+    "titleAr": "اختبر الـ interceptors والحراس",
+    "bodyEn": "Test with `provideHttpClientTesting()` and `HttpTestingController`: the auth interceptor adds the header, the error interceptor logs out on 401. Test the guard returns a UrlTree for non-admins. Test the product list builds the right request URL from query params.\n\nThen add one end-to-end test with Playwright: login, search, edit a product.",
+    "bodyAr": "اختبر بـ `provideHttpClientTesting()` و`HttpTestingController`: الـ interceptor الخاص بالمصادقة يضيف الترويسة، والـ interceptor الخاص بالأخطاء يُخرج المستخدم عند 401. واختبر أن الحارس يعيد UrlTree لغير المشرفين. واختبر أن قائمة المنتجات تبني رابط الطلب الصحيح من معاملات الاستعلام.\n\nثم أضف اختبارًا شاملًا واحدًا بـ Playwright: الدخول، والبحث، وتعديل منتج.",
+    "hintsEn": [
+     "`httpTesting.expectOne(req => req.url.includes('/products'))` finds the request.",
+     "Run Playwright against `ng serve` + json-server started by the test config."
+    ],
+    "hintsAr": [
+     "`httpTesting.expectOne(req => req.url.includes('/products'))` يجد الطلب.",
+     "شغّل Playwright على `ng serve` مع json-server يبدآن من إعدادات الاختبار."
+    ],
+    "key": "ng-admin-panel-tests"
+   },
+   {
+    "titleEn": "Polish and publish",
+    "titleAr": "حسّن وانشر",
+    "bodyEn": "Check accessibility of the tables (headers, sort buttons, focus after delete). Write a README with the architecture (shell, features, interceptors, guards, resolvers), how to run the API and the app, and screenshots.\n\nMention what you would change for production (refresh tokens, real roles from the server).",
+    "bodyAr": "تحقق من إمكانية وصول الجداول (العناوين، وأزرار الترتيب، والتركيز بعد الحذف). واكتب README فيه البنية (الهيكل، والميزات، والـ interceptors، والحراس، والـ resolvers)، وطريقة تشغيل الـ API والتطبيق، وصورًا.\n\nاذكر ما ستغيّره لبيئة الإنتاج (رموز التجديد، والأدوار الحقيقية من الخادم).",
+    "hintsEn": [
+     "A diagram of the request pipeline (interceptors in order) is very helpful.",
+     "Keep the json-server data generator in the repo so others can run it."
+    ],
+    "hintsAr": [
+     "مخطط لمسار الطلب (الـ interceptors بالترتيب) مفيد جدًا.",
+     "احتفظ بمولّد بيانات json-server في المستودع ليستطيع الآخرون تشغيله."
+    ],
+    "key": "ng-admin-panel-finish"
+   }
+  ]
+ },
+ {
+  "key": "ng-component-library",
+  "skill": "Angular",
+  "level": "Advanced",
+  "hours": 18,
+  "titleEn": "Accessible component library",
+  "titleAr": "مكتبة مكونات قابلة للوصول",
+  "summaryEn": "Build and publish an Angular component library: button, input with form control support, select/combobox, dialog, tabs and toast — accessible, themeable, documented in Storybook and tested.",
+  "summaryAr": "ابنِ مكتبة مكونات Angular وانشرها: زر، وحقل إدخال يدعم form controls، وقائمة اختيار/combobox، ونافذة حوار، وتبويبات، ورسائل toast، كلها قابلة للوصول، وقابلة لتغيير المظهر، وموثقة في Storybook ومختبرة.",
+  "techStack": "Angular library · Angular CDK · ControlValueAccessor · Storybook · Testing Library",
+  "goalsEn": [
+   "Create an Angular library workspace and publish it",
+   "Implement ControlValueAccessor for custom form controls",
+   "Build accessible widgets with the CDK (overlay, a11y, focus trap)",
+   "Theme with CSS custom properties and document with Storybook"
+  ],
+  "goalsAr": [
+   "إنشاء مساحة عمل لمكتبة Angular ونشرها",
+   "تنفيذ ControlValueAccessor لعناصر نماذج مخصصة",
+   "بناء عناصر قابلة للوصول باستخدام CDK (overlay وa11y وfocus trap)",
+   "تغيير المظهر بخصائص CSS المخصصة والتوثيق بـ Storybook"
+  ],
+  "requirementsEn": [
+   "Components: Button, TextField, Select (with keyboard and search), Dialog service, Tabs, Toast service",
+   "TextField and Select work with reactive forms (formControlName) including disabled and touched states",
+   "Full keyboard support and correct ARIA roles; passes axe checks",
+   "Light and dark themes through CSS variables; RTL support",
+   "Storybook with a story per state; tests with Angular Testing Library",
+   "Published as an npm package (or a local tarball) with a demo app"
+  ],
+  "requirementsAr": [
+   "المكونات: Button وTextField وSelect (مع لوحة المفاتيح والبحث) وخدمة Dialog وTabs وخدمة Toast",
+   "TextField وSelect يعملان مع النماذج التفاعلية (formControlName) بما في ذلك حالات التعطيل واللمس",
+   "دعم كامل للوحة المفاتيح وأدوار ARIA صحيحة، وتجتاز فحوص axe",
+   "سمات فاتحة وداكنة عبر متغيرات CSS، ودعم الاتجاه من اليمين إلى اليسار",
+   "Storybook بقصة لكل حالة، واختبارات بـ Angular Testing Library",
+   "منشورة كحزمة npm (أو ملف tarball محلي) مع تطبيق تجريبي"
+  ],
+  "acceptanceEn": [
+   "The Select can be used with only the keyboard: open, type to filter, arrows, Enter, Escape",
+   "The dialog traps focus and returns it to the opener on close",
+   "Setting the form control disabled disables the component",
+   "Storybook accessibility addon shows no violations"
+  ],
+  "acceptanceAr": [
+   "قائمة الاختيار تُستخدم بلوحة المفاتيح فقط: الفتح، والكتابة للتصفية، والأسهم، وEnter، وEscape",
+   "نافذة الحوار تحبس التركيز وتعيده إلى العنصر الذي فتحها عند الإغلاق",
+   "تعطيل الـ form control يعطّل المكوّن",
+   "إضافة إمكانية الوصول في Storybook لا تُظهر أي مخالفات"
+  ],
+  "stretchEn": [
+   "Add a data table with sorting and virtual scroll",
+   "Generate design tokens from a JSON file",
+   "Visual regression tests with Playwright screenshots"
+  ],
+  "stretchAr": [
+   "أضف جدول بيانات مع الترتيب والتمرير الافتراضي",
+   "ولّد design tokens من ملف JSON",
+   "اختبارات انحدار بصري بصور Playwright"
+  ],
+  "steps": [
+   {
+    "titleEn": "Library workspace",
+    "titleAr": "مساحة عمل المكتبة",
+    "bodyEn": "Create an empty workspace with `ng new ui-kit --no-create-application`, then `ng generate library ui` and `ng generate application demo`. The library lives in `projects/ui` and its public API is `public-api.ts`.\n\nInstall `@angular/cdk`. Every component you export must be listed in public-api.ts.",
+    "bodyAr": "أنشئ مساحة عمل فارغة بـ `ng new ui-kit --no-create-application`، ثم `ng generate library ui` و`ng generate application demo`. والمكتبة موجودة في `projects/ui`، وواجهتها العامة هي `public-api.ts`.\n\nثبّت `@angular/cdk`. وكل مكوّن تصدّره يجب أن يُذكر في public-api.ts.",
+    "hintsEn": [
+     "Prefix selectors (`ui-button`) to avoid clashes in apps.",
+     "Build the library with `ng build ui`; the demo imports it from the dist path."
+    ],
+    "hintsAr": [
+     "ضع بادئة للمحددات (`ui-button`) لتتجنب التعارض في التطبيقات.",
+     "ابنِ المكتبة بـ `ng build ui`، والتطبيق التجريبي يستوردها من مسار dist."
+    ],
+    "key": "ng-component-library-workspace"
+   },
+   {
+    "titleEn": "Design tokens and theming",
+    "titleAr": "Design tokens والسمات",
+    "bodyEn": "Define CSS custom properties in a `theme.css` shipped with the library: colours (`--ui-color-primary`), spacing, radius, font sizes, focus ring. Provide a dark theme under `[data-theme=\"dark\"]` and use logical properties (`margin-inline-start`) everywhere for RTL.\n\nComponents only use the variables, never raw colours.",
+    "bodyAr": "عرّف خصائص CSS مخصصة في `theme.css` يُشحن مع المكتبة: الألوان (`--ui-color-primary`)، والمسافات، والانحناءات، وأحجام الخطوط، وحلقة التركيز. وقدّم سمة داكنة تحت `[data-theme=\"dark\"]`، واستخدم الخصائص المنطقية (`margin-inline-start`) في كل مكان لدعم الاتجاه من اليمين إلى اليسار.\n\nالمكونات تستخدم المتغيرات فقط، ولا تستخدم ألوانًا مباشرة أبدًا.",
+    "hintsEn": [
+     "Add the CSS file to `assets` in ng-package.json so it is published.",
+     "Check contrast of every text/background pair against WCAG AA (4.5:1)."
+    ],
+    "hintsAr": [
+     "أضف ملف CSS إلى `assets` في ng-package.json لكي يُنشر.",
+     "تحقق من التباين لكل زوج نص/خلفية حسب WCAG AA (4.5:1)."
+    ],
+    "key": "ng-component-library-tokens"
+   },
+   {
+    "titleEn": "Button and TextField with ControlValueAccessor",
+    "titleAr": "Button وTextField مع ControlValueAccessor",
+    "bodyEn": "Button: an attribute component on native buttons (`button[ui-button]`) with `variant` and `size` inputs, so it keeps native behaviour. TextField: label, hint, error slot, and implement `ControlValueAccessor` (writeValue, registerOnChange, registerOnTouched, setDisabledState) so `formControlName` works.\n\nConnect label and input with generated ids, and the error with `aria-describedby`.",
+    "bodyAr": "Button: مكوّن على شكل خاصية للأزرار الأصلية (`button[ui-button]`) بـ inputs هي `variant` و`size`، فيحتفظ بالسلوك الأصلي. وTextField: عنوان، وتلميح، ومكان للخطأ، مع تنفيذ `ControlValueAccessor` (writeValue وregisterOnChange وregisterOnTouched وsetDisabledState) ليعمل `formControlName`.\n\nاربط العنوان بالحقل بأرقام مولّدة، والخطأ بـ `aria-describedby`.",
+    "hintsEn": [
+     "Provide the CVA with `{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TextFieldComponent), multi: true }`.",
+     "Call onTouched on blur, not on every key."
+    ],
+    "hintsAr": [
+     "قدّم الـ CVA بـ `{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TextFieldComponent), multi: true }`.",
+     "استدعِ onTouched عند فقدان التركيز، لا عند كل ضغطة مفتاح."
+    ],
+    "key": "ng-component-library-button-field"
+   },
+   {
+    "titleEn": "Select / combobox with the CDK",
+    "titleAr": "Select / combobox باستخدام CDK",
+    "bodyEn": "Build a combobox following the WAI-ARIA pattern: an input with `role=\"combobox\"`, `aria-expanded`, `aria-controls`, and a listbox in a CDK Overlay with `role=\"option\"` items. Use `ActiveDescendantKeyManager` for arrow keys, type-to-filter, Enter to choose, Escape to close.\n\nImplement ControlValueAccessor so it works in forms, with an `options` input of `{ value, label }`.",
+    "bodyAr": "ابنِ combobox وفق نمط WAI-ARIA: حقل إدخال بـ `role=\"combobox\"` و`aria-expanded` و`aria-controls`، وقائمة listbox داخل CDK Overlay بعناصر `role=\"option\"`. واستخدم `ActiveDescendantKeyManager` لمفاتيح الأسهم، والكتابة للتصفية، وEnter للاختيار، وEscape للإغلاق.\n\nنفّذ ControlValueAccessor ليعمل في النماذج، مع input باسم `options` من النوع `{ value, label }`.",
+    "hintsEn": [
+     "Keep focus in the input; the active option is announced through `aria-activedescendant`.",
+     "Position the overlay with `FlexibleConnectedPositionStrategy` and flip when there is no room."
+    ],
+    "hintsAr": [
+     "أبقِ التركيز في الحقل، والخيار النشط يُعلن عبر `aria-activedescendant`.",
+     "حدّد موضع الـ overlay بـ `FlexibleConnectedPositionStrategy` واقلبه عندما لا توجد مساحة."
+    ],
+    "key": "ng-component-library-select"
+   },
+   {
+    "titleEn": "Dialog service",
+    "titleAr": "خدمة Dialog",
+    "bodyEn": "Create `UiDialog.open(Component, { data })` that returns a ref with `closed: Observable<Result>`. Use CDK Overlay with a backdrop, `cdkTrapFocus` (FocusTrap), `role=\"dialog\"`, `aria-modal=\"true\"`, `aria-labelledby` to the title, Escape and backdrop click to close, and restore focus to the opener.\n\nPass data with an injection token (`UI_DIALOG_DATA`).",
+    "bodyAr": "أنشئ `UiDialog.open(Component, { data })` تعيد مرجعًا فيه `closed: Observable<Result>`. واستخدم CDK Overlay مع خلفية، و`cdkTrapFocus` (FocusTrap)، و`role=\"dialog\"`، و`aria-modal=\"true\"`، و`aria-labelledby` إلى العنوان، والإغلاق بـ Escape وبالضغط على الخلفية، واستعادة التركيز إلى العنصر الذي فتحها.\n\nمرّر البيانات بـ injection token (`UI_DIALOG_DATA`).",
+    "hintsEn": [
+     "Save `document.activeElement` before opening and focus it again after closing.",
+     "Block page scroll while a dialog is open (`scrollStrategy: block`)."
+    ],
+    "hintsAr": [
+     "احفظ `document.activeElement` قبل الفتح وأعد التركيز إليه بعد الإغلاق.",
+     "امنع تمرير الصفحة ما دامت نافذة الحوار مفتوحة (`scrollStrategy: block`)."
+    ],
+    "key": "ng-component-library-dialog"
+   },
+   {
+    "titleEn": "Tabs and toasts",
+    "titleAr": "التبويبات ورسائل toast",
+    "bodyEn": "Tabs: `ui-tabs` with `ui-tab` children (content projection, `contentChildren`), `role=\"tablist\"`, roving tabindex, arrow keys (reversed in RTL), Home/End. Toast service: `toast.show({ message, kind, duration })`, stacked in a CDK overlay, announced in an `aria-live=\"polite\"` region, dismissible, pausing on hover.",
+    "bodyAr": "التبويبات: `ui-tabs` بأبناء `ui-tab` (عرض المحتوى بـ content projection و`contentChildren`)، و`role=\"tablist\"`، وtabindex متنقل، ومفاتيح الأسهم (معكوسة في الاتجاه من اليمين إلى اليسار)، وHome وEnd. وخدمة Toast: `toast.show({ message, kind, duration })`، مكدسة في CDK overlay، ومُعلنة في منطقة `aria-live=\"polite\"`، وقابلة للإغلاق، وتتوقف مؤقتًا عند مرور المؤشر.",
+    "hintsEn": [
+     "Read the direction with the CDK `Directionality` service.",
+     "Errors may use `aria-live=\"assertive\"`; info and success use polite."
+    ],
+    "hintsAr": [
+     "اقرأ الاتجاه بخدمة `Directionality` من CDK.",
+     "الأخطاء قد تستخدم `aria-live=\"assertive\"`، والمعلومات والنجاح تستخدم polite."
+    ],
+    "key": "ng-component-library-tabs-toast"
+   },
+   {
+    "titleEn": "Storybook documentation",
+    "titleAr": "التوثيق بـ Storybook",
+    "bodyEn": "Run `npx storybook@latest init` in the workspace. Write stories for every component and state (variants, disabled, error, long text, RTL). Add the a11y addon and fix every violation it reports.\n\nUse the docs page of each component to describe inputs, outputs and keyboard behaviour.",
+    "bodyAr": "شغّل `npx storybook@latest init` في مساحة العمل. واكتب قصصًا لكل مكوّن وكل حالة (الأنواع، والتعطيل، والخطأ، والنص الطويل، والاتجاه من اليمين إلى اليسار). وأضف إضافة a11y وأصلح كل مخالفة تذكرها.\n\nاستخدم صفحة التوثيق لكل مكوّن لوصف الـ inputs والـ outputs وسلوك لوحة المفاتيح.",
+    "hintsEn": [
+     "A global decorator that switches dir and theme makes checking RTL and dark mode quick.",
+     "Stories double as visual tests later."
+    ],
+    "hintsAr": [
+     "decorator عام يبدّل الاتجاه والسمة يجعل فحص الاتجاه من اليمين إلى اليسار والوضع الداكن سريعًا.",
+     "القصص تصلح لاحقًا كاختبارات بصرية أيضًا."
+    ],
+    "key": "ng-component-library-storybook"
+   },
+   {
+    "titleEn": "Behaviour tests",
+    "titleAr": "اختبارات السلوك",
+    "bodyEn": "Use `@testing-library/angular` and `@testing-library/user-event` to test like a user: type in the select and press Enter, open the dialog and press Tab past the last button (focus stays inside), disable the form control and check the component is disabled.\n\nQuery by role and label, not by CSS class — the tests then also check accessibility.",
+    "bodyAr": "استخدم `@testing-library/angular` و`@testing-library/user-event` لتختبر كمستخدم: اكتب في قائمة الاختيار واضغط Enter، وافتح نافذة الحوار واضغط Tab بعد آخر زر (يبقى التركيز داخلها)، وعطّل الـ form control وتحقق أن المكوّن معطّل.\n\nابحث بالدور والعنوان لا بـ class في CSS، فتفحص الاختبارات إمكانية الوصول أيضًا.",
+    "hintsEn": [
+     "`screen.getByRole('combobox', { name: 'Country' })`.",
+     "Add `jest-axe` or `axe-core` checks to a few tests."
+    ],
+    "hintsAr": [
+     "`screen.getByRole('combobox', { name: 'Country' })`.",
+     "أضف فحوص `jest-axe` أو `axe-core` إلى بعض الاختبارات."
+    ],
+    "key": "ng-component-library-tests"
+   },
+   {
+    "titleEn": "Package and publish",
+    "titleAr": "غلّف وانشر",
+    "bodyEn": "Set the version, peer dependencies (`@angular/core`, `@angular/cdk`) and `sideEffects` in the library package.json. Build with `ng build ui --configuration production`, then `npm pack` in `dist/ui` and install it in a fresh Angular app to prove it works.\n\nPublish with `npm publish` under a scope, or attach the tarball to a GitHub release.",
+    "bodyAr": "اضبط الإصدار، واعتماديات الأقران (`@angular/core` و`@angular/cdk`)، و`sideEffects` في package.json الخاص بالمكتبة. وابنِ بـ `ng build ui --configuration production`، ثم `npm pack` داخل `dist/ui`، وثبّتها في تطبيق Angular جديد لتثبت أنها تعمل.\n\nانشرها بـ `npm publish` تحت نطاق، أو أرفق ملف tarball بإصدار على GitHub.",
+    "hintsEn": [
+     "Peer dependencies (not dependencies) avoid two copies of Angular in apps.",
+     "Deploy Storybook to GitHub Pages as live documentation."
+    ],
+    "hintsAr": [
+     "اعتماديات الأقران (لا الاعتماديات العادية) تتجنب وجود نسختين من Angular في التطبيقات.",
+     "انشر Storybook على GitHub Pages كتوثيق حي."
+    ],
+    "key": "ng-component-library-publish"
+   },
+   {
+    "titleEn": "Demo app and write-up",
+    "titleAr": "التطبيق التجريبي والشرح",
+    "bodyEn": "Build a demo page in the demo app that uses every component in a realistic form (a sign-up form with a country select, a confirm dialog and toasts) in both themes and both directions.\n\nIn the README, explain the accessibility decisions (patterns followed, keyboard maps) and how to theme the library.",
+    "bodyAr": "ابنِ صفحة تجريبية في التطبيق التجريبي تستخدم كل مكوّن في نموذج واقعي (نموذج تسجيل فيه قائمة اختيار للدولة، ونافذة تأكيد، ورسائل toast) بالسمتين والاتجاهين.\n\nواشرح في README قرارات إمكانية الوصول (الأنماط المتبعة وخرائط لوحة المفاتيح) وطريقة تغيير مظهر المكتبة.",
+    "hintsEn": [
+     "Link each component to the WAI-ARIA Authoring Practices pattern it follows.",
+     "Record a short screen-reader demo if you can — it is rare and impressive."
+    ],
+    "hintsAr": [
+     "اربط كل مكوّن بنمط WAI-ARIA Authoring Practices الذي يتبعه.",
+     "سجّل عرضًا قصيرًا بقارئ الشاشة إن استطعت، فهو نادر ومثير للإعجاب."
+    ],
+    "key": "ng-component-library-finish"
+   }
+  ]
+ },
+ {
+  "key": "ng-live-dashboard",
+  "skill": "Angular",
+  "level": "Advanced",
+  "hours": 16,
+  "titleEn": "Real-time dashboard with SSR and performance budgets",
+  "titleAr": "لوحة فورية مع SSR وميزانيات أداء",
+  "summaryEn": "A fast real-time market dashboard: server-side rendering with hydration, live prices over WebSockets, a signal-based store, virtual scrolling for thousands of rows, deferrable views and measured Core Web Vitals.",
+  "summaryAr": "لوحة أسواق فورية وسريعة: عرض على الخادم مع hydration، وأسعار حية عبر WebSockets، ومخزن قائم على signals، وتمرير افتراضي لآلاف الصفوف، وعروض مؤجلة، ومؤشرات Core Web Vitals مقاسة.",
+  "techStack": "Angular SSR · signals · NgRx SignalStore · RxJS WebSocket · CDK virtual scroll · Playwright",
+  "goalsEn": [
+   "Render on the server and hydrate without flicker",
+   "Model app state in a signal store with computed selectors",
+   "Stream and throttle real-time updates",
+   "Measure and improve performance (OnPush, @defer, virtual scroll, bundle budgets)"
+  ],
+  "goalsAr": [
+   "العرض على الخادم والـ hydration دون وميض",
+   "تمثيل حالة التطبيق في مخزن signals مع محددات محسوبة",
+   "بث التحديثات الفورية وتخفيف معدلها",
+   "قياس الأداء وتحسينه (OnPush و@defer والتمرير الافتراضي وميزانيات الحزمة)"
+  ],
+  "requirementsEn": [
+   "A small Node WebSocket server that streams price ticks for 2,000 symbols",
+   "Watchlist page rendered on the server with the first prices",
+   "Live updates with up/down highlighting, at most 4 UI updates per second",
+   "A table of 2,000 rows with virtual scroll, sorting and filtering",
+   "A detail panel with a chart loaded with @defer",
+   "Lighthouse performance ≥ 90 and bundle budgets enforced in CI"
+  ],
+  "requirementsAr": [
+   "خادم WebSocket صغير بـ Node يبث تحديثات أسعار لـ 2000 رمز",
+   "صفحة قائمة المتابعة تُعرض على الخادم مع أول الأسعار",
+   "تحديثات حية مع تمييز الارتفاع والانخفاض، و4 تحديثات للواجهة في الثانية كحد أقصى",
+   "جدول من 2000 صف مع تمرير افتراضي وترتيب وتصفية",
+   "لوحة تفاصيل فيها مخطط يُحمَّل بـ @defer",
+   "أداء Lighthouse 90 فأكثر، وميزانيات الحزمة مفروضة في CI"
+  ],
+  "acceptanceEn": [
+   "View source shows the prices in the HTML (SSR works) and no hydration mismatch warnings appear",
+   "Scrolling the 2,000-row table stays smooth while prices update",
+   "Dropping the WebSocket reconnects with backoff and shows a \"reconnecting\" badge",
+   "The chart library is not in the initial bundle"
+  ],
+  "acceptanceAr": [
+   "عرض المصدر يُظهر الأسعار داخل HTML (أي أن SSR يعمل)، ولا تظهر تحذيرات عدم تطابق الـ hydration",
+   "تمرير جدول الألفي صف يبقى سلسًا أثناء تحديث الأسعار",
+   "انقطاع WebSocket يعيد الاتصال مع تأخير متزايد ويعرض شارة \"إعادة الاتصال\"",
+   "مكتبة المخططات ليست في الحزمة الأولية"
+  ],
+  "stretchEn": [
+   "Add a Web Worker that computes indicators off the main thread",
+   "Make it a PWA with offline last-known prices",
+   "Add incremental hydration"
+  ],
+  "stretchAr": [
+   "أضف Web Worker يحسب المؤشرات خارج الخيط الرئيسي",
+   "اجعله PWA بآخر أسعار معروفة دون اتصال",
+   "أضف incremental hydration"
+  ],
+  "steps": [
+   {
+    "titleEn": "A price stream server",
+    "titleAr": "خادم بث الأسعار",
+    "bodyEn": "Write a small Node server with the `ws` package: on connect, send a snapshot of 2,000 symbols with prices; then every 100 ms send a batch of ~50 random ticks `{ s, p, t }`. Also expose `GET /api/snapshot` over HTTP for SSR.\n\nSimulated data is fine — the project is about handling the flow, not the market.",
+    "bodyAr": "اكتب خادم Node صغيرًا بالحزمة `ws`: عند الاتصال أرسل لقطة لألفي رمز بأسعارها، ثم كل 100 مللي ثانية أرسل دفعة من نحو 50 تحديثًا عشوائيًا `{ s, p, t }`. وقدّم أيضًا `GET /api/snapshot` عبر HTTP لأجل SSR.\n\nالبيانات المحاكاة مقبولة، فالمشروع عن التعامل مع التدفق لا عن السوق.",
+    "hintsEn": [
+     "A random walk (`p *= 1 + (Math.random() - 0.5) / 500`) looks realistic.",
+     "Keep messages small: short keys and numbers."
+    ],
+    "hintsAr": [
+     "المشي العشوائي (`p *= 1 + (Math.random() - 0.5) / 500`) يبدو واقعيًا.",
+     "اجعل الرسائل صغيرة: مفاتيح قصيرة وأرقام."
+    ],
+    "key": "ng-live-dashboard-server"
+   },
+   {
+    "titleEn": "Angular app with SSR",
+    "titleAr": "تطبيق Angular مع SSR",
+    "bodyEn": "Create the app with `ng new market --ssr`. Check `provideClientHydration(withEventReplay())` is in app.config. Load the snapshot through HttpClient in a resolver or component so it runs on the server; with `withHttpTransferCacheOptions` the browser reuses the server response instead of fetching again.\n\nView the page source: the table rows must be in the HTML.",
+    "bodyAr": "أنشئ التطبيق بـ `ng new market --ssr`. وتحقق أن `provideClientHydration(withEventReplay())` موجود في app.config. وحمّل اللقطة عبر HttpClient في resolver أو مكوّن ليعمل على الخادم، ومع `withHttpTransferCacheOptions` يعيد المتصفح استخدام رد الخادم بدل جلبه مرة أخرى.\n\nاعرض مصدر الصفحة: يجب أن تكون صفوف الجدول داخل HTML.",
+    "hintsEn": [
+     "Never touch `window` or `localStorage` during server rendering; guard with `isPlatformBrowser` or `afterNextRender`.",
+     "Hydration mismatches are logged in the browser console — fix every one."
+    ],
+    "hintsAr": [
+     "لا تلمس `window` ولا `localStorage` أثناء العرض على الخادم، واحمِ ذلك بـ `isPlatformBrowser` أو `afterNextRender`.",
+     "عدم تطابق الـ hydration يُسجل في وحدة تحكم المتصفح، فأصلح كل حالة."
+    ],
+    "key": "ng-live-dashboard-ssr"
+   },
+   {
+    "titleEn": "A signal store",
+    "titleAr": "مخزن signals",
+    "bodyEn": "Install `@ngrx/signals` and create `MarketStore` with state `{ quotes: Record<string, Quote>, watchlist: string[], filter, sort, connection }`, computed selectors (`visibleRows`, `watchlistRows`, `gainers`), and methods (`applyTicks`, `setFilter`, `toggleWatch`).\n\n`applyTicks(batch)` updates only the changed entries in one state update.",
+    "bodyAr": "ثبّت `@ngrx/signals` وأنشئ `MarketStore` بحالة `{ quotes: Record<string, Quote>, watchlist: string[], filter, sort, connection }`، ومحددات محسوبة (`visibleRows` و`watchlistRows` و`gainers`)، ودوال (`applyTicks` و`setFilter` و`toggleWatch`).\n\n`applyTicks(batch)` تحدّث المدخلات المتغيرة فقط في تحديث واحد للحالة.",
+    "hintsEn": [
+     "Keep `prev` price in each quote to know the direction of the last change.",
+     "Sorting 2,000 rows on every tick is costly — sort by a stable key unless the user sorts by price."
+    ],
+    "hintsAr": [
+     "احتفظ بالسعر السابق `prev` في كل عرض لتعرف اتجاه آخر تغيير.",
+     "ترتيب ألفي صف عند كل تحديث مكلف، فرتّب بمفتاح ثابت إلا إذا رتّب المستخدم بالسعر."
+    ],
+    "key": "ng-live-dashboard-store"
+   },
+   {
+    "titleEn": "WebSocket with reconnect and throttling",
+    "titleAr": "WebSocket مع إعادة الاتصال وتخفيف المعدل",
+    "bodyEn": "In the browser only, connect with RxJS `webSocket()`. Buffer ticks with `bufferTime(250)`, drop empty buffers, merge duplicates (keep the last tick per symbol) and call `store.applyTicks`. On error or close, `retry({ delay: (err, n) => timer(Math.min(1000 * 2 ** n, 30000)) })` and set the connection status.\n\nAt most 4 UI updates per second, however fast the server sends.",
+    "bodyAr": "في المتصفح فقط اتصل بـ `webSocket()` من RxJS. وجمّع التحديثات بـ `bufferTime(250)`، واحذف الدفعات الفارغة، وادمج المكرر (احتفظ بآخر تحديث لكل رمز)، واستدعِ `store.applyTicks`. وعند الخطأ أو الإغلاق استخدم `retry({ delay: (err, n) => timer(Math.min(1000 * 2 ** n, 30000)) })` واضبط حالة الاتصال.\n\n4 تحديثات للواجهة في الثانية كحد أقصى، مهما كانت سرعة إرسال الخادم.",
+    "hintsEn": [
+     "Start the socket in `afterNextRender` so it never runs on the server.",
+     "Show \"Reconnecting…\" from the connection signal."
+    ],
+    "hintsAr": [
+     "ابدأ الـ socket داخل `afterNextRender` حتى لا يعمل على الخادم أبدًا.",
+     "اعرض \"جارٍ إعادة الاتصال…\" من signal الاتصال."
+    ],
+    "key": "ng-live-dashboard-socket"
+   },
+   {
+    "titleEn": "A virtual table that stays smooth",
+    "titleAr": "جدول افتراضي يبقى سلسًا",
+    "bodyEn": "Render the rows with `cdk-virtual-scroll-viewport` (fixed row height) so only ~30 rows exist in the DOM. Use `@for (row of rows(); track row.symbol)` so Angular reuses rows instead of recreating them. Make row components OnPush with signal inputs.\n\nHighlight a changed price with a CSS animation class that restarts per change.",
+    "bodyAr": "اعرض الصفوف بـ `cdk-virtual-scroll-viewport` (بارتفاع صف ثابت) فلا يوجد في الـ DOM إلا نحو 30 صفًا. واستخدم `@for (row of rows(); track row.symbol)` ليعيد Angular استخدام الصفوف بدل إعادة إنشائها. واجعل مكونات الصفوف OnPush مع inputs من نوع signal.\n\nميّز السعر المتغير بـ class لحركة CSS تُعاد مع كل تغيير.",
+    "hintsEn": [
+     "Use the Performance panel in DevTools to check that scripting stays low while scrolling.",
+     "Restarting a CSS animation: toggle between two class names (`up-a` / `up-b`)."
+    ],
+    "hintsAr": [
+     "استخدم لوحة Performance في أدوات المطور لتتحقق أن وقت التنفيذ يبقى منخفضًا أثناء التمرير.",
+     "إعادة تشغيل حركة CSS: بدّل بين اسمين للـ class (`up-a` و`up-b`)."
+    ],
+    "key": "ng-live-dashboard-table"
+   },
+   {
+    "titleEn": "Detail panel with @defer",
+    "titleAr": "لوحة التفاصيل مع @defer",
+    "bodyEn": "Clicking a row opens a side panel with a price chart. Wrap the chart component in `@defer (on viewport; prefetch on idle) { ... } @placeholder { ... } @loading (minimum 300ms) { ... }` so the chart library loads only when needed.\n\nCheck the build output: the chart should be its own lazy chunk.",
+    "bodyAr": "الضغط على صف يفتح لوحة جانبية فيها مخطط للسعر. غلّف مكوّن المخطط بـ `@defer (on viewport; prefetch on idle) { ... } @placeholder { ... } @loading (minimum 300ms) { ... }` حتى لا تُحمَّل مكتبة المخططات إلا عند الحاجة.\n\nتحقق من مخرجات البناء: يجب أن يكون المخطط جزءًا كسولًا مستقلًا.",
+    "hintsEn": [
+     "Keep the last 300 ticks of the selected symbol in the store for the chart.",
+     "Use a lightweight chart library (uPlot or lightweight-charts) for live data."
+    ],
+    "hintsAr": [
+     "احتفظ بآخر 300 تحديث للرمز المختار في المخزن لأجل المخطط.",
+     "استخدم مكتبة مخططات خفيفة (uPlot أو lightweight-charts) للبيانات الحية."
+    ],
+    "key": "ng-live-dashboard-defer"
+   },
+   {
+    "titleEn": "Measure and enforce performance",
+    "titleAr": "قِس الأداء وافرضه",
+    "bodyEn": "Set budgets in angular.json (initial < 250 kB, any component style < 4 kB) so the build fails when exceeded. Run Lighthouse on the production build served with SSR and fix what it reports (image sizes, unused JS, layout shift).\n\nRecord LCP, CLS and INP before and after your fixes in a table.",
+    "bodyAr": "اضبط الميزانيات في angular.json (الحزمة الأولية أقل من 250 كيلوبايت، وأنماط أي مكوّن أقل من 4 كيلوبايت) ليفشل البناء عند تجاوزها. وشغّل Lighthouse على بناء الإنتاج المقدَّم مع SSR، وأصلح ما يذكره (أحجام الصور، وJavaScript غير المستخدم، وإزاحة التخطيط).\n\nسجّل LCP وCLS وINP قبل إصلاحاتك وبعدها في جدول.",
+    "hintsEn": [
+     "`ng build --stats-json` plus `esbuild-visualizer` shows what is in each bundle.",
+     "Reserve space for the table and chart to keep CLS near 0."
+    ],
+    "hintsAr": [
+     "`ng build --stats-json` مع `esbuild-visualizer` يعرض ما في كل حزمة.",
+     "احجز مساحة للجدول والمخطط ليبقى CLS قريبًا من 0."
+    ],
+    "key": "ng-live-dashboard-budgets"
+   },
+   {
+    "titleEn": "End-to-end tests",
+    "titleAr": "اختبارات شاملة",
+    "bodyEn": "With Playwright: check the server HTML contains a price (request the page with JavaScript disabled), prices change after a few seconds, the reconnect badge appears when you stop the WebSocket server and disappears after restart, and the chart loads only after opening a row.\n\nRun them in CI with the Node price server started first.",
+    "bodyAr": "باستخدام Playwright: تحقق أن HTML القادم من الخادم يحتوي سعرًا (اطلب الصفحة مع تعطيل JavaScript)، وأن الأسعار تتغير بعد بضع ثوانٍ، وأن شارة إعادة الاتصال تظهر عند إيقاف خادم WebSocket وتختفي بعد إعادة تشغيله، وأن المخطط لا يُحمَّل إلا بعد فتح صف.\n\nشغّلها في CI بعد تشغيل خادم الأسعار بـ Node أولًا.",
+    "hintsEn": [
+     "`page.route` can block the chart chunk request to assert it is not loaded early.",
+     "Use `expect.poll` for values that change over time."
+    ],
+    "hintsAr": [
+     "`page.route` تستطيع حجب طلب جزء المخطط لتتحقق أنه لا يُحمَّل مبكرًا.",
+     "استخدم `expect.poll` للقيم التي تتغير مع الوقت."
+    ],
+    "key": "ng-live-dashboard-e2e"
+   },
+   {
+    "titleEn": "Deploy and write the performance story",
+    "titleAr": "انشر واكتب قصة الأداء",
+    "bodyEn": "Deploy the SSR app (Node) and the price server, for example on Render or Fly.io. In the README, tell the story with numbers: SSR first paint, updates per second, DOM rows with and without virtual scroll, bundle sizes, Lighthouse scores.\n\nExplain each technique in one paragraph with what it saved.",
+    "bodyAr": "انشر تطبيق SSR (بـ Node) وخادم الأسعار، مثلًا على Render أو Fly.io. وفي README احكِ القصة بالأرقام: أول عرض مع SSR، والتحديثات في الثانية، وعدد صفوف الـ DOM مع التمرير الافتراضي وبدونه، وأحجام الحزم، ونتائج Lighthouse.\n\nاشرح كل أسلوب في فقرة مع ما وفّره.",
+    "hintsEn": [
+     "Screenshots of the Performance panel make the improvement visible.",
+     "Mention the trade-offs (SSR server cost, socket fan-out) — senior reviewers look for them."
+    ],
+    "hintsAr": [
+     "صور لوحة Performance تجعل التحسن مرئيًا.",
+     "اذكر المقايضات (تكلفة خادم SSR، وتوزيع الـ sockets)، فالمراجعون الخبراء يبحثون عنها."
+    ],
+    "key": "ng-live-dashboard-finish"
+   }
+  ]
+ }
+]

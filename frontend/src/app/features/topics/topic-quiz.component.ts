@@ -4,6 +4,7 @@ import { ApiError } from '../../core/api-error';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { Quiz, QuizLevel, QuizLevelInfo, QuizQuestion, QuizResult, QuizResultItem } from '../../core/models';
+import { isolateLatin } from '../../shared/bidi';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.components';
 
@@ -13,12 +14,6 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
  * The API sends questions without answers and grades the submission.
  */
 /** A run of text without Arabic letters (Arabic punctuation such as ، and ؟ is in the Arabic block too). */
-const LATIN_RUN = /[^\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]+/g;
-
-function escapeHtml(text: string): string {
-  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
 @Component({
   selector: 'app-topic-quiz',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -148,18 +143,9 @@ export class TopicQuizComponent {
     });
   }
 
-  /**
-   * Questions often quote code ('record ProductDto(int Id);'). Inside Arabic text the browser lays
-   * out its punctuation right-to-left and scrambles it, so in Arabic each Latin run is isolated in
-   * a left-to-right <bdi>. The text is HTML-escaped first; Angular sanitizes the result as well.
-   */
+  /** Isolates the English and code inside Arabic questions so the browser keeps them in order. */
   protected bidi(text: string | null | undefined): string {
-    const escaped = escapeHtml(text ?? '');
-    if (this.i18n.lang() !== 'ar') return escaped;
-    return escaped.replace(LATIN_RUN, (run) => {
-      const m = /^(\s*)(.*?)([.,:!?]?\s*)$/s.exec(run)!;
-      return /[A-Za-z0-9]/.test(m[2]) ? `${m[1]}<bdi dir="ltr">${m[2]}</bdi>${m[3]}` : run;
-    });
+    return isolateLatin(text, this.i18n.lang());
   }
 
   protected options(question: QuizQuestion): string[] {

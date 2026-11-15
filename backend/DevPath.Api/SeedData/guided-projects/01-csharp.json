@@ -1,0 +1,1188 @@
+[
+ {
+  "key": "cs-todo-console",
+  "skill": "CSharp",
+  "level": "Beginner",
+  "hours": 4,
+  "titleEn": "Console to-do list",
+  "titleAr": "قائمة مهام في الطرفية",
+  "summaryEn": "A to-do list that runs in the terminal: add tasks, mark them done, delete them, and keep them in a file between runs.",
+  "summaryAr": "قائمة مهام تعمل في الطرفية: تضيف مهام، وتعلّمها كمنجزة، وتحذفها، وتحفظها في ملف لتبقى بين مرة تشغيل وأخرى.",
+  "techStack": "C# · .NET console · System.Text.Json",
+  "goalsEn": [
+   "Create and run a .NET console app",
+   "Use a class, a List<T> and a loop with a menu",
+   "Read and validate user input",
+   "Save and load data as JSON"
+  ],
+  "goalsAr": [
+   "إنشاء تطبيق طرفية .NET وتشغيله",
+   "استخدام class وList<T> وحلقة بقائمة خيارات",
+   "قراءة مدخلات المستخدم والتحقق منها",
+   "حفظ البيانات وتحميلها بصيغة JSON"
+  ],
+  "requirementsEn": [
+   "Show a menu: list, add, complete, delete, quit",
+   "Each task has a number, a title and a done flag",
+   "Wrong input shows a message instead of crashing",
+   "Tasks are saved to tasks.json and loaded at start"
+  ],
+  "requirementsAr": [
+   "عرض قائمة خيارات: عرض، إضافة، إنجاز، حذف، خروج",
+   "لكل مهمة رقم وعنوان وحالة إنجاز",
+   "المدخل الخاطئ يعرض رسالة بدل أن يوقف البرنامج",
+   "تُحفظ المهام في tasks.json وتُحمَّل عند البدء"
+  ],
+  "acceptanceEn": [
+   "You can add three tasks, complete one, delete one, quit, start again and see the remaining tasks",
+   "Typing letters where a number is expected never crashes the app",
+   "Completed tasks are visibly marked in the list"
+  ],
+  "acceptanceAr": [
+   "تستطيع إضافة ثلاث مهام، وإنجاز واحدة، وحذف واحدة، ثم الخروج وإعادة التشغيل لترى المهام الباقية",
+   "كتابة حروف مكان الرقم لا توقف التطبيق أبدًا",
+   "المهام المنجزة تظهر بعلامة واضحة في القائمة"
+  ],
+  "stretchEn": [
+   "Add a due date and sort tasks by it",
+   "Add priorities (low, normal, high) with colours",
+   "Let the user edit a task title"
+  ],
+  "stretchAr": [
+   "أضف تاريخ استحقاق ورتّب المهام حسبه",
+   "أضف أولويات (منخفضة، عادية، عالية) بألوان مختلفة",
+   "اسمح للمستخدم بتعديل عنوان المهمة"
+  ],
+  "steps": [
+   {
+    "titleEn": "Create the project",
+    "titleAr": "أنشئ المشروع",
+    "bodyEn": "Open a terminal in an empty folder and create a console app with `dotnet new console -n TodoApp`. Go into the folder and run it with `dotnet run` to make sure it prints \"Hello, World!\".\n\nOpen the folder in VS Code or Visual Studio. Everything you write goes into `Program.cs` for now.",
+    "bodyAr": "افتح الطرفية في مجلد فارغ وأنشئ تطبيق طرفية بالأمر `dotnet new console -n TodoApp`. ادخل إلى المجلد وشغّله بالأمر `dotnet run` لتتأكد أنه يطبع \"Hello, World!\".\n\nافتح المجلد في VS Code أو Visual Studio. كل ما ستكتبه سيكون في `Program.cs` حاليًا.",
+    "hintsEn": [
+     "If `dotnet` is not found, install the .NET SDK and open a new terminal.",
+     "Run `dotnet --version` to check which SDK you have."
+    ],
+    "hintsAr": [
+     "إذا لم يُعثر على `dotnet` فثبّت .NET SDK وافتح طرفية جديدة.",
+     "شغّل `dotnet --version` لتعرف إصدار SDK لديك."
+    ],
+    "key": "cs-todo-console-setup"
+   },
+   {
+    "titleEn": "Describe a task with a class",
+    "titleAr": "صِف المهمة بـ class",
+    "bodyEn": "Add a `TodoItem` class at the bottom of `Program.cs` (or in its own file) with three properties: `Id` (int), `Title` (string) and `IsDone` (bool).\n\nThen create an empty list that will hold all tasks: `var items = new List<TodoItem>();`.",
+    "bodyAr": "أضف class باسم `TodoItem` في آخر `Program.cs` (أو في ملف مستقل) بثلاث خصائص: `Id` من نوع int، و`Title` من نوع string، و`IsDone` من نوع bool.\n\nثم أنشئ قائمة فارغة تحمل كل المهام: `var items = new List<TodoItem>();`.",
+    "hintsEn": [
+     "Properties look like `public string Title { get; set; } = \"\";`.",
+     "Giving Title a default of \"\" avoids null warnings."
+    ],
+    "hintsAr": [
+     "الخاصية تُكتب هكذا: `public string Title { get; set; } = \"\";`.",
+     "إعطاء Title قيمة افتراضية \"\" يمنع تحذيرات null."
+    ],
+    "code": "class TodoItem\n{\n    public int Id { get; set; }\n    public string Title { get; set; } = \"\";\n    public bool IsDone { get; set; }\n}",
+    "language": "csharp",
+    "key": "cs-todo-console-model"
+   },
+   {
+    "titleEn": "Show a menu in a loop",
+    "titleAr": "اعرض قائمة الخيارات داخل حلقة",
+    "bodyEn": "Write a `while (true)` loop that prints the options (1 List, 2 Add, 3 Complete, 4 Delete, 0 Quit), reads a line with `Console.ReadLine()` and decides what to do with a `switch`.\n\nChoosing 0 leaves the loop with `return` or `break`. For now, each option can just print its name.",
+    "bodyAr": "اكتب حلقة `while (true)` تطبع الخيارات (1 عرض، 2 إضافة، 3 إنجاز، 4 حذف، 0 خروج)، ثم تقرأ سطرًا بـ `Console.ReadLine()` وتقرر ما تفعل باستخدام `switch`.\n\nاختيار 0 يُخرج من الحلقة بـ `return` أو `break`. في هذه الخطوة يكفي أن يطبع كل خيار اسمه.",
+    "hintsEn": [
+     "`Console.ReadLine()` can return null; treat null like an empty string.",
+     "Use `Console.Clear()` at the top of the loop if you want a clean screen each time."
+    ],
+    "hintsAr": [
+     "`Console.ReadLine()` قد يعيد null، فعامله كنص فارغ.",
+     "استخدم `Console.Clear()` في بداية الحلقة إن أردت شاشة نظيفة كل مرة."
+    ],
+    "key": "cs-todo-console-menu"
+   },
+   {
+    "titleEn": "Add and list tasks",
+    "titleAr": "أضف المهام واعرضها",
+    "bodyEn": "For \"Add\", ask for a title, refuse an empty one, and add a new `TodoItem` with the next id. Keep a counter variable or use `items.Count == 0 ? 1 : items.Max(i => i.Id) + 1`.\n\nFor \"List\", loop over the items and print each one as `[x] 2. Buy milk` or `[ ] 3. Call mom`. If the list is empty, print \"No tasks yet\".",
+    "bodyAr": "في خيار \"إضافة\" اطلب العنوان، وارفض العنوان الفارغ، ثم أضف `TodoItem` جديدًا بالرقم التالي. احتفظ بمتغير عدّاد، أو استخدم `items.Count == 0 ? 1 : items.Max(i => i.Id) + 1`.\n\nفي خيار \"عرض\" مرّ على العناصر واطبع كلًّا منها بشكل `[x] 2. Buy milk` أو `[ ] 3. Call mom`. وإذا كانت القائمة فارغة فاطبع \"لا توجد مهام بعد\".",
+    "hintsEn": [
+     "`string.IsNullOrWhiteSpace(title)` catches empty and space-only titles.",
+     "Use a ternary to choose the mark: `item.IsDone ? \"x\" : \" \"`."
+    ],
+    "hintsAr": [
+     "`string.IsNullOrWhiteSpace(title)` يكشف العنوان الفارغ والمكوّن من مسافات فقط.",
+     "استخدم المعامل الثلاثي لاختيار العلامة: `item.IsDone ? \"x\" : \" \"`."
+    ],
+    "key": "cs-todo-console-add-list"
+   },
+   {
+    "titleEn": "Complete and delete by number",
+    "titleAr": "أنجز واحذف بالرقم",
+    "bodyEn": "Both options ask for a task number. Read it with `int.TryParse` so that letters don't crash the program, then find the task with `items.FirstOrDefault(i => i.Id == id)`.\n\nIf nothing is found, print \"No task with that number\". Otherwise set `IsDone = true`, or remove the item with `items.Remove(item)`.",
+    "bodyAr": "الخياران يطلبان رقم المهمة. اقرأه بـ `int.TryParse` حتى لا توقف الحروفُ البرنامج، ثم ابحث عن المهمة بـ `items.FirstOrDefault(i => i.Id == id)`.\n\nإذا لم تُوجد فاطبع \"لا توجد مهمة بهذا الرقم\"، وإلا فاجعل `IsDone = true` أو احذف العنصر بـ `items.Remove(item)`.",
+    "hintsEn": [
+     "Write a small helper `int? AskNumber(string prompt)` and reuse it in both options.",
+     "FirstOrDefault returns null when nothing matches, so check for null."
+    ],
+    "hintsAr": [
+     "اكتب دالة مساعدة صغيرة `int? AskNumber(string prompt)` واستخدمها في الخيارين.",
+     "FirstOrDefault تعيد null عندما لا يطابق شيء، فتحقق من null."
+    ],
+    "code": "int? AskNumber(string prompt)\n{\n    Console.Write(prompt);\n    return int.TryParse(Console.ReadLine(), out var n) ? n : null;\n}",
+    "language": "csharp",
+    "key": "cs-todo-console-complete-delete"
+   },
+   {
+    "titleEn": "Save the list to a file",
+    "titleAr": "احفظ القائمة في ملف",
+    "bodyEn": "After every change, save the whole list: turn it into JSON with `JsonSerializer.Serialize(items)` and write it with `File.WriteAllText(\"tasks.json\", json)`.\n\nAdd `using System.Text.Json;` at the top. Use `new JsonSerializerOptions { WriteIndented = true }` so you can open the file and read it.",
+    "bodyAr": "بعد كل تغيير احفظ القائمة كلها: حوّلها إلى JSON بـ `JsonSerializer.Serialize(items)` واكتبها بـ `File.WriteAllText(\"tasks.json\", json)`.\n\nأضف `using System.Text.Json;` في أعلى الملف. واستخدم `new JsonSerializerOptions { WriteIndented = true }` لتستطيع فتح الملف وقراءته.",
+    "hintsEn": [
+     "Put the saving code in one method, `Save(items)`, and call it after add, complete and delete.",
+     "The file is created next to the running program, usually in bin/Debug/... — that is fine."
+    ],
+    "hintsAr": [
+     "ضع كود الحفظ في دالة واحدة `Save(items)` واستدعها بعد الإضافة والإنجاز والحذف.",
+     "يُنشأ الملف بجانب البرنامج المشغَّل، غالبًا داخل bin/Debug/... وهذا طبيعي."
+    ],
+    "key": "cs-todo-console-save"
+   },
+   {
+    "titleEn": "Load the list at start",
+    "titleAr": "حمّل القائمة عند البدء",
+    "bodyEn": "When the program starts, check `File.Exists(\"tasks.json\")`. If it exists, read it with `File.ReadAllText` and turn it back into a list with `JsonSerializer.Deserialize<List<TodoItem>>(json)`.\n\nIf the file is missing or broken, start with an empty list instead of crashing.",
+    "bodyAr": "عند بدء البرنامج تحقق من `File.Exists(\"tasks.json\")`. إن وُجد فاقرأه بـ `File.ReadAllText` وأعده قائمةً بـ `JsonSerializer.Deserialize<List<TodoItem>>(json)`.\n\nإذا كان الملف غير موجود أو تالفًا فابدأ بقائمة فارغة بدل أن يتوقف البرنامج.",
+    "hintsEn": [
+     "Deserialize can return null, so write `?? new List<TodoItem>()`.",
+     "Wrap the reading in try/catch (JsonException) to survive a corrupted file."
+    ],
+    "hintsAr": [
+     "Deserialize قد تعيد null، فاكتب `?? new List<TodoItem>()`.",
+     "ضع القراءة داخل try/catch (JsonException) ليتحمل البرنامج ملفًا تالفًا."
+    ],
+    "key": "cs-todo-console-load"
+   },
+   {
+    "titleEn": "Test it like a user",
+    "titleAr": "اختبره كأنك مستخدم",
+    "bodyEn": "Go through the acceptance criteria one by one: add tasks, complete, delete, quit, run again. Then try to break it: empty titles, letters instead of numbers, numbers that don't exist.\n\nFix every crash you find. Finally, push the project to a GitHub repository with a short README that shows how to run it.",
+    "bodyAr": "راجع معايير القبول واحدًا تلو الآخر: أضف مهام، وأنجز، واحذف، واخرج، ثم شغّل مرة أخرى. بعدها حاول كسره: عناوين فارغة، وحروف بدل الأرقام، وأرقام غير موجودة.\n\nأصلح كل توقف تجده. وأخيرًا ارفع المشروع إلى مستودع على GitHub مع ملف README قصير يشرح طريقة تشغيله.",
+    "hintsEn": [
+     "Add a `.gitignore` with `dotnet new gitignore` before your first commit.",
+     "A screenshot of the menu in the README makes the project easier to understand."
+    ],
+    "hintsAr": [
+     "أضف `.gitignore` بالأمر `dotnet new gitignore` قبل أول commit.",
+     "صورة لقائمة الخيارات في README تجعل المشروع أسهل في الفهم."
+    ],
+    "key": "cs-todo-console-test"
+   }
+  ]
+ },
+ {
+  "key": "cs-gradebook",
+  "skill": "CSharp",
+  "level": "Beginner",
+  "hours": 5,
+  "titleEn": "Student grade book",
+  "titleAr": "سجل درجات الطلاب",
+  "summaryEn": "A console app that stores students and their marks, calculates averages and letter grades, and prints a simple report.",
+  "summaryAr": "تطبيق طرفية يخزن الطلاب ودرجاتهم، ويحسب المتوسطات والتقديرات، ويطبع تقريرًا بسيطًا.",
+  "techStack": "C# · .NET console · LINQ",
+  "goalsEn": [
+   "Split code into methods and classes",
+   "Work with lists of numbers and LINQ (Average, Max, Min)",
+   "Format numbers and tables in the console",
+   "Handle invalid input safely"
+  ],
+  "goalsAr": [
+   "تقسيم الكود إلى دوال وclasses",
+   "التعامل مع قوائم الأرقام وLINQ (Average وMax وMin)",
+   "تنسيق الأرقام والجداول في الطرفية",
+   "التعامل الآمن مع المدخلات غير الصحيحة"
+  ],
+  "requirementsEn": [
+   "Add a student by name",
+   "Add marks from 0 to 100 to a student",
+   "Show each student with average and letter grade",
+   "Show the class average, the best and the weakest student"
+  ],
+  "requirementsAr": [
+   "إضافة طالب بالاسم",
+   "إضافة درجات من 0 إلى 100 لطالب",
+   "عرض كل طالب مع متوسطه وتقديره",
+   "عرض متوسط الفصل وأفضل طالب وأضعفهم"
+  ],
+  "acceptanceEn": [
+   "Marks outside 0..100 are rejected with a message",
+   "A student without marks shows \"no marks\" instead of a crash or NaN",
+   "The report lines up in columns"
+  ],
+  "acceptanceAr": [
+   "الدرجات خارج المدى 0..100 تُرفض برسالة",
+   "الطالب بلا درجات يظهر \"لا توجد درجات\" بدل توقف البرنامج أو ظهور NaN",
+   "التقرير مرتب في أعمدة"
+  ],
+  "stretchEn": [
+   "Save students to a JSON file",
+   "Export the report to a CSV file",
+   "Add subjects so a student has marks per subject"
+  ],
+  "stretchAr": [
+   "احفظ الطلاب في ملف JSON",
+   "صدّر التقرير إلى ملف CSV",
+   "أضف المواد ليكون لكل طالب درجات في كل مادة"
+  ],
+  "steps": [
+   {
+    "titleEn": "Create the project",
+    "titleAr": "أنشئ المشروع",
+    "bodyEn": "Create a console app with `dotnet new console -n GradeBook` and run it once with `dotnet run`.\n\nPlan before coding: write down on paper which data you need (a student has a name and a list of marks) and which actions the menu offers.",
+    "bodyAr": "أنشئ تطبيق طرفية بالأمر `dotnet new console -n GradeBook` وشغّله مرة بالأمر `dotnet run`.\n\nخطّط قبل أن تكتب الكود: دوّن على ورقة البيانات التي تحتاجها (الطالب له اسم وقائمة درجات) والإجراءات التي ستعرضها القائمة.",
+    "hintsEn": [
+     "Five minutes of planning saves an hour of rewriting.",
+     "Keep the plan in a README.md from the start."
+    ],
+    "hintsAr": [
+     "خمس دقائق من التخطيط توفر ساعة من إعادة الكتابة.",
+     "احتفظ بالخطة في README.md من البداية."
+    ],
+    "key": "cs-gradebook-setup"
+   },
+   {
+    "titleEn": "Create the Student class",
+    "titleAr": "أنشئ class الطالب",
+    "bodyEn": "Make a `Student` class with a `Name` and a `List<int> Marks`. Add a method `AddMark(int mark)` that throws an `ArgumentOutOfRangeException` when the mark is below 0 or above 100.\n\nKeeping the rule inside the class means no other code can store a wrong mark.",
+    "bodyAr": "أنشئ class باسم `Student` فيه `Name` و`List<int> Marks`. أضف دالة `AddMark(int mark)` ترمي `ArgumentOutOfRangeException` إذا كانت الدرجة أقل من 0 أو أكبر من 100.\n\nوضع القاعدة داخل الـ class يعني أن أي كود آخر لا يستطيع تخزين درجة خاطئة.",
+    "hintsEn": [
+     "Initialise the list: `public List<int> Marks { get; } = new();`.",
+     "A get-only list can still be changed with Add, but it can never be replaced by null."
+    ],
+    "hintsAr": [
+     "هيّئ القائمة: `public List<int> Marks { get; } = new();`.",
+     "القائمة ذات get فقط يمكن الإضافة إليها، لكن لا يمكن استبدالها بـ null."
+    ],
+    "code": "class Student\n{\n    public string Name { get; }\n    public List<int> Marks { get; } = new();\n    public Student(string name) => Name = name;\n\n    public void AddMark(int mark)\n    {\n        if (mark is < 0 or > 100) throw new ArgumentOutOfRangeException(nameof(mark));\n        Marks.Add(mark);\n    }\n}",
+    "language": "csharp",
+    "key": "cs-gradebook-student-class"
+   },
+   {
+    "titleEn": "Average and letter grade",
+    "titleAr": "المتوسط والتقدير",
+    "bodyEn": "Add a read-only property `Average` that returns `Marks.Average()` when there are marks and `null` when there are none (`double?`).\n\nAdd a method `Letter()` that maps the average to a grade: 90+ A, 80+ B, 70+ C, 60+ D, otherwise F. A `switch` expression with relational patterns is perfect here.",
+    "bodyAr": "أضف خاصية للقراءة فقط `Average` تعيد `Marks.Average()` إن وُجدت درجات، و`null` إن لم توجد (النوع `double?`).\n\nأضف دالة `Letter()` تحوّل المتوسط إلى تقدير: 90 فما فوق A، و80 فما فوق B، و70 فما فوق C، و60 فما فوق D، وإلا F. تعبير `switch` بأنماط المقارنة مناسب جدًا هنا.",
+    "hintsEn": [
+     "`Marks.Average()` throws on an empty list, which is why you check `Marks.Count` first.",
+     "Pattern: `avg switch { >= 90 => \"A\", >= 80 => \"B\", ... _ => \"F\" }`."
+    ],
+    "hintsAr": [
+     "`Marks.Average()` ترمي استثناء مع قائمة فارغة، ولهذا تتحقق من `Marks.Count` أولًا.",
+     "النمط: `avg switch { >= 90 => \"A\", >= 80 => \"B\", ... _ => \"F\" }`."
+    ],
+    "key": "cs-gradebook-average"
+   },
+   {
+    "titleEn": "Menu: add students and marks",
+    "titleAr": "القائمة: إضافة الطلاب والدرجات",
+    "bodyEn": "Write the menu loop: 1 Add student, 2 Add mark, 3 Report, 0 Quit. Keep all students in a `List<Student>`.\n\nTo add a mark, show the students with numbers, ask which one, then ask for the mark. Use `int.TryParse` for both numbers and catch the exception from `AddMark` to print a friendly message.",
+    "bodyAr": "اكتب حلقة القائمة: 1 إضافة طالب، 2 إضافة درجة، 3 التقرير، 0 خروج. احتفظ بكل الطلاب في `List<Student>`.\n\nلإضافة درجة اعرض الطلاب مرقّمين، واسأل عن الطالب، ثم عن الدرجة. استخدم `int.TryParse` للرقمين، والتقط الاستثناء من `AddMark` لتطبع رسالة واضحة.",
+    "hintsEn": [
+     "Reject duplicate names with `students.Any(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase))`.",
+     "Numbering for the user starts at 1, list indexes start at 0 — subtract one."
+    ],
+    "hintsAr": [
+     "ارفض الأسماء المكررة بـ `students.Any(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase))`.",
+     "الترقيم للمستخدم يبدأ من 1 بينما فهارس القائمة تبدأ من 0، فاطرح واحدًا."
+    ],
+    "key": "cs-gradebook-menu"
+   },
+   {
+    "titleEn": "Print the report as a table",
+    "titleAr": "اطبع التقرير كجدول",
+    "bodyEn": "For each student print the name, the number of marks, the average with one decimal and the letter. Use alignment in interpolated strings: `{name,-15}` pads to 15 characters on the right, `{avg,6:F1}` aligns the number.\n\nStudents without marks show \"-\" for the average and \"no marks\" for the grade.",
+    "bodyAr": "لكل طالب اطبع الاسم، وعدد الدرجات، والمتوسط برقم عشري واحد، والتقدير. استخدم المحاذاة في النصوص المُدمجة: `{name,-15}` يملأ حتى 15 حرفًا، و`{avg,6:F1}` يحاذي الرقم.\n\nالطالب بلا درجات يظهر \"-\" مكان المتوسط و\"لا توجد درجات\" مكان التقدير.",
+    "hintsEn": [
+     "Print a header line and a line of dashes before the rows.",
+     "`avg?.ToString(\"F1\") ?? \"-\"` handles the null average neatly."
+    ],
+    "hintsAr": [
+     "اطبع سطر عناوين وسطرًا من الشرطات قبل الصفوف.",
+     "`avg?.ToString(\"F1\") ?? \"-\"` يعالج المتوسط null بشكل مرتب."
+    ],
+    "key": "cs-gradebook-report"
+   },
+   {
+    "titleEn": "Class statistics with LINQ",
+    "titleAr": "إحصاءات الفصل باستخدام LINQ",
+    "bodyEn": "Under the table, print the class average (of all students who have marks), the best student and the weakest student.\n\nFilter first: `var graded = students.Where(s => s.Average is not null).ToList();`. Then use `graded.Average(s => s.Average!.Value)`, `MaxBy` and `MinBy`.",
+    "bodyAr": "تحت الجدول اطبع متوسط الفصل (لكل الطلاب الذين لديهم درجات)، وأفضل طالب، وأضعف طالب.\n\nصفِّ أولًا: `var graded = students.Where(s => s.Average is not null).ToList();`، ثم استخدم `graded.Average(s => s.Average!.Value)` و`MaxBy` و`MinBy`.",
+    "hintsEn": [
+     "If `graded` is empty, print \"No marks yet\" and skip the statistics.",
+     "`MaxBy` returns the whole student, not just the number."
+    ],
+    "hintsAr": [
+     "إذا كانت `graded` فارغة فاطبع \"لا توجد درجات بعد\" وتخطَّ الإحصاءات.",
+     "`MaxBy` تعيد الطالب كاملًا لا الرقم فقط."
+    ],
+    "key": "cs-gradebook-class-stats"
+   },
+   {
+    "titleEn": "Clean up the code",
+    "titleAr": "نظّف الكود",
+    "bodyEn": "Move each menu action into its own method (`AddStudent`, `AddMark`, `PrintReport`) so the loop is only a few lines. Move `Student` into `Student.cs`.\n\nRead your code once from top to bottom: are the names clear? Is anything repeated? Repeated code is a sign that a small helper method is missing.",
+    "bodyAr": "انقل كل إجراء في القائمة إلى دالة مستقلة (`AddStudent` و`AddMark` و`PrintReport`) لتصبح الحلقة بضعة أسطر فقط. وانقل `Student` إلى ملف `Student.cs`.\n\nاقرأ الكود مرة من أوله إلى آخره: هل الأسماء واضحة؟ هل يوجد تكرار؟ التكرار علامة على أن دالة مساعدة صغيرة ناقصة.",
+    "hintsEn": [
+     "Top-level statements can call local functions declared below them.",
+     "A good method name says what it does: `PrintReport`, not `Do3`."
+    ],
+    "hintsAr": [
+     "العبارات العليا (top-level statements) تستطيع استدعاء دوال محلية معرّفة أسفلها.",
+     "الاسم الجيد للدالة يقول ما تفعله: `PrintReport` لا `Do3`."
+    ],
+    "key": "cs-gradebook-refactor"
+   },
+   {
+    "titleEn": "Test and publish",
+    "titleAr": "اختبر وانشر",
+    "bodyEn": "Check every acceptance criterion: wrong marks, a student without marks, the table alignment, the statistics. Add five students with different marks and compare the averages with a calculator.\n\nPush to GitHub with a README that shows a sample report.",
+    "bodyAr": "تحقق من كل معيار قبول: الدرجات الخاطئة، والطالب بلا درجات، ومحاذاة الجدول، والإحصاءات. أضف خمسة طلاب بدرجات مختلفة وقارن المتوسطات بالآلة الحاسبة.\n\nارفع المشروع إلى GitHub مع README يعرض نموذجًا للتقرير.",
+    "hintsEn": [
+     "Paste the report output into the README inside a code block.",
+     "Try names with spaces and Arabic letters too."
+    ],
+    "hintsAr": [
+     "الصق ناتج التقرير في README داخل code block.",
+     "جرّب أسماء فيها مسافات وحروف عربية أيضًا."
+    ],
+    "key": "cs-gradebook-finish"
+   }
+  ]
+ },
+ {
+  "key": "cs-library-system",
+  "skill": "CSharp",
+  "level": "Intermediate",
+  "hours": 10,
+  "titleEn": "Library management system",
+  "titleAr": "نظام إدارة مكتبة",
+  "summaryEn": "A console system for a small library: books, members, borrowing and returning with due dates and late fees, built with clean object-oriented design.",
+  "summaryAr": "نظام طرفية لمكتبة صغيرة: كتب، وأعضاء، واستعارة وإرجاع بتواريخ استحقاق وغرامات تأخير، مبني بتصميم كائني نظيف.",
+  "techStack": "C# · .NET console · LINQ · System.Text.Json",
+  "goalsEn": [
+   "Design classes with clear responsibilities",
+   "Use interfaces to separate storage from logic",
+   "Model business rules (limits, due dates, fees)",
+   "Query data with LINQ"
+  ],
+  "goalsAr": [
+   "تصميم classes بمسؤوليات واضحة",
+   "استخدام interfaces لفصل التخزين عن المنطق",
+   "تمثيل قواعد العمل (الحدود، وتواريخ الاستحقاق، والغرامات)",
+   "الاستعلام عن البيانات باستخدام LINQ"
+  ],
+  "requirementsEn": [
+   "Add and search books by title, author or ISBN",
+   "Register members",
+   "Borrow: a member can hold at most 3 books, each for 14 days",
+   "Return: late books cost 1.00 per day",
+   "Reports: overdue loans, most borrowed books",
+   "Data is saved between runs"
+  ],
+  "requirementsAr": [
+   "إضافة الكتب والبحث عنها بالعنوان أو المؤلف أو ISBN",
+   "تسجيل الأعضاء",
+   "الاستعارة: للعضو 3 كتب كحد أقصى، لكل كتاب 14 يومًا",
+   "الإرجاع: كل يوم تأخير يكلف 1.00",
+   "تقارير: الإعارات المتأخرة، والكتب الأكثر استعارة",
+   "تُحفظ البيانات بين مرات التشغيل"
+  ],
+  "acceptanceEn": [
+   "Borrowing a fourth book is refused with a clear reason",
+   "Returning a book 3 days late shows a fee of 3.00",
+   "A book that is out cannot be borrowed by someone else",
+   "The business rules live in one service class, not in the menu code"
+  ],
+  "acceptanceAr": [
+   "استعارة كتاب رابع تُرفض مع سبب واضح",
+   "إرجاع كتاب متأخر 3 أيام يُظهر غرامة 3.00",
+   "الكتاب المُعار لا يمكن أن يستعيره شخص آخر",
+   "قواعد العمل موجودة في service class واحد، لا في كود القائمة"
+  ],
+  "stretchEn": [
+   "Add reservations: a waiting list per book",
+   "Let the user \"travel in time\" with a fake clock to test fees",
+   "Add unit tests for the LibraryService with xUnit"
+  ],
+  "stretchAr": [
+   "أضف الحجز: قائمة انتظار لكل كتاب",
+   "اسمح للمستخدم بـ\"السفر عبر الزمن\" بساعة وهمية لاختبار الغرامات",
+   "أضف اختبارات وحدة لـ LibraryService باستخدام xUnit"
+  ],
+  "steps": [
+   {
+    "titleEn": "Design the model on paper",
+    "titleAr": "صمّم النموذج على الورق",
+    "bodyEn": "Before any code, list the nouns: Book, Member, Loan. Decide what each holds:\n- Book: Id, Isbn, Title, Author, Year\n- Member: Id, Name, Email\n- Loan: Id, BookId, MemberId, BorrowedOn, DueOn, ReturnedOn (null while out)\n\nThen list the verbs (borrow, return, search, report). Verbs that touch several nouns belong to a service, not to one entity.",
+    "bodyAr": "قبل أي كود، اكتب الأسماء: Book وMember وLoan. وحدّد ما يحمله كلٌّ منها:\n- Book: Id وIsbn وTitle وAuthor وYear\n- Member: Id وName وEmail\n- Loan: Id وBookId وMemberId وBorrowedOn وDueOn وReturnedOn (قيمته null ما دام الكتاب معارًا)\n\nثم اكتب الأفعال (استعارة، وإرجاع، وبحث، وتقارير). الأفعال التي تمس أكثر من اسم مكانها service، لا كيان واحد.",
+    "hintsEn": [
+     "A book is \"out\" when it has a loan with ReturnedOn == null — no need for a separate flag.",
+     "Draw arrows between the classes to see the relationships."
+    ],
+    "hintsAr": [
+     "الكتاب \"معار\" عندما توجد له إعارة قيمة ReturnedOn فيها null، فلا حاجة لحقل منفصل.",
+     "ارسم أسهمًا بين الـ classes لترى العلاقات."
+    ],
+    "key": "cs-library-system-design"
+   },
+   {
+    "titleEn": "Create a solution with two projects",
+    "titleAr": "أنشئ solution بمشروعين",
+    "bodyEn": "Create `dotnet new sln -n Library`, a class library `Library.Core` for the model and rules, and a console app `Library.Cli` for the menu. Add both to the solution and reference Core from Cli.\n\nThis split forces you to keep business rules out of the user interface.",
+    "bodyAr": "أنشئ `dotnet new sln -n Library`، ومكتبة classes باسم `Library.Core` للنموذج والقواعد، وتطبيق طرفية `Library.Cli` للقائمة. أضف الاثنين إلى الـ solution واجعل Cli يشير إلى Core.\n\nهذا الفصل يجبرك على إبقاء قواعد العمل خارج واجهة المستخدم.",
+    "hintsEn": [
+     "`dotnet new classlib -n Library.Core`, then `dotnet sln add Library.Core`.",
+     "`dotnet add Library.Cli reference Library.Core` creates the project reference."
+    ],
+    "hintsAr": [
+     "`dotnet new classlib -n Library.Core` ثم `dotnet sln add Library.Core`.",
+     "`dotnet add Library.Cli reference Library.Core` ينشئ المرجع بين المشروعين."
+    ],
+    "key": "cs-library-system-solution"
+   },
+   {
+    "titleEn": "Write the entities",
+    "titleAr": "اكتب الكيانات",
+    "bodyEn": "Create `Book`, `Member` and `Loan` in Core. Use `required` properties for things that must always be set (Title, Name). Add a computed property on Loan: `bool IsOpen => ReturnedOn is null;`.\n\nKeep entities simple: data plus small helpers about themselves.",
+    "bodyAr": "أنشئ `Book` و`Member` و`Loan` داخل Core. استخدم خصائص `required` لما يجب أن يُضبط دائمًا (Title وName). وأضف خاصية محسوبة في Loan: `bool IsOpen => ReturnedOn is null;`.\n\nاجعل الكيانات بسيطة: بيانات مع دوال مساعدة صغيرة تخصها هي.",
+    "hintsEn": [
+     "Use `DateOnly` for dates without time.",
+     "Records (`record Book(...)`) are fine too, but classes are easier to change later."
+    ],
+    "hintsAr": [
+     "استخدم `DateOnly` للتواريخ بلا وقت.",
+     "الـ records مثل `record Book(...)` مقبولة أيضًا، لكن الـ classes أسهل في التعديل لاحقًا."
+    ],
+    "key": "cs-library-system-entities"
+   },
+   {
+    "titleEn": "Hide storage behind an interface",
+    "titleAr": "أخفِ التخزين خلف interface",
+    "bodyEn": "Define `ILibraryStore` with methods like `IReadOnlyList<Book> Books`, `void Add(Book b)`, `void Save()`. Write `JsonLibraryStore` that keeps everything in lists and reads/writes one `library.json` file.\n\nThe service will only know the interface, so you could replace JSON with a database later without touching the rules.",
+    "bodyAr": "عرّف `ILibraryStore` بدوال مثل `IReadOnlyList<Book> Books` و`void Add(Book b)` و`void Save()`. واكتب `JsonLibraryStore` يحفظ كل شيء في قوائم ويقرأ ويكتب ملفًا واحدًا `library.json`.\n\nالـ service لن يعرف إلا الـ interface، فتستطيع لاحقًا استبدال JSON بقاعدة بيانات دون لمس القواعد.",
+    "hintsEn": [
+     "Serialize one object that holds all three lists: `record LibraryData(List<Book> Books, List<Member> Members, List<Loan> Loans)`.",
+     "Generate ids with `list.Count == 0 ? 1 : list.Max(x => x.Id) + 1`."
+    ],
+    "hintsAr": [
+     "احفظ object واحدًا يحمل القوائم الثلاث: `record LibraryData(List<Book> Books, List<Member> Members, List<Loan> Loans)`.",
+     "ولّد الأرقام بـ `list.Count == 0 ? 1 : list.Max(x => x.Id) + 1`."
+    ],
+    "key": "cs-library-system-repository"
+   },
+   {
+    "titleEn": "Write the LibraryService with the rules",
+    "titleAr": "اكتب LibraryService بالقواعد",
+    "bodyEn": "Create `LibraryService(ILibraryStore store, TimeProvider clock)`. Put the rules here as constants: `MaxLoans = 3`, `LoanDays = 14`, `FeePerDay = 1.00m`.\n\n`Borrow(memberId, bookId)` checks that both exist, that the book is not out and that the member has fewer than 3 open loans. Return a result object (success, or a reason) instead of printing — the service must not know about the console.",
+    "bodyAr": "أنشئ `LibraryService(ILibraryStore store, TimeProvider clock)` وضع القواعد فيه كثوابت: `MaxLoans = 3` و`LoanDays = 14` و`FeePerDay = 1.00m`.\n\nدالة `Borrow(memberId, bookId)` تتحقق من وجود العضو والكتاب، وأن الكتاب غير معار، وأن لدى العضو أقل من 3 إعارات مفتوحة. أعد object نتيجة (نجاح أو سبب الرفض) بدل الطباعة، فالـ service يجب ألا يعرف شيئًا عن الطرفية.",
+    "hintsEn": [
+     "Injecting `TimeProvider` (instead of calling DateTime.Now) lets you test due dates and fees.",
+     "Use `decimal` for money, never `double`."
+    ],
+    "hintsAr": [
+     "حقن `TimeProvider` بدل استدعاء DateTime.Now يسمح لك باختبار تواريخ الاستحقاق والغرامات.",
+     "استخدم `decimal` للمال، ولا تستخدم `double` أبدًا."
+    ],
+    "code": "public record Result(bool Ok, string? Error = null)\n{\n    public static Result Success() => new(true);\n    public static Result Fail(string error) => new(false, error);\n}",
+    "language": "csharp",
+    "key": "cs-library-system-service"
+   },
+   {
+    "titleEn": "Returning and late fees",
+    "titleAr": "الإرجاع وغرامات التأخير",
+    "bodyEn": "`Return(bookId)` finds the open loan for the book, sets `ReturnedOn` to today and calculates the fee: days late × FeePerDay, never below zero.\n\nReturn the fee so the menu can show it. Test it by temporarily changing `LoanDays` to 0, or better, by using a fake clock.",
+    "bodyAr": "دالة `Return(bookId)` تبحث عن الإعارة المفتوحة للكتاب، وتجعل `ReturnedOn` تاريخ اليوم، وتحسب الغرامة: أيام التأخير × FeePerDay، ولا تقل عن الصفر.\n\nأعد قيمة الغرامة لتعرضها القائمة. اختبرها بتغيير `LoanDays` مؤقتًا إلى 0، أو الأفضل باستخدام ساعة وهمية.",
+    "hintsEn": [
+     "`today.DayNumber - loan.DueOn.DayNumber` gives the days late for DateOnly.",
+     "`Math.Max(0, daysLate) * FeePerDay` keeps early returns free."
+    ],
+    "hintsAr": [
+     "`today.DayNumber - loan.DueOn.DayNumber` يعطي أيام التأخير مع DateOnly.",
+     "`Math.Max(0, daysLate) * FeePerDay` يجعل الإرجاع المبكر بلا غرامة."
+    ],
+    "key": "cs-library-system-return-fees"
+   },
+   {
+    "titleEn": "Search and reports with LINQ",
+    "titleAr": "البحث والتقارير باستخدام LINQ",
+    "bodyEn": "Add `Search(string text)` that matches title, author or ISBN case-insensitively. Add two reports:\n- Overdue loans: open loans whose DueOn is before today, with member name and days late (use a join or a lookup).\n- Top 5 books: group loans by BookId, order by count descending, take 5.",
+    "bodyAr": "أضف `Search(string text)` تطابق العنوان أو المؤلف أو ISBN دون اعتبار لحالة الأحرف. وأضف تقريرين:\n- الإعارات المتأخرة: الإعارات المفتوحة التي DueOn فيها قبل اليوم، مع اسم العضو وأيام التأخير (استخدم join أو lookup).\n- أعلى 5 كتب: جمّع الإعارات حسب BookId، ورتّب بالعدد تنازليًا، وخذ 5.",
+    "hintsEn": [
+     "`text.Contains(query, StringComparison.OrdinalIgnoreCase)` does case-insensitive matching.",
+     "`loans.GroupBy(l => l.BookId).OrderByDescending(g => g.Count()).Take(5)`."
+    ],
+    "hintsAr": [
+     "`text.Contains(query, StringComparison.OrdinalIgnoreCase)` يطابق دون اعتبار لحالة الأحرف.",
+     "`loans.GroupBy(l => l.BookId).OrderByDescending(g => g.Count()).Take(5)`."
+    ],
+    "key": "cs-library-system-search-reports"
+   },
+   {
+    "titleEn": "Build the console menu",
+    "titleAr": "ابنِ قائمة الطرفية",
+    "bodyEn": "In `Library.Cli`, build the menu that calls the service: books, members, borrow, return, reports. The menu only reads input, calls one service method and prints the result.\n\nIf you notice a rule creeping into the menu (like \"if loans >= 3\"), move it to the service.",
+    "bodyAr": "في `Library.Cli` ابنِ القائمة التي تستدعي الـ service: الكتب، والأعضاء، والاستعارة، والإرجاع، والتقارير. القائمة تقرأ المدخل فقط، وتستدعي دالة واحدة من الـ service، وتطبع النتيجة.\n\nإذا لاحظت قاعدة تتسلل إلى القائمة (مثل \"if loans >= 3\") فانقلها إلى الـ service.",
+    "hintsEn": [
+     "Create the store and service once at the top: `var service = new LibraryService(new JsonLibraryStore(\"library.json\"), TimeProvider.System);`.",
+     "Print `result.Error` when `result.Ok` is false."
+    ],
+    "hintsAr": [
+     "أنشئ الـ store والـ service مرة واحدة في الأعلى: `var service = new LibraryService(new JsonLibraryStore(\"library.json\"), TimeProvider.System);`.",
+     "اطبع `result.Error` عندما تكون `result.Ok` قيمتها false."
+    ],
+    "key": "cs-library-system-cli"
+   },
+   {
+    "titleEn": "Seed data, test and document",
+    "titleAr": "بيانات أولية، واختبار، وتوثيق",
+    "bodyEn": "Add a menu option that loads 10 sample books and 3 members so the app is easy to try. Walk through every acceptance criterion, including the fourth book and a late return.\n\nWrite a README with the rules, a class diagram (a simple list is fine) and how to run it. Push to GitHub.",
+    "bodyAr": "أضف خيارًا في القائمة يحمّل 10 كتب و3 أعضاء كبيانات تجريبية ليسهل تجربة التطبيق. راجع كل معايير القبول، ومنها الكتاب الرابع والإرجاع المتأخر.\n\nاكتب README فيه القواعد، ومخطط للـ classes (قائمة بسيطة تكفي)، وطريقة التشغيل. ثم ارفعه إلى GitHub.",
+    "hintsEn": [
+     "A short \"Design decisions\" section in the README impresses reviewers.",
+     "If you did the xUnit stretch goal, show `dotnet test` in the README."
+    ],
+    "hintsAr": [
+     "قسم قصير بعنوان \"قرارات التصميم\" في README يترك انطباعًا جيدًا لدى المراجعين.",
+     "إذا أنجزت تحدي xUnit الإضافي فاعرض الأمر `dotnet test` في README."
+    ],
+    "key": "cs-library-system-finish"
+   }
+  ]
+ },
+ {
+  "key": "cs-expense-tracker",
+  "skill": "CSharp",
+  "level": "Intermediate",
+  "hours": 9,
+  "titleEn": "Expense tracker with CSV import",
+  "titleAr": "متتبع مصروفات مع استيراد CSV",
+  "summaryEn": "Import your bank statement as CSV, categorise expenses with rules, and get monthly reports and budgets in the terminal.",
+  "summaryAr": "استورد كشف حسابك البنكي بصيغة CSV، وصنّف المصروفات بقواعد، واحصل على تقارير وميزانيات شهرية في الطرفية.",
+  "techStack": "C# · .NET console · LINQ · CSV",
+  "goalsEn": [
+   "Parse text files robustly",
+   "Use records, enums and pattern matching",
+   "Group and aggregate data with LINQ",
+   "Handle culture-specific numbers and dates"
+  ],
+  "goalsAr": [
+   "قراءة الملفات النصية بشكل متين",
+   "استخدام records وenums ومطابقة الأنماط",
+   "تجميع البيانات وتلخيصها باستخدام LINQ",
+   "التعامل مع الأرقام والتواريخ حسب الإعدادات الإقليمية"
+  ],
+  "requirementsEn": [
+   "Import a CSV with Date, Description, Amount",
+   "Skip and report invalid lines instead of failing",
+   "Categorise by keyword rules (e.g. \"UBER\" → Transport)",
+   "Monthly report: total per category and per month",
+   "Budgets per category with a warning when exceeded",
+   "Avoid importing the same transaction twice"
+  ],
+  "requirementsAr": [
+   "استيراد CSV بالأعمدة Date وDescription وAmount",
+   "تخطي الأسطر غير الصحيحة والإبلاغ عنها بدل الفشل",
+   "التصنيف بقواعد كلمات مفتاحية (مثل \"UBER\" ← مواصلات)",
+   "تقرير شهري: المجموع لكل فئة ولكل شهر",
+   "ميزانية لكل فئة مع تحذير عند تجاوزها",
+   "منع استيراد العملية نفسها مرتين"
+  ],
+  "acceptanceEn": [
+   "Importing a file with 2 broken lines imports the rest and lists the 2 line numbers",
+   "Importing the same file twice adds nothing the second time",
+   "The report totals match a manual sum in a spreadsheet"
+  ],
+  "acceptanceAr": [
+   "استيراد ملف فيه سطران تالفان يستورد الباقي ويذكر رقمي السطرين",
+   "استيراد الملف نفسه مرتين لا يضيف شيئًا في المرة الثانية",
+   "مجاميع التقرير تطابق الجمع اليدوي في جدول بيانات"
+  ],
+  "stretchEn": [
+   "Draw a text bar chart per category",
+   "Export the report as Markdown",
+   "Support two currencies with a fixed rate"
+  ],
+  "stretchAr": [
+   "ارسم مخططًا شريطيًا نصيًا لكل فئة",
+   "صدّر التقرير بصيغة Markdown",
+   "ادعم عملتين بسعر تحويل ثابت"
+  ],
+  "steps": [
+   {
+    "titleEn": "Prepare a sample CSV",
+    "titleAr": "جهّز ملف CSV تجريبيًا",
+    "bodyEn": "Create `sample.csv` with a header `Date,Description,Amount` and 20 lines over two months. Use negative amounts for spending and positive for income. Add two broken lines on purpose (a missing amount, a wrong date).\n\nReal data is messy; building with messy data from the start makes the importer robust.",
+    "bodyAr": "أنشئ `sample.csv` بسطر عناوين `Date,Description,Amount` و20 سطرًا على مدى شهرين. استخدم مبالغ سالبة للإنفاق وموجبة للدخل. وأضف سطرين تالفين عن قصد (مبلغ ناقص، وتاريخ خاطئ).\n\nالبيانات الحقيقية فوضوية، والبناء على بيانات فوضوية من البداية يجعل أداة الاستيراد متينة.",
+    "hintsEn": [
+     "Use the ISO date format (2026-03-15) to avoid day/month confusion.",
+     "Include a description with a comma inside quotes: \"Coffee, cake\"."
+    ],
+    "hintsAr": [
+     "استخدم صيغة التاريخ ISO مثل (2026-03-15) لتجنب الخلط بين اليوم والشهر.",
+     "أضف وصفًا فيه فاصلة بين علامتي تنصيص: \"Coffee, cake\"."
+    ],
+    "key": "cs-expense-tracker-sample"
+   },
+   {
+    "titleEn": "Model a transaction",
+    "titleAr": "مثّل العملية المالية",
+    "bodyEn": "Create `record Transaction(DateOnly Date, string Description, decimal Amount, string Category)` and an `ImportResult` that holds the imported transactions and a list of errors (line number + reason).\n\nRecords give you value equality for free, which you will use later to detect duplicates.",
+    "bodyAr": "أنشئ `record Transaction(DateOnly Date, string Description, decimal Amount, string Category)` و`ImportResult` يحمل العمليات المستوردة وقائمة الأخطاء (رقم السطر والسبب).\n\nالـ records تعطيك المساواة بالقيمة مجانًا، وستستخدمها لاحقًا لكشف التكرار.",
+    "hintsEn": [
+     "Keep Category out of equality if it can change: compare Date, Description and Amount only.",
+     "A small `record ImportError(int Line, string Reason)` keeps errors readable."
+    ],
+    "hintsAr": [
+     "أبعد Category عن المقارنة إن كانت قابلة للتغيير، وقارن Date وDescription وAmount فقط.",
+     "سجل صغير `record ImportError(int Line, string Reason)` يجعل الأخطاء مقروءة."
+    ],
+    "key": "cs-expense-tracker-model"
+   },
+   {
+    "titleEn": "Write a CSV line parser",
+    "titleAr": "اكتب قارئ أسطر CSV",
+    "bodyEn": "Splitting on commas breaks on `\"Coffee, cake\"`. Write a small parser that walks the characters and toggles an \"inside quotes\" flag; a comma only splits when outside quotes.\n\nReturn the fields as a `List<string>`. Test it with a quoted field, an empty field and a line with too few fields.",
+    "bodyAr": "التقسيم عند الفواصل يفشل مع `\"Coffee, cake\"`. اكتب قارئًا صغيرًا يمرّ على الأحرف ويبدّل حالة \"داخل علامتي التنصيص\"، فلا تقسّم الفاصلة إلا إذا كانت خارجهما.\n\nأعد الحقول كـ `List<string>`. واختبره بحقل بين علامتي تنصيص، وحقل فارغ، وسطر بحقول أقل من المطلوب.",
+    "hintsEn": [
+     "Use a StringBuilder for the current field.",
+     "Libraries like CsvHelper exist; writing it once teaches you why they are useful."
+    ],
+    "hintsAr": [
+     "استخدم StringBuilder للحقل الحالي.",
+     "توجد مكتبات مثل CsvHelper، لكن كتابته بنفسك مرة تعلمك لماذا هي مفيدة."
+    ],
+    "code": "static List<string> SplitCsv(string line)\n{\n    var fields = new List<string>();\n    var current = new StringBuilder();\n    var quoted = false;\n    foreach (var c in line)\n    {\n        if (c == '\"') quoted = !quoted;\n        else if (c == ',' && !quoted) { fields.Add(current.ToString()); current.Clear(); }\n        else current.Append(c);\n    }\n    fields.Add(current.ToString());\n    return fields;\n}",
+    "language": "csharp",
+    "key": "cs-expense-tracker-parser"
+   },
+   {
+    "titleEn": "Import with validation",
+    "titleAr": "استورد مع التحقق",
+    "bodyEn": "Read all lines with `File.ReadLines`, skip the header, and for each line parse the date with `DateOnly.TryParseExact(..., \"yyyy-MM-dd\", CultureInfo.InvariantCulture, ...)` and the amount with `decimal.TryParse(..., NumberStyles.Number, CultureInfo.InvariantCulture, ...)`.\n\nAny failure adds an `ImportError` with the line number and continues with the next line.",
+    "bodyAr": "اقرأ كل الأسطر بـ `File.ReadLines`، وتخطَّ سطر العناوين، ولكل سطر حلّل التاريخ بـ `DateOnly.TryParseExact(..., \"yyyy-MM-dd\", CultureInfo.InvariantCulture, ...)` والمبلغ بـ `decimal.TryParse(..., NumberStyles.Number, CultureInfo.InvariantCulture, ...)`.\n\nأي فشل يضيف `ImportError` برقم السطر، ثم يكمل إلى السطر التالي.",
+    "hintsEn": [
+     "Always pass InvariantCulture: on an Arabic or German machine \"12.50\" may not parse otherwise.",
+     "Line numbers for the user start at 1 and include the header."
+    ],
+    "hintsAr": [
+     "مرّر InvariantCulture دائمًا، فعلى جهاز بإعدادات عربية أو ألمانية قد لا يُقرأ \"12.50\" بدونها.",
+     "أرقام الأسطر للمستخدم تبدأ من 1 وتشمل سطر العناوين."
+    ],
+    "key": "cs-expense-tracker-import"
+   },
+   {
+    "titleEn": "Categorise with rules",
+    "titleAr": "صنّف بالقواعد",
+    "bodyEn": "Define rules as a list of `(string Keyword, string Category)` pairs, e.g. (\"UBER\", \"Transport\"), (\"CARREFOUR\", \"Groceries\"), (\"NETFLIX\", \"Subscriptions\"). The first rule whose keyword appears in the description wins; otherwise \"Other\".\n\nPositive amounts are always \"Income\". Load the rules from `rules.json` so the user can edit them without recompiling.",
+    "bodyAr": "عرّف القواعد كقائمة أزواج `(string Keyword, string Category)` مثل (\"UBER\", \"Transport\") و(\"CARREFOUR\", \"Groceries\") و(\"NETFLIX\", \"Subscriptions\"). أول قاعدة تظهر كلمتها في الوصف هي التي تُطبَّق، وإلا فالفئة \"Other\".\n\nالمبالغ الموجبة دائمًا \"Income\". وحمّل القواعد من `rules.json` ليعدّلها المستخدم دون إعادة البناء.",
+    "hintsEn": [
+     "Compare with `OrdinalIgnoreCase` so \"uber\" matches too.",
+     "Order matters: put specific rules (\"UBER EATS\" → Food) before general ones (\"UBER\")."
+    ],
+    "hintsAr": [
+     "قارن بـ `OrdinalIgnoreCase` حتى تطابق \"uber\" أيضًا.",
+     "الترتيب مهم: ضع القواعد المحددة مثل (\"UBER EATS\" ← طعام) قبل العامة مثل (\"UBER\")."
+    ],
+    "key": "cs-expense-tracker-rules"
+   },
+   {
+    "titleEn": "Store and skip duplicates",
+    "titleAr": "خزّن وتخطَّ المكرر",
+    "bodyEn": "Keep all transactions in `transactions.json`. On import, skip a transaction if one with the same date, description and amount already exists. Use a `HashSet` of keys for speed.\n\nReport how many were imported and how many were skipped as duplicates.",
+    "bodyAr": "احفظ كل العمليات في `transactions.json`. وعند الاستيراد تخطَّ العملية إذا وُجدت أخرى بالتاريخ والوصف والمبلغ نفسه. استخدم `HashSet` من المفاتيح للسرعة.\n\nأبلغ عن عدد ما استُورد وعدد ما تُخطي لأنه مكرر.",
+    "hintsEn": [
+     "A tuple `(t.Date, t.Description, t.Amount)` works as a HashSet key.",
+     "Two real coffees on the same day for the same price would look like duplicates — mention this limitation in the README."
+    ],
+    "hintsAr": [
+     "الـ tuple `(t.Date, t.Description, t.Amount)` يصلح كمفتاح في HashSet.",
+     "قهوتان حقيقيتان في اليوم نفسه بالسعر نفسه ستبدوان مكررتين، فاذكر هذا القيد في README."
+    ],
+    "key": "cs-expense-tracker-duplicates"
+   },
+   {
+    "titleEn": "Monthly and category reports",
+    "titleAr": "التقارير الشهرية وحسب الفئة",
+    "bodyEn": "Group spending by month (`new { t.Date.Year, t.Date.Month }`) and inside each month by category. Print the total per category and the month total, sorted by the biggest category first.\n\nShow income separately so that spending totals stay positive and readable.",
+    "bodyAr": "جمّع الإنفاق حسب الشهر (`new { t.Date.Year, t.Date.Month }`) وداخل كل شهر حسب الفئة. اطبع مجموع كل فئة ومجموع الشهر، مرتبًا من الفئة الأكبر.\n\nاعرض الدخل منفصلًا لتبقى مجاميع الإنفاق موجبة وسهلة القراءة.",
+    "hintsEn": [
+     "`Math.Abs(g.Sum(t => t.Amount))` turns spending into a positive number for display.",
+     "Format money with `ToString(\"N2\")`."
+    ],
+    "hintsAr": [
+     "`Math.Abs(g.Sum(t => t.Amount))` يحوّل الإنفاق إلى رقم موجب للعرض.",
+     "نسّق المال بـ `ToString(\"N2\")`."
+    ],
+    "key": "cs-expense-tracker-reports"
+   },
+   {
+    "titleEn": "Budgets and warnings",
+    "titleAr": "الميزانيات والتحذيرات",
+    "bodyEn": "Let the user set a monthly budget per category (saved in `budgets.json`). In the monthly report, show spent / budget and a percentage, and mark categories over budget with a warning.\n\nUse console colours: green below 80%, yellow 80–100%, red above.",
+    "bodyAr": "اسمح للمستخدم بتحديد ميزانية شهرية لكل فئة (تُحفظ في `budgets.json`). وفي التقرير الشهري اعرض المصروف من الميزانية ونسبته، وميّز الفئات المتجاوزة بتحذير.\n\nاستخدم ألوان الطرفية: أخضر تحت 80%، وأصفر بين 80 و100%، وأحمر فوقها.",
+    "hintsEn": [
+     "Set `Console.ForegroundColor` and call `Console.ResetColor()` after printing.",
+     "Categories without a budget just show the amount."
+    ],
+    "hintsAr": [
+     "اضبط `Console.ForegroundColor` واستدعِ `Console.ResetColor()` بعد الطباعة.",
+     "الفئات بلا ميزانية تعرض المبلغ فقط."
+    ],
+    "key": "cs-expense-tracker-budgets"
+   },
+   {
+    "titleEn": "Verify and publish",
+    "titleAr": "تحقق وانشر",
+    "bodyEn": "Import `sample.csv` twice and check the duplicate count. Compare one month's totals with a spreadsheet. Fix any difference before publishing.\n\nWrite the README with the CSV format, the rules file format and a sample report. Push to GitHub.",
+    "bodyAr": "استورد `sample.csv` مرتين وتحقق من عدد المكرر. وقارن مجاميع شهر واحد بجدول بيانات، وأصلح أي فرق قبل النشر.\n\nاكتب README فيه صيغة ملف CSV، وصيغة ملف القواعد، ونموذج تقرير. ثم ارفعه إلى GitHub.",
+    "hintsEn": [
+     "Do not commit your real bank data — keep only sample.csv in the repository.",
+     "Add real files to .gitignore, e.g. `transactions.json`."
+    ],
+    "hintsAr": [
+     "لا ترفع بياناتك البنكية الحقيقية، واحتفظ في المستودع بـ sample.csv فقط.",
+     "أضف الملفات الحقيقية إلى .gitignore، مثل `transactions.json`."
+    ],
+    "key": "cs-expense-tracker-finish"
+   }
+  ]
+ },
+ {
+  "key": "cs-link-checker",
+  "skill": "CSharp",
+  "level": "Advanced",
+  "hours": 14,
+  "titleEn": "Concurrent website link checker",
+  "titleAr": "فاحص روابط مواقع متوازٍ",
+  "summaryEn": "A command-line tool that crawls a website, follows its internal links in parallel with a concurrency limit, and reports broken links, redirects and slow pages.",
+  "summaryAr": "أداة سطر أوامر تزحف على موقع، وتتبع روابطه الداخلية بالتوازي مع حد للتزامن، وتُبلغ عن الروابط المعطلة والتحويلات والصفحات البطيئة.",
+  "techStack": "C# · .NET console · HttpClient · async/await · Channels",
+  "goalsEn": [
+   "Write correct async code with HttpClient",
+   "Limit concurrency with Channels or SemaphoreSlim",
+   "Support cancellation and timeouts",
+   "Design a small, testable crawler"
+  ],
+  "goalsAr": [
+   "كتابة كود async صحيح مع HttpClient",
+   "تحديد التزامن باستخدام Channels أو SemaphoreSlim",
+   "دعم الإلغاء والمهلات الزمنية",
+   "تصميم زاحف صغير قابل للاختبار"
+  ],
+  "requirementsEn": [
+   "Start from a URL and stay on the same host",
+   "Check each page once, at most N requests at a time",
+   "Report status codes 4xx/5xx, timeouts and redirects",
+   "Respect a max depth and a max page count",
+   "Ctrl+C stops cleanly and still prints the report",
+   "Output a summary and optionally JSON"
+  ],
+  "requirementsAr": [
+   "البدء من رابط والبقاء على الخادم نفسه",
+   "فحص كل صفحة مرة واحدة، وبحد أقصى N طلبًا في الوقت نفسه",
+   "الإبلاغ عن رموز الحالة 4xx/5xx والمهلات والتحويلات",
+   "احترام أقصى عمق وأقصى عدد صفحات",
+   "الضغط على Ctrl+C يوقف الأداة بنظافة ويطبع التقرير",
+   "إخراج ملخص، واختياريًا JSON"
+  ],
+  "acceptanceEn": [
+   "No URL is requested twice",
+   "With --concurrency 4, never more than 4 requests run at once",
+   "A 404 link is reported together with the page that links to it",
+   "Ctrl+C ends within a second and prints what was found so far"
+  ],
+  "acceptanceAr": [
+   "لا يُطلب أي رابط مرتين",
+   "مع --concurrency 4 لا تزيد الطلبات المتزامنة عن 4 أبدًا",
+   "الرابط الذي يعيد 404 يُبلغ عنه مع الصفحة التي تشير إليه",
+   "Ctrl+C ينهي الأداة خلال ثانية ويطبع ما وُجد حتى الآن"
+  ],
+  "stretchEn": [
+   "Read robots.txt and skip disallowed paths",
+   "Check external links with HEAD requests only",
+   "Retry transient failures with exponential backoff"
+  ],
+  "stretchAr": [
+   "اقرأ robots.txt وتخطَّ المسارات الممنوعة",
+   "افحص الروابط الخارجية بطلبات HEAD فقط",
+   "أعد المحاولة عند الأعطال المؤقتة مع تأخير يتضاعف"
+  ],
+  "steps": [
+   {
+    "titleEn": "Create the tool and parse arguments",
+    "titleAr": "أنشئ الأداة واقرأ المعاملات",
+    "bodyEn": "Create `dotnet new console -n LinkCheck`. Read the arguments: the start URL, `--concurrency` (default 4), `--max-pages` (default 200), `--depth` (default 3) and `--json <file>`.\n\nValidate the URL with `Uri.TryCreate(..., UriKind.Absolute, out var start)` and only allow http and https.",
+    "bodyAr": "أنشئ `dotnet new console -n LinkCheck`. واقرأ المعاملات: رابط البداية، و`--concurrency` (الافتراضي 4)، و`--max-pages` (الافتراضي 200)، و`--depth` (الافتراضي 3)، و`--json <file>`.\n\nتحقق من الرابط بـ `Uri.TryCreate(..., UriKind.Absolute, out var start)` واسمح فقط بـ http وhttps.",
+    "hintsEn": [
+     "A tiny loop over `args` is enough; System.CommandLine is an option if you want help text for free.",
+     "Put the options in a record: `record Options(Uri Start, int Concurrency, int MaxPages, int Depth, string? JsonPath)`."
+    ],
+    "hintsAr": [
+     "حلقة صغيرة على `args` تكفي، وSystem.CommandLine خيار إن أردت نص مساعدة جاهزًا.",
+     "ضع الخيارات في record: `record Options(Uri Start, int Concurrency, int MaxPages, int Depth, string? JsonPath)`."
+    ],
+    "key": "cs-link-checker-setup"
+   },
+   {
+    "titleEn": "Fetch one page correctly",
+    "titleAr": "اجلب صفحة واحدة بشكل صحيح",
+    "bodyEn": "Create one `HttpClient` for the whole run (never one per request). Set a timeout per request with a `CancellationTokenSource` linked to the global token.\n\nWrite `Task<PageResult> FetchAsync(Uri url, CancellationToken ct)` that returns the status code, the elapsed time, the final URL after redirects and, for HTML responses, the body.",
+    "bodyAr": "أنشئ `HttpClient` واحدًا للتشغيل كله (ولا تنشئ واحدًا لكل طلب). واضبط مهلة لكل طلب بـ `CancellationTokenSource` مرتبط بالـ token العام.\n\nاكتب `Task<PageResult> FetchAsync(Uri url, CancellationToken ct)` تعيد رمز الحالة، والوقت المستغرق، والرابط النهائي بعد التحويلات، ومحتوى الصفحة إذا كانت HTML.",
+    "hintsEn": [
+     "`Stopwatch.StartNew()` measures elapsed time.",
+     "Check `response.Content.Headers.ContentType?.MediaType == \"text/html\"` before reading the body."
+    ],
+    "hintsAr": [
+     "`Stopwatch.StartNew()` يقيس الوقت المستغرق.",
+     "تحقق من `response.Content.Headers.ContentType?.MediaType == \"text/html\"` قبل قراءة المحتوى."
+    ],
+    "code": "using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);\ntimeout.CancelAfter(TimeSpan.FromSeconds(10));\nusing var response = await http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, timeout.Token);",
+    "language": "csharp",
+    "key": "cs-link-checker-fetch"
+   },
+   {
+    "titleEn": "Extract and normalise links",
+    "titleAr": "استخرج الروابط ووحّدها",
+    "bodyEn": "Find `href=\"...\"` values in the HTML. A regular expression is acceptable for this project; AngleSharp is the robust option.\n\nTurn each href into an absolute URL with `new Uri(pageUrl, href)`, drop the `#fragment`, ignore `mailto:` and `javascript:`, and keep only links on the start host for crawling.",
+    "bodyAr": "ابحث عن قيم `href=\"...\"` في الـ HTML. التعبير النمطي (regex) مقبول في هذا المشروع، والمكتبة AngleSharp هي الخيار المتين.\n\nحوّل كل href إلى رابط كامل بـ `new Uri(pageUrl, href)`، واحذف `#fragment`، وتجاهل `mailto:` و`javascript:`، واحتفظ للزحف بالروابط التي على خادم البداية فقط.",
+    "hintsEn": [
+     "`new UriBuilder(uri) { Fragment = \"\" }.Uri` removes the fragment.",
+     "Normalise trailing slashes consistently, or /about and /about/ count as two pages."
+    ],
+    "hintsAr": [
+     "`new UriBuilder(uri) { Fragment = \"\" }.Uri` يحذف الـ fragment.",
+     "وحّد الشرطة المائلة في النهاية، وإلا عُدّت /about و/about/ صفحتين."
+    ],
+    "key": "cs-link-checker-links"
+   },
+   {
+    "titleEn": "A work queue with a concurrency limit",
+    "titleAr": "طابور عمل بحد للتزامن",
+    "bodyEn": "Use `Channel<CrawlItem>` (url, depth, referrer) as the queue. Start N worker tasks that read from the channel; N is the concurrency option. Each worker fetches, records the result and writes new links back to the channel.\n\nKeep a `ConcurrentDictionary<Uri, byte>` of seen URLs and only enqueue a URL if `TryAdd` succeeds — this guarantees each URL is fetched once.",
+    "bodyAr": "استخدم `Channel<CrawlItem>` (الرابط والعمق والصفحة المُحيلة) كطابور. وشغّل N من مهام العمال تقرأ من القناة، حيث N هو خيار التزامن. كل عامل يجلب الصفحة، ويسجل النتيجة، ويكتب الروابط الجديدة في القناة.\n\nاحتفظ بـ `ConcurrentDictionary<Uri, byte>` للروابط المرئية، ولا تضف رابطًا إلى الطابور إلا إذا نجح `TryAdd`، فهذا يضمن جلب كل رابط مرة واحدة.",
+    "hintsEn": [
+     "`Channel.CreateUnbounded<CrawlItem>()` is fine here.",
+     "Workers: `await foreach (var item in channel.Reader.ReadAllAsync(ct))`."
+    ],
+    "hintsAr": [
+     "`Channel.CreateUnbounded<CrawlItem>()` مناسب هنا.",
+     "العمال: `await foreach (var item in channel.Reader.ReadAllAsync(ct))`."
+    ],
+    "key": "cs-link-checker-queue"
+   },
+   {
+    "titleEn": "Know when the crawl is finished",
+    "titleAr": "اعرف متى ينتهي الزحف",
+    "bodyEn": "The tricky part: the queue may be empty while a worker is still about to add links. Count pending items with `Interlocked.Increment` when enqueuing and `Interlocked.Decrement` when an item is fully processed. When the count reaches zero, call `channel.Writer.Complete()`.\n\nAll workers then leave their loops and `Task.WhenAll(workers)` completes.",
+    "bodyAr": "هذا هو الجزء الصعب: قد يكون الطابور فارغًا بينما عامل على وشك إضافة روابط. عُدّ العناصر المعلقة بـ `Interlocked.Increment` عند الإضافة و`Interlocked.Decrement` عند انتهاء معالجة العنصر كليًا. وعندما يصل العدد إلى صفر استدعِ `channel.Writer.Complete()`.\n\nعندها يخرج كل العمال من حلقاتهم وتكتمل `Task.WhenAll(workers)`.",
+    "hintsEn": [
+     "Decrement in a `finally` block so a failed fetch still counts as processed.",
+     "Also stop enqueuing when max-pages is reached."
+    ],
+    "hintsAr": [
+     "أنقص العدد داخل `finally` حتى يُحسب الجلب الفاشل كعنصر انتهت معالجته.",
+     "وتوقف عن الإضافة عند الوصول إلى max-pages."
+    ],
+    "key": "cs-link-checker-completion"
+   },
+   {
+    "titleEn": "Record results safely",
+    "titleAr": "سجّل النتائج بأمان",
+    "bodyEn": "Store each result (url, status, time, referrer, error) in a `ConcurrentBag` or a list guarded by a lock. Keep the referrer so a broken link can be reported with the page that contains it.\n\nClassify: OK (2xx), Redirect (3xx, if you disable auto-redirect) , Broken (4xx/5xx), Error (timeout, DNS, connection).",
+    "bodyAr": "خزّن كل نتيجة (الرابط والحالة والوقت والصفحة المُحيلة والخطأ) في `ConcurrentBag` أو قائمة محمية بـ lock. واحتفظ بالصفحة المُحيلة لتُبلغ عن الرابط المعطل مع الصفحة التي تحتويه.\n\nصنّف النتائج: سليم (2xx)، وتحويل (3xx إذا عطّلت التحويل التلقائي)، ومعطل (4xx/5xx)، وخطأ (مهلة، أو DNS، أو اتصال).",
+    "hintsEn": [
+     "Catch `HttpRequestException` and `TaskCanceledException` per request; one bad URL must not stop the crawl.",
+     "Distinguish a timeout from Ctrl+C by checking which token was cancelled."
+    ],
+    "hintsAr": [
+     "التقط `HttpRequestException` و`TaskCanceledException` لكل طلب، فرابط سيئ واحد يجب ألا يوقف الزحف.",
+     "فرّق بين المهلة وCtrl+C بفحص أي token أُلغي."
+    ],
+    "key": "cs-link-checker-results"
+   },
+   {
+    "titleEn": "Ctrl+C and graceful shutdown",
+    "titleAr": "Ctrl+C والإيقاف الهادئ",
+    "bodyEn": "Create a `CancellationTokenSource` and cancel it in `Console.CancelKeyPress` (set `e.Cancel = true` so the process does not die immediately). Pass the token everywhere.\n\nAfter `Task.WhenAll` (wrapped in try/catch for OperationCanceledException), always print the report with what was collected.",
+    "bodyAr": "أنشئ `CancellationTokenSource` وألغِه داخل `Console.CancelKeyPress` (واجعل `e.Cancel = true` حتى لا تموت العملية فورًا). ومرّر الـ token إلى كل مكان.\n\nبعد `Task.WhenAll` (داخل try/catch لـ OperationCanceledException) اطبع التقرير دائمًا بما جُمع.",
+    "hintsEn": [
+     "Complete the channel writer on cancellation too, so workers stop waiting.",
+     "Test it on a big site with --max-pages 1000 and press Ctrl+C."
+    ],
+    "hintsAr": [
+     "أكمل كاتب القناة عند الإلغاء أيضًا حتى يتوقف العمال عن الانتظار.",
+     "اختبره على موقع كبير مع --max-pages 1000 ثم اضغط Ctrl+C."
+    ],
+    "key": "cs-link-checker-cancel"
+   },
+   {
+    "titleEn": "Print the report and JSON",
+    "titleAr": "اطبع التقرير وملف JSON",
+    "bodyEn": "Print totals per class, then every broken link with its status and referrer, then the 10 slowest pages. If `--json` is given, serialize the full result list with `JsonSerializer` to that file.\n\nExit with code 1 when broken links were found, so the tool can fail a CI pipeline.",
+    "bodyAr": "اطبع المجاميع لكل تصنيف، ثم كل رابط معطل مع حالته والصفحة المُحيلة، ثم أبطأ 10 صفحات. وإذا وُجد `--json` فاحفظ قائمة النتائج كاملة بـ `JsonSerializer` في ذلك الملف.\n\nأنهِ البرنامج برمز خروج 1 عند وجود روابط معطلة، لتستطيع الأداة إفشال مسار CI.",
+    "hintsEn": [
+     "Return the exit code from Main: `return broken.Count > 0 ? 1 : 0;`.",
+     "Sort slow pages with `OrderByDescending(r => r.Elapsed).Take(10)`."
+    ],
+    "hintsAr": [
+     "أعد رمز الخروج من Main: `return broken.Count > 0 ? 1 : 0;`.",
+     "رتّب الصفحات البطيئة بـ `OrderByDescending(r => r.Elapsed).Take(10)`."
+    ],
+    "key": "cs-link-checker-report"
+   },
+   {
+    "titleEn": "Test with a fake server",
+    "titleAr": "اختبر بخادم وهمي",
+    "bodyEn": "Make the crawler take an `HttpMessageHandler` so tests can pass a fake one that returns canned HTML for known URLs. Write xUnit tests for: each URL fetched once, a 404 reported with its referrer, max-pages respected, and link normalisation.\n\nA crawler that is only tested against the real internet is not tested.",
+    "bodyAr": "اجعل الزاحف يستقبل `HttpMessageHandler` لتمرر الاختبارات واحدًا وهميًا يعيد HTML جاهزًا لروابط معروفة. واكتب اختبارات xUnit لـ: جلب كل رابط مرة واحدة، والإبلاغ عن 404 مع الصفحة المُحيلة، واحترام max-pages، وتوحيد الروابط.\n\nالزاحف الذي لا يُختبر إلا على الإنترنت الحقيقي لم يُختبر فعلًا.",
+    "hintsEn": [
+     "A fake handler overrides `SendAsync` and looks up the URL in a dictionary.",
+     "Count calls per URL in the fake handler to assert \"fetched once\"."
+    ],
+    "hintsAr": [
+     "المعالج الوهمي يعيد تعريف `SendAsync` ويبحث عن الرابط في dictionary.",
+     "عُدّ الاستدعاءات لكل رابط داخل المعالج الوهمي لتتحقق من \"جُلب مرة واحدة\"."
+    ],
+    "key": "cs-link-checker-tests"
+   },
+   {
+    "titleEn": "Package and publish",
+    "titleAr": "غلّف وانشر",
+    "bodyEn": "Make it a .NET global tool: add `<PackAsTool>true</PackAsTool>` and `<ToolCommandName>linkcheck</ToolCommandName>` to the csproj, run `dotnet pack`, and install it locally with `dotnet tool install --global --add-source ./nupkg LinkCheck`.\n\nDocument the options and a sample report in the README, and add a GitHub Actions workflow that runs the tests.",
+    "bodyAr": "اجعلها أداة .NET عامة: أضف `<PackAsTool>true</PackAsTool>` و`<ToolCommandName>linkcheck</ToolCommandName>` إلى csproj، وشغّل `dotnet pack`، وثبّتها محليًا بـ `dotnet tool install --global --add-source ./nupkg LinkCheck`.\n\nوثّق الخيارات ونموذجًا للتقرير في README، وأضف مسار GitHub Actions يشغّل الاختبارات.",
+    "hintsEn": [
+     "Only crawl sites you own or that allow it; be polite with low concurrency.",
+     "Show a real run against your own portfolio site in the README."
+    ],
+    "hintsAr": [
+     "ازحف فقط على مواقع تملكها أو تسمح بذلك، وكن مهذبًا بتزامن منخفض.",
+     "اعرض في README تشغيلًا حقيقيًا على موقع معرض أعمالك."
+    ],
+    "key": "cs-link-checker-finish"
+   }
+  ]
+ },
+ {
+  "key": "cs-kv-store",
+  "skill": "CSharp",
+  "level": "Advanced",
+  "hours": 16,
+  "titleEn": "Key-value database with a TCP server",
+  "titleAr": "قاعدة بيانات مفتاح وقيمة مع خادم TCP",
+  "summaryEn": "A small Redis-like database: an in-memory store with expiry, persistence through an append-only log, and a TCP server that many clients can use at the same time.",
+  "summaryAr": "قاعدة بيانات صغيرة تشبه Redis: مخزن في الذاكرة مع انتهاء صلاحية، وحفظ دائم عبر سجل يُضاف إليه فقط، وخادم TCP يستخدمه عدة عملاء في الوقت نفسه.",
+  "techStack": "C# · .NET · TcpListener · async streams · file I/O",
+  "goalsEn": [
+   "Build a network server with TcpListener and async I/O",
+   "Design a simple text protocol and parse it",
+   "Make shared state safe for concurrent clients",
+   "Persist data with an append-only log and recover after a crash"
+  ],
+  "goalsAr": [
+   "بناء خادم شبكي بـ TcpListener وعمليات I/O غير متزامنة",
+   "تصميم بروتوكول نصي بسيط وتحليله",
+   "جعل الحالة المشتركة آمنة لعدة عملاء متزامنين",
+   "حفظ البيانات بسجل يُضاف إليه فقط والتعافي بعد التعطل"
+  ],
+  "requirementsEn": [
+   "Commands: SET key value [EX seconds], GET key, DEL key, EXISTS key, KEYS pattern, INCR key",
+   "Many clients connected at once",
+   "Expired keys disappear",
+   "Every write is appended to a log file and replayed at start",
+   "A COMPACT command rewrites the log",
+   "A small client console app"
+  ],
+  "requirementsAr": [
+   "الأوامر: SET key value [EX seconds] وGET key وDEL key وEXISTS key وKEYS pattern وINCR key",
+   "عدة عملاء متصلون في الوقت نفسه",
+   "المفاتيح المنتهية تختفي",
+   "كل كتابة تُضاف إلى ملف سجل وتُعاد عند البدء",
+   "الأمر COMPACT يعيد كتابة السجل",
+   "تطبيق طرفية صغير كعميل"
+  ],
+  "acceptanceEn": [
+   "Two clients running INCR 1000 times each end with exactly 2000",
+   "Kill the server process, restart it, and all keys (except expired ones) are back",
+   "A malformed command returns an error line and keeps the connection open"
+  ],
+  "acceptanceAr": [
+   "عميلان ينفذ كل منهما INCR ألف مرة ينتهيان بـ 2000 بالضبط",
+   "أوقف عملية الخادم قسرًا ثم أعد تشغيله، فتعود كل المفاتيح (ما عدا المنتهية)",
+   "الأمر غير الصحيح يعيد سطر خطأ ويُبقي الاتصال مفتوحًا"
+  ],
+  "stretchEn": [
+   "Support lists (LPUSH, LRANGE)",
+   "Add a simple password with AUTH",
+   "Benchmark with 50 clients and report operations per second"
+  ],
+  "stretchAr": [
+   "ادعم القوائم (LPUSH وLRANGE)",
+   "أضف كلمة مرور بسيطة بالأمر AUTH",
+   "قِس الأداء بـ 50 عميلًا واعرض عدد العمليات في الثانية"
+  ],
+  "steps": [
+   {
+    "titleEn": "Design the protocol",
+    "titleAr": "صمّم البروتوكول",
+    "bodyEn": "Keep it line based: a client sends one command per line, words separated by spaces, and the server answers one line. Answers start with a type: `+OK`, `$value`, `:42` for numbers, `-ERR message` for errors, `_` for \"nothing\".\n\nWrite the protocol in the README before writing the server; both the server and the client will follow it.",
+    "bodyAr": "اجعله قائمًا على الأسطر: يرسل العميل أمرًا واحدًا في كل سطر، بكلمات بينها مسافات، ويرد الخادم بسطر واحد. تبدأ الردود بنوع: `+OK`، و`$value`، و`:42` للأرقام، و`-ERR message` للأخطاء، و`_` لـ\"لا شيء\".\n\nاكتب البروتوكول في README قبل كتابة الخادم، فالخادم والعميل سيتبعانه معًا.",
+    "hintsEn": [
+     "Values with spaces: allow quoting, or take \"the rest of the line\" as the value for SET.",
+     "Real Redis uses RESP; a simpler protocol is fine for learning."
+    ],
+    "hintsAr": [
+     "القيم التي فيها مسافات: اسمح بعلامات التنصيص، أو اعتبر \"بقية السطر\" هي القيمة في SET.",
+     "Redis الحقيقي يستخدم RESP، والبروتوكول الأبسط مناسب للتعلم."
+    ],
+    "key": "cs-kv-store-protocol"
+   },
+   {
+    "titleEn": "The in-memory store",
+    "titleAr": "المخزن في الذاكرة",
+    "bodyEn": "Create a `Store` class around `ConcurrentDictionary<string, Entry>` where `Entry` holds the value and an optional `ExpiresAt`. Implement Set, Get, Delete, Exists and Keys.\n\n`Get` treats an expired entry as missing and removes it (lazy expiry).",
+    "bodyAr": "أنشئ class باسم `Store` حول `ConcurrentDictionary<string, Entry>` حيث يحمل `Entry` القيمة و`ExpiresAt` اختياريًا. ونفّذ Set وGet وDelete وExists وKeys.\n\nدالة `Get` تعامل المدخل المنتهي كأنه غير موجود وتحذفه (انتهاء كسول).",
+    "hintsEn": [
+     "Inject `TimeProvider` so you can test expiry without waiting.",
+     "Keys pattern: convert `user:*` to a regex with `Regex.Escape` and replace `\\*` with `.*`."
+    ],
+    "hintsAr": [
+     "احقن `TimeProvider` لتختبر الانتهاء دون انتظار.",
+     "نمط KEYS: حوّل `user:*` إلى regex بـ `Regex.Escape` واستبدل `\\*` بـ `.*`."
+    ],
+    "key": "cs-kv-store-store"
+   },
+   {
+    "titleEn": "Make INCR atomic",
+    "titleAr": "اجعل INCR ذريًا",
+    "bodyEn": "`INCR` reads, adds one and writes. Two clients doing it at the same time can lose updates. Use `ConcurrentDictionary.AddOrUpdate` with an update function, which retries until it wins.\n\nReturn an error if the existing value is not an integer.",
+    "bodyAr": "`INCR` يقرأ ثم يضيف واحدًا ثم يكتب، وعميلان يفعلان ذلك في الوقت نفسه قد يُضيعان تحديثات. استخدم `ConcurrentDictionary.AddOrUpdate` مع دالة تحديث، فهي تعيد المحاولة حتى تنجح.\n\nأعد خطأ إذا لم تكن القيمة الموجودة عددًا صحيحًا.",
+    "hintsEn": [
+     "The update function may run more than once, so it must not have side effects.",
+     "Throwing inside the update function is a simple way to report \"not an integer\"."
+    ],
+    "hintsAr": [
+     "دالة التحديث قد تعمل أكثر من مرة، لذا يجب ألا يكون لها آثار جانبية.",
+     "رمي استثناء داخل دالة التحديث طريقة بسيطة للإبلاغ عن \"ليست عددًا صحيحًا\"."
+    ],
+    "key": "cs-kv-store-atomic"
+   },
+   {
+    "titleEn": "Parse commands",
+    "titleAr": "حلّل الأوامر",
+    "bodyEn": "Write `Command Parse(string line)` that splits the line, upper-cases the command name and checks the number of arguments for each command. Return a parse error instead of throwing for bad input.\n\nThen write `string Execute(Command cmd)` that calls the store and formats the answer according to your protocol.",
+    "bodyAr": "اكتب `Command Parse(string line)` تقسّم السطر، وتحوّل اسم الأمر إلى أحرف كبيرة، وتتحقق من عدد المعاملات لكل أمر. وأعد خطأ تحليل بدل رمي استثناء عند المدخل السيئ.\n\nثم اكتب `string Execute(Command cmd)` تستدعي المخزن وتنسّق الرد حسب البروتوكول.",
+    "hintsEn": [
+     "A `switch` on the command name with one case per command keeps Execute readable.",
+     "Unit-test Parse and Execute without any network — they are pure functions."
+    ],
+    "hintsAr": [
+     "استخدام `switch` على اسم الأمر بحالة لكل أمر يجعل Execute مقروءة.",
+     "اختبر Parse وExecute دون أي شبكة، فهما دالتان نقيتان."
+    ],
+    "key": "cs-kv-store-parser"
+   },
+   {
+    "titleEn": "The TCP server",
+    "titleAr": "خادم TCP",
+    "bodyEn": "Start a `TcpListener` on port 6390. In a loop, `await listener.AcceptTcpClientAsync(ct)` and handle each client in its own task (don't await it in the loop).\n\nFor each client, wrap the stream in a `StreamReader` and `StreamWriter` (AutoFlush = true), read lines with `ReadLineAsync`, execute them and write the answer. Close the client when ReadLine returns null.",
+    "bodyAr": "شغّل `TcpListener` على المنفذ 6390. وفي حلقة نفّذ `await listener.AcceptTcpClientAsync(ct)` وعالج كل عميل في مهمة مستقلة (لا تنتظرها داخل الحلقة).\n\nلكل عميل غلّف الـ stream بـ `StreamReader` و`StreamWriter` (مع AutoFlush = true)، واقرأ الأسطر بـ `ReadLineAsync`، ونفّذها، واكتب الرد. وأغلق العميل عندما تعيد ReadLine قيمة null.",
+    "hintsEn": [
+     "Wrap each client handler in try/catch so one broken connection never stops the server.",
+     "Test with `telnet localhost 6390` or `nc localhost 6390`."
+    ],
+    "hintsAr": [
+     "ضع معالج كل عميل داخل try/catch حتى لا يوقف اتصال معطل الخادم.",
+     "اختبره بـ `telnet localhost 6390` أو `nc localhost 6390`."
+    ],
+    "code": "while (!ct.IsCancellationRequested)\n{\n    var client = await listener.AcceptTcpClientAsync(ct);\n    _ = HandleClientAsync(client, ct); // runs concurrently\n}",
+    "language": "csharp",
+    "key": "cs-kv-store-server"
+   },
+   {
+    "titleEn": "Append-only log",
+    "titleAr": "سجل الإضافة فقط",
+    "bodyEn": "Every successful write command (SET, DEL, INCR) is appended as a line to `data.aof` before answering +OK. Use one `StreamWriter` guarded by a `SemaphoreSlim(1)` so lines from different clients never mix.\n\nStore absolute expiry times in the log (`SET key value PXAT 1767225600000`) so replaying later does not extend them.",
+    "bodyAr": "كل أمر كتابة ناجح (SET وDEL وINCR) يُضاف كسطر إلى `data.aof` قبل الرد بـ +OK. استخدم `StreamWriter` واحدًا محميًا بـ `SemaphoreSlim(1)` حتى لا تختلط أسطر العملاء المختلفين.\n\nخزّن أوقات الانتهاء المطلقة في السجل مثل (`SET key value PXAT 1767225600000`) حتى لا تطول عند إعادة التشغيل.",
+    "hintsEn": [
+     "Call `FlushAsync` after each write; decide whether you also need `Flush(true)` to force the OS to disk.",
+     "Log INCR as the resulting SET to make replay simpler."
+    ],
+    "hintsAr": [
+     "استدعِ `FlushAsync` بعد كل كتابة، وقرر إن كنت تحتاج أيضًا `Flush(true)` لإجبار نظام التشغيل على الكتابة إلى القرص.",
+     "سجّل INCR على أنها SET بالقيمة الناتجة لتسهيل إعادة التشغيل."
+    ],
+    "key": "cs-kv-store-aof"
+   },
+   {
+    "titleEn": "Recover at start",
+    "titleAr": "التعافي عند البدء",
+    "bodyEn": "When the server starts, read `data.aof` line by line and execute each command against the store without logging it again. Skip expired keys.\n\nA crash can leave a half-written last line: if the last line fails to parse, ignore it and log a warning instead of refusing to start.",
+    "bodyAr": "عند بدء الخادم اقرأ `data.aof` سطرًا سطرًا ونفّذ كل أمر على المخزن دون تسجيله مرة أخرى، وتخطَّ المفاتيح المنتهية.\n\nالتعطل قد يترك آخر سطر مكتوبًا نصفه: إذا فشل تحليل آخر سطر فتجاهله وسجّل تحذيرًا بدل رفض البدء.",
+    "hintsEn": [
+     "Add a flag to Execute (`replaying: true`) that skips the log.",
+     "Test: start, write keys, kill the process from Task Manager, restart."
+    ],
+    "hintsAr": [
+     "أضف معاملًا إلى Execute (`replaying: true`) يتخطى السجل.",
+     "الاختبار: شغّل، واكتب مفاتيح، وأنهِ العملية من مدير المهام، ثم أعد التشغيل."
+    ],
+    "key": "cs-kv-store-replay"
+   },
+   {
+    "titleEn": "Compaction and active expiry",
+    "titleAr": "الضغط والانتهاء النشط",
+    "bodyEn": "The log grows forever. `COMPACT` writes the current state (one SET per live key) to `data.aof.tmp`, then replaces the old file with `File.Move(tmp, path, overwrite: true)` while writes are paused by the semaphore.\n\nAlso run a background task every second that deletes a sample of expired keys, so memory is freed even for keys nobody reads.",
+    "bodyAr": "السجل يكبر بلا نهاية. الأمر `COMPACT` يكتب الحالة الحالية (أمر SET لكل مفتاح حي) في `data.aof.tmp`، ثم يستبدل الملف القديم بـ `File.Move(tmp, path, overwrite: true)` بينما الكتابة متوقفة بواسطة الـ semaphore.\n\nوشغّل أيضًا مهمة خلفية كل ثانية تحذف عينة من المفاتيح المنتهية، لتتحرر الذاكرة حتى للمفاتيح التي لا يقرؤها أحد.",
+    "hintsEn": [
+     "`PeriodicTimer` is the modern way to run code every second.",
+     "Write the temp file fully and flush it before the move — the move is the \"commit\"."
+    ],
+    "hintsAr": [
+     "`PeriodicTimer` هي الطريقة الحديثة لتشغيل كود كل ثانية.",
+     "اكتب الملف المؤقت كاملًا وافرغه قبل النقل، فعملية النقل هي \"الاعتماد\"."
+    ],
+    "key": "cs-kv-store-compact"
+   },
+   {
+    "titleEn": "A console client and a load test",
+    "titleAr": "عميل طرفية واختبار حمل",
+    "bodyEn": "Create a second console project, `KvClient`, that connects with `TcpClient`, reads commands from the keyboard and prints the answers. Add a `--bench` mode that starts N clients, each running INCR on the same key M times, then checks the final value equals N × M.\n\nThis is the test that proves your INCR is really atomic.",
+    "bodyAr": "أنشئ مشروع طرفية ثانيًا `KvClient` يتصل بـ `TcpClient`، ويقرأ الأوامر من لوحة المفاتيح، ويطبع الردود. وأضف وضع `--bench` يشغّل N عميلًا، ينفذ كل منهم INCR على المفتاح نفسه M مرة، ثم يتحقق أن القيمة النهائية تساوي N × M.\n\nهذا هو الاختبار الذي يثبت أن INCR ذري فعلًا.",
+    "hintsEn": [
+     "`Task.WhenAll(Enumerable.Range(0, n).Select(_ => RunClientAsync()))` starts the clients.",
+     "Print the elapsed time and operations per second."
+    ],
+    "hintsAr": [
+     "`Task.WhenAll(Enumerable.Range(0, n).Select(_ => RunClientAsync()))` يشغّل العملاء.",
+     "اطبع الوقت المستغرق وعدد العمليات في الثانية."
+    ],
+    "key": "cs-kv-store-client"
+   },
+   {
+    "titleEn": "Document and publish",
+    "titleAr": "وثّق وانشر",
+    "bodyEn": "Write the README: the protocol, the commands, how persistence and recovery work, the benchmark results and the known limits (single node, no replication).\n\nAdd unit tests for the parser and the store, and an integration test that starts the server on a random port. Push to GitHub with a CI workflow.",
+    "bodyAr": "اكتب README: البروتوكول، والأوامر، وكيف يعمل الحفظ والتعافي، ونتائج قياس الأداء، والقيود المعروفة (عقدة واحدة، بلا نسخ متماثل).\n\nأضف اختبارات وحدة للمحلّل والمخزن، واختبار تكامل يشغّل الخادم على منفذ عشوائي. ثم ارفعه إلى GitHub مع مسار CI.",
+    "hintsEn": [
+     "Port 0 asks the OS for a free port; read it back from `listener.LocalEndpoint`.",
+     "A diagram of \"command → store → log\" in the README helps readers a lot."
+    ],
+    "hintsAr": [
+     "المنفذ 0 يطلب من نظام التشغيل منفذًا متاحًا، واقرأه بعدها من `listener.LocalEndpoint`.",
+     "مخطط \"أمر ← مخزن ← سجل\" في README يساعد القارئ كثيرًا."
+    ],
+    "key": "cs-kv-store-finish"
+   }
+  ]
+ }
+]

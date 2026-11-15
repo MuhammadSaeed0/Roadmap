@@ -11,6 +11,8 @@ const appRoutes: Routes = [
   { path: 'projects', loadComponent: () => import('./features/projects/projects.page'), data: { titleKey: 'nav.projects', helpId: 'projects', skin: 'gram' } },
   { path: 'projects/:id', loadComponent: () => import('./features/projects/project-detail.page'), data: { titleKey: 'nav.projects', helpId: 'project', skin: 'gram' } },
   // The challenges live in the Practice Lab now; old links open that tab.
+  { path: 'project-library', loadComponent: () => import('./features/guides/guides.page'), data: { titleKey: 'nav.guides', helpId: 'guides', skin: 'gram' } },
+  { path: 'project-library/:id', loadComponent: () => import('./features/guides/guide-detail.page'), data: { titleKey: 'nav.guides', helpId: 'guide', skin: 'gram' } },
   { path: 'challenges', redirectTo: () => inject(Router).createUrlTree(['/practice'], { queryParams: { tab: 'challenges' } }) },
   { path: 'practice', loadComponent: () => import('./features/practice/practice.page'), data: { titleKey: 'nav.practice', helpId: 'practice', skin: 'gram' } },
   { path: 'practice/:id', loadComponent: () => import('./features/practice/exercise-detail.page'), data: { titleKey: 'nav.practice', helpId: 'exercise', skin: 'gram' } },

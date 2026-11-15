@@ -1,0 +1,161 @@
+/* The topic page: content | side panel. The side panel holds "On this page", your progress, related topics and
+   market demand as cards that fold away. Columns follow the space the page gets, not the window, so the layout is
+   the same whether or not the app sidebar is open. Grid areas mirror on their own in Arabic. */
+:host { display: block; container-type: inline-size; }
+
+.topic-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-areas: 'top side' 'main side';
+  grid-template-rows: auto 1fr;
+  gap: 0 24px;
+  align-items: start;
+}
+/* Arabic lays grid columns out from the right, so the side panel is listed first to stay on the right there too. */
+:host-context([dir='rtl']) .topic-page { grid-template-columns: 320px minmax(0, 1fr); grid-template-areas: 'side top' 'side main'; }
+.topic-top { grid-area: top; min-width: 0; }
+.topic-main { grid-area: main; }
+.topic-side { grid-area: side; }
+
+.topic-header { margin-bottom: 16px; }
+.topic-header h1 { margin: 10px 0 4px; font-size: 1.7rem; line-height: 1.25; }
+.topic-top .callout { margin: 0 0 16px; }
+
+/* The side panel stays in view while the content scrolls, and scrolls on its own if it is taller than the window. */
+.topic-side {
+  position: sticky;
+  top: calc(var(--topbar-h) + 16px);
+  max-height: calc(100vh - var(--topbar-h) - 32px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  display: flex; flex-direction: column; gap: 12px; min-width: 0;
+}
+.topic-side > .card { margin: 0; flex: none; }
+
+/* Folding cards */
+.panel { padding: 0; }
+.panel-head { margin: 0; font-size: 1rem; }
+.panel-toggle {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 12px 18px;
+  border: 0; border-radius: var(--radius); background: none; color: var(--text); font: inherit; font-weight: 600;
+  text-align: start; cursor: pointer;
+}
+.panel-toggle:hover { background: var(--surface-2); }
+.panel-toggle[aria-expanded='true'] { border-end-start-radius: 0; border-end-end-radius: 0; }
+.panel-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.panel-toggle > .icon:first-child { color: var(--accent); }
+.panel-name { flex: 1; min-width: 0; }
+.panel-badge { font-size: 0.72rem; font-weight: 500; }
+.panel-toggle .chev { color: var(--muted); transition: transform 0.15s ease; }
+.panel-toggle[aria-expanded='false'] .chev { transform: rotate(-90deg); }
+[dir='rtl'] .panel-toggle[aria-expanded='false'] .chev { transform: rotate(90deg); }
+.panel-body { display: flex; flex-direction: column; gap: 14px; padding: 4px 18px 18px; }
+@media (prefers-reduced-motion: reduce) { .panel-toggle .chev { transition: none; } }
+
+/* On this page */
+.toc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.toc-list a {
+  display: grid; grid-template-columns: 16px minmax(0, 1fr); align-items: center; gap: 10px;
+  min-height: 34px; padding: 6px 10px; border-radius: var(--radius-sm);
+  color: var(--muted); font-size: 0.9rem; text-decoration: none;
+  border-inline-start: 2px solid transparent;
+}
+.toc-list a:hover { color: var(--text); background: var(--surface-2); }
+.toc-list a.active { color: var(--text); background: var(--surface-2); border-inline-start-color: var(--accent); font-weight: 500; }
+.toc-list a.active .icon { color: var(--accent); }
+.toc-list a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.toc-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding-top: 12px; border-top: 1px solid var(--border); }
+.step-link {
+  display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); text-decoration: none; color: var(--text);
+}
+.step-link:hover { border-color: var(--accent); }
+.step-link:only-child { grid-column: 1 / -1; }
+.step-dir { display: inline-flex; align-items: center; gap: 4px; font-size: 0.75rem; color: var(--muted); }
+.step-name { font-size: 0.84rem; line-height: 1.4; overflow-wrap: anywhere; }
+
+/* Content */
+.topic-main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.topic-main > .card, .topic-main > .content-section { margin: 0; }
+.content-section { scroll-margin-top: calc(var(--topbar-h) + 16px); }
+
+.lead { margin: 0 0 18px; font-size: 1.05rem; line-height: 1.65; max-width: 75ch; white-space: pre-line; }
+.sub-head { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 0.92rem; font-weight: 600; }
+.sub-head .icon { color: var(--muted); }
+
+.objectives { margin-bottom: 18px; padding: 14px 16px; border-radius: var(--radius-sm); background: var(--surface-2); }
+.check-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.check-list li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 10px; align-items: start; line-height: 1.55; }
+.check-list .icon { margin-top: 4px; color: var(--success); }
+
+.facts { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.fact { display: flex; flex-direction: column; gap: 4px; padding-top: 14px; border-top: 1px solid var(--border); }
+.fact dt { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.92rem; }
+.fact dt .icon { color: var(--accent); }
+.fact dd { margin: 0; line-height: 1.6; max-width: 75ch; white-space: pre-line; }
+
+.tasks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.task { padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); border-top: 3px solid var(--accent); }
+.task.challenge { border-top-color: var(--warning); }
+.task.challenge .sub-head .icon { color: var(--warning); }
+.task .prose { margin: 0; }
+
+/* Lists with an icon: the icon keeps its own column, so long titles wrap under the text, not under the icon. */
+.rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.rows li > a { overflow-wrap: anywhere; }
+.rows li { display: grid; grid-template-columns: 16px minmax(0, 1fr); column-gap: 10px; align-items: start; font-size: 0.9rem; line-height: 1.45; }
+.rows li > .icon { margin-top: 2px; color: var(--muted); }
+.rows li > .status-icon[data-status='Completed'] { color: var(--success); }
+.rows li > .status-icon[data-status='Skipped'] { color: var(--info); }
+.rows li > .status-icon[data-status='InProgress'], .rows li > .status-icon[data-status='Attempted'] { color: var(--accent); }
+.rows .meta { grid-column: 2; font-size: 0.8rem; color: var(--muted); }
+
+.pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.pager-link {
+  display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border-radius: var(--radius);
+  border: 1px solid var(--border); background: var(--surface); color: var(--text); text-decoration: none;
+}
+.pager-link:hover { border-color: var(--accent); }
+.pager-link.next { grid-column: 2; text-align: end; align-items: flex-end; }
+.pager-name { font-weight: 600; line-height: 1.35; }
+
+/* Your progress and related */
+.side-sub { margin: 4px 0 -6px; font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+
+.progress-card .field { margin: 0; }
+.btn-stack { display: flex; flex-direction: column; gap: 8px; }
+.btn-pair { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn-pair .btn { flex: 1 1 auto; justify-content: center; }
+
+.side-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+  padding-top: 12px; border-top: 1px solid var(--border); font-size: 0.86rem;
+}
+.side-label { display: inline-flex; align-items: center; gap: 8px; }
+.side-label .icon { color: var(--muted); }
+.side-actions { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+
+.sessions { margin-top: -6px; font-size: 0.86rem; }
+.sessions summary { cursor: pointer; color: var(--muted); }
+.sessions summary:hover { color: var(--text); }
+.sessions .session-list { margin-top: 8px; }
+.more-link { align-self: flex-start; margin-top: -6px; }
+
+/* Narrow: one column. Progress and "On this page" come right after the title, related after the content. */
+@container (max-width: 760px) {
+  .topic-page { display: flex; flex-direction: column; align-items: stretch; gap: 16px; }
+  .topic-page > *, .topic-side > * { min-width: 0; }
+  .topic-side { display: contents; }
+  .topic-top { order: 1; display: flex; flex-direction: column; gap: 12px; }
+  .topic-top .topic-header, .topic-top .callout { margin-bottom: 0; }
+  .progress-card { order: 2; }
+  .toc-panel { order: 3; }
+  .topic-main { order: 4; }
+  .related-card, .demand-card { order: 5; }
+  .topic-header h1 { font-size: 1.4rem; }
+  .tasks, .pager { grid-template-columns: minmax(0, 1fr); }
+  .pager-link.next { grid-column: auto; }
+}

@@ -1,0 +1,1214 @@
+[
+ {
+  "key": "fs-guestbook",
+  "skill": "FullStack",
+  "level": "Beginner",
+  "hours": 6,
+  "titleEn": "Guestbook: Angular talks to ASP.NET Core",
+  "titleAr": "سجل الزوار: Angular يتحدث مع ASP.NET Core",
+  "summaryEn": "Your first full-stack app: an Angular page where visitors leave messages, an ASP.NET Core minimal API that stores them, and everything wired together in development and in one deployment.",
+  "summaryAr": "أول تطبيق full-stack لك: صفحة Angular يترك فيها الزوار رسائل، وminimal API بـ ASP.NET Core يحفظها، وكل ذلك مربوط معًا أثناء التطوير وفي نشر واحد.",
+  "techStack": "Angular · ASP.NET Core minimal API · EF Core SQLite",
+  "goalsEn": [
+   "Connect a front end to a back end over HTTP",
+   "Configure CORS or a development proxy",
+   "Validate on both sides and show server errors",
+   "Serve the built Angular app from ASP.NET Core"
+  ],
+  "goalsAr": [
+   "ربط الواجهة الأمامية بالخلفية عبر HTTP",
+   "إعداد CORS أو proxy للتطوير",
+   "التحقق في الجهتين وعرض أخطاء الخادم",
+   "تقديم تطبيق Angular المبني من ASP.NET Core"
+  ],
+  "requirementsEn": [
+   "GET /api/messages returns the latest 50 messages",
+   "POST /api/messages saves name and text (1–500 characters)",
+   "The Angular page lists messages and has a form to add one",
+   "Server validation errors appear under the form fields",
+   "In production one server serves both the API and the Angular files"
+  ],
+  "requirementsAr": [
+   "GET /api/messages تعيد آخر 50 رسالة",
+   "POST /api/messages تحفظ الاسم والنص (من 1 إلى 500 حرف)",
+   "صفحة Angular تعرض الرسائل وفيها نموذج لإضافة رسالة",
+   "أخطاء التحقق من الخادم تظهر تحت حقول النموذج",
+   "في الإنتاج يقدّم خادم واحد الـ API وملفات Angular معًا"
+  ],
+  "acceptanceEn": [
+   "A new message appears at the top without reloading the page",
+   "Sending an empty message is blocked in the browser AND rejected by the API",
+   "After `dotnet publish`, opening the server URL shows the Angular app"
+  ],
+  "acceptanceAr": [
+   "الرسالة الجديدة تظهر في الأعلى دون إعادة تحميل الصفحة",
+   "إرسال رسالة فارغة يُمنع في المتصفح ويرفضه الـ API أيضًا",
+   "بعد `dotnet publish` يُظهر فتح رابط الخادم تطبيق Angular"
+  ],
+  "stretchEn": [
+   "Add simple spam protection (rate limit per IP)",
+   "Add likes on messages",
+   "Deploy it to a free host"
+  ],
+  "stretchAr": [
+   "أضف حماية بسيطة من الرسائل المزعجة (تحديد المعدل لكل IP)",
+   "أضف الإعجابات على الرسائل",
+   "انشره على استضافة مجانية"
+  ],
+  "steps": [
+   {
+    "titleEn": "One repository, two projects",
+    "titleAr": "مستودع واحد ومشروعان",
+    "bodyEn": "Create a folder `guestbook` with `api/` (`dotnet new web`) and `client/` (`ng new client --ssr=false`). Add a root README and a `.gitignore` that covers both (bin, obj, node_modules, dist).\n\nKeeping both in one repository makes it easy to change the API and the UI together.",
+    "bodyAr": "أنشئ مجلدًا `guestbook` فيه `api/` (`dotnet new web`) و`client/` (`ng new client --ssr=false`). وأضف README في الجذر و`.gitignore` يغطي الاثنين (bin وobj وnode_modules وdist).\n\nإبقاء الاثنين في مستودع واحد يسهّل تغيير الـ API والواجهة معًا.",
+    "hintsEn": [
+     "`dotnet new gitignore` plus the Angular .gitignore can be merged into the root file.",
+     "Write in the README how to run each part."
+    ],
+    "hintsAr": [
+     "تستطيع دمج `dotnet new gitignore` مع .gitignore الخاص بـ Angular في ملف الجذر.",
+     "اكتب في README طريقة تشغيل كل جزء."
+    ],
+    "key": "fs-guestbook-repo"
+   },
+   {
+    "titleEn": "The API with EF Core",
+    "titleAr": "الـ API مع EF Core",
+    "bodyEn": "Add EF Core SQLite, a `Message` entity (Id, Name, Text, CreatedAt) and a DbContext. Map `GET /api/messages` (newest first, take 50) and `POST /api/messages` that trims, validates and returns 201, or a ValidationProblem with field errors.\n\nCall `db.Database.EnsureCreated()` at start-up for this small project.",
+    "bodyAr": "أضف EF Core SQLite، وكيان `Message` (Id وName وText وCreatedAt)، وDbContext. وعرّف `GET /api/messages` (الأحدث أولًا، و50 فقط) و`POST /api/messages` التي تحذف المسافات وتتحقق وتعيد 201، أو ValidationProblem مع أخطاء الحقول.\n\nاستدعِ `db.Database.EnsureCreated()` عند البدء في هذا المشروع الصغير.",
+    "hintsEn": [
+     "Return a DTO, and set CreatedAt on the server, never from the client.",
+     "Test the API alone with a .http file before touching Angular."
+    ],
+    "hintsAr": [
+     "أعد DTO، واضبط CreatedAt على الخادم لا من العميل أبدًا.",
+     "اختبر الـ API وحده بملف .http قبل لمس Angular."
+    ],
+    "key": "fs-guestbook-api"
+   },
+   {
+    "titleEn": "Connect them in development",
+    "titleAr": "اربطهما أثناء التطوير",
+    "bodyEn": "The Angular dev server runs on 4200, the API on another port; the browser blocks cross-origin calls by default. Add `proxy.conf.json` in the client: `{ \"/api\": { \"target\": \"http://localhost:5000\", \"secure\": false } }` and reference it in angular.json's serve options.\n\nNow Angular calls `/api/messages` as if it were on the same server.",
+    "bodyAr": "خادم تطوير Angular يعمل على 4200، والـ API على منفذ آخر، والمتصفح يمنع الاستدعاءات بين المصادر المختلفة افتراضيًا. أضف `proxy.conf.json` في العميل: `{ \"/api\": { \"target\": \"http://localhost:5000\", \"secure\": false } }` واذكره في خيارات serve داخل angular.json.\n\nالآن يستدعي Angular المسار `/api/messages` كأنه على الخادم نفسه.",
+    "hintsEn": [
+     "The proxy avoids CORS entirely in development; in production both are on one origin.",
+     "Alternative: enable CORS on the API for http://localhost:4200 only."
+    ],
+    "hintsAr": [
+     "الـ proxy يتجنب CORS تمامًا أثناء التطوير، وفي الإنتاج يكون الاثنان على مصدر واحد.",
+     "البديل: فعّل CORS في الـ API لـ http://localhost:4200 فقط."
+    ],
+    "key": "fs-guestbook-proxy"
+   },
+   {
+    "titleEn": "An Angular service for the API",
+    "titleAr": "خدمة Angular للـ API",
+    "bodyEn": "Add `provideHttpClient()` and create `MessagesService` with `list(): Observable<Message[]>` and `add(input): Observable<Message>`. Define the `Message` interface to match the API's DTO exactly.\n\nKeep all URLs in this service; components never build URLs.",
+    "bodyAr": "أضف `provideHttpClient()` وأنشئ `MessagesService` فيه `list(): Observable<Message[]>` و`add(input): Observable<Message>`. وعرّف interface باسم `Message` يطابق DTO الخاص بالـ API تمامًا.\n\nاحتفظ بكل الروابط في هذه الخدمة، فالمكونات لا تبني روابط أبدًا.",
+    "hintsEn": [
+     "Dates arrive as ISO strings in JSON; type them as string and format with the date pipe.",
+     "Generating TypeScript types from the OpenAPI document is a good next step."
+    ],
+    "hintsAr": [
+     "التواريخ تصل كنصوص ISO في JSON، فحدّد نوعها كـ string ونسّقها بالـ date pipe.",
+     "توليد أنواع TypeScript من مستند OpenAPI خطوة جيدة لاحقًا."
+    ],
+    "key": "fs-guestbook-service"
+   },
+   {
+    "titleEn": "The page: list and form",
+    "titleAr": "الصفحة: القائمة والنموذج",
+    "bodyEn": "Show the messages with name, text and relative time. Add a reactive form with name and text (required, max lengths). On submit, call `add`, put the returned message at the top of the list and reset the form.\n\nDisable the button while sending.",
+    "bodyAr": "اعرض الرسائل بالاسم والنص والوقت النسبي. وأضف نموذجًا تفاعليًا فيه الاسم والنص (مطلوبان، مع حد أقصى للطول). وعند الإرسال استدعِ `add`، وضع الرسالة المُعادة في أعلى القائمة، وأعد ضبط النموذج.\n\nعطّل الزر أثناء الإرسال.",
+    "hintsEn": [
+     "Keep the list in a signal and use `update(list => [msg, ...list])`.",
+     "Show the text with interpolation, never innerHTML — visitors write it."
+    ],
+    "hintsAr": [
+     "احتفظ بالقائمة في signal واستخدم `update(list => [msg, ...list])`.",
+     "اعرض النص بالـ interpolation لا بـ innerHTML أبدًا، فالزوار هم من يكتبونه."
+    ],
+    "key": "fs-guestbook-page"
+   },
+   {
+    "titleEn": "Show server validation errors",
+    "titleAr": "اعرض أخطاء تحقق الخادم",
+    "bodyEn": "Temporarily remove the client validators and submit an empty form: the API returns 400 with `errors: { text: [...] }`. In the error handler, copy each message to the matching form control with `setErrors({ server: message })` and show it under the field.\n\nThen put the client validators back — both layers stay.",
+    "bodyAr": "احذف validators العميل مؤقتًا وأرسل نموذجًا فارغًا: يعيد الـ API الرمز 400 مع `errors: { text: [...] }`. وفي معالج الخطأ انسخ كل رسالة إلى الـ form control المطابق بـ `setErrors({ server: message })` واعرضها تحت الحقل.\n\nثم أعد validators العميل، فالطبقتان تبقيان.",
+    "hintsEn": [
+     "Field names in the error object are camelCase — match them to control names.",
+     "Show a general message for network errors (status 0)."
+    ],
+    "hintsAr": [
+     "أسماء الحقول في object الأخطاء بصيغة camelCase، فطابقها مع أسماء الـ controls.",
+     "اعرض رسالة عامة لأخطاء الشبكة (الحالة 0)."
+    ],
+    "key": "fs-guestbook-errors"
+   },
+   {
+    "titleEn": "Serve Angular from ASP.NET Core",
+    "titleAr": "قدّم Angular من ASP.NET Core",
+    "bodyEn": "Build the client with `ng build` and copy `dist/client/browser` into `api/wwwroot` (a small script or an MSBuild step). In the API add `app.UseDefaultFiles(); app.UseStaticFiles();` and `app.MapFallbackToFile(\"index.html\");` after the API routes.\n\nThe fallback lets Angular routes work on refresh.",
+    "bodyAr": "ابنِ العميل بـ `ng build` وانسخ `dist/client/browser` إلى `api/wwwroot` (بسكربت صغير أو خطوة MSBuild). وفي الـ API أضف `app.UseDefaultFiles(); app.UseStaticFiles();` و`app.MapFallbackToFile(\"index.html\");` بعد مسارات الـ API.\n\nالتوجيه الاحتياطي يجعل مسارات Angular تعمل عند التحديث.",
+    "hintsEn": [
+     "Make sure unknown /api/... routes still return 404 JSON, not index.html.",
+     "Run `dotnet publish -c Release` and start the published dll to test."
+    ],
+    "hintsAr": [
+     "تأكد أن مسارات /api/... غير المعروفة ما زالت تعيد 404 بصيغة JSON لا index.html.",
+     "شغّل `dotnet publish -c Release` ثم ابدأ الـ dll المنشور لتختبر."
+    ],
+    "key": "fs-guestbook-one-server"
+   },
+   {
+    "titleEn": "Document and publish",
+    "titleAr": "وثّق وانشر",
+    "bodyEn": "Write the README with a diagram (browser → Angular → /api → ASP.NET Core → SQLite), how to run in development (two terminals) and how to build for production. Push to GitHub.\n\nOptionally deploy to a host that runs .NET (Azure App Service free tier, MonsterASP, Render with Docker).",
+    "bodyAr": "اكتب README فيه مخطط (المتصفح ← Angular ← /api ← ASP.NET Core ← SQLite)، وطريقة التشغيل أثناء التطوير (طرفيتان)، وطريقة البناء للإنتاج. ثم ارفعه إلى GitHub.\n\nواختياريًا انشره على استضافة تشغّل .NET (مثل الطبقة المجانية في Azure App Service، أو MonsterASP، أو Render مع Docker).",
+    "hintsEn": [
+     "Add an npm script in the root that starts both with `concurrently`.",
+     "Never commit the SQLite file."
+    ],
+    "hintsAr": [
+     "أضف سكربت npm في الجذر يشغّل الاثنين بـ `concurrently`.",
+     "لا ترفع ملف SQLite أبدًا."
+    ],
+    "key": "fs-guestbook-finish"
+   }
+  ]
+ },
+ {
+  "key": "fs-event-rsvp",
+  "skill": "FullStack",
+  "level": "Beginner",
+  "hours": 7,
+  "titleEn": "Event RSVP app",
+  "titleAr": "تطبيق تأكيد حضور الفعاليات",
+  "summaryEn": "Publish events, let people RSVP with a seat limit, and give organisers a simple page to see who is coming and export the list.",
+  "summaryAr": "انشر فعاليات، واسمح للناس بتأكيد الحضور مع حد للمقاعد، وأعطِ المنظمين صفحة بسيطة لمعرفة من سيحضر وتصدير القائمة.",
+  "techStack": "Angular · ASP.NET Core Web API · EF Core · SQLite",
+  "goalsEn": [
+   "Design a small REST API with two related resources",
+   "Enforce a business rule on the server (seat limit)",
+   "Build list and detail pages with routing",
+   "Protect an organiser page with a simple secret"
+  ],
+  "goalsAr": [
+   "تصميم REST API صغير بموردين مترابطين",
+   "فرض قاعدة عمل على الخادم (حد المقاعد)",
+   "بناء صفحات القائمة والتفاصيل مع التوجيه",
+   "حماية صفحة المنظم بسر بسيط"
+  ],
+  "requirementsEn": [
+   "Events: title, description, date, location, capacity",
+   "Public pages: upcoming events, event details with seats left",
+   "RSVP form: name and email; one RSVP per email per event",
+   "Full events show \"Full\" and refuse new RSVPs",
+   "Organiser page: list of attendees, cancel an RSVP, download CSV",
+   "Organiser actions require an organiser key"
+  ],
+  "requirementsAr": [
+   "الفعاليات: العنوان والوصف والتاريخ والمكان والسعة",
+   "صفحات عامة: الفعاليات القادمة، وتفاصيل الفعالية مع المقاعد المتبقية",
+   "نموذج التأكيد: الاسم والبريد، وتأكيد واحد لكل بريد في كل فعالية",
+   "الفعاليات الممتلئة تعرض \"ممتلئة\" وترفض التأكيدات الجديدة",
+   "صفحة المنظم: قائمة الحضور، وإلغاء تأكيد، وتنزيل CSV",
+   "إجراءات المنظم تتطلب مفتاح منظم"
+  ],
+  "acceptanceEn": [
+   "The last seat cannot be taken twice even if two people submit together",
+   "The same email cannot RSVP twice to the same event",
+   "Past events are not listed as upcoming"
+  ],
+  "acceptanceAr": [
+   "آخر مقعد لا يمكن أن يؤخذ مرتين حتى لو أرسل شخصان في الوقت نفسه",
+   "البريد نفسه لا يستطيع التأكيد مرتين للفعالية نفسها",
+   "الفعاليات الماضية لا تظهر ضمن القادمة"
+  ],
+  "stretchEn": [
+   "Send a confirmation email (use a fake SMTP like smtp4dev)",
+   "Add a waiting list",
+   "Add an .ics calendar download"
+  ],
+  "stretchAr": [
+   "أرسل بريد تأكيد (استخدم SMTP وهميًا مثل smtp4dev)",
+   "أضف قائمة انتظار",
+   "أضف تنزيل ملف تقويم .ics"
+  ],
+  "steps": [
+   {
+    "titleEn": "Model and API design",
+    "titleAr": "النموذج وتصميم الـ API",
+    "bodyEn": "Entities: `Event` (Id, Title, Description, StartsAt, Location, Capacity) and `Rsvp` (Id, EventId, Name, Email, CreatedAt) with a unique index on (EventId, Email).\n\nEndpoints: `GET /api/events` (upcoming), `GET /api/events/{id}` (with seatsLeft), `POST /api/events/{id}/rsvps`, and organiser endpoints under `/api/admin/...`.",
+    "bodyAr": "الكيانات: `Event` (Id وTitle وDescription وStartsAt وLocation وCapacity) و`Rsvp` (Id وEventId وName وEmail وCreatedAt) مع فهرس فريد على (EventId, Email).\n\nالنقاط: `GET /api/events` (القادمة)، و`GET /api/events/{id}` (مع seatsLeft)، و`POST /api/events/{id}/rsvps`، ونقاط المنظم تحت `/api/admin/...`.",
+    "hintsEn": [
+     "seatsLeft = Capacity − count of RSVPs; compute it in the query.",
+     "Store emails lower-cased."
+    ],
+    "hintsAr": [
+     "seatsLeft = السعة − عدد التأكيدات، واحسبها داخل الاستعلام.",
+     "خزّن البريد بأحرف صغيرة."
+    ],
+    "key": "fs-event-rsvp-model"
+   },
+   {
+    "titleEn": "Build the API",
+    "titleAr": "ابنِ الـ API",
+    "bodyEn": "Create a Web API with EF Core SQLite. Seed 4 events (one in the past, one with capacity 2). Implement the public endpoints with DTOs and validation.\n\n`POST rsvps` returns 201, 400 (invalid), 404 (no event), 409 (full or already registered) with a clear message.",
+    "bodyAr": "أنشئ Web API مع EF Core SQLite، وأضف 4 فعاليات أولية (واحدة في الماضي، وواحدة بسعة 2). ونفّذ النقاط العامة مع DTOs والتحقق.\n\n`POST rsvps` تعيد 201، أو 400 (غير صحيح)، أو 404 (لا توجد فعالية)، أو 409 (ممتلئة أو مسجل مسبقًا) مع رسالة واضحة.",
+    "hintsEn": [
+     "Use `Results.Problem(statusCode: 409, detail: \"...\")` for conflicts.",
+     "Do not allow RSVPs to past events."
+    ],
+    "hintsAr": [
+     "استخدم `Results.Problem(statusCode: 409, detail: \"...\")` للتعارضات.",
+     "لا تسمح بالتأكيد في الفعاليات الماضية."
+    ],
+    "key": "fs-event-rsvp-api"
+   },
+   {
+    "titleEn": "Enforce the seat limit safely",
+    "titleAr": "افرض حد المقاعد بأمان",
+    "bodyEn": "Counting then inserting has a race: two requests count 1 of 2 and both insert. Use a transaction with a serializable isolation level (SQLite locks the database for writers), or add a `SeatsTaken` column updated with a conditional UPDATE: `UPDATE Events SET SeatsTaken = SeatsTaken + 1 WHERE Id = @id AND SeatsTaken < Capacity` and check one row changed.\n\nThe duplicate email case is guaranteed by the unique index; catch its exception and return 409.",
+    "bodyAr": "العدّ ثم الإدخال فيه سباق: طلبان يعدّان 1 من 2 ثم يُدخل الاثنان. استخدم transaction بمستوى عزل serializable (يقفل SQLite قاعدة البيانات للكتّاب)، أو أضف عمود `SeatsTaken` يُحدَّث بأمر UPDATE مشروط: `UPDATE Events SET SeatsTaken = SeatsTaken + 1 WHERE Id = @id AND SeatsTaken < Capacity`، وتحقق أن صفًا واحدًا تغيّر.\n\nحالة البريد المكرر يضمنها الفهرس الفريد، فالتقط استثناءه وأعد 409.",
+    "hintsEn": [
+     "EF Core `ExecuteUpdateAsync` runs the conditional UPDATE in one statement.",
+     "Test the race by firing 10 parallel requests at an event with capacity 2."
+    ],
+    "hintsAr": [
+     "`ExecuteUpdateAsync` في EF Core ينفذ الأمر UPDATE المشروط في أمر واحد.",
+     "اختبر السباق بإطلاق 10 طلبات متوازية على فعالية سعتها 2."
+    ],
+    "key": "fs-event-rsvp-seat-limit"
+   },
+   {
+    "titleEn": "Angular pages",
+    "titleAr": "صفحات Angular",
+    "bodyEn": "Create the client with routes `/` (event cards with date, location, seats left), `/events/:id` (details + RSVP form) and `/admin`. Use the dev proxy for `/api`.\n\nFormat dates with the `date` pipe and show \"Full\" or \"3 seats left\" with a computed label.",
+    "bodyAr": "أنشئ العميل بالمسارات `/` (بطاقات الفعاليات بالتاريخ والمكان والمقاعد المتبقية)، و`/events/:id` (التفاصيل مع نموذج التأكيد)، و`/admin`. واستخدم proxy التطوير لـ `/api`.\n\nنسّق التواريخ بالـ `date` pipe، واعرض \"ممتلئة\" أو \"3 مقاعد متبقية\" بتسمية محسوبة.",
+    "hintsEn": [
+     "Reload the event after a successful RSVP so seats left is correct.",
+     "Show the 409 message from the server as is — it explains what happened."
+    ],
+    "hintsAr": [
+     "أعد تحميل الفعالية بعد نجاح التأكيد ليكون عدد المقاعد المتبقية صحيحًا.",
+     "اعرض رسالة 409 من الخادم كما هي، فهي تشرح ما حدث."
+    ],
+    "key": "fs-event-rsvp-client"
+   },
+   {
+    "titleEn": "The RSVP form",
+    "titleAr": "نموذج التأكيد",
+    "bodyEn": "Reactive form with name (required) and email (required, email validator). On success, replace the form with \"You are on the list!\". On 409, show the server message under the form.\n\nHide the form when the event is full or in the past.",
+    "bodyAr": "نموذج تفاعلي فيه الاسم (مطلوب) والبريد (مطلوب، مع validator للبريد). وعند النجاح استبدل النموذج بـ \"أنت ضمن القائمة!\". وعند 409 اعرض رسالة الخادم تحت النموذج.\n\nأخفِ النموذج عندما تكون الفعالية ممتلئة أو في الماضي.",
+    "hintsEn": [
+     "Remember the RSVP in localStorage to show \"You already RSVP'd\" on return visits.",
+     "Disable the submit button while sending."
+    ],
+    "hintsAr": [
+     "تذكّر التأكيد في localStorage لتعرض \"لقد أكّدت حضورك مسبقًا\" عند العودة.",
+     "عطّل زر الإرسال أثناء الإرسال."
+    ],
+    "key": "fs-event-rsvp-rsvp-form"
+   },
+   {
+    "titleEn": "Organiser page with a key",
+    "titleAr": "صفحة المنظم بمفتاح",
+    "bodyEn": "Protect `/api/admin/*` with a simple filter that checks a header `X-Organizer-Key` against a value from configuration (user secrets in development). The admin page asks for the key once, keeps it in sessionStorage, and sends it with an interceptor.\n\nList attendees per event, allow cancelling (which frees a seat), and download a CSV.",
+    "bodyAr": "احمِ `/api/admin/*` بمرشح بسيط يقارن ترويسة `X-Organizer-Key` بقيمة من الإعدادات (user secrets أثناء التطوير). وصفحة المنظم تطلب المفتاح مرة، وتحفظه في sessionStorage، وترسله عبر interceptor.\n\nاعرض الحضور لكل فعالية، واسمح بالإلغاء (الذي يحرر مقعدًا)، وتنزيل CSV.",
+    "hintsEn": [
+     "This is not real authentication — say so in the README; the next projects add proper login.",
+     "Return the CSV from the API with `Results.File(bytes, \"text/csv\", \"attendees.csv\")`."
+    ],
+    "hintsAr": [
+     "هذه ليست مصادقة حقيقية، فاذكر ذلك في README، والمشاريع التالية تضيف دخولًا صحيحًا.",
+     "أعد ملف CSV من الـ API بـ `Results.File(bytes, \"text/csv\", \"attendees.csv\")`."
+    ],
+    "key": "fs-event-rsvp-admin"
+   },
+   {
+    "titleEn": "Test the rules",
+    "titleAr": "اختبر القواعد",
+    "bodyEn": "Add API integration tests with WebApplicationFactory: RSVP succeeds, duplicate email → 409, full event → 409, 10 parallel RSVPs on capacity 2 → exactly 2 succeed, admin endpoint without key → 401.\n\nThese tests protect the rule that matters most: never overbook.",
+    "bodyAr": "أضف اختبارات تكامل للـ API بـ WebApplicationFactory: التأكيد ينجح، والبريد المكرر ← 409، والفعالية الممتلئة ← 409، و10 تأكيدات متوازية على سعة 2 ← ينجح اثنان بالضبط، ونقطة المنظم بلا مفتاح ← 401.\n\nهذه الاختبارات تحمي القاعدة الأهم: لا حجز يتجاوز السعة أبدًا.",
+    "hintsEn": [
+     "`Task.WhenAll` of 10 PostAsJsonAsync calls simulates the race.",
+     "Use a fresh SQLite file per test run."
+    ],
+    "hintsAr": [
+     "`Task.WhenAll` لعشرة استدعاءات PostAsJsonAsync يحاكي السباق.",
+     "استخدم ملف SQLite جديدًا لكل تشغيل اختبارات."
+    ],
+    "key": "fs-event-rsvp-tests"
+   },
+   {
+    "titleEn": "Ship it",
+    "titleAr": "أطلقه",
+    "bodyEn": "Serve the Angular build from the API (as in the guestbook project), publish, and document: entities, endpoints, the seat-limit design and how to set the organiser key.\n\nShare the link with friends and run a real small event with it.",
+    "bodyAr": "قدّم بناء Angular من الـ API (كما في مشروع سجل الزوار)، وانشره، ووثّق: الكيانات، والنقاط، وتصميم حد المقاعد، وطريقة ضبط مفتاح المنظم.\n\nشارك الرابط مع أصدقائك وأدر به فعالية صغيرة حقيقية.",
+    "hintsEn": [
+     "Real users find bugs tests do not.",
+     "Store the organiser key as an environment variable on the host."
+    ],
+    "hintsAr": [
+     "المستخدمون الحقيقيون يجدون أخطاء لا تجدها الاختبارات.",
+     "خزّن مفتاح المنظم كمتغير بيئة على الاستضافة."
+    ],
+    "key": "fs-event-rsvp-finish"
+   }
+  ]
+ },
+ {
+  "key": "fs-blog-platform",
+  "skill": "FullStack",
+  "level": "Intermediate",
+  "hours": 16,
+  "titleEn": "Multi-author blog platform",
+  "titleAr": "منصة تدوين متعددة الكتّاب",
+  "summaryEn": "A complete blog platform: authors sign up and write posts with a Markdown editor and drafts, readers comment, admins moderate — Angular front end, ASP.NET Core API, SQL Server and JWT auth.",
+  "summaryAr": "منصة تدوين متكاملة: يسجّل الكتّاب ويكتبون مقالات بمحرر Markdown ومسودات، ويعلّق القراء، ويشرف المشرفون، بواجهة Angular وAPI بـ ASP.NET Core وSQL Server ومصادقة JWT.",
+  "techStack": "Angular · ASP.NET Core · EF Core · SQL Server · JWT · Markdown",
+  "goalsEn": [
+   "Design an API around resources and roles",
+   "Implement auth end to end: register, login, token refresh, guards",
+   "Handle authorization rules like \"only the author can edit\"",
+   "Render user content safely (Markdown → sanitized HTML)"
+  ],
+  "goalsAr": [
+   "تصميم API حول الموارد والأدوار",
+   "تنفيذ المصادقة من البداية إلى النهاية: التسجيل، والدخول، وتجديد الرمز، والحراس",
+   "التعامل مع قواعد التفويض مثل \"الكاتب وحده يعدّل\"",
+   "عرض محتوى المستخدمين بأمان (Markdown ← HTML معقّم)"
+  ],
+  "requirementsEn": [
+   "Register/login; roles Reader, Author, Admin",
+   "Authors create, edit, publish and unpublish posts with a Markdown editor and live preview",
+   "Posts have a slug, tags and a cover image URL; drafts are private",
+   "Public list with pagination, tag filter and search; post page by slug",
+   "Comments by signed-in users; admins can hide comments",
+   "Profile page per author"
+  ],
+  "requirementsAr": [
+   "التسجيل والدخول، والأدوار Reader وAuthor وAdmin",
+   "الكتّاب ينشئون المقالات ويعدّلونها وينشرونها ويلغون نشرها بمحرر Markdown مع معاينة حية",
+   "للمقالات slug ووسوم ورابط صورة غلاف، والمسودات خاصة",
+   "قائمة عامة مع التقسيم إلى صفحات ومرشح الوسوم والبحث، وصفحة المقال بالـ slug",
+   "التعليقات من المستخدمين المسجلين، والمشرفون يستطيعون إخفاء التعليقات",
+   "صفحة ملف شخصي لكل كاتب"
+  ],
+  "acceptanceEn": [
+   "An author cannot edit another author's post (API returns 403, UI hides the button)",
+   "A draft URL returns 404 for everyone except its author",
+   "A post containing <script> renders as text, not as a script",
+   "An expired access token is refreshed silently and the request retried once"
+  ],
+  "acceptanceAr": [
+   "الكاتب لا يستطيع تعديل مقال كاتب آخر (يعيد الـ API الرمز 403، والواجهة تخفي الزر)",
+   "رابط المسودة يعيد 404 للجميع ما عدا كاتبها",
+   "المقال الذي يحتوي <script> يُعرض كنص لا كسكربت",
+   "رمز الوصول المنتهي يُجدَّد بصمت ويُعاد الطلب مرة واحدة"
+  ],
+  "stretchEn": [
+   "Image upload instead of URLs",
+   "Likes and a \"popular\" sort",
+   "RSS feed per author"
+  ],
+  "stretchAr": [
+   "رفع الصور بدل الروابط",
+   "الإعجابات وترتيب حسب \"الأكثر شيوعًا\"",
+   "خلاصة RSS لكل كاتب"
+  ],
+  "steps": [
+   {
+    "titleEn": "Design the API and the screens",
+    "titleAr": "صمّم الـ API والشاشات",
+    "bodyEn": "List the screens (home, post, editor, my posts, profile, login, admin comments) and the endpoints each needs. Write the authorization table: who can do what (anonymous, reader, author of the post, admin).\n\nThis table becomes your tests later.",
+    "bodyAr": "اكتب الشاشات (الرئيسية، والمقال، والمحرر، ومقالاتي، والملف الشخصي، والدخول، وتعليقات المشرف) والنقاط التي تحتاجها كل شاشة. واكتب جدول التفويض: من يستطيع فعل ماذا (المجهول، والقارئ، وكاتب المقال، والمشرف).\n\nهذا الجدول سيصبح اختباراتك لاحقًا.",
+    "hintsEn": [
+     "Resource-based authorization (\"author of this post\") cannot be expressed with roles alone.",
+     "Sketch the editor screen: Markdown left, preview right."
+    ],
+    "hintsAr": [
+     "التفويض القائم على المورد (\"كاتب هذا المقال\") لا يمكن التعبير عنه بالأدوار وحدها.",
+     "ارسم شاشة المحرر: Markdown على جهة والمعاينة على الأخرى."
+    ],
+    "key": "fs-blog-platform-design"
+   },
+   {
+    "titleEn": "Backend: Identity and JWT",
+    "titleAr": "الخلفية: Identity وJWT",
+    "bodyEn": "Reuse the JWT setup from the \"Task API with JWT authentication\" project: Identity users, roles, access tokens of 15 minutes and rotating refresh tokens. New users are Readers; an admin can promote them to Author.\n\nReturn the user's id, name and roles from `GET /api/me`.",
+    "bodyAr": "أعد استخدام إعداد JWT من مشروع \"واجهة مهام مع مصادقة JWT\": مستخدمو Identity، والأدوار، ورموز وصول لمدة 15 دقيقة، ورموز تجديد تتبدل. والمستخدمون الجدد Readers، والمشرف يستطيع ترقيتهم إلى Author.\n\nأعد رقم المستخدم واسمه وأدواره من `GET /api/me`.",
+    "hintsEn": [
+     "Keep auth code in its own folder/feature so the blog code stays readable.",
+     "Seed one admin from configuration."
+    ],
+    "hintsAr": [
+     "ضع كود المصادقة في مجلد/ميزة خاصة لتبقى شيفرة المدونة مقروءة.",
+     "أضف مشرفًا أوليًا من الإعدادات."
+    ],
+    "key": "fs-blog-platform-backend-auth"
+   },
+   {
+    "titleEn": "Posts API with resource authorization",
+    "titleAr": "API المقالات مع التفويض على المورد",
+    "bodyEn": "Entities: Post (AuthorId, Title, Slug unique, Markdown, CoverUrl, PublishedAt null for drafts, UpdatedAt), Tag (many-to-many), Comment (PostId, UserId, Text, IsHidden).\n\nWrite an `IAuthorizationHandler` for a `PostOwner` requirement and call `authorizationService.AuthorizeAsync(User, post, \"PostOwner\")` in update and delete. Drafts: return 404 unless the caller is the author.",
+    "bodyAr": "الكيانات: Post (AuthorId وTitle وSlug فريد وMarkdown وCoverUrl وPublishedAt بقيمة null للمسودات وUpdatedAt)، وTag (متعدد إلى متعدد)، وComment (PostId وUserId وText وIsHidden).\n\nاكتب `IAuthorizationHandler` لمتطلب `PostOwner` واستدعِ `authorizationService.AuthorizeAsync(User, post, \"PostOwner\")` في التعديل والحذف. والمسودات: أعد 404 إلا إذا كان المستدعي هو الكاتب.",
+    "hintsEn": [
+     "Generate slugs from titles and add -2, -3 on collisions.",
+     "Admins pass the PostOwner requirement too (handle it in the handler)."
+    ],
+    "hintsAr": [
+     "ولّد الـ slugs من العناوين وأضف -2 و-3 عند التكرار.",
+     "المشرفون يجتازون متطلب PostOwner أيضًا (عالج ذلك داخل الـ handler)."
+    ],
+    "key": "fs-blog-platform-posts-api"
+   },
+   {
+    "titleEn": "Markdown rendering, safely",
+    "titleAr": "عرض Markdown بأمان",
+    "bodyEn": "Store the Markdown. Render it to HTML on the server with Markdig, then sanitize with `HtmlSanitizer` (allow headings, lists, code, links, images; strip scripts, event handlers and javascript: links). Return the sanitized HTML in the post DTO.\n\nRendering on the server once means every client gets the same, safe HTML.",
+    "bodyAr": "خزّن الـ Markdown، وحوّله إلى HTML على الخادم بـ Markdig، ثم عقّمه بـ `HtmlSanitizer` (اسمح بالعناوين والقوائم والكود والروابط والصور، واحذف السكربتات ومعالجات الأحداث وروابط javascript:). وأعد الـ HTML المعقّم في DTO المقال.\n\nالعرض على الخادم مرة واحدة يعني أن كل عميل يحصل على الـ HTML الآمن نفسه.",
+    "hintsEn": [
+     "Write a test with `<img src=x onerror=alert(1)>` and assert the handler is removed.",
+     "Cache the rendered HTML in a column and refresh it on save."
+    ],
+    "hintsAr": [
+     "اكتب اختبارًا يحتوي `<img src=x onerror=alert(1)>` وتأكد أن المعالج يُحذف.",
+     "خزّن الـ HTML المعروض في عمود وحدّثه عند الحفظ."
+    ],
+    "key": "fs-blog-platform-markdown"
+   },
+   {
+    "titleEn": "Listing, tags and search",
+    "titleAr": "القوائم والوسوم والبحث",
+    "bodyEn": "`GET /api/posts?page&pageSize&tag&q` returns published posts as cards (title, slug, excerpt, author name, tags, published date, comment count) with the total. `GET /api/posts/{slug}` returns the full post. `GET /api/authors/{id}` returns the profile and their posts.\n\nUse projections so the list never loads full Markdown bodies.",
+    "bodyAr": "`GET /api/posts?page&pageSize&tag&q` تعيد المقالات المنشورة كبطاقات (العنوان والـ slug والمقتطف واسم الكاتب والوسوم وتاريخ النشر وعدد التعليقات) مع العدد الكلي. و`GET /api/posts/{slug}` تعيد المقال كاملًا. و`GET /api/authors/{id}` تعيد الملف الشخصي ومقالاته.\n\nاستخدم projections حتى لا تحمّل القائمة محتوى الـ Markdown كاملًا أبدًا.",
+    "hintsEn": [
+     "Store a plain-text excerpt (first 200 characters without Markdown) when saving.",
+     "Index Posts on (PublishedAt) and Slug."
+    ],
+    "hintsAr": [
+     "خزّن مقتطفًا نصيًا (أول 200 حرف بلا Markdown) عند الحفظ.",
+     "ضع فهرسًا على Posts بـ (PublishedAt) وعلى Slug."
+    ],
+    "key": "fs-blog-platform-list-api"
+   },
+   {
+    "titleEn": "Angular: auth, interceptor, guards",
+    "titleAr": "Angular: المصادقة والـ interceptor والحراس",
+    "bodyEn": "Create `AuthService` with the current user signal, `login`, `logout` and `refresh`. The interceptor adds the access token; on 401 it calls refresh once, retries the original request, and logs out if refresh fails. Guards: `authGuard`, `roleGuard('Author')`.\n\nQueue concurrent requests while a refresh is running so you refresh only once.",
+    "bodyAr": "أنشئ `AuthService` فيه signal للمستخدم الحالي، و`login` و`logout` و`refresh`. والـ interceptor يضيف رمز الوصول، وعند 401 يستدعي التجديد مرة واحدة ويعيد الطلب الأصلي، ويُخرج المستخدم إن فشل التجديد. والحراس: `authGuard` و`roleGuard('Author')`.\n\nضع الطلبات المتزامنة في طابور أثناء التجديد لتجدّد مرة واحدة فقط.",
+    "hintsEn": [
+     "Share one refresh observable with `shareReplay(1)` until it completes.",
+     "Never retry the refresh request itself on 401 — that loops forever."
+    ],
+    "hintsAr": [
+     "شارك observable تجديد واحدًا بـ `shareReplay(1)` حتى يكتمل.",
+     "لا تعِد محاولة طلب التجديد نفسه عند 401، فهذا يدور بلا نهاية."
+    ],
+    "key": "fs-blog-platform-client-auth"
+   },
+   {
+    "titleEn": "The editor",
+    "titleAr": "المحرر",
+    "bodyEn": "Build the editor page: title, tags (chips input), cover URL, and a textarea for Markdown next to a live preview. For the preview, call a `POST /api/markdown/preview` endpoint (debounced 400 ms) so the preview uses the same sanitizer as the real post.\n\nButtons: Save draft, Publish/Unpublish. Warn about unsaved changes on leave.",
+    "bodyAr": "ابنِ صفحة المحرر: العنوان، والوسوم (حقل chips)، ورابط الغلاف، وtextarea للـ Markdown بجانب معاينة حية. وللمعاينة استدعِ نقطة `POST /api/markdown/preview` (مع تأخير 400 مللي ثانية) لتستخدم المعاينة المعقّم نفسه الذي يستخدمه المقال الحقيقي.\n\nالأزرار: حفظ كمسودة، ونشر/إلغاء النشر. ونبّه إلى التغييرات غير المحفوظة عند المغادرة.",
+    "hintsEn": [
+     "Autosave the draft every 30 seconds when there are changes.",
+     "Bind the preview HTML with [innerHTML]; Angular sanitizes again, which is fine."
+    ],
+    "hintsAr": [
+     "احفظ المسودة تلقائيًا كل 30 ثانية عند وجود تغييرات.",
+     "اربط HTML المعاينة بـ [innerHTML]، وAngular يعقّمه مرة أخرى وهذا جيد."
+    ],
+    "key": "fs-blog-platform-editor"
+   },
+   {
+    "titleEn": "Reader pages and comments",
+    "titleAr": "صفحات القراء والتعليقات",
+    "bodyEn": "Home: post cards with pagination and tag chips (filters in the URL). Post page: cover, title, author link, date, HTML body, then comments with a form for signed-in users. Admin: a page listing recent comments with a Hide button.\n\nSet the page title and meta description per post.",
+    "bodyAr": "الرئيسية: بطاقات المقالات مع التقسيم إلى صفحات ووسوم كمرشحات (المرشحات في الرابط). وصفحة المقال: الغلاف، والعنوان، ورابط الكاتب، والتاريخ، ومحتوى HTML، ثم التعليقات مع نموذج للمستخدمين المسجلين. والمشرف: صفحة تعرض أحدث التعليقات مع زر إخفاء.\n\nاضبط عنوان الصفحة ووصف meta لكل مقال.",
+    "hintsEn": [
+     "Use the `Meta` and `Title` services.",
+     "Hidden comments still count for admins but not in the public count."
+    ],
+    "hintsAr": [
+     "استخدم خدمتي `Meta` و`Title`.",
+     "التعليقات المخفية تُحسب للمشرفين لكن ليس في العدد العام."
+    ],
+    "key": "fs-blog-platform-reader"
+   },
+   {
+    "titleEn": "Test the authorization table",
+    "titleAr": "اختبر جدول التفويض",
+    "bodyEn": "Turn the authorization table from step 1 into API integration tests: every role × every action, including drafts and hidden comments. Add a frontend test for the refresh interceptor (two parallel 401s → one refresh). Add one Playwright test: register, get promoted, write and publish a post, comment on it.\n\nAuthorization bugs are the most dangerous bugs in this project.",
+    "bodyAr": "حوّل جدول التفويض من الخطوة 1 إلى اختبارات تكامل للـ API: كل دور × كل إجراء، بما في ذلك المسودات والتعليقات المخفية. وأضف اختبارًا للواجهة على interceptor التجديد (طلبان متوازيان بـ 401 ← تجديد واحد). وأضف اختبار Playwright واحدًا: التسجيل، ثم الترقية، ثم كتابة مقال ونشره، ثم التعليق عليه.\n\nأخطاء التفويض هي أخطر الأخطاء في هذا المشروع.",
+    "hintsEn": [
+     "xUnit `[Theory]` with `[InlineData]` rows maps neatly to the table.",
+     "Create helper clients per role in the test fixture."
+    ],
+    "hintsAr": [
+     "`[Theory]` في xUnit مع صفوف `[InlineData]` يطابق الجدول بشكل أنيق.",
+     "أنشئ عملاء مساعدين لكل دور في fixture الاختبارات."
+    ],
+    "key": "fs-blog-platform-tests"
+   },
+   {
+    "titleEn": "Deploy and present",
+    "titleAr": "انشر واعرض",
+    "bodyEn": "Deploy the API with the Angular build on one host and SQL Server (Azure SQL free tier or the host's database). Configure secrets as environment variables. Seed a few real posts.\n\nWrite the README: features, architecture diagram, the authorization table, how to run locally, and what you would add next.",
+    "bodyAr": "انشر الـ API مع بناء Angular على استضافة واحدة مع SQL Server (الطبقة المجانية في Azure SQL أو قاعدة بيانات الاستضافة). واضبط الأسرار كمتغيرات بيئة، وأضف بعض المقالات الحقيقية.\n\nاكتب README: الميزات، ومخطط البنية، وجدول التفويض، وطريقة التشغيل المحلي، وما ستضيفه لاحقًا.",
+    "hintsEn": [
+     "Write your first post about how you built it.",
+     "Turn on HTTPS only and HSTS in production."
+    ],
+    "hintsAr": [
+     "اكتب أول مقال عن طريقة بنائك له.",
+     "فعّل HTTPS فقط وHSTS في الإنتاج."
+    ],
+    "key": "fs-blog-platform-finish"
+   }
+  ]
+ },
+ {
+  "key": "fs-file-share",
+  "skill": "FullStack",
+  "level": "Intermediate",
+  "hours": 12,
+  "titleEn": "File sharing with upload progress",
+  "titleAr": "مشاركة الملفات مع تقدم الرفع",
+  "summaryEn": "Upload files with a progress bar, store them safely, and share them through expiring links with download counts — covering the hard parts of files in web apps.",
+  "summaryAr": "ارفع الملفات مع شريط تقدم، وخزّنها بأمان، وشاركها عبر روابط تنتهي صلاحيتها مع عدّ مرات التنزيل، لتغطي الأجزاء الصعبة في التعامل مع الملفات في تطبيقات الويب.",
+  "techStack": "Angular · ASP.NET Core · streaming uploads · EF Core · file storage",
+  "goalsEn": [
+   "Upload large files with progress and cancellation",
+   "Validate files on the server (size, type by content, name)",
+   "Stream downloads with the right headers and range support",
+   "Create unguessable, expiring share links"
+  ],
+  "goalsAr": [
+   "رفع الملفات الكبيرة مع التقدم والإلغاء",
+   "التحقق من الملفات على الخادم (الحجم، والنوع حسب المحتوى، والاسم)",
+   "تنزيل الملفات كتدفق بالترويسات الصحيحة ودعم المدى (range)",
+   "إنشاء روابط مشاركة لا يمكن تخمينها وتنتهي صلاحيتها"
+  ],
+  "requirementsEn": [
+   "Signed-in users upload files up to 100 MB with drag and drop and a progress bar",
+   "Allowed types: images, PDF, ZIP, text — checked by file signature, not extension",
+   "Files are stored outside wwwroot with generated names",
+   "My files page: list, rename, delete",
+   "Create a share link that expires after 1, 7 or 30 days, optionally with a download limit",
+   "Public download page for a share link with the file name and size"
+  ],
+  "requirementsAr": [
+   "المستخدمون المسجلون يرفعون ملفات حتى 100 ميجابايت بالسحب والإفلات مع شريط تقدم",
+   "الأنواع المسموحة: الصور وPDF وZIP والنصوص، ويُتحقق منها بتوقيع الملف لا بالامتداد",
+   "تُخزن الملفات خارج wwwroot بأسماء مولّدة",
+   "صفحة ملفاتي: العرض وإعادة التسمية والحذف",
+   "إنشاء رابط مشاركة ينتهي بعد 1 أو 7 أو 30 يومًا، مع حد اختياري لعدد التنزيلات",
+   "صفحة تنزيل عامة لرابط المشاركة فيها اسم الملف وحجمه"
+  ],
+  "acceptanceEn": [
+   "Uploading a 90 MB file shows real progress and can be cancelled",
+   "An .exe renamed to .png is rejected",
+   "An expired link or a link over its limit returns a clear \"expired\" page",
+   "Users cannot download other users' files through the private API"
+  ],
+  "acceptanceAr": [
+   "رفع ملف 90 ميجابايت يُظهر تقدمًا حقيقيًا ويمكن إلغاؤه",
+   "ملف .exe أُعيدت تسميته إلى .png يُرفض",
+   "الرابط المنتهي أو الذي تجاوز حده يعيد صفحة \"منتهي\" واضحة",
+   "المستخدمون لا يستطيعون تنزيل ملفات غيرهم عبر الـ API الخاص"
+  ],
+  "stretchEn": [
+   "Store files in Azure Blob Storage or S3 with pre-signed URLs",
+   "Generate image thumbnails",
+   "Resumable uploads in chunks"
+  ],
+  "stretchAr": [
+   "خزّن الملفات في Azure Blob Storage أو S3 مع روابط موقّعة مسبقًا",
+   "ولّد صورًا مصغرة",
+   "رفع قابل للاستئناف على أجزاء"
+  ],
+  "steps": [
+   {
+    "titleEn": "Model and storage abstraction",
+    "titleAr": "النموذج وتجريد التخزين",
+    "bodyEn": "Entities: `StoredFile` (Id Guid, OwnerId, OriginalName, ContentType, Size, StorageKey, UploadedAt) and `ShareLink` (Id, FileId, Token, ExpiresAt, MaxDownloads null, Downloads). Define `IFileStorage { SaveAsync(stream), OpenReadAsync(key), DeleteAsync(key) }` with a `LocalFileStorage` that writes to a folder from configuration, outside wwwroot.\n\nThe abstraction lets you switch to cloud storage later.",
+    "bodyAr": "الكيانات: `StoredFile` (Id من نوع Guid وOwnerId وOriginalName وContentType وSize وStorageKey وUploadedAt) و`ShareLink` (Id وFileId وToken وExpiresAt وMaxDownloads بقيمة null وDownloads). وعرّف `IFileStorage { SaveAsync(stream), OpenReadAsync(key), DeleteAsync(key) }` مع `LocalFileStorage` يكتب في مجلد من الإعدادات خارج wwwroot.\n\nهذا التجريد يسمح لك بالانتقال إلى التخزين السحابي لاحقًا.",
+    "hintsEn": [
+     "Use the Guid as the stored file name — never the user's file name.",
+     "Split folders by the first two characters of the key to avoid huge directories."
+    ],
+    "hintsAr": [
+     "استخدم الـ Guid كاسم للملف المخزن، ولا تستخدم اسم ملف المستخدم أبدًا.",
+     "قسّم المجلدات حسب أول حرفين من المفتاح لتتجنب المجلدات الضخمة."
+    ],
+    "key": "fs-file-share-model"
+   },
+   {
+    "titleEn": "A streaming upload endpoint",
+    "titleAr": "نقطة رفع بالتدفق",
+    "bodyEn": "Add `POST /api/files` that accepts `IFormFile` with `[RequestSizeLimit(100_000_000)]` and raises Kestrel's `MaxRequestBodySize` and `FormOptions.MultipartBodyLengthLimit`. Copy the stream to storage without loading the whole file into memory, then save the entity.\n\nReturn 413 for too large and 400 for a missing file.",
+    "bodyAr": "أضف `POST /api/files` تستقبل `IFormFile` مع `[RequestSizeLimit(100_000_000)]`، وارفع `MaxRequestBodySize` في Kestrel و`FormOptions.MultipartBodyLengthLimit`. وانسخ التدفق إلى التخزين دون تحميل الملف كاملًا في الذاكرة، ثم احفظ الكيان.\n\nأعد 413 للملف الأكبر من المسموح، و400 عند غياب الملف.",
+    "hintsEn": [
+     "`await file.CopyToAsync(target, ct)` streams in chunks.",
+     "For very large files, `MultipartReader` avoids buffering to disk first."
+    ],
+    "hintsAr": [
+     "`await file.CopyToAsync(target, ct)` ينسخ على أجزاء.",
+     "للملفات الكبيرة جدًا `MultipartReader` يتجنب التخزين المؤقت على القرص أولًا."
+    ],
+    "key": "fs-file-share-upload-api"
+   },
+   {
+    "titleEn": "Validate the content",
+    "titleAr": "تحقق من المحتوى",
+    "bodyEn": "Read the first bytes of the stream and compare them with known signatures: PNG `89 50 4E 47`, JPEG `FF D8 FF`, PDF `25 50 44 46`, ZIP `50 4B 03 04`. For text, check it is valid UTF-8 without NUL bytes. Reject everything else, whatever the extension says.\n\nSanitize the original name (remove path characters, limit length) before storing it.",
+    "bodyAr": "اقرأ أول البايتات من التدفق وقارنها بتوقيعات معروفة: PNG هو `89 50 4E 47`، وJPEG هو `FF D8 FF`، وPDF هو `25 50 44 46`، وZIP هو `50 4B 03 04`. وللنصوص تحقق أنها UTF-8 صحيح بلا بايتات NUL. وارفض كل ما عدا ذلك مهما قال الامتداد.\n\nنظّف الاسم الأصلي (احذف أحرف المسارات وحدّد الطول) قبل تخزينه.",
+    "hintsEn": [
+     "Peek with a buffered stream so you can still save from the beginning.",
+     "`Path.GetFileName` drops any directory part sent by the client."
+    ],
+    "hintsAr": [
+     "اقرأ البداية عبر تدفق مخزّن مؤقتًا لتستطيع الحفظ من البداية بعد ذلك.",
+     "`Path.GetFileName` يحذف أي جزء مجلد أرسله العميل."
+    ],
+    "key": "fs-file-share-validate"
+   },
+   {
+    "titleEn": "Downloads with the right headers",
+    "titleAr": "التنزيل بالترويسات الصحيحة",
+    "bodyEn": "`GET /api/files/{id}` (owner only) returns `Results.File(stream, contentType, originalName, enableRangeProcessing: true)`. The file name goes in Content-Disposition, safely encoded for non-ASCII names.\n\nRange support lets browsers resume downloads and stream videos.",
+    "bodyAr": "`GET /api/files/{id}` (للمالك فقط) تعيد `Results.File(stream, contentType, originalName, enableRangeProcessing: true)`. ويوضع اسم الملف في Content-Disposition مرمّزًا بأمان للأسماء غير الإنجليزية.\n\nدعم المدى يسمح للمتصفحات باستئناف التنزيل وتشغيل الفيديو كتدفق.",
+    "hintsEn": [
+     "Add `X-Content-Type-Options: nosniff` so browsers trust your content type.",
+     "Serve as attachment, not inline, to avoid running uploaded HTML."
+    ],
+    "hintsAr": [
+     "أضف `X-Content-Type-Options: nosniff` لتثق المتصفحات بنوع المحتوى الذي ترسله.",
+     "قدّم الملف كمرفق لا inline، لتتجنب تشغيل ملفات HTML مرفوعة."
+    ],
+    "key": "fs-file-share-download"
+   },
+   {
+    "titleEn": "Share links",
+    "titleAr": "روابط المشاركة",
+    "bodyEn": "`POST /api/files/{id}/shares` creates a link with a token of 32 random bytes (Base64Url), an expiry and an optional max downloads. `GET /s/{token}` (public) returns file info; `GET /s/{token}/download` checks expiry and limit, increments Downloads atomically and streams the file.\n\nList and revoke links from the owner's file page.",
+    "bodyAr": "`POST /api/files/{id}/shares` تنشئ رابطًا برمز من 32 بايتًا عشوائيًا (بترميز Base64Url)، وتاريخ انتهاء، وحد اختياري للتنزيلات. و`GET /s/{token}` (عامة) تعيد معلومات الملف، و`GET /s/{token}/download` تتحقق من الانتهاء والحد، وتزيد Downloads بشكل ذري، ثم ترسل الملف.\n\nاعرض الروابط وألغِها من صفحة ملف المالك.",
+    "hintsEn": [
+     "Increment with a conditional UPDATE so two downloads cannot pass the limit together.",
+     "Rate limit the public endpoints to slow down token guessing."
+    ],
+    "hintsAr": [
+     "زد العدد بأمر UPDATE مشروط حتى لا يتجاوز تنزيلان الحد معًا.",
+     "حدّد معدل الطلبات للنقاط العامة لتبطئ محاولات تخمين الرموز."
+    ],
+    "key": "fs-file-share-share-api"
+   },
+   {
+    "titleEn": "Angular upload with progress",
+    "titleAr": "الرفع في Angular مع التقدم",
+    "bodyEn": "Build a drop zone (dragover/drop events + a hidden file input). Upload each file with `http.post(url, formData, { reportProgress: true, observe: 'events' })` and update a progress signal on `HttpEventType.UploadProgress`. Keep the subscription so a Cancel button can unsubscribe, which aborts the request.\n\nCheck size and type on the client too, for fast feedback.",
+    "bodyAr": "ابنِ منطقة إفلات (أحداث dragover وdrop مع حقل ملف مخفي). وارفع كل ملف بـ `http.post(url, formData, { reportProgress: true, observe: 'events' })` وحدّث signal التقدم عند `HttpEventType.UploadProgress`. واحتفظ بالاشتراك ليتمكن زر الإلغاء من إلغاء الاشتراك، وهذا يُلغي الطلب.\n\nتحقق من الحجم والنوع في العميل أيضًا لردّ فعل سريع.",
+    "hintsEn": [
+     "Progress = loaded / total × 100; total can be undefined for some requests.",
+     "Upload several files one after another with `concatMap`, or 2 at a time with `mergeMap(…, 2)`."
+    ],
+    "hintsAr": [
+     "التقدم = المرفوع ÷ الإجمالي × 100، والإجمالي قد يكون undefined في بعض الطلبات.",
+     "ارفع عدة ملفات واحدًا بعد الآخر بـ `concatMap`، أو اثنين في المرة بـ `mergeMap(…, 2)`."
+    ],
+    "key": "fs-file-share-upload-ui"
+   },
+   {
+    "titleEn": "My files and share dialog",
+    "titleAr": "ملفاتي ونافذة المشاركة",
+    "bodyEn": "The files page lists name, size (formatted), type icon and date, with rename, delete (with confirmation) and Share. The share dialog picks an expiry and a limit, creates the link and shows it with a Copy button and a list of existing links with downloads and a Revoke button.\n\nThe public `/s/:token` page shows the file and a Download button, or \"This link has expired\".",
+    "bodyAr": "صفحة الملفات تعرض الاسم، والحجم (منسقًا)، وأيقونة النوع، والتاريخ، مع إعادة التسمية والحذف (مع تأكيد) والمشاركة. ونافذة المشاركة تختار مدة الانتهاء والحد، وتنشئ الرابط وتعرضه مع زر نسخ، وقائمة الروابط الحالية بعدد التنزيلات وزر إلغاء.\n\nوالصفحة العامة `/s/:token` تعرض الملف وزر التنزيل، أو \"انتهت صلاحية هذا الرابط\".",
+    "hintsEn": [
+     "A small `fileSize` pipe: 1024 → \"1 KB\".",
+     "Downloading through a normal link (`<a href download>`) lets the browser handle big files."
+    ],
+    "hintsAr": [
+     "pipe صغير باسم `fileSize`: 1024 ← \"1 KB\".",
+     "التنزيل عبر رابط عادي (`<a href download>`) يترك المتصفح يتعامل مع الملفات الكبيرة."
+    ],
+    "key": "fs-file-share-files-ui"
+   },
+   {
+    "titleEn": "Cleanup and quotas",
+    "titleAr": "التنظيف والحصص",
+    "bodyEn": "Add a background job that deletes expired share links daily and files marked deleted (delete from storage, then the row). Add a per-user quota (e.g. 1 GB): reject uploads that would exceed it with a clear message, and show usage on the files page.\n\nDeleting the row first and the file second can leave orphan files — decide the order and handle failures.",
+    "bodyAr": "أضف مهمة خلفية تحذف يوميًا روابط المشاركة المنتهية والملفات المعلّمة كمحذوفة (احذف من التخزين ثم الصف). وأضف حصة لكل مستخدم (مثل 1 جيجابايت): ارفض الرفع الذي سيتجاوزها برسالة واضحة، واعرض الاستخدام في صفحة الملفات.\n\nحذف الصف أولًا ثم الملف قد يترك ملفات يتيمة، فقرر الترتيب وتعامل مع الإخفاقات.",
+    "hintsEn": [
+     "Soft-delete the row, delete the file, then hard-delete the row — failures can be retried.",
+     "Sum sizes with a query, not by loading all rows."
+    ],
+    "hintsAr": [
+     "احذف الصف حذفًا ناعمًا، ثم احذف الملف، ثم احذف الصف نهائيًا، فيمكن إعادة المحاولة عند الإخفاق.",
+     "اجمع الأحجام باستعلام، لا بتحميل كل الصفوف."
+    ],
+    "key": "fs-file-share-cleanup"
+   },
+   {
+    "titleEn": "Security tests and docs",
+    "titleAr": "اختبارات الأمان والتوثيق",
+    "bodyEn": "Test: a renamed .exe is rejected, another user gets 404 on your file, an expired link fails, the download limit holds under parallel requests, the quota is enforced. Run the app behind a reverse proxy (IIS/nginx) once and check its own upload size limit.\n\nDocument limits, allowed types, storage layout and the share link design in the README.",
+    "bodyAr": "اختبر: ملف .exe بعد إعادة تسميته يُرفض، والمستخدم الآخر يحصل على 404 لملفك، والرابط المنتهي يفشل، وحد التنزيل يصمد أمام الطلبات المتوازية، والحصة مفروضة. وشغّل التطبيق خلف وكيل عكسي (IIS أو nginx) مرة واحدة وتحقق من حد حجم الرفع الخاص به.\n\nوثّق الحدود، والأنواع المسموحة، وتنظيم التخزين، وتصميم رابط المشاركة في README.",
+    "hintsEn": [
+     "IIS has its own `maxAllowedContentLength` in web.config.",
+     "Never trust the Content-Type header sent by the browser."
+    ],
+    "hintsAr": [
+     "IIS له حد خاص `maxAllowedContentLength` في web.config.",
+     "لا تثق أبدًا بترويسة Content-Type التي يرسلها المتصفح."
+    ],
+    "key": "fs-file-share-finish"
+   }
+  ]
+ },
+ {
+  "key": "fs-ecommerce",
+  "skill": "FullStack",
+  "level": "Advanced",
+  "hours": 24,
+  "titleEn": "E-commerce store with checkout",
+  "titleAr": "متجر إلكتروني مع إتمام الشراء",
+  "summaryEn": "A complete online shop: catalogue with search and filters, a cart that survives login, checkout with Stripe test payments and webhooks, order history, stock control and an admin back office.",
+  "summaryAr": "متجر إلكتروني متكامل: كتالوج مع البحث والمرشحات، وسلة تبقى بعد الدخول، وإتمام شراء بمدفوعات Stripe التجريبية والـ webhooks، وسجل الطلبات، والتحكم في المخزون، ولوحة إدارة خلفية.",
+  "techStack": "Angular · ASP.NET Core · EF Core · SQL Server · Stripe (test mode) · Docker",
+  "goalsEn": [
+   "Design a domain with money, stock and order states",
+   "Integrate a payment provider safely with webhooks and idempotency",
+   "Keep cart and stock consistent under concurrency",
+   "Build both a customer app and an admin back office"
+  ],
+  "goalsAr": [
+   "تصميم مجال فيه المال والمخزون وحالات الطلب",
+   "دمج مزود دفع بأمان مع الـ webhooks والتكرار الآمن",
+   "إبقاء السلة والمخزون متسقين مع التزامن",
+   "بناء تطبيق للعملاء ولوحة إدارة خلفية"
+  ],
+  "requirementsEn": [
+   "Catalogue: categories, products with variants (size/colour), images, search, filters, sorting, pagination",
+   "Cart for guests (cookie id) merged into the user's cart on login",
+   "Checkout: address, shipping option, order summary, Stripe Checkout or Payment Element in test mode",
+   "Orders move Pending → Paid → Shipped → Delivered (or Cancelled/Refunded) based on webhooks and admin actions",
+   "Stock is reserved at checkout and released if payment fails or times out",
+   "Admin: products, stock, orders, refunds, simple sales dashboard"
+  ],
+  "requirementsAr": [
+   "الكتالوج: الفئات، والمنتجات مع المتغيرات (المقاس واللون)، والصور، والبحث، والمرشحات، والترتيب، والتقسيم إلى صفحات",
+   "سلة للزوار (بمعرّف في cookie) تُدمج في سلة المستخدم عند الدخول",
+   "إتمام الشراء: العنوان، وخيار الشحن، وملخص الطلب، وStripe Checkout أو Payment Element في الوضع التجريبي",
+   "الطلبات تنتقل Pending ← Paid ← Shipped ← Delivered (أو Cancelled/Refunded) حسب الـ webhooks وإجراءات المشرف",
+   "يُحجز المخزون عند إتمام الشراء ويُحرر إذا فشل الدفع أو انتهت مهلته",
+   "الإدارة: المنتجات، والمخزون، والطلبات، والاسترداد، ولوحة مبيعات بسيطة"
+  ],
+  "acceptanceEn": [
+   "Two customers buying the last item: only one order succeeds",
+   "Prices and totals are always computed on the server; changing them in the browser has no effect",
+   "The same webhook delivered twice changes the order only once",
+   "An unpaid order releases its reserved stock after 30 minutes"
+  ],
+  "acceptanceAr": [
+   "عميلان يشتريان آخر قطعة: ينجح طلب واحد فقط",
+   "الأسعار والمجاميع تُحسب دائمًا على الخادم، وتغييرها في المتصفح لا أثر له",
+   "الـ webhook نفسه إذا وصل مرتين يغيّر الطلب مرة واحدة فقط",
+   "الطلب غير المدفوع يحرر مخزونه المحجوز بعد 30 دقيقة"
+  ],
+  "stretchEn": [
+   "Discount codes with rules",
+   "Order confirmation emails with a PDF invoice",
+   "Product reviews from verified buyers"
+  ],
+  "stretchAr": [
+   "أكواد خصم بقواعد",
+   "رسائل تأكيد الطلب مع فاتورة PDF",
+   "تقييمات المنتجات من المشترين المؤكدين"
+  ],
+  "steps": [
+   {
+    "titleEn": "Model the domain",
+    "titleAr": "مثّل المجال",
+    "bodyEn": "Entities: Category, Product, ProductVariant (Sku, Price, Stock, Reserved), Cart/CartItem, Order (Number, Status, totals, address snapshot), OrderItem (variant snapshot: name, price, quantity), Payment (provider ids, status).\n\nCopy prices and addresses into the order: later product or address changes must not change past orders. Write the order state machine with allowed transitions.",
+    "bodyAr": "الكيانات: Category وProduct وProductVariant (Sku وPrice وStock وReserved) وCart/CartItem وOrder (Number وStatus والمجاميع ولقطة من العنوان) وOrderItem (لقطة من المتغير: الاسم والسعر والكمية) وPayment (أرقام المزود والحالة).\n\nانسخ الأسعار والعناوين إلى الطلب، فتغيير المنتج أو العنوان لاحقًا يجب ألا يغيّر الطلبات السابقة. واكتب آلة حالات الطلب مع الانتقالات المسموحة.",
+    "hintsEn": [
+     "Money: `decimal(18,2)` and a single currency to start.",
+     "Available stock = Stock − Reserved."
+    ],
+    "hintsAr": [
+     "المال: `decimal(18,2)` وعملة واحدة في البداية.",
+     "المخزون المتاح = Stock − Reserved."
+    ],
+    "key": "fs-ecommerce-domain"
+   },
+   {
+    "titleEn": "Catalogue API",
+    "titleAr": "API الكتالوج",
+    "bodyEn": "Build `GET /api/products` with search, category, price range, in-stock filter, sort and pagination (projections, indexes). `GET /api/products/{slug}` returns variants with available quantities. Images: store URLs and serve them from a CDN-like static folder.\n\nSeed 60 products with variants for a realistic catalogue.",
+    "bodyAr": "ابنِ `GET /api/products` مع البحث، والفئة، ونطاق السعر، ومرشح المتوفر، والترتيب، والتقسيم إلى صفحات (مع projections وفهارس). و`GET /api/products/{slug}` تعيد المتغيرات مع الكميات المتاحة. والصور: خزّن الروابط وقدّمها من مجلد ثابت يشبه CDN.\n\nأضف 60 منتجًا أوليًا مع متغيراتها لكتالوج واقعي.",
+    "hintsEn": [
+     "Return the price range of variants for product cards (\"from 199\").",
+     "Cache the category list; it rarely changes."
+    ],
+    "hintsAr": [
+     "أعد نطاق أسعار المتغيرات لبطاقات المنتجات (\"من 199\").",
+     "خزّن قائمة الفئات مؤقتًا، فهي نادرًا ما تتغير."
+    ],
+    "key": "fs-ecommerce-catalogue-api"
+   },
+   {
+    "titleEn": "Cart for guests and users",
+    "titleAr": "السلة للزوار والمستخدمين",
+    "bodyEn": "A guest gets a cart id in an HttpOnly cookie. `GET/POST/PATCH/DELETE /api/cart/items` work for both. On login, merge the guest cart into the user's cart (sum quantities, cap at available stock) and delete the guest cart.\n\nThe cart stores variant ids and quantities only; prices are looked up every time it is read.",
+    "bodyAr": "الزائر يحصل على رقم سلة في cookie من نوع HttpOnly. ونقاط `GET/POST/PATCH/DELETE /api/cart/items` تعمل للاثنين. وعند الدخول ادمج سلة الزائر في سلة المستخدم (اجمع الكميات بحد أقصى المخزون المتاح) واحذف سلة الزائر.\n\nالسلة تخزّن أرقام المتغيرات والكميات فقط، والأسعار تُجلب في كل مرة تُقرأ فيها.",
+    "hintsEn": [
+     "Return warnings when an item's price changed or stock dropped since it was added.",
+     "Delete guest carts older than 30 days with a background job."
+    ],
+    "hintsAr": [
+     "أعد تحذيرات عندما يتغير سعر عنصر أو ينخفض مخزونه منذ إضافته.",
+     "احذف سلال الزوار الأقدم من 30 يومًا بمهمة خلفية."
+    ],
+    "key": "fs-ecommerce-cart"
+   },
+   {
+    "titleEn": "Checkout and stock reservation",
+    "titleAr": "إتمام الشراء وحجز المخزون",
+    "bodyEn": "`POST /api/checkout` (signed-in) validates the cart, computes totals on the server, creates a Pending order and reserves stock for each line with a conditional update: `Reserved = Reserved + @q WHERE Id = @id AND Stock - Reserved >= @q`. If any line fails, roll back the transaction and report which items are short.\n\nStore `ReservedUntil = now + 30 minutes` on the order.",
+    "bodyAr": "`POST /api/checkout` (للمسجلين) تتحقق من السلة، وتحسب المجاميع على الخادم، وتنشئ طلبًا Pending، وتحجز المخزون لكل سطر بتحديث مشروط: `Reserved = Reserved + @q WHERE Id = @id AND Stock - Reserved >= @q`. وإذا فشل أي سطر فألغِ الـ transaction وأبلغ عن العناصر الناقصة.\n\nخزّن `ReservedUntil = now + 30 minutes` في الطلب.",
+    "hintsEn": [
+     "Never accept prices or totals from the client.",
+     "Test with two parallel checkouts for the last unit."
+    ],
+    "hintsAr": [
+     "لا تقبل الأسعار أو المجاميع من العميل أبدًا.",
+     "اختبر بعمليتي إتمام شراء متوازيتين لآخر قطعة."
+    ],
+    "key": "fs-ecommerce-reserve"
+   },
+   {
+    "titleEn": "Stripe payment in test mode",
+    "titleAr": "الدفع بـ Stripe في الوضع التجريبي",
+    "bodyEn": "Create a Stripe account and use test keys (in user secrets). After reserving, create a Checkout Session (or PaymentIntent) with the order total and the order id in metadata, using the order id as the idempotency key. Return the session URL; Angular redirects to it.\n\nNever mark an order paid because the browser returned to a \"success\" page — only the webhook decides.",
+    "bodyAr": "أنشئ حسابًا في Stripe واستخدم المفاتيح التجريبية (في user secrets). وبعد الحجز أنشئ Checkout Session (أو PaymentIntent) بإجمالي الطلب، مع رقم الطلب في metadata، واستخدم رقم الطلب كمفتاح تكرار آمن (idempotency key). وأعد رابط الجلسة، وAngular يحوّل إليه.\n\nلا تعلّم الطلب كمدفوع لأن المتصفح عاد إلى صفحة \"نجاح\"، فالـ webhook وحده يقرر.",
+    "hintsEn": [
+     "Use Stripe test cards like 4242 4242 4242 4242 and 4000 0000 0000 9995 (declined).",
+     "The Stripe .NET SDK is `Stripe.net`."
+    ],
+    "hintsAr": [
+     "استخدم بطاقات Stripe التجريبية مثل 4242 4242 4242 4242 و4000 0000 0000 9995 (مرفوضة).",
+     "حزمة Stripe لـ .NET هي `Stripe.net`."
+    ],
+    "key": "fs-ecommerce-payment"
+   },
+   {
+    "titleEn": "Webhooks, idempotent",
+    "titleAr": "الـ webhooks بتكرار آمن",
+    "bodyEn": "Add `POST /api/webhooks/stripe` (anonymous). Verify the signature with the webhook secret, store the event id in a `ProcessedWebhook` table (unique) and skip events already processed. On `checkout.session.completed`: mark the order Paid, convert reserved stock to sold (`Stock -= q; Reserved -= q`), clear the cart. On failure or expiry: Cancel and release the reservation.\n\nTest locally with `stripe listen --forward-to localhost:5001/api/webhooks/stripe`.",
+    "bodyAr": "أضف `POST /api/webhooks/stripe` (مجهولة). وتحقق من التوقيع بسر الـ webhook، وخزّن رقم الحدث في جدول `ProcessedWebhook` (فريد)، وتخطَّ الأحداث المعالجة سابقًا. وعند `checkout.session.completed`: علّم الطلب Paid، وحوّل المخزون المحجوز إلى مُباع (`Stock -= q; Reserved -= q`)، وأفرغ السلة. وعند الفشل أو انتهاء المهلة: ألغِ الطلب وحرّر الحجز.\n\nاختبر محليًا بـ `stripe listen --forward-to localhost:5001/api/webhooks/stripe`.",
+    "hintsEn": [
+     "Read the raw body for signature verification — do not let model binding change it.",
+     "Do everything for one event in one transaction together with the ProcessedWebhook insert."
+    ],
+    "hintsAr": [
+     "اقرأ المحتوى الخام للتحقق من التوقيع، ولا تدع ربط النموذج يغيّره.",
+     "نفّذ كل ما يخص الحدث الواحد في transaction واحدة مع إدخال ProcessedWebhook."
+    ],
+    "key": "fs-ecommerce-webhooks"
+   },
+   {
+    "titleEn": "Release expired reservations",
+    "titleAr": "تحرير الحجوزات المنتهية",
+    "bodyEn": "A background service runs every minute: for Pending orders past ReservedUntil, check the payment status with Stripe (a webhook may be late), then cancel and release stock in a transaction. Log every release.\n\nThis is what stops abandoned checkouts from locking stock forever.",
+    "bodyAr": "خدمة خلفية تعمل كل دقيقة: للطلبات Pending التي تجاوزت ReservedUntil تحقق من حالة الدفع في Stripe (فقد يتأخر الـ webhook)، ثم ألغِ الطلب وحرّر المخزون داخل transaction. وسجّل كل تحرير.\n\nهذا ما يمنع عمليات الشراء المتروكة من قفل المخزون إلى الأبد.",
+    "hintsEn": [
+     "Use the same state-machine methods as the webhook so rules live in one place.",
+     "Test by setting the reservation window to 1 minute."
+    ],
+    "hintsAr": [
+     "استخدم دوال آلة الحالات نفسها التي يستخدمها الـ webhook لتعيش القواعد في مكان واحد.",
+     "اختبر بضبط نافذة الحجز على دقيقة واحدة."
+    ],
+    "key": "fs-ecommerce-expiry"
+   },
+   {
+    "titleEn": "Angular storefront",
+    "titleAr": "واجهة المتجر بـ Angular",
+    "bodyEn": "Build: home with categories and featured products, product list with filters in the URL, product page with variant picker and stock state, cart drawer (signal store synced with the API), checkout page (address form, shipping choice, summary) that redirects to Stripe, success page that polls the order until Paid, and order history.\n\nMake the cart badge update everywhere through a shared store.",
+    "bodyAr": "ابنِ: الرئيسية بالفئات والمنتجات المميزة، وقائمة المنتجات مع المرشحات في الرابط، وصفحة المنتج مع منتقي المتغيرات وحالة المخزون، ودرج السلة (مخزن signals متزامن مع الـ API)، وصفحة إتمام الشراء (نموذج العنوان، واختيار الشحن، والملخص) التي تحوّل إلى Stripe، وصفحة النجاح التي تستعلم عن الطلب حتى يصبح Paid، وسجل الطلبات.\n\nاجعل شارة السلة تتحدث في كل مكان عبر مخزن مشترك.",
+    "hintsEn": [
+     "The success page shows \"Confirming payment…\" until the webhook marks the order Paid.",
+     "Use SSR or at least good meta tags for product pages if SEO matters."
+    ],
+    "hintsAr": [
+     "صفحة النجاح تعرض \"جارٍ تأكيد الدفع…\" حتى يعلّم الـ webhook الطلب كـ Paid.",
+     "استخدم SSR أو على الأقل وسوم meta جيدة لصفحات المنتجات إن كان تحسين محركات البحث مهمًا."
+    ],
+    "key": "fs-ecommerce-storefront"
+   },
+   {
+    "titleEn": "Admin back office",
+    "titleAr": "لوحة الإدارة الخلفية",
+    "bodyEn": "A lazy-loaded admin area (role Admin): products and variants CRUD with stock adjustments (logged), orders list with status filters, order details with Ship (adds tracking number) and Refund (calls Stripe refund API, then updates status via webhook), and a dashboard with today's sales, open orders and low stock.\n\nEvery admin action goes through the same state machine and is logged with the admin id.",
+    "bodyAr": "منطقة إدارة تُحمَّل بشكل كسول (للدور Admin): عمليات CRUD للمنتجات والمتغيرات مع تسويات المخزون (مُسجلة)، وقائمة الطلبات مع مرشحات الحالة، وتفاصيل الطلب مع الشحن (يضيف رقم تتبع) والاسترداد (يستدعي API الاسترداد في Stripe، ثم تتحدث الحالة عبر الـ webhook)، ولوحة فيها مبيعات اليوم والطلبات المفتوحة والمخزون المنخفض.\n\nكل إجراء إداري يمر عبر آلة الحالات نفسها ويُسجّل برقم المشرف.",
+    "hintsEn": [
+     "Refunds are also asynchronous: show \"Refund pending\" until the webhook arrives.",
+     "Never let admins edit totals of paid orders."
+    ],
+    "hintsAr": [
+     "الاسترداد غير متزامن أيضًا، فاعرض \"الاسترداد قيد المعالجة\" حتى يصل الـ webhook.",
+     "لا تسمح للمشرفين بتعديل مجاميع الطلبات المدفوعة أبدًا."
+    ],
+    "key": "fs-ecommerce-admin"
+   },
+   {
+    "titleEn": "Tests for money and stock",
+    "titleAr": "اختبارات المال والمخزون",
+    "bodyEn": "Integration tests (real SQL Server): concurrent checkout for the last unit, server-side totals ignoring client prices, duplicate webhook, failed payment releases stock, expiry job releases stock, illegal state transitions rejected. Unit tests for the order state machine. One Playwright test: browse, add to cart, checkout with a test card through Stripe's hosted page (or a mocked payment in CI).\n\nBugs here cost real money; test them the hardest.",
+    "bodyAr": "اختبارات تكامل (على SQL Server حقيقي): إتمام شراء متزامن لآخر قطعة، ومجاميع الخادم التي تتجاهل أسعار العميل، والـ webhook المكرر، والدفع الفاشل يحرر المخزون، ومهمة الانتهاء تحرر المخزون، والانتقالات غير المسموحة في الحالة تُرفض. واختبارات وحدة لآلة حالات الطلب. واختبار Playwright واحد: التصفح، والإضافة إلى السلة، وإتمام الشراء ببطاقة تجريبية عبر صفحة Stripe المستضافة (أو دفع وهمي في CI).\n\nالأخطاء هنا تكلّف مالًا حقيقيًا، فاختبرها بأشد ما يمكن.",
+    "hintsEn": [
+     "Build fake Stripe events with the SDK and sign them with your test secret.",
+     "Wrap the payment provider behind an interface so CI does not call Stripe."
+    ],
+    "hintsAr": [
+     "ابنِ أحداث Stripe وهمية بالـ SDK ووقّعها بسرك التجريبي.",
+     "ضع مزود الدفع خلف interface حتى لا يستدعي CI خدمة Stripe."
+    ],
+    "key": "fs-ecommerce-tests"
+   },
+   {
+    "titleEn": "Containerise, deploy and present",
+    "titleAr": "ضعه في حاويات وانشره واعرضه",
+    "bodyEn": "Write a Dockerfile for the API (with the Angular build inside) and a docker-compose with SQL Server for local runs. Deploy to a host with HTTPS, set secrets as environment variables and register the production webhook endpoint in Stripe.\n\nThe README should explain the order flow with a sequence diagram, the stock reservation, idempotency and how to test payments.",
+    "bodyAr": "اكتب Dockerfile للـ API (مع بناء Angular بداخله) وملف docker-compose مع SQL Server للتشغيل المحلي. وانشره على استضافة بـ HTTPS، واضبط الأسرار كمتغيرات بيئة، وسجّل نقطة الـ webhook الخاصة بالإنتاج في Stripe.\n\nيجب أن يشرح README تدفق الطلب بمخطط تسلسلي، وحجز المخزون، والتكرار الآمن، وطريقة اختبار المدفوعات.",
+    "hintsEn": [
+     "Keep Stripe in test mode for a portfolio project; say so on the site.",
+     "A short demo video of a full purchase is very convincing."
+    ],
+    "hintsAr": [
+     "أبقِ Stripe في الوضع التجريبي لمشروع معرض الأعمال، واذكر ذلك في الموقع.",
+     "فيديو قصير لعملية شراء كاملة مقنع جدًا."
+    ],
+    "key": "fs-ecommerce-finish"
+   }
+  ]
+ },
+ {
+  "key": "fs-collab-board",
+  "skill": "FullStack",
+  "level": "Advanced",
+  "hours": 20,
+  "titleEn": "Real-time collaborative task board",
+  "titleAr": "لوحة مهام تعاونية فورية",
+  "summaryEn": "A Trello-like board where a team edits together in real time: SignalR updates, optimistic UI with rollback, conflict handling with versions, presence, activity history, and a Docker deployment.",
+  "summaryAr": "لوحة تشبه Trello يعدّل عليها الفريق معًا في الوقت نفسه: تحديثات SignalR، وواجهة متفائلة مع التراجع، ومعالجة التعارض بالإصدارات، وحالة الحضور، وسجل النشاط، والنشر بـ Docker.",
+  "techStack": "Angular · ASP.NET Core · SignalR · EF Core · SQL Server · Docker",
+  "goalsEn": [
+   "Synchronise state between many clients in real time",
+   "Apply optimistic updates and roll back on rejection",
+   "Detect conflicts with row versions and resolve them",
+   "Order items with fractional indexes instead of renumbering"
+  ],
+  "goalsAr": [
+   "مزامنة الحالة بين عملاء كثيرين في الوقت الفعلي",
+   "تطبيق التحديثات المتفائلة والتراجع عند الرفض",
+   "اكتشاف التعارضات بـ row versions وحلّها",
+   "ترتيب العناصر بفهارس كسرية بدل إعادة الترقيم"
+  ],
+  "requirementsEn": [
+   "Workspaces with members (owner, member); boards with lists and cards",
+   "Every change by one member appears for the others within a second",
+   "Drag cards between lists; the order is preserved for everyone",
+   "Two people editing the same card: the second save gets a conflict with a merge choice",
+   "Avatars of who is viewing the board and who is editing a card",
+   "An activity feed per board"
+  ],
+  "requirementsAr": [
+   "مساحات عمل بأعضاء (مالك وعضو)، ولوحات فيها قوائم وبطاقات",
+   "كل تغيير من عضو يظهر للآخرين خلال ثانية",
+   "سحب البطاقات بين القوائم مع حفظ الترتيب للجميع",
+   "شخصان يعدّلان البطاقة نفسها: الحفظ الثاني يحصل على تعارض مع خيار للدمج",
+   "صور من يشاهد اللوحة ومن يعدّل بطاقة",
+   "سجل نشاط لكل لوحة"
+  ],
+  "acceptanceEn": [
+   "Moving a card shows instantly for the mover; if the server rejects it, the card jumps back with a message",
+   "After a disconnect, the client resyncs and shows changes made while offline",
+   "A non-member gets nothing from the hub or the API",
+   "Moving a card never renumbers other cards in the database"
+  ],
+  "acceptanceAr": [
+   "نقل بطاقة يظهر فورًا لمن نقلها، وإذا رفضه الخادم تعود البطاقة مع رسالة",
+   "بعد الانقطاع يعيد العميل المزامنة ويعرض التغييرات التي حدثت أثناء غيابه",
+   "غير العضو لا يحصل على شيء من الـ hub ولا من الـ API",
+   "نقل بطاقة لا يعيد ترقيم البطاقات الأخرى في قاعدة البيانات أبدًا"
+  ],
+  "stretchEn": [
+   "Card comments with mentions and notifications",
+   "Undo of the last change per user",
+   "Offline mode with a queue of pending changes"
+  ],
+  "stretchAr": [
+   "تعليقات على البطاقات مع الإشارات والإشعارات",
+   "التراجع عن آخر تغيير لكل مستخدم",
+   "وضع عدم الاتصال مع طابور للتغييرات المعلّقة"
+  ],
+  "steps": [
+   {
+    "titleEn": "Model, permissions and versions",
+    "titleAr": "النموذج والصلاحيات والإصدارات",
+    "bodyEn": "Entities: Workspace, Membership (UserId, Role), Board, List (Position), Card (ListId, Position, Title, Description, AssigneeId, DueDate, RowVersion), Activity (BoardId, UserId, Kind, Data, At).\n\nEvery write endpoint checks membership of the board's workspace. RowVersion on Card detects concurrent edits.",
+    "bodyAr": "الكيانات: Workspace، وMembership (UserId وRole)، وBoard، وList (Position)، وCard (ListId وPosition وTitle وDescription وAssigneeId وDueDate وRowVersion)، وActivity (BoardId وUserId وKind وData وAt).\n\nكل نقطة كتابة تتحقق من عضوية مساحة العمل التي تتبعها اللوحة، وRowVersion في Card يكشف التعديلات المتزامنة.",
+    "hintsEn": [
+     "Put the membership check in one authorization handler and use it in the API and the hub.",
+     "Position is a string or decimal — see the ordering step."
+    ],
+    "hintsAr": [
+     "ضع فحص العضوية في authorization handler واحد واستخدمه في الـ API وفي الـ hub.",
+     "Position نص أو رقم عشري، وانظر خطوة الترتيب."
+    ],
+    "key": "fs-collab-board-model"
+   },
+   {
+    "titleEn": "Fractional ordering",
+    "titleAr": "الترتيب الكسري",
+    "bodyEn": "Instead of positions 1, 2, 3 (moving a card renumbers everything after it), give each card a sortable key between its neighbours: moving between \"a\" and \"b\" gives \"an\". Implement `keyBetween(before, after)` (fractional indexing with base-62 strings) and use it for cards and lists.\n\nOne move = one row updated, and concurrent moves rarely clash.",
+    "bodyAr": "بدل المواضع 1 و2 و3 (حيث يعيد نقل بطاقة ترقيم كل ما بعدها)، أعط كل بطاقة مفتاحًا قابلًا للترتيب بين جارتيها: النقل بين \"a\" و\"b\" يعطي \"an\". ونفّذ `keyBetween(before, after)` (فهرسة كسرية بنصوص أساس 62) واستخدمها للبطاقات والقوائم.\n\nنقل واحد = تعديل صف واحد، والنقلات المتزامنة نادرًا ما تتعارض.",
+    "hintsEn": [
+     "Port a well-known implementation (\"fractional-indexing\" by Rocicorp) and unit test it.",
+     "Use an ordinal (binary) collation for the position column so sorting matches your strings."
+    ],
+    "hintsAr": [
+     "انقل تنفيذًا معروفًا (مثل \"fractional-indexing\" من Rocicorp) واختبره باختبارات وحدة.",
+     "استخدم ترتيبًا ثنائيًا (ordinal collation) لعمود الموضع ليطابق الترتيب نصوصك."
+    ],
+    "key": "fs-collab-board-ordering"
+   },
+   {
+    "titleEn": "Commands API",
+    "titleAr": "API الأوامر",
+    "bodyEn": "Expose writes as commands: `POST /api/cards`, `PATCH /api/cards/{id}` (with the RowVersion the client last saw), `POST /api/cards/{id}/move` (target list, before id, after id). Each command validates, saves, writes an Activity row and returns the new card state with its new RowVersion.\n\n`GET /api/boards/{id}` returns the full board snapshot with a board-level version number.",
+    "bodyAr": "قدّم الكتابة كأوامر: `POST /api/cards`، و`PATCH /api/cards/{id}` (مع RowVersion الذي رآه العميل آخر مرة)، و`POST /api/cards/{id}/move` (القائمة الهدف، ورقم ما قبله، ورقم ما بعده). وكل أمر يتحقق، ويحفظ، ويكتب صف Activity، ويعيد الحالة الجديدة للبطاقة مع RowVersion الجديد.\n\n`GET /api/boards/{id}` تعيد لقطة كاملة للوحة مع رقم إصدار على مستوى اللوحة.",
+    "hintsEn": [
+     "Increase a Board.Version counter in the same transaction as every change; clients use it to detect gaps.",
+     "The move command computes the key on the server from the neighbours."
+    ],
+    "hintsAr": [
+     "زد عدّاد Board.Version في الـ transaction نفسها مع كل تغيير، والعملاء يستخدمونه لاكتشاف الفجوات.",
+     "أمر النقل يحسب المفتاح على الخادم من الجارتين."
+    ],
+    "key": "fs-collab-board-api"
+   },
+   {
+    "titleEn": "Broadcast with SignalR",
+    "titleAr": "البث بـ SignalR",
+    "bodyEn": "Create `BoardHub` with `JoinBoard(boardId)` (checks membership, adds to group `board:{id}`). After each successful command, the API broadcasts an event (`CardCreated`, `CardUpdated`, `CardMoved`, ...) with the board version to the group through `IHubContext<BoardHub>`.\n\nWrites go through the API; the hub only distributes changes and presence.",
+    "bodyAr": "أنشئ `BoardHub` فيه `JoinBoard(boardId)` (يتحقق من العضوية، ويضيف إلى المجموعة `board:{id}`). وبعد كل أمر ناجح يبثّ الـ API حدثًا (`CardCreated` و`CardUpdated` و`CardMoved`...) مع إصدار اللوحة إلى المجموعة عبر `IHubContext<BoardHub>`.\n\nالكتابة تمر عبر الـ API، والـ hub يوزّع التغييرات والحضور فقط.",
+    "hintsEn": [
+     "Include the id of the client that made the change so it can ignore its own echo.",
+     "Broadcast after the transaction commits, never before."
+    ],
+    "hintsAr": [
+     "ضمّن رقم العميل الذي أجرى التغيير ليتجاهل صدى تغييره.",
+     "ابثّ بعد اعتماد الـ transaction، لا قبله أبدًا."
+    ],
+    "key": "fs-collab-board-hub"
+   },
+   {
+    "titleEn": "Client store and sync",
+    "titleAr": "مخزن العميل والمزامنة",
+    "bodyEn": "In Angular, a `BoardStore` (signals) holds lists and cards from the snapshot and the last board version. Incoming hub events apply to the store if `version == local + 1`; if a version is missing (gap), refetch the snapshot.\n\nOn reconnect, also refetch: it is the simplest correct way to catch up.",
+    "bodyAr": "في Angular يحمل `BoardStore` (المبني على signals) القوائم والبطاقات من اللقطة وآخر إصدار للوحة. والأحداث القادمة من الـ hub تُطبق على المخزن إذا كان `version == local + 1`، وإن فُقد إصدار (فجوة) فأعد جلب اللقطة.\n\nوعند إعادة الاتصال أعد الجلب أيضًا، فهي أبسط طريقة صحيحة للحاق بالحالة.",
+    "hintsEn": [
+     "Sorted views are computed signals over the cards sorted by position key.",
+     "Show a small \"syncing\" indicator while a snapshot reload runs."
+    ],
+    "hintsAr": [
+     "العروض المرتبة signals محسوبة على البطاقات مرتبة بمفتاح الموضع.",
+     "اعرض مؤشرًا صغيرًا \"جارٍ المزامنة\" أثناء إعادة تحميل اللقطة."
+    ],
+    "key": "fs-collab-board-client-store"
+   },
+   {
+    "titleEn": "Optimistic updates with rollback",
+    "titleAr": "التحديثات المتفائلة مع التراجع",
+    "bodyEn": "When the user moves or edits a card, apply the change to the store immediately and send the command. Keep the previous state of that card. On success, replace it with the server's version (new RowVersion, server position). On failure, restore the previous state and show why.\n\nIgnore your own echoed event (same client id).",
+    "bodyAr": "عندما ينقل المستخدم بطاقة أو يعدّلها طبّق التغيير على المخزن فورًا وأرسل الأمر، واحتفظ بالحالة السابقة لتلك البطاقة. وعند النجاح استبدلها بنسخة الخادم (RowVersion الجديد والموضع من الخادم). وعند الفشل أعد الحالة السابقة واعرض السبب.\n\nتجاهل صدى حدثك أنت (رقم العميل نفسه).",
+    "hintsEn": [
+     "Simulate slow and failing requests with a debug interceptor to see the behaviour.",
+     "Drag and drop: the CDK DragDrop module gives you list-to-list moves and indexes."
+    ],
+    "hintsAr": [
+     "حاكِ الطلبات البطيئة والفاشلة بـ interceptor للتصحيح لترى السلوك.",
+     "السحب والإفلات: وحدة DragDrop في CDK تعطيك النقل بين القوائم والفهارس."
+    ],
+    "key": "fs-collab-board-optimistic"
+   },
+   {
+    "titleEn": "Edit conflicts",
+    "titleAr": "تعارضات التعديل",
+    "bodyEn": "When PATCH arrives with an old RowVersion, return 409 with the current server card. The editor then shows \"Someone changed this card\": their version vs yours per field, with buttons to keep theirs, keep yours (re-send with the new RowVersion) or merge field by field.\n\nMoves rarely conflict thanks to fractional keys; edits of the same text do, and users must decide.",
+    "bodyAr": "عندما يصل PATCH بـ RowVersion قديم أعد 409 مع البطاقة الحالية من الخادم. والمحرر يعرض حينها \"غيّر أحدهم هذه البطاقة\": نسختهم مقابل نسختك لكل حقل، مع أزرار للاحتفاظ بنسختهم، أو الاحتفاظ بنسختك (إعادة الإرسال بـ RowVersion الجديد)، أو الدمج حقلًا بحقل.\n\nالنقلات نادرًا ما تتعارض بفضل المفاتيح الكسرية، أما تعديل النص نفسه فيتعارض، وعلى المستخدمين أن يقرروا.",
+    "hintsEn": [
+     "Fields changed only on one side can be merged automatically.",
+     "Test with two browsers side by side."
+    ],
+    "hintsAr": [
+     "الحقول التي تغيرت في جهة واحدة فقط يمكن دمجها تلقائيًا.",
+     "اختبر بمتصفحين جنبًا إلى جنب."
+    ],
+    "key": "fs-collab-board-conflicts"
+   },
+   {
+    "titleEn": "Presence and activity",
+    "titleAr": "الحضور والنشاط",
+    "bodyEn": "Track who is on each board (connection ids per user per board, as in the SignalR chat project) and broadcast the viewer list. When a user opens a card editor, send `EditingCard(cardId)`; others show that user's avatar on the card.\n\nShow the activity feed from the Activity table, newest first, live-updated from hub events.",
+    "bodyAr": "تتبّع من يوجد على كل لوحة (أرقام الاتصالات لكل مستخدم في كل لوحة، كما في مشروع الدردشة بـ SignalR)، وابثّ قائمة المشاهدين. وعندما يفتح مستخدم محرر بطاقة أرسل `EditingCard(cardId)`، والآخرون يعرضون صورة ذلك المستخدم على البطاقة.\n\nاعرض سجل النشاط من جدول Activity، من الأحدث، ومحدّثًا مباشرة من أحداث الـ hub.",
+    "hintsEn": [
+     "Clear \"editing\" markers when the connection drops.",
+     "Activity rows store small JSON with before/after values for readable messages."
+    ],
+    "hintsAr": [
+     "امسح علامات \"يعدّل\" عند انقطاع الاتصال.",
+     "صفوف النشاط تخزّن JSON صغيرًا بالقيم قبل وبعد لرسائل مقروءة."
+    ],
+    "key": "fs-collab-board-presence"
+   },
+   {
+    "titleEn": "Multi-client tests",
+    "titleAr": "اختبارات العملاء المتعددين",
+    "bodyEn": "Backend: integration tests with two SignalR clients — a change by one arrives at the other; a non-member cannot join; an outdated PATCH returns 409; a move updates exactly one row. Unit-test keyBetween with many random insertions. Frontend: store tests for gap detection and rollback. Playwright: two browser contexts editing the same board.\n\nReal-time bugs hide in timing; the two-client tests are essential.",
+    "bodyAr": "الخلفية: اختبارات تكامل بعميلي SignalR، فالتغيير من أحدهما يصل إلى الآخر، وغير العضو لا يستطيع الانضمام، والـ PATCH القديم يعيد 409، والنقل يحدّث صفًا واحدًا بالضبط. واختبر keyBetween باختبارات وحدة مع إدخالات عشوائية كثيرة. والواجهة: اختبارات للمخزن على اكتشاف الفجوات والتراجع. وPlaywright: سياقا متصفح يعدّلان اللوحة نفسها.\n\nأخطاء الوقت الفعلي تختبئ في التوقيت، واختبارات العميلين ضرورية.",
+    "hintsEn": [
+     "`browser.newContext()` twice in Playwright gives two independent users.",
+     "Count SQL UPDATE commands in the move test with an interceptor."
+    ],
+    "hintsAr": [
+     "`browser.newContext()` مرتين في Playwright يعطي مستخدمين مستقلين.",
+     "عُدّ أوامر SQL UPDATE في اختبار النقل باستخدام interceptor."
+    ],
+    "key": "fs-collab-board-tests"
+   },
+   {
+    "titleEn": "Docker deployment and write-up",
+    "titleAr": "النشر بـ Docker والشرح",
+    "bodyEn": "Write a multi-stage Dockerfile (build Angular, build .NET, small runtime image) and docker-compose with SQL Server. Note: several API instances need a SignalR backplane (Redis) — document it, or add it as a stretch.\n\nIn the README, explain the sync design: commands, versions, gap detection, optimistic updates, conflicts and fractional ordering, with a diagram and a GIF of two users.",
+    "bodyAr": "اكتب Dockerfile متعدد المراحل (بناء Angular، وبناء .NET، وصورة تشغيل صغيرة) وملف docker-compose مع SQL Server. ملاحظة: عدة نسخ من الـ API تحتاج SignalR backplane (Redis)، فوثّق ذلك أو أضفه كتحدٍ إضافي.\n\nواشرح في README تصميم المزامنة: الأوامر، والإصدارات، واكتشاف الفجوات، والتحديثات المتفائلة، والتعارضات، والترتيب الكسري، مع مخطط وصورة GIF لمستخدمين اثنين.",
+    "hintsEn": [
+     "This project shows senior-level thinking; make the design section excellent.",
+     "Mention CRDTs as the next step for real collaborative text editing."
+    ],
+    "hintsAr": [
+     "هذا المشروع يُظهر تفكيرًا بمستوى متقدم، فاجعل قسم التصميم ممتازًا.",
+     "اذكر CRDTs كخطوة تالية للتحرير التعاوني الحقيقي للنصوص."
+    ],
+    "key": "fs-collab-board-finish"
+   }
+  ]
+ }
+]

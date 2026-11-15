@@ -1,0 +1,1120 @@
+[
+ {
+  "key": "pro-project-docs",
+  "skill": "Professional",
+  "level": "Beginner",
+  "hours": 4,
+  "titleEn": "Document your projects like a professional",
+  "titleAr": "وثّق مشاريعك كمحترف",
+  "summaryEn": "Rewrite the documentation of three of your projects so a stranger understands, runs and evaluates each one in five minutes: README, screenshots, setup steps, architecture notes and a changelog.",
+  "summaryAr": "أعد كتابة توثيق ثلاثة من مشاريعك ليفهم الغريب كل مشروع ويشغّله ويقيّمه في خمس دقائق: README، وصور، وخطوات الإعداد، وملاحظات البنية، وسجل التغييرات.",
+  "techStack": "Markdown · Mermaid diagrams · GitHub",
+  "goalsEn": [
+   "Write for a reader who has never seen your project",
+   "Structure a README that answers the right questions in order",
+   "Explain architecture with simple diagrams",
+   "Keep documentation next to the code and up to date"
+  ],
+  "goalsAr": [
+   "الكتابة لقارئ لم يرَ مشروعك من قبل",
+   "تنظيم README يجيب عن الأسئلة الصحيحة بالترتيب",
+   "شرح البنية بمخططات بسيطة",
+   "إبقاء التوثيق بجانب الكود ومحدّثًا"
+  ],
+  "requirementsEn": [
+   "Three repositories with a rewritten README",
+   "Each README: one-line pitch, screenshot or GIF, features, tech stack, how to run, how to test, project structure, what you learned",
+   "A Mermaid architecture or flow diagram in at least one project",
+   "A CHANGELOG.md or GitHub Releases in at least one project",
+   "A friend runs one project only from the README and reports problems"
+  ],
+  "requirementsAr": [
+   "ثلاثة مستودعات بملف README مُعاد كتابته",
+   "كل README فيه: وصف في سطر، وصورة أو GIF، والميزات، والتقنيات، وطريقة التشغيل، وطريقة الاختبار، وبنية المشروع، وما تعلمته",
+   "مخطط Mermaid للبنية أو للتدفق في مشروع واحد على الأقل",
+   "CHANGELOG.md أو GitHub Releases في مشروع واحد على الأقل",
+   "صديق يشغّل مشروعًا واحدًا من README فقط ويُبلغ عن المشاكل"
+  ],
+  "acceptanceEn": [
+   "A new person runs each project without asking you anything",
+   "Each README answers \"what is it, why care, how do I run it\" in the first screen",
+   "No broken links or images"
+  ],
+  "acceptanceAr": [
+   "شخص جديد يشغّل كل مشروع دون أن يسألك أي شيء",
+   "كل README يجيب عن \"ما هو، ولماذا يهمني، وكيف أشغّله\" في الشاشة الأولى",
+   "لا روابط ولا صور مكسورة"
+  ],
+  "stretchEn": [
+   "Add a short demo video",
+   "Translate one README to Arabic",
+   "Write a blog post about one project"
+  ],
+  "stretchAr": [
+   "أضف فيديو عرض قصيرًا",
+   "ترجم README واحدًا إلى العربية",
+   "اكتب مقالًا عن أحد المشاريع"
+  ],
+  "steps": [
+   {
+    "titleEn": "Pick three projects and read them cold",
+    "titleAr": "اختر ثلاثة مشاريع واقرأها كغريب",
+    "bodyEn": "Choose three projects you are proud of. Open each repository in a private window as if you were a recruiter with two minutes. Write down every question you have and every moment you got lost.\n\nThat list is your to-do list.",
+    "bodyAr": "اختر ثلاثة مشاريع تفخر بها. وافتح كل مستودع في نافذة خاصة كأنك مسؤول توظيف لديه دقيقتان. ودوّن كل سؤال خطر لك وكل لحظة تُهت فيها.\n\nهذه القائمة هي قائمة مهامك.",
+    "hintsEn": [
+     "Recruiters read the first screen of the README, look at one screenshot, and maybe the code structure.",
+     "Pin these three repositories on your GitHub profile."
+    ],
+    "hintsAr": [
+     "مسؤولو التوظيف يقرؤون الشاشة الأولى من README، وينظرون إلى صورة واحدة، وربما إلى بنية الكود.",
+     "ثبّت هذه المستودعات الثلاثة في ملفك الشخصي على GitHub."
+    ],
+    "key": "pro-project-docs-pick"
+   },
+   {
+    "titleEn": "A README structure that works",
+    "titleAr": "بنية README تعمل",
+    "bodyEn": "Use this order: title + one-sentence pitch; screenshot or GIF; features (bullets); tech stack; getting started (prerequisites, install, run); running tests; project structure (short tree); architecture notes; what I learned / challenges; roadmap or known limits; license.\n\nWrite the pitch last — it is the hardest sentence.",
+    "bodyAr": "استخدم هذا الترتيب: العنوان ووصف في جملة واحدة، ثم صورة أو GIF، ثم الميزات (نقاط)، ثم التقنيات، ثم البدء (المتطلبات، والتثبيت، والتشغيل)، ثم تشغيل الاختبارات، ثم بنية المشروع (شجرة قصيرة)، ثم ملاحظات البنية، ثم ما تعلمته والتحديات، ثم الخطط أو القيود المعروفة، ثم الترخيص.\n\nاكتب الوصف المختصر في الأخير، فهو أصعب جملة.",
+    "hintsEn": [
+     "A good pitch says who it is for and what it does: \"A budget planner that splits expenses across categories\".",
+     "Use headings so GitHub builds a table of contents automatically."
+    ],
+    "hintsAr": [
+     "الوصف الجيد يقول لمن هو وماذا يفعل: \"مخطط ميزانية يقسّم المصروفات على الفئات\".",
+     "استخدم العناوين ليبني GitHub جدول محتويات تلقائيًا."
+    ],
+    "key": "pro-project-docs-structure"
+   },
+   {
+    "titleEn": "Screenshots and GIFs",
+    "titleAr": "الصور وصور GIF",
+    "bodyEn": "Take clean screenshots with realistic data (no \"test test 123\"). For interactive features record a short GIF (ShareX, ScreenToGif or Kap). Store them in `docs/images/` and reference them with relative paths.\n\nOne great visual near the top beats ten small ones.",
+    "bodyAr": "التقط صورًا نظيفة ببيانات واقعية (لا \"test test 123\"). وللميزات التفاعلية سجّل صورة GIF قصيرة (بـ ShareX أو ScreenToGif أو Kap). وخزّنها في `docs/images/` واذكرها بمسارات نسبية.\n\nصورة واحدة ممتازة قرب الأعلى أفضل من عشر صور صغيرة.",
+    "hintsEn": [
+     "Keep GIFs under ~5 MB and ~10 seconds.",
+     "Add alt text to every image."
+    ],
+    "hintsAr": [
+     "أبقِ صور GIF تحت نحو 5 ميجابايت ونحو 10 ثوانٍ.",
+     "أضف نصًا بديلًا لكل صورة."
+    ],
+    "key": "pro-project-docs-visuals"
+   },
+   {
+    "titleEn": "Setup steps that really work",
+    "titleAr": "خطوات إعداد تعمل فعلًا",
+    "bodyEn": "List exact prerequisites with versions (.NET 10 SDK, Node 22, SQL Server or Docker). Give copy-paste commands for clone, configuration (user secrets, environment variables — with example values, never real ones) and run.\n\nTest the steps yourself in a fresh folder; fix every step that fails.",
+    "bodyAr": "اذكر المتطلبات بالضبط مع الإصدارات (.NET 10 SDK، وNode 22، وSQL Server أو Docker). وأعطِ أوامر جاهزة للنسخ للاستنساخ، والإعداد (user secrets ومتغيرات البيئة بقيم مثال، لا حقيقية أبدًا)، والتشغيل.\n\nاختبر الخطوات بنفسك في مجلد جديد، وأصلح كل خطوة تفشل.",
+    "hintsEn": [
+     "An `.env.example` or `appsettings.Example.json` shows what to configure.",
+     "Mention the URL to open after starting."
+    ],
+    "hintsAr": [
+     "ملف `.env.example` أو `appsettings.Example.json` يوضح ما يجب ضبطه.",
+     "اذكر الرابط الذي يُفتح بعد التشغيل."
+    ],
+    "key": "pro-project-docs-setup"
+   },
+   {
+    "titleEn": "Architecture in a diagram",
+    "titleAr": "البنية في مخطط",
+    "bodyEn": "Add a Mermaid diagram (GitHub renders it) showing the main parts and how a request flows: browser → Angular → API → database. Add 3–5 short notes on decisions (\"Why SQLite\", \"Why signals instead of NgRx\").\n\nDecisions show how you think, which matters more than the list of technologies.",
+    "bodyAr": "أضف مخطط Mermaid (يعرضه GitHub) يُظهر الأجزاء الرئيسية وكيف يتدفق الطلب: المتصفح ← Angular ← الـ API ← قاعدة البيانات. وأضف من 3 إلى 5 ملاحظات قصيرة عن القرارات (\"لماذا SQLite\"، و\"لماذا signals بدل NgRx\").\n\nالقرارات تُظهر طريقة تفكيرك، وهذا أهم من قائمة التقنيات.",
+    "hintsEn": [
+     "Start with `flowchart LR` and a few nodes; keep it readable.",
+     "For bigger projects, put details in `docs/architecture.md` and link it."
+    ],
+    "hintsAr": [
+     "ابدأ بـ `flowchart LR` وبضع عقد، واجعله مقروءًا.",
+     "للمشاريع الأكبر ضع التفاصيل في `docs/architecture.md` واربطه."
+    ],
+    "key": "pro-project-docs-architecture"
+   },
+   {
+    "titleEn": "What you learned and the limits",
+    "titleAr": "ما تعلمته والقيود",
+    "bodyEn": "Write 3–5 honest bullets: problems you hit and how you solved them, what you would do differently, and known limitations. This section is often what interviewers ask about.\n\nHonesty about limits reads as maturity, not weakness.",
+    "bodyAr": "اكتب من 3 إلى 5 نقاط صادقة: المشاكل التي واجهتها وكيف حللتها، وما ستفعله بشكل مختلف، والقيود المعروفة. هذا القسم كثيرًا ما يسأل عنه من يجري المقابلات.\n\nالصدق بشأن القيود يُقرأ كنضج لا كضعف.",
+    "hintsEn": [
+     "Be specific: \"Fixed an N+1 query that made the list take 2 s\" beats \"Learned EF Core\".",
+     "Link to the commit or PR where you fixed it."
+    ],
+    "hintsAr": [
+     "كن محددًا: \"أصلحت استعلام N+1 كان يجعل القائمة تأخذ ثانيتين\" أفضل من \"تعلمت EF Core\".",
+     "اربط الـ commit أو طلب السحب الذي أصلحت فيه ذلك."
+    ],
+    "key": "pro-project-docs-learned"
+   },
+   {
+    "titleEn": "User-test your README",
+    "titleAr": "اختبر README مع مستخدم",
+    "bodyEn": "Ask a friend (developer or not) to run one project using only the README while you watch silently. Note every hesitation. Fix the README, then ask a second person.\n\nThis is the single most effective documentation technique.",
+    "bodyAr": "اطلب من صديق (مطور أو لا) أن يشغّل مشروعًا واحدًا باستخدام README فقط بينما تراقب بصمت. ودوّن كل تردد. وأصلح README، ثم اطلب من شخص ثانٍ.\n\nهذه أكثر تقنية فعالية في التوثيق.",
+    "hintsEn": [
+     "Do not help them — if you have to speak, the README failed.",
+     "Check links with a link checker extension."
+    ],
+    "hintsAr": [
+     "لا تساعده، فإن اضطررت للكلام فقد فشل README.",
+     "افحص الروابط بإضافة لفحص الروابط."
+    ],
+    "key": "pro-project-docs-test"
+   },
+   {
+    "titleEn": "Polish the profile",
+    "titleAr": "حسّن الملف الشخصي",
+    "bodyEn": "Add topics/tags to each repository, a short description and the website link in the repository \"About\" box. Make sure the pinned repositories and your profile README tell one consistent story.\n\nThen do the same for every new project from the start.",
+    "bodyAr": "أضف topics/tags لكل مستودع، ووصفًا قصيرًا، ورابط الموقع في مربع \"About\" للمستودع. وتأكد أن المستودعات المثبتة وملف README لملفك الشخصي تحكي قصة واحدة متسقة.\n\nثم افعل الشيء نفسه لكل مشروع جديد من البداية.",
+    "hintsEn": [
+     "Topics help people find your projects in GitHub search.",
+     "Archive old, unfinished repositories you do not want to show."
+    ],
+    "hintsAr": [
+     "الـ topics تساعد الناس على إيجاد مشاريعك في بحث GitHub.",
+     "أرشف المستودعات القديمة غير المكتملة التي لا تريد عرضها."
+    ],
+    "key": "pro-project-docs-finish"
+   }
+  ]
+ },
+ {
+  "key": "pro-job-ready-profile",
+  "skill": "Professional",
+  "level": "Beginner",
+  "hours": 5,
+  "titleEn": "Job-ready CV, LinkedIn and GitHub",
+  "titleAr": "سيرة ذاتية وLinkedIn وGitHub جاهزة للتوظيف",
+  "summaryEn": "Build a one-page developer CV targeted at real job ads, a LinkedIn profile and a GitHub profile that support it, and a tracker for your applications.",
+  "summaryAr": "ابنِ سيرة ذاتية من صفحة واحدة موجهة إلى إعلانات وظائف حقيقية، وملفًا على LinkedIn وملفًا على GitHub يدعمانها، ومتتبعًا لطلبات التوظيف.",
+  "techStack": "CV builder (in DevPath) · LinkedIn · GitHub · a spreadsheet or Notion",
+  "goalsEn": [
+   "Read job ads and extract what employers ask for",
+   "Write achievement-based bullets with numbers",
+   "Make CV, LinkedIn and GitHub consistent",
+   "Track applications and follow up professionally"
+  ],
+  "goalsAr": [
+   "قراءة إعلانات الوظائف واستخراج ما يطلبه أصحاب العمل",
+   "كتابة نقاط قائمة على الإنجازات مع أرقام",
+   "جعل السيرة الذاتية وLinkedIn وGitHub متسقة",
+   "تتبع طلبات التوظيف والمتابعة باحترافية"
+  ],
+  "requirementsEn": [
+   "Analyse 10 job ads for junior .NET / full-stack roles",
+   "A one-page CV (ATS-friendly) with projects, skills and education",
+   "Tailored versions for two different ads",
+   "LinkedIn: headline, about, experience/projects, skills, featured links",
+   "GitHub: pinned projects and profile README matching the CV",
+   "An application tracker with 10 entries"
+  ],
+  "requirementsAr": [
+   "حلّل 10 إعلانات وظائف لأدوار .NET أو full-stack للمبتدئين",
+   "سيرة ذاتية من صفحة واحدة (متوافقة مع ATS) فيها المشاريع والمهارات والتعليم",
+   "نسختان مخصصتان لإعلانين مختلفين",
+   "LinkedIn: العنوان، والنبذة، والخبرة/المشاريع، والمهارات، والروابط المميزة",
+   "GitHub: مشاريع مثبتة وملف README للملف الشخصي يطابقان السيرة الذاتية",
+   "متتبع طلبات فيه 10 مدخلات"
+  ],
+  "acceptanceEn": [
+   "Every project bullet starts with a verb and shows a result",
+   "The CV passes an ATS check (single column, real text, standard headings)",
+   "A friend can find your GitHub and projects from the CV in one click"
+  ],
+  "acceptanceAr": [
+   "كل نقطة عن مشروع تبدأ بفعل وتُظهر نتيجة",
+   "السيرة الذاتية تجتاز فحص ATS (عمود واحد، ونص حقيقي، وعناوين معيارية)",
+   "يستطيع صديق إيجاد GitHub ومشاريعك من السيرة الذاتية بنقرة واحدة"
+  ],
+  "stretchEn": [
+   "Write a short cover letter template",
+   "Ask two people for feedback on the CV",
+   "Record a 60-second self-introduction video"
+  ],
+  "stretchAr": [
+   "اكتب قالب خطاب تقديم قصيرًا",
+   "اطلب من شخصين ملاحظاتهما على السيرة الذاتية",
+   "سجّل فيديو تقديم ذاتي مدته 60 ثانية"
+  ],
+  "steps": [
+   {
+    "titleEn": "Analyse real job ads",
+    "titleAr": "حلّل إعلانات وظائف حقيقية",
+    "bodyEn": "Collect 10 ads for the role you want (LinkedIn, Wuzzuf, Bayt, Indeed). In a table, list the skills and keywords each one asks for and count how often each appears.\n\nThe top 10 keywords guide your CV, your projects and what to learn next.",
+    "bodyAr": "اجمع 10 إعلانات للدور الذي تريده (من LinkedIn وWuzzuf وBayt وIndeed). وفي جدول اكتب المهارات والكلمات المفتاحية التي يطلبها كل إعلان، وعُدّ كم مرة تظهر كل منها.\n\nأكثر 10 كلمات تكرارًا توجّه سيرتك الذاتية ومشاريعك وما ستتعلمه بعد ذلك.",
+    "hintsEn": [
+     "Separate \"required\" from \"nice to have\".",
+     "DevPath's market demand data shows the same idea for the whole roadmap."
+    ],
+    "hintsAr": [
+     "افصل \"المطلوب\" عن \"الميزة الإضافية\".",
+     "بيانات الطلب في السوق في DevPath تُظهر الفكرة نفسها للخارطة كلها."
+    ],
+    "key": "pro-job-ready-profile-ads"
+   },
+   {
+    "titleEn": "Gather your material",
+    "titleAr": "اجمع مادتك",
+    "bodyEn": "List your projects, courses, education, languages and any work or volunteering. For each project write: the problem, what you built, the technologies, and one measurable result (users, speed, tests, size).\n\nRaw material first; wording comes later.",
+    "bodyAr": "اكتب مشاريعك، ودوراتك، وتعليمك، ولغاتك، وأي عمل أو تطوع. ولكل مشروع اكتب: المشكلة، وما بنيته، والتقنيات، ونتيجة واحدة قابلة للقياس (المستخدمون، أو السرعة، أو الاختبارات، أو الحجم).\n\nالمادة الخام أولًا، والصياغة لاحقًا.",
+    "hintsEn": [
+     "Numbers can be small: \"40 integration tests\", \"loads in 300 ms\", \"used by 12 classmates\".",
+     "Include the DevPath projects you finished."
+    ],
+    "hintsAr": [
+     "الأرقام يمكن أن تكون صغيرة: \"40 اختبار تكامل\"، و\"يُحمَّل في 300 مللي ثانية\"، و\"يستخدمه 12 زميلًا\".",
+     "ضمّن مشاريع DevPath التي أنهيتها."
+    ],
+    "key": "pro-job-ready-profile-content"
+   },
+   {
+    "titleEn": "Write achievement bullets",
+    "titleAr": "اكتب نقاط الإنجازات",
+    "bodyEn": "Use the pattern: verb + what + how + result. \"Built a REST API for a bookstore with ASP.NET Core and EF Core, covering 25 endpoints with integration tests.\" \"Reduced page load from 2 s to 300 ms by fixing N+1 queries.\"\n\nTwo to four bullets per project, the most impressive first.",
+    "bodyAr": "استخدم النمط: فعل + ماذا + كيف + النتيجة. \"بنيت REST API لمتجر كتب بـ ASP.NET Core وEF Core، وغطيت 25 نقطة باختبارات تكامل.\" \"خفّضت زمن تحميل الصفحة من ثانيتين إلى 300 مللي ثانية بإصلاح استعلامات N+1.\"\n\nمن نقطتين إلى أربع لكل مشروع، والأكثر إثارة للإعجاب أولًا.",
+    "hintsEn": [
+     "Avoid \"responsible for\" and \"helped with\" — say what you did.",
+     "Use the keywords from your job-ad table naturally."
+    ],
+    "hintsAr": [
+     "تجنب \"مسؤول عن\" و\"ساعدت في\"، وقل ما فعلته.",
+     "استخدم الكلمات المفتاحية من جدول الإعلانات بشكل طبيعي."
+    ],
+    "key": "pro-job-ready-profile-bullets"
+   },
+   {
+    "titleEn": "Build the one-page CV",
+    "titleAr": "ابنِ السيرة الذاتية من صفحة واحدة",
+    "bodyEn": "Use DevPath's CV builder (or any clean template): name and links (email, phone, GitHub, LinkedIn, portfolio), a 2–3 line summary for the target role, skills grouped (Languages, Frameworks, Databases, Tools), projects, education, languages.\n\nSingle column, standard headings and real text keep ATS systems happy.",
+    "bodyAr": "استخدم منشئ السير الذاتية في DevPath (أو أي قالب نظيف): الاسم والروابط (البريد، والهاتف، وGitHub، وLinkedIn، ومعرض الأعمال)، وملخص من سطرين إلى ثلاثة للدور المستهدف، والمهارات مجمّعة (اللغات، والأطر، وقواعد البيانات، والأدوات)، والمشاريع، والتعليم، واللغات.\n\nعمود واحد، وعناوين معيارية، ونص حقيقي، تُرضي أنظمة ATS.",
+    "hintsEn": [
+     "Run the CV builder's ATS check and fix every warning.",
+     "Export to PDF and check the text can be selected and copied."
+    ],
+    "hintsAr": [
+     "شغّل فحص ATS في منشئ السير الذاتية وأصلح كل تحذير.",
+     "صدّرها إلى PDF وتحقق أن النص قابل للتحديد والنسخ."
+    ],
+    "key": "pro-job-ready-profile-cv"
+   },
+   {
+    "titleEn": "Tailor it to two ads",
+    "titleAr": "خصّصها لإعلانين",
+    "bodyEn": "Pick two different ads. For each, make a copy of the CV: adjust the summary to the role, reorder skills to match their keywords, and put the most relevant project first. Keep everything truthful.\n\nTailoring takes 15 minutes and noticeably increases replies.",
+    "bodyAr": "اختر إعلانين مختلفين. ولكل منهما اعمل نسخة من السيرة الذاتية: عدّل الملخص ليناسب الدور، وأعد ترتيب المهارات لتطابق كلماتهم المفتاحية، وضع المشروع الأكثر صلة أولًا. وأبقِ كل شيء صادقًا.\n\nالتخصيص يستغرق 15 دقيقة ويزيد الردود بشكل ملحوظ.",
+    "hintsEn": [
+     "Name files clearly: `Firstname-Lastname-NET-Developer.pdf`.",
+     "Never add a skill you could not discuss in an interview."
+    ],
+    "hintsAr": [
+     "سمِّ الملفات بوضوح: `Firstname-Lastname-NET-Developer.pdf`.",
+     "لا تضف مهارة لا تستطيع مناقشتها في مقابلة أبدًا."
+    ],
+    "key": "pro-job-ready-profile-tailor"
+   },
+   {
+    "titleEn": "LinkedIn profile",
+    "titleAr": "ملف LinkedIn",
+    "bodyEn": "Headline: role + key stack (\"Junior .NET Developer | ASP.NET Core · Angular · SQL Server\"). About: 3 short paragraphs — what you do, what you built, what you are looking for. Add projects with links, skills (top 5 pinned), a professional photo and a banner. Turn on \"Open to work\" for recruiters.\n\nConnect with people at companies from your job-ad list.",
+    "bodyAr": "العنوان: الدور + التقنيات الأساسية (\"Junior .NET Developer | ASP.NET Core · Angular · SQL Server\"). والنبذة: 3 فقرات قصيرة، ماذا تفعل، وماذا بنيت، وما الذي تبحث عنه. وأضف المشاريع مع الروابط، والمهارات (أعلى 5 مثبتة)، وصورة احترافية، وصورة غلاف. وفعّل \"Open to work\" لمسؤولي التوظيف.\n\nتواصل مع أشخاص في الشركات الموجودة في قائمة إعلاناتك.",
+    "hintsEn": [
+     "Add a personal message when you send connection requests.",
+     "Post one short update when you finish a project."
+    ],
+    "hintsAr": [
+     "أضف رسالة شخصية عند إرسال طلبات التواصل.",
+     "انشر تحديثًا قصيرًا عندما تنهي مشروعًا."
+    ],
+    "key": "pro-job-ready-profile-linkedin"
+   },
+   {
+    "titleEn": "GitHub to match",
+    "titleAr": "GitHub متطابق",
+    "bodyEn": "Pin the projects your CV mentions, make sure each has a strong README (see the \"Document your projects\" project), and update your profile README with the same headline and links.\n\nA recruiter who clicks your GitHub from the CV should see exactly what the CV promised.",
+    "bodyAr": "ثبّت المشاريع التي تذكرها سيرتك الذاتية، وتأكد أن لكل منها README قويًا (انظر مشروع \"وثّق مشاريعك\")، وحدّث ملف README لملفك الشخصي بالعنوان والروابط نفسها.\n\nمسؤول التوظيف الذي يضغط على GitHub من السيرة الذاتية يجب أن يرى بالضبط ما وعدت به السيرة.",
+    "hintsEn": [
+     "Green squares are less important than 3 finished, well-documented projects.",
+     "Add the live demo link to each pinned project's About box."
+    ],
+    "hintsAr": [
+     "المربعات الخضراء أقل أهمية من 3 مشاريع مكتملة وموثقة جيدًا.",
+     "أضف رابط العرض المباشر إلى مربع About لكل مشروع مثبت."
+    ],
+    "key": "pro-job-ready-profile-github"
+   },
+   {
+    "titleEn": "Apply and track",
+    "titleAr": "قدّم وتتبّع",
+    "bodyEn": "Create a tracker (spreadsheet or Notion) with company, role, link, date applied, contact, status, next step and notes. Apply to 10 suitable roles with tailored CVs. Follow up politely after 7–10 days.\n\nReview the tracker weekly: which kinds of applications get replies? Adjust.",
+    "bodyAr": "أنشئ متتبعًا (جدول بيانات أو Notion) فيه الشركة، والدور، والرابط، وتاريخ التقديم، وجهة التواصل، والحالة، والخطوة التالية، والملاحظات. وقدّم على 10 أدوار مناسبة بسير ذاتية مخصصة. وتابع بأدب بعد 7 إلى 10 أيام.\n\nراجع المتتبع أسبوعيًا: أي أنواع الطلبات تحصل على ردود؟ ثم عدّل.",
+    "hintsEn": [
+     "Referrals from people you know get far more replies than cold applications.",
+     "Keep notes from every interview in the tracker; patterns appear quickly."
+    ],
+    "hintsAr": [
+     "الترشيحات من أشخاص تعرفهم تحصل على ردود أكثر بكثير من التقديم البارد.",
+     "احتفظ بملاحظات كل مقابلة في المتتبع، فالأنماط تظهر بسرعة."
+    ],
+    "key": "pro-job-ready-profile-finish"
+   }
+  ]
+ },
+ {
+  "key": "pro-open-source",
+  "skill": "Professional",
+  "level": "Intermediate",
+  "hours": 12,
+  "titleEn": "Your first open-source contributions",
+  "titleAr": "أول مساهماتك في المصادر المفتوحة",
+  "summaryEn": "Contribute to real open-source projects: find a good first issue, understand an unfamiliar codebase, follow contribution rules, open a pull request, respond to review and get it merged.",
+  "summaryAr": "ساهم في مشاريع مصادر مفتوحة حقيقية: جد مشكلة مناسبة للمبتدئين، وافهم قاعدة كود غير مألوفة، واتبع قواعد المساهمة، وافتح طلب سحب، واستجب للمراجعة حتى يُدمج.",
+  "techStack": "Git · GitHub · .NET or Angular open-source projects",
+  "goalsEn": [
+   "Navigate and understand an unfamiliar codebase",
+   "Communicate in issues and PRs with maintainers",
+   "Follow a project's contribution and code style rules",
+   "Handle code review feedback professionally"
+  ],
+  "goalsAr": [
+   "التنقل في قاعدة كود غير مألوفة وفهمها",
+   "التواصل في المشكلات وطلبات السحب مع المشرفين",
+   "اتباع قواعد المساهمة وأسلوب الكود في المشروع",
+   "التعامل مع ملاحظات مراجعة الكود باحترافية"
+  ],
+  "requirementsEn": [
+   "Choose 2–3 active projects in your stack",
+   "Make one documentation contribution and at least one code contribution",
+   "Each PR links an issue, follows CONTRIBUTING.md and includes tests when code changes",
+   "Respond to all review comments",
+   "Write a short log of what you did and learned"
+  ],
+  "requirementsAr": [
+   "اختر 2 أو 3 مشاريع نشطة في تقنياتك",
+   "قدّم مساهمة توثيق ومساهمة كود واحدة على الأقل",
+   "كل طلب سحب يربط مشكلة، ويتبع CONTRIBUTING.md، ويتضمن اختبارات عند تغيير الكود",
+   "استجب لكل تعليقات المراجعة",
+   "اكتب سجلًا قصيرًا لما فعلته وتعلمته"
+  ],
+  "acceptanceEn": [
+   "At least one PR is merged (or under active review with positive feedback)",
+   "You asked before working on an issue and got a go-ahead",
+   "The project's CI passes on your PR"
+  ],
+  "acceptanceAr": [
+   "طلب سحب واحد على الأقل مدموج (أو قيد مراجعة نشطة بملاحظات إيجابية)",
+   "سألت قبل العمل على مشكلة وحصلت على موافقة",
+   "CI الخاص بالمشروع ينجح على طلب السحب الخاص بك"
+  ],
+  "stretchEn": [
+   "Help triage issues by reproducing bugs",
+   "Review someone else's PR in the project",
+   "Contribute to DevPath itself or another learning project"
+  ],
+  "stretchAr": [
+   "ساعد في فرز المشكلات بإعادة إنتاج الأخطاء",
+   "راجع طلب سحب لشخص آخر في المشروع",
+   "ساهم في DevPath نفسه أو في مشروع تعليمي آخر"
+  ],
+  "steps": [
+   {
+    "titleEn": "Find a welcoming project",
+    "titleAr": "جد مشروعًا مرحّبًا",
+    "bodyEn": "Search GitHub for labels `good first issue` or `help wanted` in C#, TypeScript or Angular projects (goodfirstissue.dev and up-for-grabs.net help). Prefer projects with recent commits, a CONTRIBUTING.md, responsive maintainers and a code of conduct.\n\nLibraries you already use are the best choice: you understand the user side.",
+    "bodyAr": "ابحث في GitHub عن التسميات `good first issue` أو `help wanted` في مشاريع C# أو TypeScript أو Angular (والموقعان goodfirstissue.dev وup-for-grabs.net يساعدان). وفضّل المشاريع ذات commits حديثة، وملف CONTRIBUTING.md، ومشرفين متجاوبين، ومدونة سلوك.\n\nالمكتبات التي تستخدمها أصلًا هي أفضل خيار، فأنت تفهم جانب المستخدم.",
+    "hintsEn": [
+     "Look at how maintainers reply to other newcomers before choosing.",
+     "Avoid giant projects for the very first PR; medium ones review faster."
+    ],
+    "hintsAr": [
+     "انظر كيف يرد المشرفون على القادمين الجدد الآخرين قبل أن تختار.",
+     "تجنب المشاريع الضخمة في أول طلب سحب، فالمتوسطة تراجع أسرع."
+    ],
+    "key": "pro-open-source-find"
+   },
+   {
+    "titleEn": "Build and test it locally",
+    "titleAr": "ابنِه واختبره محليًا",
+    "bodyEn": "Fork the repository, clone your fork, and follow CONTRIBUTING.md to build and run the tests. Note anything in the setup instructions that was wrong or missing.\n\nIf the setup docs are confusing, fixing them is a perfect first contribution.",
+    "bodyAr": "انسخ المستودع (fork)، واستنسخ نسختك، واتبع CONTRIBUTING.md لتبنيه وتشغّل الاختبارات. ودوّن أي شيء في تعليمات الإعداد كان خاطئًا أو ناقصًا.\n\nإذا كانت وثائق الإعداد مربكة فإصلاحها مساهمة أولى مثالية.",
+    "hintsEn": [
+     "Add the original as `upstream`: `git remote add upstream <url>`.",
+     "Keep your fork's main clean; work on branches."
+    ],
+    "hintsAr": [
+     "أضف المستودع الأصلي كـ `upstream`: `git remote add upstream <url>`.",
+     "أبقِ main في نسختك نظيفًا، واعمل على فروع."
+    ],
+    "key": "pro-open-source-build-locally"
+   },
+   {
+    "titleEn": "A documentation contribution",
+    "titleAr": "مساهمة في التوثيق",
+    "bodyEn": "Start small: fix unclear docs, add a missing example, correct typos in a meaningful page. Open a PR with a clear title and description, following the project's PR template.\n\nIt teaches you the project's workflow with low risk.",
+    "bodyAr": "ابدأ صغيرًا: أصلح توثيقًا غير واضح، أو أضف مثالًا ناقصًا، أو صحّح أخطاء إملائية في صفحة مهمة. وافتح طلب سحب بعنوان ووصف واضحين، متبعًا قالب طلبات السحب في المشروع.\n\nهذا يعلّمك سير عمل المشروع بمخاطرة منخفضة.",
+    "hintsEn": [
+     "Some projects require signing a CLA — do it when the bot asks.",
+     "One focused change per PR."
+    ],
+    "hintsAr": [
+     "بعض المشاريع تشترط توقيع CLA، فوقّعه عندما يطلب البوت ذلك.",
+     "تغيير واحد مركّز لكل طلب سحب."
+    ],
+    "key": "pro-open-source-docs-pr"
+   },
+   {
+    "titleEn": "Claim a code issue",
+    "titleAr": "اطلب العمل على مشكلة كود",
+    "bodyEn": "Pick a small code issue. Comment that you would like to work on it and briefly how you plan to fix it; wait for a maintainer's go-ahead. Reproduce the bug first, or understand the feature request fully.\n\nAsking first avoids duplicate work and wasted effort.",
+    "bodyAr": "اختر مشكلة كود صغيرة. واكتب تعليقًا تقول فيه إنك تود العمل عليها، وكيف تخطط لإصلاحها باختصار، وانتظر موافقة أحد المشرفين. وأعد إنتاج الخطأ أولًا، أو افهم طلب الميزة بالكامل.\n\nالسؤال أولًا يتجنب العمل المكرر والجهد الضائع.",
+    "hintsEn": [
+     "A failing test that reproduces the bug is the best way to \"understand\" it.",
+     "If nobody answers in a week, pick another issue — maintainers are busy volunteers."
+    ],
+    "hintsAr": [
+     "الاختبار الفاشل الذي يعيد إنتاج الخطأ هو أفضل طريقة \"لفهمه\".",
+     "إن لم يرد أحد خلال أسبوع فاختر مشكلة أخرى، فالمشرفون متطوعون مشغولون."
+    ],
+    "key": "pro-open-source-claim"
+   },
+   {
+    "titleEn": "Understand the codebase",
+    "titleAr": "افهم قاعدة الكود",
+    "bodyEn": "Find the relevant code: search for error messages or names from the issue, follow the call chain with \"Go to definition\", read the tests around it, and look at `git log -p` of the files for context.\n\nWrite a short note to yourself: where the behaviour lives and how it is tested.",
+    "bodyAr": "جد الكود المعني: ابحث عن رسائل الخطأ أو الأسماء من المشكلة، واتبع سلسلة الاستدعاءات بـ \"Go to definition\"، واقرأ الاختبارات المحيطة، وانظر إلى `git log -p` للملفات لتفهم السياق.\n\nاكتب ملاحظة قصيرة لنفسك: أين يعيش السلوك، وكيف يُختبر.",
+    "hintsEn": [
+     "Debug a test to see the real flow at runtime.",
+     "Match the existing style exactly, even if you would write it differently."
+    ],
+    "hintsAr": [
+     "شغّل اختبارًا بالمصحح لترى التدفق الحقيقي وقت التشغيل.",
+     "طابق الأسلوب الموجود تمامًا، حتى لو كنت ستكتبه بطريقة مختلفة."
+    ],
+    "key": "pro-open-source-navigate"
+   },
+   {
+    "titleEn": "Make the change and open the PR",
+    "titleAr": "نفّذ التغيير وافتح طلب السحب",
+    "bodyEn": "Write a failing test, fix the code, run the full test suite and the linters. Rebase on the latest upstream main. Open the PR: link the issue (\"Fixes #123\"), explain the cause and the fix, and mention how you tested.\n\nKeep the diff minimal — no unrelated formatting changes.",
+    "bodyAr": "اكتب اختبارًا فاشلًا، وأصلح الكود، وشغّل مجموعة الاختبارات كاملة وأدوات الفحص. وأعد البناء فوق أحدث main في upstream. ثم افتح طلب السحب: اربط المشكلة (\"Fixes #123\")، واشرح السبب والإصلاح، واذكر كيف اختبرت.\n\nأبقِ الفرق في أدنى حد، بلا تغييرات تنسيق غير مرتبطة.",
+    "hintsEn": [
+     "`git fetch upstream && git rebase upstream/main` before pushing.",
+     "Check the CI on your PR and fix failures yourself."
+    ],
+    "hintsAr": [
+     "`git fetch upstream && git rebase upstream/main` قبل الرفع.",
+     "تحقق من CI على طلب السحب وأصلح الإخفاقات بنفسك."
+    ],
+    "key": "pro-open-source-code-pr"
+   },
+   {
+    "titleEn": "Respond to review",
+    "titleAr": "استجب للمراجعة",
+    "bodyEn": "Reply to every comment: either make the change or explain your reasoning politely and ask. Push follow-up commits (or squash if the project prefers), then re-request review. Thank reviewers.\n\nReview comments are about the code, not about you — they are free mentoring.",
+    "bodyAr": "رد على كل تعليق: إما أن تنفّذ التغيير، أو تشرح منطقك بأدب وتسأل. وارفع commits المتابعة (أو اضغطها إن كان المشروع يفضل ذلك)، ثم أعد طلب المراجعة. واشكر المراجعين.\n\nتعليقات المراجعة عن الكود لا عنك، وهي إرشاد مجاني.",
+    "hintsEn": [
+     "If a change is requested you do not understand, ask for an example.",
+     "Be patient: reviews can take days or weeks."
+    ],
+    "hintsAr": [
+     "إذا طُلب تغيير لا تفهمه فاطلب مثالًا.",
+     "كن صبورًا: المراجعات قد تأخذ أيامًا أو أسابيع."
+    ],
+    "key": "pro-open-source-review"
+   },
+   {
+    "titleEn": "Log and share",
+    "titleAr": "سجّل وشارك",
+    "bodyEn": "Write a CONTRIBUTIONS.md in your profile repository: project, link to each PR, what the change was, what you learned. Add the merged contributions to your CV and LinkedIn.\n\nThen keep going: a second and third contribution to the same project build real relationships.",
+    "bodyAr": "اكتب CONTRIBUTIONS.md في مستودع ملفك الشخصي: المشروع، ورابط كل طلب سحب، وما كان التغيير، وما تعلمته. وأضف المساهمات المدموجة إلى سيرتك الذاتية وLinkedIn.\n\nثم استمر: المساهمة الثانية والثالثة في المشروع نفسه تبني علاقات حقيقية.",
+    "hintsEn": [
+     "\"Contributed a fix to <project> used by thousands\" is a strong CV line.",
+     "Maintainers sometimes become references or referrals."
+    ],
+    "hintsAr": [
+     "\"ساهمت بإصلاح في <المشروع> الذي يستخدمه الآلاف\" سطر قوي في السيرة الذاتية.",
+     "المشرفون أحيانًا يصبحون مرجعًا لك أو يرشحونك لوظائف."
+    ],
+    "key": "pro-open-source-finish"
+   }
+  ]
+ },
+ {
+  "key": "pro-agile-sprint",
+  "skill": "Professional",
+  "level": "Intermediate",
+  "hours": 10,
+  "titleEn": "Run a feature like a real team sprint",
+  "titleAr": "نفّذ ميزة كسباق عمل لفريق حقيقي",
+  "summaryEn": "Plan and deliver a new feature for one of your projects the way teams do: user stories with acceptance criteria, estimation, a sprint board, daily notes, a demo and a retrospective.",
+  "summaryAr": "خطّط لميزة جديدة في أحد مشاريعك وسلّمها كما تفعل الفرق: قصص مستخدم بمعايير قبول، وتقدير، ولوحة sprint، وملاحظات يومية، وعرض، واجتماع مراجعة بأثر رجعي.",
+  "techStack": "GitHub Issues & Projects (or Jira/Trello) · Markdown",
+  "goalsEn": [
+   "Turn a vague idea into user stories with acceptance criteria",
+   "Split work into small, estimable tasks",
+   "Estimate, plan a sprint and track progress honestly",
+   "Demo your work and run a useful retrospective"
+  ],
+  "goalsAr": [
+   "تحويل فكرة غامضة إلى قصص مستخدم بمعايير قبول",
+   "تقسيم العمل إلى مهام صغيرة قابلة للتقدير",
+   "التقدير والتخطيط للـ sprint وتتبع التقدم بصدق",
+   "عرض عملك وإدارة اجتماع مراجعة مفيد"
+  ],
+  "requirementsEn": [
+   "A product brief: problem, users, goal, out of scope",
+   "5–8 user stories in \"As a … I want … so that …\" form with Given/When/Then criteria",
+   "Stories split into tasks of at most one day, estimated",
+   "A 2-week sprint board with a goal; daily 3-line notes",
+   "A demo recording or written demo with screenshots",
+   "A retrospective with 3 concrete actions"
+  ],
+  "requirementsAr": [
+   "ملخص منتج: المشكلة، والمستخدمون، والهدف، وما هو خارج النطاق",
+   "من 5 إلى 8 قصص مستخدم بصيغة \"بصفتي … أريد … لكي …\" مع معايير Given/When/Then",
+   "القصص مقسمة إلى مهام لا تتجاوز يومًا واحدًا، ومقدّرة",
+   "لوحة sprint لأسبوعين بهدف، وملاحظات يومية من 3 أسطر",
+   "تسجيل للعرض أو عرض مكتوب مع صور",
+   "اجتماع مراجعة بأثر رجعي مع 3 إجراءات محددة"
+  ],
+  "acceptanceEn": [
+   "Every story has testable acceptance criteria",
+   "You can compare estimated vs actual time per task",
+   "The sprint goal was met, or the retrospective explains why not",
+   "The retrospective actions are specific (\"write the test first for API tasks\"), not vague"
+  ],
+  "acceptanceAr": [
+   "كل قصة لها معايير قبول قابلة للاختبار",
+   "تستطيع مقارنة الوقت المقدّر بالفعلي لكل مهمة",
+   "تحقق هدف الـ sprint، أو يشرح اجتماع المراجعة سبب عدم تحققه",
+   "إجراءات المراجعة محددة (\"اكتب الاختبار أولًا لمهام الـ API\")، لا غامضة"
+  ],
+  "stretchEn": [
+   "Do it with a friend as a two-person team",
+   "Add a burndown chart",
+   "Run a second sprint and compare velocity"
+  ],
+  "stretchAr": [
+   "افعلها مع صديق كفريق من شخصين",
+   "أضف مخطط burndown",
+   "نفّذ sprint ثانيًا وقارن السرعة"
+  ],
+  "steps": [
+   {
+    "titleEn": "Write a product brief",
+    "titleAr": "اكتب ملخص المنتج",
+    "bodyEn": "Choose a meaningful feature for one of your projects (e.g. \"recurring transactions\" for the budget planner). On one page write: the problem, who has it, the goal, how you will know it worked, and what is out of scope.\n\n\"Out of scope\" protects you from endless work.",
+    "bodyAr": "اختر ميزة ذات معنى لأحد مشاريعك (مثل \"العمليات المتكررة\" لمخطط الميزانية). وفي صفحة واحدة اكتب: المشكلة، ومن يعاني منها، والهدف، وكيف ستعرف أنها نجحت، وما هو خارج النطاق.\n\n\"خارج النطاق\" يحميك من العمل الذي لا ينتهي.",
+    "hintsEn": [
+     "If you cannot say who needs it, pick another feature.",
+     "Keep the brief in the repository as docs/brief.md."
+    ],
+    "hintsAr": [
+     "إن لم تستطع قول من يحتاجها فاختر ميزة أخرى.",
+     "احتفظ بالملخص في المستودع باسم docs/brief.md."
+    ],
+    "key": "pro-agile-sprint-brief"
+   },
+   {
+    "titleEn": "User stories and acceptance criteria",
+    "titleAr": "قصص المستخدم ومعايير القبول",
+    "bodyEn": "Write 5–8 stories: \"As a user who pays rent monthly, I want to mark a transaction as recurring so that I do not enter it every month.\" For each, write criteria in Given/When/Then: \"Given a monthly recurring rent of 3000, when a new month starts, then a rent transaction is created automatically.\"\n\nCriteria are what you will test and demo.",
+    "bodyAr": "اكتب من 5 إلى 8 قصص: \"بصفتي مستخدمًا يدفع الإيجار شهريًا، أريد تعليم العملية كمتكررة لكي لا أُدخلها كل شهر.\" ولكل قصة اكتب المعايير بصيغة Given/When/Then: \"بفرض وجود إيجار شهري متكرر قيمته 3000، عندما يبدأ شهر جديد، فإن عملية إيجار تُنشأ تلقائيًا.\"\n\nالمعايير هي ما ستختبره وتعرضه.",
+    "hintsEn": [
+     "Use INVEST: Independent, Negotiable, Valuable, Estimable, Small, Testable.",
+     "Put each story in a GitHub issue with the criteria as a checklist."
+    ],
+    "hintsAr": [
+     "استخدم INVEST: مستقلة، وقابلة للتفاوض، وذات قيمة، وقابلة للتقدير، وصغيرة، وقابلة للاختبار.",
+     "ضع كل قصة في issue على GitHub مع المعايير كقائمة تحقق."
+    ],
+    "key": "pro-agile-sprint-stories"
+   },
+   {
+    "titleEn": "Split into tasks",
+    "titleAr": "قسّمها إلى مهام",
+    "bodyEn": "Break each story into technical tasks of at most one day: \"add RecurringRule entity + migration\", \"API endpoint to create a rule\", \"background job that materialises transactions\", \"UI toggle in the form\", \"tests\". Vertical slices (UI + API + DB for one small behaviour) are better than layers.\n\nSmall tasks make progress visible and estimates better.",
+    "bodyAr": "قسّم كل قصة إلى مهام تقنية لا تتجاوز يومًا واحدًا: \"أضف كيان RecurringRule مع migration\"، و\"نقطة API لإنشاء قاعدة\"، و\"مهمة خلفية تُنشئ العمليات\"، و\"مفتاح تبديل في النموذج\"، و\"الاختبارات\". والشرائح الرأسية (الواجهة + الـ API + قاعدة البيانات لسلوك صغير واحد) أفضل من الطبقات.\n\nالمهام الصغيرة تجعل التقدم مرئيًا والتقديرات أفضل.",
+    "hintsEn": [
+     "If a task feels bigger than a day, split again.",
+     "Include testing and documentation tasks — they are real work."
+    ],
+    "hintsAr": [
+     "إذا بدت مهمة أكبر من يوم فقسّمها مرة أخرى.",
+     "ضمّن مهام الاختبار والتوثيق، فهي عمل حقيقي."
+    ],
+    "key": "pro-agile-sprint-split"
+   },
+   {
+    "titleEn": "Estimate",
+    "titleAr": "قدّر",
+    "bodyEn": "Estimate each task in hours (or story points with planning poker if you have a partner). Write the estimate on the task. Also add up your available hours for the next two weeks honestly.\n\nPlan only about 70% of your available time — the rest goes to surprises.",
+    "bodyAr": "قدّر كل مهمة بالساعات (أو بنقاط القصص مع planning poker إن كان لديك شريك). واكتب التقدير على المهمة. واجمع أيضًا بصدق الساعات المتاحة لك في الأسبوعين القادمين.\n\nخطّط لنحو 70% فقط من وقتك المتاح، والباقي للمفاجآت.",
+    "hintsEn": [
+     "Compare with similar past work if you have any.",
+     "Estimates are guesses — the goal is to learn to guess better, not to be exact."
+    ],
+    "hintsAr": [
+     "قارن بعمل سابق مشابه إن وُجد.",
+     "التقديرات تخمينات، والهدف أن تتعلم التخمين بشكل أفضل لا أن تكون دقيقًا."
+    ],
+    "key": "pro-agile-sprint-estimate"
+   },
+   {
+    "titleEn": "Plan the sprint",
+    "titleAr": "خطّط للـ sprint",
+    "bodyEn": "Write one sprint goal (\"Users can create monthly recurring transactions and see them generated\"). Pull the highest-value stories that fit your capacity into the sprint on a GitHub Project board (Todo / In progress / Review / Done). Limit work in progress to 2 tasks.\n\nThe goal helps you decide what to drop when time runs short.",
+    "bodyAr": "اكتب هدفًا واحدًا للـ sprint (\"يستطيع المستخدمون إنشاء عمليات شهرية متكررة ورؤيتها تتولد\"). واسحب القصص الأعلى قيمة التي تناسب طاقتك إلى الـ sprint على لوحة GitHub Project (Todo وIn progress وReview وDone). وحدّد العمل الجاري بمهمتين.\n\nالهدف يساعدك على تقرير ما تحذفه عندما يضيق الوقت.",
+    "hintsEn": [
+     "Add an \"Estimate\" and \"Actual\" number field to the project items.",
+     "Use an iteration field for the sprint dates."
+    ],
+    "hintsAr": [
+     "أضف حقلي أرقام \"Estimate\" و\"Actual\" لعناصر المشروع.",
+     "استخدم حقل iteration لتواريخ الـ sprint."
+    ],
+    "key": "pro-agile-sprint-plan"
+   },
+   {
+    "titleEn": "Work the sprint with daily notes",
+    "titleAr": "نفّذ الـ sprint مع ملاحظات يومية",
+    "bodyEn": "Each working day write three lines in `docs/daily.md`: what I did, what I will do, what blocks me. Move cards honestly. Each task goes through a PR, even if you review it yourself after a break.\n\nWhen something takes twice as long as estimated, note why — that is the data for the retrospective.",
+    "bodyAr": "في كل يوم عمل اكتب ثلاثة أسطر في `docs/daily.md`: ما أنجزته، وما سأفعله، وما يعيقني. وحرّك البطاقات بصدق. وكل مهمة تمر عبر طلب سحب، حتى لو راجعتها بنفسك بعد استراحة.\n\nعندما يستغرق شيء ضعف المقدّر دوّن السبب، فهذه بيانات اجتماع المراجعة.",
+    "hintsEn": [
+     "If a blocker lasts more than a day, change the plan instead of waiting.",
+     "Record the actual hours on each task when you close it."
+    ],
+    "hintsAr": [
+     "إذا استمر عائق أكثر من يوم فغيّر الخطة بدل الانتظار.",
+     "سجّل الساعات الفعلية لكل مهمة عند إغلاقها."
+    ],
+    "key": "pro-agile-sprint-execute"
+   },
+   {
+    "titleEn": "Demo",
+    "titleAr": "العرض",
+    "bodyEn": "At the end, demo the stories against their acceptance criteria: record a 3–5 minute video or write a demo page with screenshots, showing each criterion working. Show only what is done, and say what was not finished.\n\nA demo to a friend or a study group is even better — note their feedback.",
+    "bodyAr": "في النهاية اعرض القصص مقابل معايير قبولها: سجّل فيديو من 3 إلى 5 دقائق أو اكتب صفحة عرض بالصور، تُظهر كل معيار يعمل. واعرض ما اكتمل فقط، وقل ما لم يكتمل.\n\nالعرض أمام صديق أو مجموعة دراسة أفضل، فدوّن ملاحظاتهم.",
+    "hintsEn": [
+     "Start the demo with the problem from the brief, not with code.",
+     "Keep the demo recording link in the README."
+    ],
+    "hintsAr": [
+     "ابدأ العرض بالمشكلة من الملخص لا بالكود.",
+     "احتفظ برابط تسجيل العرض في README."
+    ],
+    "key": "pro-agile-sprint-demo"
+   },
+   {
+    "titleEn": "Retrospective",
+    "titleAr": "اجتماع المراجعة بأثر رجعي",
+    "bodyEn": "Answer: what went well, what did not, what will I change. Compare estimated vs actual per task and find patterns (e.g. UI tasks always take 2×). Pick 3 specific actions for next time and write them at the top of the next sprint.\n\nPublish the brief, the board screenshot, the daily notes summary, the demo and the retrospective in the README.",
+    "bodyAr": "أجب: ما الذي سار جيدًا، وما الذي لم يسر، وما الذي سأغيّره. وقارن المقدّر بالفعلي لكل مهمة وجد الأنماط (مثل أن مهام الواجهة تستغرق دائمًا الضعف). واختر 3 إجراءات محددة للمرة القادمة واكتبها في أعلى الـ sprint التالي.\n\nانشر الملخص، وصورة اللوحة، وخلاصة الملاحظات اليومية، والعرض، واجتماع المراجعة في README.",
+    "hintsEn": [
+     "\"Communicate better\" is not an action; \"post a status note every evening\" is.",
+     "This whole package is a great story for \"Tell me how you work\" interview questions."
+    ],
+    "hintsAr": [
+     "\"التواصل بشكل أفضل\" ليس إجراءً، أما \"انشر ملاحظة حالة كل مساء\" فهو كذلك.",
+     "هذه الحزمة كلها قصة ممتازة لأسئلة المقابلات \"أخبرني كيف تعمل\"."
+    ],
+    "key": "pro-agile-sprint-finish"
+   }
+  ]
+ },
+ {
+  "key": "pro-design-doc",
+  "skill": "Professional",
+  "level": "Advanced",
+  "hours": 12,
+  "titleEn": "Write a system design document",
+  "titleAr": "اكتب مستند تصميم نظام",
+  "summaryEn": "Write and defend a real design document for a system at scale (for example a URL shortener with 100 million links): requirements, estimates, C4 diagrams, data model, trade-offs, ADRs and a review.",
+  "summaryAr": "اكتب مستند تصميم حقيقيًا لنظام على نطاق واسع ودافع عنه (مثل مختصر روابط فيه 100 مليون رابط): المتطلبات، والتقديرات، ومخططات C4، ونموذج البيانات، والمقايضات، وسجلات قرارات البنية (ADRs)، والمراجعة.",
+  "techStack": "Markdown · Mermaid / Structurizr (C4) · ADR templates",
+  "goalsEn": [
+   "Turn a product idea into functional and non-functional requirements",
+   "Do back-of-the-envelope capacity estimates",
+   "Design data models, APIs and scaling strategies with trade-offs",
+   "Record decisions with ADRs and handle review feedback"
+  ],
+  "goalsAr": [
+   "تحويل فكرة منتج إلى متطلبات وظيفية وغير وظيفية",
+   "إجراء تقديرات سعة سريعة تقريبية",
+   "تصميم نماذج البيانات والواجهات واستراتيجيات التوسع مع المقايضات",
+   "تسجيل القرارات بـ ADRs والتعامل مع ملاحظات المراجعة"
+  ],
+  "requirementsEn": [
+   "Pick a system: URL shortener, chat, ride-hailing, ticket booking or news feed",
+   "Requirements with numbers (users, requests per second, data size, latency, availability)",
+   "C4 context and container diagrams; a sequence diagram for the main flow",
+   "API design and data model with partitioning/indexing choices",
+   "Scaling: caching, read replicas, queues, rate limiting; failure modes",
+   "At least 3 ADRs; a \"risks and open questions\" section; one review round"
+  ],
+  "requirementsAr": [
+   "اختر نظامًا: مختصر روابط، أو دردشة، أو طلب سيارات، أو حجز تذاكر، أو خلاصة أخبار",
+   "المتطلبات بالأرقام (المستخدمون، والطلبات في الثانية، وحجم البيانات، وزمن الاستجابة، والتوفر)",
+   "مخططا C4 للسياق والحاويات، ومخطط تسلسلي للتدفق الرئيسي",
+   "تصميم الـ API ونموذج البيانات مع خيارات التقسيم والفهرسة",
+   "التوسع: التخزين المؤقت، ونسخ القراءة، والطوابير، وتحديد المعدل، وأنماط الفشل",
+   "3 ADRs على الأقل، وقسم \"المخاطر والأسئلة المفتوحة\"، وجولة مراجعة واحدة"
+  ],
+  "acceptanceEn": [
+   "Every major choice lists at least one alternative and why it lost",
+   "Estimates are shown with their arithmetic",
+   "A reviewer can follow the main request from the diagrams alone",
+   "Review comments are answered in the document or as ADR updates"
+  ],
+  "acceptanceAr": [
+   "كل خيار رئيسي يذكر بديلًا واحدًا على الأقل ولماذا خسر",
+   "التقديرات معروضة مع حساباتها",
+   "المراجع يستطيع تتبع الطلب الرئيسي من المخططات وحدها",
+   "تعليقات المراجعة يُجاب عنها في المستند أو كتحديثات للـ ADRs"
+  ],
+  "stretchEn": [
+   "Build a small prototype of the riskiest part",
+   "Do a mock system design interview using the document",
+   "Write the cost estimate for a cloud provider"
+  ],
+  "stretchAr": [
+   "ابنِ نموذجًا أوليًا صغيرًا للجزء الأخطر",
+   "أجرِ مقابلة تصميم أنظمة تجريبية باستخدام المستند",
+   "اكتب تقدير التكلفة لدى مزود سحابي"
+  ],
+  "steps": [
+   {
+    "titleEn": "Choose and scope the system",
+    "titleAr": "اختر النظام وحدّد نطاقه",
+    "bodyEn": "Pick one system and write the core use cases (for a URL shortener: create a short link, redirect, see stats, custom aliases, expiry). Mark what is in scope for this document and what is not (e.g. no user accounts).\n\nA design document that tries to cover everything says nothing deep.",
+    "bodyAr": "اختر نظامًا واحدًا واكتب حالات الاستخدام الأساسية (لمختصر الروابط: إنشاء رابط قصير، والتحويل، ورؤية الإحصاءات، والأسماء المخصصة، والانتهاء). وعلّم ما هو ضمن نطاق هذا المستند وما ليس كذلك (مثلًا بلا حسابات مستخدمين).\n\nمستند التصميم الذي يحاول تغطية كل شيء لا يقول شيئًا عميقًا.",
+    "hintsEn": [
+     "Use a design doc template: Context, Goals, Non-goals, Design, Alternatives, Risks.",
+     "Write for an engineer who joins next month."
+    ],
+    "hintsAr": [
+     "استخدم قالب مستند تصميم: السياق، والأهداف، وغير الأهداف، والتصميم، والبدائل، والمخاطر.",
+     "اكتب لمهندس ينضم الشهر القادم."
+    ],
+    "key": "pro-design-doc-scope"
+   },
+   {
+    "titleEn": "Requirements with numbers",
+    "titleAr": "المتطلبات بالأرقام",
+    "bodyEn": "Functional: the use cases. Non-functional with numbers: 100 M links, 10 M new links/month, read:write 100:1, redirect p99 < 50 ms, 99.9% availability, links never change once created.\n\nNumbers turn opinions into engineering decisions.",
+    "bodyAr": "الوظيفية: حالات الاستخدام. وغير الوظيفية بالأرقام: 100 مليون رابط، و10 ملايين رابط جديد شهريًا، ونسبة القراءة إلى الكتابة 100:1، وزمن التحويل p99 أقل من 50 مللي ثانية، وتوفر 99.9%، والروابط لا تتغير بعد إنشائها.\n\nالأرقام تحوّل الآراء إلى قرارات هندسية.",
+    "hintsEn": [
+     "If you do not know a number, make an assumption and state it explicitly.",
+     "Availability 99.9% ≈ 8.8 hours of downtime per year."
+    ],
+    "hintsAr": [
+     "إن لم تعرف رقمًا فافترض واحدًا واذكر الافتراض صراحة.",
+     "التوفر 99.9% يعادل نحو 8.8 ساعة توقف في السنة."
+    ],
+    "key": "pro-design-doc-requirements"
+   },
+   {
+    "titleEn": "Back-of-the-envelope estimates",
+    "titleAr": "تقديرات سريعة تقريبية",
+    "bodyEn": "Compute: writes per second (10 M / 30 days / 86,400 ≈ 4/s average, plan for 10× peaks), reads per second (×100), storage (100 M × ~500 bytes ≈ 50 GB plus indexes), bandwidth, and cache size for the hottest 20% of links.\n\nShow the arithmetic in the document so reviewers can check it.",
+    "bodyAr": "احسب: الكتابات في الثانية (10 ملايين ÷ 30 يومًا ÷ 86400 ≈ 4 في الثانية في المتوسط، وخطّط لذروات 10 أضعاف)، والقراءات في الثانية (× 100)، والتخزين (100 مليون × نحو 500 بايت ≈ 50 جيجابايت إضافة إلى الفهارس)، وعرض النطاق، وحجم التخزين المؤقت لأكثر 20% من الروابط استخدامًا.\n\nاعرض الحسابات في المستند ليتحقق منها المراجعون.",
+    "hintsEn": [
+     "Round aggressively — orders of magnitude matter, not decimals.",
+     "These numbers decide whether one database is enough (often it is)."
+    ],
+    "hintsAr": [
+     "قرّب بجرأة، فالمهم رتبة المقدار لا الكسور.",
+     "هذه الأرقام تقرر هل تكفي قاعدة بيانات واحدة (وغالبًا تكفي)."
+    ],
+    "key": "pro-design-doc-estimates"
+   },
+   {
+    "titleEn": "C4 diagrams",
+    "titleAr": "مخططات C4",
+    "bodyEn": "Draw the Context diagram (users, your system, external systems) and the Container diagram (web app, API, cache, database, background workers, analytics pipeline) with technologies and protocols on the arrows. Add a sequence diagram for \"redirect\" including the cache hit and miss paths.\n\nUse Mermaid C4 or Structurizr so diagrams live as code next to the document.",
+    "bodyAr": "ارسم مخطط السياق (المستخدمون، ونظامك، والأنظمة الخارجية) ومخطط الحاويات (تطبيق الويب، والـ API، والتخزين المؤقت، وقاعدة البيانات، والعمال الخلفيون، ومسار التحليلات) مع التقنيات والبروتوكولات على الأسهم. وأضف مخططًا تسلسليًا لـ\"التحويل\" يشمل مسارَي وجود القيمة في التخزين المؤقت وغيابها.\n\nاستخدم Mermaid C4 أو Structurizr لتعيش المخططات ككود بجانب المستند.",
+    "hintsEn": [
+     "Every box needs a name, a technology and a one-line responsibility.",
+     "Do not draw the Component level unless it adds information."
+    ],
+    "hintsAr": [
+     "كل صندوق يحتاج اسمًا وتقنية ومسؤولية في سطر واحد.",
+     "لا ترسم مستوى المكونات إلا إذا أضاف معلومة."
+    ],
+    "key": "pro-design-doc-c4"
+   },
+   {
+    "titleEn": "API and data model",
+    "titleAr": "الـ API ونموذج البيانات",
+    "bodyEn": "Define the API (`POST /links`, `GET /{code}` → 301/302, `GET /links/{code}/stats`) with request/response examples and errors. Design the tables or documents, the code generation strategy (random base62 vs counter + encoding vs hash) with collision handling, and indexes. Explain how click stats are counted without slowing redirects (async events, aggregation).\n\nEach choice gets a short \"why\".",
+    "bodyAr": "عرّف الـ API (`POST /links` و`GET /{code}` ← 301/302 و`GET /links/{code}/stats`) مع أمثلة للطلبات والردود والأخطاء. وصمّم الجداول أو المستندات، واستراتيجية توليد الرموز (base62 عشوائي، أو عدّاد مع ترميز، أو hash) مع معالجة التكرار، والفهارس. واشرح كيف تُحسب إحصاءات النقرات دون إبطاء التحويل (أحداث غير متزامنة وتجميع).\n\nكل خيار يحصل على \"لماذا\" قصيرة.",
+    "hintsEn": [
+     "301 is cached by browsers (faster, but you lose click counts); 302 is not — a real trade-off to discuss.",
+     "Consider how you will shard by code if one database is no longer enough."
+    ],
+    "hintsAr": [
+     "301 تخزنه المتصفحات (أسرع لكنك تفقد عدّ النقرات)، و302 لا تخزنه، وهذه مقايضة حقيقية تستحق النقاش.",
+     "فكّر في طريقة تقسيم البيانات حسب الرمز إن لم تعد قاعدة بيانات واحدة كافية."
+    ],
+    "key": "pro-design-doc-data"
+   },
+   {
+    "titleEn": "Scaling and failure modes",
+    "titleAr": "التوسع وأنماط الفشل",
+    "bodyEn": "Describe: a cache in front of the database (what, TTL, invalidation), read replicas, a queue for analytics events, rate limiting for link creation, CDN/edge for redirects. Then list failure modes — cache down, database failover, queue backlog, a hot link — and what the system does in each.\n\nDesigning for failure is what separates senior designs.",
+    "bodyAr": "صِف: تخزينًا مؤقتًا أمام قاعدة البيانات (ماذا يُخزن، ومدة الصلاحية، والإبطال)، ونسخ القراءة، وطابورًا لأحداث التحليلات، وتحديد معدل إنشاء الروابط، وCDN أو edge للتحويلات. ثم اكتب أنماط الفشل: تعطل التخزين المؤقت، وانتقال قاعدة البيانات إلى نسخة احتياطية، وتراكم الطابور، ورابط شديد الازدحام، وما يفعله النظام في كل حالة.\n\nالتصميم مع مراعاة الفشل هو ما يميز التصاميم المتقدمة.",
+    "hintsEn": [
+     "\"Graceful degradation\": redirects keep working even if stats are delayed.",
+     "Mention monitoring: which 3 metrics would page you at night?"
+    ],
+    "hintsAr": [
+     "\"التدهور الهادئ\": التحويلات تستمر حتى لو تأخرت الإحصاءات.",
+     "اذكر المراقبة: ما المقاييس الثلاثة التي ستوقظك ليلًا؟"
+    ],
+    "key": "pro-design-doc-scale"
+   },
+   {
+    "titleEn": "Architecture Decision Records",
+    "titleAr": "سجلات قرارات البنية",
+    "bodyEn": "Write at least three ADRs in `docs/adr/`: e.g. \"0001 Use SQL Server with a code primary key\", \"0002 Use 302 redirects\", \"0003 Count clicks asynchronously\". Each: context, decision, alternatives considered, consequences (good and bad), status.\n\nADRs keep the \"why\" long after the meeting is forgotten.",
+    "bodyAr": "اكتب ثلاثة ADRs على الأقل في `docs/adr/`: مثل \"0001 Use SQL Server with a code primary key\"، و\"0002 Use 302 redirects\"، و\"0003 Count clicks asynchronously\". ولكل منها: السياق، والقرار، والبدائل المدروسة، والعواقب (الجيدة والسيئة)، والحالة.\n\nالـ ADRs تحفظ \"لماذا\" لوقت طويل بعد أن يُنسى الاجتماع.",
+    "hintsEn": [
+     "Keep each ADR to one page.",
+     "A superseded ADR stays, with a link to the one that replaces it."
+    ],
+    "hintsAr": [
+     "اجعل كل ADR في صفحة واحدة.",
+     "الـ ADR المستبدل يبقى، مع رابط إلى الذي حل محله."
+    ],
+    "key": "pro-design-doc-adrs"
+   },
+   {
+    "titleEn": "Get it reviewed",
+    "titleAr": "اعرضه للمراجعة",
+    "bodyEn": "Share the document with two people (a study group, a senior friend, an online community) as a PR so they can comment line by line. Answer every comment: change the design, add an ADR, or explain. Add a \"Risks and open questions\" section with what remains uncertain.\n\nDefending and improving a design under review is the actual skill.",
+    "bodyAr": "شارك المستند مع شخصين (مجموعة دراسة، أو صديق خبير، أو مجتمع على الإنترنت) كطلب سحب ليعلّقوا سطرًا بسطر. وأجب عن كل تعليق: غيّر التصميم، أو أضف ADR، أو اشرح. وأضف قسم \"المخاطر والأسئلة المفتوحة\" بما بقي غير مؤكد.\n\nالدفاع عن التصميم وتحسينه تحت المراجعة هو المهارة الفعلية.",
+    "hintsEn": [
+     "Ask reviewers specific questions (\"Is the cache invalidation right?\").",
+     "Thank reviewers in the document's history section."
+    ],
+    "hintsAr": [
+     "اطرح على المراجعين أسئلة محددة (\"هل إبطال التخزين المؤقت صحيح؟\").",
+     "اشكر المراجعين في قسم تاريخ المستند."
+    ],
+    "key": "pro-design-doc-review"
+   },
+   {
+    "titleEn": "Publish and practise presenting it",
+    "titleAr": "انشره وتدرّب على عرضه",
+    "bodyEn": "Publish the document, diagrams and ADRs in a repository. Then practise explaining the design in 30 minutes on a whiteboard (or Excalidraw), as in a system design interview: requirements → estimates → high level → deep dive → bottlenecks.\n\nRecord yourself once and watch it — you will spot what to improve.",
+    "bodyAr": "انشر المستند والمخططات والـ ADRs في مستودع. ثم تدرّب على شرح التصميم في 30 دقيقة على سبورة (أو Excalidraw) كما في مقابلة تصميم الأنظمة: المتطلبات ← التقديرات ← المستوى العالي ← التعمق ← نقاط الاختناق.\n\nسجّل نفسك مرة وشاهد التسجيل، فستلاحظ ما يجب تحسينه.",
+    "hintsEn": [
+     "The same structure works for any system design question.",
+     "Link the document from your CV under projects."
+    ],
+    "hintsAr": [
+     "البنية نفسها تصلح لأي سؤال تصميم أنظمة.",
+     "اربط المستند من سيرتك الذاتية تحت المشاريع."
+    ],
+    "key": "pro-design-doc-finish"
+   }
+  ]
+ },
+ {
+  "key": "pro-interview-sprint",
+  "skill": "Professional",
+  "level": "Advanced",
+  "hours": 20,
+  "titleEn": "Four-week interview preparation sprint",
+  "titleAr": "سباق تحضير للمقابلات لمدة أربعة أسابيع",
+  "summaryEn": "A structured plan to become interview-ready for .NET / full-stack roles: coding problems, technical deep dives, system design, behavioural stories with STAR, and recorded mock interviews with feedback.",
+  "summaryAr": "خطة منظمة لتصبح جاهزًا لمقابلات أدوار .NET وfull-stack: مسائل البرمجة، والتعمق التقني، وتصميم الأنظمة، وقصص سلوكية بطريقة STAR، ومقابلات تجريبية مسجلة مع ملاحظات.",
+  "techStack": "DevPath Interviews and Practice · a timer · a recording tool · a peer",
+  "goalsEn": [
+   "Solve coding problems out loud within time limits",
+   "Explain .NET, SQL and Angular concepts clearly and deeply",
+   "Structure a system design answer",
+   "Tell concise, evidence-based behavioural stories"
+  ],
+  "goalsAr": [
+   "حل مسائل البرمجة بصوت مسموع وضمن حدود زمنية",
+   "شرح مفاهيم .NET وSQL وAngular بوضوح وعمق",
+   "تنظيم إجابة تصميم الأنظمة",
+   "رواية قصص سلوكية موجزة ومبنية على الأدلة"
+  ],
+  "requirementsEn": [
+   "A 4-week schedule with daily blocks (coding, concepts, design, behavioural)",
+   "40 coding problems solved with notes on patterns",
+   "A personal Q&A bank of 60 technical questions answered in your own words",
+   "2 system design practices using the design doc structure",
+   "8 STAR stories mapped to common questions",
+   "4 recorded mock interviews with a peer, with a feedback log"
+  ],
+  "requirementsAr": [
+   "جدول لأربعة أسابيع بفترات يومية (البرمجة، والمفاهيم، والتصميم، والجانب السلوكي)",
+   "حل 40 مسألة برمجة مع ملاحظات عن الأنماط",
+   "بنك أسئلة وأجوبة شخصي فيه 60 سؤالًا تقنيًا مُجابًا بكلماتك",
+   "تمرينان لتصميم الأنظمة باستخدام بنية مستند التصميم",
+   "8 قصص STAR مرتبطة بالأسئلة الشائعة",
+   "4 مقابلات تجريبية مسجلة مع زميل، مع سجل للملاحظات"
+  ],
+  "acceptanceEn": [
+   "You can solve a medium problem in 30 minutes while explaining your thinking",
+   "Each STAR story is under 2 minutes and ends with a measurable result",
+   "Feedback scores improve between the first and the last mock interview",
+   "Your weakest area is identified and practised in week 4"
+  ],
+  "acceptanceAr": [
+   "تستطيع حل مسألة متوسطة في 30 دقيقة مع شرح طريقة تفكيرك",
+   "كل قصة STAR أقل من دقيقتين وتنتهي بنتيجة قابلة للقياس",
+   "درجات الملاحظات تتحسن بين أول مقابلة تجريبية وآخرها",
+   "أضعف مجالاتك محدد ومُتدرب عليه في الأسبوع الرابع"
+  ],
+  "stretchEn": [
+   "Practise in Arabic and in English",
+   "Prepare questions to ask the interviewer for 5 companies",
+   "Do a take-home assignment under time pressure"
+  ],
+  "stretchAr": [
+   "تدرّب بالعربية والإنجليزية",
+   "جهّز أسئلة تطرحها على من يجري المقابلة لخمس شركات",
+   "نفّذ مهمة منزلية تحت ضغط الوقت"
+  ],
+  "steps": [
+   {
+    "titleEn": "Baseline and schedule",
+    "titleAr": "نقطة البداية والجدول",
+    "bodyEn": "Do one timed mock interview with a peer before any preparation (45 minutes: 20 coding, 15 concepts, 10 behavioural) and record it. Score yourself per area from 1 to 5. Then build a 4-week schedule: about 2 hours a day split into coding, concepts, design and behavioural, with a mock interview at the end of each week.\n\nThe baseline shows where your time should go.",
+    "bodyAr": "أجرِ مقابلة تجريبية واحدة محددة الوقت مع زميل قبل أي تحضير (45 دقيقة: 20 للبرمجة، و15 للمفاهيم، و10 للجانب السلوكي) وسجّلها. وقيّم نفسك في كل مجال من 1 إلى 5. ثم ابنِ جدولًا لأربعة أسابيع: نحو ساعتين يوميًا مقسمة بين البرمجة والمفاهيم والتصميم والجانب السلوكي، مع مقابلة تجريبية في نهاية كل أسبوع.\n\nنقطة البداية تُظهر أين يجب أن يذهب وقتك.",
+    "hintsEn": [
+     "Pramp, interviewing.io and study groups can provide peers.",
+     "Protect the schedule in your calendar like real appointments."
+    ],
+    "hintsAr": [
+     "Pramp وinterviewing.io ومجموعات الدراسة تستطيع توفير زملاء.",
+     "احمِ الجدول في تقويمك كأنه مواعيد حقيقية."
+    ],
+    "key": "pro-interview-sprint-baseline"
+   },
+   {
+    "titleEn": "A method for coding problems",
+    "titleAr": "طريقة لمسائل البرمجة",
+    "bodyEn": "Practise a fixed routine: restate the problem, ask about edge cases, give examples, state a brute force, improve it, state complexity, then code, then test with your examples. Say every step out loud.\n\nInterviewers grade the process as much as the answer.",
+    "bodyAr": "تدرّب على روتين ثابت: أعد صياغة المسألة، واسأل عن الحالات الطرفية، وأعطِ أمثلة، واذكر حلًا بالقوة الغاشمة، ثم حسّنه، واذكر التعقيد، ثم اكتب الكود، ثم اختبره بأمثلتك. وقل كل خطوة بصوت مسموع.\n\nمن يجري المقابلة يقيّم الطريقة بقدر ما يقيّم الإجابة.",
+    "hintsEn": [
+     "DevPath's Challenges tab (algorithms, data structures, strings) is a good source of problems.",
+     "Use C# in interviews for .NET roles; know `Dictionary`, `HashSet`, `PriorityQueue`, LINQ well."
+    ],
+    "hintsAr": [
+     "تبويب التحديات في DevPath (الخوارزميات وهياكل البيانات والنصوص) مصدر جيد للمسائل.",
+     "استخدم C# في مقابلات أدوار .NET، واعرف `Dictionary` و`HashSet` و`PriorityQueue` وLINQ جيدًا."
+    ],
+    "key": "pro-interview-sprint-coding-method"
+   },
+   {
+    "titleEn": "40 problems by pattern",
+    "titleAr": "40 مسألة حسب الأنماط",
+    "bodyEn": "Solve problems grouped by pattern: hashing, two pointers, sliding window, stack, binary search, BFS/DFS, heaps, intervals, simple dynamic programming. For each, keep a note: the pattern, the key insight, the complexity, and the mistake you made.\n\nRe-solve the ones you struggled with a week later without looking.",
+    "bodyAr": "حل المسائل مجمّعة حسب النمط: الـ hashing، والمؤشران، والنافذة المنزلقة، والمكدس، والبحث الثنائي، وBFS/DFS، والـ heaps، والفترات، والبرمجة الديناميكية البسيطة. ولكل مسألة احتفظ بملاحظة: النمط، والفكرة الأساسية، والتعقيد، والخطأ الذي ارتكبته.\n\nأعد حل المسائل التي واجهت فيها صعوبة بعد أسبوع دون أن تنظر.",
+    "hintsEn": [
+     "Time-box: 30 minutes, then read a solution, understand it, and redo it from memory.",
+     "Quality of understanding beats quantity of problems."
+    ],
+    "hintsAr": [
+     "حدّد الوقت: 30 دقيقة، ثم اقرأ حلًا وافهمه وأعد كتابته من الذاكرة.",
+     "جودة الفهم أفضل من كثرة المسائل."
+    ],
+    "key": "pro-interview-sprint-patterns"
+   },
+   {
+    "titleEn": "Technical question bank",
+    "titleAr": "بنك الأسئلة التقنية",
+    "bodyEn": "Use DevPath's Interview Preparation questions for C#, ASP.NET Core, EF Core, SQL Server, Angular and testing. Write your own answer to 60 of them in a document: a definition, an example from your projects, and a common pitfall. Practise answering out loud in under 2 minutes each.\n\n\"In my budget planner I used X because Y\" is far stronger than a textbook definition.",
+    "bodyAr": "استخدم أسئلة التحضير للمقابلات في DevPath لـ C# وASP.NET Core وEF Core وSQL Server وAngular والاختبارات. واكتب إجابتك عن 60 منها في مستند: تعريف، ومثال من مشاريعك، وخطأ شائع. وتدرّب على الإجابة بصوت مسموع في أقل من دقيقتين لكل سؤال.\n\n\"في مخطط الميزانية استخدمت X لأن Y\" أقوى بكثير من تعريف الكتب.",
+    "hintsEn": [
+     "Rate each answer in DevPath (confident / partial / needs review) and revisit the weak ones.",
+     "Prepare deep answers for: async/await, DI lifetimes, EF tracking, indexes, change detection."
+    ],
+    "hintsAr": [
+     "قيّم كل إجابة في DevPath (واثق، أو جزئي، أو يحتاج مراجعة) وارجع إلى الضعيفة.",
+     "جهّز إجابات عميقة عن: async/await، وأعمار DI، والتتبع في EF، والفهارس، وchange detection."
+    ],
+    "key": "pro-interview-sprint-concepts"
+   },
+   {
+    "titleEn": "System design practice",
+    "titleAr": "التدرب على تصميم الأنظمة",
+    "bodyEn": "Practise two designs (e.g. a URL shortener and a chat app) using the structure from the design document project: requirements, estimates, high-level diagram, deep dive on one part, bottlenecks and trade-offs. Do each in 35 minutes on Excalidraw, then compare with a reference solution.\n\nJunior roles ask lighter versions, but the structure impresses at any level.",
+    "bodyAr": "تدرّب على تصميمين (مثل مختصر الروابط وتطبيق دردشة) باستخدام البنية من مشروع مستند التصميم: المتطلبات، والتقديرات، والمخطط العام، والتعمق في جزء واحد، ونقاط الاختناق والمقايضات. ونفّذ كلًا منهما في 35 دقيقة على Excalidraw، ثم قارن بحل مرجعي.\n\nأدوار المبتدئين تسأل نسخًا أخف، لكن البنية تترك انطباعًا في أي مستوى.",
+    "hintsEn": [
+     "Always start by asking clarifying questions and stating assumptions.",
+     "Talk about the database you know best in depth instead of naming many."
+    ],
+    "hintsAr": [
+     "ابدأ دائمًا بطرح أسئلة توضيحية وذكر الافتراضات.",
+     "تحدث بعمق عن قاعدة البيانات التي تعرفها جيدًا بدل ذكر أسماء كثيرة."
+    ],
+    "key": "pro-interview-sprint-design"
+   },
+   {
+    "titleEn": "Behavioural stories with STAR",
+    "titleAr": "القصص السلوكية بطريقة STAR",
+    "bodyEn": "Write 8 stories using Situation, Task, Action, Result: a hard bug, a disagreement, a failure, learning something fast, a deadline, helping someone, a project you are proud of, a time you improved something. Map each to common questions (\"Tell me about a challenge\").\n\nKeep each under 2 minutes, focus on what YOU did, and end with a number or a lesson.",
+    "bodyAr": "اكتب 8 قصص بطريقة STAR (الموقف، والمهمة، والإجراء، والنتيجة): خطأ صعب، وخلاف، وفشل، وتعلّم شيء بسرعة، وموعد نهائي، ومساعدة أحد، ومشروع تفخر به، ومرة حسّنت فيها شيئًا. واربط كل قصة بالأسئلة الشائعة (\"أخبرني عن تحدٍ\").\n\nاجعل كل قصة أقل من دقيقتين، وركّز على ما فعلته أنت، واختم برقم أو درس.",
+    "hintsEn": [
+     "Your DevPath projects, sprints and open-source PRs are excellent material.",
+     "Practise saying \"I\" instead of \"we\" for your own contribution."
+    ],
+    "hintsAr": [
+     "مشاريعك في DevPath والـ sprints وطلبات السحب في المصادر المفتوحة مادة ممتازة.",
+     "تدرّب على قول \"أنا\" بدل \"نحن\" عند الحديث عن مساهمتك."
+    ],
+    "key": "pro-interview-sprint-star"
+   },
+   {
+    "titleEn": "Weekly mock interviews",
+    "titleAr": "مقابلات تجريبية أسبوعية",
+    "bodyEn": "Each week do one recorded 45–60 minute mock with a peer, switching roles. The interviewer uses a scorecard (problem solving, communication, technical depth, code quality, behavioural). Watch your recording the next day and log three things to fix.\n\nBeing the interviewer teaches you what good answers look like.",
+    "bodyAr": "في كل أسبوع أجرِ مقابلة تجريبية مسجلة من 45 إلى 60 دقيقة مع زميل، وتبادلا الأدوار. ومن يجري المقابلة يستخدم بطاقة تقييم (حل المشكلات، والتواصل، والعمق التقني، وجودة الكود، والجانب السلوكي). وشاهد تسجيلك في اليوم التالي ودوّن ثلاثة أشياء لإصلاحها.\n\nأن تكون من يجري المقابلة يعلّمك شكل الإجابات الجيدة.",
+    "hintsEn": [
+     "Watch for filler words, long silences and jumping into code too early.",
+     "Track scores in a table to see progress."
+    ],
+    "hintsAr": [
+     "انتبه لكلمات الحشو، والصمت الطويل، والقفز إلى الكود مبكرًا.",
+     "تتبّع الدرجات في جدول لترى التقدم."
+    ],
+    "key": "pro-interview-sprint-mocks"
+   },
+   {
+    "titleEn": "Week 4: attack the weakest area",
+    "titleAr": "الأسبوع الرابع: هاجم أضعف مجال",
+    "bodyEn": "Look at your scores: which area is lowest? Spend most of week 4 on it — more problems of that pattern, deeper answers for those concepts, or more story practice. Prepare also: a 60-second introduction, your questions for the interviewer, and how to talk about salary.\n\nRepeat the baseline mock at the end and compare with week 0.",
+    "bodyAr": "انظر إلى درجاتك: أي مجال هو الأدنى؟ واصرف معظم الأسبوع الرابع عليه: مزيد من المسائل من ذلك النمط، أو إجابات أعمق لتلك المفاهيم، أو مزيد من التدرب على القصص. وجهّز أيضًا: تقديمًا ذاتيًا في 60 ثانية، وأسئلتك لمن يجري المقابلة، وطريقة الحديث عن الراتب.\n\nكرّر مقابلة نقطة البداية في النهاية وقارن بالأسبوع صفر.",
+    "hintsEn": [
+     "Good questions to ask: \"What does a great first 3 months look like?\", \"How do you review code?\"",
+     "Research salary ranges for your city before any interview."
+    ],
+    "hintsAr": [
+     "أسئلة جيدة للطرح: \"كيف تبدو الأشهر الثلاثة الأولى الممتازة؟\" و\"كيف تراجعون الكود؟\"",
+     "ابحث عن نطاقات الرواتب في مدينتك قبل أي مقابلة."
+    ],
+    "key": "pro-interview-sprint-weak-spot"
+   },
+   {
+    "titleEn": "Review the sprint",
+    "titleAr": "راجع السباق",
+    "bodyEn": "Write a short report: baseline vs final scores per area, the patterns you mastered, your strongest stories, and a maintenance plan (e.g. 3 problems and 1 mock per week while applying). Keep the question bank and stories as living documents.\n\nThen start applying — with the job-ready profile from the earlier project.",
+    "bodyAr": "اكتب تقريرًا قصيرًا: درجات البداية مقابل الدرجات النهائية في كل مجال، والأنماط التي أتقنتها، وأقوى قصصك، وخطة للمحافظة (مثل 3 مسائل ومقابلة تجريبية واحدة أسبوعيًا أثناء التقديم). واحتفظ ببنك الأسئلة والقصص كمستندات حية.\n\nثم ابدأ التقديم، بالملف الجاهز للتوظيف من المشروع السابق.",
+    "hintsEn": [
+     "After every real interview, add the questions you got to your bank.",
+     "Rejections are data: note what was asked and practise it."
+    ],
+    "hintsAr": [
+     "بعد كل مقابلة حقيقية أضف الأسئلة التي طُرحت عليك إلى بنكك.",
+     "الرفض بيانات: دوّن ما سُئلت عنه وتدرّب عليه."
+    ],
+    "key": "pro-interview-sprint-finish"
+   }
+  ]
+ }
+]

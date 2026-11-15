@@ -18,17 +18,6 @@
 .chip-rail { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; scrollbar-width: thin; }
 .chip-rail .chip { flex: none; }
 
-.grid-dashboard { grid-template-columns: 280px minmax(0, 1fr) 320px; align-items: start; gap: 16px; }
-.dash-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-.dash-col > .card { margin: 0; grid-column: auto; }
-@media (max-width: 1280px) {
-  .grid-dashboard { grid-template-columns: minmax(0, 1fr) 320px; }
-  .dash-left { grid-column: 1 / -1; order: 3; }
-}
-@media (max-width: 960px) {
-  .grid-dashboard { grid-template-columns: minmax(0, 1fr); }
-  .dash-main { order: 1; } .dash-right { order: 2; }
-}
 
 /* Roadmap: one ring per phase, filled by its progress. */
 /* Roadmap phase map: every phase as a tile with its full name, so nothing is cut off. */
@@ -124,17 +113,6 @@
   --accent: #4599ff; --accent-2: #4599ff; --accent-hover: #6aaeff; --accent-soft: rgb(69 153 255 / 0.16); --accent-text: #7ab8ff; --on-accent: #0b1420;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
 }
-.grid-dashboard .dash-left > .card { padding: 8px; border: 0; background: none; box-shadow: none; }
-.grid-dashboard .dash-left .card-title { padding: 4px 8px; color: var(--muted); font-size: 0.94rem; }
-.grid-dashboard .dash-left .card-title > .icon { display: none; }
-.grid-dashboard .quick-grid { grid-template-columns: 1fr; gap: 2px; }
-.grid-dashboard .quick-action { padding: 8px; border: 0; background: none; font-weight: 500; }
-.grid-dashboard .quick-action:hover { background: var(--surface-3); transform: none; }
-.grid-dashboard .quick-action .icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--surface-3); color: var(--text); }
-.grid-dashboard .dash-left .skill-list, .grid-dashboard .dash-left > .card > .muted { padding-inline: 8px; }
-.grid-dashboard .accent-card { border-color: var(--border); }
-.grid-dashboard .hero { grid-template-columns: minmax(0, 1fr) auto; }
-@media (max-width: 1500px) { .grid-dashboard .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* =====================================================================
    gram: roadmap and projects
@@ -299,7 +277,6 @@
 .chip-rail::-webkit-scrollbar, .phase-map::-webkit-scrollbar { display: none; }
 [data-skin='tube'] .video-topic h3 a { color: var(--text); }
 [data-skin='tube'] .toolbar .input[type='search'] { flex: 1 1 280px; max-width: 480px; border-radius: 999px; }
-.grid-dashboard .hero h1 { font-size: 1.4rem; }
 [data-skin='snap'] .level-hero app-progress-ring { display: block; margin-top: -64px; padding: 4px; border-radius: 50%; background: var(--surface); }
 
 /* ---------- The remaining pages reuse a skin ---------- */

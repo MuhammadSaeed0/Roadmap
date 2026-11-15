@@ -16,14 +16,25 @@ export function inlineSpans(text: string): Span[] {
   return text.split('`').map((part, i) => ({ text: part, code: i % 2 === 1 })).filter(s => s.text.length > 0);
 }
 
-/** A lesson body: paragraphs separated by a blank line; consecutive lines starting with "- " form a list. */
+/**
+ * A lesson body: paragraphs separated by a blank line; consecutive lines starting with "- " form a list,
+ * also when they follow a paragraph line directly ("Decide:\n- one\n- two").
+ */
 export function lessonBlocks(body: string): Block[] {
-  return body.split(/\n\s*\n/).map(chunk => chunk.trim()).filter(Boolean).map(chunk => {
-    const lines = chunk.split('\n');
-    return lines.every(l => l.startsWith('- '))
-      ? { kind: 'ul' as const, lines: lines.map(l => inlineSpans(l.slice(2))) }
-      : { kind: 'p' as const, lines: [inlineSpans(lines.join(' '))] };
-  });
+  const blocks: Block[] = [];
+  for (const chunk of body.split(/\n\s*\n/).map(c => c.trim()).filter(Boolean)) {
+    let text: string[] = [];
+    let items: string[] = [];
+    const flushText = () => { if (text.length) blocks.push({ kind: 'p', lines: [inlineSpans(text.join(' '))] }); text = []; };
+    const flushItems = () => { if (items.length) blocks.push({ kind: 'ul', lines: items.map(inlineSpans) }); items = []; };
+    for (const line of chunk.split('\n').map(l => l.trim())) {
+      if (line.startsWith('- ')) { flushText(); items.push(line.slice(2)); }
+      else { flushItems(); text.push(line); }
+    }
+    flushText();
+    flushItems();
+  }
+  return blocks;
 }
 
 /**
@@ -53,7 +64,7 @@ export function lessonBlocks(body: string): Block[] {
       font-family: var(--font-mono); font-size: 0.86rem; white-space: pre-wrap; direction: ltr; text-align: left; }
     .lesson-foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
     @media (max-width: 860px) {
-      .tutorial-layout { grid-template-columns: 1fr; gap: 12px; }
+      .tutorial-layout { grid-template-columns: minmax(0, 1fr); gap: 12px; }
       .lesson-nav { flex-direction: row; overflow-x: auto; }
       .lesson-nav button { width: auto; white-space: nowrap; }
     }

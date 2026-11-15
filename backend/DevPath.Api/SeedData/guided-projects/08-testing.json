@@ -1,0 +1,1154 @@
+[
+ {
+  "key": "test-tdd-kata",
+  "skill": "Testing",
+  "level": "Beginner",
+  "hours": 4,
+  "titleEn": "Test-driven string calculator",
+  "titleAr": "آلة حاسبة للنصوص بالتطوير الموجّه بالاختبارات",
+  "summaryEn": "Learn test-driven development with a classic kata: a calculator that adds numbers in a string, built one failing test at a time with xUnit.",
+  "summaryAr": "تعلّم التطوير الموجّه بالاختبارات (TDD) بتمرين كلاسيكي: آلة حاسبة تجمع الأرقام الموجودة في نص، تُبنى اختبارًا فاشلًا تلو الآخر باستخدام xUnit.",
+  "techStack": "C# · xUnit · .NET test runner",
+  "goalsEn": [
+   "Practise the red → green → refactor cycle",
+   "Write clear test names and Arrange-Act-Assert tests",
+   "Use [Theory] with [InlineData] for many cases",
+   "Test exceptions and edge cases"
+  ],
+  "goalsAr": [
+   "التدرب على دورة أحمر ← أخضر ← إعادة تنظيم",
+   "كتابة أسماء اختبارات واضحة واختبارات بنمط Arrange-Act-Assert",
+   "استخدام [Theory] مع [InlineData] لحالات كثيرة",
+   "اختبار الاستثناءات والحالات الطرفية"
+  ],
+  "requirementsEn": [
+   "Add(\"\") returns 0; Add(\"1\") returns 1; Add(\"1,2\") returns 3",
+   "Any amount of numbers; new lines also separate: \"1\\n2,3\" = 6",
+   "Custom delimiter: \"//;\\n1;2\" = 3",
+   "Negative numbers throw with all negatives in the message",
+   "Numbers above 1000 are ignored",
+   "Every rule was added test-first"
+  ],
+  "requirementsAr": [
+   "Add(\"\") تعيد 0، وAdd(\"1\") تعيد 1، وAdd(\"1,2\") تعيد 3",
+   "أي عدد من الأرقام، والأسطر الجديدة تفصل أيضًا: \"1\\n2,3\" = 6",
+   "فاصل مخصص: \"//;\\n1;2\" = 3",
+   "الأرقام السالبة ترمي استثناء فيه كل الأرقام السالبة",
+   "الأرقام الأكبر من 1000 تُتجاهل",
+   "كل قاعدة أُضيفت بعد كتابة اختبارها أولًا"
+  ],
+  "acceptanceEn": [
+   "The git history shows a failing test commit before each passing implementation",
+   "All tests pass with `dotnet test`",
+   "The final code has no duplication and reads clearly"
+  ],
+  "acceptanceAr": [
+   "سجل git يُظهر commit لاختبار فاشل قبل كل تنفيذ ناجح",
+   "كل الاختبارات تنجح مع `dotnet test`",
+   "الكود النهائي بلا تكرار ويُقرأ بوضوح"
+  ],
+  "stretchEn": [
+   "Delimiters of any length: \"//[***]\\n1***2\" = 3",
+   "Several delimiters: \"//[*][%]\\n1*2%3\" = 6",
+   "Do the same kata again tomorrow, faster"
+  ],
+  "stretchAr": [
+   "فواصل بأي طول: \"//[***]\\n1***2\" = 3",
+   "عدة فواصل: \"//[*][%]\\n1*2%3\" = 6",
+   "أعد التمرين نفسه غدًا بسرعة أكبر"
+  ],
+  "steps": [
+   {
+    "titleEn": "Solution with a test project",
+    "titleAr": "Solution مع مشروع اختبار",
+    "bodyEn": "Create `dotnet new sln -n Kata`, a class library `Kata` and an xUnit project `Kata.Tests` that references it. Run `dotnet test` once to see the sample test pass, then delete it.\n\nYou will write no production code without a failing test that needs it.",
+    "bodyAr": "أنشئ `dotnet new sln -n Kata`، ومكتبة classes باسم `Kata`، ومشروع xUnit باسم `Kata.Tests` يشير إليها. شغّل `dotnet test` مرة لترى الاختبار التجريبي ينجح، ثم احذفه.\n\nلن تكتب أي كود إنتاجي بدون اختبار فاشل يحتاجه.",
+    "hintsEn": [
+     "`dotnet new xunit -n Kata.Tests` then `dotnet add Kata.Tests reference Kata`.",
+     "Run `dotnet watch test` to rerun tests on every save."
+    ],
+    "hintsAr": [
+     "`dotnet new xunit -n Kata.Tests` ثم `dotnet add Kata.Tests reference Kata`.",
+     "شغّل `dotnet watch test` لتُعاد الاختبارات مع كل حفظ."
+    ],
+    "key": "test-tdd-kata-setup"
+   },
+   {
+    "titleEn": "First test: empty string",
+    "titleAr": "أول اختبار: النص الفارغ",
+    "bodyEn": "Write `Add_returns_zero_for_an_empty_string`: arrange a `StringCalculator`, act `Add(\"\")`, assert 0. It does not compile — that counts as red. Create the class with `Add` returning 0. Green. Commit both steps.\n\nDo the simplest thing that passes, even if it looks silly.",
+    "bodyAr": "اكتب `Add_returns_zero_for_an_empty_string`: جهّز `StringCalculator`، ونفّذ `Add(\"\")`، وتحقق من 0. لن يُترجم الكود، وهذا يُعدّ أحمر. أنشئ الـ class مع `Add` تعيد 0. أخضر. واعمل commit للخطوتين.\n\nافعل أبسط شيء ينجح، حتى لو بدا سخيفًا.",
+    "hintsEn": [
+     "Commit messages like \"red: empty string\" and \"green: return 0\" make the history a story.",
+     "Name tests as sentences: what happens, in which case."
+    ],
+    "hintsAr": [
+     "رسائل commit مثل \"red: empty string\" و\"green: return 0\" تجعل السجل قصة.",
+     "سمِّ الاختبارات كجمل: ماذا يحدث، وفي أي حالة."
+    ],
+    "key": "test-tdd-kata-empty"
+   },
+   {
+    "titleEn": "One and two numbers with a Theory",
+    "titleAr": "رقم ورقمان باستخدام Theory",
+    "bodyEn": "Write a `[Theory]` with `[InlineData(\"1\", 1)]` and `[InlineData(\"1,2\", 3)]`. Make it pass by splitting on comma and summing. Then add `[InlineData(\"1,2,3,4\", 10)]` — it probably passes already. That is fine; it documents the rule.\n\nRefactor if the code got messy, with all tests green.",
+    "bodyAr": "اكتب `[Theory]` مع `[InlineData(\"1\", 1)]` و`[InlineData(\"1,2\", 3)]`. واجعله ينجح بالتقسيم عند الفاصلة والجمع. ثم أضف `[InlineData(\"1,2,3,4\", 10)]`، وغالبًا سينجح مباشرة، ولا بأس، فهو يوثّق القاعدة.\n\nأعد التنظيم إن صار الكود فوضويًا، مع بقاء كل الاختبارات خضراء.",
+    "hintsEn": [
+     "`input.Split(',').Select(int.Parse).Sum()`.",
+     "A theory runs once per InlineData row and shows each separately."
+    ],
+    "hintsAr": [
+     "`input.Split(',').Select(int.Parse).Sum()`.",
+     "الـ theory تعمل مرة لكل صف InlineData وتعرض كل حالة منفصلة."
+    ],
+    "key": "test-tdd-kata-numbers"
+   },
+   {
+    "titleEn": "New lines as separators",
+    "titleAr": "الأسطر الجديدة كفواصل",
+    "bodyEn": "Add the case `\"1\\n2,3\"` → 6. Watch it fail (FormatException). Change the split to accept both separators. Green, then commit.\n\nRead the failure message carefully each time: it tells you exactly what to change.",
+    "bodyAr": "أضف الحالة `\"1\\n2,3\"` ← 6. وشاهدها تفشل (FormatException). غيّر التقسيم ليقبل الفاصلين، فيصبح أخضر، ثم اعمل commit.\n\nاقرأ رسالة الفشل بعناية في كل مرة، فهي تخبرك بالضبط بما يجب تغييره.",
+    "hintsEn": [
+     "`Split(new[] { ',', '\\n' })`.",
+     "In C# test data, \"\\n\" is a real new-line character."
+    ],
+    "hintsAr": [
+     "`Split(new[] { ',', '\\n' })`.",
+     "في بيانات اختبار C# يكون \"\\n\" حرف سطر جديد حقيقيًا."
+    ],
+    "key": "test-tdd-kata-newlines"
+   },
+   {
+    "titleEn": "Custom delimiter",
+    "titleAr": "الفاصل المخصص",
+    "bodyEn": "Test `\"//;\\n1;2\"` → 3. Implement: if the input starts with `//`, take the character after it as an extra delimiter and the numbers from the second line. Refactor the parsing into a private method `Parse(string input)` that returns the numbers.\n\nKeep the public `Add` short and readable.",
+    "bodyAr": "اختبر `\"//;\\n1;2\"` ← 3. والتنفيذ: إذا بدأ المدخل بـ `//` فخذ الحرف الذي بعده كفاصل إضافي، والأرقام من السطر الثاني. وأعد تنظيم التحليل في دالة خاصة `Parse(string input)` تعيد الأرقام.\n\nأبقِ الدالة العامة `Add` قصيرة ومقروءة.",
+    "hintsEn": [
+     "`input.IndexOf('\\n')` finds the end of the header line.",
+     "Run all tests after every small change."
+    ],
+    "hintsAr": [
+     "`input.IndexOf('\\n')` يجد نهاية سطر العنوان.",
+     "شغّل كل الاختبارات بعد كل تغيير صغير."
+    ],
+    "key": "test-tdd-kata-delimiter"
+   },
+   {
+    "titleEn": "Negatives throw",
+    "titleAr": "الأرقام السالبة ترمي استثناء",
+    "bodyEn": "Test that `Add(\"1,-2,-3\")` throws `ArgumentException` whose message contains \"-2, -3\": `var ex = Assert.Throws<ArgumentException>(() => calc.Add(\"1,-2,-3\")); Assert.Contains(\"-2, -3\", ex.Message);`.\n\nCollect all negatives before throwing, so users see every problem at once.",
+    "bodyAr": "اختبر أن `Add(\"1,-2,-3\")` ترمي `ArgumentException` تحتوي رسالتها \"-2, -3\": `var ex = Assert.Throws<ArgumentException>(() => calc.Add(\"1,-2,-3\")); Assert.Contains(\"-2, -3\", ex.Message);`.\n\nاجمع كل الأرقام السالبة قبل رمي الاستثناء، ليرى المستخدمون كل المشاكل دفعة واحدة.",
+    "hintsEn": [
+     "`string.Join(\", \", negatives)` builds the list.",
+     "Asserting on the message keeps the error helpful over time."
+    ],
+    "hintsAr": [
+     "`string.Join(\", \", negatives)` يبني القائمة.",
+     "التحقق من نص الرسالة يُبقي الخطأ مفيدًا مع الوقت."
+    ],
+    "key": "test-tdd-kata-negatives"
+   },
+   {
+    "titleEn": "Ignore numbers above 1000",
+    "titleAr": "تجاهل الأرقام الأكبر من 1000",
+    "bodyEn": "Test `\"2,1001\"` → 2 and `\"1000,1\"` → 1001 (the boundary). Implement with a `Where(n => n <= 1000)`.\n\nBoundary values (999, 1000, 1001) are where bugs live — always test both sides.",
+    "bodyAr": "اختبر `\"2,1001\"` ← 2 و`\"1000,1\"` ← 1001 (الحد). ونفّذ بـ `Where(n => n <= 1000)`.\n\nالقيم الحدية (999 و1000 و1001) هي حيث تعيش الأخطاء، فاختبر الجهتين دائمًا.",
+    "hintsEn": [
+     "One InlineData per boundary value keeps the intention clear.",
+     "Ask: what about whitespace like \" 1, 2\"? Decide and test it."
+    ],
+    "hintsAr": [
+     "صف InlineData لكل قيمة حدية يُبقي الهدف واضحًا.",
+     "اسأل: ماذا عن المسافات مثل \" 1, 2\"؟ قرر واختبر."
+    ],
+    "key": "test-tdd-kata-big"
+   },
+   {
+    "titleEn": "Review your history and publish",
+    "titleAr": "راجع السجل وانشر",
+    "bodyEn": "Read `git log --oneline`: it should alternate red and green commits. Look at the final code: is anything duplicated or unclear? Refactor once more with the tests as your safety net.\n\nPush to GitHub with a README explaining TDD in your own words and what you noticed.",
+    "bodyAr": "اقرأ `git log --oneline`: يجب أن يتناوب بين commits حمراء وخضراء. وانظر إلى الكود النهائي: هل يوجد تكرار أو غموض؟ أعد التنظيم مرة أخرى والاختبارات شبكة أمانك.\n\nارفعه إلى GitHub مع README يشرح TDD بكلماتك وما لاحظته.",
+    "hintsEn": [
+     "Time yourself; repeat the kata in a week and compare.",
+     "Run `dotnet test --collect:\"XPlat Code Coverage\"` to see coverage."
+    ],
+    "hintsAr": [
+     "احسب وقتك، وكرّر التمرين بعد أسبوع وقارن.",
+     "شغّل `dotnet test --collect:\"XPlat Code Coverage\"` لترى التغطية."
+    ],
+    "key": "test-tdd-kata-finish"
+   }
+  ]
+ },
+ {
+  "key": "test-bank-account",
+  "skill": "Testing",
+  "level": "Beginner",
+  "hours": 5,
+  "titleEn": "Unit-testing a bank account",
+  "titleAr": "اختبار وحدة لحساب بنكي",
+  "summaryEn": "Write a small bank account domain and test it thoroughly: deposits, withdrawals, overdraft rules, transfers and statements — with readable tests, test data builders and a coverage report.",
+  "summaryAr": "اكتب مجالًا صغيرًا لحساب بنكي واختبره جيدًا: الإيداع، والسحب، وقواعد السحب على المكشوف، والتحويلات، وكشف الحساب، باختبارات مقروءة، وبُناة بيانات اختبار، وتقرير تغطية.",
+  "techStack": "C# · xUnit · FluentAssertions or Shouldly · coverlet",
+  "goalsEn": [
+   "Write focused tests: one behaviour per test",
+   "Control time in tests with a fake clock",
+   "Use builders to keep test setup short",
+   "Read a coverage report and find untested paths"
+  ],
+  "goalsAr": [
+   "كتابة اختبارات مركّزة: سلوك واحد لكل اختبار",
+   "التحكم في الوقت داخل الاختبارات بساعة وهمية",
+   "استخدام البُناة لإبقاء تجهيز الاختبار قصيرًا",
+   "قراءة تقرير التغطية وإيجاد المسارات غير المختبرة"
+  ],
+  "requirementsEn": [
+   "Deposit and withdraw positive amounts; zero or negative amounts are rejected",
+   "Withdrawals beyond balance + overdraft limit are refused",
+   "Transfers move money between two accounts or fail without changing either",
+   "A daily withdrawal limit of 2,000 resets each day",
+   "A statement lists transactions with dates and running balance",
+   "Line coverage of the domain above 95%"
+  ],
+  "requirementsAr": [
+   "الإيداع والسحب بمبالغ موجبة، والمبالغ الصفرية أو السالبة تُرفض",
+   "السحب فوق الرصيد + حد السحب على المكشوف يُرفض",
+   "التحويلات تنقل المال بين حسابين أو تفشل دون تغيير أي منهما",
+   "حد سحب يومي 2000 يُعاد ضبطه كل يوم",
+   "كشف الحساب يعرض العمليات بالتواريخ والرصيد المتراكم",
+   "تغطية أسطر المجال فوق 95%"
+  ],
+  "acceptanceEn": [
+   "Tests do not depend on the real date (they pass at midnight too)",
+   "A failed transfer leaves both balances unchanged — proven by a test",
+   "Test names read like a specification"
+  ],
+  "acceptanceAr": [
+   "الاختبارات لا تعتمد على التاريخ الحقيقي (فتنجح عند منتصف الليل أيضًا)",
+   "التحويل الفاشل يترك الرصيدين بلا تغيير، ويثبت ذلك اختبار",
+   "أسماء الاختبارات تُقرأ كمواصفات"
+  ],
+  "stretchEn": [
+   "Add interest calculated monthly",
+   "Add currency with conversion",
+   "Generate an HTML coverage report in CI"
+  ],
+  "stretchAr": [
+   "أضف فائدة تُحسب شهريًا",
+   "أضف العملة مع التحويل",
+   "ولّد تقرير تغطية HTML في CI"
+  ],
+  "steps": [
+   {
+    "titleEn": "Projects and libraries",
+    "titleAr": "المشاريع والمكتبات",
+    "bodyEn": "Create `Bank` (class library) and `Bank.Tests` (xUnit) in a solution. Add an assertion library (`FluentAssertions` or `Shouldly`) for readable checks like `balance.Should().Be(150m)`.\n\nWrite a list of behaviours (the specification) in a comment or the README first.",
+    "bodyAr": "أنشئ `Bank` (مكتبة classes) و`Bank.Tests` (مشروع xUnit) داخل solution. وأضف مكتبة تحقق (`FluentAssertions` أو `Shouldly`) لفحوص مقروءة مثل `balance.Should().Be(150m)`.\n\nاكتب قائمة السلوكيات (المواصفات) أولًا في تعليق أو في README.",
+    "hintsEn": [
+     "Each behaviour in the list becomes one test name.",
+     "Money is `decimal`."
+    ],
+    "hintsAr": [
+     "كل سلوك في القائمة يصبح اسم اختبار واحد.",
+     "المال من نوع `decimal`."
+    ],
+    "key": "test-bank-account-setup"
+   },
+   {
+    "titleEn": "Deposits and withdrawals",
+    "titleAr": "الإيداع والسحب",
+    "bodyEn": "Write `Account` with `Balance`, `Deposit(amount)` and `Withdraw(amount)`. Test: deposit increases balance; deposit of 0 or -5 throws; withdraw decreases balance; withdraw more than balance throws `InsufficientFundsException`.\n\nEach test checks one thing and has a name like `Withdraw_more_than_balance_is_refused`.",
+    "bodyAr": "اكتب `Account` فيه `Balance` و`Deposit(amount)` و`Withdraw(amount)`. واختبر: الإيداع يزيد الرصيد، وإيداع 0 أو -5 يرمي استثناء، والسحب ينقص الرصيد، وسحب أكثر من الرصيد يرمي `InsufficientFundsException`.\n\nكل اختبار يتحقق من شيء واحد، واسمه مثل `Withdraw_more_than_balance_is_refused`.",
+    "hintsEn": [
+     "Check the balance is unchanged after a refused withdrawal, not only that it threw.",
+     "Use [Theory] for the invalid amounts (0, -1, -100)."
+    ],
+    "hintsAr": [
+     "تحقق أن الرصيد لم يتغير بعد السحب المرفوض، لا أنه رمى استثناء فقط.",
+     "استخدم [Theory] للمبالغ غير الصحيحة (0 و-1 و-100)."
+    ],
+    "key": "test-bank-account-deposit"
+   },
+   {
+    "titleEn": "Overdraft rules",
+    "titleAr": "قواعد السحب على المكشوف",
+    "bodyEn": "Add an `OverdraftLimit` (default 0). Withdrawals are allowed while `Balance - amount >= -OverdraftLimit`. Test the exact boundary: with limit 100 and balance 0, withdrawing 100 works and 100.01 fails.",
+    "bodyAr": "أضف `OverdraftLimit` (الافتراضي 0). والسحب مسموح ما دام `Balance - amount >= -OverdraftLimit`. واختبر الحد بالضبط: مع حد 100 ورصيد 0، سحب 100 ينجح و100.01 يفشل.",
+    "hintsEn": [
+     "Boundary tests catch off-by-one errors (`>` vs `>=`).",
+     "A helper `AccountWith(balance, overdraft)` keeps tests short."
+    ],
+    "hintsAr": [
+     "اختبارات الحدود تكشف أخطاء الفرق بواحد (`>` مقابل `>=`).",
+     "دالة مساعدة `AccountWith(balance, overdraft)` تُبقي الاختبارات قصيرة."
+    ],
+    "key": "test-bank-account-overdraft"
+   },
+   {
+    "titleEn": "Daily limit with a fake clock",
+    "titleAr": "الحد اليومي مع ساعة وهمية",
+    "bodyEn": "Withdrawals per calendar day cannot exceed 2,000. Inject `TimeProvider` into Account; tests use `FakeTimeProvider` (package `Microsoft.Extensions.TimeProvider.Testing`) and `Advance(TimeSpan.FromDays(1))`.\n\nTest: 1,500 + 600 the same day fails; 1,500 today and 600 tomorrow works.",
+    "bodyAr": "السحب في اليوم التقويمي الواحد لا يتجاوز 2000. احقن `TimeProvider` في Account، والاختبارات تستخدم `FakeTimeProvider` (من الحزمة `Microsoft.Extensions.TimeProvider.Testing`) و`Advance(TimeSpan.FromDays(1))`.\n\nاختبر: 1500 ثم 600 في اليوم نفسه يفشل، و1500 اليوم ثم 600 غدًا ينجح.",
+    "hintsEn": [
+     "Code that calls DateTime.Now directly cannot be tested reliably.",
+     "Store transactions with timestamps; compute today's total from them."
+    ],
+    "hintsAr": [
+     "الكود الذي يستدعي DateTime.Now مباشرة لا يمكن اختباره بشكل موثوق.",
+     "خزّن العمليات مع أوقاتها، واحسب مجموع اليوم منها."
+    ],
+    "key": "test-bank-account-clock"
+   },
+   {
+    "titleEn": "Transfers that are all or nothing",
+    "titleAr": "تحويلات كلها أو لا شيء",
+    "bodyEn": "Write `Bank.Transfer(from, to, amount)`. If the withdrawal fails, nothing changes. Test the failure case by asserting both balances are exactly what they were.\n\nThink about order: withdraw first, then deposit — withdrawals can fail, deposits of a valid amount cannot.",
+    "bodyAr": "اكتب `Bank.Transfer(from, to, amount)`. وإذا فشل السحب لا يتغير شيء. واختبر حالة الفشل بالتحقق أن الرصيدين كما كانا بالضبط.\n\nفكّر في الترتيب: السحب أولًا ثم الإيداع، فالسحب قد يفشل أما إيداع مبلغ صحيح فلا.",
+    "hintsEn": [
+     "Transferring to the same account should be refused — add a test.",
+     "Record the transfer in both accounts' histories with a shared reference."
+    ],
+    "hintsAr": [
+     "التحويل إلى الحساب نفسه يجب أن يُرفض، فأضف اختبارًا.",
+     "سجّل التحويل في سجلي الحسابين بمرجع مشترك."
+    ],
+    "key": "test-bank-account-transfer"
+   },
+   {
+    "titleEn": "Test data builders",
+    "titleAr": "بُناة بيانات الاختبار",
+    "bodyEn": "Tests now repeat setup. Create `AccountBuilder` with defaults and fluent methods: `new AccountBuilder().WithBalance(500).WithOverdraft(100).Build()`. Refactor the tests to use it.\n\nThe test should only mention the details that matter for that test.",
+    "bodyAr": "الاختبارات الآن تكرر التجهيز. أنشئ `AccountBuilder` بقيم افتراضية ودوال متسلسلة: `new AccountBuilder().WithBalance(500).WithOverdraft(100).Build()`. وأعد تنظيم الاختبارات لتستخدمه.\n\nيجب أن يذكر الاختبار فقط التفاصيل المهمة له.",
+    "hintsEn": [
+     "WithBalance can deposit internally so the account is in a valid state.",
+     "Builders are test code: keep them in the test project."
+    ],
+    "hintsAr": [
+     "تستطيع WithBalance الإيداع داخليًا ليكون الحساب في حالة صحيحة.",
+     "البُناة كود اختبار، فأبقها في مشروع الاختبار."
+    ],
+    "key": "test-bank-account-builders"
+   },
+   {
+    "titleEn": "Statement with running balance",
+    "titleAr": "كشف الحساب مع الرصيد المتراكم",
+    "bodyEn": "`Statement()` returns lines (date, description, amount, balance after) newest first. Test the content of a statement after three operations with a fixed fake date.\n\nConsider snapshot testing (the Verify library) for the formatted text output.",
+    "bodyAr": "`Statement()` تعيد أسطرًا (التاريخ والوصف والمبلغ والرصيد بعدها) من الأحدث إلى الأقدم. واختبر محتوى الكشف بعد ثلاث عمليات بتاريخ وهمي ثابت.\n\nفكّر في اختبار اللقطات (مكتبة Verify) للنص المنسق الناتج.",
+    "hintsEn": [
+     "Compare lists of records with `Should().BeEquivalentTo(expected)`.",
+     "Fix the culture in tests that format numbers or dates."
+    ],
+    "hintsAr": [
+     "قارن قوائم الـ records بـ `Should().BeEquivalentTo(expected)`.",
+     "ثبّت الإعدادات الإقليمية في الاختبارات التي تنسّق الأرقام أو التواريخ."
+    ],
+    "key": "test-bank-account-statement"
+   },
+   {
+    "titleEn": "Coverage and publish",
+    "titleAr": "التغطية والنشر",
+    "bodyEn": "Run `dotnet test --collect:\"XPlat Code Coverage\"` and turn the result into HTML with `reportgenerator`. Open it, find red lines and decide: add a test, or remove dead code.\n\nPublish with the specification list in the README and a coverage badge or screenshot.",
+    "bodyAr": "شغّل `dotnet test --collect:\"XPlat Code Coverage\"` وحوّل النتيجة إلى HTML بـ `reportgenerator`. وافتحه، وجد الأسطر الحمراء، وقرر: أضف اختبارًا، أو احذف الكود الميت.\n\nانشره مع قائمة المواصفات في README وشارة أو صورة للتغطية.",
+    "hintsEn": [
+     "Install with `dotnet tool install -g dotnet-reportgenerator-globaltool`.",
+     "High coverage is not the goal; meaningful assertions are. Coverage only shows what is never run."
+    ],
+    "hintsAr": [
+     "ثبّته بـ `dotnet tool install -g dotnet-reportgenerator-globaltool`.",
+     "التغطية العالية ليست الهدف، بل الفحوص ذات المعنى، فالتغطية تُظهر فقط ما لا يُنفّذ أبدًا."
+    ],
+    "key": "test-bank-account-finish"
+   }
+  ]
+ },
+ {
+  "key": "test-api-integration",
+  "skill": "Testing",
+  "level": "Intermediate",
+  "hours": 10,
+  "titleEn": "Integration tests for a real API",
+  "titleAr": "اختبارات تكامل لـ API حقيقي",
+  "summaryEn": "Add a professional integration test suite to an ASP.NET Core API: WebApplicationFactory, a real SQL Server in Docker with Testcontainers, database resets with Respawn, authentication in tests and CI.",
+  "summaryAr": "أضف مجموعة اختبارات تكامل احترافية إلى API بـ ASP.NET Core: WebApplicationFactory، وSQL Server حقيقي في Docker عبر Testcontainers، وإعادة ضبط قاعدة البيانات بـ Respawn، والمصادقة داخل الاختبارات، وCI.",
+  "techStack": "C# · xUnit · WebApplicationFactory · Testcontainers · Respawn · GitHub Actions",
+  "goalsEn": [
+   "Test an API through HTTP with WebApplicationFactory",
+   "Use a real database in tests and keep tests independent",
+   "Replace external services and authentication in tests",
+   "Run the suite in CI with Docker"
+  ],
+  "goalsAr": [
+   "اختبار الـ API عبر HTTP بـ WebApplicationFactory",
+   "استخدام قاعدة بيانات حقيقية في الاختبارات مع إبقاء الاختبارات مستقلة",
+   "استبدال الخدمات الخارجية والمصادقة في الاختبارات",
+   "تشغيل المجموعة في CI مع Docker"
+  ],
+  "requirementsEn": [
+   "Use an existing API (e.g. the Bookstore API from the ASP.NET Core track)",
+   "A shared fixture starts one SQL Server container per test run",
+   "Each test starts from a clean database (Respawn)",
+   "Tests can act as different users with a test auth handler",
+   "External calls (email, payment) are replaced by fakes you can inspect",
+   "At least 20 tests covering happy paths, validation, authorization and errors"
+  ],
+  "requirementsAr": [
+   "استخدم API موجودًا (مثل Bookstore API من مسار ASP.NET Core)",
+   "fixture مشترك يشغّل حاوية SQL Server واحدة لكل تشغيل اختبارات",
+   "كل اختبار يبدأ من قاعدة بيانات نظيفة (Respawn)",
+   "الاختبارات تستطيع التصرف كمستخدمين مختلفين بـ test auth handler",
+   "الاستدعاءات الخارجية (البريد والدفع) تُستبدل بنسخ وهمية تستطيع فحصها",
+   "20 اختبارًا على الأقل تغطي المسارات الناجحة والتحقق والتفويض والأخطاء"
+  ],
+  "acceptanceEn": [
+   "Tests pass in any order and in parallel classes",
+   "The suite runs in GitHub Actions on every push",
+   "A test proves the \"send email\" fake was called with the right address",
+   "No test depends on data created by another test"
+  ],
+  "acceptanceAr": [
+   "الاختبارات تنجح بأي ترتيب ومع classes متوازية",
+   "المجموعة تعمل في GitHub Actions عند كل push",
+   "اختبار يثبت أن النسخة الوهمية من \"إرسال البريد\" استُدعيت بالعنوان الصحيح",
+   "لا يوجد اختبار يعتمد على بيانات أنشأها اختبار آخر"
+  ],
+  "stretchEn": [
+   "Add snapshot tests of JSON responses with Verify",
+   "Measure and speed up the suite",
+   "Add contract tests for the OpenAPI document"
+  ],
+  "stretchAr": [
+   "أضف اختبارات لقطات لردود JSON بـ Verify",
+   "قِس سرعة المجموعة وحسّنها",
+   "أضف اختبارات عقد لمستند OpenAPI"
+  ],
+  "steps": [
+   {
+    "titleEn": "WebApplicationFactory basics",
+    "titleAr": "أساسيات WebApplicationFactory",
+    "bodyEn": "Add a test project with `Microsoft.AspNetCore.Mvc.Testing` referencing the API. Add `public partial class Program { }` to the API. Write a first test: `var client = factory.CreateClient(); var res = await client.GetAsync(\"/api/books\"); res.StatusCode.Should().Be(HttpStatusCode.OK);`.\n\nThe whole app runs in memory, with the real middleware, routing and serialization.",
+    "bodyAr": "أضف مشروع اختبار فيه `Microsoft.AspNetCore.Mvc.Testing` يشير إلى الـ API، وأضف `public partial class Program { }` إلى الـ API. واكتب أول اختبار: `var client = factory.CreateClient(); var res = await client.GetAsync(\"/api/books\"); res.StatusCode.Should().Be(HttpStatusCode.OK);`.\n\nالتطبيق كله يعمل في الذاكرة، بالـ middleware والتوجيه والتحويل الحقيقي.",
+    "hintsEn": [
+     "Use `IClassFixture<WebApplicationFactory<Program>>` to share one factory per class.",
+     "Read JSON with `ReadFromJsonAsync<T>()`."
+    ],
+    "hintsAr": [
+     "استخدم `IClassFixture<WebApplicationFactory<Program>>` لمشاركة factory واحد لكل class.",
+     "اقرأ JSON بـ `ReadFromJsonAsync<T>()`."
+    ],
+    "key": "test-api-integration-factory"
+   },
+   {
+    "titleEn": "A real SQL Server with Testcontainers",
+    "titleAr": "SQL Server حقيقي مع Testcontainers",
+    "bodyEn": "Add `Testcontainers.MsSql`. Create `ApiFixture : IAsyncLifetime` that starts an `MsSqlContainer`, then a custom `WebApplicationFactory` that replaces the DbContext connection string with the container's in `ConfigureWebHost` and applies migrations once.\n\nDocker must be running. The in-memory provider hides SQL behaviour (constraints, transactions); a real server does not.",
+    "bodyAr": "أضف `Testcontainers.MsSql`. وأنشئ `ApiFixture : IAsyncLifetime` يشغّل `MsSqlContainer`، ثم `WebApplicationFactory` مخصصًا يستبدل نص اتصال الـ DbContext بنص الحاوية داخل `ConfigureWebHost`، ويطبّق الـ migrations مرة واحدة.\n\nيجب أن يكون Docker يعمل. مزود الذاكرة يخفي سلوك SQL (القيود والـ transactions)، أما الخادم الحقيقي فلا.",
+    "hintsEn": [
+     "Use an xUnit collection fixture so all test classes share one container.",
+     "Remove the original DbContextOptions registration before adding yours."
+    ],
+    "hintsAr": [
+     "استخدم collection fixture في xUnit لتتشارك كل classes الاختبار حاوية واحدة.",
+     "احذف تسجيل DbContextOptions الأصلي قبل إضافة تسجيلك."
+    ],
+    "key": "test-api-integration-container"
+   },
+   {
+    "titleEn": "Clean database per test",
+    "titleAr": "قاعدة بيانات نظيفة لكل اختبار",
+    "bodyEn": "Add `Respawn`. Create a `Respawner` once (ignore the migrations history table) and call `ResetAsync(connection)` in each test's `InitializeAsync`. Then seed only what the test needs.\n\nTests that share data become order-dependent and flaky; resetting removes that whole class of problems.",
+    "bodyAr": "أضف `Respawn`. وأنشئ `Respawner` مرة واحدة (مع تجاهل جدول تاريخ الـ migrations) واستدعِ `ResetAsync(connection)` في `InitializeAsync` لكل اختبار. ثم أضف فقط البيانات التي يحتاجها الاختبار.\n\nالاختبارات التي تتشارك البيانات تصبح معتمدة على الترتيب وغير مستقرة، وإعادة الضبط تزيل هذا النوع كله من المشاكل.",
+    "hintsEn": [
+     "Respawn deletes rows in foreign-key order; it is fast because it does not recreate tables.",
+     "A base class `IntegrationTest` can hold the reset and helper methods."
+    ],
+    "hintsAr": [
+     "Respawn يحذف الصفوف حسب ترتيب المفاتيح الأجنبية، وهو سريع لأنه لا يعيد إنشاء الجداول.",
+     "class أساسي `IntegrationTest` يستطيع حمل إعادة الضبط والدوال المساعدة."
+    ],
+    "key": "test-api-integration-respawn"
+   },
+   {
+    "titleEn": "Arrange data through helpers",
+    "titleAr": "جهّز البيانات بدوال مساعدة",
+    "bodyEn": "Write helpers that create data either through the API (closest to real use) or directly in the DbContext (faster): `await CreateAuthorAsync(\"Ann\")`, `await CreateBookAsync(authorId, price: 10)`.\n\nEach test arranges its own data and asserts on it; never rely on seed data from the app.",
+    "bodyAr": "اكتب دوال مساعدة تنشئ البيانات إما عبر الـ API (الأقرب للاستخدام الحقيقي) أو مباشرة في الـ DbContext (الأسرع): `await CreateAuthorAsync(\"Ann\")` و`await CreateBookAsync(authorId, price: 10)`.\n\nكل اختبار يجهّز بياناته ويتحقق منها، ولا تعتمد أبدًا على البيانات الأولية للتطبيق.",
+    "hintsEn": [
+     "Get a scoped DbContext with `factory.Services.CreateScope()`.",
+     "Give created data unique values (Guid in names) when uniqueness matters."
+    ],
+    "hintsAr": [
+     "احصل على DbContext من نوع scoped بـ `factory.Services.CreateScope()`.",
+     "أعط البيانات المنشأة قيمًا فريدة (Guid في الأسماء) عندما يكون التفرد مهمًا."
+    ],
+    "key": "test-api-integration-seed"
+   },
+   {
+    "titleEn": "Authentication in tests",
+    "titleAr": "المصادقة داخل الاختبارات",
+    "bodyEn": "Add a test authentication handler that reads a header like `X-Test-User: id;roles` and creates the ClaimsPrincipal. Register it in the test factory as the default scheme. Helper: `CreateClientAs(\"user-1\", \"Admin\")`.\n\nNow you can test authorization rules without real login flows (keep a few tests that do use the real login).",
+    "bodyAr": "أضف test authentication handler يقرأ ترويسة مثل `X-Test-User: id;roles` وينشئ ClaimsPrincipal. وسجّله في factory الاختبار كمخطط افتراضي. ودالة مساعدة: `CreateClientAs(\"user-1\", \"Admin\")`.\n\nالآن تستطيع اختبار قواعد التفويض دون مسارات دخول حقيقية (واحتفظ ببعض الاختبارات التي تستخدم الدخول الحقيقي).",
+    "hintsEn": [
+     "Override the scheme in `ConfigureTestServices` so it wins over the app's registration.",
+     "A client without the header tests the anonymous case."
+    ],
+    "hintsAr": [
+     "أعد تعريف المخطط داخل `ConfigureTestServices` ليتغلب على تسجيل التطبيق.",
+     "عميل بدون الترويسة يختبر حالة المستخدم المجهول."
+    ],
+    "key": "test-api-integration-auth"
+   },
+   {
+    "titleEn": "Fake external services",
+    "titleAr": "خدمات خارجية وهمية",
+    "bodyEn": "Replace `IEmailSender` (and any HTTP client to third parties) with fakes in `ConfigureTestServices`. The fake email sender stores messages in a list the test can read: `fakeEmail.Sent.Should().ContainSingle(m => m.To == \"a@x.com\")`.\n\nTests must never send real emails or call real payment APIs.",
+    "bodyAr": "استبدل `IEmailSender` (وأي HTTP client لأطراف خارجية) بنسخ وهمية داخل `ConfigureTestServices`. والنسخة الوهمية لمرسل البريد تخزّن الرسائل في قائمة يستطيع الاختبار قراءتها: `fakeEmail.Sent.Should().ContainSingle(m => m.To == \"a@x.com\")`.\n\nالاختبارات يجب ألا ترسل بريدًا حقيقيًا أو تستدعي واجهات دفع حقيقية أبدًا.",
+    "hintsEn": [
+     "Register the fake as a singleton so the test and the app see the same instance.",
+     "Clear it in the per-test reset."
+    ],
+    "hintsAr": [
+     "سجّل النسخة الوهمية كـ singleton ليرى الاختبار والتطبيق النسخة نفسها.",
+     "أفرغها في إعادة الضبط الخاصة بكل اختبار."
+    ],
+    "key": "test-api-integration-fakes"
+   },
+   {
+    "titleEn": "Write the suite",
+    "titleAr": "اكتب المجموعة",
+    "bodyEn": "Cover each endpoint with: the happy path (status + body), validation errors (400 with field names), not found (404), authorization (401/403 per role), conflicts (409), and side effects (row in the database, fake email sent).\n\nGroup tests by feature in classes; keep each test under ~20 lines.",
+    "bodyAr": "غطِّ كل نقطة بـ: المسار الناجح (الحالة والمحتوى)، وأخطاء التحقق (400 مع أسماء الحقول)، وعدم الوجود (404)، والتفويض (401/403 لكل دور)، والتعارضات (409)، والآثار الجانبية (صف في قاعدة البيانات، وبريد وهمي أُرسل).\n\nجمّع الاختبارات حسب الميزة في classes، وأبقِ كل اختبار في حدود 20 سطرًا.",
+    "hintsEn": [
+     "Assert ProblemDetails with `ReadFromJsonAsync<ValidationProblemDetails>()`.",
+     "When a test fails, the message should tell you what broke without debugging."
+    ],
+    "hintsAr": [
+     "تحقق من ProblemDetails بـ `ReadFromJsonAsync<ValidationProblemDetails>()`.",
+     "عندما يفشل اختبار يجب أن تخبرك رسالته بما انكسر دون تصحيح."
+    ],
+    "key": "test-api-integration-cases"
+   },
+   {
+    "titleEn": "Run it in CI",
+    "titleAr": "شغّلها في CI",
+    "bodyEn": "Add `.github/workflows/tests.yml`: checkout, setup-dotnet, `dotnet test --logger trx`. GitHub's Ubuntu runners have Docker, so Testcontainers works out of the box. Upload the test results as an artifact.\n\nA failing test should block the merge — turn on branch protection.",
+    "bodyAr": "أضف `.github/workflows/tests.yml`: checkout، ثم setup-dotnet، ثم `dotnet test --logger trx`. وأجهزة Ubuntu في GitHub فيها Docker، فيعمل Testcontainers مباشرة. وارفع نتائج الاختبارات كـ artifact.\n\nالاختبار الفاشل يجب أن يمنع الدمج، ففعّل حماية الفرع.",
+    "hintsEn": [
+     "Cache NuGet packages with `actions/cache` or setup-dotnet's cache option.",
+     "Print container logs when a test fails to debug CI-only problems."
+    ],
+    "hintsAr": [
+     "خزّن حزم NuGet مؤقتًا بـ `actions/cache` أو بخيار التخزين المؤقت في setup-dotnet.",
+     "اطبع سجلات الحاوية عند فشل اختبار لتصحيح المشاكل التي تظهر في CI فقط."
+    ],
+    "key": "test-api-integration-ci"
+   },
+   {
+    "titleEn": "Measure, speed up and document",
+    "titleAr": "قِس وسرّع ووثّق",
+    "bodyEn": "Measure the suite time. Make it faster: one container for all classes, parallel test collections where safe, Respawn instead of recreating databases. Document how to run tests locally (Docker required), the fixtures, the auth helper and the fakes.\n\nA fast, reliable suite is one people actually run.",
+    "bodyAr": "قِس وقت المجموعة، واجعلها أسرع: حاوية واحدة لكل الـ classes، ومجموعات اختبار متوازية حيث يكون ذلك آمنًا، وRespawn بدل إعادة إنشاء قواعد البيانات. ووثّق طريقة تشغيل الاختبارات محليًا (Docker مطلوب)، والـ fixtures، ودالة المصادقة المساعدة، والنسخ الوهمية.\n\nالمجموعة السريعة الموثوقة هي التي يشغّلها الناس فعلًا.",
+    "hintsEn": [
+     "Write the before/after times in the README.",
+     "Flaky tests should be fixed or quarantined immediately, never ignored."
+    ],
+    "hintsAr": [
+     "اكتب الأوقات قبل وبعد في README.",
+     "الاختبارات غير المستقرة يجب إصلاحها أو عزلها فورًا، لا تجاهلها أبدًا."
+    ],
+    "key": "test-api-integration-finish"
+   }
+  ]
+ },
+ {
+  "key": "test-angular-app",
+  "skill": "Testing",
+  "level": "Intermediate",
+  "hours": 10,
+  "titleEn": "Testing an Angular app end to end",
+  "titleAr": "اختبار تطبيق Angular من البداية إلى النهاية",
+  "summaryEn": "Build a solid test suite for an Angular app: pure unit tests, component tests that behave like users, HTTP tests with a testing controller, and Playwright end-to-end tests with network mocking.",
+  "summaryAr": "ابنِ مجموعة اختبارات متينة لتطبيق Angular: اختبارات وحدة نقية، واختبارات مكونات تتصرف كالمستخدمين، واختبارات HTTP مع testing controller، واختبارات شاملة بـ Playwright مع محاكاة الشبكة.",
+  "techStack": "Angular · Vitest or Jasmine · Angular Testing Library · HttpTestingController · Playwright",
+  "goalsEn": [
+   "Choose the right level of test for each behaviour",
+   "Test components through the DOM like a user",
+   "Test services that call HTTP without a server",
+   "Write stable end-to-end tests with good locators and network mocks"
+  ],
+  "goalsAr": [
+   "اختيار مستوى الاختبار المناسب لكل سلوك",
+   "اختبار المكونات عبر الـ DOM كما يفعل المستخدم",
+   "اختبار الخدمات التي تستدعي HTTP بدون خادم",
+   "كتابة اختبارات شاملة مستقرة بمحددات جيدة ومحاكاة للشبكة"
+  ],
+  "requirementsEn": [
+   "Use one of your Angular projects (e.g. the TV show finder or the budget planner)",
+   "Unit tests for pure functions and pipes",
+   "Component tests with Testing Library for forms, lists and states",
+   "Service tests with HttpTestingController",
+   "Playwright tests for the 3 most important user journeys, with mocked API responses",
+   "All tests run in CI"
+  ],
+  "requirementsAr": [
+   "استخدم أحد مشاريعك بـ Angular (مثل باحث المسلسلات أو مخطط الميزانية)",
+   "اختبارات وحدة للدوال النقية والـ pipes",
+   "اختبارات مكونات بـ Testing Library للنماذج والقوائم والحالات",
+   "اختبارات خدمات بـ HttpTestingController",
+   "اختبارات Playwright لأهم 3 رحلات للمستخدم، مع محاكاة ردود الـ API",
+   "كل الاختبارات تعمل في CI"
+  ],
+  "acceptanceEn": [
+   "Component tests find elements by role and label, not CSS classes",
+   "An HTTP test fails if the service calls the wrong URL or forgets a parameter",
+   "E2E tests do not depend on a real backend and pass 10 times in a row",
+   "A short testing strategy explains what is tested where"
+  ],
+  "acceptanceAr": [
+   "اختبارات المكونات تجد العناصر بالدور والعنوان لا بـ classes في CSS",
+   "اختبار HTTP يفشل إذا استدعت الخدمة رابطًا خاطئًا أو نسيت معاملًا",
+   "الاختبارات الشاملة لا تعتمد على خلفية حقيقية وتنجح 10 مرات متتالية",
+   "استراتيجية اختبار قصيرة تشرح ما يُختبر وأين"
+  ],
+  "stretchEn": [
+   "Add visual regression screenshots",
+   "Run axe accessibility checks in Playwright",
+   "Measure and raise mutation score with Stryker for TS"
+  ],
+  "stretchAr": [
+   "أضف لقطات انحدار بصري",
+   "شغّل فحوص إمكانية الوصول بـ axe داخل Playwright",
+   "قِس درجة الطفرات وارفعها بـ Stryker لـ TypeScript"
+  ],
+  "steps": [
+   {
+    "titleEn": "Write a testing strategy",
+    "titleAr": "اكتب استراتيجية الاختبار",
+    "bodyEn": "List the app's important behaviours and decide the cheapest test that gives confidence for each: pure logic → unit; a component's states and interactions → component test; API calls → service test with HttpTestingController; whole journeys across pages → a few E2E tests.\n\nThis is the testing pyramid applied to your app.",
+    "bodyAr": "اكتب السلوكيات المهمة للتطبيق، وقرر لكل منها أرخص اختبار يعطي ثقة: المنطق النقي ← اختبار وحدة، وحالات المكوّن وتفاعلاته ← اختبار مكوّن، واستدعاءات الـ API ← اختبار خدمة مع HttpTestingController، والرحلات الكاملة عبر الصفحات ← بضعة اختبارات شاملة.\n\nهذا هو هرم الاختبارات مطبقًا على تطبيقك.",
+    "hintsEn": [
+     "Put the strategy in TESTING.md in the repository.",
+     "E2E tests are slow and brittle: keep them for journeys, not every edge case."
+    ],
+    "hintsAr": [
+     "ضع الاستراتيجية في TESTING.md داخل المستودع.",
+     "الاختبارات الشاملة بطيئة وهشة، فأبقها للرحلات لا لكل حالة طرفية."
+    ],
+    "key": "test-angular-app-strategy"
+   },
+   {
+    "titleEn": "Unit tests for logic and pipes",
+    "titleAr": "اختبارات وحدة للمنطق والـ pipes",
+    "bodyEn": "Extract logic from components into pure functions (formatting, calculations, filters) and test them directly. Test custom pipes by instantiating them: `expect(new FileSizePipe().transform(2048)).toBe('2 KB')`.\n\nThese tests are fast and precise; most edge cases belong here.",
+    "bodyAr": "استخرج المنطق من المكونات إلى دوال نقية (التنسيق والحسابات والمرشحات) واختبرها مباشرة. واختبر الـ pipes المخصصة بإنشائها: `expect(new FileSizePipe().transform(2048)).toBe('2 KB')`.\n\nهذه الاختبارات سريعة ودقيقة، ومعظم الحالات الطرفية مكانها هنا.",
+    "hintsEn": [
+     "If a function is hard to test, it probably does too much — split it.",
+     "Use table-driven tests (`it.each`) for many inputs."
+    ],
+    "hintsAr": [
+     "إذا صعب اختبار دالة فهي غالبًا تفعل أكثر من اللازم، فقسّمها.",
+     "استخدم الاختبارات القائمة على الجداول (`it.each`) للمدخلات الكثيرة."
+    ],
+    "key": "test-angular-app-unit"
+   },
+   {
+    "titleEn": "Service tests with HttpTestingController",
+    "titleAr": "اختبارات الخدمات مع HttpTestingController",
+    "bodyEn": "Configure TestBed with `provideHttpClient()` and `provideHttpClientTesting()`. Call the service, then `const req = httpTesting.expectOne(r => r.url.endsWith('/search/shows'))`, check `req.request.params.get('q')`, and `req.flush(fakeResponse)`. Assert the mapped result. Also flush an error and check it is handled.\n\nCall `httpTesting.verify()` after each test to catch unexpected requests.",
+    "bodyAr": "اضبط TestBed بـ `provideHttpClient()` و`provideHttpClientTesting()`. واستدعِ الخدمة، ثم `const req = httpTesting.expectOne(r => r.url.endsWith('/search/shows'))`، وتحقق من `req.request.params.get('q')`، ثم `req.flush(fakeResponse)`، وتحقق من النتيجة المحوّلة. واستجب بخطأ أيضًا وتحقق أنه يُعالَج.\n\nاستدعِ `httpTesting.verify()` بعد كل اختبار لتكشف الطلبات غير المتوقعة.",
+    "hintsEn": [
+     "Keep fake responses in small fixture files typed with your interfaces.",
+     "Test interceptors the same way: make a request and inspect its headers."
+    ],
+    "hintsAr": [
+     "احفظ الردود الوهمية في ملفات fixture صغيرة بأنواع interfaces الخاصة بك.",
+     "اختبر الـ interceptors بالطريقة نفسها: أرسل طلبًا وافحص ترويساته."
+    ],
+    "key": "test-angular-app-http"
+   },
+   {
+    "titleEn": "Component tests like a user",
+    "titleAr": "اختبارات المكونات كالمستخدم",
+    "bodyEn": "Install `@testing-library/angular` and `@testing-library/user-event`. Render a component with mocked dependencies, interact with `user.type(screen.getByLabelText('Name'), 'Ann')` and `user.click(screen.getByRole('button', { name: 'Save' }))`, then assert on what the user sees.\n\nTest the states: loading, empty, error with retry, and success.",
+    "bodyAr": "ثبّت `@testing-library/angular` و`@testing-library/user-event`. واعرض مكوّنًا مع اعتماديات وهمية، وتفاعل بـ `user.type(screen.getByLabelText('Name'), 'Ann')` و`user.click(screen.getByRole('button', { name: 'Save' }))`، ثم تحقق مما يراه المستخدم.\n\nاختبر الحالات: التحميل، والفراغ، والخطأ مع إعادة المحاولة، والنجاح.",
+    "hintsEn": [
+     "If you cannot find an element by role or label, the UI may not be accessible — fix the UI.",
+     "Provide fake services with `{ provide: ShowsService, useValue: fake }`."
+    ],
+    "hintsAr": [
+     "إن لم تستطع إيجاد عنصر بالدور أو العنوان فقد لا تكون الواجهة قابلة للوصول، فأصلح الواجهة.",
+     "قدّم خدمات وهمية بـ `{ provide: ShowsService, useValue: fake }`."
+    ],
+    "key": "test-angular-app-components"
+   },
+   {
+    "titleEn": "Testing forms and validation",
+    "titleAr": "اختبار النماذج والتحقق",
+    "bodyEn": "For a form component: submit empty and check the error messages appear; fill valid values and check the output event or service call has the right payload; check the submit button is disabled while saving.\n\nAssert on visible text, not on form control internals.",
+    "bodyAr": "لمكوّن نموذج: أرسله فارغًا وتحقق من ظهور رسائل الخطأ، واملأه بقيم صحيحة وتحقق أن الحدث الخارج أو استدعاء الخدمة يحمل المحتوى الصحيح، وتحقق أن زر الإرسال معطّل أثناء الحفظ.\n\nتحقق من النص المرئي، لا من تفاصيل الـ form control الداخلية.",
+    "hintsEn": [
+     "Use a Promise you resolve later in the fake service to test the \"saving\" state.",
+     "Test server error display by making the fake throw an HttpErrorResponse."
+    ],
+    "hintsAr": [
+     "استخدم Promise تحلّه لاحقًا في الخدمة الوهمية لتختبر حالة \"جارٍ الحفظ\".",
+     "اختبر عرض خطأ الخادم بجعل الخدمة الوهمية ترمي HttpErrorResponse."
+    ],
+    "key": "test-angular-app-forms"
+   },
+   {
+    "titleEn": "Playwright setup",
+    "titleAr": "إعداد Playwright",
+    "bodyEn": "Run `npm init playwright@latest`. In `playwright.config.ts` set `webServer` to start `ng serve` and `baseURL` to it. Write the first test: open the home page and check the heading with `page.getByRole('heading', { name: ... })`.\n\nPrefer role and text locators; avoid CSS selectors that break when styling changes.",
+    "bodyAr": "شغّل `npm init playwright@latest`. وفي `playwright.config.ts` اضبط `webServer` ليشغّل `ng serve`، و`baseURL` عليه. واكتب أول اختبار: افتح الصفحة الرئيسية وتحقق من العنوان بـ `page.getByRole('heading', { name: ... })`.\n\nفضّل محددات الدور والنص، وتجنب محددات CSS التي تنكسر عند تغيير التنسيق.",
+    "hintsEn": [
+     "`npx playwright codegen` records actions and suggests locators.",
+     "Use `npx playwright test --ui` while writing tests."
+    ],
+    "hintsAr": [
+     "`npx playwright codegen` يسجّل الإجراءات ويقترح المحددات.",
+     "استخدم `npx playwright test --ui` أثناء كتابة الاختبارات."
+    ],
+    "key": "test-angular-app-playwright"
+   },
+   {
+    "titleEn": "Mock the network in E2E",
+    "titleAr": "حاكِ الشبكة في الاختبارات الشاملة",
+    "bodyEn": "Use `page.route('**/api/**', route => route.fulfill({ json: fixture }))` so E2E tests do not depend on a live backend or third-party API. Write the 3 journeys (e.g. search → open details → add to watchlist → see it on the watchlist page). Also test an error journey with a 500 response.\n\nUse web-first assertions (`await expect(locator).toHaveText(...)`) that wait automatically — never fixed sleeps.",
+    "bodyAr": "استخدم `page.route('**/api/**', route => route.fulfill({ json: fixture }))` حتى لا تعتمد الاختبارات الشاملة على خلفية حية أو API طرف ثالث. واكتب الرحلات الثلاث (مثل البحث ← فتح التفاصيل ← الإضافة إلى قائمة المشاهدة ← رؤيتها في صفحة القائمة). واختبر أيضًا رحلة خطأ برد 500.\n\nاستخدم فحوصًا تنتظر تلقائيًا (`await expect(locator).toHaveText(...)`)، ولا تستخدم انتظارًا ثابتًا أبدًا.",
+    "hintsEn": [
+     "A few tests against the real backend (smoke tests) are still useful in a separate job.",
+     "Run the suite 10 times with `--repeat-each=10` to catch flakiness."
+    ],
+    "hintsAr": [
+     "بعض الاختبارات على الخلفية الحقيقية (smoke tests) تبقى مفيدة في مهمة منفصلة.",
+     "شغّل المجموعة 10 مرات بـ `--repeat-each=10` لتكشف عدم الاستقرار."
+    ],
+    "key": "test-angular-app-mock-network"
+   },
+   {
+    "titleEn": "CI with reports",
+    "titleAr": "CI مع التقارير",
+    "bodyEn": "Add a workflow with two jobs: unit/component tests (`ng test --watch=false`) and E2E (`npx playwright install --with-deps` then `npx playwright test`). Upload the Playwright HTML report and traces on failure.\n\nTraces let you replay a failed CI test step by step.",
+    "bodyAr": "أضف مسار عمل بمهمتين: اختبارات الوحدات والمكونات (`ng test --watch=false`) والاختبارات الشاملة (`npx playwright install --with-deps` ثم `npx playwright test`). وارفع تقرير Playwright بصيغة HTML والـ traces عند الفشل.\n\nالـ traces تسمح لك بإعادة تشغيل اختبار فاشل في CI خطوة بخطوة.",
+    "hintsEn": [
+     "Set `trace: 'on-first-retry'` and `retries: 1` in CI only.",
+     "Shard E2E tests across machines when the suite grows."
+    ],
+    "hintsAr": [
+     "اضبط `trace: 'on-first-retry'` و`retries: 1` في CI فقط.",
+     "وزّع الاختبارات الشاملة على عدة أجهزة عندما تكبر المجموعة."
+    ],
+    "key": "test-angular-app-ci"
+   },
+   {
+    "titleEn": "Review and document",
+    "titleAr": "راجع ووثّق",
+    "bodyEn": "Delete tests that only repeat others or test Angular itself. Make sure each failing test message is clear. Update TESTING.md with how to run each level, the fixtures and the mocking approach.\n\nShow the CI badge and a screenshot of the Playwright report in the README.",
+    "bodyAr": "احذف الاختبارات التي تكرر غيرها أو تختبر Angular نفسه. وتأكد أن رسالة كل اختبار فاشل واضحة. وحدّث TESTING.md بطريقة تشغيل كل مستوى، والـ fixtures، وأسلوب المحاكاة.\n\nاعرض شارة CI وصورة لتقرير Playwright في README.",
+    "hintsEn": [
+     "Fewer, meaningful tests beat many shallow ones.",
+     "Mention one bug your tests caught while you wrote them."
+    ],
+    "hintsAr": [
+     "اختبارات أقل ذات معنى أفضل من اختبارات كثيرة سطحية.",
+     "اذكر خطأً واحدًا اكتشفته اختباراتك أثناء كتابتها."
+    ],
+    "key": "test-angular-app-finish"
+   }
+  ]
+ },
+ {
+  "key": "test-legacy-refactor",
+  "skill": "Testing",
+  "level": "Advanced",
+  "hours": 14,
+  "titleEn": "Rescue legacy code with tests",
+  "titleAr": "أنقذ الكود القديم بالاختبارات",
+  "summaryEn": "Take a messy, untested piece of legacy code, pin down its current behaviour with characterization and snapshot tests, break dependencies, refactor it safely and prove the tests are strong with mutation testing.",
+  "summaryAr": "خذ قطعة كود قديم فوضوية وغير مختبرة، وثبّت سلوكها الحالي باختبارات التوصيف واللقطات، وافصل اعتمادياتها، وأعد تنظيمها بأمان، وأثبت قوة الاختبارات باختبار الطفرات.",
+  "techStack": "C# · xUnit · Verify (approval tests) · Stryker.NET · refactoring",
+  "goalsEn": [
+   "Write characterization tests for code you do not fully understand",
+   "Use approval/snapshot tests for complex outputs",
+   "Break hard dependencies (time, files, static calls) with seams",
+   "Measure test strength with mutation testing"
+  ],
+  "goalsAr": [
+   "كتابة اختبارات توصيف لكود لا تفهمه بالكامل",
+   "استخدام اختبارات الموافقة/اللقطات للمخرجات المعقدة",
+   "فصل الاعتماديات الصعبة (الوقت والملفات والاستدعاءات الثابتة) بنقاط فصل (seams)",
+   "قياس قوة الاختبارات باختبار الطفرات"
+  ],
+  "requirementsEn": [
+   "Start from the \"Gilded Rose\" kata (C# version) or a long method from your own old code",
+   "Characterization tests that cover the current behaviour, including weird cases",
+   "An approval test that runs many inputs and verifies the whole output",
+   "Refactor into small, named pieces without changing behaviour",
+   "Add the new feature the kata asks for, test-first",
+   "Mutation score above 85% with Stryker.NET"
+  ],
+  "requirementsAr": [
+   "ابدأ من تمرين \"Gilded Rose\" (نسخة C#) أو دالة طويلة من كودك القديم",
+   "اختبارات توصيف تغطي السلوك الحالي، بما في ذلك الحالات الغريبة",
+   "اختبار موافقة يشغّل مدخلات كثيرة ويتحقق من المخرجات كاملة",
+   "إعادة التنظيم إلى أجزاء صغيرة مسماة دون تغيير السلوك",
+   "إضافة الميزة الجديدة التي يطلبها التمرين، بكتابة الاختبار أولًا",
+   "درجة طفرات فوق 85% مع Stryker.NET"
+  ],
+  "acceptanceEn": [
+   "Every refactoring commit keeps all tests green",
+   "The approval test would fail if any single output changed",
+   "Stryker reports which mutants survived and you explain or kill each",
+   "The final code is easy to extend with one more item type"
+  ],
+  "acceptanceAr": [
+   "كل commit لإعادة التنظيم يُبقي كل الاختبارات خضراء",
+   "اختبار الموافقة سيفشل إذا تغيّر أي ناتج واحد",
+   "Stryker يُبلغ عن الطفرات التي نجت، وأنت تشرح كلًا منها أو تقضي عليها",
+   "الكود النهائي سهل التوسيع بنوع عنصر إضافي"
+  ],
+  "stretchEn": [
+   "Do the same on a real legacy module at work or in an open-source project",
+   "Add property-based tests for the rules",
+   "Record a screencast of the refactoring with tests running"
+  ],
+  "stretchAr": [
+   "افعل الشيء نفسه على module قديم حقيقي في العمل أو في مشروع مفتوح المصدر",
+   "أضف اختبارات قائمة على الخصائص للقواعد",
+   "سجّل فيديو لإعادة التنظيم مع تشغيل الاختبارات"
+  ],
+  "steps": [
+   {
+    "titleEn": "Get the legacy code",
+    "titleAr": "احصل على الكود القديم",
+    "bodyEn": "Clone Emily Bache's \"GildedRose-Refactoring-Kata\" and take the C# version, or pick a 200+ line method from an old project. Read the requirements text but do not trust it: the code is the real specification.\n\nDo not change a single line yet.",
+    "bodyAr": "انسخ المستودع \"GildedRose-Refactoring-Kata\" الخاص بـ Emily Bache وخذ نسخة C#، أو اختر دالة من 200 سطر فأكثر من مشروع قديم. واقرأ نص المتطلبات لكن لا تثق به، فالكود هو المواصفات الحقيقية.\n\nلا تغيّر أي سطر بعد.",
+    "hintsEn": [
+     "Notice the nested ifs and repeated conditions — that is what you will untangle.",
+     "Note questions you have about the behaviour; tests will answer them."
+    ],
+    "hintsAr": [
+     "لاحظ الشروط المتداخلة والمكررة، فهذا ما ستفكّه.",
+     "دوّن أسئلتك عن السلوك، والاختبارات ستجيب عنها."
+    ],
+    "key": "test-legacy-refactor-get-code"
+   },
+   {
+    "titleEn": "Characterization tests",
+    "titleAr": "اختبارات التوصيف",
+    "bodyEn": "Write a test with an assert you expect to fail, run it, and copy the actual value into the assertion. Repeat for each item type and boundary (quality 0 and 50, sell-in 0, -1, 5, 6, 10, 11). These tests describe what the code does, not what it should do.\n\nIf behaviour looks wrong, keep it for now and note it — fixing comes later.",
+    "bodyAr": "اكتب اختبارًا بفحص تتوقع فشله، وشغّله، وانسخ القيمة الفعلية إلى الفحص. وكرّر لكل نوع عنصر وكل حد (الجودة 0 و50، وsell-in بقيم 0 و-1 و5 و6 و10 و11). هذه الاختبارات تصف ما يفعله الكود، لا ما يجب أن يفعله.\n\nإذا بدا سلوك خاطئًا فأبقه الآن ودوّنه، فالإصلاح يأتي لاحقًا.",
+    "hintsEn": [
+     "Coverage tools show which branches your characterization tests still miss.",
+     "Keep a list of \"suspicious behaviours\" in the README."
+    ],
+    "hintsAr": [
+     "أدوات التغطية تُظهر الفروع التي ما زالت اختبارات التوصيف لا تغطيها.",
+     "احتفظ بقائمة \"سلوكيات مشبوهة\" في README."
+    ],
+    "key": "test-legacy-refactor-characterize"
+   },
+   {
+    "titleEn": "A broad approval test",
+    "titleAr": "اختبار موافقة واسع",
+    "bodyEn": "Add the `Verify.Xunit` package. Write a test that builds every combination of item names, sell-in values (-1..12) and qualities (0, 1, 49, 50), runs 30 days of updates and verifies the whole text output. The first run creates a `.received` file; approve it as `.verified`.\n\nNow any change in any output fails the test and shows a diff.",
+    "bodyAr": "أضف الحزمة `Verify.Xunit`. واكتب اختبارًا يبني كل تركيبة من أسماء العناصر، وقيم sell-in (من -1 إلى 12)، والجودة (0 و1 و49 و50)، ويشغّل تحديثات 30 يومًا، ويتحقق من النص الناتج كاملًا. التشغيل الأول ينشئ ملف `.received`، فوافق عليه ليصبح `.verified`.\n\nالآن أي تغيير في أي ناتج يُفشل الاختبار ويعرض الفرق.",
+    "hintsEn": [
+     "Commit the .verified file; never commit .received files.",
+     "This combination test is your main safety net during refactoring."
+    ],
+    "hintsAr": [
+     "ارفع ملف .verified، ولا ترفع ملفات .received أبدًا.",
+     "اختبار التركيبات هذا هو شبكة الأمان الرئيسية أثناء إعادة التنظيم."
+    ],
+    "key": "test-legacy-refactor-approval"
+   },
+   {
+    "titleEn": "Check your net with Stryker",
+    "titleAr": "افحص شبكتك بـ Stryker",
+    "bodyEn": "Install `dotnet tool install -g dotnet-stryker` and run `dotnet stryker` in the test project. Stryker changes the code (flips `<` to `<=`, removes statements) and checks a test fails for each change. Surviving mutants show gaps in your tests.\n\nAdd tests until no important mutant survives — before you start refactoring.",
+    "bodyAr": "ثبّت `dotnet tool install -g dotnet-stryker` وشغّل `dotnet stryker` داخل مشروع الاختبار. Stryker يغيّر الكود (يقلب `<` إلى `<=`، ويحذف عبارات) ويتحقق أن اختبارًا يفشل مع كل تغيير. والطفرات الناجية تُظهر الفجوات في اختباراتك.\n\nأضف اختبارات حتى لا تنجو أي طفرة مهمة، قبل أن تبدأ إعادة التنظيم.",
+    "hintsEn": [
+     "Open the HTML report: each surviving mutant shows the exact change.",
+     "Some mutants are equivalent (no behaviour change) — document them instead of chasing them."
+    ],
+    "hintsAr": [
+     "افتح تقرير HTML: كل طفرة ناجية تعرض التغيير بالضبط.",
+     "بعض الطفرات مكافئة (لا تغيّر السلوك)، فوثّقها بدل مطاردتها."
+    ],
+    "key": "test-legacy-refactor-mutation-baseline"
+   },
+   {
+    "titleEn": "Refactor in tiny steps",
+    "titleAr": "أعد التنظيم بخطوات صغيرة جدًا",
+    "bodyEn": "Use safe, automated refactorings from the IDE: extract variable, extract method, invert if, rename. After each one, run the tests and commit. First flatten the nested ifs, then extract a method per item type.\n\nIf a test fails, undo the last step instead of debugging forward.",
+    "bodyAr": "استخدم إعادة تنظيم آلية وآمنة من بيئة التطوير: استخراج متغير، واستخراج دالة، وعكس شرط if، وإعادة التسمية. وبعد كل واحدة شغّل الاختبارات واعمل commit. أولًا سطّح الشروط المتداخلة، ثم استخرج دالة لكل نوع عنصر.\n\nإذا فشل اختبار فتراجع عن الخطوة الأخيرة بدل التصحيح إلى الأمام.",
+    "hintsEn": [
+     "Commits of 1–5 minutes each are normal in this work.",
+     "`git reset --hard` to the last green commit is a valid move."
+    ],
+    "hintsAr": [
+     "commits مدة كل منها من دقيقة إلى 5 دقائق أمر طبيعي في هذا العمل.",
+     "`git reset --hard` إلى آخر commit أخضر خطوة مقبولة."
+    ],
+    "key": "test-legacy-refactor-small-steps"
+   },
+   {
+    "titleEn": "Introduce a design",
+    "titleAr": "أدخل تصميمًا",
+    "bodyEn": "Once the logic is split per item type, introduce a small polymorphic design: an `IItemUpdater` per type chosen by a factory (or a dictionary of strategies). Keep the public API the kata requires unchanged.\n\nThe approval test proves the new design behaves exactly like the old code.",
+    "bodyAr": "بعد تقسيم المنطق حسب نوع العنصر أدخل تصميمًا صغيرًا متعدد الأشكال: `IItemUpdater` لكل نوع يختاره factory (أو dictionary من الاستراتيجيات). وأبقِ الواجهة العامة التي يتطلبها التمرين بلا تغيير.\n\nاختبار الموافقة يثبت أن التصميم الجديد يتصرف تمامًا كالكود القديم.",
+    "hintsEn": [
+     "Do not over-design: a switch expression returning a strategy is enough.",
+     "Remove the duplicated quality clamping into one helper."
+    ],
+    "hintsAr": [
+     "لا تبالغ في التصميم، فتعبير switch يعيد استراتيجية يكفي.",
+     "انقل حصر الجودة المكرر إلى دالة مساعدة واحدة."
+    ],
+    "key": "test-legacy-refactor-design"
+   },
+   {
+    "titleEn": "Break a hard dependency",
+    "titleAr": "افصل اعتمادية صعبة",
+    "bodyEn": "Legacy code often calls `DateTime.Now`, static helpers, or files directly. Add such a dependency on purpose if your code has none (e.g. logging to a file), then break it with a seam: extract an interface, inject it, and use a fake in tests.\n\nThis is the core move for testing any legacy system.",
+    "bodyAr": "الكود القديم كثيرًا ما يستدعي `DateTime.Now` أو دوالًا ثابتة أو ملفات مباشرة. أضف اعتمادية كهذه عن قصد إن لم يكن في كودك واحدة (مثل الكتابة في ملف سجل)، ثم افصلها بنقطة فصل: استخرج interface، واحقنه، واستخدم نسخة وهمية في الاختبارات.\n\nهذه هي الحركة الأساسية لاختبار أي نظام قديم.",
+    "hintsEn": [
+     "Michael Feathers' \"Working Effectively with Legacy Code\" names many seam techniques.",
+     "For static calls you cannot change, wrap them in a small adapter first."
+    ],
+    "hintsAr": [
+     "كتاب Michael Feathers \"Working Effectively with Legacy Code\" يسمي تقنيات فصل كثيرة.",
+     "للاستدعاءات الثابتة التي لا تستطيع تغييرها غلّفها أولًا في adapter صغير."
+    ],
+    "key": "test-legacy-refactor-seams"
+   },
+   {
+    "titleEn": "Add the new feature test-first",
+    "titleAr": "أضف الميزة الجديدة بالاختبار أولًا",
+    "bodyEn": "Implement the kata's new requirement (\"Conjured\" items degrade twice as fast) with TDD: write the failing unit tests, add a new updater, make them pass. Update the approval test output deliberately and review the diff — only Conjured lines should change.\n\nWith the new design, the feature is a few lines instead of another nested if.",
+    "bodyAr": "نفّذ المتطلب الجديد في التمرين (عناصر \"Conjured\" تفقد جودتها بضعف السرعة) بـ TDD: اكتب اختبارات الوحدة الفاشلة، وأضف updater جديدًا، واجعلها تنجح. وحدّث ناتج اختبار الموافقة عن قصد وراجع الفرق، فيجب ألا تتغير إلا أسطر Conjured.\n\nمع التصميم الجديد تصبح الميزة بضعة أسطر بدل شرط if متداخل آخر.",
+    "hintsEn": [
+     "If other lines change in the diff, you broke something — stop and check.",
+     "Fix the \"suspicious behaviours\" now, each with its own test and commit."
+    ],
+    "hintsAr": [
+     "إذا تغيرت أسطر أخرى في الفرق فقد كسرت شيئًا، فتوقف وتحقق.",
+     "أصلح \"السلوكيات المشبوهة\" الآن، لكل منها اختبار وcommit خاص."
+    ],
+    "key": "test-legacy-refactor-feature"
+   },
+   {
+    "titleEn": "Final mutation run and write-up",
+    "titleAr": "تشغيل الطفرات النهائي والشرح",
+    "bodyEn": "Run Stryker again and reach 85%+ on the new code. Write the README as a case study: the starting code, the safety net (characterization, approval, mutation), the refactoring steps (link commits), the new design, and the results.\n\nThis shows employers you can work safely in real-world codebases.",
+    "bodyAr": "شغّل Stryker مرة أخرى وصل إلى 85% فأكثر على الكود الجديد. واكتب README كدراسة حالة: الكود الأصلي، وشبكة الأمان (التوصيف والموافقة والطفرات)، وخطوات إعادة التنظيم (مع روابط الـ commits)، والتصميم الجديد، والنتائج.\n\nهذا يُظهر لأصحاب العمل أنك تستطيع العمل بأمان في قواعد كود حقيقية.",
+    "hintsEn": [
+     "Include before/after cyclomatic complexity (Visual Studio code metrics).",
+     "Run Stryker in CI with a threshold that fails the build."
+    ],
+    "hintsAr": [
+     "ضمّن التعقيد الدوري قبل وبعد (code metrics في Visual Studio).",
+     "شغّل Stryker في CI مع حد أدنى يُفشل البناء."
+    ],
+    "key": "test-legacy-refactor-finish"
+   }
+  ]
+ },
+ {
+  "key": "test-quality-gates",
+  "skill": "Testing",
+  "level": "Advanced",
+  "hours": 15,
+  "titleEn": "Quality gates: property, contract and load tests",
+  "titleAr": "بوابات الجودة: اختبارات الخصائص والعقود والحمل",
+  "summaryEn": "Go beyond example-based tests: property-based tests that find edge cases for you, consumer-driven contract tests between an Angular client and an API, and load tests with performance thresholds — all as CI gates.",
+  "summaryAr": "تجاوز الاختبارات القائمة على الأمثلة: اختبارات قائمة على الخصائص تجد الحالات الطرفية بنفسها، واختبارات عقود يقودها المستهلك بين عميل Angular وAPI، واختبارات حمل بحدود أداء، وكلها بوابات في CI.",
+  "techStack": "C# · FsCheck · Pact (PactNet + pact-js) · k6 · GitHub Actions",
+  "goalsEn": [
+   "Write property-based tests and understand shrinking",
+   "Protect API/client compatibility with consumer-driven contracts",
+   "Design load tests with realistic scenarios and thresholds",
+   "Combine everything into automated quality gates"
+  ],
+  "goalsAr": [
+   "كتابة اختبارات قائمة على الخصائص وفهم التقليص (shrinking)",
+   "حماية التوافق بين الـ API والعميل بالعقود التي يقودها المستهلك",
+   "تصميم اختبارات حمل بسيناريوهات واقعية وحدود",
+   "جمع كل ذلك في بوابات جودة آلية"
+  ],
+  "requirementsEn": [
+   "Property tests for at least 3 rules of a domain (e.g. money, sorting, parsing)",
+   "A consumer contract from the Angular client for 3 endpoints, verified against the real API",
+   "A k6 script with ramp-up, a realistic mix of requests and thresholds (p95 < 300 ms, errors < 1%)",
+   "All three run in CI; breaking any of them fails the pipeline",
+   "A report explaining one bug each technique found"
+  ],
+  "requirementsAr": [
+   "اختبارات خصائص لثلاث قواعد على الأقل في مجال ما (مثل المال والترتيب والتحليل)",
+   "عقد مستهلك من عميل Angular لثلاث نقاط، يُتحقق منه مقابل الـ API الحقيقي",
+   "سكربت k6 بزيادة تدريجية، ومزيج واقعي من الطلبات، وحدود (p95 أقل من 300 مللي ثانية، والأخطاء أقل من 1%)",
+   "الثلاثة تعمل في CI، وكسر أي منها يُفشل المسار",
+   "تقرير يشرح خطأً واحدًا وجدته كل تقنية"
+  ],
+  "acceptanceEn": [
+   "A property test fails on a planted bug and reports a minimal counterexample",
+   "Renaming a JSON field in the API fails the contract verification",
+   "The load test fails when you add an artificial 500 ms delay to one endpoint",
+   "The pipeline runs these gates without manual steps"
+  ],
+  "acceptanceAr": [
+   "اختبار خصائص يفشل على خطأ مزروع ويُبلغ عن أصغر مثال مضاد",
+   "إعادة تسمية حقل JSON في الـ API تُفشل التحقق من العقد",
+   "اختبار الحمل يفشل عندما تضيف تأخيرًا مصطنعًا 500 مللي ثانية لإحدى النقاط",
+   "المسار يشغّل هذه البوابات بلا خطوات يدوية"
+  ],
+  "stretchEn": [
+   "Add a Pact Broker (or PactFlow free tier) with can-i-deploy",
+   "Add a soak test that runs for an hour",
+   "Add chaos tests that kill the database mid-load"
+  ],
+  "stretchAr": [
+   "أضف Pact Broker (أو الطبقة المجانية من PactFlow) مع can-i-deploy",
+   "أضف اختبار تحمّل يعمل لمدة ساعة",
+   "أضف اختبارات فوضى توقف قاعدة البيانات في منتصف الحمل"
+  ],
+  "steps": [
+   {
+    "titleEn": "Pick the system under test",
+    "titleAr": "اختر النظام المختبَر",
+    "bodyEn": "Use a full-stack project you built (e.g. the Bookstore API with an Angular client, or the Event RSVP app). List the rules worth property testing, the endpoints the client really uses, and the busiest user journeys for load.\n\nWrite this plan in QUALITY.md.",
+    "bodyAr": "استخدم مشروعًا full-stack بنيته (مثل Bookstore API مع عميل Angular، أو تطبيق تأكيد حضور الفعاليات). واكتب القواعد التي تستحق اختبار الخصائص، والنقاط التي يستخدمها العميل فعلًا، والرحلات الأكثر ازدحامًا للحمل.\n\nاكتب هذه الخطة في QUALITY.md.",
+    "hintsEn": [
+     "Good property candidates: anything with \"for all inputs ...\" in its rules.",
+     "Choose endpoints the client calls, not every endpoint."
+    ],
+    "hintsAr": [
+     "مرشحات جيدة لاختبار الخصائص: أي شيء في قواعده \"لكل المدخلات ...\".",
+     "اختر النقاط التي يستدعيها العميل، لا كل النقاط."
+    ],
+    "key": "test-quality-gates-choose"
+   },
+   {
+    "titleEn": "Property-based tests with FsCheck",
+    "titleAr": "اختبارات قائمة على الخصائص بـ FsCheck",
+    "bodyEn": "Add `FsCheck.Xunit`. Instead of examples, state properties that hold for all inputs: \"sorting twice equals sorting once\", \"parse(format(x)) == x\", \"total of order lines is never negative\", \"pagination pages together contain each item exactly once\".\n\nWrite them with `[Property]` and let FsCheck generate hundreds of inputs.",
+    "bodyAr": "أضف `FsCheck.Xunit`. وبدل الأمثلة اكتب خصائص تصح لكل المدخلات: \"الترتيب مرتين يساوي الترتيب مرة واحدة\"، و\"parse(format(x)) == x\"، و\"مجموع أسطر الطلب لا يكون سالبًا أبدًا\"، و\"صفحات التقسيم معًا تحتوي كل عنصر مرة واحدة بالضبط\".\n\nاكتبها بـ `[Property]` ودع FsCheck يولّد مئات المدخلات.",
+    "hintsEn": [
+     "Round-trip, invariant and \"compare with a simple model\" are the three most useful property shapes.",
+     "Write custom generators (`Arb`) for valid domain objects."
+    ],
+    "hintsAr": [
+     "الذهاب والعودة، والثوابت، و\"المقارنة بنموذج بسيط\" هي أكثر أشكال الخصائص فائدة.",
+     "اكتب مولّدات مخصصة (`Arb`) لكائنات المجال الصحيحة."
+    ],
+    "key": "test-quality-gates-properties"
+   },
+   {
+    "titleEn": "Plant a bug and watch shrinking",
+    "titleAr": "ازرع خطأ وشاهد التقليص",
+    "bodyEn": "Introduce a subtle bug (e.g. rounding when quantity > 99, or a pagination off-by-one on the last page). Run the properties: FsCheck finds a failing input and then shrinks it to the smallest example that still fails.\n\nNote the counterexample in QUALITY.md, then remove the bug. Keep the property: it guards the rule forever.",
+    "bodyAr": "أدخل خطأً خفيًا (مثل تقريب عندما تكون الكمية أكبر من 99، أو فرق بواحد في التقسيم عند الصفحة الأخيرة). وشغّل الخصائص: يجد FsCheck مدخلًا فاشلًا ثم يقلّصه إلى أصغر مثال ما زال يفشل.\n\nدوّن المثال المضاد في QUALITY.md، ثم احذف الخطأ. وأبقِ الخاصية، فهي تحرس القاعدة إلى الأبد.",
+    "hintsEn": [
+     "FsCheck prints the seed; replay a failure with `Replay = \"...\"`.",
+     "Turn a found counterexample into a normal example test too."
+    ],
+    "hintsAr": [
+     "FsCheck يطبع البذرة (seed)، وأعد تشغيل الفشل بـ `Replay = \"...\"`.",
+     "حوّل المثال المضاد الذي وجدته إلى اختبار مثال عادي أيضًا."
+    ],
+    "key": "test-quality-gates-shrinking"
+   },
+   {
+    "titleEn": "Consumer contract from Angular",
+    "titleAr": "عقد المستهلك من Angular",
+    "bodyEn": "Add `@pact-foundation/pact` to the Angular project. For each endpoint the client uses, write a consumer test: describe the expected request and a minimal response shape (with matchers like `like()` and `eachLike()`), then call your real Angular service against Pact's mock server.\n\nRunning the tests writes a pact JSON file — the contract.",
+    "bodyAr": "أضف `@pact-foundation/pact` إلى مشروع Angular. ولكل نقطة يستخدمها العميل اكتب اختبار مستهلك: صِف الطلب المتوقع وشكلًا أدنى للرد (بمطابِقات مثل `like()` و`eachLike()`)، ثم استدعِ خدمة Angular الحقيقية مقابل الخادم الوهمي لـ Pact.\n\nتشغيل الاختبارات يكتب ملف pact بصيغة JSON، وهو العقد.",
+    "hintsEn": [
+     "Only include fields the client actually reads — that is what makes contracts consumer-driven.",
+     "Use matchers so the provider can return different values of the same type."
+    ],
+    "hintsAr": [
+     "ضمّن فقط الحقول التي يقرؤها العميل فعلًا، فهذا ما يجعل العقود يقودها المستهلك.",
+     "استخدم المطابِقات ليستطيع المزوّد إعادة قيم مختلفة من النوع نفسه."
+    ],
+    "key": "test-quality-gates-consumer"
+   },
+   {
+    "titleEn": "Verify the contract on the API",
+    "titleAr": "تحقق من العقد على الـ API",
+    "bodyEn": "In the API test project, add `PactNet` and a provider verification test: start the API (WebApplicationFactory on a real port, or Kestrel in the test), point the verifier at the pact file, and add provider states (e.g. \"a book with id 1 exists\") that seed data.\n\nThen rename a field the client uses and watch verification fail.",
+    "bodyAr": "في مشروع اختبار الـ API أضف `PactNet` واختبار تحقق للمزوّد: شغّل الـ API (WebApplicationFactory على منفذ حقيقي، أو Kestrel داخل الاختبار)، ووجّه أداة التحقق إلى ملف pact، وأضف حالات المزوّد (مثل \"يوجد كتاب رقمه 1\") التي تضيف البيانات.\n\nثم أعد تسمية حقل يستخدمه العميل وشاهد التحقق يفشل.",
+    "hintsEn": [
+     "Provider states map to small setup functions in a test-only endpoint or middleware.",
+     "Contracts catch breaking changes before deployment, where end-to-end tests are slow and late."
+    ],
+    "hintsAr": [
+     "حالات المزوّد تقابل دوال تجهيز صغيرة في نقطة أو middleware مخصص للاختبار.",
+     "العقود تكشف التغييرات الكاسرة قبل النشر، حيث تكون الاختبارات الشاملة بطيئة ومتأخرة."
+    ],
+    "key": "test-quality-gates-provider"
+   },
+   {
+    "titleEn": "Design the load test",
+    "titleAr": "صمّم اختبار الحمل",
+    "bodyEn": "Install k6. Write a script with scenarios that mirror real use: 70% browse lists, 20% open details, 10% create something. Use `stages` to ramp up to 50 virtual users over 1 minute, hold 3 minutes, ramp down. Add thinking time with `sleep`.\n\nDefine thresholds: `http_req_duration: ['p(95)<300']`, `http_req_failed: ['rate<0.01']`.",
+    "bodyAr": "ثبّت k6. واكتب سكربتًا بسيناريوهات تعكس الاستخدام الحقيقي: 70% تصفح قوائم، و20% فتح تفاصيل، و10% إنشاء شيء ما. واستخدم `stages` للزيادة إلى 50 مستخدمًا افتراضيًا خلال دقيقة، ثم الثبات 3 دقائق، ثم النزول. وأضف وقت تفكير بـ `sleep`.\n\nعرّف الحدود: `http_req_duration: ['p(95)<300']` و`http_req_failed: ['rate<0.01']`.",
+    "hintsEn": [
+     "Run against a production-like environment, never against production without permission.",
+     "Use `check()` to assert response content, not only status."
+    ],
+    "hintsAr": [
+     "شغّله على بيئة تشبه الإنتاج، ولا تشغّله على الإنتاج نفسه دون إذن أبدًا.",
+     "استخدم `check()` للتحقق من محتوى الرد، لا من الحالة فقط."
+    ],
+    "key": "test-quality-gates-load-design"
+   },
+   {
+    "titleEn": "Run, find a bottleneck, fix it",
+    "titleAr": "شغّل، وجد عنق الزجاجة، وأصلحه",
+    "bodyEn": "Run the test and read the summary: p95, errors, requests per second. Look at the API logs and database during the run. Find one bottleneck (a missing index, N+1 query, no caching) and fix it; run again and compare.\n\nThen add an artificial delay to prove the thresholds fail the run.",
+    "bodyAr": "شغّل الاختبار واقرأ الملخص: p95 والأخطاء والطلبات في الثانية. وانظر إلى سجلات الـ API وقاعدة البيانات أثناء التشغيل. وجد عنق زجاجة واحدًا (فهرس ناقص، أو استعلام N+1، أو غياب التخزين المؤقت) وأصلحه، ثم شغّل مرة أخرى وقارن.\n\nثم أضف تأخيرًا مصطنعًا لتثبت أن الحدود تُفشل التشغيل.",
+    "hintsEn": [
+     "k6 exits with a non-zero code when thresholds fail — that is what makes it a gate.",
+     "Export results to JSON and keep the numbers in QUALITY.md."
+    ],
+    "hintsAr": [
+     "k6 يخرج برمز غير صفري عند فشل الحدود، وهذا ما يجعله بوابة.",
+     "صدّر النتائج إلى JSON واحتفظ بالأرقام في QUALITY.md."
+    ],
+    "key": "test-quality-gates-load-run"
+   },
+   {
+    "titleEn": "Gates in CI",
+    "titleAr": "البوابات في CI",
+    "bodyEn": "Create a workflow: unit + property tests → consumer contract tests (upload the pact as an artifact) → provider verification (download the pact) → start the app with docker compose → run a short k6 smoke load (1 minute) with thresholds. Any failure stops the pipeline.\n\nKeep the long load test as a nightly scheduled job.",
+    "bodyAr": "أنشئ مسار عمل: اختبارات الوحدة والخصائص ← اختبارات عقود المستهلك (ارفع ملف pact كـ artifact) ← تحقق المزوّد (نزّل ملف pact) ← شغّل التطبيق بـ docker compose ← شغّل حملًا قصيرًا بـ k6 (دقيقة واحدة) مع الحدود. وأي فشل يوقف المسار.\n\nأبقِ اختبار الحمل الطويل كمهمة ليلية مجدولة.",
+    "hintsEn": [
+     "`grafana/setup-k6-action` and `grafana/run-k6-action` install and run k6 in GitHub Actions.",
+     "Mark the gates as required checks in branch protection."
+    ],
+    "hintsAr": [
+     "`grafana/setup-k6-action` و`grafana/run-k6-action` تثبّتان k6 وتشغّلانه في GitHub Actions.",
+     "علّم البوابات كفحوص مطلوبة في حماية الفرع."
+    ],
+    "key": "test-quality-gates-pipeline"
+   },
+   {
+    "titleEn": "The quality report",
+    "titleAr": "تقرير الجودة",
+    "bodyEn": "Finish QUALITY.md: what each gate protects, the bug each technique found (with the counterexample, the failed contract and the slow endpoint), the numbers before and after the performance fix, and the cost of each gate in CI minutes.\n\nThis is the kind of document a lead engineer writes; it shows you think about quality as a system.",
+    "bodyAr": "أكمل QUALITY.md: ما تحميه كل بوابة، والخطأ الذي وجدته كل تقنية (مع المثال المضاد، والعقد الفاشل، والنقطة البطيئة)، والأرقام قبل إصلاح الأداء وبعده، وتكلفة كل بوابة بدقائق CI.\n\nهذا نوع المستندات التي يكتبها المهندس القائد، ويُظهر أنك تفكر في الجودة كنظام.",
+    "hintsEn": [
+     "Link the CI runs that show each gate failing and passing.",
+     "Be explicit about what these tests do not cover."
+    ],
+    "hintsAr": [
+     "اربط تشغيلات CI التي تُظهر كل بوابة تفشل وتنجح.",
+     "كن صريحًا فيما لا تغطيه هذه الاختبارات."
+    ],
+    "key": "test-quality-gates-finish"
+   }
+  ]
+ }
+]

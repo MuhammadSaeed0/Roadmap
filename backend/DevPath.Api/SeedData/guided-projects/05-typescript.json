@@ -1,0 +1,1156 @@
+[
+ {
+  "key": "ts-quiz-game",
+  "skill": "TypeScript",
+  "level": "Beginner",
+  "hours": 4,
+  "titleEn": "Browser quiz game",
+  "titleAr": "لعبة أسئلة في المتصفح",
+  "summaryEn": "A multiple-choice quiz that runs in the browser, written in TypeScript with Vite: questions, score, a timer and a results screen.",
+  "summaryAr": "لعبة أسئلة اختيار من متعدد تعمل في المتصفح، مكتوبة بـ TypeScript مع Vite: أسئلة، ونتيجة، ومؤقت، وشاشة نتائج.",
+  "techStack": "TypeScript · Vite · HTML · CSS",
+  "goalsEn": [
+   "Set up a TypeScript project with Vite",
+   "Describe data with interfaces and types",
+   "Read and change the DOM safely with types",
+   "Split code into modules"
+  ],
+  "goalsAr": [
+   "إعداد مشروع TypeScript مع Vite",
+   "وصف البيانات بـ interfaces وtypes",
+   "قراءة الـ DOM وتعديله بأمان مع الأنواع",
+   "تقسيم الكود إلى modules"
+  ],
+  "requirementsEn": [
+   "10 questions loaded from a questions.ts file",
+   "Show one question at a time with 4 answers",
+   "Show right or wrong after each answer, then a Next button",
+   "A 15-second timer per question; time out counts as wrong",
+   "A results screen with the score and a restart button"
+  ],
+  "requirementsAr": [
+   "10 أسئلة محمّلة من ملف questions.ts",
+   "عرض سؤال واحد في كل مرة مع 4 إجابات",
+   "إظهار صحيح أو خطأ بعد كل إجابة، ثم زر التالي",
+   "مؤقت 15 ثانية لكل سؤال، وانتهاء الوقت يُحسب خطأ",
+   "شاشة نتائج فيها النتيجة وزر إعادة البدء"
+  ],
+  "acceptanceEn": [
+   "`npm run build` passes with \"strict\": true and no `any`",
+   "You cannot answer twice or click Next before answering",
+   "Restart resets the score, the timer and the question order"
+  ],
+  "acceptanceAr": [
+   "`npm run build` ينجح مع \"strict\": true وبدون `any`",
+   "لا يمكن الإجابة مرتين ولا الضغط على التالي قبل الإجابة",
+   "إعادة البدء تعيد ضبط النتيجة والمؤقت وترتيب الأسئلة"
+  ],
+  "stretchEn": [
+   "Shuffle questions and answers",
+   "Save the best score in localStorage",
+   "Add categories and let the player choose one"
+  ],
+  "stretchAr": [
+   "اخلط الأسئلة والإجابات",
+   "احفظ أفضل نتيجة في localStorage",
+   "أضف فئات واسمح للاعب باختيار واحدة"
+  ],
+  "steps": [
+   {
+    "titleEn": "Create the project with Vite",
+    "titleAr": "أنشئ المشروع بـ Vite",
+    "bodyEn": "Run `npm create vite@latest quiz -- --template vanilla-ts`, then `npm install` and `npm run dev`. Open the URL and see the starter page.\n\nOpen `tsconfig.json` and check that `\"strict\": true` is on — it catches most mistakes before you run the code.",
+    "bodyAr": "شغّل `npm create vite@latest quiz -- --template vanilla-ts`، ثم `npm install` و`npm run dev`. وافتح الرابط لترى صفحة البداية.\n\nافتح `tsconfig.json` وتأكد أن `\"strict\": true` مفعّل، فهو يكتشف معظم الأخطاء قبل تشغيل الكود.",
+    "hintsEn": [
+     "Delete the counter example files so you start clean.",
+     "Install Node.js LTS first if `npm` is not found."
+    ],
+    "hintsAr": [
+     "احذف ملفات مثال العدّاد لتبدأ من صفحة نظيفة.",
+     "ثبّت Node.js LTS أولًا إذا لم يُعثر على `npm`."
+    ],
+    "key": "ts-quiz-game-setup"
+   },
+   {
+    "titleEn": "Describe a question with a type",
+    "titleAr": "صِف السؤال بنوع",
+    "bodyEn": "In `src/types.ts`, write `export interface Question { text: string; answers: [string, string, string, string]; correctIndex: 0 | 1 | 2 | 3; }`. In `src/questions.ts`, export an array of 10 questions typed as `Question[]`.\n\nThe tuple and the union type make it impossible to write a question with 3 answers or a correctIndex of 7.",
+    "bodyAr": "في `src/types.ts` اكتب `export interface Question { text: string; answers: [string, string, string, string]; correctIndex: 0 | 1 | 2 | 3; }`. وفي `src/questions.ts` صدّر مصفوفة من 10 أسئلة نوعها `Question[]`.\n\nالـ tuple ونوع الاتحاد يجعلان كتابة سؤال بثلاث إجابات أو correctIndex بقيمة 7 مستحيلة.",
+    "hintsEn": [
+     "Try writing a wrong question to see the error in the editor.",
+     "Use `import type { Question } from './types'` for type-only imports."
+    ],
+    "hintsAr": [
+     "جرّب كتابة سؤال خاطئ لترى الخطأ في المحرر.",
+     "استخدم `import type { Question } from './types'` للاستيراد الخاص بالأنواع فقط."
+    ],
+    "key": "ts-quiz-game-types"
+   },
+   {
+    "titleEn": "Build the page",
+    "titleAr": "ابنِ الصفحة",
+    "bodyEn": "In `index.html`, add a container with a question heading, a list for the answers, a timer, a score and a Next button. Give each element an id.\n\nIn `main.ts`, get the elements once: `const questionEl = document.querySelector<HTMLHeadingElement>('#question')!;`. The generic type tells TypeScript which element you get.",
+    "bodyAr": "في `index.html` أضف حاوية فيها عنوان للسؤال، وقائمة للإجابات، ومؤقت، والنتيجة، وزر التالي، وأعط كل عنصر id.\n\nوفي `main.ts` احصل على العناصر مرة واحدة: `const questionEl = document.querySelector<HTMLHeadingElement>('#question')!;`. النوع العام يخبر TypeScript بنوع العنصر الذي تحصل عليه.",
+    "hintsEn": [
+     "The `!` says \"I am sure it exists\"; a helper that throws a clear error is safer.",
+     "Use buttons for answers, not divs, so keyboard users can play."
+    ],
+    "hintsAr": [
+     "علامة `!` تعني \"أنا متأكد أنه موجود\"، ودالة مساعدة ترمي خطأ واضحًا أكثر أمانًا.",
+     "استخدم أزرارًا للإجابات لا divs، ليستطيع مستخدمو لوحة المفاتيح اللعب."
+    ],
+    "key": "ts-quiz-game-html"
+   },
+   {
+    "titleEn": "Keep the game state in one place",
+    "titleAr": "احفظ حالة اللعبة في مكان واحد",
+    "bodyEn": "Create a `state` object with `index`, `score`, `answered` and `secondsLeft`. Write `render()` that draws the current question from the state, and change the state only in a few functions (`answer`, `next`, `restart`) that call render.\n\nOne source of truth makes bugs like \"score shown twice\" much rarer.",
+    "bodyAr": "أنشئ object باسم `state` فيه `index` و`score` و`answered` و`secondsLeft`. واكتب `render()` ترسم السؤال الحالي من الحالة، ولا تغيّر الحالة إلا في دوال قليلة (`answer` و`next` و`restart`) تستدعي render.\n\nمصدر حقيقة واحد يجعل أخطاء مثل \"ظهور النتيجة مرتين\" نادرة جدًا.",
+    "hintsEn": [
+     "Type it: `interface GameState { index: number; score: number; answered: boolean; secondsLeft: number; }`.",
+     "render() clears the answer list and creates the buttons again."
+    ],
+    "hintsAr": [
+     "حدّد نوعها: `interface GameState { index: number; score: number; answered: boolean; secondsLeft: number; }`.",
+     "render() تفرغ قائمة الإجابات وتنشئ الأزرار من جديد."
+    ],
+    "key": "ts-quiz-game-state"
+   },
+   {
+    "titleEn": "Answer and feedback",
+    "titleAr": "الإجابة والتغذية الراجعة",
+    "bodyEn": "When an answer button is clicked: if already answered, ignore it. Otherwise mark it answered, add a point if it is correct, colour the clicked button red or green and always show the correct one in green. Enable the Next button.",
+    "bodyAr": "عند الضغط على زر إجابة: إن كانت مُجابة مسبقًا فتجاهل الضغط. وإلا علّمها كمجابة، وأضف نقطة إن كانت صحيحة، ولوّن الزر المضغوط بالأحمر أو الأخضر، وأظهر الإجابة الصحيحة بالأخضر دائمًا. ثم فعّل زر التالي.",
+    "hintsEn": [
+     "Add CSS classes (`.correct`, `.wrong`) instead of setting colours in code.",
+     "Disable all answer buttons after answering."
+    ],
+    "hintsAr": [
+     "أضف classes في CSS (`.correct` و`.wrong`) بدل ضبط الألوان في الكود.",
+     "عطّل كل أزرار الإجابة بعد الإجابة."
+    ],
+    "key": "ts-quiz-game-answer"
+   },
+   {
+    "titleEn": "A timer per question",
+    "titleAr": "مؤقت لكل سؤال",
+    "bodyEn": "Start a `setInterval` of 1 second when a question is shown; decrease `secondsLeft` and render. At 0, stop it and treat the question as answered wrong. Stop the interval when the player answers or moves on.\n\nKeep the interval id in a variable typed `number | undefined` and always `clearInterval` before starting a new one.",
+    "bodyAr": "شغّل `setInterval` كل ثانية عند عرض السؤال، وأنقص `secondsLeft` ثم ارسم. وعند الوصول إلى 0 أوقفه واعتبر السؤال مُجابًا خطأ. وأوقف المؤقت عندما يجيب اللاعب أو ينتقل.\n\nاحفظ رقم المؤقت في متغير نوعه `number | undefined`، واستدعِ `clearInterval` دائمًا قبل بدء مؤقت جديد.",
+    "hintsEn": [
+     "Forgetting clearInterval creates several timers that count down twice as fast.",
+     "Show the timer in red for the last 5 seconds."
+    ],
+    "hintsAr": [
+     "نسيان clearInterval ينشئ عدة مؤقتات تعدّ تنازليًا بضعف السرعة.",
+     "اعرض المؤقت بالأحمر في آخر 5 ثوانٍ."
+    ],
+    "key": "ts-quiz-game-timer"
+   },
+   {
+    "titleEn": "Results and restart",
+    "titleAr": "النتائج وإعادة البدء",
+    "bodyEn": "After the last question show the results: score out of 10, a percentage and a message (\"Excellent\" for 9+, \"Good\" for 6+, \"Keep practising\"). The Restart button resets the state and shows question 1.\n\nWrite the message logic as a small function with a return type: `function verdict(score: number): string`.",
+    "bodyAr": "بعد آخر سؤال اعرض النتائج: النتيجة من 10، ونسبة مئوية، ورسالة (\"ممتاز\" لـ 9 فأكثر، و\"جيد\" لـ 6 فأكثر، و\"استمر في التدرب\"). وزر إعادة البدء يعيد ضبط الحالة ويعرض السؤال الأول.\n\nاكتب منطق الرسالة كدالة صغيرة بنوع إرجاع: `function verdict(score: number): string`.",
+    "hintsEn": [
+     "Hide and show screens with the `hidden` attribute.",
+     "Move each piece (timer, render, game logic) to its own module once it works."
+    ],
+    "hintsAr": [
+     "أخفِ الشاشات وأظهرها بالخاصية `hidden`.",
+     "انقل كل جزء (المؤقت، والرسم، ومنطق اللعبة) إلى module مستقل بعد أن يعمل."
+    ],
+    "key": "ts-quiz-game-results"
+   },
+   {
+    "titleEn": "Build and publish",
+    "titleAr": "ابنِ وانشر",
+    "bodyEn": "Run `npm run build` — it type-checks and creates the `dist` folder. Fix any error. Publish it for free on GitHub Pages or Netlify and put the live link in the README.\n\nAsk a friend to play and watch where they get confused.",
+    "bodyAr": "شغّل `npm run build`، فهو يفحص الأنواع وينشئ مجلد `dist`. أصلح أي خطأ. وانشره مجانًا على GitHub Pages أو Netlify، وضع الرابط المباشر في README.\n\nاطلب من صديق أن يلعب، ولاحظ أين يرتبك.",
+    "hintsEn": [
+     "For GitHub Pages set `base` in vite.config.ts to the repository name.",
+     "A live link is worth more than any screenshot."
+    ],
+    "hintsAr": [
+     "لـ GitHub Pages اضبط `base` في vite.config.ts على اسم المستودع.",
+     "الرابط المباشر أثمن من أي صورة."
+    ],
+    "key": "ts-quiz-game-finish"
+   }
+  ]
+ },
+ {
+  "key": "ts-pomodoro",
+  "skill": "TypeScript",
+  "level": "Beginner",
+  "hours": 4,
+  "titleEn": "Pomodoro focus timer",
+  "titleAr": "مؤقت تركيز بطريقة بومودورو",
+  "summaryEn": "A focus timer with work and break sessions, settings, a task list and statistics saved in the browser.",
+  "summaryAr": "مؤقت تركيز بجلسات عمل واستراحة، وإعدادات، وقائمة مهام، وإحصاءات محفوظة في المتصفح.",
+  "techStack": "TypeScript · Vite · localStorage · Notifications API",
+  "goalsEn": [
+   "Model state with union types",
+   "Persist typed data in localStorage",
+   "Handle time correctly (do not trust setInterval alone)",
+   "Use browser APIs: Notifications and the page title"
+  ],
+  "goalsAr": [
+   "تمثيل الحالة بأنواع الاتحاد",
+   "حفظ بيانات ذات أنواع في localStorage",
+   "التعامل الصحيح مع الوقت (لا تعتمد على setInterval وحده)",
+   "استخدام واجهات المتصفح: الإشعارات وعنوان الصفحة"
+  ],
+  "requirementsEn": [
+   "Modes: Focus 25 min, Short break 5, Long break 15 after 4 focus sessions",
+   "Start, pause, reset and skip",
+   "The remaining time is shown on the page and in the tab title",
+   "A notification and a sound when a session ends",
+   "Settings for the durations, saved",
+   "Today's count of focus sessions, saved"
+  ],
+  "requirementsAr": [
+   "الأوضاع: تركيز 25 دقيقة، واستراحة قصيرة 5، واستراحة طويلة 15 بعد 4 جلسات تركيز",
+   "البدء والإيقاف المؤقت وإعادة الضبط والتخطي",
+   "الوقت المتبقي يظهر في الصفحة وفي عنوان التبويب",
+   "إشعار وصوت عند انتهاء الجلسة",
+   "إعدادات للمدد تُحفظ",
+   "عدد جلسات التركيز اليوم يُحفظ"
+  ],
+  "acceptanceEn": [
+   "The timer stays accurate when the tab is in the background for 10 minutes",
+   "Reloading the page keeps settings and today's count",
+   "After 4 focus sessions the next break is the long one"
+  ],
+  "acceptanceAr": [
+   "يبقى المؤقت دقيقًا عندما يكون التبويب في الخلفية 10 دقائق",
+   "إعادة تحميل الصفحة تحفظ الإعدادات وعدد اليوم",
+   "بعد 4 جلسات تركيز تكون الاستراحة التالية هي الطويلة"
+  ],
+  "stretchEn": [
+   "Add a task list and link sessions to tasks",
+   "Show a weekly chart of sessions",
+   "Make it installable as a PWA"
+  ],
+  "stretchAr": [
+   "أضف قائمة مهام واربط الجلسات بالمهام",
+   "اعرض مخططًا أسبوعيًا للجلسات",
+   "اجعله قابلًا للتثبيت كـ PWA"
+  ],
+  "steps": [
+   {
+    "titleEn": "Project and layout",
+    "titleAr": "المشروع والتخطيط",
+    "bodyEn": "Create a Vite vanilla-ts project. Build the page: three mode buttons, a big time display, Start/Pause, Reset and Skip buttons, and a settings section with three number inputs.\n\nStyle it simply; the logic is the main work.",
+    "bodyAr": "أنشئ مشروع Vite بقالب vanilla-ts. وابنِ الصفحة: ثلاثة أزرار للأوضاع، وعرض كبير للوقت، وأزرار البدء/الإيقاف وإعادة الضبط والتخطي، وقسم إعدادات فيه ثلاثة حقول أرقام.\n\nنسّقها ببساطة، فالمنطق هو العمل الأساسي.",
+    "hintsEn": [
+     "Use `font-variant-numeric: tabular-nums` so the digits do not jump.",
+     "Keep the HTML semantic: buttons for actions, labels for inputs."
+    ],
+    "hintsAr": [
+     "استخدم `font-variant-numeric: tabular-nums` حتى لا تقفز الأرقام.",
+     "اجعل الـ HTML دلاليًا: أزرار للإجراءات، وlabels للحقول."
+    ],
+    "key": "ts-pomodoro-setup"
+   },
+   {
+    "titleEn": "Types for modes and state",
+    "titleAr": "أنواع للأوضاع والحالة",
+    "bodyEn": "Write `type Mode = 'focus' | 'short' | 'long';`, `interface Settings { focus: number; short: number; long: number; }` (minutes) and `interface TimerState { mode: Mode; running: boolean; endsAt: number | null; remainingMs: number; completedFocus: number; }`.\n\nA union type for Mode means a typo like `'foucs'` is a compile error.",
+    "bodyAr": "اكتب `type Mode = 'focus' | 'short' | 'long';` و`interface Settings { focus: number; short: number; long: number; }` (بالدقائق) و`interface TimerState { mode: Mode; running: boolean; endsAt: number | null; remainingMs: number; completedFocus: number; }`.\n\nنوع الاتحاد للوضع يعني أن خطأً إملائيًا مثل `'foucs'` يصبح خطأ ترجمة.",
+    "hintsEn": [
+     "`Record<Mode, number>` is another neat way to type the settings.",
+     "Keep times in milliseconds internally, minutes only in the UI."
+    ],
+    "hintsAr": [
+     "`Record<Mode, number>` طريقة أنيقة أخرى لتحديد نوع الإعدادات.",
+     "احفظ الأوقات داخليًا بالمللي ثانية، والدقائق في الواجهة فقط."
+    ],
+    "key": "ts-pomodoro-types"
+   },
+   {
+    "titleEn": "An accurate countdown",
+    "titleAr": "عدّ تنازلي دقيق",
+    "bodyEn": "Do not decrease a counter every second: browsers slow down timers in background tabs. On start, store `endsAt = Date.now() + remainingMs`. Every 250 ms compute `remaining = endsAt - Date.now()` and render it.\n\nPause stores the remaining time and clears endsAt; resume sets a new endsAt.",
+    "bodyAr": "لا تُنقص عدّادًا كل ثانية، فالمتصفحات تبطئ المؤقتات في التبويبات الخلفية. عند البدء احفظ `endsAt = Date.now() + remainingMs`، وكل 250 مللي ثانية احسب `remaining = endsAt - Date.now()` واعرضه.\n\nالإيقاف المؤقت يحفظ الوقت المتبقي ويمسح endsAt، والاستئناف يضبط endsAt جديدًا.",
+    "hintsEn": [
+     "Format with `Math.ceil(ms / 1000)`, then minutes and seconds with `padStart(2, '0')`.",
+     "Test by switching tabs for a few minutes and comparing with your phone clock."
+    ],
+    "hintsAr": [
+     "نسّق بـ `Math.ceil(ms / 1000)`، ثم الدقائق والثواني بـ `padStart(2, '0')`.",
+     "اختبره بالانتقال إلى تبويب آخر لبضع دقائق ومقارنته بساعة هاتفك."
+    ],
+    "key": "ts-pomodoro-accurate"
+   },
+   {
+    "titleEn": "Session flow",
+    "titleAr": "تسلسل الجلسات",
+    "bodyEn": "When a session reaches zero: if it was focus, increase `completedFocus` and the next mode is long after every 4th, otherwise short. After a break, the next mode is focus. Don't auto-start the next session; wait for Start.\n\nSkip moves to the next mode the same way without counting a focus session.",
+    "bodyAr": "عندما تصل الجلسة إلى الصفر: إن كانت تركيزًا فزد `completedFocus`، والوضع التالي استراحة طويلة بعد كل رابعة، وإلا فقصيرة. وبعد الاستراحة يكون الوضع التالي تركيزًا. لا تبدأ الجلسة التالية تلقائيًا، بل انتظر الضغط على البدء.\n\nالتخطي ينتقل إلى الوضع التالي بالطريقة نفسها دون احتساب جلسة تركيز.",
+    "hintsEn": [
+     "A pure function `nextMode(mode: Mode, completedFocus: number): Mode` is easy to test.",
+     "`completedFocus % 4 === 0` decides the long break."
+    ],
+    "hintsAr": [
+     "دالة نقية `nextMode(mode: Mode, completedFocus: number): Mode` سهلة الاختبار.",
+     "`completedFocus % 4 === 0` تقرر الاستراحة الطويلة."
+    ],
+    "key": "ts-pomodoro-flow"
+   },
+   {
+    "titleEn": "Tab title, sound and notification",
+    "titleAr": "عنوان التبويب والصوت والإشعار",
+    "bodyEn": "Update `document.title` to \"12:34 · Focus\" while running. When a session ends, play a short sound (`new Audio('/bell.mp3').play()`) and show a notification if allowed: ask with `Notification.requestPermission()` the first time the user presses Start.\n\nNever ask for notification permission on page load — users block it.",
+    "bodyAr": "حدّث `document.title` إلى \"12:34 · Focus\" أثناء التشغيل. وعند انتهاء الجلسة شغّل صوتًا قصيرًا (`new Audio('/bell.mp3').play()`) وأظهر إشعارًا إن كان مسموحًا: اطلب الإذن بـ `Notification.requestPermission()` أول مرة يضغط فيها المستخدم على البدء.\n\nلا تطلب إذن الإشعارات عند تحميل الصفحة أبدًا، فالمستخدمون يرفضونه.",
+    "hintsEn": [
+     "Browsers only allow sound after a user interaction — the Start click counts.",
+     "Check `Notification.permission === 'granted'` before creating one."
+    ],
+    "hintsAr": [
+     "المتصفحات لا تسمح بالصوت إلا بعد تفاعل المستخدم، والضغط على البدء يُحسب.",
+     "تحقق من `Notification.permission === 'granted'` قبل إنشاء إشعار."
+    ],
+    "key": "ts-pomodoro-title-notify"
+   },
+   {
+    "titleEn": "Typed localStorage",
+    "titleAr": "localStorage بأنواع",
+    "bodyEn": "Write `load<T>(key: string, fallback: T): T` and `save<T>(key: string, value: T): void` that use JSON and catch errors. Save the settings when they change and the daily stats as `{ date: '2026-11-15', focusCount: 3 }`.\n\nWhen the stored date is not today, start today's count at 0.",
+    "bodyAr": "اكتب `load<T>(key: string, fallback: T): T` و`save<T>(key: string, value: T): void` تستخدمان JSON وتلتقطان الأخطاء. واحفظ الإعدادات عند تغيّرها، وإحصاءات اليوم بشكل `{ date: '2026-11-15', focusCount: 3 }`.\n\nعندما لا يكون التاريخ المحفوظ هو اليوم، ابدأ عدّ اليوم من 0.",
+    "hintsEn": [
+     "localStorage can throw in private mode — the try/catch keeps the app working.",
+     "Validate loaded settings (positive numbers) instead of trusting them."
+    ],
+    "hintsAr": [
+     "localStorage قد يرمي استثناء في الوضع الخاص، والـ try/catch يُبقي التطبيق يعمل.",
+     "تحقق من الإعدادات المحمّلة (أرقام موجبة) بدل الوثوق بها."
+    ],
+    "key": "ts-pomodoro-storage"
+   },
+   {
+    "titleEn": "Settings form",
+    "titleAr": "نموذج الإعدادات",
+    "bodyEn": "Fill the inputs from the saved settings. On change, validate (1–90 minutes), save, and if the timer is not running, update the remaining time of the current mode.\n\nShow a small message for invalid values instead of saving them.",
+    "bodyAr": "املأ الحقول من الإعدادات المحفوظة. وعند التغيير تحقق (من 1 إلى 90 دقيقة)، واحفظ، وإن لم يكن المؤقت يعمل فحدّث الوقت المتبقي للوضع الحالي.\n\nاعرض رسالة صغيرة للقيم غير الصحيحة بدل حفظها.",
+    "hintsEn": [
+     "`input.valueAsNumber` gives a number (NaN when empty).",
+     "`Number.isInteger(n) && n >= 1 && n <= 90`."
+    ],
+    "hintsAr": [
+     "`input.valueAsNumber` يعطي رقمًا (NaN عندما يكون فارغًا).",
+     "`Number.isInteger(n) && n >= 1 && n <= 90`."
+    ],
+    "key": "ts-pomodoro-settings"
+   },
+   {
+    "titleEn": "Test and publish",
+    "titleAr": "اختبر وانشر",
+    "bodyEn": "Test the acceptance criteria, including a 10-minute background test. Add Vitest and write tests for `nextMode` and the time formatting.\n\nDeploy to Netlify or GitHub Pages and add the link to the README.",
+    "bodyAr": "اختبر معايير القبول، ومنها اختبار الخلفية لعشر دقائق. وأضف Vitest واكتب اختبارات لـ `nextMode` ولتنسيق الوقت.\n\nانشره على Netlify أو GitHub Pages وأضف الرابط إلى README.",
+    "hintsEn": [
+     "Set the durations to 1 minute while testing the flow.",
+     "Pure functions are the easiest code to test — that is why you wrote them."
+    ],
+    "hintsAr": [
+     "اضبط المدد على دقيقة واحدة أثناء اختبار التسلسل.",
+     "الدوال النقية أسهل كود في الاختبار، ولهذا كتبتها."
+    ],
+    "key": "ts-pomodoro-finish"
+   }
+  ]
+ },
+ {
+  "key": "ts-weather-dashboard",
+  "skill": "TypeScript",
+  "level": "Intermediate",
+  "hours": 8,
+  "titleEn": "Weather dashboard with a real API",
+  "titleAr": "لوحة طقس من API حقيقي",
+  "summaryEn": "Search a city and see the current weather and a 7-day forecast from the free Open-Meteo API, with typed and validated responses, loading and error states, and caching.",
+  "summaryAr": "ابحث عن مدينة واعرض الطقس الحالي وتوقعات 7 أيام من الـ API المجاني Open-Meteo، مع ردود ذات أنواع ومُتحقق منها، وحالات التحميل والخطأ، والتخزين المؤقت.",
+  "techStack": "TypeScript · Vite · fetch · Zod · Open-Meteo API",
+  "goalsEn": [
+   "Call HTTP APIs with fetch and async/await",
+   "Validate unknown JSON at runtime with Zod",
+   "Model loading, success and error states with discriminated unions",
+   "Debounce input and cache responses"
+  ],
+  "goalsAr": [
+   "استدعاء واجهات HTTP بـ fetch وasync/await",
+   "التحقق من JSON غير المعروف وقت التشغيل بـ Zod",
+   "تمثيل حالات التحميل والنجاح والخطأ بأنواع الاتحاد المميّزة",
+   "تأخير معالجة الإدخال (debounce) وتخزين الردود مؤقتًا"
+  ],
+  "requirementsEn": [
+   "City search with suggestions (geocoding API)",
+   "Current temperature, wind, humidity and an icon",
+   "7-day forecast with min/max",
+   "Loading skeletons and friendly errors (offline, city not found)",
+   "°C/°F toggle",
+   "Recent searches and a 10-minute cache"
+  ],
+  "requirementsAr": [
+   "البحث عن مدينة مع اقتراحات (geocoding API)",
+   "درجة الحرارة الحالية والرياح والرطوبة وأيقونة",
+   "توقعات 7 أيام بالحد الأدنى والأقصى",
+   "هياكل تحميل وأخطاء واضحة (انقطاع الاتصال، مدينة غير موجودة)",
+   "تبديل بين °C و°F",
+   "آخر عمليات البحث وتخزين مؤقت لعشر دقائق"
+  ],
+  "acceptanceEn": [
+   "Typing quickly sends at most one search request per 300 ms",
+   "Disconnecting the network shows an error with a Retry button",
+   "A response with an unexpected shape shows an error instead of crashing",
+   "Opening the same city within 10 minutes makes no new request"
+  ],
+  "acceptanceAr": [
+   "الكتابة السريعة ترسل طلب بحث واحدًا كحد أقصى كل 300 مللي ثانية",
+   "قطع الشبكة يعرض خطأ مع زر إعادة المحاولة",
+   "الرد بشكل غير متوقع يعرض خطأ بدل توقف التطبيق",
+   "فتح المدينة نفسها خلال 10 دقائق لا يرسل طلبًا جديدًا"
+  ],
+  "stretchEn": [
+   "Use the browser location for \"my weather\"",
+   "Draw an hourly temperature chart",
+   "Support Arabic with RTL layout"
+  ],
+  "stretchAr": [
+   "استخدم موقع المتصفح لـ\"طقسي\"",
+   "ارسم مخطط درجات الحرارة لكل ساعة",
+   "ادعم العربية مع تخطيط من اليمين إلى اليسار"
+  ],
+  "steps": [
+   {
+    "titleEn": "Explore the API",
+    "titleAr": "استكشف الـ API",
+    "bodyEn": "Open the Open-Meteo docs. Try the geocoding URL `https://geocoding-api.open-meteo.com/v1/search?name=Cairo&count=5` and the forecast URL with `latitude`, `longitude`, `current=temperature_2m,wind_speed_10m,relative_humidity_2m,weather_code` and `daily=temperature_2m_max,temperature_2m_min,weather_code`.\n\nLook at the JSON in the browser and note the fields you need. No API key is required.",
+    "bodyAr": "افتح توثيق Open-Meteo. وجرّب رابط geocoding `https://geocoding-api.open-meteo.com/v1/search?name=Cairo&count=5` ورابط التوقعات مع `latitude` و`longitude` و`current=temperature_2m,wind_speed_10m,relative_humidity_2m,weather_code` و`daily=temperature_2m_max,temperature_2m_min,weather_code`.\n\nانظر إلى JSON في المتصفح ودوّن الحقول التي تحتاجها. لا حاجة إلى مفتاح API.",
+    "hintsEn": [
+     "Add `timezone=auto` so daily values match the city's days.",
+     "weather_code follows the WMO codes; map them to icons later."
+    ],
+    "hintsAr": [
+     "أضف `timezone=auto` لتطابق القيم اليومية أيام المدينة.",
+     "weather_code يتبع رموز WMO، وستربطها بالأيقونات لاحقًا."
+    ],
+    "key": "ts-weather-dashboard-explore"
+   },
+   {
+    "titleEn": "Schemas with Zod",
+    "titleAr": "مخططات Zod",
+    "bodyEn": "Install `zod`. Write schemas for the geocoding and forecast responses, and derive the types with `z.infer<typeof ForecastSchema>`. Parse every response with `Schema.safeParse(json)`.\n\n`fetch().json()` returns `any`; without validation, a changed API breaks your app in confusing places.",
+    "bodyAr": "ثبّت `zod`. واكتب مخططات لردود geocoding والتوقعات، واستخرج الأنواع بـ `z.infer<typeof ForecastSchema>`. وحلّل كل رد بـ `Schema.safeParse(json)`.\n\n`fetch().json()` تعيد `any`، وبدون تحقق فإن تغيّر الـ API يكسر تطبيقك في أماكن مربكة.",
+    "hintsEn": [
+     "Geocoding returns no `results` field when nothing is found — make it optional.",
+     "Only describe the fields you use; Zod ignores the rest by default."
+    ],
+    "hintsAr": [
+     "geocoding لا يعيد الحقل `results` عندما لا يجد شيئًا، فاجعله اختياريًا.",
+     "صِف الحقول التي تستخدمها فقط، فـ Zod يتجاهل الباقي افتراضيًا."
+    ],
+    "key": "ts-weather-dashboard-schemas"
+   },
+   {
+    "titleEn": "A small typed API client",
+    "titleAr": "عميل API صغير بأنواع",
+    "bodyEn": "Write `async function getJson<T>(url: string, schema: z.ZodType<T>, signal?: AbortSignal): Promise<T>` that checks `response.ok`, parses JSON, validates and throws an `ApiError` with a kind ('network' | 'http' | 'invalid').\n\nBuild `searchCities(name)` and `getForecast(lat, lon)` on top of it.",
+    "bodyAr": "اكتب `async function getJson<T>(url: string, schema: z.ZodType<T>, signal?: AbortSignal): Promise<T>` تتحقق من `response.ok`، وتحلل JSON، وتتحقق من المخطط، وترمي `ApiError` بنوع ('network' | 'http' | 'invalid').\n\nوابنِ `searchCities(name)` و`getForecast(lat, lon)` فوقها.",
+    "hintsEn": [
+     "fetch only rejects on network failure; a 404 resolves with ok = false.",
+     "Build URLs with `new URL()` and `url.searchParams.set()` to encode names correctly."
+    ],
+    "hintsAr": [
+     "fetch لا يرفض إلا عند فشل الشبكة، أما 404 فيُحل مع ok = false.",
+     "ابنِ الروابط بـ `new URL()` و`url.searchParams.set()` لترميز الأسماء بشكل صحيح."
+    ],
+    "key": "ts-weather-dashboard-client"
+   },
+   {
+    "titleEn": "Loading, success and error states",
+    "titleAr": "حالات التحميل والنجاح والخطأ",
+    "bodyEn": "Model the forecast area as `type Load<T> = { status: 'idle' } | { status: 'loading' } | { status: 'ok'; data: T } | { status: 'error'; error: ApiError };`. Render with a `switch (state.status)`.\n\nTypeScript knows that `data` exists only in the 'ok' branch — you cannot forget a state.",
+    "bodyAr": "مثّل منطقة التوقعات كـ `type Load<T> = { status: 'idle' } | { status: 'loading' } | { status: 'ok'; data: T } | { status: 'error'; error: ApiError };`. وارسمها بـ `switch (state.status)`.\n\nيعرف TypeScript أن `data` موجودة فقط في فرع 'ok'، فلا يمكنك نسيان حالة.",
+    "hintsEn": [
+     "Add a `default` branch with `const _never: never = state;` to get an error when you add a new status.",
+     "Show skeleton boxes while loading, not a spinner alone."
+    ],
+    "hintsAr": [
+     "أضف فرع `default` فيه `const _never: never = state;` لتحصل على خطأ عند إضافة حالة جديدة.",
+     "اعرض مربعات هيكلية أثناء التحميل، لا مؤشر دوران وحده."
+    ],
+    "key": "ts-weather-dashboard-states"
+   },
+   {
+    "titleEn": "Search with debounce and abort",
+    "titleAr": "البحث مع debounce والإلغاء",
+    "bodyEn": "On input, wait 300 ms after the last keystroke before searching (debounce). Cancel the previous request with an `AbortController` so an old, slow answer never overwrites a newer one.\n\nShow up to 5 suggestions with the country; choosing one loads its forecast.",
+    "bodyAr": "عند الإدخال انتظر 300 مللي ثانية بعد آخر ضغطة قبل البحث (debounce). وألغِ الطلب السابق بـ `AbortController` حتى لا يستبدل رد قديم بطيء ردًا أحدث.\n\nاعرض حتى 5 اقتراحات مع الدولة، واختيار أحدها يحمّل توقعاته.",
+    "hintsEn": [
+     "Ignore AbortError in your catch — it is not a real error.",
+     "Do not search for fewer than 2 characters."
+    ],
+    "hintsAr": [
+     "تجاهل AbortError في catch، فهو ليس خطأ حقيقيًا.",
+     "لا تبحث بأقل من حرفين."
+    ],
+    "code": "function debounce<A extends unknown[]>(fn: (...args: A) => void, ms: number) {\n  let id: ReturnType<typeof setTimeout> | undefined;\n  return (...args: A) => {\n    clearTimeout(id);\n    id = setTimeout(() => fn(...args), ms);\n  };\n}",
+    "language": "typescript",
+    "key": "ts-weather-dashboard-search"
+   },
+   {
+    "titleEn": "Render the weather",
+    "titleAr": "اعرض الطقس",
+    "bodyEn": "Show the city, the current temperature (rounded), wind, humidity and an icon chosen from the weather code. Below, 7 day cards with the weekday name (`toLocaleDateString(undefined, { weekday: 'short' })`), min and max.\n\nMap codes to icons with a `Record<number, { label: string; icon: string }>` and a fallback.",
+    "bodyAr": "اعرض المدينة، ودرجة الحرارة الحالية (مقرّبة)، والرياح، والرطوبة، وأيقونة تُختار من رمز الطقس. وتحتها 7 بطاقات لأيام الأسبوع باسم اليوم (`toLocaleDateString(undefined, { weekday: 'short' })`) والحد الأدنى والأقصى.\n\nاربط الرموز بالأيقونات بـ `Record<number, { label: string; icon: string }>` مع قيمة احتياطية.",
+    "hintsEn": [
+     "Build DOM with `document.createElement` and `textContent`, not innerHTML with API strings.",
+     "Group codes: 0 clear, 1–3 cloudy, 45–48 fog, 51–67 rain, 71–77 snow, 95+ storm."
+    ],
+    "hintsAr": [
+     "ابنِ الـ DOM بـ `document.createElement` و`textContent`، لا بـ innerHTML مع نصوص من الـ API.",
+     "جمّع الرموز: 0 صافٍ، و1–3 غائم، و45–48 ضباب، و51–67 مطر، و71–77 ثلج، و95 فأكثر عاصفة."
+    ],
+    "key": "ts-weather-dashboard-render"
+   },
+   {
+    "titleEn": "Units, cache and recent searches",
+    "titleAr": "الوحدات والتخزين المؤقت وآخر عمليات البحث",
+    "bodyEn": "Add the °C/°F toggle (convert on display, keep Celsius in state). Cache forecasts in a `Map<string, { at: number; data: Forecast }>` keyed by rounded coordinates; reuse entries younger than 10 minutes.\n\nSave the last 5 cities in localStorage and show them as quick buttons.",
+    "bodyAr": "أضف التبديل بين °C و°F (حوّل عند العرض، واحفظ المئوية في الحالة). وخزّن التوقعات مؤقتًا في `Map<string, { at: number; data: Forecast }>` بمفتاح من الإحداثيات المقرّبة، وأعد استخدام المدخلات الأحدث من 10 دقائق.\n\nاحفظ آخر 5 مدن في localStorage واعرضها كأزرار سريعة.",
+    "hintsEn": [
+     "F = C × 9/5 + 32.",
+     "Validate what you read from localStorage with Zod too."
+    ],
+    "hintsAr": [
+     "F = C × 9/5 + 32.",
+     "تحقق مما تقرؤه من localStorage بـ Zod أيضًا."
+    ],
+    "key": "ts-weather-dashboard-units-cache"
+   },
+   {
+    "titleEn": "Errors, tests and publish",
+    "titleAr": "الأخطاء والاختبارات والنشر",
+    "bodyEn": "Test the error paths with DevTools: Network → Offline, and a fake bad response (edit the schema to require a field that does not exist). Each must show a friendly message and Retry.\n\nAdd Vitest tests for the client with a mocked fetch, deploy, and document the architecture in the README.",
+    "bodyAr": "اختبر مسارات الخطأ بأدوات المطور: Network ← Offline، ورد سيئ مزيف (عدّل المخطط ليشترط حقلًا غير موجود). كل حالة يجب أن تعرض رسالة واضحة وزر إعادة المحاولة.\n\nأضف اختبارات Vitest للعميل مع fetch وهمي، وانشر المشروع، ووثّق بنيته في README.",
+    "hintsEn": [
+     "`vi.stubGlobal('fetch', vi.fn().mockResolvedValue(...))` mocks fetch.",
+     "Credit Open-Meteo in the footer as their terms ask."
+    ],
+    "hintsAr": [
+     "`vi.stubGlobal('fetch', vi.fn().mockResolvedValue(...))` يحاكي fetch.",
+     "اذكر Open-Meteo في التذييل كما تطلب شروطهم."
+    ],
+    "key": "ts-weather-dashboard-finish"
+   }
+  ]
+ },
+ {
+  "key": "ts-kanban",
+  "skill": "TypeScript",
+  "level": "Intermediate",
+  "hours": 10,
+  "titleEn": "Kanban board with undo",
+  "titleAr": "لوحة كانبان مع التراجع",
+  "summaryEn": "A drag-and-drop Kanban board in TypeScript without a framework: columns and cards, a typed reducer for every change, undo/redo, persistence and keyboard support.",
+  "summaryAr": "لوحة كانبان بالسحب والإفلات في TypeScript بدون framework: أعمدة وبطاقات، وreducer بأنواع لكل تغيير، وتراجع/إعادة، وحفظ، ودعم لوحة المفاتيح.",
+  "techStack": "TypeScript · Vite · HTML Drag and Drop · localStorage · Vitest",
+  "goalsEn": [
+   "Model all changes as typed actions (discriminated unions)",
+   "Write a pure reducer and test it",
+   "Implement undo/redo with immutable state",
+   "Make drag and drop accessible from the keyboard"
+  ],
+  "goalsAr": [
+   "تمثيل كل التغييرات كإجراءات ذات أنواع (أنواع اتحاد مميّزة)",
+   "كتابة reducer نقي واختباره",
+   "تنفيذ التراجع والإعادة مع حالة غير قابلة للتعديل",
+   "جعل السحب والإفلات متاحًا من لوحة المفاتيح"
+  ],
+  "requirementsEn": [
+   "Columns (add, rename, delete) and cards (add, edit, delete)",
+   "Move cards between columns and reorder by drag and drop",
+   "Move cards with the keyboard too",
+   "Undo/redo with Ctrl+Z / Ctrl+Y for every change",
+   "The board is saved and restored",
+   "Search filters cards by text"
+  ],
+  "requirementsAr": [
+   "الأعمدة (إضافة، وإعادة تسمية، وحذف) والبطاقات (إضافة، وتعديل، وحذف)",
+   "نقل البطاقات بين الأعمدة وإعادة ترتيبها بالسحب والإفلات",
+   "نقل البطاقات بلوحة المفاتيح أيضًا",
+   "تراجع وإعادة بـ Ctrl+Z / Ctrl+Y لكل تغيير",
+   "تُحفظ اللوحة وتُستعاد",
+   "البحث يصفّي البطاقات بالنص"
+  ],
+  "acceptanceEn": [
+   "Every change goes through the reducer; there is no other code that mutates the board",
+   "Undo after a drag puts the card back exactly where it was",
+   "The reducer has unit tests for every action type",
+   "A keyboard-only user can move a card to another column"
+  ],
+  "acceptanceAr": [
+   "كل تغيير يمر عبر الـ reducer، ولا يوجد كود آخر يعدّل اللوحة",
+   "التراجع بعد السحب يعيد البطاقة إلى مكانها بالضبط",
+   "للـ reducer اختبارات وحدة لكل نوع إجراء",
+   "المستخدم الذي يعتمد على لوحة المفاتيح فقط يستطيع نقل بطاقة إلى عمود آخر"
+  ],
+  "stretchEn": [
+   "Add labels and due dates with filters",
+   "Sync between two open tabs with the storage event",
+   "Export and import the board as JSON"
+  ],
+  "stretchAr": [
+   "أضف تسميات وتواريخ استحقاق مع مرشحات",
+   "زامن بين تبويبين مفتوحين بحدث storage",
+   "صدّر اللوحة واستوردها بصيغة JSON"
+  ],
+  "steps": [
+   {
+    "titleEn": "Model the board and actions",
+    "titleAr": "مثّل اللوحة والإجراءات",
+    "bodyEn": "Write `interface Card { id: string; title: string; description: string }`, `interface Column { id: string; title: string; cardIds: string[] }` and `interface Board { columns: Column[]; cards: Record<string, Card> }`.\n\nWrite the actions as a union: `{ type: 'addCard'; columnId: string; title: string } | { type: 'moveCard'; cardId: string; toColumnId: string; toIndex: number } | ...`.",
+    "bodyAr": "اكتب `interface Card { id: string; title: string; description: string }` و`interface Column { id: string; title: string; cardIds: string[] }` و`interface Board { columns: Column[]; cards: Record<string, Card> }`.\n\nواكتب الإجراءات كاتحاد: `{ type: 'addCard'; columnId: string; title: string } | { type: 'moveCard'; cardId: string; toColumnId: string; toIndex: number } | ...`.",
+    "hintsEn": [
+     "Cards in a Record by id plus ordered id lists per column make moves cheap.",
+     "Use `crypto.randomUUID()` for ids."
+    ],
+    "hintsAr": [
+     "البطاقات في Record حسب الرقم، مع قوائم أرقام مرتبة لكل عمود، تجعل النقل رخيصًا.",
+     "استخدم `crypto.randomUUID()` للأرقام."
+    ],
+    "key": "ts-kanban-model"
+   },
+   {
+    "titleEn": "A pure reducer",
+    "titleAr": "Reducer نقي",
+    "bodyEn": "Write `function reduce(board: Board, action: Action): Board` with a `switch (action.type)`. Never change the old board: return new objects and arrays (`{ ...board, columns: board.columns.map(...) }`).\n\nAdd the exhaustive check `const _: never = action` in the default branch.",
+    "bodyAr": "اكتب `function reduce(board: Board, action: Action): Board` مع `switch (action.type)`. ولا تعدّل اللوحة القديمة أبدًا: أعد objects ومصفوفات جديدة (`{ ...board, columns: board.columns.map(...) }`).\n\nأضف الفحص الشامل `const _: never = action` في الفرع default.",
+    "hintsEn": [
+     "`structuredClone` is tempting but slow for every action; spread only what changes.",
+     "Mark state types `readonly` to get errors on accidental mutation."
+    ],
+    "hintsAr": [
+     "`structuredClone` مغرية لكنها بطيئة مع كل إجراء، فانسخ ما يتغير فقط.",
+     "علّم أنواع الحالة بـ `readonly` لتحصل على أخطاء عند التعديل غير المقصود."
+    ],
+    "key": "ts-kanban-reducer"
+   },
+   {
+    "titleEn": "Test the reducer first",
+    "titleAr": "اختبر الـ reducer أولًا",
+    "bodyEn": "Install Vitest and write a test per action: add a card, move it to another column at index 0, reorder inside a column, delete a column with its cards. Check that the old board object is unchanged after each action.\n\nYou now have a working, tested board without any UI.",
+    "bodyAr": "ثبّت Vitest واكتب اختبارًا لكل إجراء: أضف بطاقة، وانقلها إلى عمود آخر في الموضع 0، وأعد الترتيب داخل عمود، واحذف عمودًا مع بطاقاته. وتحقق أن object اللوحة القديم لم يتغير بعد كل إجراء.\n\nأصبح لديك الآن لوحة تعمل ومختبرة بلا أي واجهة.",
+    "hintsEn": [
+     "`Object.freeze` the input board in tests to catch mutations.",
+     "Moving within the same column: remove first, then insert — watch the index shift."
+    ],
+    "hintsAr": [
+     "جمّد اللوحة المُدخلة بـ `Object.freeze` في الاختبارات لتكشف التعديلات.",
+     "النقل داخل العمود نفسه: احذف أولًا ثم أدخل، وانتبه لتغيّر الفهرس."
+    ],
+    "key": "ts-kanban-tests"
+   },
+   {
+    "titleEn": "A store with undo and redo",
+    "titleAr": "مخزن مع التراجع والإعادة",
+    "bodyEn": "Create a `Store` with `past: Board[]`, `present: Board`, `future: Board[]`. `dispatch(action)` pushes present to past, sets the new board and clears future. `undo()` and `redo()` move between the stacks. Notify subscribers after every change.\n\nImmutable boards make undo trivial: you just keep the old objects.",
+    "bodyAr": "أنشئ `Store` فيه `past: Board[]` و`present: Board` و`future: Board[]`. ودالة `dispatch(action)` تدفع present إلى past، وتضبط اللوحة الجديدة، وتفرغ future. و`undo()` و`redo()` تتنقلان بين المكدسين. وأبلغ المشتركين بعد كل تغيير.\n\nاللوحات غير القابلة للتعديل تجعل التراجع سهلًا جدًا: أنت فقط تحتفظ بالـ objects القديمة.",
+    "hintsEn": [
+     "Limit past to 100 entries.",
+     "Do not record an action that changed nothing (reduce returned the same object)."
+    ],
+    "hintsAr": [
+     "حدّد past بـ 100 عنصر.",
+     "لا تسجّل إجراءً لم يغير شيئًا (أعاد الـ reduce الـ object نفسه)."
+    ],
+    "key": "ts-kanban-store"
+   },
+   {
+    "titleEn": "Render the board",
+    "titleAr": "ارسم اللوحة",
+    "bodyEn": "Subscribe to the store and render the columns and cards. Re-rendering everything is fine at this size. Use `<section>` per column with a heading and an `<ol>` of cards, each card a focusable `<li tabindex=\"0\">`.\n\nButtons on columns and cards dispatch actions; nothing else changes the board.",
+    "bodyAr": "اشترك في المخزن وارسم الأعمدة والبطاقات. إعادة رسم كل شيء مقبولة بهذا الحجم. واستخدم `<section>` لكل عمود فيه عنوان و`<ol>` للبطاقات، وكل بطاقة `<li tabindex=\"0\">` قابل للتركيز.\n\nأزرار الأعمدة والبطاقات ترسل إجراءات، ولا شيء آخر يغيّر اللوحة.",
+    "hintsEn": [
+     "Keep focus on the same card after re-render by remembering its id.",
+     "Use `textContent` for titles typed by the user."
+    ],
+    "hintsAr": [
+     "أبقِ التركيز على البطاقة نفسها بعد إعادة الرسم بتذكّر رقمها.",
+     "استخدم `textContent` للعناوين التي يكتبها المستخدم."
+    ],
+    "key": "ts-kanban-render"
+   },
+   {
+    "titleEn": "Drag and drop",
+    "titleAr": "السحب والإفلات",
+    "bodyEn": "Make cards `draggable=\"true\"`. On `dragstart`, put the card id in `event.dataTransfer`. On `dragover` of a column, call `preventDefault()` and compute the drop index from the mouse Y against the cards' middles; show a placeholder line. On `drop`, dispatch `moveCard`.\n\nThe DOM only signals intent; the reducer does the move.",
+    "bodyAr": "اجعل البطاقات `draggable=\"true\"`. وعند `dragstart` ضع رقم البطاقة في `event.dataTransfer`. وعند `dragover` على عمود استدعِ `preventDefault()` واحسب موضع الإفلات من إحداثي Y للفأرة مقارنة بمنتصف البطاقات، واعرض خطًا مؤقتًا. وعند `drop` أرسل `moveCard`.\n\nالـ DOM يعبّر عن النية فقط، والـ reducer هو من ينفّذ النقل.",
+    "hintsEn": [
+     "`getBoundingClientRect()` gives each card's middle: `top + height / 2`.",
+     "HTML drag and drop does not work on touch screens; the keyboard method covers mobile too if you add buttons."
+    ],
+    "hintsAr": [
+     "`getBoundingClientRect()` يعطي منتصف كل بطاقة: `top + height / 2`.",
+     "السحب والإفلات في HTML لا يعمل على شاشات اللمس، وطريقة لوحة المفاتيح تغطي الجوال أيضًا إن أضفت أزرارًا."
+    ],
+    "key": "ts-kanban-drag"
+   },
+   {
+    "titleEn": "Keyboard moves and shortcuts",
+    "titleAr": "النقل بلوحة المفاتيح والاختصارات",
+    "bodyEn": "On a focused card: Space picks it up, arrow keys move it (up/down inside the column, left/right to the next column), Space drops it, Escape cancels. Announce each move in an `aria-live` region (\"Card moved to Done, position 2\").\n\nAdd global Ctrl+Z and Ctrl+Y (Cmd on macOS) for undo and redo, but not while typing in an input.",
+    "bodyAr": "على البطاقة المركّز عليها: Space يرفعها، والأسهم تنقلها (أعلى وأسفل داخل العمود، ويمين ويسار إلى العمود التالي)، وSpace يفلتها، وEscape يلغي. وأعلن كل نقل في منطقة `aria-live` (\"نُقلت البطاقة إلى Done، الموضع 2\").\n\nأضف Ctrl+Z وCtrl+Y (أو Cmd على macOS) على مستوى الصفحة للتراجع والإعادة، لكن ليس أثناء الكتابة في حقل.",
+    "hintsEn": [
+     "Check `event.target instanceof HTMLInputElement` to skip shortcuts while typing.",
+     "In RTL, left and right arrows mean the opposite direction."
+    ],
+    "hintsAr": [
+     "تحقق من `event.target instanceof HTMLInputElement` لتتخطى الاختصارات أثناء الكتابة.",
+     "في الاتجاه من اليمين إلى اليسار يكون معنى السهمين الأيمن والأيسر معكوسًا."
+    ],
+    "key": "ts-kanban-keyboard"
+   },
+   {
+    "titleEn": "Save, restore and search",
+    "titleAr": "الحفظ والاستعادة والبحث",
+    "bodyEn": "Subscribe once more: save `present` to localStorage (debounced 300 ms). On start, load and validate it; fall back to a default board with three columns. Add a search box that hides cards whose title and description do not contain the text — a view filter, not an action.",
+    "bodyAr": "اشترك مرة أخرى: احفظ `present` في localStorage (مع تأخير 300 مللي ثانية). وعند البدء حمّلها وتحقق منها، وارجع إلى لوحة افتراضية بثلاثة أعمدة عند الحاجة. وأضف مربع بحث يخفي البطاقات التي لا يحتوي عنوانها ووصفها على النص، كمرشح عرض لا كإجراء.",
+    "hintsEn": [
+     "Search must not go into undo history.",
+     "Validate the stored JSON shape; a broken save must not lock the user out."
+    ],
+    "hintsAr": [
+     "البحث يجب ألا يدخل في سجل التراجع.",
+     "تحقق من شكل JSON المحفوظ، فالحفظ التالف يجب ألا يمنع المستخدم من الدخول."
+    ],
+    "key": "ts-kanban-persist"
+   },
+   {
+    "titleEn": "Polish and publish",
+    "titleAr": "حسّن وانشر",
+    "bodyEn": "Go through the acceptance criteria, including a keyboard-only session. Run the tests and the build. Deploy and write a README that explains the architecture: actions → reducer → store (undo) → render.\n\nA short GIF of drag, undo and keyboard moves shows the work best.",
+    "bodyAr": "راجع معايير القبول، ومنها جلسة كاملة بلوحة المفاتيح فقط. وشغّل الاختبارات والبناء. ثم انشره واكتب README يشرح البنية: الإجراءات ← الـ reducer ← المخزن (مع التراجع) ← الرسم.\n\nصورة GIF قصيرة للسحب والتراجع والنقل بلوحة المفاتيح تعرض العمل أفضل عرض.",
+    "hintsEn": [
+     "Mention that this is the same pattern Redux and NgRx use.",
+     "Coverage of the reducer near 100% is realistic and impressive."
+    ],
+    "hintsAr": [
+     "اذكر أن هذا هو النمط نفسه الذي تستخدمه Redux وNgRx.",
+     "تغطية اختبار قرب 100% للـ reducer واقعية ومثيرة للإعجاب."
+    ],
+    "key": "ts-kanban-finish"
+   }
+  ]
+ },
+ {
+  "key": "ts-schema-validator",
+  "skill": "TypeScript",
+  "level": "Advanced",
+  "hours": 14,
+  "titleEn": "Build a type-safe validation library",
+  "titleAr": "ابنِ مكتبة تحقق آمنة الأنواع",
+  "summaryEn": "Write your own small version of Zod: schemas for strings, numbers, objects, arrays and unions that validate data at runtime and infer the TypeScript type at compile time, published as an npm package.",
+  "summaryAr": "اكتب نسختك الصغيرة من Zod: مخططات للنصوص والأرقام والكائنات والمصفوفات والاتحادات تتحقق من البيانات وقت التشغيل وتستنتج نوع TypeScript وقت الترجمة، ثم انشرها كحزمة npm.",
+  "techStack": "TypeScript · generics · conditional and mapped types · Vitest · tsup · npm",
+  "goalsEn": [
+   "Use generics, conditional types, mapped types and infer",
+   "Design a fluent, chainable API",
+   "Collect precise error paths",
+   "Build, test and publish a library with type declarations"
+  ],
+  "goalsAr": [
+   "استخدام generics والأنواع الشرطية والأنواع المُعيَّنة (mapped) وinfer",
+   "تصميم واجهة برمجية متسلسلة سلسة",
+   "جمع مسارات أخطاء دقيقة",
+   "بناء مكتبة واختبارها ونشرها مع ملفات تعريف الأنواع"
+  ],
+  "requirementsEn": [
+   "Schemas: string, number, boolean, literal, object, array, union, optional, nullable",
+   "Checks: min, max, email, regex, int, positive",
+   "parse throws, safeParse returns { success, data | error }",
+   "Errors include the path, e.g. [\"users\", 2, \"email\"]",
+   "Infer<typeof schema> produces the exact type",
+   "Published to npm (or a local tarball) with ESM, CJS and .d.ts"
+  ],
+  "requirementsAr": [
+   "المخططات: string وnumber وboolean وliteral وobject وarray وunion وoptional وnullable",
+   "الفحوص: min وmax وemail وregex وint وpositive",
+   "parse ترمي استثناء، وsafeParse تعيد { success, data | error }",
+   "الأخطاء تتضمن المسار، مثل [\"users\", 2, \"email\"]",
+   "Infer<typeof schema> ينتج النوع الدقيق",
+   "منشورة على npm (أو كملف tarball محلي) بصيغ ESM وCJS و.d.ts"
+  ],
+  "acceptanceEn": [
+   "`Infer` of an object with optional fields gives `{ a: string; b?: number }`, checked with a type test",
+   "All errors of an object are reported, not only the first",
+   "The library has no runtime dependencies",
+   "Tests cover every schema and check"
+  ],
+  "acceptanceAr": [
+   "`Infer` لكائن بحقول اختيارية يعطي `{ a: string; b?: number }`، ويُتحقق منه باختبار أنواع",
+   "كل أخطاء الكائن يُبلغ عنها، لا الأول فقط",
+   "المكتبة بلا اعتماديات وقت التشغيل",
+   "الاختبارات تغطي كل مخطط وكل فحص"
+  ],
+  "stretchEn": [
+   "Add transform and refine",
+   "Add discriminated unions with fast lookup",
+   "Generate JSON Schema from a schema"
+  ],
+  "stretchAr": [
+   "أضف transform وrefine",
+   "أضف الاتحادات المميّزة مع بحث سريع",
+   "ولّد JSON Schema من المخطط"
+  ],
+  "steps": [
+   {
+    "titleEn": "Design the API from the outside",
+    "titleAr": "صمّم الواجهة من الخارج",
+    "bodyEn": "Write the code you want users to write before implementing anything:\n- `const User = v.object({ name: v.string().min(1), age: v.number().int().optional() });`\n- `type User = Infer<typeof User>;`\n- `const result = User.safeParse(json);`\n\nWrite it in a `examples.ts` file; it will become a type test later.",
+    "bodyAr": "اكتب الكود الذي تريد أن يكتبه المستخدمون قبل تنفيذ أي شيء:\n- `const User = v.object({ name: v.string().min(1), age: v.number().int().optional() });`\n- `type User = Infer<typeof User>;`\n- `const result = User.safeParse(json);`\n\nاكتبه في ملف `examples.ts`، فسيصبح اختبار أنواع لاحقًا.",
+    "hintsEn": [
+     "Look at the Zod and Valibot docs for ideas, not code.",
+     "Decide early: are schemas immutable (each `.min()` returns a new schema)? Yes is safer."
+    ],
+    "hintsAr": [
+     "انظر إلى توثيق Zod وValibot للأفكار، لا للكود.",
+     "قرر مبكرًا: هل المخططات غير قابلة للتعديل (كل `.min()` تعيد مخططًا جديدًا)؟ الإجابة بنعم أكثر أمانًا."
+    ],
+    "key": "ts-schema-validator-design"
+   },
+   {
+    "titleEn": "Library project setup",
+    "titleAr": "إعداد مشروع المكتبة",
+    "bodyEn": "Create a folder with `npm init -y`, add `typescript`, `vitest` and `tsup` as dev dependencies, and a strict tsconfig. Configure tsup to output ESM and CJS with declarations (`tsup src/index.ts --format esm,cjs --dts`).\n\nFill `package.json`: `exports` with `import`, `require` and `types`, and `\"files\": [\"dist\"]`.",
+    "bodyAr": "أنشئ مجلدًا بـ `npm init -y`، وأضف `typescript` و`vitest` و`tsup` كاعتماديات تطوير، وtsconfig صارمًا. واضبط tsup ليُخرج ESM وCJS مع ملفات التعريف (`tsup src/index.ts --format esm,cjs --dts`).\n\nاملأ `package.json`: الحقل `exports` بـ `import` و`require` و`types`، و`\"files\": [\"dist\"]`.",
+    "hintsEn": [
+     "`publint` checks that your package.json exports are correct.",
+     "Set `\"sideEffects\": false` so bundlers can tree-shake."
+    ],
+    "hintsAr": [
+     "`publint` يتحقق من صحة exports في package.json.",
+     "اضبط `\"sideEffects\": false` لتستطيع أدوات التجميع حذف ما لا يُستخدم."
+    ],
+    "key": "ts-schema-validator-setup"
+   },
+   {
+    "titleEn": "The base Schema class",
+    "titleAr": "class المخطط الأساسي",
+    "bodyEn": "Write `abstract class Schema<T>` with an abstract `_parse(input: unknown, path: Path): ParseResult<T>`, and public `parse` and `safeParse` built on it. `ParseResult<T>` is `{ ok: true; value: T } | { ok: false; issues: Issue[] }` where `Issue = { path: (string | number)[]; message: string }`.\n\nThe phantom type parameter `T` is what `Infer` reads later.",
+    "bodyAr": "اكتب `abstract class Schema<T>` فيه دالة مجردة `_parse(input: unknown, path: Path): ParseResult<T>`، ودالتان عامتان `parse` و`safeParse` مبنيتان عليها. و`ParseResult<T>` هو `{ ok: true; value: T } | { ok: false; issues: Issue[] }` حيث `Issue = { path: (string | number)[]; message: string }`.\n\nمعامل النوع الوهمي `T` هو ما سيقرؤه `Infer` لاحقًا.",
+    "hintsEn": [
+     "`type Infer<S> = S extends Schema<infer T> ? T : never;`",
+     "A `readonly _type!: T` property helps TypeScript keep T even if no method uses it."
+    ],
+    "hintsAr": [
+     "`type Infer<S> = S extends Schema<infer T> ? T : never;`",
+     "خاصية `readonly _type!: T` تساعد TypeScript على الاحتفاظ بـ T حتى لو لم تستخدمه أي دالة."
+    ],
+    "key": "ts-schema-validator-base"
+   },
+   {
+    "titleEn": "Primitive schemas and checks",
+    "titleAr": "المخططات الأولية والفحوص",
+    "bodyEn": "Implement `StringSchema` with `min`, `max`, `email`, `regex`, `NumberSchema` with `int`, `positive`, `min`, `max`, plus `BooleanSchema` and `literal(value)`. Store checks in an array; each method returns a new schema with one more check.\n\nRun the type check first, then all checks, collecting every failure.",
+    "bodyAr": "نفّذ `StringSchema` مع `min` و`max` و`email` و`regex`، و`NumberSchema` مع `int` و`positive` و`min` و`max`، إضافة إلى `BooleanSchema` و`literal(value)`. واحفظ الفحوص في مصفوفة، وكل دالة تعيد مخططًا جديدًا بفحص إضافي.\n\nنفّذ فحص النوع أولًا، ثم كل الفحوص مع جمع كل الإخفاقات.",
+    "hintsEn": [
+     "`literal<const V extends string | number | boolean>(v: V): Schema<V>` keeps the exact literal type thanks to `const`.",
+     "NaN is a number in JavaScript — reject it explicitly."
+    ],
+    "hintsAr": [
+     "`literal<const V extends string | number | boolean>(v: V): Schema<V>` تحتفظ بالنوع الحرفي الدقيق بفضل `const`.",
+     "NaN رقم في JavaScript، فارفضه صراحة."
+    ],
+    "key": "ts-schema-validator-primitives"
+   },
+   {
+    "titleEn": "Object schemas with inferred shape",
+    "titleAr": "مخططات الكائنات مع استنتاج الشكل",
+    "bodyEn": "`object<Shape extends Record<string, Schema<any>>>(shape)` returns `Schema<ObjectType<Shape>>`. Build `ObjectType` with mapped types: required keys map to `Infer<Shape[K]>`, keys whose schema is optional become `?:`.\n\nAt runtime, check the input is a plain object, parse each key with the path extended by the key, and collect all issues. Drop unknown keys.",
+    "bodyAr": "`object<Shape extends Record<string, Schema<any>>>(shape)` تعيد `Schema<ObjectType<Shape>>`. وابنِ `ObjectType` بالأنواع المُعيَّنة: المفاتيح المطلوبة تصبح `Infer<Shape[K]>`، والمفاتيح التي مخططها اختياري تصبح `?:`.\n\nوقت التشغيل تحقق أن المدخل كائن عادي، وحلّل كل مفتاح مع إضافة المفتاح إلى المسار، واجمع كل الأخطاء. واحذف المفاتيح غير المعروفة.",
+    "hintsEn": [
+     "Split keys with a helper: `type OptionalKeys<S> = { [K in keyof S]: S[K] extends OptionalSchema<any> ? K : never }[keyof S]`.",
+     "Wrap the result in `Simplify<T> = { [K in keyof T]: T[K] } & {}` so hovers show a clean type."
+    ],
+    "hintsAr": [
+     "افصل المفاتيح بنوع مساعد: `type OptionalKeys<S> = { [K in keyof S]: S[K] extends OptionalSchema<any> ? K : never }[keyof S]`.",
+     "غلّف النتيجة بـ `Simplify<T> = { [K in keyof T]: T[K] } & {}` لتعرض نافذة التلميح نوعًا نظيفًا."
+    ],
+    "key": "ts-schema-validator-object"
+   },
+   {
+    "titleEn": "Arrays, unions, optional, nullable",
+    "titleAr": "المصفوفات والاتحادات والاختياري وnull",
+    "bodyEn": "`array(item)` checks `Array.isArray` and parses each element with the index in the path. `union([a, b])` returns the first success, or a single issue listing what was expected. `.optional()` wraps any schema to accept undefined; `.nullable()` accepts null.\n\nFor union inference use `Infer<Options[number]>`.",
+    "bodyAr": "`array(item)` تتحقق بـ `Array.isArray` وتحلل كل عنصر مع إضافة فهرسه إلى المسار. و`union([a, b])` تعيد أول نجاح، أو خطأ واحدًا يذكر ما كان متوقعًا. و`.optional()` تغلّف أي مخطط ليقبل undefined، و`.nullable()` تقبل null.\n\nلاستنتاج نوع الاتحاد استخدم `Infer<Options[number]>`.",
+    "hintsEn": [
+     "Type the union parameter as a tuple: `<O extends readonly [Schema<any>, ...Schema<any>[]]>`.",
+     "Recursive schemas (a tree) need a `lazy(() => schema)` helper — a good stretch goal."
+    ],
+    "hintsAr": [
+     "حدّد نوع معامل الاتحاد كـ tuple: `<O extends readonly [Schema<any>, ...Schema<any>[]]>`.",
+     "المخططات العودية (شجرة) تحتاج دالة مساعدة `lazy(() => schema)`، وهي تحدٍ إضافي جيد."
+    ],
+    "key": "ts-schema-validator-composites"
+   },
+   {
+    "titleEn": "Test the types themselves",
+    "titleAr": "اختبر الأنواع نفسها",
+    "bodyEn": "Runtime tests are not enough: the inferred types are half the product. Use Vitest's `expectTypeOf`: `expectTypeOf<Infer<typeof User>>().toEqualTypeOf<{ name: string; age?: number }>()`.\n\nWrite type tests for every schema, especially optional keys, unions and nested arrays.",
+    "bodyAr": "اختبارات وقت التشغيل لا تكفي، فالأنواع المستنتجة نصف المنتج. استخدم `expectTypeOf` في Vitest: `expectTypeOf<Infer<typeof User>>().toEqualTypeOf<{ name: string; age?: number }>()`.\n\nاكتب اختبارات أنواع لكل مخطط، خاصة المفاتيح الاختيارية والاتحادات والمصفوفات المتداخلة.",
+    "hintsEn": [
+     "Run `vitest --typecheck` so type tests fail the build.",
+     "Also test that wrong usage is an error with `// @ts-expect-error`."
+    ],
+    "hintsAr": [
+     "شغّل `vitest --typecheck` لتُفشل اختبارات الأنواع البناء.",
+     "اختبر أيضًا أن الاستخدام الخاطئ خطأ بـ `// @ts-expect-error`."
+    ],
+    "key": "ts-schema-validator-type-tests"
+   },
+   {
+    "titleEn": "Runtime tests and error messages",
+    "titleAr": "اختبارات وقت التشغيل ورسائل الأخطاء",
+    "bodyEn": "Test valid and invalid inputs for every schema and check. For a nested object with 3 mistakes, assert all 3 issues with their exact paths. Add a `formatIssues(issues)` helper that produces readable lines like `users[2].email: Invalid email`.\n\nGood error messages are what users remember about a validation library.",
+    "bodyAr": "اختبر مدخلات صحيحة وخاطئة لكل مخطط وكل فحص. ولكائن متداخل فيه 3 أخطاء تحقق من الأخطاء الثلاثة بمساراتها الدقيقة. وأضف دالة مساعدة `formatIssues(issues)` تنتج أسطرًا مقروءة مثل `users[2].email: Invalid email`.\n\nرسائل الأخطاء الجيدة هي ما يتذكره المستخدمون عن مكتبة التحقق.",
+    "hintsEn": [
+     "Allow custom messages: `v.string().min(3, 'Too short')`.",
+     "Benchmark parsing 10,000 objects and note the time in the README."
+    ],
+    "hintsAr": [
+     "اسمح برسائل مخصصة: `v.string().min(3, 'Too short')`.",
+     "قِس سرعة تحليل 10000 كائن ودوّن الوقت في README."
+    ],
+    "key": "ts-schema-validator-runtime-tests"
+   },
+   {
+    "titleEn": "Build and publish",
+    "titleAr": "ابنِ وانشر",
+    "bodyEn": "Run `tsup` and check `dist` contains `.js`, `.cjs` and `.d.ts`. Try the package in another project with `npm pack` and `npm install ../my-validator-1.0.0.tgz`, both from ESM and CommonJS.\n\nPublish with `npm publish --access public` (choose a unique scoped name like `@yourname/validator`), or keep the tarball if you prefer not to publish.",
+    "bodyAr": "شغّل `tsup` وتحقق أن `dist` يحتوي `.js` و`.cjs` و`.d.ts`. وجرّب الحزمة في مشروع آخر بـ `npm pack` ثم `npm install ../my-validator-1.0.0.tgz`، من ESM ومن CommonJS.\n\nانشرها بـ `npm publish --access public` (اختر اسمًا فريدًا بنطاق مثل `@yourname/validator`)، أو احتفظ بملف tarball إن فضّلت عدم النشر.",
+    "hintsEn": [
+     "Add a `prepublishOnly` script that runs tests and the build.",
+     "Use semantic versioning: breaking changes bump the major version."
+    ],
+    "hintsAr": [
+     "أضف سكربت `prepublishOnly` يشغّل الاختبارات والبناء.",
+     "استخدم الإصدار الدلالي: التغييرات الكاسرة ترفع الرقم الرئيسي."
+    ],
+    "key": "ts-schema-validator-publish"
+   },
+   {
+    "titleEn": "Document like a real library",
+    "titleAr": "وثّق كمكتبة حقيقية",
+    "bodyEn": "Write a README with installation, a quick start, every schema and check, error handling and the inference examples. Add a CI workflow that runs type tests, runtime tests and the build on every push.\n\nExplain in a \"How it works\" section how Infer and the mapped types are built — that section shows your TypeScript depth.",
+    "bodyAr": "اكتب README فيه التثبيت، وبداية سريعة، وكل مخطط وفحص، ومعالجة الأخطاء، وأمثلة الاستنتاج. وأضف مسار CI يشغّل اختبارات الأنواع واختبارات وقت التشغيل والبناء عند كل push.\n\nواشرح في قسم \"كيف تعمل\" طريقة بناء Infer والأنواع المُعيَّنة، فهذا القسم يُظهر عمق معرفتك بـ TypeScript.",
+    "hintsEn": [
+     "Include a comparison table with Zod: what you support and what you do not.",
+     "A CHANGELOG.md from the first version is a good habit."
+    ],
+    "hintsAr": [
+     "ضمّن جدول مقارنة مع Zod: ما تدعمه وما لا تدعمه.",
+     "ملف CHANGELOG.md من الإصدار الأول عادة جيدة."
+    ],
+    "key": "ts-schema-validator-finish"
+   }
+  ]
+ },
+ {
+  "key": "ts-static-site-generator",
+  "skill": "TypeScript",
+  "level": "Advanced",
+  "hours": 14,
+  "titleEn": "Markdown static site generator",
+  "titleAr": "مولّد مواقع ثابتة من Markdown",
+  "summaryEn": "A Node.js command-line tool in TypeScript that turns a folder of Markdown files into a fast static website with layouts, front matter, tags, an RSS feed and a dev server with live reload.",
+  "summaryAr": "أداة سطر أوامر في Node.js بلغة TypeScript تحوّل مجلدًا من ملفات Markdown إلى موقع ثابت سريع، مع قوالب تخطيط، وfront matter، ووسوم، وخلاصة RSS، وخادم تطوير بإعادة تحميل حية.",
+  "techStack": "TypeScript · Node.js · fs/promises · markdown-it · chokidar · Vitest",
+  "goalsEn": [
+   "Write a Node.js CLI in TypeScript",
+   "Work with the file system asynchronously and in parallel",
+   "Design a build pipeline with plugins",
+   "Build incrementally and serve with live reload"
+  ],
+  "goalsAr": [
+   "كتابة أداة سطر أوامر Node.js بلغة TypeScript",
+   "التعامل مع نظام الملفات بشكل غير متزامن ومتوازٍ",
+   "تصميم مسار بناء مع إضافات (plugins)",
+   "البناء التدريجي والتقديم مع إعادة تحميل حية"
+  ],
+  "requirementsEn": [
+   "`ssg build` turns content/**/*.md into dist/**/index.html",
+   "Front matter (title, date, tags, draft) validated with types",
+   "Layouts with a simple template syntax and partials",
+   "Generated pages: home with latest posts, tag pages, RSS feed, sitemap",
+   "Static assets copied; code blocks highlighted",
+   "`ssg dev` serves the site and reloads the browser on changes"
+  ],
+  "requirementsAr": [
+   "`ssg build` يحوّل content/**/*.md إلى dist/**/index.html",
+   "الـ front matter (العنوان والتاريخ والوسوم والمسودة) مُتحقق منه بالأنواع",
+   "قوالب تخطيط بصيغة بسيطة وأجزاء (partials)",
+   "صفحات مولّدة: الرئيسية بآخر المقالات، وصفحات الوسوم، وخلاصة RSS، وخريطة الموقع",
+   "نسخ الملفات الثابتة وتلوين كتل الكود",
+   "`ssg dev` يقدّم الموقع ويعيد تحميل المتصفح عند التغييرات"
+  ],
+  "acceptanceEn": [
+   "A post with a missing title fails the build with the file name and the reason",
+   "Drafts are skipped in build and shown in dev",
+   "Changing one post in dev rebuilds only what depends on it",
+   "The generated RSS validates in an online validator"
+  ],
+  "acceptanceAr": [
+   "المقال الذي ينقصه عنوان يُفشل البناء مع اسم الملف والسبب",
+   "المسودات تُتخطى في البناء وتظهر في التطوير",
+   "تغيير مقال واحد في التطوير يعيد بناء ما يعتمد عليه فقط",
+   "خلاصة RSS المولّدة تنجح في أداة تحقق عبر الإنترنت"
+  ],
+  "stretchEn": [
+   "Add a plugin API and write a reading-time plugin",
+   "Add image optimisation",
+   "Add client-side search with a JSON index"
+  ],
+  "stretchAr": [
+   "أضف واجهة للإضافات واكتب إضافة لوقت القراءة",
+   "أضف تحسين الصور",
+   "أضف بحثًا في المتصفح بفهرس JSON"
+  ],
+  "steps": [
+   {
+    "titleEn": "A TypeScript CLI project",
+    "titleAr": "مشروع CLI بلغة TypeScript",
+    "bodyEn": "Create a package with `\"type\": \"module\"` and `\"bin\": { \"ssg\": \"dist/cli.js\" }`. Add TypeScript, `tsx` for running in development, and build with `tsc`. Start `src/cli.ts` with a shebang (`#!/usr/bin/env node`) and parse the command (`build`, `dev`) and options (`--out`, `--drafts`).\n\nRun it with `npx tsx src/cli.ts build` while developing.",
+    "bodyAr": "أنشئ حزمة فيها `\"type\": \"module\"` و`\"bin\": { \"ssg\": \"dist/cli.js\" }`. وأضف TypeScript، و`tsx` للتشغيل أثناء التطوير، وابنِ بـ `tsc`. وابدأ `src/cli.ts` بسطر shebang (`#!/usr/bin/env node`) وحلّل الأمر (`build` و`dev`) والخيارات (`--out` و`--drafts`).\n\nشغّله بـ `npx tsx src/cli.ts build` أثناء التطوير.",
+    "hintsEn": [
+     "Node has `util.parseArgs` built in — no dependency needed.",
+     "Create a sample `content/` folder with 6 posts in the repository to test with."
+    ],
+    "hintsAr": [
+     "Node فيه `util.parseArgs` مدمجة، فلا حاجة لاعتمادية.",
+     "أنشئ مجلد `content/` تجريبيًا فيه 6 مقالات داخل المستودع لتختبر عليه."
+    ],
+    "key": "ts-static-site-generator-setup"
+   },
+   {
+    "titleEn": "Find and read content in parallel",
+    "titleAr": "جد المحتوى واقرأه بالتوازي",
+    "bodyEn": "Find all `.md` files under `content/` with `fs.readdir(dir, { recursive: true })`. Read them with `Promise.all` and a concurrency limit (e.g. 16 at a time) so huge sites do not open thousands of files at once.\n\nEach file becomes a `SourceFile { path, slug, raw }`; the slug comes from the path (`posts/hello.md` → `posts/hello/`).",
+    "bodyAr": "جد كل ملفات `.md` تحت `content/` بـ `fs.readdir(dir, { recursive: true })`. واقرأها بـ `Promise.all` مع حد للتزامن (مثل 16 في المرة) حتى لا تفتح المواقع الضخمة آلاف الملفات دفعة واحدة.\n\nكل ملف يصبح `SourceFile { path, slug, raw }`، والـ slug يأتي من المسار (`posts/hello.md` ← `posts/hello/`).",
+    "hintsEn": [
+     "Normalise paths with `path.posix` so slugs are the same on Windows.",
+     "A tiny `pLimit` is 15 lines; writing it is a nice exercise."
+    ],
+    "hintsAr": [
+     "وحّد المسارات بـ `path.posix` لتكون الـ slugs نفسها على Windows.",
+     "دالة `pLimit` صغيرة في 15 سطرًا، وكتابتها تمرين لطيف."
+    ],
+    "key": "ts-static-site-generator-read"
+   },
+   {
+    "titleEn": "Front matter with typed validation",
+    "titleAr": "Front matter مع تحقق بالأنواع",
+    "bodyEn": "Split the YAML block between the first two `---` lines from the body (use the `yaml` package to parse it). Validate it into `interface PostMeta { title: string; date: Date; tags: string[]; draft: boolean; layout: string }` with defaults for tags, draft and layout.\n\nCollect all errors with file names and fail the build once at the end with a clear list.",
+    "bodyAr": "افصل كتلة YAML بين أول سطرين `---` عن المحتوى (استخدم الحزمة `yaml` للتحليل). وتحقق منها إلى `interface PostMeta { title: string; date: Date; tags: string[]; draft: boolean; layout: string }` مع قيم افتراضية للوسوم والمسودة والتخطيط.\n\nاجمع كل الأخطاء مع أسماء الملفات، وأفشل البناء مرة واحدة في النهاية بقائمة واضحة.",
+    "hintsEn": [
+     "Reuse your validation library from the previous project, or Zod.",
+     "Exit with `process.exitCode = 1` instead of `process.exit` so logs are flushed."
+    ],
+    "hintsAr": [
+     "أعد استخدام مكتبة التحقق من المشروع السابق، أو Zod.",
+     "اخرج بـ `process.exitCode = 1` بدل `process.exit` لتُكتب السجلات كاملة."
+    ],
+    "key": "ts-static-site-generator-front-matter"
+   },
+   {
+    "titleEn": "Render Markdown and highlight code",
+    "titleAr": "حوّل Markdown ولوّن الكود",
+    "bodyEn": "Render the body with `markdown-it` and highlight fenced code with `shiki` (or highlight.js) at build time, so the site ships no highlighting JavaScript. Add ids to headings and build a table of contents from them.\n\nEscape is handled by markdown-it; do not allow raw HTML unless you trust all authors.",
+    "bodyAr": "حوّل المحتوى بـ `markdown-it` ولوّن كتل الكود بـ `shiki` (أو highlight.js) وقت البناء، فلا يحمل الموقع JavaScript للتلوين. وأضف ids للعناوين وابنِ منها جدول محتويات.\n\nالـ escape يتولاه markdown-it، فلا تسمح بـ HTML خام إلا إذا كنت تثق بكل الكتّاب.",
+    "hintsEn": [
+     "shiki is async to initialise; create the highlighter once and reuse it.",
+     "Slugify headings consistently, including Arabic text."
+    ],
+    "hintsAr": [
+     "تهيئة shiki غير متزامنة، فأنشئ الملوّن مرة واحدة وأعد استخدامه.",
+     "حوّل العناوين إلى slugs بشكل متسق، بما في ذلك النص العربي."
+    ],
+    "key": "ts-static-site-generator-markdown"
+   },
+   {
+    "titleEn": "Layouts and partials",
+    "titleAr": "قوالب التخطيط والأجزاء",
+    "bodyEn": "Create `layouts/base.html` and `layouts/post.html` with placeholders like `{{ title }}`, `{{{ content }}}` (raw), `{{> header }}` (partial). Write a small template function: escape `{{ }}` values, insert `{{{ }}}` as is, and include partials.\n\nTyped render context: `interface PageContext { site: SiteConfig; page: PostMeta & { url: string }; content: string }`.",
+    "bodyAr": "أنشئ `layouts/base.html` و`layouts/post.html` بعناصر نائبة مثل `{{ title }}` و`{{{ content }}}` (خام) و`{{> header }}` (جزء). واكتب دالة قوالب صغيرة: تُجري escape على قيم `{{ }}`، وتُدخل `{{{ }}}` كما هي، وتضمّن الأجزاء.\n\nسياق الرسم بأنواع: `interface PageContext { site: SiteConfig; page: PostMeta & { url: string }; content: string }`.",
+    "hintsEn": [
+     "Escaping by default and raw only on request is how every safe template engine works.",
+     "Support dotted paths like `{{ page.title }}` with a reduce over the parts."
+    ],
+    "hintsAr": [
+     "الـ escape افتراضيًا، والخام عند الطلب فقط، هو أسلوب كل محرك قوالب آمن.",
+     "ادعم المسارات المنقطة مثل `{{ page.title }}` باستخدام reduce على الأجزاء."
+    ],
+    "key": "ts-static-site-generator-templates"
+   },
+   {
+    "titleEn": "Generated pages: home, tags, RSS, sitemap",
+    "titleAr": "الصفحات المولّدة: الرئيسية والوسوم وRSS وخريطة الموقع",
+    "bodyEn": "After rendering posts, build: the home page with the 10 latest non-draft posts, one page per tag, `feed.xml` (RSS 2.0 with absolute URLs and RFC 822 dates) and `sitemap.xml`.\n\nWrite everything to `dist/` with `fs.mkdir(dir, { recursive: true })` and copy `static/` as is.",
+    "bodyAr": "بعد رسم المقالات ابنِ: الصفحة الرئيسية بآخر 10 مقالات غير مسودة، وصفحة لكل وسم، و`feed.xml` (بصيغة RSS 2.0 بروابط مطلقة وتواريخ RFC 822)، و`sitemap.xml`.\n\nاكتب كل شيء في `dist/` بـ `fs.mkdir(dir, { recursive: true })`، وانسخ `static/` كما هو.",
+    "hintsEn": [
+     "`date.toUTCString()` produces an RFC 822 date that RSS accepts.",
+     "Escape XML special characters in titles inside the feed."
+    ],
+    "hintsAr": [
+     "`date.toUTCString()` ينتج تاريخًا بصيغة RFC 822 تقبلها RSS.",
+     "طبّق escape على أحرف XML الخاصة في العناوين داخل الخلاصة."
+    ],
+    "key": "ts-static-site-generator-pages"
+   },
+   {
+    "titleEn": "Turn it into a pipeline",
+    "titleAr": "حوّله إلى مسار بناء",
+    "bodyEn": "Refactor into stages: load → parse → transform → render → write. Each stage is a function with typed input and output. Add a hook interface `Plugin { name; transform?(post): post | Promise<post>; generate?(site): OutputFile[] }` and move RSS and sitemap into plugins.\n\nTime each stage and print a summary: \"42 pages in 380 ms\".",
+    "bodyAr": "أعد تنظيمه إلى مراحل: تحميل ← تحليل ← تحويل ← رسم ← كتابة. كل مرحلة دالة لها مدخلات ومخرجات بأنواع. وأضف واجهة خطافات `Plugin { name; transform?(post): post | Promise<post>; generate?(site): OutputFile[] }` وانقل RSS وخريطة الموقع إلى إضافات.\n\nقِس وقت كل مرحلة واطبع ملخصًا: \"42 صفحة في 380 مللي ثانية\".",
+    "hintsEn": [
+     "`performance.now()` gives precise timings.",
+     "A pipeline with pure stages is easy to unit test with in-memory files."
+    ],
+    "hintsAr": [
+     "`performance.now()` تعطي توقيتات دقيقة.",
+     "المسار ذو المراحل النقية سهل الاختبار بملفات في الذاكرة."
+    ],
+    "key": "ts-static-site-generator-pipeline"
+   },
+   {
+    "titleEn": "Dev server with live reload",
+    "titleAr": "خادم التطوير مع إعادة التحميل الحية",
+    "bodyEn": "`ssg dev` builds once (including drafts), serves `dist/` with Node's `http` module, and watches `content/`, `layouts/` and `static/` with `chokidar`. On change, rebuild and tell browsers to reload through Server-Sent Events: inject a small script into each page that listens to `/__reload`.\n\nIncremental: a changed post rebuilds itself, the home page, its tag pages and the feed; a changed layout rebuilds everything.",
+    "bodyAr": "`ssg dev` يبني مرة (مع المسودات)، ويقدّم `dist/` بوحدة `http` في Node، ويراقب `content/` و`layouts/` و`static/` بـ `chokidar`. وعند التغيير يعيد البناء ويطلب من المتصفحات إعادة التحميل عبر Server-Sent Events: أدخل في كل صفحة سكربتًا صغيرًا يستمع إلى `/__reload`.\n\nالبناء التدريجي: المقال المتغير يعيد بناء نفسه، والصفحة الرئيسية، وصفحات وسومه، والخلاصة، أما تغيير قالب التخطيط فيعيد بناء كل شيء.",
+    "hintsEn": [
+     "Debounce file events by 50 ms — editors save in several steps.",
+     "Serve `index.html` for folder URLs and set the right Content-Type per extension."
+    ],
+    "hintsAr": [
+     "أخّر أحداث الملفات 50 مللي ثانية، فالمحررات تحفظ على عدة خطوات.",
+     "قدّم `index.html` لروابط المجلدات، واضبط Content-Type المناسب لكل امتداد."
+    ],
+    "key": "ts-static-site-generator-dev"
+   },
+   {
+    "titleEn": "Tests, package and dogfood",
+    "titleAr": "الاختبارات والتغليف والاستخدام الذاتي",
+    "bodyEn": "Test the stages with Vitest: front matter errors, slug generation, template escaping, RSS output. Build the package and run `npm link` to use `ssg` as a real command.\n\nDogfood it: build your own blog or portfolio with it, deploy it on GitHub Pages with a workflow, and link it in the README.",
+    "bodyAr": "اختبر المراحل بـ Vitest: أخطاء الـ front matter، وتوليد الـ slugs، والـ escape في القوالب، ومخرجات RSS. وابنِ الحزمة وشغّل `npm link` لتستخدم `ssg` كأمر حقيقي.\n\nاستخدمه بنفسك: ابنِ مدونتك أو معرض أعمالك به، وانشره على GitHub Pages بمسار عمل، وضع رابطه في README.",
+    "hintsEn": [
+     "A site built by your own tool is the best demo there is.",
+     "Document the folder structure and template syntax with examples."
+    ],
+    "hintsAr": [
+     "موقع مبني بأداتك أنت هو أفضل عرض ممكن.",
+     "وثّق بنية المجلدات وصيغة القوالب بأمثلة."
+    ],
+    "key": "ts-static-site-generator-finish"
+   }
+  ]
+ }
+]
