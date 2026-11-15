@@ -315,6 +315,11 @@ export const en = {
     allSkills: 'All skills', allStatuses: 'All statuses', allPhases: 'All phases', allPriorities: 'All priorities', allKnowledge: 'Any knowledge level',
     empty: 'No topics match these filters.',
   },
+  places: {
+    projects: { name: 'Main Projects', what: 'four portfolio projects tied to the roadmap phases.', link: 'Main Projects: your portfolio' },
+    library: { name: 'Project library', what: 'extra step-by-step projects for every skill, at your own pace.', link: 'Project library: extra projects' },
+    practice: { name: 'Practice Lab', what: 'short exercises and challenges that check your code in the browser.', link: 'Practice Lab: quick exercises' },
+  },
   guides: {
     title: 'Project library',
     subtitle: 'Build real projects at your own pace. Every skill has simple, medium and advanced projects, each with step-by-step instructions and hints.',

@@ -21,13 +21,15 @@ function readOpenGroups(): ReadonlySet<string> {
 }
 
 /** The Project library: every guided project, grouped by skill, filtered by skill, level and text. */
+import { ProjectPlacesComponent } from '../../shared/project-places.component';
 @Component({
   selector: 'app-guides-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './guides.css',
-  imports: [RouterLink, IconComponent, TranslatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent, ProgressBarComponent],
+  imports: [ProjectPlacesComponent, RouterLink, IconComponent, TranslatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent, ProgressBarComponent],
   template: `
     <app-page-header [title]="'guides.title' | t" [subtitle]="'guides.subtitle' | t" />
+    <app-project-places current="library" />
 
     <div class="card guide-filters" data-tour="guides-filters">
       <label class="sr-only" for="guide-search">{{ 'guides.search' | t }}</label>

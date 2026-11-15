@@ -6,13 +6,15 @@ import { createLoader } from '../../core/loader';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, PageHeaderComponent, ProgressRingComponent, SkeletonComponent } from '../../shared/ui.components';
 
+import { ProjectPlacesComponent } from '../../shared/project-places.component';
 @Component({
   selector: 'app-projects-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, PageHeaderComponent,
+  imports: [ProjectPlacesComponent, RouterLink, IconComponent, TranslatePipe, LocalizePipe, PageHeaderComponent,
     ProgressRingComponent, SkeletonComponent, ErrorStateComponent],
   template: `
     <app-page-header [title]="'projects.title' | t" [subtitle]="'projects.subtitle' | t" />
+    <app-project-places current="projects" />
     @if (data.initialLoading()) {
       <div class="grid grid-2">@for (i of [1, 2, 3, 4]; track i) { <div class="card"><app-skeleton [rows]="5" /></div> }</div>
     } @else if (data.error()) {
