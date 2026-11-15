@@ -335,4 +335,24 @@ public class SkillCalculatorTests
         Assert.Equal(5.0 / total, Rules.EvidenceWeights[EvidenceKind.Passive] / total);
         Assert.Equal(40.0 / total, Rules.EvidenceWeights[EvidenceKind.Project] / total);
     }
+
+    [Fact]
+    public void A_finished_library_project_adds_xp_only_and_a_repository_makes_it_evidenced()
+    {
+        var plain = _calc.Calculate(Snapshot(), Now);
+        var self = _calc.Calculate(Snapshot() with { GuidedProjects = [new(7, Difficulty.Intermediate, "P", "P", Now, false)] }, Now);
+        var built = _calc.Calculate(Snapshot() with { GuidedProjects = [new(7, Difficulty.Intermediate, "P", "P", Now, true)] }, Now);
+
+        var o = Opp(built, "guided-project:7");
+        Assert.Equal(XpActivity.GuidedProjectCompleted, o.Activity);
+        Assert.Equal(VerificationTier.Evidenced, o.Verification);
+        Assert.Equal(80, o.MaxPoints);
+        Assert.Empty(o.Categories);
+        Assert.Equal(VerificationTier.SelfReported, Opp(self, "guided-project:7").Verification);
+        Assert.True(self.Xp > plain.Xp);
+        Assert.True(built.Xp >= self.Xp);
+        // Optional practice must not change anyone's percentages.
+        Assert.Equal(plain.Overall, built.Overall);
+        Assert.Equal(plain.Categories.Select(c => c.MaxPoints), built.Categories.Select(c => c.MaxPoints));
+    }
 }

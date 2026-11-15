@@ -78,6 +78,7 @@ public sealed class SkillCalculator(SkillRules rules)
         opportunities.AddRange(ProjectOpportunities(s, topics, categoryOf));
         opportunities.AddRange(DiscussionOpportunities(s));
         opportunities.AddRange(ReviewGivenOpportunities(s));
+        opportunities.AddRange(GuidedProjectOpportunities(s));
         opportunities = ApplyDailyCap(opportunities);
 
         var categories = rules.Categories
@@ -350,6 +351,22 @@ public sealed class SkillCalculator(SkillRules rules)
             yield return new Opportunity($"review-given:{r.RequestId}", XpActivity.ProjectReviewGiven, EvidenceKind.Quality,
                 VerificationTier.Evidenced, Pts(p.PeerReviewGiven, VerificationTier.Evidenced), p.PeerReviewGiven, [], [],
                 r.At, r.ProjectTitleEn, r.ProjectTitleAr, null);
+    }
+
+    /// <summary>
+    /// Finished Project library projects add XP only, like accepted answers: they are optional extra practice, so
+    /// counting them in competency or technology scores would raise the available points for everyone and lower
+    /// every learner's percentages. A repository link makes the work inspectable (Evidenced).
+    /// </summary>
+    private IEnumerable<Opportunity> GuidedProjectOpportunities(SkillSnapshot s)
+    {
+        foreach (var g in s.GuidedProjects ?? [])
+        {
+            var max = rules.Points.GuidedProject.GetValueOrDefault(g.Level);
+            var tier = g.HasRepository ? VerificationTier.Evidenced : VerificationTier.SelfReported;
+            yield return new Opportunity($"guided-project:{g.Id}", XpActivity.GuidedProjectCompleted, EvidenceKind.Project, tier,
+                Pts(max, tier), max, [], [], g.CompletedAt, g.TitleEn, g.TitleAr, null);
+        }
     }
 
     /// <summary>Limits self-reported points per day, so ticking a whole phase at once can't flood the score.</summary>

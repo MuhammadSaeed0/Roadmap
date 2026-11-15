@@ -176,6 +176,10 @@
     ],
     "key": "pro-project-docs-finish"
    }
+  ],
+  "topics": [
+   "pro-documentation",
+   "git-readme"
   ]
  },
  {
@@ -357,6 +361,10 @@
     ],
     "key": "pro-job-ready-profile-finish"
    }
+  ],
+  "topics": [
+   "git-portfolio-hygiene",
+   "pro-documentation"
   ]
  },
  {
@@ -536,6 +544,11 @@
     ],
     "key": "pro-open-source-finish"
    }
+  ],
+  "topics": [
+   "pro-reading-codebases",
+   "pro-code-review",
+   "git-pull-requests"
   ]
  },
  {
@@ -719,6 +732,11 @@
     ],
     "key": "pro-agile-sprint-finish"
    }
+  ],
+  "topics": [
+   "pro-breaking-down-features",
+   "pro-requirements",
+   "pro-agile-scrum"
   ]
  },
  {
@@ -917,6 +935,11 @@
     ],
     "key": "pro-design-doc-finish"
    }
+  ],
+  "topics": [
+   "pro-requirements",
+   "arch-clean-architecture",
+   "pro-performance"
   ]
  },
  {
@@ -1115,6 +1138,10 @@
     ],
     "key": "pro-interview-sprint-finish"
    }
+  ],
+  "topics": [
+   "pro-debugging",
+   "pro-breaking-down-features"
   ]
  }
 ]

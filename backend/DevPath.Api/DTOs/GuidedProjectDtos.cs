@@ -22,6 +22,16 @@ public record GuidedProjectDetailDto(
     IReadOnlyList<string> StretchEn, IReadOnlyList<string> StretchAr,
     IReadOnlyList<GuidedStepDto> Steps,
     /// <summary>The other projects of the same skill, easiest first, so the learner can move up a level.</summary>
-    IReadOnlyList<GuidedProjectSummaryDto> SameSkill);
+    IReadOnlyList<GuidedProjectSummaryDto> SameSkill,
+    /// <summary>The learner's repository for this project, once they built it.</summary>
+    string? RepositoryUrl = null);
+
+/// <summary>A library project suggested on a topic page because it practises that topic.</summary>
+public record GuidedProjectRefDto(int Id, SkillArea Skill, Difficulty Level, string TitleEn, string TitleAr, int StepCount, int DoneSteps);
+
+/// <summary>The library project the learner is working on, with the step to do next.</summary>
+public record CurrentGuidedProjectDto(
+    int Id, SkillArea Skill, Difficulty Level, string TitleEn, string TitleAr, int StepCount, int DoneSteps,
+    string NextStepTitleEn, string NextStepTitleAr);
 
 public record GuidedStepUpdate(bool Done);

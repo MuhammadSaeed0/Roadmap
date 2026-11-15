@@ -58,7 +58,7 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
             await SyncProjectTaskVideosAsync(content.TaskVideos, ct);
             await SyncQuizzesAsync(content.Quizzes, topics, ct);
             await SyncTutorialsAsync(content.Tutorials, topics, ct);
-            await SyncGuidedProjectsAsync(content.GuidedProjects, ct);
+            await SyncGuidedProjectsAsync(content.GuidedProjects, topics, ct);
             await SyncMarketDemandAsync(content.MarketDemand, topics, ct);
             await SeedLearningPathsAsync(content.LearningPaths, phases, ct);
 
@@ -451,7 +451,7 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
     }
 
     /// <summary>Project library entries and their steps are synchronised by key; anything that leaves the seed files is removed.</summary>
-    private async Task SyncGuidedProjectsAsync(List<GuidedProjectSeed> seeds, CancellationToken ct)
+    private async Task SyncGuidedProjectsAsync(List<GuidedProjectSeed> seeds, Dictionary<string, Topic> topics, CancellationToken ct)
     {
         var projects = await db.GuidedProjects.ToDictionaryAsync(p => p.Key, ct);
         var steps = await db.GuidedProjectSteps.ToDictionaryAsync(s => s.Key, ct);
@@ -507,6 +507,15 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
         db.GuidedProjectSteps.RemoveRange(steps.Values.Where(s => !stepKeys.Contains(s.Key)));
         var projectKeys = seeds.Select(p => p.Key).ToHashSet();
         db.GuidedProjects.RemoveRange(projects.Values.Where(p => !projectKeys.Contains(p.Key)));
+        await db.SaveChangesAsync(ct);
+
+        // Topic links, now that every project has an id.
+        var ids = await db.GuidedProjects.ToDictionaryAsync(p => p.Key, p => p.Id, ct);
+        var wanted = seeds.SelectMany(s => (s.Topics ?? []).Select(slug => (ProjectId: ids[s.Key], TopicId: topics[slug].Id))).ToHashSet();
+        var links = await db.GuidedProjectTopics.ToListAsync(ct);
+        db.GuidedProjectTopics.RemoveRange(links.Where(l => !wanted.Contains((l.ProjectId, l.TopicId))));
+        var have = links.Select(l => (l.ProjectId, l.TopicId)).ToHashSet();
+        db.GuidedProjectTopics.AddRange(wanted.Where(w => !have.Contains(w)).Select(w => new GuidedProjectTopic { ProjectId = w.ProjectId, TopicId = w.TopicId }));
         await db.SaveChangesAsync(ct);
     }
 
@@ -754,6 +763,7 @@ public class SeedContent
             if (p.Level is not (Difficulty.Beginner or Difficulty.Intermediate or Difficulty.Advanced))
                 errors.Add($"Guided project '{p.Key}' must be Beginner, Intermediate or Advanced");
             if (p.Steps.Count < 3) errors.Add($"Guided project '{p.Key}' needs at least three steps");
+            foreach (var slug in p.Topics ?? []) Ref(slug, $"Guided project '{p.Key}'");
             if (string.IsNullOrWhiteSpace(p.TitleAr) || string.IsNullOrWhiteSpace(p.SummaryEn) || string.IsNullOrWhiteSpace(p.SummaryAr))
                 errors.Add($"Guided project '{p.Key}' needs a title and a summary in both languages");
             foreach (var (en, ar, what) in new[] { (p.GoalsEn, p.GoalsAr, "goals"), (p.RequirementsEn, p.RequirementsAr, "requirements"),

@@ -176,6 +176,11 @@
     ],
     "key": "fs-guestbook-finish"
    }
+  ],
+  "topics": [
+   "fs-connect-angular-api",
+   "fs-cors",
+   "fs-form-validation"
   ]
  },
  {
@@ -357,6 +362,11 @@
     ],
     "key": "fs-event-rsvp-finish"
    }
+  ],
+  "topics": [
+   "fs-crud-workflows",
+   "fs-api-contracts",
+   "fs-error-handling"
   ]
  },
  {
@@ -570,6 +580,12 @@
     ],
     "key": "fs-blog-platform-finish"
    }
+  ],
+  "topics": [
+   "fs-auth-flow",
+   "fs-crud-workflows",
+   "fs-pagination",
+   "fs-search-filtering"
   ]
  },
  {
@@ -768,6 +784,11 @@
     ],
     "key": "fs-file-share-finish"
    }
+  ],
+  "topics": [
+   "fs-loading-states",
+   "fs-error-handling",
+   "fs-auth-flow"
   ]
  },
  {
@@ -996,6 +1017,12 @@
     ],
     "key": "fs-ecommerce-finish"
    }
+  ],
+  "topics": [
+   "fs-crud-workflows",
+   "fs-auth-flow",
+   "fs-concurrent-updates",
+   "fs-dto-mapping"
   ]
  },
  {
@@ -1209,6 +1236,11 @@
     ],
     "key": "fs-collab-board-finish"
    }
+  ],
+  "topics": [
+   "fs-concurrent-updates",
+   "fs-api-contracts",
+   "fs-auth-flow"
   ]
  }
 ]

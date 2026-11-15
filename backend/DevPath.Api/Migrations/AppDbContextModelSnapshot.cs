@@ -569,6 +569,30 @@ namespace DevPath.Api.Migrations
                     b.ToTable("GuidedProjects");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.GuidedProjectRepository", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("UserId", "ProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("GuidedProjectRepositories");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.GuidedProjectStep", b =>
                 {
                     b.Property<int>("Id")
@@ -629,6 +653,21 @@ namespace DevPath.Api.Migrations
                     b.HasIndex("ProjectId", "Order");
 
                     b.ToTable("GuidedProjectSteps");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.GuidedProjectTopic", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProjectId", "TopicId");
+
+                    b.HasIndex("TopicId");
+
+                    b.ToTable("GuidedProjectTopics");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.GuidedStepProgress", b =>
@@ -2850,6 +2889,23 @@ namespace DevPath.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.GuidedProjectRepository", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.GuidedProject", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.GuidedProjectStep", b =>
                 {
                     b.HasOne("DevPath.Api.Models.GuidedProject", "Project")
@@ -2859,6 +2915,25 @@ namespace DevPath.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.GuidedProjectTopic", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.GuidedProject", "Project")
+                        .WithMany("TopicLinks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.Topic", "Topic")
+                        .WithMany()
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("Topic");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.GuidedStepProgress", b =>
@@ -3550,6 +3625,8 @@ namespace DevPath.Api.Migrations
             modelBuilder.Entity("DevPath.Api.Models.GuidedProject", b =>
                 {
                     b.Navigation("Steps");
+
+                    b.Navigation("TopicLinks");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.GuidedProjectStep", b =>

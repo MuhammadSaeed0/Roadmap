@@ -39,6 +39,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<GuidedProject> GuidedProjects => Set<GuidedProject>();
     public DbSet<GuidedProjectStep> GuidedProjectSteps => Set<GuidedProjectStep>();
     public DbSet<GuidedStepProgress> GuidedStepProgress => Set<GuidedStepProgress>();
+    public DbSet<GuidedProjectTopic> GuidedProjectTopics => Set<GuidedProjectTopic>();
+    public DbSet<GuidedProjectRepository> GuidedProjectRepositories => Set<GuidedProjectRepository>();
 
     // User data
     public DbSet<TopicProgress> TopicProgress => Set<TopicProgress>();
@@ -478,6 +480,22 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.Property(x => x.TitleAr).HasMaxLength(200);
             e.Property(x => x.CodeLanguage).HasMaxLength(20);
             e.HasOne(x => x.Project).WithMany(p => p.Steps).HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<GuidedProjectTopic>(e =>
+        {
+            e.HasKey(x => new { x.ProjectId, x.TopicId });
+            e.HasIndex(x => x.TopicId);
+            e.HasOne(x => x.Project).WithMany(p => p.TopicLinks).HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<GuidedProjectRepository>(e =>
+        {
+            OwnedByUser(e);
+            e.HasKey(x => new { x.UserId, x.ProjectId });
+            e.Property(x => x.Url).HasMaxLength(500);
+            e.HasOne(x => x.Project).WithMany().HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Cascade);
         });
 
         b.Entity<GuidedStepProgress>(e =>

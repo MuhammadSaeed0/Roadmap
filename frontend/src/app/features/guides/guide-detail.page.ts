@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { ApiError } from '../../core/api-error';
@@ -13,12 +14,14 @@ import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
 import { lessonBlocks } from '../topics/topic-tutorial.component';
 
+const URL_PATTERN = /^https?:\/\/\S+$/i;
+
 /** One guided project: the brief, the steps with hints revealed one at a time, and the learner's progress. */
 @Component({
   selector: 'app-guide-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './guides.css',
-  imports: [RouterLink, IconComponent, TranslatePipe, CodeBlockComponent, SkeletonComponent, ErrorStateComponent, ProgressBarComponent],
+  imports: [RouterLink, ReactiveFormsModule, IconComponent, TranslatePipe, CodeBlockComponent, SkeletonComponent, ErrorStateComponent, ProgressBarComponent],
   template: `
     @if (data.initialLoading() || (data.loading() && !data.value())) {
       <div class="card"><app-skeleton [rows]="2" [height]="30" /></div>
@@ -161,6 +164,25 @@ import { lessonBlocks } from '../topics/topic-tutorial.component';
             }
           </section>
 
+          @if (!nextStep()) {
+            <section class="card" aria-labelledby="grepo-h" data-tour="guide-repo">
+              <h2 id="grepo-h" class="side-title"><app-icon name="branch" [size]="16" /> {{ 'guides.repoTitle' | t }}</h2>
+              <p class="small muted">{{ 'guides.repoHelp' | t }}</p>
+              <form class="stack" (submit)="$event.preventDefault(); saveRepo(p)" novalidate>
+                <label for="grepo" class="sr-only">{{ 'guides.repoTitle' | t }}</label>
+                <input id="grepo" class="input" type="url" dir="ltr" [formControl]="repoUrl" [placeholder]="'projects.repoPlaceholder' | t"
+                       [attr.aria-invalid]="repoUrl.touched && repoUrl.invalid" />
+                @if (repoUrl.touched && repoUrl.hasError('pattern')) { <small class="field-error">{{ 'validation.url' | t }}</small> }
+                <div class="row-gap">
+                  <button type="submit" class="btn btn-secondary btn-sm" [disabled]="savingRepo()">{{ 'common.save' | t }}</button>
+                  @if (repoUrl.value && repoUrl.valid) {
+                    <a class="btn btn-ghost btn-sm" [href]="repoUrl.value" target="_blank" rel="noopener noreferrer">{{ 'common.openLink' | t }} <app-icon name="external" [size]="13" /></a>
+                  }
+                </div>
+              </form>
+            </section>
+          }
+
           @if (p.sameSkill.length > 0) {
             <section class="card" aria-labelledby="same-h">
               <h2 id="same-h" class="side-title">{{ 'guides.sameSkill' | t }}</h2>
@@ -194,6 +216,8 @@ export default class GuideDetailPage {
   protected readonly open = signal<ReadonlySet<number>>(new Set());
   protected readonly revealed = signal<Record<number, number>>({});
   protected readonly busy = signal<number | null>(null);
+  protected readonly savingRepo = signal(false);
+  protected readonly repoUrl = new FormControl('', { nonNullable: true, validators: [Validators.maxLength(500), Validators.pattern(URL_PATTERN)] });
 
   protected readonly doneCount = computed(() => this.data.value()?.steps.filter(s => s.done).length ?? 0);
   protected readonly percent = computed(() => {
@@ -208,6 +232,7 @@ export default class GuideDetailPage {
       untracked(async () => {
         this.revealed.set({});
         await this.data.reload();
+        this.repoUrl.setValue(this.data.value()?.repositoryUrl ?? '');
         // Open the first step that isn't done yet, so the learner continues where they stopped.
         const next = this.nextStep();
         this.open.set(new Set(next ? [next.id] : []));
@@ -241,6 +266,22 @@ export default class GuideDetailPage {
   protected goTo(step: GuidedStep): void {
     this.open.update(o => new Set([...o, step.id]));
     setTimeout(() => document.getElementById('step-' + step.order)?.scrollIntoView?.({ behavior: 'smooth', block: 'start' }));
+  }
+
+  /** Saves the repository link (an empty field removes it). */
+  protected async saveRepo(p: GuidedProjectDetail): Promise<void> {
+    if (this.repoUrl.invalid) { this.repoUrl.markAsTouched(); return; }
+    this.savingRepo.set(true);
+    try {
+      const url = this.repoUrl.value.trim() || null;
+      await this.api.setGuidedRepository(p.id, url);
+      this.data.update(v => ({ ...v, repositoryUrl: url }));
+      this.toast.success(this.i18n.t('guides.repoSaved'));
+    } catch (e) {
+      this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
+    } finally {
+      this.savingRepo.set(false);
+    }
   }
 
   /** Ticks a step on or off. When a step is done, it closes and the next open step opens. */

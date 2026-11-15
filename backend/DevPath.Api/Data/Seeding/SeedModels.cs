@@ -93,7 +93,7 @@ public record GuidedProjectSeed(
     string TitleEn, string TitleAr, string SummaryEn, string SummaryAr, string TechStack,
     List<string> GoalsEn, List<string> GoalsAr, List<string> RequirementsEn, List<string> RequirementsAr,
     List<string> AcceptanceEn, List<string> AcceptanceAr, List<string> StretchEn, List<string> StretchAr,
-    List<GuidedStepSeed> Steps);
+    List<GuidedStepSeed> Steps, List<string>? Topics = null);
 
 public record GuidedStepSeed(
     string Key, string TitleEn, string TitleAr, string BodyEn, string BodyAr,

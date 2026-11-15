@@ -65,7 +65,9 @@ public record TopicDetailDto(
     IReadOnlyList<InterviewRefDto> InterviewQuestions, IReadOnlyList<ExerciseRefDto> Exercises,
     IReadOnlyList<StudySessionDto> Sessions, int TotalMinutesStudied, int NoteCount, ReviewStateDto? Review,
     IReadOnlyList<string> ObjectivesEn, IReadOnlyList<string> ObjectivesAr, Difficulty? Difficulty,
-    IReadOnlyList<TopicDemandDto> Demand);
+    IReadOnlyList<TopicDemandDto> Demand,
+    /// <summary>Project library projects that practise this topic, easiest first.</summary>
+    IReadOnlyList<GuidedProjectRefDto> GuidedProjects);
 
 /// <summary>Job-market evidence for a topic: in research run Run, Postings of TotalPostings job adverts asked for Technology.</summary>
 public record TopicDemandDto(string Technology, int Postings, int Required, double Share, int TotalPostings, string Run, string PeriodFrom, string PeriodTo);

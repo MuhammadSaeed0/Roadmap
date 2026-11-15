@@ -288,6 +288,7 @@ export const ar: Translations = {
     todayPlan: 'خطة التعلم لليوم', planIntro: 'كم لديك من الوقت اليوم؟', planEmpty: 'لم يتبقَّ شيء للتخطيط.',
     projects: 'تقدم المشاريع', skills: 'نظرة على المهارات', recentActivity: 'النشاط الأخير',
     activePaths: 'مسارات تعلمك',
+    libraryProject: 'مشروعك الحالي من المكتبة', libraryNext: 'الخطوة التالية',
     quickActions: 'إجراءات سريعة', resumeProject: 'استئناف المشروع', startProject: 'ابدأ المشروع', startPractice: 'ابدأ التدريب',
     reviewWeak: 'راجع المواضيع الضعيفة', viewReadiness: 'عرض الجاهزية المهنية',
     streak: 'أيام متتالية: {n}', noStreak: 'ابدأ سلسلة أيام متتالية اليوم', weekMinutes: 'هذا الأسبوع: {n} دقيقة',
@@ -336,12 +337,14 @@ export const ar: Translations = {
     openGroups: 'افتح كل المهارات', closeGroups: 'أغلق كل المهارات',
     allDone: 'أنجزت كل الخطوات. راجع قائمة «يكتمل عندما» مرة أخرى، ثم جرّب التحديات الإضافية.',
     nextStep: 'الخطوة التالية', expandAll: 'افتح كل الخطوات', collapseAll: 'أغلق كل الخطوات',
+    repoTitle: 'مستودعك', repoSaved: 'تم حفظ المستودع',
+    repoHelp: 'اربط المستودع الذي بنيته. الرابط يجعل نقاط هذا المشروع موثّقة، ويضيفه إلى اقتراحات سيرتك الذاتية وملفك العام.',
   },
   topic: {
     whatIsIt: 'ما هو؟', whyMatters: 'لماذا يهم؟', howWorks: 'كيف يعمل؟', realWorld: 'مثال من الواقع',
     practiceTask: 'مهمة تطبيقية', challenge: 'تحدٍّ مستقل', resources: 'مصادر مقترحة',
     prerequisites: 'المتطلبات السابقة', unlocks: 'يفتح المواضيع', relatedProjects: 'مشاريع مرتبطة',
-    interviewQs: 'أسئلة المقابلات', exercises: 'تمارين تدريبية', notes: 'الملاحظات', yourProgress: 'تقدمك',
+    interviewQs: 'أسئلة المقابلات', exercises: 'تمارين تدريبية', guidedProjects: 'تدرّب بمشروع', notes: 'الملاحظات', yourProgress: 'تقدمك',
     status: 'الحالة', knowledge: 'المعرفة السابقة', markComplete: 'تعليم كمكتمل', markInProgress: 'ابدأ',
     markKnown: 'أعرف هذا مسبقًا', reopen: 'إعادة فتح', prereqWarning: 'بعض المتطلبات السابقة لم تكتمل بعد، لكن يمكنك دراسة هذا الموضوع.',
     review: 'المراجعة المتباعدة', addToReview: 'إضافة إلى قائمة المراجعة', inReview: 'ضمن قائمة المراجعة', reviewDue: 'المراجعة مستحقة الآن',
@@ -534,7 +537,7 @@ export const ar: Translations = {
     activities: {
       VideoWatched: 'مشاهدة فيديو', TopicCompleted: 'إكمال موضوع', QuizQuestion: 'إجابة اختبار', QuizLevelPassed: 'اجتياز مستوى اختبار',
       InterviewQuestion: 'سؤال مقابلة', ExerciseCompleted: 'إكمال تمرين', ExerciseQuality: 'جودة تمرين',
-      ProjectTaskCompleted: 'مهمة مشروع', ProjectCompleted: 'إكمال مشروع', ProjectReview: 'مراجعة مشروع', PortfolioItem: 'قائمة ملف الأعمال', DiscussionAnswerAccepted: 'إجابة مقبولة', ProjectReviewGiven: 'مراجعة لمشروع زميل',
+      ProjectTaskCompleted: 'مهمة مشروع', ProjectCompleted: 'إكمال مشروع', ProjectReview: 'مراجعة مشروع', PortfolioItem: 'قائمة ملف الأعمال', DiscussionAnswerAccepted: 'إجابة مقبولة', ProjectReviewGiven: 'مراجعة لمشروع زميل', GuidedProjectCompleted: 'إكمال مشروع من المكتبة',
     },
     req: {
       xp: 'مجموع النقاط', overall: 'الكفاءة الإجمالية', category: 'درجة {category}', projectTasks: 'مهام المشاريع المكتملة',
@@ -592,6 +595,7 @@ export const ar: Translations = {
     notFound: 'الملف غير موجود', notFoundHint: 'هذا الملف غير موجود أو أن صاحبه أبقاه خاصًا.',
     memberSince: 'يتعلّم على مسار المبرمج منذ {date}', xp: 'نقاط الخبرة', topics: 'مواضيع مكتملة', answers: 'إجابات مقبولة',
     reviewed: 'مشاريع روجعت من الأقران', projects: 'المشاريع المكتملة', noProjects: 'لا توجد مشاريع مكتملة بعد.', peerReviewed: 'روجع من الأقران',
+    libraryProjects: 'مكتبة المشاريع',
   },
   reviews: {
     title: 'مراجعات الأقران', subtitle: 'راجع المشاريع التي أنهاها متعلمون آخرون، واطلب مراجعة مشاريعك. مراجعة الأقران تُحتسب أكثر من تقييمك لنفسك.',

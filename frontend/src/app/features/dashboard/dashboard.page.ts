@@ -34,6 +34,8 @@ export default class DashboardPage {
 
   protected readonly data = createLoader(() => this.api.dashboard());
   protected readonly activePaths = createLoader(() => this.api.activePaths());
+  /** The Project library project the learner touched last, if one is unfinished. */
+  protected readonly library = createLoader(() => this.api.currentGuidedProject());
   protected readonly round = Math.round;
   protected readonly planMinutes = signal(60);
   protected readonly plan = createLoader(() => this.api.studyPlan(this.planMinutes()));

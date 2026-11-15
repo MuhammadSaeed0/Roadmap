@@ -180,6 +180,11 @@
     ],
     "key": "aspnet-notes-api-finish"
    }
+  ],
+  "topics": [
+   "api-startup",
+   "api-http-rest",
+   "api-status-codes"
   ]
  },
  {
@@ -361,6 +366,11 @@
     ],
     "key": "aspnet-url-shortener-finish"
    }
+  ],
+  "topics": [
+   "api-http-rest",
+   "api-validation",
+   "api-dependency-injection"
   ]
  },
  {
@@ -559,6 +569,13 @@
     ],
     "key": "aspnet-bookstore-api-finish"
    }
+  ],
+  "topics": [
+   "api-controllers-routing",
+   "api-dtos",
+   "api-validation",
+   "api-pagination",
+   "api-error-handling"
   ]
  },
  {
@@ -757,6 +774,11 @@
     ],
     "key": "aspnet-auth-api-finish"
    }
+  ],
+  "topics": [
+   "api-authentication",
+   "api-authorization",
+   "api-configuration"
   ]
  },
  {
@@ -972,6 +994,11 @@
     ],
     "key": "aspnet-realtime-chat-finish"
    }
+  ],
+  "topics": [
+   "api-authentication",
+   "api-dependency-injection",
+   "api-middleware"
   ]
  },
  {
@@ -1172,6 +1199,12 @@
     ],
     "key": "aspnet-job-queue-finish"
    }
+  ],
+  "topics": [
+   "api-service-lifetimes",
+   "api-logging",
+   "api-error-handling",
+   "cs-cancellation-tokens"
   ]
  }
 ]

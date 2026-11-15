@@ -174,6 +174,12 @@
     ],
     "key": "ef-recipe-book-finish"
    }
+  ],
+  "topics": [
+   "ef-dbcontext",
+   "ef-entities",
+   "ef-migrations",
+   "ef-crud"
   ]
  },
  {
@@ -353,6 +359,11 @@
     ],
     "key": "ef-contacts-finish"
    }
+  ],
+  "topics": [
+   "ef-relationships",
+   "ef-loading",
+   "ef-crud"
   ]
  },
  {
@@ -551,6 +562,11 @@
     ],
     "key": "ef-inventory-finish"
    }
+  ],
+  "topics": [
+   "ef-relationships",
+   "ef-transactions",
+   "ef-concurrency"
   ]
  },
  {
@@ -749,6 +765,12 @@
     ],
     "key": "ef-blog-data-finish"
    }
+  ],
+  "topics": [
+   "ef-loading",
+   "ef-n-plus-one",
+   "ef-query-performance",
+   "ef-generated-sql"
   ]
  },
  {
@@ -962,6 +984,11 @@
     ],
     "key": "ef-multitenant-audit-finish"
    }
+  ],
+  "topics": [
+   "ef-dbcontext",
+   "ef-tracking",
+   "ef-schema-changes"
   ]
  },
  {
@@ -1160,6 +1187,11 @@
     ],
     "key": "ef-event-store-finish"
    }
+  ],
+  "topics": [
+   "ef-transactions",
+   "ef-concurrency",
+   "ef-migrations"
   ]
  }
 ]

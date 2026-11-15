@@ -89,6 +89,27 @@ import { EmptyStateComponent, ProgressBarComponent, SkeletonComponent } from '..
           </ul>
         }
       </section>
+
+      @if (p.libraryProjects.length > 0) {
+        <section class="card">
+          <h2 class="section-title"><app-icon name="layers" /> {{ 'profile.libraryProjects' | t }}</h2>
+          <ul class="rows" role="list">
+            @for (g of p.libraryProjects; track g.id) {
+              <li>
+                <div class="row-between">
+                  <strong>{{ i18n.pick(g.titleEn, g.titleAr) }}</strong>
+                  <span class="badge">{{ 'guides.levels.' + g.level | t }}</span>
+                </div>
+                <span class="tiny muted" dir="ltr">{{ g.techStack }}</span>
+                @if (g.repositoryUrl) {
+                  <a class="small" [href]="g.repositoryUrl" target="_blank" rel="noopener noreferrer nofollow" dir="ltr">
+                    <app-icon name="external" [size]="13" /> {{ g.repositoryUrl }}</a>
+                }
+              </li>
+            }
+          </ul>
+        </section>
+      }
     }
   `,
 })

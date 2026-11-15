@@ -28,6 +28,9 @@ public class GuidedProjectService(AppDbContext db, TimeProvider clock)
         var sameSkill = (await Summaries(db.GuidedProjects.AsNoTracking().Where(x => x.Skill == p.Skill && x.Id != id)).ToListAsync(ct))
             .OrderBy(x => x.Level).ThenBy(x => x.Id).ToList();
 
+        var repository = await db.GuidedProjectRepositories.AsNoTracking()
+            .Where(r => r.ProjectId == id).Select(r => r.Url).FirstOrDefaultAsync(ct);
+
         return new GuidedProjectDetailDto(
             p.Id, p.Key, p.Skill, p.Level, p.EstimatedHours, p.TitleEn, p.TitleAr, p.SummaryEn, p.SummaryAr, p.TechStack,
             Lines(p.GoalsEn), Lines(p.GoalsAr), Lines(p.RequirementsEn), Lines(p.RequirementsAr),
@@ -38,7 +41,7 @@ public class GuidedProjectService(AppDbContext db, TimeProvider clock)
                 return new GuidedStepDto(s.Id, s.Key, s.Order, s.TitleEn, s.TitleAr, s.BodyEn, s.BodyAr, s.Code, s.CodeLanguage,
                     Lines(s.HintsEn), Lines(s.HintsAr), done is not null, done?.CompletedAt);
             }).ToList(),
-            sameSkill);
+            sameSkill, repository);
     }
 
     /// <summary>Marks a step done or not done. Idempotent: setting the state it already has changes nothing.</summary>
@@ -55,6 +58,51 @@ public class GuidedProjectService(AppDbContext db, TimeProvider clock)
         else
             return;
         await db.SaveChangesAsync(ct);
+    }
+
+    /// <summary>Saves or clears the repository link for a library project. A link makes its XP Evidenced.</summary>
+    public async Task SetRepositoryAsync(int projectId, string? url, CancellationToken ct)
+    {
+        if (!await db.GuidedProjects.AnyAsync(p => p.Id == projectId, ct)) throw new NotFoundException("GuidedProject", projectId);
+        var row = await db.GuidedProjectRepositories.SingleOrDefaultAsync(r => r.ProjectId == projectId, ct);
+        var now = clock.GetUtcNow().UtcDateTime;
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            if (row is null) return;
+            db.GuidedProjectRepositories.Remove(row);
+        }
+        else if (row is null)
+            db.GuidedProjectRepositories.Add(new GuidedProjectRepository { ProjectId = projectId, Url = url.Trim(), UpdatedAt = now });
+        else
+        {
+            row.Url = url.Trim();
+            row.UpdatedAt = now;
+        }
+        await db.SaveChangesAsync(ct);
+    }
+
+    /// <summary>
+    /// The unfinished library project where the learner most recently ticked a step, with its next step,
+    /// or null when they have none in progress.
+    /// </summary>
+    public async Task<CurrentGuidedProjectDto?> GetCurrentAsync(CancellationToken ct)
+    {
+        var current = await db.GuidedProjects.AsNoTracking()
+            .Select(p => new
+            {
+                p.Id, p.Skill, p.Level, p.TitleEn, p.TitleAr,
+                Steps = p.Steps.Count,
+                Done = p.Steps.Count(s => s.ProgressRows.Any()),
+                Last = p.Steps.SelectMany(s => s.ProgressRows).Max(r => (DateTime?)r.CompletedAt),
+                Next = p.Steps.Where(s => !s.ProgressRows.Any()).OrderBy(s => s.Order)
+                    .Select(s => new { s.TitleEn, s.TitleAr }).FirstOrDefault(),
+            })
+            .Where(p => p.Last != null && p.Done < p.Steps)
+            .OrderByDescending(p => p.Last).ThenBy(p => p.Id)
+            .FirstOrDefaultAsync(ct);
+        return current is null || current.Next is null ? null : new CurrentGuidedProjectDto(
+            current.Id, current.Skill, current.Level, current.TitleEn, current.TitleAr, current.Steps, current.Done,
+            current.Next.TitleEn, current.Next.TitleAr);
     }
 
     private static IQueryable<GuidedProjectSummaryDto> Summaries(IQueryable<GuidedProject> query) =>

@@ -178,6 +178,10 @@
     ],
     "key": "test-tdd-kata-finish"
    }
+  ],
+  "topics": [
+   "test-unit-csharp",
+   "test-strategy"
   ]
  },
  {
@@ -359,6 +363,11 @@
     ],
     "key": "test-bank-account-finish"
    }
+  ],
+  "topics": [
+   "test-unit-csharp",
+   "test-business-logic",
+   "test-mocking"
   ]
  },
  {
@@ -557,6 +566,10 @@
     ],
     "key": "test-api-integration-finish"
    }
+  ],
+  "topics": [
+   "test-api",
+   "test-integration"
   ]
  },
  {
@@ -755,6 +768,10 @@
     ],
     "key": "test-angular-app-finish"
    }
+  ],
+  "topics": [
+   "test-angular-components",
+   "test-angular-services"
   ]
  },
  {
@@ -953,6 +970,11 @@
     ],
     "key": "test-legacy-refactor-finish"
    }
+  ],
+  "topics": [
+   "test-business-logic",
+   "pro-refactoring",
+   "test-strategy"
   ]
  },
  {
@@ -1149,6 +1171,11 @@
     ],
     "key": "test-quality-gates-finish"
    }
+  ],
+  "topics": [
+   "test-strategy",
+   "test-integration",
+   "pro-performance"
   ]
  }
 ]

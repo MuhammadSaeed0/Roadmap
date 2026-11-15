@@ -132,6 +132,28 @@ public class CvSuggestionService(AppDbContext db)
                 "exercise:" + e.Key, arabic ? e.TitleAr : e.TitleEn, "completed", 1, 1, technologies, description, [], "",
                 (e.LastSubmittedAt ?? e.CompletedAt)?.Year.ToString() ?? "", evidence));
         }
+        // ... and Project library projects with every step done
+        var library = await db.GuidedProjects.AsNoTracking()
+            .Select(p => new
+            {
+                p.Key, p.TitleEn, p.TitleAr, p.SummaryEn, p.SummaryAr, p.TechStack,
+                Steps = p.Steps.Count,
+                Done = p.Steps.Count(s => s.ProgressRows.Any()),
+                Last = p.Steps.SelectMany(s => s.ProgressRows).Max(r => (DateTime?)r.CompletedAt),
+                Repo = db.GuidedProjectRepositories.Where(r => r.ProjectId == p.Id).Select(r => r.Url).FirstOrDefault(),
+            })
+            .Where(p => p.Steps > 0 && p.Done == p.Steps)
+            .ToListAsync(ct);
+        foreach (var g in library)
+        {
+            var evidence = g.Repo is not null
+                ? new CvEvidence("built", "Project library project finished, repository linked", "مشروع من مكتبة المشاريع مكتمل، مع رابط المستودع")
+                : new CvEvidence("practiced", "Project library project finished (no repository linked yet)", "مشروع من مكتبة المشاريع مكتمل (لم يُربط مستودع بعد)");
+            projectSuggestions.Add(new CvProjectSuggestion(
+                "guided:" + g.Key, arabic ? g.TitleAr : g.TitleEn, "completed", g.Done, g.Steps,
+                g.TechStack.Split('·', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries),
+                arabic ? g.SummaryAr : g.SummaryEn, [], g.Repo ?? "", g.Last?.Year.ToString() ?? "", evidence));
+        }
         projectSuggestions = projectSuggestions.OrderBy(p => Array.IndexOf(Levels, p.Evidence.Level)).ToList();
 
         // ---- coursework: only phases whose core topics are all completed

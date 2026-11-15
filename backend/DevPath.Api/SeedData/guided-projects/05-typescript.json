@@ -176,6 +176,12 @@
     ],
     "key": "ts-quiz-game-finish"
    }
+  ],
+  "topics": [
+   "web-html-css",
+   "web-javascript-essentials",
+   "ts-types-inference",
+   "ts-modules"
   ]
  },
  {
@@ -357,6 +363,11 @@
     ],
     "key": "ts-pomodoro-finish"
    }
+  ],
+  "topics": [
+   "ts-types-inference",
+   "ts-interfaces-aliases",
+   "ts-functions"
   ]
  },
  {
@@ -542,6 +553,12 @@
     ],
     "key": "ts-weather-dashboard-finish"
    }
+  ],
+  "topics": [
+   "ts-promises",
+   "ts-async-await",
+   "ts-narrowing",
+   "ts-error-handling"
   ]
  },
  {
@@ -740,6 +757,11 @@
     ],
     "key": "ts-kanban-finish"
    }
+  ],
+  "topics": [
+   "ts-interfaces-aliases",
+   "ts-narrowing",
+   "ts-classes"
   ]
  },
  {
@@ -953,6 +975,11 @@
     ],
     "key": "ts-schema-validator-finish"
    }
+  ],
+  "topics": [
+   "ts-generics",
+   "ts-narrowing",
+   "ts-modules"
   ]
  },
  {
@@ -1151,6 +1178,11 @@
     ],
     "key": "ts-static-site-generator-finish"
    }
+  ],
+  "topics": [
+   "ts-async-await",
+   "ts-modules",
+   "ts-error-handling"
   ]
  }
 ]

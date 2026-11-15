@@ -82,6 +82,7 @@ export const content: TourContent = {
     'dashboard-plan': { title: 'Today’s plan', body: 'Choose how much time you have (30, 60 or 120 minutes) and get a plan that mixes learning, review, practice and project work to fit it.' },
     'dashboard-skills': { title: 'Skills overview', body: 'Progress for each skill separately, from C# to Angular and testing, so you can see which areas are behind.' },
     'dashboard-projects': { title: 'Main Projects', body: 'The four practical projects and how far along each one is. Click one to open it.' },
+    'dashboard-library': { title: 'Your library project', body: 'The Project library project you worked on last, with the step to do next.' },
     'dashboard-activity': { title: 'Recent activity', body: 'What you did lately: completed topics, study sessions, practice and project tasks, with links back to each. It appears once you have some activity.' },
     'dashboard-actions': { title: 'Quick actions', body: 'Shortcuts to resume your active project, start a practice exercise, review weak topics or check your career readiness.' },
 
@@ -97,6 +98,7 @@ export const content: TourContent = {
     'topic-progress': { title: 'Your progress', body: 'Set the status (start, complete or already known), what you already knew, and your confidence from 0 to 5. Add the topic to spaced review, and see your study sessions for it.' },
     'topic-notes': { title: 'Your notes', body: 'Notes you wrote for this topic. Add one here and it’s linked to the topic automatically.' },
     'topic-related': { title: 'Related', body: 'Prerequisites to learn first, the topics this one unlocks, and the projects and interview questions that use it. The previous and next topics on the roadmap are under “On this page” and at the end of the page.' },
+    'topic-guided': { title: 'Practise with a project', body: 'Project library projects that use this topic, easiest first.' },
 
     'projects-list': { title: 'Your projects', body: 'Each card shows the tech stack, overall progress, tasks done, the current milestone, change requests and the portfolio checklist. A project is meant to start after the roadmap phase named on its card.' },
     'project-hero': { title: 'Project overview', body: 'What you’re building, the tech stack, overall progress and the phase it follows.' },
@@ -188,6 +190,7 @@ export const content: TourContent = {
     'guide-overview': { title: 'Before you start', body: 'What you will learn, what the finished app must do, and the checks that tell you it is done. Read them once before step 1.' },
     'guide-steps': { title: 'Step by step', body: 'Do the steps in order. Each one explains what to do; reveal hints one at a time only when you are stuck, then tick the step off.' },
     'guide-progress': { title: 'Your progress', body: 'How many steps you have done, and more projects in the same skill so you can move up a level.' },
+    'guide-repo': { title: 'Your repository', body: 'When every step is done, link your repository. It makes the XP verified and adds the project to your CV suggestions and public profile.' },
   },
   tips: [
     'Press ? for quick help on the current page.',

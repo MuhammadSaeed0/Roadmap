@@ -263,6 +263,18 @@ public class SkillAssessmentService(AppDbContext db, SkillRules rules, TimeProvi
             .Select(r => new ReviewGivenFact(r.Id, r.Project.TitleEn, r.Project.TitleAr, r.CompletedAt!.Value))
             .ToListAsync(ct);
 
+        // Library projects with every step done (step progress is filtered to the signed-in learner).
+        var guided = await db.GuidedProjects.AsNoTracking()
+            .Select(p => new
+            {
+                p.Id, p.Level, p.TitleEn, p.TitleAr, Steps = p.Steps.Count,
+                Done = p.Steps.Count(st => st.ProgressRows.Any()),
+                Last = p.Steps.SelectMany(st => st.ProgressRows).Max(r => (DateTime?)r.CompletedAt),
+                Repo = db.GuidedProjectRepositories.Any(r => r.ProjectId == p.Id),
+            })
+            .Where(p => p.Steps > 0 && p.Done == p.Steps)
+            .ToListAsync(ct);
+
         return new SkillSnapshot(
             topics, watched, curated, notes, questions, answers, attempts,
             interviews.Select(q => new InterviewFact(q.Id, q.TopicId, q.Category, q.Difficulty, q.Rating, q.At)).ToList(),
@@ -277,6 +289,7 @@ public class SkillAssessmentService(AppDbContext db, SkillRules rules, TimeProvi
                 p.PortfolioDone, checklistTotal,
                 latestPeerReview.TryGetValue(p.Id, out var peer) ? new ProjectReviewFact(ParseScores(peer.Scores ?? "{}"), VerificationTier.Reviewed, peer.CompletedAt!.Value)
                 : reviews.TryGetValue(p.Id, out var r) ? new ProjectReviewFact(ParseScores(r.Scores), r.Verification, r.UpdatedAt) : null)).ToList(),
-            studyMinutes, accepted, given);
+            studyMinutes, accepted, given,
+            guided.Select(g => new GuidedProjectFact(g.Id, g.Level, g.TitleEn, g.TitleAr, g.Last, g.Repo)).ToList());
     }
 }

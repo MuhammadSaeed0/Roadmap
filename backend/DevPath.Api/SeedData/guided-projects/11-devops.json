@@ -182,6 +182,10 @@
     ],
     "key": "devops-docker-compose-finish"
    }
+  ],
+  "topics": [
+   "devops-docker",
+   "api-configuration"
   ]
  },
  {
@@ -363,6 +367,10 @@
     ],
     "key": "devops-ci-pipeline-finish"
    }
+  ],
+  "topics": [
+   "devops-ci-cd",
+   "git-pull-requests"
   ]
  },
  {
@@ -546,6 +554,11 @@
     ],
     "key": "devops-continuous-deployment-finish"
    }
+  ],
+  "topics": [
+   "devops-ci-cd",
+   "cloud-azure-app-service",
+   "pro-deployment"
   ]
  },
  {
@@ -744,6 +757,10 @@
     ],
     "key": "devops-observability-finish"
    }
+  ],
+  "topics": [
+   "api-logging",
+   "pro-logging-diagnostics"
   ]
  },
  {
@@ -942,6 +959,10 @@
     ],
     "key": "devops-infra-as-code-finish"
    }
+  ],
+  "topics": [
+   "cloud-fundamentals",
+   "cloud-azure-app-service"
   ]
  },
  {
@@ -1155,6 +1176,10 @@
     ],
     "key": "devops-kubernetes-finish"
    }
+  ],
+  "topics": [
+   "devops-kubernetes",
+   "devops-docker"
   ]
  }
 ]

@@ -13,11 +13,11 @@ export const SECTION_IDS = [
   'nav', 'menu', 'search', 'quick-add', 'prefs', 'account', 'help',
   // Dashboard
   'dashboard-hero', 'dashboard-today', 'dashboard-continue', 'dashboard-plan', 'dashboard-skills',
-  'dashboard-projects', 'dashboard-activity', 'dashboard-actions',
+  'dashboard-projects', 'dashboard-library', 'dashboard-activity', 'dashboard-actions',
   // Roadmap and library
   'roadmap-header', 'roadmap-phases', 'library-filters', 'library-list',
   // Topic page
-  'topic-header', 'topic-content', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-notes', 'topic-related',
+  'topic-header', 'topic-content', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-notes', 'topic-related', 'topic-guided',
   // Projects
   'projects-list', 'project-hero', 'project-milestones', 'project-changes', 'project-portfolio', 'project-repo',
   // Practice
@@ -42,7 +42,7 @@ export const SECTION_IDS = [
   'paths-builtin', 'paths-mine', 'path-hero', 'path-topics', 'path-details', 'path-pick',
   'reviews-tabs', 'reviews-list',
   // Project library
-  'guides-filters', 'guides-list', 'guide-overview', 'guide-steps', 'guide-progress',
+  'guides-filters', 'guides-list', 'guide-overview', 'guide-steps', 'guide-progress', 'guide-repo',
 ] as const;
 export type SectionId = (typeof SECTION_IDS)[number];
 
@@ -57,9 +57,9 @@ export type HelpId = (typeof HELP_IDS)[number];
 /** The sections each page guide walks through, in reading order. */
 export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   dashboard: ['dashboard-hero', 'dashboard-today', 'dashboard-continue', 'dashboard-plan', 'dashboard-skills',
-    'dashboard-projects', 'dashboard-activity', 'dashboard-actions'],
+    'dashboard-projects', 'dashboard-library', 'dashboard-activity', 'dashboard-actions'],
   roadmap: ['roadmap-header', 'roadmap-phases', 'library-filters', 'library-list'],
-  topic: ['topic-header', 'topic-content', 'topic-tutorial', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-notes', 'topic-related'],
+  topic: ['topic-header', 'topic-content', 'topic-tutorial', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-guided', 'topic-notes', 'topic-related'],
   projects: ['projects-list'],
   project: ['project-hero', 'project-milestones', 'project-changes', 'project-portfolio', 'project-repo', 'project-review'],
   practice: ['practice-types', 'practice-filters', 'practice-list', 'challenges-list'],
@@ -84,7 +84,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   'path-create': ['path-details', 'path-pick'],
   reviews: ['reviews-tabs', 'reviews-list'],
   guides: ['guides-filters', 'guides-list'],
-  guide: ['guide-overview', 'guide-steps', 'guide-progress'],
+  guide: ['guide-overview', 'guide-steps', 'guide-progress', 'guide-repo'],
 };
 
 export interface TourContext { isAdmin: boolean; }

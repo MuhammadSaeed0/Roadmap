@@ -23,6 +23,7 @@
     "discussionAcceptedCap": 20,
     "peerReviewGiven": 30,
     "peerReviewGivenCap": 20,
+    "guidedProject": { "Beginner": 40, "Intermediate": 80, "Advanced": 150 },
     "selfReportedDailyCap": 600
   },
 

@@ -125,6 +125,12 @@ public class TopicService(
             .ToListAsync(ct))
             .OrderBy(e => e.Type).ThenBy(e => e.Id).ToList();
 
+        var guided = (await db.GuidedProjectTopics.AsNoTracking().Where(l => l.TopicId == id)
+            .Select(l => new GuidedProjectRefDto(l.Project.Id, l.Project.Skill, l.Project.Level, l.Project.TitleEn, l.Project.TitleAr,
+                l.Project.Steps.Count, l.Project.Steps.Count(st => st.ProgressRows.Any())))
+            .ToListAsync(ct))
+            .OrderBy(g => g.Level).ThenBy(g => g.Id).ToList();
+
         var sessions = await db.StudySessions.AsNoTracking()
             .Where(s => s.TopicId == id)
             .OrderByDescending(s => s.SessionDate).ThenByDescending(s => s.Id)
@@ -155,7 +161,8 @@ public class TopicService(
             Lines(topic.ObjectivesEn), Lines(topic.ObjectivesAr), topic.Difficulty,
             topic.Demand.OrderByDescending(d => d.Share).ThenBy(d => d.Technology)
                 .Select(d => new TopicDemandDto(d.Technology, d.Postings, d.Required, d.Share, d.TotalPostings, d.Run, d.PeriodFrom, d.PeriodTo))
-                .ToList());
+                .ToList(),
+            guided);
 
         static IReadOnlyList<string> Lines(string text) => text.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
     }
