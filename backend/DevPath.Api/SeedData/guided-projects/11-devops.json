@@ -1,0 +1,1160 @@
+[
+ {
+  "key": "devops-docker-compose",
+  "skill": "DevOps",
+  "level": "Beginner",
+  "hours": 5,
+  "titleEn": "Containerise an API and its database",
+  "titleAr": "ضع الـ API وقاعدة بياناته في حاويات",
+  "summaryEn": "Package an ASP.NET Core API in a Docker image and run it with SQL Server through Docker Compose, so anyone can start the whole system with one command.",
+  "summaryAr": "غلّف API بـ ASP.NET Core في صورة Docker وشغّله مع SQL Server عبر Docker Compose، ليستطيع أي أحد تشغيل النظام كاملًا بأمر واحد.",
+  "techStack": "Docker · Docker Compose · ASP.NET Core · SQL Server",
+  "goalsEn": [
+   "Understand images, containers, ports and volumes",
+   "Write a multi-stage Dockerfile for .NET",
+   "Connect services with Docker Compose networks and environment variables",
+   "Persist data with volumes and wait for dependencies with health checks"
+  ],
+  "goalsAr": [
+   "فهم الصور والحاويات والمنافذ والـ volumes",
+   "كتابة Dockerfile متعدد المراحل لـ .NET",
+   "ربط الخدمات بشبكات Docker Compose ومتغيرات البيئة",
+   "حفظ البيانات بالـ volumes وانتظار الاعتماديات بفحوص الصحة"
+  ],
+  "requirementsEn": [
+   "A multi-stage Dockerfile: build with the SDK image, run with the small ASP.NET runtime image",
+   "docker-compose.yml with the API and SQL Server",
+   "The connection string and secrets come from environment variables (.env, not committed)",
+   "Database data survives `docker compose down` and `up`",
+   "The API waits for SQL Server to be healthy and applies migrations",
+   "`docker compose up` is the only command a newcomer needs"
+  ],
+  "requirementsAr": [
+   "Dockerfile متعدد المراحل: البناء بصورة SDK، والتشغيل بصورة ASP.NET runtime الصغيرة",
+   "ملف docker-compose.yml فيه الـ API وSQL Server",
+   "نص الاتصال والأسرار تأتي من متغيرات البيئة (ملف .env لا يُرفع)",
+   "بيانات قاعدة البيانات تبقى بعد `docker compose down` ثم `up`",
+   "الـ API ينتظر حتى يصبح SQL Server سليمًا ثم يطبّق الـ migrations",
+   "`docker compose up` هو الأمر الوحيد الذي يحتاجه القادم الجديد"
+  ],
+  "acceptanceEn": [
+   "The runtime image is under 250 MB",
+   "The container does not run as root",
+   "Opening http://localhost:8080/health returns Healthy",
+   "A fresh clone runs with docker compose up and a copied .env.example"
+  ],
+  "acceptanceAr": [
+   "صورة التشغيل أقل من 250 ميجابايت",
+   "الحاوية لا تعمل بصلاحيات root",
+   "فتح http://localhost:8080/health يعيد Healthy",
+   "نسخة جديدة من المستودع تعمل بـ docker compose up مع نسخ .env.example"
+  ],
+  "stretchEn": [
+   "Add the Angular front end as a third service with nginx",
+   "Add Adminer or Azure Data Studio access to the database",
+   "Push the image to GitHub Container Registry"
+  ],
+  "stretchAr": [
+   "أضف واجهة Angular كخدمة ثالثة مع nginx",
+   "أضف Adminer أو وصول Azure Data Studio إلى قاعدة البيانات",
+   "ارفع الصورة إلى GitHub Container Registry"
+  ],
+  "steps": [
+   {
+    "titleEn": "Docker basics",
+    "titleAr": "أساسيات Docker",
+    "bodyEn": "Install Docker Desktop. Run `docker run --rm -p 8080:80 nginx` and open http://localhost:8080. Then `docker ps`, `docker images`, `docker logs <id>` and `docker stop <id>`.\n\nAn image is a template; a container is a running instance of it. `-p host:container` maps a port.",
+    "bodyAr": "ثبّت Docker Desktop. وشغّل `docker run --rm -p 8080:80 nginx` وافتح http://localhost:8080. ثم `docker ps` و`docker images` و`docker logs <id>` و`docker stop <id>`.\n\nالصورة قالب، والحاوية نسخة قيد التشغيل منه. و`-p host:container` يربط منفذًا.",
+    "hintsEn": [
+     "On Windows, use WSL 2 as the Docker backend.",
+     "`--rm` deletes the container when it stops — handy for experiments."
+    ],
+    "hintsAr": [
+     "على Windows استخدم WSL 2 كخلفية لـ Docker.",
+     "`--rm` يحذف الحاوية عند توقفها، وهو مفيد للتجارب."
+    ],
+    "key": "devops-docker-compose-basics"
+   },
+   {
+    "titleEn": "Prepare the API",
+    "titleAr": "جهّز الـ API",
+    "bodyEn": "Use an API you built (e.g. the Bookstore API). Make sure it reads the connection string from configuration (`ConnectionStrings__Default` as environment variable works), exposes `/health` with `AddHealthChecks().AddDbContextCheck<...>()`, and can apply migrations at start-up (for this local setup).\n\nListen on port 8080 inside the container (the .NET 8+ default).",
+    "bodyAr": "استخدم API بنيته (مثل Bookstore API). وتأكد أنه يقرأ نص الاتصال من الإعدادات (`ConnectionStrings__Default` كمتغير بيئة يعمل)، ويقدّم `/health` بـ `AddHealthChecks().AddDbContextCheck<...>()`، ويستطيع تطبيق الـ migrations عند البدء (لهذا الإعداد المحلي).\n\nاستمع على المنفذ 8080 داخل الحاوية (وهو الافتراضي في .NET 8 وما بعده).",
+    "hintsEn": [
+     "Double underscore in an environment variable means \":\" in .NET configuration.",
+     "In production, run migrations as a separate step instead of at start-up."
+    ],
+    "hintsAr": [
+     "الشرطتان السفليتان في متغير البيئة تعنيان \":\" في إعدادات .NET.",
+     "في الإنتاج شغّل الـ migrations كخطوة مستقلة بدل تشغيلها عند البدء."
+    ],
+    "key": "devops-docker-compose-api"
+   },
+   {
+    "titleEn": "A multi-stage Dockerfile",
+    "titleAr": "Dockerfile متعدد المراحل",
+    "bodyEn": "Write a Dockerfile with a build stage (`mcr.microsoft.com/dotnet/sdk:10.0`: copy the .csproj, `dotnet restore`, copy the rest, `dotnet publish -c Release -o /app`) and a final stage (`mcr.microsoft.com/dotnet/aspnet:10.0`: copy /app, `USER app`, `ENTRYPOINT [\"dotnet\", \"Bookstore.Api.dll\"]`). Add a `.dockerignore` (bin, obj, .git, node_modules).\n\nCopying the project file before the source lets Docker cache the restore layer.",
+    "bodyAr": "اكتب Dockerfile فيه مرحلة بناء (`mcr.microsoft.com/dotnet/sdk:10.0`: انسخ ملف .csproj، ثم `dotnet restore`، ثم انسخ الباقي، ثم `dotnet publish -c Release -o /app`) ومرحلة نهائية (`mcr.microsoft.com/dotnet/aspnet:10.0`: انسخ /app، ثم `USER app`، ثم `ENTRYPOINT [\"dotnet\", \"Bookstore.Api.dll\"]`). وأضف `.dockerignore` (bin وobj و.git وnode_modules).\n\nنسخ ملف المشروع قبل الكود يسمح لـ Docker بتخزين طبقة الاستعادة مؤقتًا.",
+    "hintsEn": [
+     "Build with `docker build -t bookstore-api .` and check the size with `docker images`.",
+     "The `app` user exists in the official .NET images."
+    ],
+    "hintsAr": [
+     "ابنِ بـ `docker build -t bookstore-api .` وتحقق من الحجم بـ `docker images`.",
+     "المستخدم `app` موجود في صور .NET الرسمية."
+    ],
+    "code": "FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build\nWORKDIR /src\nCOPY Bookstore.Api/Bookstore.Api.csproj Bookstore.Api/\nRUN dotnet restore Bookstore.Api/Bookstore.Api.csproj\nCOPY . .\nRUN dotnet publish Bookstore.Api/Bookstore.Api.csproj -c Release -o /app --no-restore\n\nFROM mcr.microsoft.com/dotnet/aspnet:10.0\nWORKDIR /app\nCOPY --from=build /app .\nUSER app\nEXPOSE 8080\nENTRYPOINT [\"dotnet\", \"Bookstore.Api.dll\"]",
+    "language": "dockerfile",
+    "key": "devops-docker-compose-dockerfile"
+   },
+   {
+    "titleEn": "Docker Compose with SQL Server",
+    "titleAr": "Docker Compose مع SQL Server",
+    "bodyEn": "Write `docker-compose.yml` with two services: `db` (image `mcr.microsoft.com/mssql/server:2022-latest`, `ACCEPT_EULA=Y`, `MSSQL_SA_PASSWORD` from .env, a named volume for `/var/opt/mssql`) and `api` (build from the Dockerfile, port `8080:8080`, `ConnectionStrings__Default=Server=db;...` using the service name as host).\n\nServices reach each other by service name on the Compose network.",
+    "bodyAr": "اكتب `docker-compose.yml` بخدمتين: `db` (الصورة `mcr.microsoft.com/mssql/server:2022-latest`، و`ACCEPT_EULA=Y`، و`MSSQL_SA_PASSWORD` من ملف .env، وvolume مسمى للمسار `/var/opt/mssql`)، و`api` (يُبنى من الـ Dockerfile، والمنفذ `8080:8080`، و`ConnectionStrings__Default=Server=db;...` باستخدام اسم الخدمة كعنوان الخادم).\n\nالخدمات تصل إلى بعضها باسم الخدمة على شبكة Compose.",
+    "hintsEn": [
+     "Put secrets in `.env` (git-ignored) and commit a `.env.example` with placeholders.",
+     "Add `TrustServerCertificate=True` to the connection string for the local container."
+    ],
+    "hintsAr": [
+     "ضع الأسرار في `.env` (المتجاهَل في git) وارفع `.env.example` بقيم نائبة.",
+     "أضف `TrustServerCertificate=True` إلى نص الاتصال للحاوية المحلية."
+    ],
+    "key": "devops-docker-compose-compose"
+   },
+   {
+    "titleEn": "Start-up order with health checks",
+    "titleAr": "ترتيب البدء مع فحوص الصحة",
+    "bodyEn": "SQL Server takes a while to accept connections. Add a `healthcheck` to `db` that runs `sqlcmd ... -Q \"SELECT 1\"`, and in `api` use `depends_on: db: condition: service_healthy`. Add a healthcheck to the API that calls `/health`.\n\nWithout this, the API starts first, fails to connect and crashes.",
+    "bodyAr": "SQL Server يحتاج وقتًا قبل قبول الاتصالات. أضف `healthcheck` إلى `db` يشغّل `sqlcmd ... -Q \"SELECT 1\"`، وفي `api` استخدم `depends_on: db: condition: service_healthy`. وأضف فحص صحة للـ API يستدعي `/health`.\n\nبدون هذا يبدأ الـ API أولًا، ويفشل في الاتصال، ويتوقف.",
+    "hintsEn": [
+     "The sqlcmd path in the 2022 image is `/opt/mssql-tools18/bin/sqlcmd` with `-C` to trust the certificate.",
+     "Also add EF Core retry on failure (`EnableRetryOnFailure`)."
+    ],
+    "hintsAr": [
+     "مسار sqlcmd في صورة 2022 هو `/opt/mssql-tools18/bin/sqlcmd` مع `-C` للثقة بالشهادة.",
+     "أضف أيضًا إعادة المحاولة عند الفشل في EF Core (`EnableRetryOnFailure`)."
+    ],
+    "key": "devops-docker-compose-health"
+   },
+   {
+    "titleEn": "Persist data",
+    "titleAr": "احفظ البيانات",
+    "bodyEn": "Run `docker compose up -d`, create some data through the API, then `docker compose down` and `up -d` again: the data is still there thanks to the named volume. Then try `docker compose down -v` and see it disappear.\n\nKnow which command keeps and which deletes your data.",
+    "bodyAr": "شغّل `docker compose up -d`، وأنشئ بعض البيانات عبر الـ API، ثم `docker compose down` ثم `up -d` مرة أخرى: البيانات ما زالت موجودة بفضل الـ volume المسمى. ثم جرّب `docker compose down -v` وشاهدها تختفي.\n\nاعرف أي أمر يحفظ بياناتك وأيها يحذفها.",
+    "hintsEn": [
+     "`docker volume ls` lists volumes.",
+     "`docker compose logs -f api` follows the API logs."
+    ],
+    "hintsAr": [
+     "`docker volume ls` يعرض الـ volumes.",
+     "`docker compose logs -f api` يتابع سجلات الـ API."
+    ],
+    "key": "devops-docker-compose-volumes"
+   },
+   {
+    "titleEn": "Smaller and safer",
+    "titleAr": "أصغر وأكثر أمانًا",
+    "bodyEn": "Check: the image size, that the process runs as non-root (`docker exec <id> whoami`), that no secrets are baked into the image (`docker history`), and scan it with `docker scout cves bookstore-api`.\n\nTry the \"chiseled\" .NET runtime image (`aspnet:10.0-noble-chiseled`) and compare the size.",
+    "bodyAr": "تحقق من: حجم الصورة، وأن العملية تعمل بلا صلاحيات root (`docker exec <id> whoami`)، وأنه لا توجد أسرار مدمجة في الصورة (`docker history`)، وافحصها بـ `docker scout cves bookstore-api`.\n\nجرّب صورة .NET runtime من نوع \"chiseled\" (`aspnet:10.0-noble-chiseled`) وقارن الحجم.",
+    "hintsEn": [
+     "Chiseled images have no shell — debugging needs a sidecar or a debug image.",
+     "Never use `latest` tags in production; pin versions."
+    ],
+    "hintsAr": [
+     "صور chiseled بلا shell، فالتصحيح يحتاج sidecar أو صورة تصحيح.",
+     "لا تستخدم الوسم `latest` في الإنتاج أبدًا، وثبّت الإصدارات."
+    ],
+    "key": "devops-docker-compose-harden"
+   },
+   {
+    "titleEn": "Document one-command start",
+    "titleAr": "وثّق التشغيل بأمر واحد",
+    "bodyEn": "Update the README: prerequisites (Docker), `cp .env.example .env`, `docker compose up -d`, the URLs, how to see logs, and how to reset the database. Ask a friend to try it on a fresh machine.\n\n\"Clone and run one command\" is a big plus for any portfolio project.",
+    "bodyAr": "حدّث README: المتطلبات (Docker)، ثم `cp .env.example .env`، ثم `docker compose up -d`، والروابط، وكيف ترى السجلات، وكيف تعيد ضبط قاعدة البيانات. واطلب من صديق أن يجربه على جهاز جديد.\n\n\"استنسخ وشغّل أمرًا واحدًا\" ميزة كبيرة لأي مشروع في معرض الأعمال.",
+    "hintsEn": [
+     "Add a Makefile or scripts for common commands if you like.",
+     "SQL Server images need about 2 GB of RAM — mention it."
+    ],
+    "hintsAr": [
+     "أضف Makefile أو سكربتات للأوامر الشائعة إن أردت.",
+     "صور SQL Server تحتاج نحو 2 جيجابايت من الذاكرة، فاذكر ذلك."
+    ],
+    "key": "devops-docker-compose-finish"
+   }
+  ]
+ },
+ {
+  "key": "devops-ci-pipeline",
+  "skill": "DevOps",
+  "level": "Beginner",
+  "hours": 5,
+  "titleEn": "A CI pipeline with GitHub Actions",
+  "titleAr": "مسار CI باستخدام GitHub Actions",
+  "summaryEn": "Build a continuous integration pipeline for a full-stack repository: build and test the .NET API and the Angular app on every push and pull request, with caching, artifacts, test reports and status badges.",
+  "summaryAr": "ابنِ مسار تكامل مستمر لمستودع full-stack: بناء الـ API بـ .NET وتطبيق Angular واختبارهما عند كل push وطلب سحب، مع التخزين المؤقت والـ artifacts وتقارير الاختبارات وشارات الحالة.",
+  "techStack": "GitHub Actions · .NET · Node.js · Angular",
+  "goalsEn": [
+   "Write GitHub Actions workflows: triggers, jobs, steps",
+   "Run jobs in parallel and share results with artifacts",
+   "Speed up pipelines with caching",
+   "Report test results and protect branches with required checks"
+  ],
+  "goalsAr": [
+   "كتابة مسارات GitHub Actions: المحفزات والمهام والخطوات",
+   "تشغيل المهام بالتوازي ومشاركة النتائج بالـ artifacts",
+   "تسريع المسارات بالتخزين المؤقت",
+   "الإبلاغ عن نتائج الاختبارات وحماية الفروع بالفحوص المطلوبة"
+  ],
+  "requirementsEn": [
+   "Workflow runs on push to main and on pull requests",
+   "Job \"api\": restore, build (warnings as errors), test with results",
+   "Job \"web\": npm ci, lint, test, production build",
+   "Both jobs cached (NuGet and npm) and running in parallel",
+   "Build outputs uploaded as artifacts",
+   "A status badge in the README and the jobs required on main"
+  ],
+  "requirementsAr": [
+   "المسار يعمل عند push إلى main وعند طلبات السحب",
+   "مهمة \"api\": الاستعادة، والبناء (التحذيرات كأخطاء)، والاختبار مع النتائج",
+   "مهمة \"web\": npm ci، والفحص، والاختبار، وبناء الإنتاج",
+   "المهمتان مع تخزين مؤقت (NuGet وnpm) وتعملان بالتوازي",
+   "مخرجات البناء مرفوعة كـ artifacts",
+   "شارة حالة في README، والمهمتان مطلوبتان على main"
+  ],
+  "acceptanceEn": [
+   "A failing test makes the PR check red and blocks merging",
+   "The second run is noticeably faster thanks to caching",
+   "Test results are visible in the run summary"
+  ],
+  "acceptanceAr": [
+   "الاختبار الفاشل يجعل فحص طلب السحب أحمر ويمنع الدمج",
+   "التشغيل الثاني أسرع بوضوح بفضل التخزين المؤقت",
+   "نتائج الاختبارات ظاهرة في ملخص التشغيل"
+  ],
+  "stretchEn": [
+   "Add a matrix to test on Windows and Linux",
+   "Only run the web job when client files change (paths filter)",
+   "Add code coverage to the summary"
+  ],
+  "stretchAr": [
+   "أضف matrix للاختبار على Windows وLinux",
+   "شغّل مهمة web فقط عند تغير ملفات العميل (مرشح المسارات)",
+   "أضف تغطية الكود إلى الملخص"
+  ],
+  "steps": [
+   {
+    "titleEn": "Your first workflow",
+    "titleAr": "أول مسار عمل",
+    "bodyEn": "Create `.github/workflows/ci.yml` with `on: [push, pull_request]` and one job that runs on `ubuntu-latest`, checks out the code (`actions/checkout@v4`) and prints `dotnet --version`. Push and open the Actions tab.\n\nRead the log of each step — this is where you will debug every pipeline.",
+    "bodyAr": "أنشئ `.github/workflows/ci.yml` فيه `on: [push, pull_request]` ومهمة واحدة تعمل على `ubuntu-latest`، وتسحب الكود (`actions/checkout@v4`)، وتطبع `dotnet --version`. ثم ارفع وافتح تبويب Actions.\n\nاقرأ سجل كل خطوة، فهنا ستصحح كل مسار.",
+    "hintsEn": [
+     "YAML is sensitive to indentation — use spaces, never tabs.",
+     "Restrict push triggers to main: `push: branches: [main]`."
+    ],
+    "hintsAr": [
+     "YAML حساس للإزاحة، فاستخدم المسافات لا علامات الجدولة أبدًا.",
+     "قيّد محفزات push بـ main: `push: branches: [main]`."
+    ],
+    "key": "devops-ci-pipeline-first"
+   },
+   {
+    "titleEn": "The API job",
+    "titleAr": "مهمة الـ API",
+    "bodyEn": "Add `actions/setup-dotnet@v4` with your version, then `dotnet restore`, `dotnet build --no-restore -c Release -warnaserror`, and `dotnet test --no-build -c Release --logger trx --results-directory TestResults`.\n\nIf tests need SQL Server, use a service container in the job.",
+    "bodyAr": "أضف `actions/setup-dotnet@v4` بإصدارك، ثم `dotnet restore`، ثم `dotnet build --no-restore -c Release -warnaserror`، ثم `dotnet test --no-build -c Release --logger trx --results-directory TestResults`.\n\nإذا احتاجت الاختبارات SQL Server فاستخدم service container في المهمة.",
+    "hintsEn": [
+     "Set `working-directory` if the API is in a subfolder.",
+     "Fail on warnings to keep the code clean from the start."
+    ],
+    "hintsAr": [
+     "اضبط `working-directory` إذا كان الـ API في مجلد فرعي.",
+     "افشل عند التحذيرات لتبقي الكود نظيفًا من البداية."
+    ],
+    "key": "devops-ci-pipeline-api-job"
+   },
+   {
+    "titleEn": "The web job",
+    "titleAr": "مهمة الويب",
+    "bodyEn": "Add a second job `web` with `actions/setup-node@v4` (Node LTS), then `npm ci`, `npm run lint` (if configured), `npx ng test --watch=false`, and `npx ng build`. Jobs run in parallel by default.\n\n`npm ci` installs exactly what package-lock.json says — use it in CI, not `npm install`.",
+    "bodyAr": "أضف مهمة ثانية `web` فيها `actions/setup-node@v4` (بنسخة Node LTS)، ثم `npm ci`، ثم `npm run lint` (إن كان مضبوطًا)، ثم `npx ng test --watch=false`، ثم `npx ng build`. والمهام تعمل بالتوازي افتراضيًا.\n\n`npm ci` يثبّت بالضبط ما يقوله package-lock.json، فاستخدمه في CI لا `npm install`.",
+    "hintsEn": [
+     "Karma needs a headless browser; Vitest-based `ng test` does not.",
+     "Set `defaults: run: working-directory: client` for the job."
+    ],
+    "hintsAr": [
+     "Karma يحتاج متصفحًا بلا واجهة، أما `ng test` المبني على Vitest فلا يحتاج.",
+     "اضبط `defaults: run: working-directory: client` للمهمة."
+    ],
+    "key": "devops-ci-pipeline-web-job"
+   },
+   {
+    "titleEn": "Caching",
+    "titleAr": "التخزين المؤقت",
+    "bodyEn": "Turn on caching: `setup-node` with `cache: npm` and `cache-dependency-path: client/package-lock.json`; for NuGet, `setup-dotnet` with `cache: true` (needs a packages.lock.json) or `actions/cache` on `~/.nuget/packages`.\n\nCompare run times before and after.",
+    "bodyAr": "فعّل التخزين المؤقت: `setup-node` مع `cache: npm` و`cache-dependency-path: client/package-lock.json`، ولـ NuGet استخدم `setup-dotnet` مع `cache: true` (يحتاج packages.lock.json) أو `actions/cache` على `~/.nuget/packages`.\n\nقارن أوقات التشغيل قبل وبعد.",
+    "hintsEn": [
+     "Enable the NuGet lock file with `<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>`.",
+     "Cache keys include a hash of the lock file, so changes refresh the cache."
+    ],
+    "hintsAr": [
+     "فعّل ملف قفل NuGet بـ `<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>`.",
+     "مفاتيح التخزين المؤقت تتضمن hash لملف القفل، فتغييره يجدّد التخزين."
+    ],
+    "key": "devops-ci-pipeline-cache"
+   },
+   {
+    "titleEn": "Artifacts and test reports",
+    "titleAr": "الـ artifacts وتقارير الاختبارات",
+    "bodyEn": "Upload the published API and the Angular `dist` with `actions/upload-artifact@v4`. Publish test results so they show in the run summary — e.g. `dorny/test-reporter` for TRX and JUnit files — and upload TestResults even when tests fail (`if: always()`).\n\nArtifacts are what a later deployment job will use.",
+    "bodyAr": "ارفع الـ API المنشور ومجلد `dist` الخاص بـ Angular بـ `actions/upload-artifact@v4`. وانشر نتائج الاختبارات لتظهر في ملخص التشغيل، مثل `dorny/test-reporter` لملفات TRX وJUnit، وارفع TestResults حتى عند فشل الاختبارات (`if: always()`).\n\nالـ artifacts هي ما ستستخدمه مهمة النشر لاحقًا.",
+    "hintsEn": [
+     "Set `retention-days` to keep storage low.",
+     "Writing to `$GITHUB_STEP_SUMMARY` adds Markdown to the run page."
+    ],
+    "hintsAr": [
+     "اضبط `retention-days` لتبقي التخزين منخفضًا.",
+     "الكتابة في `$GITHUB_STEP_SUMMARY` تضيف Markdown إلى صفحة التشغيل."
+    ],
+    "key": "devops-ci-pipeline-artifacts"
+   },
+   {
+    "titleEn": "Required checks and badges",
+    "titleAr": "الفحوص المطلوبة والشارات",
+    "bodyEn": "In the repository rules for main, require the `api` and `web` checks to pass before merging. Add the workflow status badge to the README (copy it from the workflow page → \"Create status badge\").\n\nOpen a PR with a failing test to prove the gate works.",
+    "bodyAr": "في قواعد المستودع الخاصة بـ main اشترط نجاح فحصَي `api` و`web` قبل الدمج. وأضف شارة حالة المسار إلى README (انسخها من صفحة المسار ← \"Create status badge\").\n\nافتح طلب سحب فيه اختبار فاشل لتثبت أن البوابة تعمل.",
+    "hintsEn": [
+     "Check names must match the job names exactly.",
+     "Use `concurrency` with `cancel-in-progress: true` to cancel outdated runs on the same PR."
+    ],
+    "hintsAr": [
+     "أسماء الفحوص يجب أن تطابق أسماء المهام تمامًا.",
+     "استخدم `concurrency` مع `cancel-in-progress: true` لإلغاء التشغيلات القديمة على طلب السحب نفسه."
+    ],
+    "key": "devops-ci-pipeline-protect"
+   },
+   {
+    "titleEn": "Secure the workflow",
+    "titleAr": "أمّن مسار العمل",
+    "bodyEn": "Add `permissions: contents: read` at the top (least privilege). Pin third-party actions to a full commit SHA, enable Dependabot for GitHub Actions (`.github/dependabot.yml`), and never print secrets.\n\nPull requests from forks do not get your secrets — design CI so it does not need them.",
+    "bodyAr": "أضف `permissions: contents: read` في الأعلى (أقل صلاحية). وثبّت الـ actions الخارجية على SHA كامل لـ commit، وفعّل Dependabot لـ GitHub Actions (`.github/dependabot.yml`)، ولا تطبع الأسرار أبدًا.\n\nطلبات السحب القادمة من نسخ fork لا تحصل على أسرارك، فصمّم CI ليعمل بدونها.",
+    "hintsEn": [
+     "Official actions (actions/*) can use major version tags; pin the rest.",
+     "Dependabot will open PRs to update the pinned SHAs."
+    ],
+    "hintsAr": [
+     "الـ actions الرسمية (actions/*) تستطيع استخدام وسوم الإصدار الرئيسي، وثبّت الباقي.",
+     "Dependabot سيفتح طلبات سحب لتحديث الـ SHAs المثبتة."
+    ],
+    "key": "devops-ci-pipeline-security"
+   },
+   {
+    "titleEn": "Document the pipeline",
+    "titleAr": "وثّق المسار",
+    "bodyEn": "Add a \"CI\" section to the README: what runs, when, how long it takes, and how to run the same checks locally. Show the badge and a screenshot of a run summary.\n\nThe next DevOps project adds deployment on top of this pipeline.",
+    "bodyAr": "أضف قسم \"CI\" إلى README: ما الذي يعمل، ومتى، وكم يستغرق، وكيف تشغّل الفحوص نفسها محليًا. واعرض الشارة وصورة لملخص تشغيل.\n\nمشروع DevOps التالي يضيف النشر فوق هذا المسار.",
+    "hintsEn": [
+     "Run workflows locally with `act` if you want faster feedback.",
+     "Keep CI under 10 minutes; split or cache when it grows."
+    ],
+    "hintsAr": [
+     "شغّل مسارات العمل محليًا بـ `act` إن أردت ردًا أسرع.",
+     "أبقِ CI تحت 10 دقائق، وقسّم أو خزّن مؤقتًا عندما يكبر."
+    ],
+    "key": "devops-ci-pipeline-finish"
+   }
+  ]
+ },
+ {
+  "key": "devops-continuous-deployment",
+  "skill": "DevOps",
+  "level": "Intermediate",
+  "hours": 12,
+  "titleEn": "Continuous deployment with environments",
+  "titleAr": "النشر المستمر مع البيئات",
+  "summaryEn": "Deploy a full-stack app automatically: build once, deploy to a staging environment on every merge, promote the same build to production after approval, run migrations safely, check health and roll back.",
+  "summaryAr": "انشر تطبيق full-stack تلقائيًا: ابنِ مرة واحدة، وانشر إلى بيئة staging عند كل دمج، ورقِّ البناء نفسه إلى الإنتاج بعد الموافقة، وشغّل الـ migrations بأمان، وافحص الصحة، وتراجع عند الحاجة.",
+  "techStack": "GitHub Actions · Azure App Service (or any .NET host) · Azure SQL · deployment slots",
+  "goalsEn": [
+   "Design a pipeline that builds once and deploys many times",
+   "Use GitHub environments with secrets and required reviewers",
+   "Run database migrations safely in a pipeline",
+   "Verify deployments with health checks and roll back quickly"
+  ],
+  "goalsAr": [
+   "تصميم مسار يبني مرة وينشر مرات كثيرة",
+   "استخدام بيئات GitHub مع الأسرار والمراجعين المطلوبين",
+   "تشغيل migrations قاعدة البيانات بأمان داخل المسار",
+   "التحقق من النشر بفحوص الصحة والتراجع بسرعة"
+  ],
+  "requirementsEn": [
+   "Two environments: staging and production, each with its own database and settings",
+   "On merge to main: build, test, publish artifact, deploy to staging automatically",
+   "Production deployment needs a manual approval in GitHub",
+   "EF Core migrations run as an idempotent SQL script before the app is swapped in",
+   "A smoke test hits /health and a key endpoint after each deployment",
+   "A documented and tested rollback"
+  ],
+  "requirementsAr": [
+   "بيئتان: staging والإنتاج، لكل منهما قاعدة بيانات وإعدادات خاصة",
+   "عند الدمج إلى main: البناء، والاختبار، ونشر artifact، والنشر إلى staging تلقائيًا",
+   "النشر إلى الإنتاج يحتاج موافقة يدوية في GitHub",
+   "migrations الخاصة بـ EF Core تعمل كسكربت SQL قابل للتكرار بأمان قبل تبديل التطبيق",
+   "اختبار دخان يصل إلى /health ونقطة أساسية بعد كل نشر",
+   "تراجع موثّق ومُختبر"
+  ],
+  "acceptanceEn": [
+   "The exact artifact tested on staging is the one deployed to production",
+   "No secret appears in the repository or the logs",
+   "A deployment with a failing health check does not reach users (slot not swapped)",
+   "Rolling back takes under 5 minutes"
+  ],
+  "acceptanceAr": [
+   "الـ artifact نفسه الذي اختُبر على staging هو ما يُنشر إلى الإنتاج",
+   "لا يظهر أي سر في المستودع ولا في السجلات",
+   "النشر الذي يفشل فحص صحته لا يصل إلى المستخدمين (لا يُبدّل الـ slot)",
+   "التراجع يستغرق أقل من 5 دقائق"
+  ],
+  "stretchEn": [
+   "Use OpenID Connect (federated credentials) instead of publish profiles",
+   "Add a manual \"deploy specific version\" workflow",
+   "Notify a chat channel on deployments"
+  ],
+  "stretchAr": [
+   "استخدم OpenID Connect (بيانات اعتماد اتحادية) بدل publish profiles",
+   "أضف مسارًا يدويًا \"انشر إصدارًا محددًا\"",
+   "أرسل إشعارًا إلى قناة دردشة عند النشر"
+  ],
+  "steps": [
+   {
+    "titleEn": "Plan environments and configuration",
+    "titleAr": "خطّط للبيئات والإعدادات",
+    "bodyEn": "List what differs between staging and production: URLs, connection strings, secrets, log levels, feature flags. Everything else must be identical. Decide where each value lives: app settings in the host (secrets), appsettings.{Environment}.json (non-secret defaults).\n\nWrite the table in docs/deployment.md.",
+    "bodyAr": "اكتب ما يختلف بين staging والإنتاج: الروابط، ونصوص الاتصال، والأسرار، ومستويات السجل، ومفاتيح الميزات. وكل ما عدا ذلك يجب أن يكون متطابقًا. وحدّد مكان كل قيمة: إعدادات التطبيق في الاستضافة (للأسرار)، وappsettings.{Environment}.json (للقيم الافتراضية غير السرية).\n\nاكتب الجدول في docs/deployment.md.",
+    "hintsEn": [
+     "Set `ASPNETCORE_ENVIRONMENT` to Staging or Production on each host.",
+     "Never point staging at the production database."
+    ],
+    "hintsAr": [
+     "اضبط `ASPNETCORE_ENVIRONMENT` على Staging أو Production في كل استضافة.",
+     "لا توجّه staging إلى قاعدة بيانات الإنتاج أبدًا."
+    ],
+    "key": "devops-continuous-deployment-environments"
+   },
+   {
+    "titleEn": "Create the hosting",
+    "titleAr": "أنشئ الاستضافة",
+    "bodyEn": "Create (in the portal or CLI) an App Service plan with one Web App and a \"staging\" deployment slot, and two databases (staging and production). Put connection strings and secrets in the app settings of each slot, marked as \"slot setting\" so they do not move on swap.\n\nIf you use another host (MonsterASP, Render), create two separate sites instead of slots.",
+    "bodyAr": "أنشئ (من البوابة أو الـ CLI) App Service plan فيه Web App واحد مع deployment slot باسم \"staging\"، وقاعدتي بيانات (staging والإنتاج). وضع نصوص الاتصال والأسرار في إعدادات التطبيق لكل slot، معلّمة كـ \"slot setting\" حتى لا تنتقل عند التبديل.\n\nإذا استخدمت استضافة أخرى (MonsterASP أو Render) فأنشئ موقعين منفصلين بدل الـ slots.",
+    "hintsEn": [
+     "Slots need at least the Standard tier on Azure; free credits for students cover it.",
+     "Enable \"Always On\" so the first request after idle is not slow."
+    ],
+    "hintsAr": [
+     "الـ slots تحتاج الطبقة Standard على الأقل في Azure، والرصيد المجاني للطلاب يغطيها.",
+     "فعّل \"Always On\" حتى لا يكون أول طلب بعد الخمول بطيئًا."
+    ],
+    "key": "devops-continuous-deployment-infra"
+   },
+   {
+    "titleEn": "Build once, publish an artifact",
+    "titleAr": "ابنِ مرة وانشر artifact",
+    "bodyEn": "Extend your CI workflow: on push to main, after tests pass, a `build` job runs `dotnet publish` (with the Angular build copied into wwwroot), zips it, and uploads it as an artifact named with the commit SHA. Also generate the migration script: `dotnet ef migrations script --idempotent -o migrate.sql` and upload it.\n\nEvery later job downloads this artifact — nothing is rebuilt.",
+    "bodyAr": "وسّع مسار CI: عند push إلى main وبعد نجاح الاختبارات تشغّل مهمة `build` الأمر `dotnet publish` (مع نسخ بناء Angular إلى wwwroot)، وتضغطه، وترفعه كـ artifact مسمى بـ SHA الـ commit. وولّد أيضًا سكربت الـ migrations: `dotnet ef migrations script --idempotent -o migrate.sql` وارفعه.\n\nكل مهمة لاحقة تنزّل هذا الـ artifact، ولا يُعاد بناء أي شيء.",
+    "hintsEn": [
+     "Add the version (SHA) to the app, e.g. an /api/version endpoint, to know what is deployed.",
+     "Building separately per environment means you deploy something you never tested."
+    ],
+    "hintsAr": [
+     "أضف الإصدار (SHA) إلى التطبيق، مثل نقطة /api/version، لتعرف ما المنشور.",
+     "البناء بشكل منفصل لكل بيئة يعني أنك تنشر شيئًا لم تختبره أبدًا."
+    ],
+    "key": "devops-continuous-deployment-build-once"
+   },
+   {
+    "titleEn": "Safe database migrations",
+    "titleAr": "migrations آمنة لقاعدة البيانات",
+    "bodyEn": "In the deploy job, run the idempotent migration script against the target database before deploying the code (e.g. with `azure/sql-action` or sqlcmd). Make migrations backward compatible: the old code must still work with the new schema (add columns first, remove them in a later release).\n\nThis \"expand then contract\" approach is what allows zero-downtime deploys and rollbacks.",
+    "bodyAr": "في مهمة النشر شغّل سكربت الـ migrations القابل للتكرار على قاعدة البيانات المستهدفة قبل نشر الكود (مثلًا بـ `azure/sql-action` أو sqlcmd). واجعل الـ migrations متوافقة مع الإصدار السابق: يجب أن يعمل الكود القديم مع المخطط الجديد (أضف الأعمدة أولًا، واحذفها في إصدار لاحق).\n\nنهج \"وسّع ثم قلّص\" هذا هو ما يسمح بالنشر دون توقف وبالتراجع.",
+    "hintsEn": [
+     "Idempotent scripts check __EFMigrationsHistory, so running them twice is safe.",
+     "Back up the production database (or rely on point-in-time restore) before risky migrations."
+    ],
+    "hintsAr": [
+     "السكربتات القابلة للتكرار تتحقق من __EFMigrationsHistory، فتشغيلها مرتين آمن.",
+     "خذ نسخة احتياطية من قاعدة بيانات الإنتاج (أو اعتمد على الاستعادة لنقطة زمنية) قبل الـ migrations الخطرة."
+    ],
+    "key": "devops-continuous-deployment-migrations"
+   },
+   {
+    "titleEn": "Automatic deploy to staging",
+    "titleAr": "نشر تلقائي إلى staging",
+    "bodyEn": "Add a `deploy-staging` job (`needs: build`, `environment: staging`) that downloads the artifact, runs migrations on the staging database and deploys the zip to the staging slot/site (`azure/webapps-deploy`). Then a smoke test step: `curl --fail https://.../health` with retries, and one call to a key API endpoint.\n\nIf the smoke test fails, the job fails and production is never touched.",
+    "bodyAr": "أضف مهمة `deploy-staging` (`needs: build` و`environment: staging`) تنزّل الـ artifact، وتشغّل الـ migrations على قاعدة بيانات staging، وتنشر الملف المضغوط إلى slot أو موقع staging (`azure/webapps-deploy`). ثم خطوة اختبار دخان: `curl --fail https://.../health` مع إعادة المحاولة، واستدعاء واحد لنقطة API أساسية.\n\nإذا فشل اختبار الدخان تفشل المهمة ولا يُلمس الإنتاج أبدًا.",
+    "hintsEn": [
+     "Store credentials as environment secrets in GitHub (Settings → Environments).",
+     "A small script with a retry loop avoids failures while the app warms up."
+    ],
+    "hintsAr": [
+     "خزّن بيانات الاعتماد كأسرار بيئة في GitHub (Settings ← Environments).",
+     "سكربت صغير بحلقة إعادة محاولة يتجنب الإخفاقات أثناء تسخين التطبيق."
+    ],
+    "key": "devops-continuous-deployment-staging"
+   },
+   {
+    "titleEn": "Production with approval and swap",
+    "titleAr": "الإنتاج مع الموافقة والتبديل",
+    "bodyEn": "Add a `deploy-production` job (`needs: deploy-staging`, `environment: production` with yourself as required reviewer). It runs production migrations, deploys the same artifact to the production staging slot, smoke-tests it, then swaps slots (`az webapp deployment slot swap`). Users get the new version only after it proved healthy.\n\nWithout slots: deploy to production, smoke test, and be ready to roll back.",
+    "bodyAr": "أضف مهمة `deploy-production` (`needs: deploy-staging` و`environment: production` مع نفسك كمراجع مطلوب). تشغّل migrations الإنتاج، وتنشر الـ artifact نفسه إلى slot الـ staging الخاص بالإنتاج، وتجري اختبار الدخان، ثم تبدّل الـ slots (`az webapp deployment slot swap`). فلا يحصل المستخدمون على الإصدار الجديد إلا بعد أن يثبت سلامته.\n\nبدون slots: انشر إلى الإنتاج، وأجرِ اختبار الدخان، وكن مستعدًا للتراجع.",
+    "hintsEn": [
+     "Swap warms up the app before switching traffic.",
+     "Add a wait timer on the production environment if you want a cooling period."
+    ],
+    "hintsAr": [
+     "التبديل يسخّن التطبيق قبل تحويل حركة المرور.",
+     "أضف مؤقت انتظار على بيئة الإنتاج إن أردت فترة تهدئة."
+    ],
+    "key": "devops-continuous-deployment-production"
+   },
+   {
+    "titleEn": "Rollback and test it",
+    "titleAr": "التراجع واختباره",
+    "bodyEn": "Rollback with slots = swap back (the previous version is still in the staging slot). Without slots = redeploy the previous artifact with a manual workflow (`workflow_dispatch` with a SHA input). Practise it: deploy a version that breaks a page, roll back, time it.\n\nA rollback you have never tested is a hope, not a plan.",
+    "bodyAr": "التراجع مع الـ slots = التبديل مرة أخرى (فالإصدار السابق ما زال في slot الـ staging). وبدون slots = أعد نشر الـ artifact السابق بمسار يدوي (`workflow_dispatch` مع إدخال SHA). وتدرّب عليه: انشر إصدارًا يكسر صفحة، ثم تراجع، واحسب الوقت.\n\nالتراجع الذي لم تختبره أبدًا أمنية لا خطة.",
+    "hintsEn": [
+     "Because migrations are backward compatible, the old code works with the new schema.",
+     "Write the exact rollback commands in docs/deployment.md."
+    ],
+    "hintsAr": [
+     "لأن الـ migrations متوافقة مع الإصدار السابق، يعمل الكود القديم مع المخطط الجديد.",
+     "اكتب أوامر التراجع بالضبط في docs/deployment.md."
+    ],
+    "key": "devops-continuous-deployment-rollback"
+   },
+   {
+    "titleEn": "Document and show the pipeline",
+    "titleAr": "وثّق المسار واعرضه",
+    "bodyEn": "Draw the pipeline (PR → CI → merge → build artifact → staging + smoke → approval → production + swap) in the README with a screenshot of a run with the approval step. Document configuration, secrets (names only), migrations policy and rollback.\n\nYou now have the same delivery flow many companies use.",
+    "bodyAr": "ارسم المسار (طلب سحب ← CI ← دمج ← بناء artifact ← staging + اختبار دخان ← موافقة ← الإنتاج + تبديل) في README مع صورة لتشغيل فيه خطوة الموافقة. ووثّق الإعدادات، والأسرار (الأسماء فقط)، وسياسة الـ migrations، والتراجع.\n\nلديك الآن مسار التسليم نفسه الذي تستخدمه شركات كثيرة.",
+    "hintsEn": [
+     "Show the /api/version endpoint returning the deployed SHA.",
+     "Mention DORA metrics (deployment frequency, lead time) you could measure."
+    ],
+    "hintsAr": [
+     "اعرض نقطة /api/version وهي تعيد SHA المنشور.",
+     "اذكر مقاييس DORA (تكرار النشر، وزمن التسليم) التي تستطيع قياسها."
+    ],
+    "key": "devops-continuous-deployment-finish"
+   }
+  ]
+ },
+ {
+  "key": "devops-observability",
+  "skill": "DevOps",
+  "level": "Intermediate",
+  "hours": 12,
+  "titleEn": "Observability: logs, metrics and traces",
+  "titleAr": "قابلية الملاحظة: السجلات والمقاييس والتتبعات",
+  "summaryEn": "Make an API observable: structured logs in Seq, metrics in Prometheus and Grafana dashboards, distributed traces with OpenTelemetry and Jaeger, and alerts — all running locally with Docker Compose.",
+  "summaryAr": "اجعل الـ API قابلًا للملاحظة: سجلات منظمة في Seq، ومقاييس في Prometheus ولوحات Grafana، وتتبعات موزعة بـ OpenTelemetry وJaeger، وتنبيهات، كلها تعمل محليًا بـ Docker Compose.",
+  "techStack": "ASP.NET Core · Serilog · Seq · OpenTelemetry · Prometheus · Grafana · Jaeger · Docker Compose",
+  "goalsEn": [
+   "Write structured logs with useful context",
+   "Instrument an app with OpenTelemetry metrics and traces",
+   "Build dashboards around RED metrics (rate, errors, duration)",
+   "Define alerts that point to real user impact"
+  ],
+  "goalsAr": [
+   "كتابة سجلات منظمة بسياق مفيد",
+   "تجهيز التطبيق بمقاييس وتتبعات OpenTelemetry",
+   "بناء لوحات حول مقاييس RED (المعدل والأخطاء والمدة)",
+   "تعريف تنبيهات تشير إلى أثر حقيقي على المستخدمين"
+  ],
+  "requirementsEn": [
+   "Serilog JSON logs with request id, user id and trace id, sent to Seq",
+   "OpenTelemetry metrics (ASP.NET Core, HttpClient, runtime) scraped by Prometheus",
+   "A custom business metric (e.g. orders created)",
+   "Traces across the API, the database and an outgoing HTTP call, viewed in Jaeger",
+   "A Grafana dashboard: requests per second, error rate, p95 latency, top endpoints",
+   "Two alert rules (error rate and latency) that fire during a fault test"
+  ],
+  "requirementsAr": [
+   "سجلات Serilog بصيغة JSON فيها رقم الطلب ورقم المستخدم ورقم التتبع، تُرسل إلى Seq",
+   "مقاييس OpenTelemetry (ASP.NET Core وHttpClient والـ runtime) يجمعها Prometheus",
+   "مقياس عمل مخصص (مثل الطلبات المنشأة)",
+   "تتبعات عبر الـ API وقاعدة البيانات واستدعاء HTTP خارجي، تُعرض في Jaeger",
+   "لوحة Grafana: الطلبات في الثانية، ونسبة الأخطاء، وp95 لزمن الاستجابة، وأعلى النقاط",
+   "قاعدتا تنبيه (لنسبة الأخطاء ولزمن الاستجابة) تنطلقان أثناء اختبار عطل"
+  ],
+  "acceptanceEn": [
+   "From an error in Seq you can jump to the trace of the same request",
+   "Injecting a slow dependency shows up on the dashboard within a minute",
+   "Logs contain no passwords, tokens or personal data",
+   "`docker compose up` starts the app and the whole observability stack"
+  ],
+  "acceptanceAr": [
+   "من خطأ في Seq تستطيع الانتقال إلى تتبع الطلب نفسه",
+   "حقن اعتمادية بطيئة يظهر في اللوحة خلال دقيقة",
+   "السجلات لا تحتوي كلمات مرور ولا رموزًا ولا بيانات شخصية",
+   "`docker compose up` يشغّل التطبيق ومنظومة الملاحظة كلها"
+  ],
+  "stretchEn": [
+   "Use the .NET Aspire dashboard as an alternative",
+   "Add SLOs with an error budget panel",
+   "Send alerts to a chat webhook"
+  ],
+  "stretchAr": [
+   "استخدم لوحة .NET Aspire كبديل",
+   "أضف SLOs مع لوحة ميزانية الأخطاء",
+   "أرسل التنبيهات إلى webhook دردشة"
+  ],
+  "steps": [
+   {
+    "titleEn": "Start the observability stack",
+    "titleAr": "شغّل منظومة الملاحظة",
+    "bodyEn": "Extend docker-compose with: `datalust/seq` (logs UI), `prom/prometheus` (metrics), `grafana/grafana` (dashboards), and `jaegertracing/all-in-one` (traces, with OTLP enabled). Add a `prometheus.yml` that scrapes the API's `/metrics` endpoint every 5 seconds.\n\nOpen each UI once to check it runs.",
+    "bodyAr": "وسّع docker-compose بـ: `datalust/seq` (واجهة السجلات)، و`prom/prometheus` (المقاييس)، و`grafana/grafana` (اللوحات)، و`jaegertracing/all-in-one` (التتبعات، مع تفعيل OTLP). وأضف `prometheus.yml` يجمع من نقطة `/metrics` الخاصة بالـ API كل 5 ثوانٍ.\n\nافتح كل واجهة مرة لتتحقق أنها تعمل.",
+    "hintsEn": [
+     "Seq needs `ACCEPT_EULA=Y` and is free for single-user development.",
+     "Use the OTLP endpoint of Jaeger on port 4317."
+    ],
+    "hintsAr": [
+     "Seq يحتاج `ACCEPT_EULA=Y` وهو مجاني للتطوير بمستخدم واحد.",
+     "استخدم نقطة OTLP الخاصة بـ Jaeger على المنفذ 4317."
+    ],
+    "key": "devops-observability-stack"
+   },
+   {
+    "titleEn": "Structured logging with Serilog",
+    "titleAr": "السجلات المنظمة بـ Serilog",
+    "bodyEn": "Add `Serilog.AspNetCore` and the Seq sink. Configure JSON output, `UseSerilogRequestLogging()` (one summary line per request), and enrich logs with the request id, the user id and the trace id. Log with templates: `logger.LogInformation(\"Order {OrderId} created for {CustomerId}\", ...)`, never with string interpolation.\n\nTemplates keep values as searchable properties in Seq.",
+    "bodyAr": "أضف `Serilog.AspNetCore` وsink الخاص بـ Seq. واضبط الإخراج بصيغة JSON، و`UseSerilogRequestLogging()` (سطر ملخص واحد لكل طلب)، وأضف إلى السجلات رقم الطلب ورقم المستخدم ورقم التتبع. وسجّل بالقوالب: `logger.LogInformation(\"Order {OrderId} created for {CustomerId}\", ...)`، ولا تستخدم دمج النصوص أبدًا.\n\nالقوالب تُبقي القيم كخصائص قابلة للبحث في Seq.",
+    "hintsEn": [
+     "Search in Seq with queries like `OrderId = 42` or `@Level = 'Error'`.",
+     "Set noisy categories (Microsoft.AspNetCore) to Warning."
+    ],
+    "hintsAr": [
+     "ابحث في Seq باستعلامات مثل `OrderId = 42` أو `@Level = 'Error'`.",
+     "اضبط الفئات المزعجة (مثل Microsoft.AspNetCore) على Warning."
+    ],
+    "key": "devops-observability-logs"
+   },
+   {
+    "titleEn": "Keep secrets and personal data out",
+    "titleAr": "أبقِ الأسرار والبيانات الشخصية خارج السجلات",
+    "bodyEn": "Review what you log: never passwords, tokens, full card numbers or full request bodies. Log ids instead of emails where possible. Add a destructuring policy or a filter that masks known sensitive property names.\n\nLogs are often kept longer and read by more people than the database.",
+    "bodyAr": "راجع ما تسجّله: لا كلمات مرور، ولا رموز، ولا أرقام بطاقات كاملة، ولا محتوى طلبات كاملًا أبدًا. وسجّل الأرقام بدل البريد حيثما أمكن. وأضف سياسة destructuring أو مرشحًا يخفي أسماء الخصائص الحساسة المعروفة.\n\nالسجلات كثيرًا ما تُحفظ مدة أطول ويقرؤها أشخاص أكثر من قاعدة البيانات.",
+    "hintsEn": [
+     "Search Seq for \"password\" and \"Bearer\" after running the tests.",
+     "Mention data retention in your docs."
+    ],
+    "hintsAr": [
+     "ابحث في Seq عن \"password\" و\"Bearer\" بعد تشغيل الاختبارات.",
+     "اذكر مدة الاحتفاظ بالبيانات في توثيقك."
+    ],
+    "key": "devops-observability-privacy"
+   },
+   {
+    "titleEn": "OpenTelemetry metrics and traces",
+    "titleAr": "مقاييس وتتبعات OpenTelemetry",
+    "bodyEn": "Add the OpenTelemetry packages and configure `AddOpenTelemetry().WithMetrics(m => m.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddRuntimeInstrumentation().AddPrometheusExporter()).WithTracing(t => t.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddEntityFrameworkCoreInstrumentation().AddOtlpExporter())`, and map the Prometheus endpoint.\n\nSet a service name so traces and metrics are labelled.",
+    "bodyAr": "أضف حزم OpenTelemetry واضبط `AddOpenTelemetry().WithMetrics(m => m.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddRuntimeInstrumentation().AddPrometheusExporter()).WithTracing(t => t.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddEntityFrameworkCoreInstrumentation().AddOtlpExporter())`، وعرّف نقطة Prometheus.\n\nاضبط اسمًا للخدمة لتُوسم التتبعات والمقاييس.",
+    "hintsEn": [
+     "`ConfigureResource(r => r.AddService(\"bookstore-api\"))`.",
+     "Check http://localhost:8080/metrics shows `http_server_request_duration_seconds`."
+    ],
+    "hintsAr": [
+     "`ConfigureResource(r => r.AddService(\"bookstore-api\"))`.",
+     "تحقق أن http://localhost:8080/metrics يعرض `http_server_request_duration_seconds`."
+    ],
+    "key": "devops-observability-otel"
+   },
+   {
+    "titleEn": "Custom metrics and spans",
+    "titleAr": "مقاييس وspans مخصصة",
+    "bodyEn": "Create a `Meter(\"Bookstore\")` with a counter `orders_created_total` and a histogram `order_value`. Create an `ActivitySource` and wrap an important operation in `using var activity = source.StartActivity(\"CalculateDiscount\")`, adding tags (`activity?.SetTag(\"order.items\", count)`).\n\nBusiness metrics tell you if the product works, not just the server.",
+    "bodyAr": "أنشئ `Meter(\"Bookstore\")` فيه عدّاد `orders_created_total` وhistogram باسم `order_value`. وأنشئ `ActivitySource` وغلّف عملية مهمة بـ `using var activity = source.StartActivity(\"CalculateDiscount\")`، مع إضافة وسوم (`activity?.SetTag(\"order.items\", count)`).\n\nمقاييس العمل تخبرك إن كان المنتج يعمل، لا الخادم فقط.",
+    "hintsEn": [
+     "Register your meter and source names with `AddMeter` and `AddSource`.",
+     "Keep label/tag values low-cardinality (no user ids in metric labels)."
+    ],
+    "hintsAr": [
+     "سجّل أسماء الـ meter والمصدر بـ `AddMeter` و`AddSource`.",
+     "أبقِ قيم التسميات/الوسوم قليلة التنوع (لا أرقام مستخدمين في تسميات المقاييس)."
+    ],
+    "key": "devops-observability-custom"
+   },
+   {
+    "titleEn": "A Grafana dashboard",
+    "titleAr": "لوحة Grafana",
+    "bodyEn": "Add Prometheus as a data source (provision it with a file so it is part of the repository). Build panels with PromQL: requests per second (`sum(rate(http_server_request_duration_seconds_count[1m]))`), error rate (5xx / all), p95 latency (`histogram_quantile(0.95, sum by (le) (rate(..._bucket[5m])))`), and top endpoints. Add the business metric.\n\nExport the dashboard JSON into the repository.",
+    "bodyAr": "أضف Prometheus كمصدر بيانات (جهّزه بملف ليكون جزءًا من المستودع). وابنِ لوحات بـ PromQL: الطلبات في الثانية (`sum(rate(http_server_request_duration_seconds_count[1m]))`)، ونسبة الأخطاء (5xx ÷ الكل)، وp95 لزمن الاستجابة (`histogram_quantile(0.95, sum by (le) (rate(..._bucket[5m])))`)، وأعلى النقاط. وأضف مقياس العمل.\n\nصدّر JSON اللوحة إلى المستودع.",
+    "hintsEn": [
+     "Grafana provisioning folders: `provisioning/datasources` and `provisioning/dashboards`.",
+     "RED (Rate, Errors, Duration) is the standard dashboard for any service."
+    ],
+    "hintsAr": [
+     "مجلدات تجهيز Grafana: `provisioning/datasources` و`provisioning/dashboards`.",
+     "RED (المعدل والأخطاء والمدة) هي اللوحة المعيارية لأي خدمة."
+    ],
+    "key": "devops-observability-dashboard"
+   },
+   {
+    "titleEn": "Follow a request across services",
+    "titleAr": "تتبّع طلبًا عبر الخدمات",
+    "bodyEn": "Make an endpoint call another service over HTTP (a second tiny API, or an external API) and the database. Open the trace in Jaeger: you see the HTTP span, the SQL span with the query and the outgoing call, with their durations. Put the trace id in the error response (ProblemDetails `traceId`) and in logs, so you can jump from Seq to Jaeger.\n\nTraces answer \"where did the time go?\" in seconds.",
+    "bodyAr": "اجعل نقطة تستدعي خدمة أخرى عبر HTTP (API صغيرًا ثانيًا، أو API خارجيًا) وقاعدة البيانات. وافتح التتبع في Jaeger: ترى span الـ HTTP، وspan الـ SQL مع الاستعلام، والاستدعاء الخارجي، مع مدة كل منها. وضع رقم التتبع في رد الخطأ (`traceId` في ProblemDetails) وفي السجلات، لتنتقل من Seq إلى Jaeger.\n\nالتتبعات تجيب عن \"أين ذهب الوقت؟\" في ثوانٍ.",
+    "hintsEn": [
+     "W3C trace context headers are propagated automatically by HttpClient instrumentation.",
+     "Sample traces in production (e.g. 10%) to control cost."
+    ],
+    "hintsAr": [
+     "ترويسات W3C trace context تُمرَّر تلقائيًا بتجهيز HttpClient.",
+     "خذ عينات من التتبعات في الإنتاج (مثل 10%) للتحكم في التكلفة."
+    ],
+    "key": "devops-observability-traces"
+   },
+   {
+    "titleEn": "Alerts and a fault test",
+    "titleAr": "التنبيهات واختبار العطل",
+    "bodyEn": "Create Grafana alert rules: error rate above 5% for 2 minutes, and p95 above 500 ms for 5 minutes. Add a \"chaos\" switch to the API (an environment variable or admin endpoint) that adds latency or random 500s. Run a small load (k6 or a loop with curl), turn the fault on, and watch the dashboard, the logs, the traces and the alerts.\n\nAlert on symptoms users feel, not on CPU.",
+    "bodyAr": "أنشئ قواعد تنبيه في Grafana: نسبة الأخطاء فوق 5% لمدة دقيقتين، وp95 فوق 500 مللي ثانية لمدة 5 دقائق. وأضف مفتاح \"فوضى\" إلى الـ API (متغير بيئة أو نقطة إدارية) يضيف تأخيرًا أو أخطاء 500 عشوائية. وشغّل حملًا صغيرًا (k6 أو حلقة مع curl)، وفعّل العطل، وراقب اللوحة والسجلات والتتبعات والتنبيهات.\n\nنبّه على الأعراض التي يشعر بها المستخدمون، لا على المعالج.",
+    "hintsEn": [
+     "Every alert should link to the dashboard and say what to check first (a runbook line).",
+     "Too many alerts get ignored; start with two good ones."
+    ],
+    "hintsAr": [
+     "كل تنبيه يجب أن يربط باللوحة ويقول ما الذي يُفحص أولًا (سطر من دليل التشغيل).",
+     "التنبيهات الكثيرة تُتجاهل، فابدأ باثنين جيدين."
+    ],
+    "key": "devops-observability-alerts"
+   },
+   {
+    "titleEn": "Write the runbook",
+    "titleAr": "اكتب دليل التشغيل",
+    "bodyEn": "Document: how to start the stack, the URLs of each tool, what each dashboard panel means, and a runbook for each alert (what it means, how to investigate with logs and traces, how to mitigate). Include screenshots from your fault test.\n\nObservability skills are in high demand and rarely shown in junior portfolios.",
+    "bodyAr": "وثّق: طريقة تشغيل المنظومة، وروابط كل أداة، ومعنى كل لوحة، ودليل تشغيل لكل تنبيه (ماذا يعني، وكيف تحقق بالسجلات والتتبعات، وكيف تخفف المشكلة). وضمّن صورًا من اختبار العطل.\n\nمهارات الملاحظة مطلوبة بشدة ونادرًا ما تظهر في معارض أعمال المبتدئين.",
+    "hintsEn": [
+     "Explain the difference between logs, metrics and traces in one paragraph.",
+     "Mention how you would ship this to a managed service (Azure Monitor, Grafana Cloud)."
+    ],
+    "hintsAr": [
+     "اشرح الفرق بين السجلات والمقاييس والتتبعات في فقرة واحدة.",
+     "اذكر كيف ستنقل ذلك إلى خدمة مُدارة (Azure Monitor أو Grafana Cloud)."
+    ],
+    "key": "devops-observability-finish"
+   }
+  ]
+ },
+ {
+  "key": "devops-infra-as-code",
+  "skill": "DevOps",
+  "level": "Advanced",
+  "hours": 16,
+  "titleEn": "Infrastructure as code with Bicep or Terraform",
+  "titleAr": "البنية التحتية ككود باستخدام Bicep أو Terraform",
+  "summaryEn": "Describe a production-style cloud setup as code: App Service, Azure SQL, Key Vault, Application Insights and managed identity, with separate environments, previews of changes in pull requests and approved applies.",
+  "summaryAr": "صِف إعدادًا سحابيًا بنمط الإنتاج ككود: App Service وAzure SQL وKey Vault وApplication Insights والهوية المُدارة، مع بيئات منفصلة، ومعاينات للتغييرات في طلبات السحب، وتطبيق بعد الموافقة.",
+  "techStack": "Azure · Bicep (or Terraform) · GitHub Actions with OIDC · Key Vault · managed identity",
+  "goalsEn": [
+   "Write modular, parameterised infrastructure code",
+   "Remove secrets from configuration with managed identity and Key Vault",
+   "Preview infrastructure changes (what-if / plan) in pull requests",
+   "Apply changes through a pipeline with approvals and least privilege"
+  ],
+  "goalsAr": [
+   "كتابة كود بنية تحتية منظم في وحدات وقابل للمعاملات",
+   "إزالة الأسرار من الإعدادات بالهوية المُدارة وKey Vault",
+   "معاينة تغييرات البنية التحتية (what-if أو plan) في طلبات السحب",
+   "تطبيق التغييرات عبر مسار بموافقات وأقل الصلاحيات"
+  ],
+  "requirementsEn": [
+   "Modules: app service plan + web app, Azure SQL server + database, Key Vault, Application Insights + Log Analytics",
+   "Parameters files for dev and prod (SKU sizes, names, settings)",
+   "The web app uses a system-assigned managed identity to read Key Vault and to connect to SQL (no SQL password in config)",
+   "PRs show a what-if/plan comment; merges apply to dev automatically and to prod after approval",
+   "GitHub authenticates to Azure with OIDC (no long-lived secrets)",
+   "Naming and tagging conventions applied everywhere"
+  ],
+  "requirementsAr": [
+   "الوحدات: App Service plan مع Web App، وخادم Azure SQL مع قاعدة بيانات، وKey Vault، وApplication Insights مع Log Analytics",
+   "ملفات معاملات لـ dev وprod (أحجام الـ SKU والأسماء والإعدادات)",
+   "تطبيق الويب يستخدم هوية مُدارة من النظام لقراءة Key Vault وللاتصال بـ SQL (بلا كلمة مرور SQL في الإعدادات)",
+   "طلبات السحب تعرض تعليق what-if/plan، والدمج يطبّق على dev تلقائيًا وعلى prod بعد الموافقة",
+   "GitHub يصادق مع Azure بـ OIDC (بلا أسرار طويلة العمر)",
+   "أعراف التسمية والوسوم مطبقة في كل مكان"
+  ],
+  "acceptanceEn": [
+   "Destroying and re-creating dev from code gives a working environment",
+   "No secret or password appears in the repository, the pipeline or the app settings",
+   "A change to the SKU in a PR shows up in the what-if output before merge",
+   "The app reads a secret from Key Vault through its identity"
+  ],
+  "acceptanceAr": [
+   "حذف dev وإعادة إنشائه من الكود يعطي بيئة تعمل",
+   "لا يظهر أي سر أو كلمة مرور في المستودع ولا المسار ولا إعدادات التطبيق",
+   "تغيير الـ SKU في طلب سحب يظهر في مخرجات what-if قبل الدمج",
+   "التطبيق يقرأ سرًا من Key Vault عبر هويته"
+  ],
+  "stretchEn": [
+   "Add a private endpoint for SQL",
+   "Add policy checks with PSRule or Checkov",
+   "Estimate monthly cost per environment"
+  ],
+  "stretchAr": [
+   "أضف private endpoint لـ SQL",
+   "أضف فحوص السياسات بـ PSRule أو Checkov",
+   "قدّر التكلفة الشهرية لكل بيئة"
+  ],
+  "steps": [
+   {
+    "titleEn": "Choose the tool and design",
+    "titleAr": "اختر الأداة والتصميم",
+    "bodyEn": "Pick Bicep (Azure-native, simple) or Terraform (multi-cloud, state file). Draw the target architecture: resource group per environment, plan + web app, SQL server + database, Key Vault, Log Analytics + App Insights, and the identity arrows (app → Key Vault, app → SQL).\n\nWrite naming rules (e.g. `app-bookstore-dev-weu`) and required tags (env, owner, cost-center).",
+    "bodyAr": "اختر Bicep (أصلي في Azure وبسيط) أو Terraform (متعدد السحابات وله ملف حالة). وارسم البنية المستهدفة: resource group لكل بيئة، وplan مع web app، وخادم SQL مع قاعدة بيانات، وKey Vault، وLog Analytics مع App Insights، وأسهم الهوية (التطبيق ← Key Vault، والتطبيق ← SQL).\n\nاكتب قواعد التسمية (مثل `app-bookstore-dev-weu`) والوسوم المطلوبة (env وowner وcost-center).",
+    "hintsEn": [
+     "Use the Azure free account or student credits; keep dev on the cheapest SKUs.",
+     "Terraform needs a remote state backend (an Azure storage account) — create it first."
+    ],
+    "hintsAr": [
+     "استخدم حساب Azure المجاني أو رصيد الطلاب، وأبقِ dev على أرخص الـ SKUs.",
+     "Terraform يحتاج خلفية حالة بعيدة (حساب Azure storage)، فأنشئه أولًا."
+    ],
+    "key": "devops-infra-as-code-choose"
+   },
+   {
+    "titleEn": "Write the modules",
+    "titleAr": "اكتب الوحدات",
+    "bodyEn": "Create one module per concern: `monitoring.bicep` (Log Analytics + App Insights, outputs the connection string), `sql.bicep` (server with Entra-only authentication + database), `keyvault.bicep` (RBAC mode), `webapp.bicep` (plan + app with managed identity, HTTPS only, minimum TLS 1.2). A `main.bicep` wires them with parameters.\n\nOutputs of one module become inputs of another — no hard-coded names.",
+    "bodyAr": "أنشئ وحدة لكل مسؤولية: `monitoring.bicep` (Log Analytics مع App Insights، ويُخرج نص الاتصال)، و`sql.bicep` (خادم بمصادقة Entra فقط مع قاعدة بيانات)، و`keyvault.bicep` (بوضع RBAC)، و`webapp.bicep` (plan مع تطبيق بهوية مُدارة، وHTTPS فقط، وأدنى إصدار TLS 1.2). وملف `main.bicep` يربطها بالمعاملات.\n\nمخرجات وحدة تصبح مدخلات أخرى، بلا أسماء مكتوبة داخل الكود.",
+    "hintsEn": [
+     "`az bicep build` and the VS Code Bicep extension catch errors as you type.",
+     "Use `uniqueString(resourceGroup().id)` for names that must be globally unique."
+    ],
+    "hintsAr": [
+     "`az bicep build` وإضافة Bicep في VS Code تكشفان الأخطاء أثناء الكتابة.",
+     "استخدم `uniqueString(resourceGroup().id)` للأسماء التي يجب أن تكون فريدة عالميًا."
+    ],
+    "key": "devops-infra-as-code-modules"
+   },
+   {
+    "titleEn": "Managed identity instead of secrets",
+    "titleAr": "الهوية المُدارة بدل الأسرار",
+    "bodyEn": "Give the web app a system-assigned identity. Grant it \"Key Vault Secrets User\" on the vault with a role assignment in code. For SQL, make the app's identity a database user (`CREATE USER [app-name] FROM EXTERNAL PROVIDER` run once by the Entra admin) and use a connection string with `Authentication=Active Directory Default` — no password.\n\nSecrets that do not exist cannot leak.",
+    "bodyAr": "أعطِ تطبيق الويب هوية من النظام. وامنحها دور \"Key Vault Secrets User\" على الـ vault بتعيين دور داخل الكود. ولـ SQL اجعل هوية التطبيق مستخدمًا في قاعدة البيانات (الأمر `CREATE USER [app-name] FROM EXTERNAL PROVIDER` يشغّله مشرف Entra مرة واحدة) واستخدم نص اتصال فيه `Authentication=Active Directory Default`، بلا كلمة مرور.\n\nالأسرار غير الموجودة لا يمكن أن تتسرب.",
+    "hintsEn": [
+     "Role assignment names must be deterministic GUIDs: `guid(vault.id, app.id, roleId)`.",
+     "In the app, use `Azure.Identity` DefaultAzureCredential and the Key Vault configuration provider."
+    ],
+    "hintsAr": [
+     "أسماء تعيينات الأدوار يجب أن تكون GUIDs ثابتة: `guid(vault.id, app.id, roleId)`.",
+     "في التطبيق استخدم DefaultAzureCredential من `Azure.Identity` ومزود إعدادات Key Vault."
+    ],
+    "key": "devops-infra-as-code-identity"
+   },
+   {
+    "titleEn": "Environments with parameter files",
+    "titleAr": "البيئات بملفات المعاملات",
+    "bodyEn": "Create `dev.bicepparam` and `prod.bicepparam` (or `dev.tfvars` / `prod.tfvars`) with SKUs (B1 vs P0v3, Basic vs S0), names and app settings. Deploy dev manually once: `az deployment group create -g rg-bookstore-dev -f main.bicep -p dev.bicepparam`.\n\nThen delete the resource group and deploy again to prove it is fully reproducible.",
+    "bodyAr": "أنشئ `dev.bicepparam` و`prod.bicepparam` (أو `dev.tfvars` و`prod.tfvars`) بالـ SKUs (مثل B1 مقابل P0v3، وBasic مقابل S0)، والأسماء، وإعدادات التطبيق. وانشر dev يدويًا مرة واحدة: `az deployment group create -g rg-bookstore-dev -f main.bicep -p dev.bicepparam`.\n\nثم احذف الـ resource group وانشر مرة أخرى لتثبت أنه قابل لإعادة الإنتاج بالكامل.",
+    "hintsEn": [
+     "Deployments are idempotent: running the same template twice changes nothing.",
+     "Put the resource group itself in a subscription-level template if you want it in code too."
+    ],
+    "hintsAr": [
+     "النشر قابل للتكرار بأمان: تشغيل القالب نفسه مرتين لا يغيّر شيئًا.",
+     "ضع الـ resource group نفسه في قالب على مستوى الاشتراك إن أردته في الكود أيضًا."
+    ],
+    "key": "devops-infra-as-code-params"
+   },
+   {
+    "titleEn": "GitHub to Azure with OIDC",
+    "titleAr": "من GitHub إلى Azure بـ OIDC",
+    "bodyEn": "Create an Entra app registration (or user-assigned identity) with federated credentials for your repository's environments (`repo:you/bookstore:environment:dev` and `:prod`). Give it Contributor on each resource group only (plus User Access Administrator if it creates role assignments, scoped tightly). In the workflow, use `azure/login@v2` with client id, tenant id and subscription id — no client secret.\n\nShort-lived tokens per run replace a password that could leak.",
+    "bodyAr": "أنشئ app registration في Entra (أو هوية من نوع user-assigned) مع بيانات اعتماد اتحادية لبيئات مستودعك (`repo:you/bookstore:environment:dev` و`:prod`). وامنحها دور Contributor على كل resource group فقط (إضافة إلى User Access Administrator إن كانت تنشئ تعيينات أدوار، بنطاق ضيق). وفي مسار العمل استخدم `azure/login@v2` مع client id وtenant id وsubscription id، بلا client secret.\n\nالرموز قصيرة العمر لكل تشغيل تحل محل كلمة مرور قد تتسرب.",
+    "hintsEn": [
+     "The workflow needs `permissions: id-token: write`.",
+     "Separate identities for dev and prod limit the blast radius."
+    ],
+    "hintsAr": [
+     "مسار العمل يحتاج `permissions: id-token: write`.",
+     "هويات منفصلة لـ dev وprod تحد من نطاق الضرر."
+    ],
+    "key": "devops-infra-as-code-oidc"
+   },
+   {
+    "titleEn": "Preview changes in pull requests",
+    "titleAr": "عاين التغييرات في طلبات السحب",
+    "bodyEn": "Add a workflow on pull requests that changes `infra/**`: lint (`az bicep build`), run `az deployment group what-if` (or `terraform plan`) against dev and prod, and post the result as a PR comment. Reviewers see exactly which resources will be created, changed or deleted.\n\nInfrastructure changes deserve the same review as code.",
+    "bodyAr": "أضف مسار عمل لطلبات السحب التي تغيّر `infra/**`: الفحص (`az bicep build`)، ثم تشغيل `az deployment group what-if` (أو `terraform plan`) على dev وprod، ثم نشر النتيجة كتعليق على طلب السحب. فيرى المراجعون بالضبط أي الموارد ستُنشأ أو تتغير أو تُحذف.\n\nتغييرات البنية التحتية تستحق المراجعة نفسها التي يستحقها الكود.",
+    "hintsEn": [
+     "Watch for \"Delete\" in what-if output — it should never be a surprise.",
+     "`actions/github-script` or `marocchino/sticky-pull-request-comment` can post or update the comment."
+    ],
+    "hintsAr": [
+     "انتبه لـ \"Delete\" في مخرجات what-if، فلا يجب أن يكون مفاجأة أبدًا.",
+     "`actions/github-script` أو `marocchino/sticky-pull-request-comment` يستطيعان نشر التعليق أو تحديثه."
+    ],
+    "key": "devops-infra-as-code-what-if"
+   },
+   {
+    "titleEn": "Apply with approvals",
+    "titleAr": "طبّق مع الموافقات",
+    "bodyEn": "On merge to main: deploy infrastructure to dev automatically, then to prod in a job using the `production` environment with required reviewers. Then the application pipeline (from the continuous deployment project) deploys the code to the infrastructure created here.\n\nKeep infra and app pipelines separate but connected: infra rarely changes, the app often.",
+    "bodyAr": "عند الدمج إلى main: انشر البنية التحتية إلى dev تلقائيًا، ثم إلى prod في مهمة تستخدم بيئة `production` مع مراجعين مطلوبين. ثم ينشر مسار التطبيق (من مشروع النشر المستمر) الكود إلى البنية التحتية المنشأة هنا.\n\nأبقِ مساري البنية التحتية والتطبيق منفصلين لكن مترابطين، فالبنية نادرًا ما تتغير والتطبيق كثيرًا.",
+    "hintsEn": [
+     "Use deployment stacks or `--mode Complete` carefully — understand what they delete.",
+     "Lock the production resource group against deletion."
+    ],
+    "hintsAr": [
+     "استخدم deployment stacks أو `--mode Complete` بحذر، وافهم ما الذي تحذفه.",
+     "اقفل resource group الإنتاج ضد الحذف."
+    ],
+    "key": "devops-infra-as-code-apply"
+   },
+   {
+    "titleEn": "Verify security and drift",
+    "titleAr": "تحقق من الأمان والانحراف",
+    "bodyEn": "Check: the app reads a secret from Key Vault (expose a harmless \"config check\" endpoint that reports success, not the value), SQL has no password logins, HTTPS only and TLS 1.2 are on, and diagnostics flow to Log Analytics. Change something manually in the portal, then run what-if to see the drift.\n\nManual changes are reverted by the next apply — that is the point of IaC.",
+    "bodyAr": "تحقق من: التطبيق يقرأ سرًا من Key Vault (قدّم نقطة \"فحص إعدادات\" غير ضارة تُبلغ بالنجاح لا بالقيمة)، وSQL بلا دخول بكلمات مرور، وHTTPS فقط وTLS 1.2 مفعّلان، والتشخيصات تتدفق إلى Log Analytics. وغيّر شيئًا يدويًا في البوابة، ثم شغّل what-if لترى الانحراف.\n\nالتغييرات اليدوية تُلغى في التطبيق التالي، وهذا هو جوهر البنية التحتية ككود.",
+    "hintsEn": [
+     "Run a scanner (PSRule for Azure, Checkov) in the PR workflow for best-practice checks.",
+     "Document any exception you accept and why."
+    ],
+    "hintsAr": [
+     "شغّل أداة فحص (PSRule for Azure أو Checkov) في مسار طلبات السحب لفحوص أفضل الممارسات.",
+     "وثّق أي استثناء تقبله ولماذا."
+    ],
+    "key": "devops-infra-as-code-verify"
+   },
+   {
+    "titleEn": "Document the platform",
+    "titleAr": "وثّق المنصة",
+    "bodyEn": "Write docs/infrastructure.md: the architecture diagram, modules and their parameters, environments and SKUs with monthly cost estimates, the identity and permissions model, how to create a new environment, and how to destroy dev to save money.\n\nThis is the kind of setup platform and cloud teams build — and few junior candidates can show.",
+    "bodyAr": "اكتب docs/infrastructure.md: مخطط البنية، والوحدات ومعاملاتها، والبيئات والـ SKUs مع تقديرات التكلفة الشهرية، ونموذج الهوية والصلاحيات، وطريقة إنشاء بيئة جديدة، وطريقة حذف dev لتوفير المال.\n\nهذا نوع الإعداد الذي تبنيه فرق المنصات والسحابة، وقليل من المرشحين المبتدئين يستطيعون عرضه.",
+    "hintsEn": [
+     "Add a scheduled workflow that destroys dev every night if you are on paid resources.",
+     "Include the what-if comment screenshot in the README."
+    ],
+    "hintsAr": [
+     "أضف مسارًا مجدولًا يحذف dev كل ليلة إن كنت على موارد مدفوعة.",
+     "ضمّن صورة تعليق what-if في README."
+    ],
+    "key": "devops-infra-as-code-finish"
+   }
+  ]
+ },
+ {
+  "key": "devops-kubernetes",
+  "skill": "DevOps",
+  "level": "Advanced",
+  "hours": 18,
+  "titleEn": "Run the app on Kubernetes",
+  "titleAr": "شغّل التطبيق على Kubernetes",
+  "summaryEn": "Deploy a full-stack app to Kubernetes: a local cluster, deployments with probes and resources, config and secrets, ingress with TLS, autoscaling, rolling updates and rollbacks, packaged with Helm and delivered with GitOps.",
+  "summaryAr": "انشر تطبيق full-stack على Kubernetes: عنقود محلي، وdeployments مع الفحوص والموارد، والإعدادات والأسرار، وingress مع TLS، والتوسع التلقائي، والتحديثات المتدرجة والتراجع، مغلفًا بـ Helm ومُسلّمًا بـ GitOps.",
+  "techStack": "Kubernetes (kind or k3d) · kubectl · Helm · ingress-nginx · cert-manager · Argo CD",
+  "goalsEn": [
+   "Understand pods, deployments, services, ingress, config maps and secrets",
+   "Configure health probes, resources and autoscaling correctly",
+   "Package an app with Helm for several environments",
+   "Deliver changes with GitOps and roll back safely"
+  ],
+  "goalsAr": [
+   "فهم الـ pods والـ deployments والـ services والـ ingress والـ config maps والأسرار",
+   "ضبط فحوص الصحة والموارد والتوسع التلقائي بشكل صحيح",
+   "تغليف التطبيق بـ Helm لعدة بيئات",
+   "تسليم التغييرات بـ GitOps والتراجع بأمان"
+  ],
+  "requirementsEn": [
+   "A local cluster with kind or k3d and an ingress controller",
+   "API (3 replicas), Angular front end (nginx) and SQL Server (StatefulSet with a persistent volume) deployed",
+   "Liveness, readiness and startup probes; CPU/memory requests and limits",
+   "Config via ConfigMap, secrets via Secret (or Sealed Secrets/External Secrets)",
+   "Ingress with TLS from cert-manager (self-signed locally)",
+   "HPA scaling the API on CPU; zero-downtime rolling updates; a Helm chart with dev and prod values; Argo CD syncing from Git"
+  ],
+  "requirementsAr": [
+   "عنقود محلي بـ kind أو k3d مع ingress controller",
+   "نشر الـ API (3 نسخ)، وواجهة Angular (بـ nginx)، وSQL Server (كـ StatefulSet مع persistent volume)",
+   "فحوص liveness وreadiness وstartup، وطلبات وحدود للمعالج والذاكرة",
+   "الإعدادات عبر ConfigMap، والأسرار عبر Secret (أو Sealed Secrets/External Secrets)",
+   "Ingress مع TLS من cert-manager (موقّع ذاتيًا محليًا)",
+   "HPA يوسّع الـ API حسب المعالج، وتحديثات متدرجة بلا توقف، وHelm chart بقيم لـ dev وprod، وArgo CD يزامن من Git"
+  ],
+  "acceptanceEn": [
+   "Killing an API pod causes no failed requests during a load test",
+   "A deployment with a broken image never receives traffic (readiness) and is rolled back",
+   "Under load the API scales from 3 to at least 5 pods and back",
+   "Changing the image tag in Git deploys it through Argo CD without kubectl"
+  ],
+  "acceptanceAr": [
+   "إيقاف pod من الـ API لا يسبب أي طلبات فاشلة أثناء اختبار حمل",
+   "الـ deployment بصورة مكسورة لا يستقبل حركة مرور أبدًا (بفضل readiness) ويُتراجع عنه",
+   "تحت الحمل يتوسع الـ API من 3 إلى 5 pods على الأقل ثم يعود",
+   "تغيير وسم الصورة في Git ينشرها عبر Argo CD دون kubectl"
+  ],
+  "stretchEn": [
+   "Deploy to a managed cluster (AKS free tier)",
+   "Add NetworkPolicies between services",
+   "Add Prometheus and Grafana with the kube-prometheus-stack chart"
+  ],
+  "stretchAr": [
+   "انشر إلى عنقود مُدار (الطبقة المجانية من AKS)",
+   "أضف NetworkPolicies بين الخدمات",
+   "أضف Prometheus وGrafana بـ chart الخاص بـ kube-prometheus-stack"
+  ],
+  "steps": [
+   {
+    "titleEn": "A local cluster",
+    "titleAr": "عنقود محلي",
+    "bodyEn": "Install kubectl, Helm and kind (or k3d). Create a cluster with port mappings for 80 and 443, install ingress-nginx, and check with `kubectl get nodes` and `kubectl get pods -A`.\n\nBuild your images (API and Angular+nginx from the Docker projects) and load them into the cluster with `kind load docker-image`.",
+    "bodyAr": "ثبّت kubectl وHelm وkind (أو k3d). وأنشئ عنقودًا بربط للمنفذين 80 و443، وثبّت ingress-nginx، وتحقق بـ `kubectl get nodes` و`kubectl get pods -A`.\n\nابنِ صورك (الـ API وAngular مع nginx من مشاريع Docker) وحمّلها إلى العنقود بـ `kind load docker-image`.",
+    "hintsEn": [
+     "Use a kind config file so the cluster can be recreated identically.",
+     "`kubectl explain deployment.spec` documents any field."
+    ],
+    "hintsAr": [
+     "استخدم ملف إعدادات لـ kind ليمكن إعادة إنشاء العنقود بشكل مطابق.",
+     "`kubectl explain deployment.spec` يوثّق أي حقل."
+    ],
+    "key": "devops-kubernetes-cluster"
+   },
+   {
+    "titleEn": "Deployment and Service for the API",
+    "titleAr": "Deployment وService للـ API",
+    "bodyEn": "Write `api-deployment.yaml` (3 replicas, container port 8080, labels) and `api-service.yaml` (ClusterIP on port 80 → 8080). Apply them with `kubectl apply -f`, then `kubectl get pods`, `kubectl logs`, `kubectl describe pod` and `kubectl port-forward svc/api 8080:80` to test.\n\nKubernetes keeps 3 pods running: delete one and watch it come back.",
+    "bodyAr": "اكتب `api-deployment.yaml` (3 نسخ، والمنفذ 8080 للحاوية، والتسميات) و`api-service.yaml` (ClusterIP على المنفذ 80 ← 8080). وطبّقهما بـ `kubectl apply -f`، ثم استخدم `kubectl get pods` و`kubectl logs` و`kubectl describe pod` و`kubectl port-forward svc/api 8080:80` للاختبار.\n\nKubernetes يُبقي 3 pods تعمل: احذف واحدًا وشاهده يعود.",
+    "hintsEn": [
+     "Labels and selectors connect services to pods — a mismatch means \"no endpoints\".",
+     "Use a namespace per app/environment: `kubectl create namespace bookstore-dev`."
+    ],
+    "hintsAr": [
+     "التسميات والمحددات تربط الخدمات بالـ pods، وعدم التطابق يعني \"لا توجد endpoints\".",
+     "استخدم namespace لكل تطبيق/بيئة: `kubectl create namespace bookstore-dev`."
+    ],
+    "key": "devops-kubernetes-basics"
+   },
+   {
+    "titleEn": "SQL Server as a StatefulSet",
+    "titleAr": "SQL Server كـ StatefulSet",
+    "bodyEn": "Deploy SQL Server with a StatefulSet, a PersistentVolumeClaim (5 GiB) and a headless Service. Store the SA password in a Secret. Connect the API with `Server=sqlserver-0.sqlserver;...` from a Secret too.\n\nIn real production you would use a managed database; running it in the cluster here teaches you storage and state.",
+    "bodyAr": "انشر SQL Server بـ StatefulSet مع PersistentVolumeClaim (بحجم 5 جيبيبايت) وService من نوع headless. وخزّن كلمة مرور SA في Secret. واربط الـ API بـ `Server=sqlserver-0.sqlserver;...` من Secret أيضًا.\n\nفي الإنتاج الحقيقي ستستخدم قاعدة بيانات مُدارة، وتشغيلها في العنقود هنا يعلّمك التخزين والحالة.",
+    "hintsEn": [
+     "Secrets are only base64-encoded, not encrypted — never commit them; see the secrets step.",
+     "Delete the pod and check the data survives on the volume."
+    ],
+    "hintsAr": [
+     "الـ Secrets مرمّزة بـ base64 فقط وليست مشفرة، فلا ترفعها أبدًا، وانظر خطوة الأسرار.",
+     "احذف الـ pod وتحقق أن البيانات تبقى على الـ volume."
+    ],
+    "key": "devops-kubernetes-database"
+   },
+   {
+    "titleEn": "Probes and resources",
+    "titleAr": "الفحوص والموارد",
+    "bodyEn": "Add to the API: a `readinessProbe` on `/health/ready` (checks the database), a `livenessProbe` on `/health/live` (only checks the process), a `startupProbe` for slow starts, and `resources.requests` (e.g. 100m CPU, 128Mi) and `limits` (512Mi memory).\n\nReadiness controls traffic; liveness restarts the container. Checking the database in liveness would restart healthy pods when the database blips.",
+    "bodyAr": "أضف إلى الـ API: `readinessProbe` على `/health/ready` (يفحص قاعدة البيانات)، و`livenessProbe` على `/health/live` (يفحص العملية فقط)، و`startupProbe` للبدايات البطيئة، و`resources.requests` (مثل 100m للمعالج و128Mi) و`limits` (512Mi للذاكرة).\n\nالـ readiness يتحكم في حركة المرور، والـ liveness يعيد تشغيل الحاوية. وفحص قاعدة البيانات في الـ liveness سيعيد تشغيل pods سليمة عندما تتعثر قاعدة البيانات لحظيًا.",
+    "hintsEn": [
+     "Map two health endpoints with tags: `MapHealthChecks(\"/health/ready\", new() { Predicate = c => c.Tags.Contains(\"ready\") })`.",
+     "Requests are what the scheduler reserves; limits are the hard cap."
+    ],
+    "hintsAr": [
+     "عرّف نقطتي صحة بالوسوم: `MapHealthChecks(\"/health/ready\", new() { Predicate = c => c.Tags.Contains(\"ready\") })`.",
+     "الطلبات هي ما يحجزه المجدول، والحدود هي السقف الصارم."
+    ],
+    "key": "devops-kubernetes-probes"
+   },
+   {
+    "titleEn": "Configuration and secrets",
+    "titleAr": "الإعدادات والأسرار",
+    "bodyEn": "Move non-secret settings to a ConfigMap and mount them as environment variables. For secrets, use Sealed Secrets (encrypt with the cluster's public key so the encrypted file can be committed) or External Secrets with a vault.\n\nChanging a ConfigMap does not restart pods by itself — use a checksum annotation (Helm does this nicely) or `kubectl rollout restart`.",
+    "bodyAr": "انقل الإعدادات غير السرية إلى ConfigMap واربطها كمتغيرات بيئة. وللأسرار استخدم Sealed Secrets (تشفير بالمفتاح العام للعنقود فيمكن رفع الملف المشفر) أو External Secrets مع vault.\n\nتغيير ConfigMap لا يعيد تشغيل الـ pods بنفسه، فاستخدم تعليقًا فيه checksum (وHelm يفعل ذلك بشكل جميل) أو `kubectl rollout restart`.",
+    "hintsEn": [
+     "`kubeseal` turns a normal Secret manifest into a SealedSecret.",
+     "Never put secrets in ConfigMaps."
+    ],
+    "hintsAr": [
+     "`kubeseal` يحوّل ملف Secret عاديًا إلى SealedSecret.",
+     "لا تضع الأسرار في ConfigMaps أبدًا."
+    ],
+    "key": "devops-kubernetes-config"
+   },
+   {
+    "titleEn": "Ingress and TLS",
+    "titleAr": "Ingress وTLS",
+    "bodyEn": "Deploy the Angular image (nginx) with its own Deployment and Service. Create an Ingress for `bookstore.localtest.me`: `/api` → api service, `/` → web service. Install cert-manager, create a self-signed ClusterIssuer and request a certificate through the Ingress annotation.\n\n`*.localtest.me` resolves to 127.0.0.1, so no hosts-file editing is needed.",
+    "bodyAr": "انشر صورة Angular (مع nginx) بـ Deployment وService خاصين. وأنشئ Ingress للنطاق `bookstore.localtest.me`: `/api` ← خدمة api، و`/` ← خدمة الويب. وثبّت cert-manager، وأنشئ ClusterIssuer موقّعًا ذاتيًا، واطلب شهادة عبر تعليق في الـ Ingress.\n\n`*.localtest.me` يُحل إلى 127.0.0.1، فلا حاجة لتعديل ملف hosts.",
+    "hintsEn": [
+     "In a real cluster, use the Let's Encrypt issuer with your domain.",
+     "Set the ingress class name to nginx."
+    ],
+    "hintsAr": [
+     "في عنقود حقيقي استخدم مُصدر Let's Encrypt مع نطاقك.",
+     "اضبط اسم ingress class على nginx."
+    ],
+    "key": "devops-kubernetes-ingress"
+   },
+   {
+    "titleEn": "Rolling updates, rollbacks and autoscaling",
+    "titleAr": "التحديثات المتدرجة والتراجع والتوسع التلقائي",
+    "bodyEn": "Set the rolling update strategy (`maxUnavailable: 0`, `maxSurge: 1`) and a `preStop` sleep so in-flight requests finish. Deploy a new image tag with a load test running: no errors. Deploy a broken image: readiness fails, the rollout stalls, users are unaffected; run `kubectl rollout undo`.\n\nAdd an HPA (CPU 60%, min 3, max 8; install metrics-server) and watch it scale under load.",
+    "bodyAr": "اضبط استراتيجية التحديث المتدرج (`maxUnavailable: 0` و`maxSurge: 1`) وانتظارًا في `preStop` لتنتهي الطلبات الجارية. وانشر وسم صورة جديدًا أثناء تشغيل اختبار حمل: بلا أخطاء. ثم انشر صورة مكسورة: يفشل الـ readiness، ويتوقف التحديث، ولا يتأثر المستخدمون، ثم شغّل `kubectl rollout undo`.\n\nأضف HPA (المعالج 60%، والحد الأدنى 3، والأقصى 8، مع تثبيت metrics-server) وشاهده يتوسع تحت الحمل.",
+    "hintsEn": [
+     "`kubectl rollout status deployment/api` waits and reports progress.",
+     "HPA needs CPU requests set, or it cannot compute utilisation."
+    ],
+    "hintsAr": [
+     "`kubectl rollout status deployment/api` ينتظر ويُبلغ عن التقدم.",
+     "الـ HPA يحتاج ضبط طلبات المعالج، وإلا لا يستطيع حساب الاستخدام."
+    ],
+    "key": "devops-kubernetes-rollout"
+   },
+   {
+    "titleEn": "Package with Helm",
+    "titleAr": "غلّف بـ Helm",
+    "bodyEn": "Turn the manifests into a Helm chart: `templates/` with the Deployment, Service, Ingress, HPA, ConfigMap; `values.yaml` with defaults; `values-dev.yaml` and `values-prod.yaml` (replicas, resources, hosts, image tag). Install with `helm upgrade --install bookstore ./chart -f values-dev.yaml -n bookstore-dev`.\n\nRun `helm lint` and `helm template` to check the output.",
+    "bodyAr": "حوّل الملفات إلى Helm chart: `templates/` فيها الـ Deployment والـ Service والـ Ingress والـ HPA والـ ConfigMap، و`values.yaml` بالقيم الافتراضية، و`values-dev.yaml` و`values-prod.yaml` (عدد النسخ، والموارد، والنطاقات، ووسم الصورة). وثبّت بـ `helm upgrade --install bookstore ./chart -f values-dev.yaml -n bookstore-dev`.\n\nشغّل `helm lint` و`helm template` لتتحقق من المخرجات.",
+    "hintsEn": [
+     "Add a checksum annotation of the ConfigMap so config changes roll pods.",
+     "`helm history` and `helm rollback` give release-level rollback."
+    ],
+    "hintsAr": [
+     "أضف تعليق checksum للـ ConfigMap لتعيد تغييرات الإعدادات تشغيل الـ pods بالتدريج.",
+     "`helm history` و`helm rollback` يعطيان تراجعًا على مستوى الإصدار."
+    ],
+    "key": "devops-kubernetes-helm"
+   },
+   {
+    "titleEn": "GitOps with Argo CD",
+    "titleAr": "GitOps باستخدام Argo CD",
+    "bodyEn": "Install Argo CD in the cluster and create an Application that points to the chart in your Git repository with the dev values. From now on, deploy by committing: CI builds and pushes an image (to GHCR), then a commit updates the image tag in values-dev.yaml; Argo CD notices and syncs.\n\nThe cluster state always matches Git — and Git history is your deployment history.",
+    "bodyAr": "ثبّت Argo CD في العنقود وأنشئ Application يشير إلى الـ chart في مستودع Git مع قيم dev. ومن الآن انشر بالـ commit: CI يبني صورة ويرفعها (إلى GHCR)، ثم commit يحدّث وسم الصورة في values-dev.yaml، فيلاحظ Argo CD ذلك ويزامن.\n\nحالة العنقود تطابق Git دائمًا، وتاريخ Git هو تاريخ النشر.",
+    "hintsEn": [
+     "Rollback in GitOps = git revert of the tag change.",
+     "Enable self-heal so manual kubectl changes are reverted."
+    ],
+    "hintsAr": [
+     "التراجع في GitOps = git revert لتغيير الوسم.",
+     "فعّل self-heal لتُلغى التغييرات اليدوية بـ kubectl."
+    ],
+    "key": "devops-kubernetes-gitops"
+   },
+   {
+    "titleEn": "Chaos test and documentation",
+    "titleAr": "اختبار الفوضى والتوثيق",
+    "bodyEn": "Run a load test (k6) while you: delete API pods, roll out a new version, roll out a broken version, scale the node (or stop SQL Server briefly). Record what happened and the error counts. Write the README: architecture diagram, how to create the cluster and install everything, the chart values, the GitOps flow and the chaos results.\n\nThis is a strong showcase for DevOps and platform roles.",
+    "bodyAr": "شغّل اختبار حمل (k6) بينما: تحذف pods من الـ API، وتنشر إصدارًا جديدًا، وتنشر إصدارًا مكسورًا، وتغيّر حجم العقدة (أو توقف SQL Server لفترة قصيرة). وسجّل ما حدث وأعداد الأخطاء. ثم اكتب README: مخطط البنية، وطريقة إنشاء العنقود وتثبيت كل شيء، وقيم الـ chart، ومسار GitOps، ونتائج اختبار الفوضى.\n\nهذا عرض قوي لأدوار DevOps والمنصات.",
+    "hintsEn": [
+     "Provide one script (`./setup.sh` or `setup.ps1`) that creates the whole local environment.",
+     "Explain which parts you would replace with managed services in production."
+    ],
+    "hintsAr": [
+     "قدّم سكربتًا واحدًا (`./setup.sh` أو `setup.ps1`) ينشئ البيئة المحلية كلها.",
+     "اشرح الأجزاء التي ستستبدلها بخدمات مُدارة في الإنتاج."
+    ],
+    "key": "devops-kubernetes-finish"
+   }
+  ]
+ }
+]

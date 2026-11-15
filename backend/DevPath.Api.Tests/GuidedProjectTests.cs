@@ -28,6 +28,16 @@ public class GuidedProjectTests(ApiFactory factory) : IClassFixture<ApiFactory>
     }
 
     [Fact]
+    public async Task Every_skill_has_two_projects_at_each_level()
+    {
+        var client = await factory.CreateUserClientAsync();
+        var list = (await client.GetFromJsonAsync<JsonArray>("/api/guided-projects"))!;
+        var groups = list.GroupBy(p => (Skill: p!["skill"]!.GetValue<string>(), Level: p["level"]!.GetValue<string>())).ToList();
+        Assert.Equal(11 * 3, groups.Count);
+        Assert.All(groups, g => Assert.Equal(2, g.Count()));
+    }
+
+    [Fact]
     public async Task Steps_are_ticked_per_learner()
     {
         var me = await factory.CreateUserClientAsync();
