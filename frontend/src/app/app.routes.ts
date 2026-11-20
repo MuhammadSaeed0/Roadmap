@@ -5,6 +5,7 @@ import { accountStatusGuard, adminGuard, authGuard, guestGuard } from './core/au
 
 const appRoutes: Routes = [
   { path: '', loadComponent: () => import('./features/dashboard/dashboard.page'), data: { titleKey: 'nav.dashboard', helpId: 'dashboard', skin: 'snap' } },
+  { path: 'pre-roadmap', loadComponent: () => import('./features/pre-roadmap/pre-roadmap.page'), data: { titleKey: 'nav.preRoadmap', helpId: 'pre-roadmap', skin: 'threads' } },
   { path: 'roadmap', loadComponent: () => import('./features/roadmap/roadmap.page'), data: { titleKey: 'nav.roadmap', helpId: 'roadmap', skin: 'threads' } },
   // The library is the roadmap's list view now; old links keep their filters.
   { path: 'library', redirectTo: ({ queryParams }) => inject(Router).createUrlTree(['/roadmap'], { queryParams: { ...queryParams, view: 'list' } }) },

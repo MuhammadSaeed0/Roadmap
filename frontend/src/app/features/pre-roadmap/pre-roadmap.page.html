@@ -1,0 +1,243 @@
+<app-page-header [title]="'preRoadmap.title' | t" [subtitle]="'preRoadmap.subtitle' | t" />
+
+<!-- The four steps of the page, also used to jump between sections. -->
+<nav class="card pre-journey" data-tour="pre-journey" [attr.aria-label]="'preRoadmap.journeyLabel' | t">
+  <ol class="pre-steps">
+    @for (step of journey; track step; let i = $index) {
+      <li>
+        <button type="button" class="pre-step" [class.active]="activeStep() === step"
+                [attr.aria-current]="activeStep() === step ? 'step' : null" (click)="goTo(step)">
+          <span class="pre-step-num" aria-hidden="true">{{ i + 1 }}</span>
+          <span class="pre-step-name">{{ 'preRoadmap.journey.' + step | t }}</span>
+        </button>
+      </li>
+    }
+  </ol>
+  <div class="pre-lang">
+    <span class="muted small" id="pre-lang-label">{{ 'videos.languageFilter' | t }}</span>
+    <div class="segmented" role="radiogroup" aria-labelledby="pre-lang-label">
+      @for (option of languageOptions; track option) {
+        <button type="button" role="radio" [class.active]="languages.filter() === option" [attr.aria-checked]="languages.filter() === option"
+                (click)="setLanguage(option)">{{ ('videos.language.' + option) | t }}</button>
+      }
+    </div>
+  </div>
+</nav>
+
+<!-- 1. Introduction -->
+<section id="pre-intro" class="pre-section" tabindex="-1" aria-labelledby="pre-intro-title" data-tour="pre-intro">
+  <div class="pre-section-head">
+    <span class="pre-section-icon" aria-hidden="true"><app-icon name="bulb" [size]="20" /></span>
+    <div>
+      <h2 id="pre-intro-title">{{ 'preRoadmap.introTitle' | t }}</h2>
+      <p class="muted">{{ 'preRoadmap.introLead' | t }}</p>
+    </div>
+  </div>
+
+  <div class="pre-questions">
+    @for (q of intro; track q.id) {
+      @let isOpen = isQuestionOpen(q.id);
+      <div class="card pre-question" [class.open]="isOpen">
+        <h3 class="pre-question-head">
+          <button type="button" class="pre-toggle" [attr.aria-expanded]="isOpen" [attr.aria-controls]="'q-' + q.id" (click)="toggleQuestion(q.id)">
+            <span class="pre-toggle-icon" aria-hidden="true"><app-icon [name]="q.icon" [size]="18" /></span>
+            <span class="grow">{{ text(q.question) }}</span>
+            <app-icon name="chevron-down" [size]="18" class="chev" />
+          </button>
+        </h3>
+        @if (isOpen) {
+          <div class="pre-question-body" [id]="'q-' + q.id">
+            @for (paragraph of q.answer; track $index) { <p>{{ text(paragraph) }}</p> }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <h3 class="pre-sub"><app-icon name="video" [size]="17" /> {{ 'preRoadmap.startVideos' | t }}</h3>
+  <app-pre-videos [videos]="introVideos" />
+</section>
+
+<!-- 2. Fields -->
+<section id="pre-fields" class="pre-section" tabindex="-1" aria-labelledby="pre-fields-title" data-tour="pre-fields">
+  <div class="pre-section-head">
+    <span class="pre-section-icon" aria-hidden="true"><app-icon name="compass" [size]="20" /></span>
+    <div>
+      <h2 id="pre-fields-title">{{ 'preRoadmap.fieldsTitle' | t }}</h2>
+      <p class="muted">{{ 'preRoadmap.fieldsLead' | t }}</p>
+    </div>
+  </div>
+
+  <div class="card pre-filters">
+    <label class="sr-only" for="pre-field-search">{{ 'preRoadmap.search' | t }}</label>
+    <input id="pre-field-search" class="input" type="search" [placeholder]="'preRoadmap.search' | t" [value]="fieldSearch()"
+           (input)="fieldSearch.set($any($event.target).value)" />
+    <div class="segmented" role="radiogroup" [attr.aria-label]="'preRoadmap.categoryLabel' | t">
+      <button type="button" role="radio" [attr.aria-checked]="category() === ''" [class.active]="category() === ''" (click)="setCategory('')">
+        {{ 'preRoadmap.categories.all' | t }}
+      </button>
+      @for (c of categories; track c) {
+        <button type="button" role="radio" [attr.aria-checked]="category() === c" [class.active]="category() === c" (click)="setCategory(c)">
+          {{ 'preRoadmap.categories.' + c | t }}
+        </button>
+      }
+    </div>
+  </div>
+  <p class="muted small pre-count" aria-live="polite">{{ 'preRoadmap.fieldCount' | t: { n: fields().length } }}</p>
+
+  @if (fields().length === 0) {
+    <div class="card pre-empty">
+      <p>{{ 'preRoadmap.noFields' | t }}</p>
+      <button type="button" class="btn btn-secondary btn-sm" (click)="clearFieldFilters()">{{ 'preRoadmap.clear' | t }}</button>
+    </div>
+  } @else {
+    <ul class="pre-field-grid" role="list">
+      @for (f of fields(); track f.id) {
+        <li>
+          <button type="button" class="card pre-field-card" [id]="'field-card-' + f.id" [class.selected]="selectedId() === f.id"
+                  [attr.aria-expanded]="selectedId() === f.id" aria-controls="pre-field-detail"
+                  [attr.aria-label]="'preRoadmap.showField' | t: { name: text(f.title) }" (click)="selectField(f)">
+            <span class="pre-field-icon" [attr.data-category]="f.category" aria-hidden="true"><app-icon [name]="f.icon" [size]="22" /></span>
+            <span class="pre-field-title">{{ text(f.title) }}</span>
+            <span class="pre-field-summary">{{ text(f.summary) }}</span>
+            <span class="pre-field-foot">
+              <span class="level-badge" [attr.data-level]="f.difficulty">{{ 'preRoadmap.levels.' + f.difficulty | t }}</span>
+              <span class="pre-field-tech" dir="ltr">{{ f.technologies.slice(0, 3).join(' · ') }}</span>
+            </span>
+          </button>
+        </li>
+      }
+    </ul>
+  }
+
+  @if (selected(); as f) {
+    <app-pre-field-detail [field]="f" [links]="siteLinks(f.links)" [videos]="videos[f.id] ?? []" (closed)="closeField()" />
+  }
+</section>
+
+<!-- 3. Fundamentals -->
+<section id="pre-fundamentals" class="pre-section" tabindex="-1" aria-labelledby="pre-fundamentals-title" data-tour="pre-fundamentals">
+  <div class="pre-section-head">
+    <span class="pre-section-icon" aria-hidden="true"><app-icon name="layers" [size]="20" /></span>
+    <div>
+      <h2 id="pre-fundamentals-title">{{ 'preRoadmap.fundamentalsTitle' | t }}</h2>
+      <p class="muted">{{ 'preRoadmap.fundamentalsLead' | t }}</p>
+    </div>
+  </div>
+
+  <div class="card pre-filters">
+    <div class="pre-progress">
+      <span class="small">{{ 'preRoadmap.understoodCount' | t: { done: understoodCount(), total: totalFundamentals } }}</span>
+      <app-progress-bar [value]="understoodPercent()" [small]="true" [tone]="understoodCount() === totalFundamentals ? 'success' : 'accent'"
+                        [label]="'preRoadmap.understoodCount' | t: { done: understoodCount(), total: totalFundamentals }" />
+    </div>
+    <label class="sr-only" for="pre-fund-search">{{ 'preRoadmap.searchFundamentals' | t }}</label>
+    <input id="pre-fund-search" class="input" type="search" [placeholder]="'preRoadmap.searchFundamentals' | t" [value]="fundamentalSearch()"
+           (input)="fundamentalSearch.set($any($event.target).value)" />
+    <div class="segmented" role="radiogroup" [attr.aria-label]="'preRoadmap.groupLabel' | t">
+      <button type="button" role="radio" [attr.aria-checked]="group() === ''" [class.active]="group() === ''" (click)="group.set('')">
+        {{ 'preRoadmap.groups.all' | t }}
+      </button>
+      @for (g of groups; track g) {
+        <button type="button" role="radio" [attr.aria-checked]="group() === g" [class.active]="group() === g" (click)="group.set(g)">
+          {{ 'preRoadmap.groups.' + g | t }}
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (fundamentals().length === 0) {
+    <div class="card pre-empty"><p>{{ 'preRoadmap.noFundamentals' | t }}</p></div>
+  } @else {
+    <div class="pre-list-head">
+      <button type="button" class="btn btn-ghost btn-sm" (click)="toggleAllFundamentals()">{{ (allOpen() ? 'preRoadmap.closeAll' : 'preRoadmap.openAll') | t }}</button>
+    </div>
+    <ul class="pre-fundamentals" role="list">
+      @for (f of fundamentals(); track f.id) {
+        @let isOpen = isFundamentalOpen(f.id);
+        @let done = understood().has(f.id);
+        <li class="card pre-fundamental" [class.open]="isOpen" [class.done]="done">
+          <div class="pre-fundamental-head">
+            <button type="button" class="pre-check" [class.checked]="done" [attr.aria-pressed]="done"
+                    [attr.aria-label]="('preRoadmap.understood' | t) + ': ' + text(f.title)" [title]="'preRoadmap.understood' | t"
+                    (click)="toggleUnderstood(f)">
+              <app-icon [name]="done ? 'check' : f.icon" [size]="16" />
+            </button>
+            <h3 class="pre-fundamental-title">
+              <button type="button" class="pre-toggle" [attr.aria-expanded]="isOpen" [attr.aria-controls]="'fund-' + f.id" (click)="toggleFundamental(f.id)">
+                <span class="grow">
+                  <span class="pre-fundamental-name">{{ text(f.title) }}</span>
+                  <span class="pre-fundamental-summary">{{ text(f.summary) }}</span>
+                </span>
+                <span class="chip chip-sm chip-ghost pre-group">{{ 'preRoadmap.groups.' + f.group | t }}</span>
+                <app-icon name="chevron-down" [size]="18" class="chev" />
+              </button>
+            </h3>
+          </div>
+          @if (isOpen) {
+            <div class="pre-fundamental-body" [id]="'fund-' + f.id">
+              <div class="pre-why">
+                <h4 class="pre-label"><app-icon name="info" [size]="16" /> {{ 'preRoadmap.why' | t }}</h4>
+                <p>{{ text(f.why) }}</p>
+              </div>
+              <div class="pre-fundamental-cols">
+                <div>
+                  <h4 class="pre-label"><app-icon name="link" [size]="16" /> {{ 'preRoadmap.resources' | t }}</h4>
+                  <ul class="pre-resources" role="list">
+                    @for (res of f.resources; track res.url) {
+                      <li>
+                        <a [href]="res.url" target="_blank" rel="noopener noreferrer">
+                          <span dir="auto">{{ res.name }}</span> <app-icon name="external" [size]="12" />
+                          <span class="sr-only">{{ 'preRoadmap.newTab' | t }}</span>
+                        </a>
+                        <span class="muted small">{{ text(res.note) }}
+                          @if (res.language === 'Arabic') { <span class="chip chip-sm video-lang" data-lang="Arabic">{{ 'videos.language.Arabic' | t }}</span> }
+                        </span>
+                      </li>
+                    }
+                  </ul>
+                </div>
+                @let links = siteLinks(f.links);
+                @if (links.length > 0) {
+                  <div>
+                    <h4 class="pre-label"><app-icon name="map" [size]="16" /> {{ 'preRoadmap.onThisSite' | t }}</h4>
+                    <ul class="pre-links" role="list">
+                      @for (l of links; track l.kind + l.label) {
+                        <li>
+                          <a [routerLink]="l.route" [fragment]="l.fragment" class="pre-link">
+                            <span class="pre-link-kind">{{ 'preRoadmap.' + l.kind | t }}</span>
+                            <span class="pre-link-name">{{ l.label }}</span>
+                          </a>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                }
+              </div>
+              @if (videos[f.id]; as list) {
+                <h4 class="pre-label"><app-icon name="video" [size]="16" /> {{ 'preRoadmap.videos' | t }}</h4>
+                <app-pre-videos [videos]="list" />
+              }
+            </div>
+          }
+        </li>
+      }
+    </ul>
+  }
+</section>
+
+<!-- 4. Next -->
+<section id="pre-next" class="pre-section" tabindex="-1" aria-labelledby="pre-next-title" data-tour="pre-next">
+  <div class="card pre-cta">
+    <span class="pre-cta-icon" aria-hidden="true"><app-icon name="map" [size]="28" /></span>
+    <div class="grow">
+      <h2 id="pre-next-title">{{ 'preRoadmap.nextTitle' | t }}</h2>
+      <p>{{ 'preRoadmap.nextLead' | t }}</p>
+      <div class="pre-cta-actions">
+        <a routerLink="/roadmap" class="btn btn-primary">{{ 'preRoadmap.toRoadmap' | t }} <app-icon name="arrow-right" [size]="16" class="flip-rtl" /></a>
+        <a routerLink="/paths" class="btn btn-secondary">{{ 'preRoadmap.toPaths' | t }}</a>
+        <a routerLink="/project-library" class="btn btn-ghost">{{ 'preRoadmap.toLibrary' | t }}</a>
+      </div>
+    </div>
+  </div>
+</section>
