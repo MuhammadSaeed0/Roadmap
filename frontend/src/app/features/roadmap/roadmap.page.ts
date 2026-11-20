@@ -37,14 +37,17 @@ export default class RoadmapPage {
   constructor() {
     inject(ActivatedRoute).queryParamMap.pipe(takeUntilDestroyed())
       .subscribe(q => this.view.set(q.get('view') === 'list' ? 'list' : 'phases'));
-    // Open the current phase the first time data arrives.
+    // Open the current phase the first time data arrives, and the phase a link points at (#phase-<id>, e.g. from the Pre-Roadmap page).
     effect(() => {
       const roadmap = this.data.value();
-      if (roadmap?.currentPhaseId && untracked(() => this.expanded().size === 0)) {
-        this.expanded.set(new Set([roadmap.currentPhaseId]));
-        const fragment = location.hash.replace('#phase-', '');
-        if (fragment) this.expanded.update(s => new Set([...s, Number(fragment)]));
+      if (!roadmap || untracked(() => this.expanded().size > 0)) return;
+      const open = new Set<number>(roadmap.currentPhaseId ? [roadmap.currentPhaseId] : []);
+      const linked = Number(location.hash.replace('#phase-', ''));
+      if (linked && roadmap.phases.some(p => p.id === linked)) {
+        open.add(linked);
+        setTimeout(() => document.getElementById('phase-' + linked)?.scrollIntoView({ block: 'start' }), 0);
       }
+      if (open.size > 0) this.expanded.set(open);
     });
   }
 

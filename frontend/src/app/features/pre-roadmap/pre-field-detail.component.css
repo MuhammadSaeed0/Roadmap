@@ -1,0 +1,48 @@
+/* One career field's details on the Pre-Roadmap page. */
+:host { display: block; container-type: inline-size; }
+/* Level badge (same look as the Project library) */
+.level-badge {
+  display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 999px; font-size: 0.76rem; font-weight: 600;
+  background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); white-space: nowrap;
+}
+.level-badge[data-level='Beginner'] { background: var(--success-soft); color: var(--success); border-color: transparent; }
+.level-badge[data-level='Intermediate'] { background: var(--info-soft); color: var(--info); border-color: transparent; }
+.level-badge[data-level='Advanced'] { background: var(--warning-soft); color: var(--warning); border-color: transparent; }
+
+/* Field details */
+.pre-detail { margin: 16px 0 0; scroll-margin-top: calc(var(--topbar-h) + 16px); animation: pre-reveal 0.25s ease; border-color: color-mix(in srgb, var(--accent) 35%, var(--border)); }
+.pre-detail:focus { outline: none; }
+.pre-detail-head { display: flex; align-items: flex-start; gap: 14px; padding-bottom: 16px; margin-bottom: 18px; border-bottom: 1px solid var(--border); }
+.pre-detail-head h3 { margin: 2px 0 6px; font-size: 1.25rem; }
+.pre-detail-summary { margin: 0; max-width: 75ch; color: var(--text-2); line-height: 1.6; }
+.pre-detail-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 320px); gap: 24px; }
+.pre-detail-main, .pre-detail-side { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.pre-detail-side { padding-inline-start: 24px; border-inline-start: 1px solid var(--border); }
+.pre-detail-videos { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border); }
+.pre-side-text { margin: 8px 0 0; color: var(--text-2); line-height: 1.55; }
+
+.pre-start { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.pre-start li {
+  display: flex; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-2);
+}
+.pre-start-num {
+  display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; flex: none;
+  background: var(--accent); color: var(--on-accent); font-size: 0.8rem; font-weight: 700;
+}
+.pre-start-name { margin: 0 0 2px; font-weight: 650; }
+.pre-start-why { margin: 0; font-size: 0.9rem; line-height: 1.55; color: var(--text-2); }
+.pre-dots { margin: 0; padding-inline-start: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 0.92rem; line-height: 1.5; }
+.pre-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; }
+[dir='rtl'] .pre-chips { justify-content: flex-end; }
+
+.pre-field-icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; flex: none; background: var(--accent-soft); color: var(--accent-text); }
+.pre-field-icon[data-category='apps'] { background: var(--info-soft); color: var(--info); }
+.pre-field-icon[data-category='data'] { background: var(--success-soft); color: var(--success); }
+.pre-field-icon[data-category='systems'] { background: var(--warning-soft); color: var(--warning); }
+.grow { flex: 1; min-width: 0; }
+@keyframes pre-reveal { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .pre-detail { animation: none; } }
+@container (max-width: 640px) {
+  .pre-detail-grid { grid-template-columns: minmax(0, 1fr); }
+  .pre-detail-side { padding-inline-start: 0; border-inline-start: 0; padding-top: 18px; border-top: 1px solid var(--border); }
+}

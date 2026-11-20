@@ -5,7 +5,7 @@ import { TopicVideo, VideoLanguage } from './models';
 export type VideoLanguageFilter = VideoLanguage | 'all';
 
 /** Where the language choice applies. Each place keeps its own choice, so filtering one never changes another. */
-export type VideoLanguageScope = 'library' | 'topic';
+export type VideoLanguageScope = 'library' | 'topic' | 'preRoadmap';
 export const VIDEO_LANGUAGE_SCOPE = new InjectionToken<VideoLanguageScope>('VIDEO_LANGUAGE_SCOPE');
 
 /** Gives a component its own language choice: add to its `providers`. */

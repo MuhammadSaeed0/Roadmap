@@ -195,6 +195,7 @@ export class ShellComponent {
       { path: '/cv', key: 'nav.cv', icon: 'file' },
     ] },
     { key: 'nav.learn', items: [
+      { path: '/pre-roadmap', key: 'nav.preRoadmap', icon: 'compass' },
       { path: '/roadmap', key: 'nav.roadmap', icon: 'map' },
       { path: '/paths', key: 'nav.paths', icon: 'route' },
     ] },

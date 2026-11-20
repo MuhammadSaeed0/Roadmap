@@ -17,6 +17,8 @@ export const SECTION_IDS = [
   // Roadmap and library
   'roadmap-header', 'roadmap-phases', 'library-filters', 'library-list',
   // Topic page
+  // Pre-Roadmap
+  'pre-journey', 'pre-intro', 'pre-fields', 'pre-fundamentals', 'pre-next',
   'topic-header', 'topic-content', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-notes', 'topic-related', 'topic-guided',
   // Projects
   'projects-list', 'project-hero', 'project-milestones', 'project-changes', 'project-portfolio', 'project-repo',
@@ -50,7 +52,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
   'resources', 'notes', 'progress', 'skills', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
-  'discussions', 'discussion', 'paths', 'path', 'path-create', 'reviews', 'guides', 'guide',
+  'discussions', 'discussion', 'paths', 'path', 'path-create', 'reviews', 'guides', 'guide', 'pre-roadmap',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
 
@@ -84,6 +86,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   'path-create': ['path-details', 'path-pick'],
   reviews: ['reviews-tabs', 'reviews-list'],
   guides: ['guides-filters', 'guides-list'],
+  'pre-roadmap': ['pre-journey', 'pre-intro', 'pre-fields', 'pre-fundamentals', 'pre-next'],
   guide: ['guide-overview', 'guide-steps', 'guide-progress', 'guide-repo'],
 };
 
@@ -106,6 +109,7 @@ export const MAIN_TOUR: readonly MainStep[] = [
   { id: 'dashboard-hero', route: '/', targets: ['dashboard-hero'] },
   { id: 'dashboard-continue', route: '/', targets: ['dashboard-continue'] },
   { id: 'dashboard-plan', route: '/', targets: ['dashboard-plan'] },
+  { id: 'pre-fields', route: '/pre-roadmap', targets: ['pre-fields'] },
   { id: 'roadmap-phases', route: '/roadmap', targets: ['roadmap-phases', 'roadmap-header'] },
   { id: 'library-filters', route: '/roadmap?view=list', targets: ['library-filters'] },
   { id: 'videos-filters', route: '/videos', targets: ['videos-filters'] },

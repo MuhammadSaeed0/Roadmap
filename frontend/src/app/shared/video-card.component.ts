@@ -27,6 +27,7 @@ import { IconComponent } from './icon.component';
       </p>
       @if (video().description) { <p class="small video-desc">{{ video().description }}</p> }
       <div class="video-actions">
+        @if (actions()) {
         <button type="button" class="icon-btn" [class.is-on]="video().isWatched" [attr.aria-pressed]="video().isWatched"
                 [attr.aria-label]="(video().isWatched ? 'videos.markUnwatched' : 'videos.markWatched') | t"
                 [title]="(video().isWatched ? 'videos.markUnwatched' : 'videos.markWatched') | t"
@@ -39,6 +40,7 @@ import { IconComponent } from './icon.component';
                 [disabled]="busy()" (click)="toggle.emit('isBookmarked')">
           <app-icon name="bookmark" [size]="17" />
         </button>
+        }
         <a class="icon-btn" [href]="watch()" target="_blank" rel="noopener noreferrer"
            [attr.aria-label]="('videos.openOnYoutube' | t) + ': ' + video().title" [title]="'videos.openOnYoutube' | t">
           <app-icon name="external" [size]="16" />
@@ -58,6 +60,8 @@ export class VideoCardComponent {
   readonly playing = input(false);
   readonly busy = input(false);
   readonly removable = input(true);
+  /** False hides the watched/saved buttons (for videos that are not tied to a topic, such as on the Pre-Roadmap page). */
+  readonly actions = input(true);
   readonly play = output<void>();
   readonly toggle = output<'isWatched' | 'isBookmarked'>();
   readonly remove = output<void>();
