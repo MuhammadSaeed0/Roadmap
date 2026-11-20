@@ -15,7 +15,9 @@ type Tab = 'users' | 'admins' | 'activity' | 'usage';
 /** An action that asks for an optional note (reject, suspend) opens this dialog instead of a plain confirmation. */
 interface ReasonRequest { user: AdminUser; action: 'reject' | 'suspend'; }
 
-const STATUSES: AccountStatus[] = ['PendingEmailVerification', 'PendingApproval', 'Approved', 'Rejected', 'Suspended'];
+// Approval is off (accounts are active once the email is verified), so 'waiting for approval' and 'approved'
+// are not filters any more; an active account simply shows no status badge.
+const STATUSES: AccountStatus[] = ['PendingEmailVerification', 'Rejected', 'Suspended'];
 const PAGE_SIZE = 20;
 
 /**
@@ -47,21 +49,12 @@ const PAGE_SIZE = 20;
         <h2 id="admin-stats-h" class="sr-only">{{ 'admin.statsTitle' | t }}</h2>
         <dl class="stat-row admin-stat-row">
           <div><dt>{{ 'admin.stats.total' | t }}</dt><dd>{{ s.total | fmtNum }}</dd></div>
-          <div class="stat-attention" [class.has-items]="s.pendingApproval > 0">
-            <dt>{{ 'admin.stats.pendingApproval' | t }}</dt><dd>{{ s.pendingApproval | fmtNum }}</dd>
-          </div>
           <div><dt>{{ 'admin.stats.pendingVerification' | t }}</dt><dd>{{ s.pendingVerification | fmtNum }}</dd></div>
-          <div><dt>{{ 'admin.stats.approved' | t }}</dt><dd>{{ s.approved | fmtNum }}</dd></div>
           <div><dt>{{ 'admin.stats.rejected' | t }}</dt><dd>{{ s.rejected | fmtNum }}</dd></div>
           <div><dt>{{ 'admin.stats.suspended' | t }}</dt><dd>{{ s.suspended | fmtNum }}</dd></div>
           <div><dt>{{ 'admin.stats.admins' | t }}</dt><dd>{{ s.admins | fmtNum }}</dd></div>
           <div><dt>{{ 'admin.stats.recent' | t }}</dt><dd>{{ s.registeredLast7Days | fmtNum }}</dd></div>
         </dl>
-        @if (s.pendingApproval > 0 && filterStatus() !== 'PendingApproval') {
-          <button type="button" class="btn btn-secondary btn-sm" (click)="showPending()">
-            <app-icon name="shield" [size]="15" /> {{ 'admin.reviewPending' | t: { count: s.pendingApproval } }}
-          </button>
-        }
       </section>
     }
 
@@ -121,7 +114,7 @@ const PAGE_SIZE = 20;
                           </div>
                         </div>
                       </th>
-                      <td><span class="badge account-badge" [attr.data-account]="u.status">{{ 'accountStatus.' + u.status | t }}</span></td>
+                      <td>@if (u.status !== 'Approved') { <span class="badge account-badge" [attr.data-account]="u.status">{{ 'accountStatus.' + u.status | t }}</span> }</td>
                       <td class="nowrap">{{ u.createdAt | fmtDate }}</td>
                       <td>
                         <div class="row-actions">
@@ -144,8 +137,6 @@ const PAGE_SIZE = 20;
                           <dl class="admin-details">
                             <div><dt>{{ 'admin.detail.emailVerified' | t }}</dt>
                               <dd>{{ u.emailVerifiedAt ? (u.emailVerifiedAt | fmtDate) : ((u.emailConfirmed ? 'admin.detail.confirmedBefore' : 'common.no') | t) }}</dd></div>
-                            <div><dt>{{ 'admin.detail.approved' | t }}</dt>
-                              <dd>{{ u.approvedAt ? (u.approvedAt | fmtDate) : '—' }}@if (u.approvedByEmail) { · <span dir="ltr">{{ u.approvedByEmail }}</span> }</dd></div>
                             <div><dt>{{ 'admin.detail.statusChanged' | t }}</dt>
                               <dd>{{ u.statusChangedAt ? (u.statusChangedAt | fmtDate) : '—' }}@if (u.statusChangedByEmail) { · <span dir="ltr">{{ u.statusChangedByEmail }}</span> }</dd></div>
                             <div><dt>{{ 'admin.detail.lastSignIn' | t }}</dt><dd>{{ u.lastSignInAt ? (u.lastSignInAt | fmtDate) : '—' }}</dd></div>
@@ -204,7 +195,11 @@ const PAGE_SIZE = 20;
               <div class="field grow">
                 <label for="promote-email">{{ 'admin.promoteLabel' | t }}</label>
                 <input id="promote-email" class="input" type="email" name="promoteEmail" [(ngModel)]="promoteEmail" dir="ltr"
+                       (ngModelChange)="suggestEmails($event)" (focus)="suggestEmails(promoteEmail)" list="promote-suggestions"
                        autocomplete="off" maxlength="254" [placeholder]="'admin.promotePlaceholder' | t" aria-describedby="promote-help" />
+                <datalist id="promote-suggestions">
+                  @for (e of emailSuggestions(); track e) { <option [value]="e"></option> }
+                </datalist>
                 <small id="promote-help" class="muted small">{{ 'admin.promoteHelp' | t }}</small>
               </div>
               <button type="submit" class="btn btn-primary" [disabled]="promoting() || !promoteEmail.trim()">
@@ -322,6 +317,9 @@ export default class AdminPage implements OnInit {
   protected readonly busyId = signal<string | null>(null);
 
   protected promoteEmail = '';
+  /** Emails of accounts that are not administrators yet, matching what is typed in the promote field. */
+  protected readonly emailSuggestions = signal<string[]>([]);
+  private suggestTimer: ReturnType<typeof setTimeout> | undefined;
   protected readonly promoting = signal(false);
   protected readonly testing = signal(false);
 
@@ -388,12 +386,6 @@ export default class AdminPage implements OnInit {
   protected setStatus(status: AccountStatus | ''): void {
     this.filterStatus.set(status);
     this.search();
-  }
-
-  protected showPending(): void {
-    this.tab.set('users');
-    this.query = '';
-    this.setStatus('PendingApproval');
   }
 
   protected goPage(page: number): void {
@@ -513,6 +505,19 @@ export default class AdminPage implements OnInit {
     } finally {
       this.busyId.set(null);
     }
+  }
+
+  /** Looks up matching emails shortly after typing stops (all accounts when the field is empty). */
+  protected suggestEmails(text: string): void {
+    clearTimeout(this.suggestTimer);
+    this.suggestTimer = setTimeout(async () => {
+      try {
+        const list = await this.api.users({ q: text, role: 'user', page: 1, pageSize: 20 });
+        this.emailSuggestions.set(list.items.filter(u => u.status === 'Approved').map(u => u.email));
+      } catch {
+        this.emailSuggestions.set([]);
+      }
+    }, 200);
   }
 
   protected async promote(): Promise<void> {

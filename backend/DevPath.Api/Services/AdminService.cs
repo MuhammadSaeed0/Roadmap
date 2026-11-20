@@ -49,6 +49,8 @@ public class AdminService(
         }
         if (status is not null) query = query.Where(u => u.Status == status);
         if (role == "admin") query = query.Where(u => AdminIds().Contains(u.Id));
+        // Accounts that could be made administrators: used by the email suggestions on the Administrators tab.
+        else if (role == "user") query = query.Where(u => !AdminIds().Contains(u.Id));
         var total = await query.CountAsync(ct);
         var items = await ToDtos(query.OrderByDescending(u => u.CreatedAt).ThenBy(u => u.Id).Skip((page - 1) * pageSize).Take(pageSize), ct);
         return new AdminUserListDto(items, total, page, pageSize);
