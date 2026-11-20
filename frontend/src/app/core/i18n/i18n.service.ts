@@ -41,6 +41,8 @@ export class I18nService {
   readonly isRtl = computed(() => this.lang() === 'ar');
   /** Arabic month/day names with Western digits — easier to read next to code and percentages. */
   readonly locale = computed(() => (this.lang() === 'ar' ? 'ar-EG-u-nu-latn' : 'en-GB'));
+  /** Translation key of the page being shown (set by the shell from the route); the browser tab reads "Page · DevPath". */
+  readonly pageKey = signal<string | null>(null);
 
   constructor() {
     effect(() => {
@@ -48,7 +50,10 @@ export class I18nService {
       const html = this.document.documentElement;
       html.lang = lang;
       html.dir = this.dir();
-      this.title.setTitle(dictionaries[lang].app.fullName);
+      const app = dictionaries[lang].app.fullName;
+      const page = this.pageKey();
+      const name = page ? this.t(page) : '';
+      this.title.setTitle(!name || name === page ? app : name.includes(app) ? name : `${name} · ${app}`);
       try { localStorage.setItem(STORAGE_KEY, lang); } catch { /* storage unavailable: preference just isn't remembered */ }
     });
   }
