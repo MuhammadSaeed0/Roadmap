@@ -199,7 +199,8 @@ export class ShellComponent {
       { path: '/paths', key: 'nav.paths', icon: 'route' },
     ] },
     { key: 'nav.watch', items: [
-      { path: '/media', key: 'nav.media', icon: 'video' },
+      { path: '/videos', key: 'nav.videos', icon: 'video' },
+      { path: '/resources', key: 'nav.resources', icon: 'link' },
     ] },
     { key: 'nav.build', items: [
       { path: '/projects', key: 'nav.projects', icon: 'folder' },

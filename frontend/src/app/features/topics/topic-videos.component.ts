@@ -155,6 +155,12 @@ export class TopicVideosComponent {
   protected readonly shown = computed(() => this.languages.apply(this.data.value()?.videos ?? []));
 
   constructor() {
+    // Each topic, and each project task, keeps its own language choice.
+    effect(() => {
+      const topicId = this.topicId();
+      const taskId = this.taskId();
+      this.languages.setPlace(taskId ? `task-${taskId}` : topicId ? String(topicId) : null);
+    });
     effect(() => {
       this.topicId();
       this.taskId();

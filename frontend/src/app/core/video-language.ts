@@ -1,4 +1,4 @@
-import { InjectionToken, Injectable, Provider, inject, signal } from '@angular/core';
+import { InjectionToken, Injectable, Provider, computed, inject, signal } from '@angular/core';
 import { I18nService } from './i18n/i18n.service';
 import { TopicVideo, VideoLanguage } from './models';
 
@@ -14,19 +14,33 @@ export function provideVideoLanguage(scope: VideoLanguageScope): Provider[] {
 }
 
 /**
- * Which language of curated videos to show (Arabic, English or both), remembered in this browser per place
- * (the video library and topic pages each remember their own). Until the learner chooses, both languages are
- * shown with the interface language first.
+ * Which language of curated videos to show (Arabic, English or both), remembered in this browser per place:
+ * the video library keeps one choice, and each topic (or project task) keeps its own, so filtering one never
+ * changes another. Until the learner chooses, both languages are shown with the interface language first.
  */
 @Injectable()
 export class VideoLanguageService {
   private readonly i18n = inject(I18nService);
-  private readonly key = `devpath.videoLanguage.${inject(VIDEO_LANGUAGE_SCOPE)}`;
-  readonly filter = signal<VideoLanguageFilter>(read(this.key));
+  private readonly scope = inject(VIDEO_LANGUAGE_SCOPE);
+  /** One topic or task inside the scope, set by the component; null for the whole scope (the library). */
+  private readonly place = signal<string | null>(null);
+  private readonly key = computed(() => `devpath.videoLanguage.${this.scope}${this.place() === null ? '' : `.${this.place()}`}`);
+  /** The choice made on this visit; the stored one is read again when the place changes. */
+  private readonly chosen = signal<{ key: string; value: VideoLanguageFilter } | null>(null);
+  readonly filter = computed<VideoLanguageFilter>(() => {
+    const key = this.key();
+    const chosen = this.chosen();
+    return chosen?.key === key ? chosen.value : read(key);
+  });
+
+  setPlace(place: string | null): void {
+    this.place.set(place);
+  }
 
   set(filter: VideoLanguageFilter): void {
-    this.filter.set(filter);
-    try { localStorage.setItem(this.key, filter); } catch { /* not remembered */ }
+    const key = this.key();
+    this.chosen.set({ key, value: filter });
+    try { localStorage.setItem(key, filter); } catch { /* not remembered */ }
   }
 
   /** Filters by the chosen language (videos without a language, such as ones you added, always stay) and sorts the interface language first. */

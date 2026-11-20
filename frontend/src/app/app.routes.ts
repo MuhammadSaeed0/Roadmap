@@ -20,11 +20,11 @@ const appRoutes: Routes = [
   { path: 'playground', loadComponent: () => import('./features/playground/playground.page'), data: { titleKey: 'nav.playground', helpId: 'playground', skin: 'gram' } },
   { path: 'playground/new/:template', loadComponent: () => import('./features/playground/workspace.page'), data: { titleKey: 'nav.playground', helpId: 'workspace', skin: 'gram' } },
   { path: 'playground/:id', loadComponent: () => import('./features/playground/workspace.page'), data: { titleKey: 'nav.playground', helpId: 'workspace', skin: 'gram' } },
-  { path: 'media', loadComponent: () => import('./features/media/media.page'), data: { titleKey: 'nav.media', helpId: 'media', skin: 'tube' } },
-  // Videos and resources are the two tabs of /media now; old links keep their filters.
-  { path: 'videos', redirectTo: ({ queryParams }) => inject(Router).createUrlTree(['/media'], { queryParams: { ...queryParams, section: 'videos' } }) },
+  // /media (videos and resources on one page for a short while) opens the matching page; other filters are kept.
+  { path: 'media', redirectTo: ({ queryParams: { section, ...rest } }) => inject(Router).createUrlTree([section === 'resources' ? '/resources' : '/videos'], { queryParams: rest }) },
+  { path: 'videos', loadComponent: () => import('./features/videos/video-library.page'), data: { titleKey: 'nav.videos', helpId: 'videos', skin: 'tube' } },
   { path: 'interviews', loadComponent: () => import('./features/interviews/interviews.page'), data: { titleKey: 'nav.interviews', helpId: 'interviews', skin: 'chatgreen' } },
-  { path: 'resources', redirectTo: ({ queryParams }) => inject(Router).createUrlTree(['/media'], { queryParams: { ...queryParams, section: 'resources' } }) },
+  { path: 'resources', loadComponent: () => import('./features/resources/resources.page'), data: { titleKey: 'nav.resources', helpId: 'resources', skin: 'tube' } },
   { path: 'notes', loadComponent: () => import('./features/notes/notes.page'), data: { titleKey: 'nav.notes', helpId: 'notes', skin: 'chatgreen' } },
   // The old Overview tab is the Progress tab of the Developer Level page now; old links open that tab.
   { path: 'progress', canActivate: [progressOverviewRedirect],
