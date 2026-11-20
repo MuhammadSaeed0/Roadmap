@@ -249,6 +249,10 @@ export class ShellComponent {
 
     void this.checkHealth();
 
+    // While the menu panel is open, the page behind it doesn't scroll (see html.nav-locked in skins.css).
+    effect(() => document.documentElement.classList.toggle('nav-locked', this.navOpen()));
+    inject(DestroyRef).onDestroy(() => document.documentElement.classList.remove('nav-locked'));
+
     // The session ended while an app page was open (the cookie expired, or the password was
     // changed or reset on another device): go to sign-in, and come back afterwards.
     effect(() => {
