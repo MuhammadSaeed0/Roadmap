@@ -1,0 +1,126 @@
+<app-page-header [title]="'marketing.title' | t" [subtitle]="'marketing.subtitle' | t" />
+
+<div class="mk-layout">
+  <section class="card mk-post" data-tour="marketing-post" aria-labelledby="mk-post-title">
+    <div class="mk-head">
+      <h2 id="mk-post-title"><app-icon name="message-square" [size]="18" /> {{ 'marketing.post' | t }}</h2>
+      <div class="segmented" role="radiogroup" [attr.aria-label]="'marketing.post' | t">
+        <button type="button" role="radio" lang="ar" [class.active]="postLang() === 'ar'" [attr.aria-checked]="postLang() === 'ar'" (click)="postLang.set('ar')">{{ 'marketing.arabic' | t }}</button>
+        <button type="button" role="radio" lang="en" [class.active]="postLang() === 'en'" [attr.aria-checked]="postLang() === 'en'" (click)="postLang.set('en')">{{ 'marketing.english' | t }}</button>
+      </div>
+    </div>
+
+    <label class="sr-only" for="mk-text">{{ 'marketing.postLabel' | t }}</label>
+    <textarea id="mk-text" class="mk-text" [dir]="postLang() === 'ar' ? 'rtl' : 'ltr'" [lang]="postLang()" [value]="text()"
+              (input)="edit($any($event.target).value)" rows="16" spellcheck="false"></textarea>
+    <p class="muted small mk-meta">
+      <span>{{ 'marketing.characters' | t: { count: (text().length | fmtNum) } }}</span>
+      <span>{{ 'marketing.editHint' | t }}</span>
+    </p>
+
+    <div class="mk-actions">
+      <button type="button" class="btn btn-primary" (click)="copy(text(), 'post')">
+        <app-icon [name]="justCopied() === 'post' ? 'check' : 'copy'" [size]="16" />
+        {{ (justCopied() === 'post' ? 'marketing.copied' : 'marketing.copyPost') | t }}
+      </button>
+      @if (canShare) {
+        <button type="button" class="btn btn-secondary" (click)="share()">
+          <app-icon name="share" [size]="16" /> {{ 'marketing.share' | t }}
+        </button>
+      }
+      @if (edited()) {
+        <button type="button" class="btn btn-ghost" (click)="reset()"><app-icon name="refresh" [size]="16" /> {{ 'marketing.reset' | t }}</button>
+      }
+    </div>
+    @if (canShare) { <p class="muted small">{{ 'marketing.shareHint' | t }}</p> }
+  </section>
+
+  <section class="card mk-kit" data-tour="marketing-kit" aria-labelledby="mk-kit-title">
+    <h2 id="mk-kit-title"><app-icon name="briefcase" [size]="18" /> {{ 'marketing.kit' | t }}</h2>
+
+    <dl class="mk-fields">
+      <div class="mk-field">
+        <dt>{{ 'marketing.appUrl' | t }}</dt>
+        <dd><a [href]="appUrl" target="_blank" rel="noopener" dir="ltr">{{ appUrl }}</a></dd>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="copy(appUrl, 'url')">
+          <app-icon [name]="justCopied() === 'url' ? 'check' : 'copy'" [size]="14" /> {{ 'marketing.copy' | t }}
+        </button>
+      </div>
+      <div class="mk-field">
+        <dt>{{ 'marketing.hashtags' | t }}</dt>
+        <dd class="mk-tags">@for (tag of tagList; track tag) { <bdi>{{ tag }}</bdi> }</dd>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="copy(hashtags, 'tags')">
+          <app-icon [name]="justCopied() === 'tags' ? 'check' : 'copy'" [size]="14" /> {{ 'marketing.copy' | t }}
+        </button>
+      </div>
+      <div class="mk-field">
+        <dt>{{ 'marketing.shortCaption' | t }}</dt>
+        <dd [dir]="postLang() === 'ar' ? 'rtl' : 'ltr'" class="mk-pre">{{ shortCaption() }}</dd>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="copy(shortCaption(), 'short')">
+          <app-icon [name]="justCopied() === 'short' ? 'check' : 'copy'" [size]="14" /> {{ 'marketing.copy' | t }}
+        </button>
+      </div>
+    </dl>
+
+    <h3>{{ 'marketing.steps' | t }}</h3>
+    <ol class="mk-steps">
+      <li>{{ 'marketing.step1' | t }}</li>
+      <li>{{ 'marketing.step2' | t }}</li>
+      <li>{{ 'marketing.step3' | t }}</li>
+      <li>{{ 'marketing.step4' | t }}</li>
+    </ol>
+
+    <a class="btn btn-secondary mk-fb" [href]="facebookUrl" target="_blank" rel="noopener">
+      <app-icon name="external" [size]="16" /> {{ 'marketing.facebook' | t }}
+    </a>
+    <p class="muted small">{{ 'marketing.facebookHint' | t }}</p>
+  </section>
+</div>
+
+<section class="mk-gallery" data-tour="marketing-gallery" aria-labelledby="mk-gallery-title">
+  <div class="mk-head">
+    <div>
+      <h2 id="mk-gallery-title"><app-icon name="eye" [size]="18" /> {{ 'marketing.gallery' | t }}</h2>
+      <p class="muted small">{{ 'marketing.galleryHint' | t }} · {{ 'marketing.count' | t: { count: shots.length } }}</p>
+    </div>
+    <button type="button" class="btn btn-secondary" (click)="downloadAll()" [disabled]="downloading()">
+      <app-icon name="download" [size]="16" /> {{ 'marketing.downloadAll' | t }}
+    </button>
+  </div>
+
+  <ol class="mk-grid" role="list">
+    @for (shot of shots; track shot.file; let i = $index) {
+      <li class="mk-shot" [class.mk-shot-mobile]="shot.device === 'mobile'">
+        <button type="button" class="mk-thumb" (click)="open(i)" [attr.aria-label]="('marketing.view' | t) + ': ' + caption(shot)">
+          <img [src]="url(shot.file)" [alt]="caption(shot)" loading="lazy" decoding="async" />
+          <span class="mk-order">{{ i + 1 }}</span>
+        </button>
+        <div class="mk-shot-body">
+          <p class="mk-caption">{{ caption(shot) }}</p>
+          <span class="chip chip-sm">{{ 'marketing.device.' + shot.device | t }}</span>
+        </div>
+        <a class="btn btn-secondary btn-sm mk-download" [href]="url(shot.file)" [download]="'devpath-' + shot.file">
+          <app-icon name="download" [size]="14" /> {{ 'marketing.download' | t }}
+        </a>
+      </li>
+    }
+  </ol>
+</section>
+
+<dialog #viewer class="mk-viewer" (close)="viewing.set(null)" (click)="$event.target === $event.currentTarget && close()"
+        [attr.aria-label]="current() ? caption(current()!) : null">
+  @if (current(); as shot) {
+    <div class="mk-viewer-bar">
+      <p class="mk-caption">{{ viewing()! + 1 }} / {{ shots.length }} · {{ caption(shot) }}</p>
+      <a class="btn btn-secondary btn-sm" [href]="url(shot.file)" [download]="'devpath-' + shot.file">
+        <app-icon name="download" [size]="14" /> {{ 'marketing.download' | t }}
+      </a>
+      <button type="button" class="icon-btn" (click)="close()" [attr.aria-label]="'marketing.close' | t"><app-icon name="x" /></button>
+    </div>
+    <img class="mk-viewer-img" [src]="url(shot.file)" [alt]="caption(shot)" />
+    <div class="mk-viewer-nav">
+      <button type="button" class="btn btn-secondary btn-sm" (click)="step(-1)"><app-icon name="chevron-left" class="flip-rtl" [size]="14" /> {{ 'marketing.previous' | t }}</button>
+      <button type="button" class="btn btn-secondary btn-sm" (click)="step(1)">{{ 'marketing.next' | t }} <app-icon name="chevron-right" class="flip-rtl" [size]="14" /></button>
+    </div>
+  }
+</dialog>

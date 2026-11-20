@@ -112,6 +112,7 @@ const NARROW_MAX = 960;
                   </div>
                   @if (auth.isAdmin()) {
                     <button type="button" role="menuitem" (click)="go('/admin')"><app-icon name="shield" [size]="16" /> {{ 'nav.admin' | t }}</button>
+                    <button type="button" role="menuitem" (click)="go('/marketing')"><app-icon name="share" [size]="16" /> {{ 'nav.marketing' | t }}</button>
                   }
                   <button type="button" role="menuitem" (click)="go('/settings')"><app-icon name="settings" [size]="16" /> {{ 'nav.settings' | t }}</button>
                   <button type="button" role="menuitem" (click)="signOut()"><app-icon name="log-out" [size]="16" /> {{ 'auth.signOut' | t }}</button>

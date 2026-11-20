@@ -54,6 +54,7 @@ export const content: TourContent = {
     'cv-editor': { title: 'CV editor', summary: 'Edit your CV section by section beside a live preview of the real PDF. Changes are saved automatically.' },
     settings: { title: 'Settings', summary: 'Language and theme, your learning preferences, and your account.' },
     search: { title: 'Search', summary: 'Results from across DevPath for what you typed, grouped by kind.' },
+    marketing: { title: 'Marketing Studio', summary: 'For administrators: the Facebook post, the publishing kit and real screenshots, ready to copy, download and share from a phone.' },
     admin: { title: 'Administration', summary: 'For administrators: approve new accounts, manage administrators and review what changed.' },
     playground: { title: 'Code Playground', summary: 'Coding environments for C#, SQL, TypeScript, JavaScript, HTML/CSS and Angular. Start from a template, write and run code in your browser, and save projects to your account.' },
     workspace: { title: 'Workspace', summary: 'A small IDE: a file explorer, tabs, the editor, and an output panel (with a live preview for web and Angular projects). Your code runs in your browser.' },
@@ -171,6 +172,9 @@ export const content: TourContent = {
     'settings-about': { title: 'About your data', body: 'Your progress, notes, study sessions and videos are stored with your account and only you can see them.' },
     'search-results': { title: 'Results', body: 'Matches grouped by kind: topics, projects, tasks, exercises, interview questions, resources and notes. Click any result to open it.' },
 
+    'marketing-post': { title: 'Facebook post', body: 'The post in Arabic and English. Edit it here if you like, then copy it in one tap or share it with the images from your phone.' },
+    'marketing-kit': { title: 'Publishing kit', body: 'The app link, hashtags and a short caption to copy, the steps to publish, and a link-only share to Facebook.' },
+    'marketing-gallery': { title: 'Screenshots', body: 'Real screenshots in posting order. Tap one to see it full size, download it, or download them all.' },
     'admin-stats': { title: 'Account statistics', body: 'Totals for every account status, including how many are waiting for approval. The button below jumps straight to them.' },
     'admin-tabs': { title: 'Admin sections', body: 'Accounts to review, the list of administrators, and the activity log of every administrative change.' },
     'admin-users': { title: 'Accounts', body: 'Search and filter accounts, then approve, reject, suspend, reactivate or resend the confirmation email. Every action asks for confirmation and is logged.' },
