@@ -39,6 +39,7 @@ export const SECTION_IDS = [
   'cv-new', 'cv-list', 'cv-templates', 'cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview',
   'settings-appearance', 'settings-learning', 'settings-account', 'settings-about', 'search-results',
   'admin-stats', 'admin-tabs', 'admin-users', 'admin-usage',
+  'marketing-post', 'marketing-kit', 'marketing-gallery',
   // Discussions and learning paths
   'discussions-ask', 'discussions-filters', 'discussions-list', 'discussion-post', 'discussion-reply',
   'paths-builtin', 'paths-mine', 'path-hero', 'path-topics', 'path-details', 'path-pick',
@@ -51,7 +52,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 /** Pages with a guide. Routes name theirs in `data.helpId` (see app.routes.ts), so /topics/:id etc. work. */
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
-  'resources', 'notes', 'progress', 'skills', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
+  'resources', 'notes', 'progress', 'skills', 'settings', 'search', 'admin', 'marketing', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
   'discussions', 'discussion', 'paths', 'path', 'path-create', 'reviews', 'guides', 'guide', 'pre-roadmap',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
@@ -79,6 +80,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   settings: ['settings-appearance', 'settings-learning', 'settings-account', 'settings-about'],
   search: ['search-results'],
   admin: ['admin-stats', 'admin-tabs', 'admin-users', 'admin-usage'],
+  marketing: ['marketing-post', 'marketing-kit', 'marketing-gallery'],
   discussions: ['discussions-ask', 'discussions-filters', 'discussions-list'],
   discussion: ['discussion-post', 'discussion-reply'],
   paths: ['paths-builtin', 'paths-mine'],

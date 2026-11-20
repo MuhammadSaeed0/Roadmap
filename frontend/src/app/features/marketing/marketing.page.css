@@ -1,0 +1,74 @@
+:host { display: block; container-type: inline-size; }
+
+h2 { display: flex; align-items: center; gap: 8px; margin: 0; }
+h3 { font-size: 0.95rem; margin: 20px 0 8px; }
+
+.mk-layout { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.mk-layout .card { margin: 0; }
+.mk-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+
+.mk-text {
+  width: 100%; min-height: 360px; resize: vertical; padding: 14px 16px;
+  font: inherit; font-size: 0.95rem; line-height: 1.75; color: var(--text);
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.mk-text:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.mk-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 8px 0 0; }
+.mk-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 8px; }
+
+.mk-fields { margin: 12px 0 0; display: grid; gap: 12px; }
+.mk-field {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center;
+  padding: 12px 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.mk-field dt { grid-column: 1 / -1; font-size: 0.8rem; color: var(--muted); }
+.mk-field dd { margin: 0; min-width: 0; overflow-wrap: anywhere; font-size: 0.9rem; }
+.mk-pre { white-space: pre-line; }
+.mk-tags { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.mk-steps { margin: 0; padding-inline-start: 20px; display: grid; gap: 6px; font-size: 0.92rem; color: var(--text-2); }
+.mk-fb { margin-top: 16px; }
+
+.mk-gallery { margin-top: 24px; }
+.mk-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.mk-shot {
+  display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.mk-thumb {
+  position: relative; display: block; padding: 0; border: 0; cursor: zoom-in;
+  aspect-ratio: 16 / 10; background: var(--surface-2); overflow: hidden;
+}
+.mk-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; transition: transform 0.25s ease; }
+.mk-shot-mobile .mk-thumb img { object-fit: contain; }
+.mk-thumb:hover img { transform: scale(1.03); }
+.mk-thumb:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.mk-order {
+  position: absolute; inset-block-start: 8px; inset-inline-start: 8px; min-width: 28px; height: 28px; padding: 0 8px;
+  display: grid; place-items: center; border-radius: 999px; font-weight: 600; font-size: 0.85rem;
+  background: var(--accent); color: var(--on-accent); box-shadow: var(--shadow-sm);
+}
+.mk-shot-body { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 12px 14px 8px; flex: 1; }
+.mk-caption { margin: 0; font-size: 0.9rem; font-weight: 500; }
+.mk-download { margin: 0 14px 14px; align-self: flex-start; }
+
+.mk-viewer {
+  width: min(1200px, 96vw); max-height: 94vh; padding: 0; border: 1px solid var(--border);
+  border-radius: var(--radius); background: var(--surface); color: var(--text); box-shadow: var(--shadow-lg);
+}
+.mk-viewer::backdrop { background: rgb(0 0 0 / 0.7); }
+.mk-viewer-bar, .mk-viewer-nav { display: flex; align-items: center; gap: 8px; padding: 10px 12px; }
+.mk-viewer-bar .mk-caption { flex: 1; min-width: 0; }
+.mk-viewer-nav { justify-content: space-between; }
+.mk-viewer-img { display: block; width: 100%; max-height: calc(94vh - 120px); object-fit: contain; background: var(--surface-2); }
+
+@container (max-width: 860px) {
+  .mk-layout { grid-template-columns: minmax(0, 1fr); }
+}
+@container (max-width: 520px) {
+  .mk-text { min-height: 300px; font-size: 0.92rem; }
+  .mk-actions .btn { flex: 1 1 100%; justify-content: center; }
+  .mk-fb { width: 100%; justify-content: center; }
+  .mk-grid { grid-template-columns: minmax(0, 1fr); }
+  .mk-head > .btn { width: 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) { .mk-thumb img { transition: none; } }
