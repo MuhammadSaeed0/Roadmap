@@ -41,6 +41,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<GuidedStepProgress> GuidedStepProgress => Set<GuidedStepProgress>();
     public DbSet<GuidedProjectTopic> GuidedProjectTopics => Set<GuidedProjectTopic>();
     public DbSet<GuidedProjectRepository> GuidedProjectRepositories => Set<GuidedProjectRepository>();
+    public DbSet<PageViewDaily> PageViews => Set<PageViewDaily>();
 
     // User data
     public DbSet<TopicProgress> TopicProgress => Set<TopicProgress>();
@@ -480,6 +481,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.Property(x => x.TitleAr).HasMaxLength(200);
             e.Property(x => x.CodeLanguage).HasMaxLength(20);
             e.HasOne(x => x.Project).WithMany(p => p.Steps).HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<PageViewDaily>(e =>
+        {
+            e.ToTable("PageViewsDaily");
+            e.HasKey(x => new { x.Date, x.Route });
+            e.Property(x => x.Route).HasMaxLength(UsageService.MaxRouteLength);
         });
 
         b.Entity<GuidedProjectTopic>(e =>

@@ -173,6 +173,7 @@ export const content: TourContent = {
     'admin-stats': { title: 'Account statistics', body: 'Totals for every account status, including how many are waiting for approval. The button below jumps straight to them.' },
     'admin-tabs': { title: 'Admin sections', body: 'Accounts to review, the list of administrators, and the activity log of every administrative change.' },
     'admin-users': { title: 'Accounts', body: 'Search and filter accounts, then approve, reject, suspend, reactivate or resend the confirmation email. Every action asks for confirmation and is logged.' },
+    'admin-usage': { title: 'Usage', body: 'The most opened pages and Project library uptake over the last 30 days. Counts only: nobody can be identified.' },
     'discussions-ask': { title: 'Ask a question', body: 'Pick the topic your question is about, give it a clear title, and describe what you tried.' },
     'discussions-filters': { title: 'Filter and sort', body: 'Show the questions of one topic, newest first or with the most votes first.' },
     'discussions-list': { title: 'Questions', body: 'Each card shows its votes, its topic and how many replies it has. A green check means an answer was accepted.' },

@@ -1,0 +1,84 @@
+using System.Text.RegularExpressions;
+using DevPath.Api.Data;
+using DevPath.Api.DTOs;
+using DevPath.Api.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace DevPath.Api.Services;
+
+/// <summary>
+/// Anonymous usage counts for the admin page: page views per route pattern per day, and how many learners
+/// started and finished Project library projects. Nothing here identifies a person.
+/// </summary>
+public partial class UsageService(AppDbContext db, TimeProvider clock)
+{
+    /// <summary>
+    /// A route pattern from the app's router: lower-case words and ":param" placeholders, so ids from the URL
+    /// ("topics/12") are refused. The empty string is the home page.
+    /// </summary>
+    [GeneratedRegex(@"^(|([a-z][a-z0-9-]*|:[a-zA-Z]+)(/([a-z][a-z0-9-]*|:[a-zA-Z]+))*)$")]
+    private static partial Regex RoutePattern();
+
+    public const int MaxRouteLength = 100;
+
+    public static bool IsValidRoute(string? route) =>
+        route is not null && route.Length <= MaxRouteLength && RoutePattern().IsMatch(route);
+
+    /// <summary>Adds one view of a route for today (UTC).</summary>
+    public async Task RecordAsync(string route, CancellationToken ct)
+    {
+        if (!IsValidRoute(route))
+            throw new RequestValidationException("route", "invalid", "Send the route pattern, such as \"topics/:id\".");
+
+        var today = DateOnly.FromDateTime(clock.GetUtcNow().UtcDateTime);
+        // Increment in the database so concurrent views are not lost; insert the day's row the first time.
+        for (var attempt = 1; ; attempt++)
+        {
+            try
+            {
+                var updated = await db.PageViews.Where(v => v.Date == today && v.Route == route)
+                    .ExecuteUpdateAsync(s => s.SetProperty(v => v.Views, v => v.Views + 1), ct);
+                if (updated > 0) return;
+                db.PageViews.Add(new PageViewDaily { Date = today, Route = route, Views = 1 });
+                await db.SaveChangesAsync(ct);
+                return;
+            }
+            catch (Exception e) when (attempt < 5 && e is DbUpdateException or System.Data.Common.DbException)
+            {
+                // Another request inserted the day's row first (or held a lock); increment it on the next attempt.
+                db.ChangeTracker.Clear();
+                await Task.Delay(20 * attempt, ct);
+            }
+        }
+    }
+
+    /// <summary>The last <paramref name="days"/> days (today included), counts only.</summary>
+    public async Task<UsageReportDto> ReportAsync(int days, CancellationToken ct)
+    {
+        days = Math.Clamp(days, 1, 365);
+        var to = DateOnly.FromDateTime(clock.GetUtcNow().UtcDateTime);
+        var from = to.AddDays(1 - days);
+
+        var rows = await db.PageViews.AsNoTracking().Where(v => v.Date >= from && v.Date <= to)
+            .Select(v => new { v.Date, v.Route, v.Views }).ToListAsync(ct);
+        var top = rows.GroupBy(r => r.Route)
+            .Select(g => new UsageRouteDto(g.Key, g.Sum(r => r.Views), g.Select(r => r.Date).Distinct().Count()))
+            .OrderByDescending(r => r.Views).ThenBy(r => r.Route).ToList();
+        var daily = Enumerable.Range(0, days).Select(i => from.AddDays(i))
+            .Select(d => new UsageDayDto(d, rows.Where(r => r.Date == d).Sum(r => r.Views))).ToList();
+
+        // Library: learners with at least one ticked step, and learners who finished at least one project.
+        var stepsPerProject = await db.GuidedProjectSteps.AsNoTracking().GroupBy(s => s.ProjectId)
+            .Select(g => new { ProjectId = g.Key, Steps = g.Count() }).ToDictionaryAsync(x => x.ProjectId, x => x.Steps, ct);
+        var progress = await db.GuidedStepProgress.IgnoreQueryFilters().AsNoTracking()
+            .GroupBy(p => new { p.UserId, p.Step.ProjectId })
+            .Select(g => new { g.Key.UserId, g.Key.ProjectId, Done = g.Count() }).ToListAsync(ct);
+        var finished = progress.Where(p => p.Done >= stepsPerProject.GetValueOrDefault(p.ProjectId, int.MaxValue)).ToList();
+
+        return new UsageReportDto(from, to, rows.Sum(r => r.Views), top, daily,
+            new UsageLibraryDto(
+                progress.Select(p => p.UserId).Distinct().Count(),
+                finished.Select(p => p.UserId).Distinct().Count(),
+                finished.Count));
+    }
+}

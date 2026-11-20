@@ -144,7 +144,7 @@ export const ar: Translations = {
       approved: 'معتمدة', rejected: 'مرفوضة', suspended: 'موقوفة', admins: 'المسؤولون', recent: 'جديدة خلال 7 أيام',
     },
     reviewPending: 'راجع {count} بانتظار الموافقة',
-    tabs: { users: 'الحسابات', admins: 'المسؤولون', activity: 'سجل النشاط' },
+    tabs: { users: 'الحسابات', admins: 'المسؤولون', activity: 'سجل النشاط', usage: 'الاستخدام' },
     searchLabel: 'ابحث في الحسابات بالاسم أو البريد', searchPlaceholder: 'ابحث بالاسم أو البريد…', filterStatus: 'التصفية حسب الحالة',
     allStatuses: 'كل الحالات', noUsers: 'لا توجد حسابات', noUsersHint: 'جرّب بحثًا أو تصفية مختلفة.',
     usersCaption: 'الحسابات', pageInfo: '{from}–{to} من {total}', details: 'تفاصيل {name}',
@@ -181,6 +181,12 @@ export const ar: Translations = {
     testEmail: 'إرسال رسالة تجريبية', testEmailHelp: 'يرسل رسالة تجريبية إلى بريدك للتحقق من إعدادات البريد.',
     testEmailSent: 'أُرسلت رسالة تجريبية إلى {email}. تحقّق من وصولها.',
     noActivity: 'لا يوجد نشاط إداري بعد.',
+    usage: {
+      privacy: 'آخر 30 يومًا. يُحفظ عنوان الصفحة فقط (مثل /topics/:id) وعدد مرات فتحها يوميًا، ولا يُحفظ من فتحها أبدًا. بدأ العدّ مع هذا الإصدار.',
+      views: 'مرات فتح الصفحات', started: 'متعلمون بدأوا مشروعًا من المكتبة', finished: 'متعلمون أنهوا مشروعًا',
+      projectsFinished: 'مشاريع مكتملة من المكتبة', perDay: 'مرات فتح الصفحات يوميًا', topPages: 'أكثر الصفحات فتحًا',
+      page: 'الصفحة', days: 'أيام الفتح', empty: 'لم تُحسب أي زيارة بعد.',
+    },
     audit: {
       approve: 'وافق على', reject: 'رفض', suspend: 'أوقف', reactivate: 'أعاد تفعيل',
       resend_verification: 'أعاد إرسال رسالة التأكيد إلى', grant_admin: 'منح صلاحيات المسؤول إلى', revoke_admin: 'أزال صلاحيات المسؤول من',

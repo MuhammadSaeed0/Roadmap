@@ -36,7 +36,7 @@ export const SECTION_IDS = [
   // CV builder
   'cv-new', 'cv-list', 'cv-templates', 'cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview',
   'settings-appearance', 'settings-learning', 'settings-account', 'settings-about', 'search-results',
-  'admin-stats', 'admin-tabs', 'admin-users',
+  'admin-stats', 'admin-tabs', 'admin-users', 'admin-usage',
   // Discussions and learning paths
   'discussions-ask', 'discussions-filters', 'discussions-list', 'discussion-post', 'discussion-reply',
   'paths-builtin', 'paths-mine', 'path-hero', 'path-topics', 'path-details', 'path-pick',
@@ -76,7 +76,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   'cv-editor': ['cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview'],
   settings: ['settings-appearance', 'settings-learning', 'settings-account', 'settings-about'],
   search: ['search-results'],
-  admin: ['admin-stats', 'admin-tabs', 'admin-users'],
+  admin: ['admin-stats', 'admin-tabs', 'admin-users', 'admin-usage'],
   discussions: ['discussions-ask', 'discussions-filters', 'discussions-list'],
   discussion: ['discussion-post', 'discussion-reply'],
   paths: ['paths-builtin', 'paths-mine'],

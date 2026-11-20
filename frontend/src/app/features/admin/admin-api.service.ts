@@ -24,6 +24,14 @@ export interface AdminOverview {
   canManageAdmins: boolean; emailProvider: string;
 }
 
+/** GET /admin/usage: counts only, nothing per person. Route is a pattern such as "topics/:id". */
+export interface AdminUsage {
+  from: string; to: string; totalViews: number;
+  topPages: { route: string; views: number; days: number }[];
+  daily: { date: string; views: number }[];
+  library: { learnersStarted: number; learnersFinished: number; projectsFinished: number };
+}
+
 export type StatusAction = 'approve' | 'reject' | 'suspend' | 'reactivate' | 'resend-verification';
 
 /** The admin endpoints. The server checks the role and the owner-only rules on every call. */
@@ -57,6 +65,7 @@ export class AdminApiService {
   promote(email: string) { return this.run(this.http.post<AdminUser>(`${this.base}/admins`, { email })); }
   revoke(id: string) { return this.run(this.http.delete<AdminUser>(`${this.base}/admins/${encodeURIComponent(id)}`)); }
   audit(take = 100) { return this.run(this.http.get<AdminAudit[]>(`${this.base}/audit`, { params: { take } })); }
+  usage(days = 30) { return this.run(this.http.get<AdminUsage>(`${this.base}/usage`, { params: { days } })); }
   testEmail() { return this.run(this.http.post<void>(`${this.base}/test-email`, {})); }
 
   private async run<T>(request: Observable<T>): Promise<T> {

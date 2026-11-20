@@ -1081,6 +1081,23 @@ namespace DevPath.Api.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.PageViewDaily", b =>
+                {
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Route")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Views")
+                        .HasColumnType("int");
+
+                    b.HasKey("Date", "Route");
+
+                    b.ToTable("PageViewsDaily", (string)null);
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.Phase", b =>
                 {
                     b.Property<int>("Id")

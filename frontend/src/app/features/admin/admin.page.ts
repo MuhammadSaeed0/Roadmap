@@ -7,9 +7,10 @@ import { FormatDatePipe, FormatNumberPipe, TranslatePipe } from '../../core/i18n
 import { ConfirmService, ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../../shared/ui.components';
+import { AdminUsageComponent } from './admin-usage.component';
 import { AdminApiService, AdminAudit, AdminOverview, AdminUser, AdminUserList, StatusAction } from './admin-api.service';
 
-type Tab = 'users' | 'admins' | 'activity';
+type Tab = 'users' | 'admins' | 'activity' | 'usage';
 
 /** An action that asks for an optional note (reject, suspend) opens this dialog instead of a plain confirmation. */
 interface ReasonRequest { user: AdminUser; action: 'reject' | 'suspend'; }
@@ -25,7 +26,7 @@ const PAGE_SIZE = 20;
 @Component({
   selector: 'app-admin-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, IconComponent, TranslatePipe, FormatDatePipe, FormatNumberPipe, PageHeaderComponent, SkeletonComponent,
+  imports: [FormsModule, AdminUsageComponent, IconComponent, TranslatePipe, FormatDatePipe, FormatNumberPipe, PageHeaderComponent, SkeletonComponent,
     ErrorStateComponent, EmptyStateComponent],
   template: `
     <app-page-header [title]="'admin.title' | t" [subtitle]="'admin.subtitle' | t">
@@ -269,6 +270,10 @@ const PAGE_SIZE = 20;
           }
         </section>
       }
+
+      @case ('usage') {
+        <div id="panel-usage" role="tabpanel" aria-labelledby="tab-usage"><app-admin-usage /></div>
+      }
     }
 
     <dialog #reasonDialog class="dialog" (cancel)="$event.preventDefault(); closeReason()" aria-labelledby="reason-title">
@@ -299,7 +304,7 @@ export default class AdminPage implements OnInit {
   private readonly confirm = inject(ConfirmService);
   private readonly reasonDialog = viewChild<ElementRef<HTMLDialogElement>>('reasonDialog');
 
-  protected readonly tabs: Tab[] = ['users', 'admins', 'activity'];
+  protected readonly tabs: Tab[] = ['users', 'admins', 'activity', 'usage'];
   protected readonly statuses = STATUSES;
   protected readonly tab = signal<Tab>('users');
 

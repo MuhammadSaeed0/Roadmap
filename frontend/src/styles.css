@@ -895,6 +895,8 @@ button.stat-card:hover { border-color: var(--accent); }
 .admin-search { flex: 1 1 260px; }
 .admin-filter { width: auto; min-width: 200px; }
 .admin-table td, .admin-table th { vertical-align: middle; }
+/* Four admin tabs don't fit one row on a phone: wrap them instead of pushing the page sideways. */
+.admin-tabs { flex-wrap: wrap; overflow: visible; }
 .admin-table tbody th { min-width: 240px; }
 .admin-user { display: flex; align-items: center; gap: 10px; }
 .admin-user strong, .admin-list strong { margin-inline-end: 6px; }

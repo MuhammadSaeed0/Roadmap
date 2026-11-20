@@ -18,11 +18,13 @@ import { HelpMenuComponent } from './tour/help-menu.component';
 import { NotificationBellComponent } from '../shared/notification-bell.component';
 import { TourOverlayComponent } from './tour/tour-overlay.component';
 import { TourWelcomeComponent } from './tour/tour-welcome.component';
+import { UsageTracker } from '../core/usage-tracker.service';
 
 interface NavItem { path: string; key: string; icon: string; }
 
 /** Up to this width the sidebar is a drawer (keep in step with the max-width: 960px rules in styles.css). */
 const NARROW_MAX = 960;
+
 @Component({
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -224,6 +226,7 @@ export class ShellComponent {
   });
 
   constructor() {
+    inject(UsageTracker).start();
     const onWidth = (e: MediaQueryListEvent) => { this.narrow.set(e.matches); if (!e.matches) this.navOpen.set(false); };
     this.narrowQuery?.addEventListener('change', onWidth);
     inject(DestroyRef).onDestroy(() => this.narrowQuery?.removeEventListener('change', onWidth));

@@ -142,7 +142,7 @@ export const en = {
       approved: 'Approved', rejected: 'Rejected', suspended: 'Suspended', admins: 'Administrators', recent: 'New in the last 7 days',
     },
     reviewPending: 'Review {count} waiting for approval',
-    tabs: { users: 'Accounts', admins: 'Administrators', activity: 'Activity log' },
+    tabs: { users: 'Accounts', admins: 'Administrators', activity: 'Activity log', usage: 'Usage' },
     searchLabel: 'Search accounts by name or email', searchPlaceholder: 'Search by name or email…', filterStatus: 'Filter by status',
     allStatuses: 'All statuses', noUsers: 'No accounts found', noUsersHint: 'Try another search or status filter.',
     usersCaption: 'Accounts', pageInfo: '{from}–{to} of {total}', details: 'Details for {name}',
@@ -179,6 +179,12 @@ export const en = {
     testEmail: 'Send a test email', testEmailHelp: 'Sends a test message to your own address to check the email settings.',
     testEmailSent: 'A test email was sent to {email}. Check that it arrived.',
     noActivity: 'No administrative activity yet.',
+    usage: {
+      privacy: 'Last 30 days. Only page addresses (like /topics/:id) and daily counts are stored, never who opened them. Counting started with this release.',
+      views: 'Page views', started: 'Learners who started a library project', finished: 'Learners who finished one',
+      projectsFinished: 'Library projects finished', perDay: 'Page views per day', topPages: 'Most opened pages',
+      page: 'Page', days: 'Days opened', empty: 'No page views counted yet.',
+    },
     audit: {
       approve: 'approved', reject: 'rejected', suspend: 'suspended', reactivate: 'reactivated',
       resend_verification: 'resent the confirmation email to', grant_admin: 'made an administrator:', revoke_admin: 'removed admin rights from',
