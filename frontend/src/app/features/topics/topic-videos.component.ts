@@ -11,7 +11,7 @@ import { ConfirmService, ToastService } from '../../core/ui-services';
 import { embedUrl, parseYouTubeVideoId, searchUrl, watchUrl } from '../../core/youtube';
 import { IconComponent } from '../../shared/icon.component';
 import { VideoCardComponent } from '../../shared/video-card.component';
-import { VideoLanguageFilter, VideoLanguageService } from '../../core/video-language';
+import { VideoLanguageFilter, VideoLanguageService, provideVideoLanguage } from '../../core/video-language';
 import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.components';
 
 /**
@@ -22,6 +22,7 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
  */
 @Component({
   selector: 'app-topic-videos',
+  providers: [provideVideoLanguage('topic')],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, IconComponent, TranslatePipe, SkeletonComponent, ErrorStateComponent, VideoCardComponent],
   template: `

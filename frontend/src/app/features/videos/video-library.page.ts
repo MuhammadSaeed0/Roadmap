@@ -10,7 +10,7 @@ import { LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
 import { SKILLS, SavedVideo, SkillArea, TopicVideo, VideoLibrary } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
-import { VideoLanguageFilter, VideoLanguageService } from '../../core/video-language';
+import { VideoLanguageFilter, VideoLanguageService, provideVideoLanguage } from '../../core/video-language';
 import { embedUrl, watchUrl } from '../../core/youtube';
 import { IconComponent } from '../../shared/icon.component';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../../shared/ui.components';
@@ -22,6 +22,7 @@ type Flags = { isWatched: boolean; isBookmarked: boolean };
 /** Every hand-picked video of the roadmap, by phase and topic, in Arabic and English, plus the videos you saved. */
 @Component({
   selector: 'app-video-library-page',
+  providers: [provideVideoLanguage('library')],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, RouterLink, IconComponent, TranslatePipe, LocalizePipe, PageHeaderComponent, SkeletonComponent,
     ErrorStateComponent, EmptyStateComponent, VideoCardComponent],
@@ -234,7 +235,7 @@ export default class VideoLibraryPage {
   protected setTab(tab: Tab): void {
     this.tab.set(tab);
     if (tab === 'saved') void this.saved.reload();
-    void this.router.navigate([], { relativeTo: this.route, queryParams: { tab: tab === 'saved' ? 'saved' : null }, replaceUrl: true });
+    void this.router.navigate([], { relativeTo: this.route, queryParams: { tab: tab === 'saved' ? 'saved' : null }, queryParamsHandling: 'merge', replaceUrl: true });
   }
 
   /** Watched/saved from either list; both lists are kept in step. */

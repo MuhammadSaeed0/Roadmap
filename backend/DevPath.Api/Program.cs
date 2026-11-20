@@ -180,6 +180,7 @@ builder.Services.AddScoped<LearningStateLoader>();
 builder.Services.AddScoped<TopicService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<StudySessionService>();
+builder.Services.AddScoped<UsageService>();
 builder.Services.AddScoped<ResourceService>();
 builder.Services.AddScoped<PracticeService>();
 builder.Services.AddScoped<ChallengeService>();

@@ -13,7 +13,7 @@ namespace DevPath.Api.Controllers;
 [ApiController]
 [Route("api/admin")]
 [Authorize(Policy = Policies.Admin)]
-public class AdminController(AdminService admin) : ControllerBase
+public class AdminController(AdminService admin, UsageService usage) : ControllerBase
 {
     [HttpGet("overview")]
     public Task<AdminOverviewDto> Overview(CancellationToken ct) => admin.OverviewAsync(ct);
@@ -60,6 +60,10 @@ public class AdminController(AdminService admin) : ControllerBase
     /// <summary>Main administrator only.</summary>
     [HttpDelete("admins/{id}")]
     public Task<AdminUserDto> Revoke(string id, CancellationToken ct) => admin.RevokeAsync(id, ct);
+
+    /// <summary>Page views per route and Project library uptake for the last <paramref name="days"/> days. Counts only.</summary>
+    [HttpGet("usage")]
+    public Task<UsageReportDto> Usage([FromQuery] int days = 30, CancellationToken ct = default) => usage.ReportAsync(days, ct);
 
     [HttpGet("audit")]
     public Task<IReadOnlyList<AdminAuditDto>> Audit([FromQuery] int take = 50, CancellationToken ct = default) => admin.AuditAsync(take, ct);

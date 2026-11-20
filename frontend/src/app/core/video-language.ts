@@ -1,22 +1,32 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { InjectionToken, Injectable, Provider, inject, signal } from '@angular/core';
 import { I18nService } from './i18n/i18n.service';
 import { TopicVideo, VideoLanguage } from './models';
 
 export type VideoLanguageFilter = VideoLanguage | 'all';
-const KEY = 'devpath.videoLanguage';
+
+/** Where the language choice applies. Each place keeps its own choice, so filtering one never changes another. */
+export type VideoLanguageScope = 'library' | 'topic';
+export const VIDEO_LANGUAGE_SCOPE = new InjectionToken<VideoLanguageScope>('VIDEO_LANGUAGE_SCOPE');
+
+/** Gives a component its own language choice: add to its `providers`. */
+export function provideVideoLanguage(scope: VideoLanguageScope): Provider[] {
+  return [VideoLanguageService, { provide: VIDEO_LANGUAGE_SCOPE, useValue: scope }];
+}
 
 /**
- * Which language of curated videos to show (Arabic, English or both), remembered in this browser.
- * Until the learner chooses, both languages are shown with the interface language first.
+ * Which language of curated videos to show (Arabic, English or both), remembered in this browser per place
+ * (the video library and topic pages each remember their own). Until the learner chooses, both languages are
+ * shown with the interface language first.
  */
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class VideoLanguageService {
   private readonly i18n = inject(I18nService);
-  readonly filter = signal<VideoLanguageFilter>(read());
+  private readonly key = `devpath.videoLanguage.${inject(VIDEO_LANGUAGE_SCOPE)}`;
+  readonly filter = signal<VideoLanguageFilter>(read(this.key));
 
   set(filter: VideoLanguageFilter): void {
     this.filter.set(filter);
-    try { localStorage.setItem(KEY, filter); } catch { /* not remembered */ }
+    try { localStorage.setItem(this.key, filter); } catch { /* not remembered */ }
   }
 
   /** Filters by the chosen language (videos without a language, such as ones you added, always stay) and sorts the interface language first. */
@@ -29,9 +39,9 @@ export class VideoLanguageService {
   }
 }
 
-function read(): VideoLanguageFilter {
+function read(key: string): VideoLanguageFilter {
   try {
-    const value = localStorage.getItem(KEY);
+    const value = localStorage.getItem(key);
     return value === 'Arabic' || value === 'English' ? value : 'all';
   } catch {
     return 'all';

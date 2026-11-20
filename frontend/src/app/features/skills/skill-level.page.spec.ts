@@ -66,6 +66,11 @@ async function render(lang: 'en' | 'ar', data: SkillLevel = level): Promise<HTML
 }
 
 describe('SkillLevelPage', () => {
+  it('has the level, progress and job readiness tabs', async () => {
+    const el = await render('en');
+    expect([...el.querySelectorAll('[role="tab"]')].map(t => t.textContent?.trim())).toEqual(['Your level', 'Progress', 'Job readiness']);
+  });
+
   it('shows the level, the competency gap warning and what the next level needs, with links', async () => {
     const el = await render('en');
     expect(el.querySelector('[data-testid="level-name"]')?.textContent).toContain('Junior Developer');

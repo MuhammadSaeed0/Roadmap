@@ -9,6 +9,7 @@ import { createLoader } from '../../core/loader';
 import { EvidenceScore, ItemRef, SkillAction, SkillRequirement, XpTransaction } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
 import { CareerReadinessComponent } from '../career/career-readiness.component';
+import { ProgressOverviewComponent } from '../progress/progress-overview.component';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, PageHeaderComponent, ProgressBarComponent, ProgressRingComponent, SkeletonComponent } from '../../shared/ui.components';
 
@@ -19,10 +20,12 @@ type Tone = 'danger' | 'warning' | 'accent' | 'success';
  * exactly what the next level needs, adaptive skill checks and the points history. All numbers come from
  * GET /api/skill-level; the page only presents them.
  */
+type SkillsTab = 'level' | 'progress' | 'career';
+
 @Component({
   selector: 'app-skill-level-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, CareerReadinessComponent, TranslatePipe, LocalizePipe, FormatNumberPipe, FormatDatePipe, PageHeaderComponent,
+  imports: [RouterLink, IconComponent, CareerReadinessComponent, ProgressOverviewComponent, TranslatePipe, LocalizePipe, FormatNumberPipe, FormatDatePipe, PageHeaderComponent,
     ProgressBarComponent, ProgressRingComponent, SkeletonComponent, ErrorStateComponent],
   styles: `
     /* One even gap between every block of the page (the global .card + .card rule misses a card followed by a grid). */
@@ -82,6 +85,8 @@ type Tone = 'danger' | 'warning' | 'accent' | 'success';
 
     @if (tab() === 'career') {
       <div role="tabpanel" id="skills-panel-career" aria-labelledby="skills-tab-career"><app-career-readiness /></div>
+    } @else if (tab() === 'progress') {
+      <div role="tabpanel" id="skills-panel-progress" aria-labelledby="skills-tab-progress" data-tour="skills-progress"><app-progress-overview /></div>
     } @else {
 
     @if (data.initialLoading()) {
@@ -321,16 +326,16 @@ type Tone = 'danger' | 'warning' | 'accent' | 'success';
 export default class SkillLevelPage {
   private readonly api = inject(ApiService);
   private readonly router = inject(Router);
-  protected readonly tabs = ['level', 'career'] as const;
-  protected readonly tab = signal<'level' | 'career'>('level');
+  protected readonly tabs = ['level', 'progress', 'career'] as const;
+  protected readonly tab = signal<SkillsTab>('level');
 
   constructor() {
     // /career redirects here with ?tab=career, and the tour can switch tabs while the page is open.
     inject(ActivatedRoute).queryParamMap.pipe(takeUntilDestroyed())
-      .subscribe(q => this.tab.set(q.get('tab') === 'career' ? 'career' : 'level'));
+      .subscribe(q => this.tab.set(this.tabs.find(t => t === q.get('tab')) ?? 'level'));
   }
 
-  protected setTab(tab: 'level' | 'career'): void {
+  protected setTab(tab: SkillsTab): void {
     void this.router.navigate([], { queryParams: { tab: tab === 'level' ? null : tab }, replaceUrl: true });
   }
 

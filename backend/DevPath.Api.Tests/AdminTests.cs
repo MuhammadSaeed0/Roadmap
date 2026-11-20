@@ -27,6 +27,22 @@ public class AdminTests(ApiFactory factory) : IClassFixture<ApiFactory>
     }
 
     [Fact]
+    public async Task The_user_role_filter_lists_only_accounts_that_are_not_administrators()
+    {
+        var (admin, adminEmail) = await factory.CreateAdminClientAsync();
+        var learnerEmail = factory.NewEmail();
+        await factory.CreateUserClientAsync(learnerEmail);
+
+        var learners = (await Json(await admin.GetAsync("/api/admin/users?role=user&pageSize=100")))["items"]!.AsArray()
+            .Select(u => u!["email"]!.GetValue<string>()).ToList();
+        Assert.Contains(learnerEmail, learners);
+        Assert.DoesNotContain(adminEmail, learners);
+
+        var found = (await Json(await admin.GetAsync($"/api/admin/users?role=user&q={Uri.EscapeDataString(learnerEmail[..8])}")))["items"]!.AsArray();
+        Assert.Contains(found, u => u!["email"]!.GetValue<string>() == learnerEmail);
+    }
+
+    [Fact]
     public async Task An_administrator_deletes_a_user_and_everything_they_saved()
     {
         var (admin, _) = await factory.CreateAdminClientAsync();
