@@ -31,14 +31,6 @@
       "language": "ar",
       "duration": "14:22",
       "description": "في هذا الشرح قمنا باستعراض كيفيةة إنشاء مشروع جديد وتشغيله بالاعتماد على أداة Dotnet CLI. أوامر dotnet المستخدمة في الشرح:"
-    },
-    {
-      "videoId": "fb46V7y0h5E",
-      "title": "14. دورة ASP.NET Core - شرح بنية المشروع Project Structure",
-      "channel": "خالد السعداني - Khalid ESSAADANI",
-      "language": "ar",
-      "duration": "11:35",
-      "description": "يمكنك تحميل السورس كود الخاص بالدورة من الرابط التالي:"
     }
   ],
   "cs-variables-types": [
@@ -458,14 +450,6 @@
       "description": "Throughout the course we'll be looking at various topics including variables, arrays, getting user input, loops, conditionals, object orientation and much more."
     },
     {
-      "videoId": "hV9j-7siQrY",
-      "title": "17. البرمجة الكائنية OOP - الفئات والكائنات Classes and Objects",
-      "channel": "خالد السعداني - Khalid ESSAADANI",
-      "language": "ar",
-      "duration": "10:55",
-      "description": "أكاديمية المبرمجين العرب:"
-    },
-    {
       "videoId": "366ar-xJ1cw",
       "title": "030 C# Classes And Objects الفئات والكائنات في لغة السي شارب",
       "channel": "محمود السكري | كود عربي",
@@ -632,14 +616,6 @@
       "description": "C# Interfaces tutorial - from Default to your own Interfaces in C# Explained - In-Depth guide on how to use interfaces We are currently updating our Complete C# Masterclass and decided to share some amazing videos here, on my YouTube channel."
     },
     {
-      "videoId": "5dVYvciyUOc",
-      "title": "27. البرمجة الكائنية OOP - الواجهات Interfaces",
-      "channel": "خالد السعداني - Khalid ESSAADANI",
-      "language": "ar",
-      "duration": "14:36",
-      "description": "أكاديمية المبرمجين العرب:"
-    },
-    {
       "videoId": "vinXQlIEIvA",
       "title": "OOP in Arabic - #10 Abstraction - Interface",
       "channel": "Omar Ahmed",
@@ -713,14 +689,6 @@
       "language": "en",
       "duration": "5:37",
       "description": "Text version of the video Healthy diet is very important both for the body and mind. If you like Aarvi Kitchen recipes, please support by sharing, subscribing and liking our YouTube channel. Hope you can help."
-    },
-    {
-      "videoId": "R9kHNMtjnvM",
-      "title": "7. تجميع البيانات في تقنية LINQ عبر الأمر Group By",
-      "channel": "خالد السعداني - Khalid ESSAADANI",
-      "language": "ar",
-      "duration": "11:05",
-      "description": "7. تجميع البيانات في تقنية LINQ عبر الأمر Group By"
     },
     {
       "videoId": "DEKxvN7zp9Q",
@@ -1648,14 +1616,6 @@
       "description": "Feeling lost with ASP.NET Core Middleware?  This video is your one-stop guide!  We'll explain what middleware is and how it works in your applications."
     },
     {
-      "videoId": "XR_Nz-vf2Lo",
-      "title": "ASP.NET Core Request Pipeline Explained | Every Middleware in Order (Complete Guide)",
-      "channel": "Tutor Things",
-      "language": "en",
-      "duration": "29:53",
-      "description": "Confused about the ASP.NET Core Request Pipeline and the correct Middleware Order? In this video, we'll break down every built-in ASP.NET Core middleware, explain why the order matters, and show the most common mistakes that can break your application."
-    },
-    {
       "videoId": "cu4CUJAcJ-4",
       "title": "Building Custom Middleware for ASP.NET Core",
       "channel": "Bald. Bearded. Builder.",
@@ -1988,14 +1948,6 @@
       "language": "en",
       "duration": "9:33",
       "description": "How to sort your SQL results with ORDER BY, lowest or highest first, instead of the order the database happens to pick. *🏆 My Academy (recommended)*"
-    },
-    {
-      "videoId": "yg4ZhrjqYf8",
-      "title": "The Big 6 of SQL: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY",
-      "channel": "Maven Analytics",
-      "language": "en",
-      "duration": "2:14",
-      "description": "We'll review the key components of SQL queries, which will serve as the building blocks for many of the analyses you'll perform using SQL:"
     }
   ],
   "sql-modify-data": [
@@ -2083,14 +2035,6 @@
       "description": "docker run --detach --name my-postgres --env POSTGRES_PASSWORD=devops123 aputra/postgres-169:15.3 docker exec -it my-postgres psql -U postgres"
     },
     {
-      "videoId": "FjxtntY5sO0",
-      "title": "How to Join Tables in SQL | Clearly Explained | Beginners Start Here!",
-      "channel": "Maven Analytics",
-      "language": "en",
-      "duration": "7:45",
-      "description": "FREE LIVE EVENT: AI Analyst Week, Nov 9, 10 & 12. Eight sessions on Claude, Copilot, Excel, Power BI, critical thinking, business acumen, agents and your 2027 career roadmap."
-    },
-    {
       "videoId": "pPvZQPE-j7A",
       "title": "Joining Multiple Tables in SQL (Visually Explained) | 3+ Table Joins | #SQL Course 10",
       "channel": "Data with Baraa",
@@ -2172,14 +2116,6 @@
       "channel": "DevCreed | محمد الهلالي",
       "language": "ar",
       "duration": "6:37"
-    },
-    {
-      "videoId": "ICnGEGltxcQ",
-      "title": "40. دورة ASP.NET Core - مدخل إلى Entity Framework Core وإنشاء DbContext",
-      "channel": "خالد السعداني - Khalid ESSAADANI",
-      "language": "ar",
-      "duration": "4:48",
-      "description": "يمكنك تحميل السورس كود الخاص بالدورة من الرابط التالي:"
     }
   ],
   "ef-dbset": [
@@ -3247,12 +3183,6 @@
       "language": "en"
     },
     {
-      "videoId": "x6dmFa1xxW4",
-      "title": "Arrow Functions | TypeScript Tutorial",
-      "channel": "Smartherd",
-      "language": "en"
-    },
-    {
       "videoId": "6ADpjpuOVEc",
       "title": "18  Arrow Function  - TypeScript Tutorial For Beginners",
       "channel": "Tony Xhepa",
@@ -3400,12 +3330,6 @@
       "videoId": "hEqmc-PQfpk",
       "title": "TypeScript Modules Tutorial for Beginners (Full Guide)",
       "channel": "Beshilo Coding Academy ",
-      "language": "en"
-    },
-    {
-      "videoId": "VPAvB5R6d5g",
-      "title": "Importing & Exporting Modules | TypeScript Tutorial",
-      "channel": "Smartherd",
       "language": "en"
     },
     {
@@ -3619,21 +3543,9 @@
   ],
   "ng-standalone-components": [
     {
-      "videoId": "x5PZwb4XurU",
-      "title": "Getting Started with Standalone Components in Angular",
-      "channel": "Angular",
-      "language": "en"
-    },
-    {
       "videoId": "2SubpkPOE7M",
       "title": "Angular Standalone Components Explained: The Complete Guide (v17 & Higher)",
       "channel": "procademy",
-      "language": "en"
-    },
-    {
-      "videoId": "EZXg3ZabHzA",
-      "title": "Modern Angular Course 03: Your First Standalone Component",
-      "channel": "Loiane Groner",
       "language": "en"
     },
     {
@@ -3704,12 +3616,6 @@
     }
   ],
   "ng-services": [
-    {
-      "videoId": "-jRxG84AzCI",
-      "title": "Services in Angular - Learning Angular (Part 6)",
-      "channel": "Angular",
-      "language": "en"
-    },
     {
       "videoId": "mOsCP1FT8EA",
       "title": "#51 🚀 Angular 19 Tutorial: 🌟 What Are Services in Angular?",
@@ -3905,12 +3811,6 @@
     }
   ],
   "ng-signals": [
-    {
-      "videoId": "j1diBkWLk1k",
-      "title": "Modern Angular Course 05: Introducing Signals",
-      "channel": "Loiane Groner",
-      "language": "en"
-    },
     {
       "videoId": "n1a2eQ0Zyls",
       "title": "Angular Signals: The Complete Guide",
@@ -4502,14 +4402,6 @@
       "title": "xUnit Testing C# Asp.Net Core: A complete course for beginners",
       "channel": "WebGentle",
       "language": "en"
-    },
-    {
-      "videoId": "EW7g_JbyLjg",
-      "title": "الاختبارات الأحادية في دوت نيت Unit Testing in .NET Core",
-      "channel": "خالد السعداني - Khalid ESSAADANI",
-      "language": "ar",
-      "duration": "19:32",
-      "description": "في هذا الدرس سوف نتعرف على كيفية إجراء الاختبارات من نوع Unit Tests في الدوت نيت بلغة سي شارب. سنتعرف كذلك على Test-Driven Development وعلى Red-Green-Refactor Cycle."
     }
   ],
   "test-business-logic": [
@@ -4562,14 +4454,6 @@
       "title": "ASP.NET Core Integration Testing with Web Application Factory",
       "channel": "Benjamin Day",
       "language": "en"
-    },
-    {
-      "videoId": "EW7g_JbyLjg",
-      "title": "الاختبارات الأحادية في دوت نيت Unit Testing in .NET Core",
-      "channel": "خالد السعداني - Khalid ESSAADANI",
-      "language": "ar",
-      "duration": "19:32",
-      "description": "في هذا الدرس سوف نتعرف على كيفية إجراء الاختبارات من نوع Unit Tests في الدوت نيت بلغة سي شارب. سنتعرف كذلك على Test-Driven Development وعلى Red-Green-Refactor Cycle."
     }
   ],
   "test-integration": [
@@ -4700,12 +4584,6 @@
       "language": "en"
     },
     {
-      "videoId": "IBvYFRSw4do",
-      "title": "It’s Time We Go Beyond The Test Pyramid (& Do This Instead)",
-      "channel": "Modern Software Engineering",
-      "language": "en"
-    },
-    {
       "videoId": "7KzEJenkB2Q",
       "title": "ST 43 | Test Automation Pyramid | Software Testing Course | Uplatz",
       "channel": "Uplatz",
@@ -4725,12 +4603,6 @@
       "videoId": "8JJ101D3knE",
       "title": "Git Tutorial for Beginners: Learn Git in 1 Hour",
       "channel": "Programming with Mosh",
-      "language": "en"
-    },
-    {
-      "videoId": "r8jQ9hVA2qs",
-      "title": "A brief introduction to Git for beginners | GitHub",
-      "channel": "GitHub",
       "language": "en"
     },
     {
@@ -4892,12 +4764,6 @@
   ],
   "git-pull-requests": [
     {
-      "videoId": "nCKdihvneS0",
-      "title": "How to create a pull request in 4 min | GitHub for Beginners",
-      "channel": "GitHub",
-      "language": "en"
-    },
-    {
       "videoId": "6EQN0gJL7y8",
       "title": "How To Use GitHub Pull Requests",
       "channel": "corbin",
@@ -4907,12 +4773,6 @@
       "videoId": "rgbCcBNZcdQ",
       "title": "Creating a Simple Github Pull Request",
       "channel": "Jake Vanderplas",
-      "language": "en"
-    },
-    {
-      "videoId": "FDXSgyDGmho",
-      "title": "How to merge a pull request | Introduction to GitHub",
-      "channel": "GitHub",
       "language": "en"
     },
     {
@@ -5090,21 +4950,9 @@
   ],
   "pro-debugging": [
     {
-      "videoId": "Dr4Y58nqxVs",
-      "title": "Basics of Debugging",
-      "channel": "Microsoft Visual Studio",
-      "language": "en"
-    },
-    {
       "videoId": "u-HdLtqEOog",
       "title": "Debugging C# Code in Visual Studio | Mosh",
       "channel": "Programming with Mosh",
-      "language": "en"
-    },
-    {
-      "videoId": "emvl_Yhr7tc",
-      "title": "5 essential C# debugging tips in Visual Studio - fast & beginner-friendly",
-      "channel": "Microsoft Visual Studio",
       "language": "en"
     },
     {
@@ -5150,12 +4998,6 @@
   ],
   "pro-requirements": [
     {
-      "videoId": "siRgoRaj9lk",
-      "title": "How to Start Managing & Gathering Requirements with User Stories",
-      "channel": "Bridging the Gap - Resources for Business Analysts",
-      "language": "en"
-    },
-    {
       "videoId": "8VTw52j2LNY",
       "title": "The Best Guide To Agile Requirements Gathering",
       "channel": "XBOSoft",
@@ -5166,27 +5008,9 @@
       "title": "Agile Requirements Gathering: Master User Stories & Evolving Requirements!",
       "channel": "CodeLucky",
       "language": "en"
-    },
-    {
-      "videoId": "WaJ7aUPJnN4",
-      "title": "Requirements gathering and story writing",
-      "channel": "ServiceNow Community",
-      "language": "en"
     }
   ],
   "pro-code-review": [
-    {
-      "videoId": "d9_fweNDjKw",
-      "title": "Better Code Reviews in 6 SIMPLE STEPS",
-      "channel": "Modern Software Engineering",
-      "language": "en"
-    },
-    {
-      "videoId": "a9_0UUUNt-Y",
-      "title": "Code Review Best Practices",
-      "channel": "JetBrains",
-      "language": "en"
-    },
     {
       "videoId": "0t4_MfHgb_A",
       "title": "How to Do Code Reviews Like a Human",
@@ -5202,21 +5026,9 @@
   ],
   "pro-refactoring": [
     {
-      "videoId": "lkZ6Wo65ULA",
-      "title": "How to Safely Refactor Legacy Code Using Adapt Parameter",
-      "channel": "Emily Bache",
-      "language": "en"
-    },
-    {
       "videoId": "xgYozshgjV0",
       "title": "Refactoring Legacy Code in C#",
       "channel": "Roy Osherove",
-      "language": "en"
-    },
-    {
-      "videoId": "NCjwUptCaLU",
-      "title": "Refactoring Legacy Code STEP BY STEP (Part 2)",
-      "channel": "Modern Software Engineering",
       "language": "en"
     },
     {
@@ -5237,12 +5049,6 @@
       "videoId": "YTcZ2c-1X6g",
       "title": "Clean architecture in ASP.NET Core, simply explained",
       "channel": "Round The Code",
-      "language": "en"
-    },
-    {
-      "videoId": "GYZcds1FjEM",
-      "title": "Visual Studio Toolbox Live - Clean Architecture for ASP.NET Core Apps",
-      "channel": "Microsoft Visual Studio",
       "language": "en"
     }
   ],
@@ -5314,12 +5120,6 @@
   ],
   "pro-performance": [
     {
-      "videoId": "hc0_mwC0blU",
-      "title": "Performance Profiling | .NET Perf Counters Tool",
-      "channel": "Microsoft Visual Studio",
-      "language": "en"
-    },
-    {
       "videoId": "SqxvleC0L4g",
       "title": "Monitoring Performance Counters using .NET Tools (dotnet-counters tool in .NET 5.0)",
       "channel": "DotNet Core Central",
@@ -5369,18 +5169,6 @@
       "videoId": "SrCucUMJAE8",
       "title": "How to Write Software Documentation",
       "channel": "Technical Writer HQ",
-      "language": "en"
-    },
-    {
-      "videoId": "F1U0j3KprbA",
-      "title": "Technical documentation. How can I write them better and why should I care? | PlatformCon 2023",
-      "channel": "Platform Engineering",
-      "language": "en"
-    },
-    {
-      "videoId": "GKN_X5w9J0k",
-      "title": "How to Structure Your Technical Documentation",
-      "channel": "Fanny N.",
       "language": "en"
     },
     {
@@ -5530,12 +5318,6 @@
       "language": "en"
     },
     {
-      "videoId": "R8_veQiYBjI",
-      "title": "GitHub Actions Tutorial - Basic Concepts and CI/CD Pipeline with Docker",
-      "channel": "TechWorld with Nana",
-      "language": "en"
-    },
-    {
       "videoId": "vBUpk393onI",
       "title": "How to create Build Pipeline in Azure DevOps for ASP.NET Core Web API | CI/CD",
       "channel": "Remigiusz Zalewski",
@@ -5603,12 +5385,6 @@
     }
   ],
   "devops-kubernetes": [
-    {
-      "videoId": "s_o8dwzRlu4",
-      "title": "Kubernetes Crash Course for Absolute Beginners [NEW]",
-      "channel": "TechWorld with Nana",
-      "language": "en"
-    },
     {
       "videoId": "zTBpl1nSPqk",
       "title": "How to deploy .NET Web API to Kubernetes",

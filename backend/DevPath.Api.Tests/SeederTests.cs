@@ -54,7 +54,8 @@ public class SeederTests : IAsyncLifetime
             Arabic = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.Arabic),
         }).ToListAsync();
         Assert.All(videosPerTopic, n => { Assert.InRange(n.English, 2, 4); Assert.InRange(n.Arabic, 0, 2); });
-        Assert.True(videosPerTopic.Count(n => n.Arabic > 0) >= videosPerTopic.Count / 2, "at least half of the topics should have an Arabic video");
+        // About half: removing a channel the owner did not want (2026-11-20) left 82 of 166 topics with an Arabic video.
+        Assert.True(videosPerTopic.Count(n => n.Arabic > 0) >= videosPerTopic.Count * 48 / 100, "about half of the topics should have an Arabic video");
         Assert.All(await _db.CuratedVideos.Select(v => v.VideoId).ToListAsync(), id => Assert.True(DevPath.Api.Services.YouTubeIds.IsValid(id)));
         // Every project task has videos, and every topic has a quiz with a valid answer for each question.
         Assert.False(await _db.ProjectTasks.AnyAsync(t => !_db.ProjectTaskVideos.Any(v => v.ProjectTaskId == t.Id)));
