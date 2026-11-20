@@ -24,7 +24,7 @@ export const SECTION_IDS = [
   'practice-types', 'practice-filters', 'practice-list', 'exercise-problem', 'exercise-workspace', 'exercise-attempt', 'exercise-hints', 'exercise-solution',
   // Code Playground and video library
   'playground-security', 'playground-environments', 'playground-projects', 'workspace-title', 'workspace-save', 'workspace-ide',
-  'videos-stats', 'videos-filters', 'videos-phase',
+  'media-tabs', 'videos-stats', 'videos-filters', 'videos-phase',
   // Interviews, resources, notes
   'interviews-modes', 'interviews-categories', 'interviews-filters', 'interviews-list',
   'resources-verify', 'resources-filters', 'resources-list', 'notes-new', 'notes-list', 'notes-editor',
@@ -49,7 +49,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 /** Pages with a guide. Routes name theirs in `data.helpId` (see app.routes.ts), so /topics/:id etc. work. */
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
-  'resources', 'notes', 'progress', 'skills', 'settings', 'search', 'admin', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
+  'media', 'notes', 'progress', 'skills', 'settings', 'search', 'admin', 'playground', 'workspace', 'cv', 'cv-editor',
   'discussions', 'discussion', 'paths', 'path', 'path-create', 'reviews', 'guides', 'guide',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
@@ -66,9 +66,8 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   exercise: ['exercise-problem', 'exercise-workspace', 'exercise-attempt', 'exercise-hints', 'exercise-solution'],
   playground: ['playground-security', 'playground-environments', 'playground-projects'],
   workspace: ['workspace-title', 'workspace-save', 'workspace-ide'],
-  videos: ['videos-stats', 'videos-filters', 'videos-phase'],
   interviews: ['interviews-modes', 'interviews-categories', 'interviews-filters', 'interviews-list'],
-  resources: ['resources-verify', 'resources-filters', 'resources-list'],
+  media: ['media-tabs', 'videos-stats', 'videos-filters', 'videos-phase', 'resources-verify', 'resources-filters', 'resources-list'],
   notes: ['notes-new', 'notes-list', 'notes-editor'],
   progress: ['progress-tabs', 'progress-panel'],
   skills: ['skills-level', 'skills-progress', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history', 'career-gaps', 'career-areas', 'career-portfolio'],
@@ -108,12 +107,12 @@ export const MAIN_TOUR: readonly MainStep[] = [
   { id: 'dashboard-plan', route: '/', targets: ['dashboard-plan'] },
   { id: 'roadmap-phases', route: '/roadmap', targets: ['roadmap-phases', 'roadmap-header'] },
   { id: 'library-filters', route: '/roadmap?view=list', targets: ['library-filters'] },
-  { id: 'videos-filters', route: '/videos', targets: ['videos-filters'] },
+  { id: 'videos-filters', route: '/media?section=videos', targets: ['videos-filters'] },
   { id: 'projects-list', route: '/projects', targets: ['projects-list'] },
   { id: 'practice-types', route: '/practice', targets: ['practice-types'] },
   { id: 'playground-environments', route: '/playground', targets: ['playground-environments'] },
   { id: 'interviews-modes', route: '/interviews', targets: ['interviews-modes'] },
-  { id: 'resources-filters', route: '/resources', targets: ['resources-filters'] },
+  { id: 'resources-filters', route: '/media?section=resources', targets: ['resources-filters'] },
   { id: 'notes-list', route: '/notes', targets: ['notes-list'] },
   { id: 'progress-tabs', route: '/progress', targets: ['progress-tabs'] },
   { id: 'skills-level', route: '/skills', targets: ['skills-level'] },

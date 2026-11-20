@@ -11,7 +11,7 @@ export const ar: Translations = {
     practice: 'مختبر التدريب', interviews: 'التحضير للمقابلات', resources: 'المصادر', notes: 'ملاحظاتي',
     progress: 'المراجعة والجلسات', career: 'الجاهزية المهنية', settings: 'الإعدادات', search: 'بحث',
     learn: 'تعلّم', build: 'ابنِ وتدرّب', track: 'تقدّمي', manage: 'الإدارة', admin: 'لوحة الإدارة',
-    playground: 'ساحة البرمجة', videos: 'مكتبة الفيديوهات', cv: 'منشئ السيرة الذاتية', skills: 'مستوى المطوّر', challenges: 'التحديات',
+    playground: 'ساحة البرمجة', videos: 'مكتبة الفيديوهات', media: 'الفيديوهات والمصادر', cv: 'منشئ السيرة الذاتية', skills: 'مستوى المطوّر', challenges: 'التحديات',
     watch: 'شاهد واقرأ', prepare: 'المقابلات والملاحظات', account: 'الحساب',
     discussions: 'النقاشات', paths: 'مسارات التعلم', reviews: 'مراجعات الأقران',
   },
@@ -324,6 +324,7 @@ export const ar: Translations = {
     allSkills: 'كل المهارات', allStatuses: 'كل الحالات', allPhases: 'كل المراحل', allPriorities: 'كل الأولويات', allKnowledge: 'أي مستوى معرفة',
     empty: 'لا توجد مواضيع تطابق هذه المرشحات.',
   },
+  media: { videos: 'الفيديوهات', resources: 'مصادر للقراءة' },
   places: {
     projects: { name: 'المشاريع الرئيسية', what: 'أربعة مشاريع لمعرض أعمالك مرتبطة بمراحل الخارطة.', link: 'المشاريع الرئيسية: معرض أعمالك' },
     library: { name: 'مكتبة المشاريع', what: 'مشاريع إضافية خطوة بخطوة لكل مهارة، بالسرعة التي تناسبك.', link: 'مكتبة المشاريع: مشاريع إضافية' },

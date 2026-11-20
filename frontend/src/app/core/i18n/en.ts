@@ -9,7 +9,7 @@ export const en = {
     practice: 'Practice Lab', interviews: 'Interview Preparation', resources: 'Resources', notes: 'My Notes',
     progress: 'Reviews & Sessions', career: 'Career Readiness', settings: 'Settings', search: 'Search',
     learn: 'Learn', build: 'Build & practise', track: 'My progress', manage: 'Manage', admin: 'Administration',
-    playground: 'Code Playground', videos: 'Video Library', cv: 'CV Builder', skills: 'Developer Level', challenges: 'Challenges',
+    playground: 'Code Playground', videos: 'Video Library', media: 'Videos & Resources', cv: 'CV Builder', skills: 'Developer Level', challenges: 'Challenges',
     watch: 'Watch & read', prepare: 'Interviews & notes', account: 'Account',
     discussions: 'Discussions', paths: 'Learning Paths', reviews: 'Peer reviews',
   },
@@ -322,6 +322,7 @@ export const en = {
     allSkills: 'All skills', allStatuses: 'All statuses', allPhases: 'All phases', allPriorities: 'All priorities', allKnowledge: 'Any knowledge level',
     empty: 'No topics match these filters.',
   },
+  media: { videos: 'Videos', resources: 'Reading resources' },
   places: {
     projects: { name: 'Main Projects', what: 'four portfolio projects tied to the roadmap phases.', link: 'Main Projects: your portfolio' },
     library: { name: 'Project library', what: 'extra step-by-step projects for every skill, at your own pace.', link: 'Project library: extra projects' },

@@ -234,7 +234,7 @@ export default class VideoLibraryPage {
   protected setTab(tab: Tab): void {
     this.tab.set(tab);
     if (tab === 'saved') void this.saved.reload();
-    void this.router.navigate([], { relativeTo: this.route, queryParams: { tab: tab === 'saved' ? 'saved' : null }, replaceUrl: true });
+    void this.router.navigate([], { relativeTo: this.route, queryParams: { tab: tab === 'saved' ? 'saved' : null }, queryParamsHandling: 'merge', replaceUrl: true });
   }
 
   /** Watched/saved from either list; both lists are kept in step. */
