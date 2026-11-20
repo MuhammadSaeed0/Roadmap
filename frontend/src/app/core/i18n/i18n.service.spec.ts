@@ -65,4 +65,19 @@ describe('I18nService', () => {
     expect(i18n.errorMessage({ code: 'attempt_required' })).toContain('attempt');
     expect(i18n.errorMessage({ code: 'something_new' })).toBe('Unexpected error.');
   });
+
+  it('names the page in the browser tab, in the chosen language', () => {
+    const i18n = create();
+    expect(document.title).toBe('DevPath');
+    i18n.pageKey.set('nav.roadmap');
+    TestBed.tick();
+    expect(document.title).toBe('My Roadmap · DevPath');
+    i18n.setLang('ar');
+    TestBed.tick();
+    expect(document.title).toBe(`${i18n.t('nav.roadmap')} · مسار المبرمج`);
+    // A missing key never leaks into the tab
+    i18n.pageKey.set('nav.doesNotExist');
+    TestBed.tick();
+    expect(document.title).toBe('مسار المبرمج');
+  });
 });
