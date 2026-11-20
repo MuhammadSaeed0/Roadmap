@@ -21,11 +21,11 @@ const plan = {
   items: [step('learn', 5, 'Lambda expressions'), step('practice', 5, 'Lambda expressions'), step('review', null, 'Review: LINQ')],
 } as unknown as StudyPlan;
 
-async function render(fullName: string, library: CurrentGuidedProject | null = null): Promise<HTMLElement> {
+async function render(fullName: string, library: CurrentGuidedProject | null = null, data: Dashboard = dashboard): Promise<HTMLElement> {
   TestBed.configureTestingModule({
     providers: [
       provideRouter([]),
-      { provide: ApiService, useValue: { dashboard: () => Promise.resolve(dashboard), activePaths: () => Promise.resolve([]), studyPlan: () => Promise.resolve(plan),
+      { provide: ApiService, useValue: { dashboard: () => Promise.resolve(data), activePaths: () => Promise.resolve([]), studyPlan: () => Promise.resolve(plan),
         currentGuidedProject: () => Promise.resolve(library) } },
       { provide: AuthService, useValue: { account: signal({ fullName }) } },
     ],
@@ -69,5 +69,16 @@ describe('DashboardPage', () => {
     const el = await render('');
     expect(el.querySelector('[data-tour="dashboard-activity"]')).toBeNull();
     expect(el.querySelector('h1')?.textContent).toMatch(/^Good (morning|afternoon|evening)$/);
+  });
+
+  it('puts due reviews at the top only when there are some', async () => {
+    const due = await render('Mohamed', null, { ...dashboard, reviewsDue: 3 });
+    const banner = due.querySelector('.due-banner')!;
+    expect(banner.textContent).toContain('3 topics are due for review today');
+    expect(banner.querySelector('a')?.getAttribute('href')).toBe('/progress?tab=review');
+    expect(due.querySelector('.dash-main')?.firstElementChild).toBe(banner);
+    TestBed.resetTestingModule();
+    const none = await render('Mohamed');
+    expect(none.querySelector('.due-banner')).toBeNull();
   });
 });

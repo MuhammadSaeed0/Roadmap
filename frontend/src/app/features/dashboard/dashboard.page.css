@@ -77,3 +77,7 @@
   .hero h1 { font-size: 1.3rem; }
   .skill-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+.due-banner { align-items: center; margin: 0; }
+.due-banner p { margin: 0; flex: 1; min-width: 0; }
+.due-banner .btn { flex: none; }
