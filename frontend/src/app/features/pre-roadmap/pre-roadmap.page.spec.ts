@@ -39,6 +39,9 @@ describe('PreRoadmapPage', () => {
   beforeEach(() => {
     for (const key of Object.keys(localStorage)) if (key.startsWith('devpath.')) localStorage.removeItem(key);
   });
+  afterEach(() => {
+    for (const key of Object.keys(localStorage)) if (key.startsWith('devpath.')) localStorage.removeItem(key);
+  });
 
   it('shows the four sections, the intro questions and all eleven fields', async () => {
     const { el } = await render();

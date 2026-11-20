@@ -20,6 +20,11 @@ const button = (el: HTMLElement, label: string) =>
   [...el.querySelectorAll<HTMLButtonElement>('button')].find(b => b.textContent?.includes(label))!;
 
 describe('Marketing Studio', () => {
+  // Choosing a language saves it in localStorage; clear it so later spec files start in their default language.
+  afterEach(() => {
+    for (const key of Object.keys(localStorage)) if (key.startsWith('devpath.')) localStorage.removeItem(key);
+  });
+
   it('is an administrator-only page', () => {
     const route = routes.find(r => r.path === 'marketing');
     expect(route?.canActivate).toContain(adminGuard);
