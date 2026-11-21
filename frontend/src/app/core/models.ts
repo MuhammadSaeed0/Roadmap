@@ -406,6 +406,8 @@ export interface PathDetail {
   isBuiltIn: boolean; isPublic: boolean; creatorId: string | null; creatorName: string | null;
   createdAt: string; isActivated: boolean;
   phases: PathPhaseDto[]; topics: PathTopicDto[];
+  /** Project library projects that only use this path's topics. */
+  guidedProjects?: GuidedProjectRef[];
 }
 
 /** A Project library card (GET /guided-projects). */

@@ -697,6 +697,7 @@ export const en = {
     title: 'Notifications', noNotifications: 'No notifications yet.',
   },
   paths: {
+    guidedTitle: 'Projects for this path', guidedIntro: 'Project library projects that use only what this path teaches. Build them as you go.',
     title: 'Learning Paths', create: 'Create path', activate: 'Activate', deactivate: 'Deactivate', activated: 'Active',
     builtIn: 'Built-in', custom: 'Custom', topics: '{n} topics', progress: '{n}% complete',
     noPaths: 'No learning paths yet.', nameLabel: 'Path name', descriptionLabel: 'Description',

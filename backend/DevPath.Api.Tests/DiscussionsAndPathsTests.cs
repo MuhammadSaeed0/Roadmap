@@ -380,4 +380,14 @@ public class DiscussionsAndPathsTests(ApiFactory factory) : IClassFixture<ApiFac
         Assert.Equal(HttpStatusCode.BadRequest, (await _a.PostAsJsonAsync("/api/notes", new { title = "x", topicId, guidedProjectId = id })).StatusCode);
         Assert.Equal(HttpStatusCode.BadRequest, (await _a.PostAsJsonAsync("/api/notes", new { title = "x", guidedStepOrder = 2 })).StatusCode);
     }
+
+    [Fact]
+    public async Task A_built_in_path_lists_the_library_projects_that_fit_it()
+    {
+        var builtIn = (await Json(await _a.GetAsync("/api/paths"))).AsArray().First(p => p!["isBuiltIn"]!.GetValue<bool>())!;
+        var detail = await Json(await _a.GetAsync($"/api/paths/{builtIn["id"]}"));
+        var guided = detail["guidedProjects"]!.AsArray();
+        Assert.NotEmpty(guided);
+        Assert.Equal(guided.Count, guided.Select(g => g!["id"]!.GetValue<int>()).Distinct().Count());
+    }
 }

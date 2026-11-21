@@ -699,6 +699,7 @@ export const ar: Translations = {
     title: 'الإشعارات', noNotifications: 'لا توجد إشعارات بعد.',
   },
   paths: {
+    guidedTitle: 'مشاريع لهذا المسار', guidedIntro: 'مشاريع من المكتبة تستخدم ما يعلّمه هذا المسار فقط. ابنِها وأنت تتقدّم فيه.',
     title: 'مسارات التعلم', create: 'إنشاء مسار', activate: 'تفعيل', deactivate: 'إلغاء التفعيل', activated: 'مفعّل',
     builtIn: 'مدمج', custom: 'مخصص', topics: '{n} موضوع', progress: '{n}% مكتمل',
     noPaths: 'لا توجد مسارات تعلم بعد.', nameLabel: 'اسم المسار', descriptionLabel: 'الوصف',
