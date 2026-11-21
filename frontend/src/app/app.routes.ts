@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { progressOverviewRedirect } from './features/progress/progress-redirect';
-import { accountStatusGuard, adminGuard, authGuard, guestGuard } from './core/auth.guard';
+import { accountStatusGuard, adminGuard, authGuard, guestGuard, guestMatch } from './core/auth.guard';
 
 const appRoutes: Routes = [
   { path: '', loadComponent: () => import('./features/dashboard/dashboard.page'), data: { titleKey: 'nav.dashboard', helpId: 'dashboard', skin: 'snap' } },
@@ -62,6 +62,9 @@ const authRoutes: Routes = [
 // Every feature page is lazy-loaded, so the initial bundle stays small.
 // `titleKey` is the translation key shown in the top bar breadcrumb; `helpId` names the page's guide in the Help menu (core/tour).
 export const routes: Routes = [
+  // The public front page: "/" for a visitor without an account (signed-in learners fall through to the dashboard).
+  { path: '', pathMatch: 'full', canMatch: [guestMatch], loadComponent: () => import('./features/landing/landing.page'),
+    data: { titleKey: 'landing.tabTitle', layout: 'auth', skin: 'bird' } },
   ...authRoutes.map((route) => ({ ...route, canActivate: [guestGuard], data: { ...route.data, layout: 'auth', skin: 'bird' } })),
   // A public profile: readable by anyone, signed in or not.
   { path: 'u/:handle', loadComponent: () => import('./features/profile/public-profile.page'), data: { titleKey: 'profile.title', layout: 'auth', skin: 'bird' } },

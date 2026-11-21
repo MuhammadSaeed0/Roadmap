@@ -1,7 +1,7 @@
 import { Location, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, HostListener, computed, effect, inject, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationCancel, NavigationEnd, NavigationError, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { ApiService } from '../core/api.service';
 import { I18nService } from '../core/i18n/i18n.service';
@@ -33,6 +33,7 @@ const NARROW_MAX = 960;
   template: `
     <a class="skip-link" href="#main">{{ 'common.skipToContent' | t }}</a>
 
+    @if (!deciding()) {
     <div class="shell" [class.auth-layout]="authLayout()">
       <div class="main-col">
         @if (authLayout()) {
@@ -156,6 +157,10 @@ const NARROW_MAX = 960;
         </main>
       </div>
     </div>
+    } @else {
+      <!-- "/" is the landing page or the dashboard depending on the session: wait for the router instead of flashing a layout. -->
+      <router-outlet />
+    }
 
     <app-toast-host />
     <app-confirm-dialog />
@@ -182,6 +187,8 @@ export class ShellComponent {
   protected readonly accountOpen = signal(false);
   /** Account pages (sign-in, sign-up…) hide the sidebar and the app's top bar. */
   // Set from the URL before the first navigation finishes, so neither layout flashes on load.
+  /** True on a first load of "/" until the first navigation settles (landing page or dashboard). */
+  protected readonly deciding = signal(['', '/'].includes(inject(Location).path().split(/[?#]/)[0]));
   protected readonly authLayout = signal(/^\/(sign-in|sign-up|forgot-password|reset-password|verify-email|account-status|change-password)\b/.test(inject(Location).path()));
   protected readonly initials = computed(() => {
     const words = this.auth.displayName().split(/[\s@._-]+/).filter(Boolean);
@@ -247,12 +254,15 @@ export class ShellComponent {
     this.narrowQuery?.addEventListener('change', onWidth);
     inject(DestroyRef).onDestroy(() => this.narrowQuery?.removeEventListener('change', onWidth));
 
+    this.router.events.pipe(filter(e => e instanceof NavigationCancel || e instanceof NavigationError), takeUntilDestroyed(inject(DestroyRef)))
+      .subscribe(() => this.deciding.set(false));
     this.router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntilDestroyed(inject(DestroyRef))).subscribe(() => {
       let r = this.route;
       while (r.firstChild) r = r.firstChild;
       this.titleKey.set((r.snapshot.data['titleKey'] as string) ?? 'app.name');
       this.i18n.pageKey.set((r.snapshot.data['titleKey'] as string) ?? null);
       this.authLayout.set(r.snapshot.data['layout'] === 'auth');
+      this.deciding.set(false);
       // Each page borrows the look of a familiar app; styles in skins.css key off <html data-skin>.
       const skin = r.snapshot.data['skin'] as string | undefined;
       if (skin) document.documentElement.dataset['skin'] = skin; else delete document.documentElement.dataset['skin'];

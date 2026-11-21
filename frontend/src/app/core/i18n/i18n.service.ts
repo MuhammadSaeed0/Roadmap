@@ -161,7 +161,16 @@ export class I18nService {
 function readSavedLang(): Lang {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved === 'ar' || saved === 'en' ? saved : 'en';
+    if (saved === 'ar' || saved === 'en') return saved;
+  } catch { /* storage unavailable: fall back to the browser's language */ }
+  return browserLang();
+}
+
+/** First visit (nothing saved): Arabic when the browser prefers Arabic, otherwise English. Mirrored in public/boot.js. */
+export function browserLang(): Lang {
+  try {
+    const tags = typeof navigator === 'undefined' ? [] : [...(navigator.languages ?? []), navigator.language];
+    return tags.some(t => typeof t === 'string' && t.toLowerCase().startsWith('ar')) ? 'ar' : 'en';
   } catch {
     return 'en';
   }
