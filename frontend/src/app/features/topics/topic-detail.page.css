@@ -113,11 +113,6 @@
 .rows li > .status-icon[data-status='InProgress'], .rows li > .status-icon[data-status='Attempted'] { color: var(--accent); }
 .rows .meta { grid-column: 2; font-size: 0.8rem; color: var(--muted); }
 
-.finish-bar {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-2);
-}
-.finish-bar p { margin: 0; flex: 1 1 220px; }
 .pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .pager-link {
   display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border-radius: var(--radius);
