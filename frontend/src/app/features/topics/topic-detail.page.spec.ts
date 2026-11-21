@@ -126,6 +126,7 @@ describe('TopicDetailPage', () => {
     const el = fixture.nativeElement as HTMLElement;
     const button = el.querySelector<HTMLButtonElement>('.finish-btn')!;
     expect(button.textContent).toContain('Finish and go to the next topic');
+    expect(el.querySelector('.finish-bar p')).toBeNull();
     button.click();
     await vi.waitFor(() => expect(navigate).toHaveBeenCalled());
     expect(updateTopicProgress).toHaveBeenCalledWith(7, expect.objectContaining({ status: 'Completed' }));

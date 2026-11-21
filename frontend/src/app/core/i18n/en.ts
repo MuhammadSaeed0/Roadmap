@@ -402,7 +402,7 @@ export const en = {
     practiceTask: 'Practice task', challenge: 'Independent challenge', resources: 'Recommended resources',
     prerequisites: 'Prerequisites', unlocks: 'Unlocks', relatedProjects: 'Related projects',
     interviewQs: 'Interview questions', exercises: 'Practice exercises', guidedProjects: 'Practise with a project', notes: 'Notes', yourProgress: 'Your progress',
-    status: 'Status', knowledge: 'Prior knowledge', finishNext: 'Finish and go to the next topic', finishHint: 'Done with the lesson and the practice? Mark it complete and move on.', finishLastHint: 'This is the last topic in this part of the roadmap.', markComplete: 'Mark as completed', markInProgress: 'Start',
+    status: 'Status', knowledge: 'Prior knowledge', finishNext: 'Finish and go to the next topic', finishLastHint: 'This is the last topic in this part of the roadmap.', markComplete: 'Mark as completed', markInProgress: 'Start',
     markKnown: 'I already know this', reopen: 'Reopen', prereqWarning: 'Some prerequisites aren’t finished yet. You can still study this topic.',
     review: 'Spaced review', addToReview: 'Add to review queue', inReview: 'In your review queue', reviewDue: 'Review due now',
     nextReview: 'Next review: {date}', removeFromReview: 'Remove from queue', logSession: 'Log a study session',
