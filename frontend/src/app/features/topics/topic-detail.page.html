@@ -151,16 +151,6 @@
         }
       </section>
 
-      @if (t.status !== 'Completed' && t.status !== 'Skipped') {
-        <div class="finish-bar">
-          @if (!t.next) { <p class="muted">{{ 'topic.finishLastHint' | t }}</p> }
-          <button type="button" class="btn btn-primary finish-btn" [disabled]="saving()" (click)="finishAndContinue()">
-            <app-icon name="check" [size]="15" /> {{ (t.next ? 'topic.finishNext' : 'topic.markComplete') | t }}
-            @if (t.next) { <app-icon name="chevron-right" [size]="15" class="flip-rtl" /> }
-          </button>
-        </div>
-      }
-
       @if (t.previous || t.next) {
         <nav class="pager" [attr.aria-label]="'topic.moreTopics' | t">
           @if (t.previous; as p) {

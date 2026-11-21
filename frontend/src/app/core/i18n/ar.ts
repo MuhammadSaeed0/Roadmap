@@ -404,7 +404,7 @@ export const ar: Translations = {
     practiceTask: 'مهمة تطبيقية', challenge: 'تحدٍّ مستقل', resources: 'مصادر مقترحة',
     prerequisites: 'المتطلبات السابقة', unlocks: 'يفتح المواضيع', relatedProjects: 'مشاريع مرتبطة',
     interviewQs: 'أسئلة المقابلات', exercises: 'تمارين تدريبية', guidedProjects: 'تدرّب بمشروع', notes: 'الملاحظات', yourProgress: 'تقدمك',
-    status: 'الحالة', knowledge: 'المعرفة السابقة', finishNext: 'أنهيت الموضوع، انتقل للتالي', finishLastHint: 'هذا آخر موضوع في هذا الجزء من الخارطة.', markComplete: 'تعليم كمكتمل', markInProgress: 'ابدأ',
+    status: 'الحالة', knowledge: 'المعرفة السابقة', markComplete: 'تعليم كمكتمل', markInProgress: 'ابدأ',
     markKnown: 'أعرف هذا مسبقًا', reopen: 'إعادة فتح', prereqWarning: 'بعض المتطلبات السابقة لم تكتمل بعد، لكن يمكنك دراسة هذا الموضوع.',
     review: 'المراجعة المتباعدة', addToReview: 'إضافة إلى قائمة المراجعة', inReview: 'ضمن قائمة المراجعة', reviewDue: 'المراجعة مستحقة الآن',
     nextReview: 'المراجعة القادمة: {date}', removeFromReview: 'إزالة من القائمة', logSession: 'تسجيل جلسة دراسة',

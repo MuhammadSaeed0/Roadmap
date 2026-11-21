@@ -1,6 +1,6 @@
 import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Router, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { TopicDetail } from '../../core/models';
@@ -90,6 +90,11 @@ describe('TopicDetailPage', () => {
     expect(el.querySelector('[data-tour="topic-guided"]')).toBeNull();
   });
 
+  it('has no end-of-lesson finish button', async () => {
+    const el = await render('en');
+    expect(el.querySelector('.finish-bar, .finish-btn')).toBeNull();
+  });
+
   it('folds a side panel and remembers it', async () => {
     localStorage.removeItem('devpath.topicPanels');
     const el = await render('en');
@@ -109,37 +114,4 @@ describe('TopicDetailPage', () => {
     expect(el.querySelector('.demand-card')).toBeNull();
   });
 
-  it('ends the lesson with one button that completes the topic and opens the next one', async () => {
-    const updateTopicProgress = vi.fn(() => Promise.resolve({ completedAt: '2026-11-21T10:00:00Z' }));
-    TestBed.configureTestingModule({
-      providers: [
-        provideRouter([]),
-        { provide: ApiService, useValue: { topic: () => Promise.resolve(topic), notes: () => Promise.resolve([]), topicVideos: never, quiz: never, updateTopicProgress } },
-      ],
-    });
-    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
-    const fixture = TestBed.createComponent(TopicDetailPage);
-    fixture.componentRef.setInput('id', '7');
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const el = fixture.nativeElement as HTMLElement;
-    const button = el.querySelector<HTMLButtonElement>('.finish-btn')!;
-    expect(button.textContent).toContain('Finish and go to the next topic');
-    expect(el.querySelector('.finish-bar p')).toBeNull();
-    button.click();
-    await vi.waitFor(() => expect(navigate).toHaveBeenCalled());
-    expect(updateTopicProgress).toHaveBeenCalledWith(7, expect.objectContaining({ status: 'Completed' }));
-    expect(navigate).toHaveBeenCalledWith(['/topics', 8]);
-    fixture.detectChanges();
-    expect(el.querySelector('.finish-btn')).toBeNull();
-  });
-
-  it('offers only "Mark as completed" on the last topic, and nothing once it is done', async () => {
-    const last = await render('en', { ...topic, next: null });
-    expect(last.querySelector('.finish-btn')?.textContent).toContain('Mark as completed');
-    TestBed.resetTestingModule();
-    const done = await render('en', { ...topic, status: 'Completed' });
-    expect(done.querySelector('.finish-bar')).toBeNull();
-  });
 });
