@@ -377,6 +377,8 @@ export interface PublicProfile {
   paths: { id: number; nameEn: string; nameAr: string; iconName: string; percent: number }[];
   projects: { id: number; titleEn: string; titleAr: string; techStack: string; repositoryUrl: string | null; peerReviewed: boolean }[];
   libraryProjects: { id: number; titleEn: string; titleAr: string; techStack: string; level: Difficulty; repositoryUrl: string | null }[];
+  /** Roadmap phases with every topic done. */
+  completedPhases: { id: number; order: number; titleEn: string; titleAr: string }[];
 }
 
 // ---- Learning Paths ----

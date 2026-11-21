@@ -15,6 +15,15 @@ import { EmptyStateComponent, ProgressBarComponent, SkeletonComponent } from '..
   styles: `
     :host { display: flex; flex-direction: column; gap: 16px; width: min(860px, 100%); margin-inline: auto; }
     :host > .card { margin: 0; }
+    .phase-badges { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+    .phase-badge-item {
+      display: inline-flex; align-items: center; gap: 8px; padding-block: 6px; padding-inline: 6px 12px; border-radius: 999px;
+      background: var(--success-soft); color: var(--text); font-size: 0.9rem;
+    }
+    .phase-badge-num {
+      display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+      background: var(--success); color: var(--on-accent); font-size: 0.78rem; font-weight: 600;
+    }
     .hero { display: flex; gap: 18px; align-items: center; }
     .avatar-lg { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; flex: none;
       background: var(--accent-soft); color: var(--accent-text); font-size: 1.4rem; font-weight: 700; }
@@ -52,6 +61,17 @@ import { EmptyStateComponent, ProgressBarComponent, SkeletonComponent } from '..
           <div class="stat"><strong>{{ p.reviewedProjects | fmtNum }}</strong><span class="tiny muted">{{ 'profile.reviewed' | t }}</span></div>
         </div>
       </section>
+
+      @if (p.completedPhases.length > 0) {
+        <section class="card">
+          <h2 class="section-title"><app-icon name="award" /> {{ 'profile.phaseBadges' | t }}</h2>
+          <ul class="phase-badges" role="list">
+            @for (b of p.completedPhases; track b.id) {
+              <li class="phase-badge-item"><span class="phase-badge-num">{{ b.order }}</span><span>{{ i18n.pick(b.titleEn, b.titleAr) }}</span></li>
+            }
+          </ul>
+        </section>
+      }
 
       @if (p.paths.length > 0) {
         <section class="card">

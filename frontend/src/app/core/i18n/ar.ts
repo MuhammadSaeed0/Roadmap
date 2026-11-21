@@ -657,7 +657,7 @@ export const ar: Translations = {
     notFound: 'الملف غير موجود', notFoundHint: 'هذا الملف غير موجود أو أن صاحبه أبقاه خاصًا.',
     memberSince: 'يتعلّم على مسار المبرمج منذ {date}', xp: 'نقاط الخبرة', topics: 'مواضيع مكتملة', answers: 'إجابات مقبولة',
     reviewed: 'مشاريع روجعت من الأقران', projects: 'المشاريع المكتملة', noProjects: 'لا توجد مشاريع مكتملة بعد.', peerReviewed: 'روجع من الأقران',
-    libraryProjects: 'مكتبة المشاريع',
+    phaseBadges: 'مراحل مكتملة', libraryProjects: 'مكتبة المشاريع',
   },
   reviews: {
     openCount: 'طلبات مفتوحة يمكنك مراجعتها: {n}',

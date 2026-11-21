@@ -655,7 +655,7 @@ export const en = {
     notFound: 'Profile not found', notFoundHint: 'This profile doesn’t exist or its owner keeps it private.',
     memberSince: 'Learning on DevPath since {date}', xp: 'XP', topics: 'Topics completed', answers: 'Accepted answers',
     reviewed: 'Peer-reviewed projects', projects: 'Completed projects', noProjects: 'No completed projects yet.', peerReviewed: 'Peer reviewed',
-    libraryProjects: 'Project library',
+    phaseBadges: 'Completed phases', libraryProjects: 'Project library',
   },
   reviews: {
     openCount: '{n} open requests you can review',
