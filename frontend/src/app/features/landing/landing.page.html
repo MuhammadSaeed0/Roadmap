@@ -1,0 +1,66 @@
+<section class="ld-hero" aria-labelledby="ld-title">
+  <p class="ld-kicker">{{ 'landing.kicker' | t }}</p>
+  <h1 id="ld-title" tabindex="-1">{{ 'landing.headline' | t }}</h1>
+  <p class="ld-lead">{{ 'landing.lead' | t }}</p>
+  <div class="ld-actions">
+    <a class="btn btn-primary ld-cta" routerLink="/sign-up">{{ 'landing.cta' | t }}</a>
+    <a class="btn btn-ghost" routerLink="/sign-in">{{ 'landing.signIn' | t }}</a>
+  </div>
+  <p class="ld-note muted small">{{ 'landing.free' | t }}</p>
+</section>
+
+<section class="ld-facts" [attr.aria-label]="'landing.factsLabel' | t">
+  <dl>
+    @for (f of facts; track f.key) {
+      <div class="ld-fact">
+        <app-icon [name]="f.icon" [size]="18" />
+        <dt>{{ f.key | t }}</dt>
+        <dd><bdi dir="ltr">{{ f.n }}</bdi></dd>
+      </div>
+    }
+  </dl>
+</section>
+
+<section class="ld-section" aria-labelledby="ld-shots-h">
+  <h2 id="ld-shots-h">{{ 'landing.shotsTitle' | t }}</h2>
+  <ul class="ld-shots" role="list">
+    @for (s of shots; track s.file) {
+      <li>
+        <figure>
+          <img [src]="url(s.file)" [alt]="i18n.pick(s.en, s.ar)" loading="lazy" decoding="async" width="1920" height="1200" />
+          <figcaption>{{ i18n.pick(s.en, s.ar) }}</figcaption>
+        </figure>
+      </li>
+    }
+  </ul>
+</section>
+
+<section class="ld-section" aria-labelledby="ld-feat-h">
+  <h2 id="ld-feat-h">{{ 'landing.featuresTitle' | t }}</h2>
+  <ul class="ld-features" role="list">
+    @for (f of features; track f.key) {
+      <li>
+        <app-icon [name]="f.icon" [size]="20" />
+        <div>
+          <h3>{{ 'landing.features.' + f.key + '.title' | t }}</h3>
+          <p>{{ 'landing.features.' + f.key + '.body' | t }}</p>
+        </div>
+      </li>
+    }
+  </ul>
+</section>
+
+<section class="ld-section ld-audience" aria-labelledby="ld-who-h">
+  <h2 id="ld-who-h">{{ 'landing.whoTitle' | t }}</h2>
+  <ul role="list">
+    @for (a of audience; track a) {
+      <li><app-icon name="check" [size]="16" /> {{ 'landing.who.' + a | t }}</li>
+    }
+  </ul>
+</section>
+
+<section class="ld-final">
+  <h2>{{ 'landing.finalTitle' | t }}</h2>
+  <a class="btn btn-primary ld-cta" routerLink="/sign-up">{{ 'landing.cta' | t }}</a>
+  <p class="muted small">{{ 'landing.haveAccount' | t }} <a routerLink="/sign-in">{{ 'landing.signIn' | t }}</a></p>
+</section>

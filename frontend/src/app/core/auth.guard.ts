@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, CanMatchFn, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
 /**
@@ -41,6 +41,13 @@ export const guestGuard: CanActivateFn = async () => {
   await auth.restore();
   if (!auth.account()) return true;
   return router.createUrlTree([auth.approved() ? '/' : '/account-status']);
+};
+
+/** "/" for visitors without an account: the public landing page matches only then; everyone else gets the app. */
+export const guestMatch: CanMatchFn = async () => {
+  const auth = inject(AuthService);
+  await auth.restore();
+  return !auth.account();
 };
 
 /**

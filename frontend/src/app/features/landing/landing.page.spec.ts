@@ -1,0 +1,76 @@
+import { signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { RouterTestingHarness } from '@angular/router/testing';
+import { routes } from '../../app.routes';
+import { ApiService } from '../../core/api.service';
+import { AuthService } from '../../core/auth.service';
+import { I18nService, browserLang } from '../../core/i18n/i18n.service';
+import LandingPage from './landing.page';
+
+const never = () => new Promise<never>(() => undefined);
+
+/** A stand-in for AuthService: signed out (null) or an approved learner. */
+function auth(account: { status: string } | null) {
+  const value = signal(account as never);
+  return {
+    account: value, ready: signal(true), approved: () => account?.status === 'Approved', isAdmin: () => false,
+    displayName: () => 'Mona', restore: () => Promise.resolve(),
+  };
+}
+
+async function openRoot(account: { status: string } | null) {
+  TestBed.configureTestingModule({
+    providers: [
+      provideRouter(routes),
+      { provide: AuthService, useValue: auth(account) },
+      // Every API call stays pending: these tests only check which page "/" opens.
+      { provide: ApiService, useValue: new Proxy({}, { get: () => never }) },
+    ],
+  });
+  TestBed.inject(I18nService).lang.set('en');
+  const harness = await RouterTestingHarness.create();
+  await harness.navigateByUrl('/');
+  return harness;
+}
+
+describe('Landing page', () => {
+  it('is what "/" shows a visitor without an account', async () => {
+    const harness = await openRoot(null);
+    const el = harness.routeNativeElement!;
+    expect(el.querySelector('h1')?.textContent).toContain('From your first line of code to your first developer job');
+    expect(el.querySelector('a.ld-cta')?.getAttribute('href')).toBe('/sign-up');
+    expect(el.querySelector('a[href="/sign-in"]')).not.toBeNull();
+  });
+
+  it('is never shown to a signed-in learner: "/" stays the dashboard', async () => {
+    const harness = await openRoot({ status: 'Approved' });
+    expect(harness.routeNativeElement?.querySelector('.ld-hero')).toBeNull();
+    expect(harness.routeNativeElement?.tagName.toLowerCase()).toBe('app-dashboard-page');
+  });
+
+  it('shows the real numbers and real screenshots, loaded lazily', async () => {
+    TestBed.configureTestingModule({ providers: [provideRouter([])] });
+    TestBed.inject(I18nService).lang.set('en');
+    const fixture = TestBed.createComponent(LandingPage);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    expect([...el.querySelectorAll('.ld-fact dd')].map(d => d.textContent?.trim())).toEqual(['14', '166', '178', '97', '66', '900+']);
+    const images = [...el.querySelectorAll<HTMLImageElement>('.ld-shots img')];
+    expect(images.length).toBe(4);
+    expect(images.every(i => i.getAttribute('src')!.startsWith('marketing/') && i.getAttribute('loading') === 'lazy' && i.alt.length > 0)).toBe(true);
+  });
+
+  it('opens in Arabic for a first visit from an Arabic browser', () => {
+    const spy = vi.spyOn(navigator, 'languages', 'get').mockReturnValue(['ar-EG', 'en']);
+    try {
+      expect(browserLang()).toBe('ar');
+    } finally {
+      spy.mockRestore();
+    }
+    vi.spyOn(navigator, 'languages', 'get').mockReturnValue(['en-US']);
+    vi.spyOn(navigator, 'language', 'get').mockReturnValue('en-US');
+    expect(browserLang()).toBe('en');
+    vi.restoreAllMocks();
+  });
+});
