@@ -21,7 +21,8 @@ const STATUSES: AccountStatus[] = ['PendingEmailVerification', 'Rejected', 'Susp
 const PAGE_SIZE = 20;
 
 /**
- * The admin area: account approval, administrators and the activity log.
+ * The admin area: accounts, administrators, usage and the activity log. (Approval is off; an account left in
+ * PendingApproval from before can still be approved from its row.)
  * Buttons only appear for actions that make sense; the API enforces every rule
  * (role, owner-only actions, protected main administrator) regardless of what is shown here.
  */

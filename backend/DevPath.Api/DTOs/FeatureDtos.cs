@@ -27,7 +27,9 @@ public record PortfolioItemDto(int Id, string Key, string TitleEn, string TitleA
 public record ProjectDetailDto(
     ProjectSummaryDto Summary, IReadOnlyList<string> RequirementsEn, IReadOnlyList<string> RequirementsAr,
     string? RepositoryUrl, IReadOnlyList<MilestoneDto> Milestones, IReadOnlyList<ProjectTaskDto> ChangeRequests,
-    IReadOnlyList<PortfolioItemDto> Portfolio, int NoteCount);
+    IReadOnlyList<PortfolioItemDto> Portfolio, int NoteCount,
+    /// <summary>Library projects that practise this project's topics, the closest matches first.</summary>
+    IReadOnlyList<GuidedProjectRefDto> GuidedProjects);
 
 public record UpdateProjectTaskProgressRequest(
     [Required] ProjectTaskStatus? Status,

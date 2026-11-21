@@ -73,4 +73,24 @@ public class ProfileTests(ApiFactory factory) : IClassFixture<ApiFactory>
         Assert.Equal(1, profile["topicsCompleted"]!.GetValue<int>());
         Assert.Contains(profile["paths"]!.AsArray(), p => p!["percent"]!.GetValue<double>() > 0);
     }
+
+    [Fact]
+    public async Task A_phase_badge_appears_once_every_topic_of_the_phase_is_done()
+    {
+        var owner = await factory.CreateUserClientAsync();
+        var anonymous = factory.CreateClient();
+        var handle = Handle();
+        await Json(await owner.PutAsJsonAsync("/api/profile", new { isPublic = true, handle }));
+        var phase = (await Json(await owner.GetAsync("/api/roadmap")))["phases"]![0]!;
+        var topics = phase["topics"]!.AsArray().Select(t => t!["id"]!.GetValue<int>()).ToList();
+
+        // All but one topic: no badge yet. Skipping as already known counts as done.
+        foreach (var id in topics.Skip(1))
+            (await owner.PutAsJsonAsync($"/api/topics/{id}/progress", new { status = "Skipped", knowledge = "AlreadyKnow", confidence = 4 })).EnsureSuccessStatusCode();
+        Assert.Empty((await Json(await anonymous.GetAsync($"/api/profiles/{handle}")))["completedPhases"]!.AsArray());
+
+        (await owner.PutAsJsonAsync($"/api/topics/{topics[0]}/progress", new { status = "Completed", knowledge = "AlreadyKnow", confidence = 4 })).EnsureSuccessStatusCode();
+        var badge = (await Json(await anonymous.GetAsync($"/api/profiles/{handle}")))["completedPhases"]!.AsArray().Single()!;
+        Assert.Equal(phase["id"]!.GetValue<int>(), badge["id"]!.GetValue<int>());
+    }
 }

@@ -11,6 +11,10 @@ public class PeerReviewsController(PeerReviewService reviews) : ControllerBase
     [HttpGet("api/review-requests")]
     public Task<ReviewRequestListsDto> List(CancellationToken ct) => reviews.ListAsync(ct);
 
+    /// <summary>The number of open requests I can review, for the menu badge.</summary>
+    [HttpGet("api/review-requests/open-count")]
+    public async Task<OpenReviewCountDto> OpenCount(CancellationToken ct) => new(await reviews.OpenCountAsync(ct));
+
     [HttpGet("api/projects/{projectId:int}/review-request")]
     public async Task<ActionResult<ReviewRequestDto>> Latest(int projectId, CancellationToken ct) =>
         await reviews.LatestForProjectAsync(projectId, ct) is { } r ? r : NoContent();

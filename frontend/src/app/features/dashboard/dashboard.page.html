@@ -14,6 +14,13 @@
 } @else if (data.value(); as d) {
   <div class="dash">
     <div class="dash-main">
+      @if (d.reviewsDue > 0) {
+        <div class="callout callout-warn due-banner" role="status">
+          <app-icon name="repeat" />
+          <p>{{ 'dashboard.dueBanner' | t: { n: d.reviewsDue } }}</p>
+          <a class="btn btn-primary btn-sm" routerLink="/progress" [queryParams]="{ tab: 'review' }">{{ 'dashboard.reviewNow' | t }}</a>
+        </div>
+      }
       <!-- Welcome and overall progress -->
       <section class="card hero" aria-labelledby="page-title" data-tour="dashboard-hero">
         <div class="hero-text">

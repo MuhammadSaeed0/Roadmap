@@ -91,13 +91,24 @@ public partial class ProfileService(AppDbContext db, ICurrentUser currentUser)
             .Where(p => p.Steps > 0 && p.Done == p.Steps)
             .ToListAsync(ct);
 
+        // Phase badges: every topic of the phase completed or skipped as already known.
+        var doneTopics = (await db.TopicProgress.IgnoreQueryFilters()
+            .Where(p => p.UserId == id && (p.Status == TopicStatus.Completed || p.Status == TopicStatus.Skipped))
+            .Select(p => p.TopicId).ToListAsync(ct)).ToHashSet();
+        var phaseTopics = await db.Topics.AsNoTracking().Select(t => new { t.Id, t.PhaseId }).ToListAsync(ct);
+        var finishedPhaseIds = phaseTopics.GroupBy(t => t.PhaseId)
+            .Where(g => g.All(t => doneTopics.Contains(t.Id))).Select(g => g.Key).ToHashSet();
+        var phaseBadges = await db.Phases.AsNoTracking().Where(p => finishedPhaseIds.Contains(p.Id)).OrderBy(p => p.Order)
+            .Select(p => new PublicPhaseBadgeDto(p.Id, p.Order, p.TitleEn, p.TitleAr)).ToListAsync(ct);
+
         return new PublicProfileDto(
             user.PublicHandle!, user.FullName, user.CreatedAt, level, xp, completedTopics.Count, acceptedAnswers, reviewed.Count,
             paths,
             projects.Select(p => new PublicProjectDto(p.Id, p.TitleEn, p.TitleAr, p.TechStack,
                 SafeUrl(repositories.GetValueOrDefault(p.Id)), reviewed.Contains(p.Id))).ToList(),
             library.OrderBy(g => g.Level).ThenBy(g => g.Id)
-                .Select(g => new PublicLibraryProjectDto(g.Id, g.TitleEn, g.TitleAr, g.TechStack, g.Level.ToString(), SafeUrl(g.Repo))).ToList());
+                .Select(g => new PublicLibraryProjectDto(g.Id, g.TitleEn, g.TitleAr, g.TechStack, g.Level.ToString(), SafeUrl(g.Repo))).ToList(),
+            phaseBadges);
     }
 
     /// <summary>Built-in paths the learner has started, with their share of completed topics.</summary>

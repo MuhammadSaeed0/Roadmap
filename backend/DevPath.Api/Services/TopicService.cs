@@ -22,6 +22,17 @@ public class TopicService(
             .ToDictionaryAsync(t => t.Id, ct);
         var phaseInfo = await db.Phases.AsNoTracking().ToDictionaryAsync(p => p.Id, ct);
         var projectSummaries = await projects.GetSummariesAsync(ct);
+        // A library project belongs to the latest phase among its topics: by the end of that phase it is all within reach.
+        var guidedLinks = await db.GuidedProjectTopics.AsNoTracking()
+            .Select(l => new { l.ProjectId, PhaseOrder = l.Topic.Phase.Order })
+            .ToListAsync(ct);
+        var guidedPhase = guidedLinks.GroupBy(l => l.ProjectId).ToDictionary(g => g.Key, g => g.Max(l => l.PhaseOrder));
+        var guidedRefs = (await db.GuidedProjects.AsNoTracking()
+            .Select(g => new GuidedProjectRefDto(g.Id, g.Skill, g.Level, g.TitleEn, g.TitleAr,
+                g.Steps.Count, g.Steps.Count(st => st.ProgressRows.Any())))
+            .ToListAsync(ct))
+            .Where(g => guidedPhase.ContainsKey(g.Id))
+            .ToLookup(g => guidedPhase[g.Id]);
 
         var byPhase = state.Topics.ToLookup(t => t.PhaseId);
         var lastPhaseId = state.Phases.LastOrDefault()?.Id;
@@ -30,10 +41,12 @@ public class TopicService(
         {
             var topics = byPhase[p.Id].ToList();
             var info = phaseInfo[p.Id];
-            // Projects appear in the final "Full-Stack Projects" phase.
-            var phaseProjects = p.Id == lastPhaseId && topics.Count == 0
-                ? projectSummaries.Select(s => new ProjectBriefDto(s.Id, s.Slug, s.TitleEn, s.TitleAr, s.TechStack, s.Percent)).ToList()
-                : [];
+            // Every main project appears in the final "Full-Stack Projects" phase, and also in the phase after which it can start.
+            var isProjectPhase = p.Id == lastPhaseId && topics.Count == 0;
+            var phaseProjects = projectSummaries
+                .Where(s => isProjectPhase || s.StartAfterPhase.Id == p.Id)
+                .Select(s => new ProjectBriefDto(s.Id, s.Slug, s.TitleEn, s.TitleAr, s.TechStack, s.Percent)).ToList();
+            var phaseGuided = guidedRefs[p.Order].OrderBy(g => g.Level).ThenBy(g => g.Id).ToList();
             return new PhaseDto(
                 p.Id, p.Slug, p.Order, p.TitleEn, p.TitleAr, info.DescriptionEn, info.DescriptionAr,
                 topics.Count, topics.Count(t => t.IsDone),
@@ -42,7 +55,7 @@ public class TopicService(
                     : projectSummaries.Count == 0 ? 0 : Math.Round(projectSummaries.Average(s => s.Percent), 1),
                 topics.Where(t => !t.IsDone).Sum(t => t.Minutes),
                 topics.Select(t => ToSummary(t, state, topicExtras[t.Id].SummaryEn, topicExtras[t.Id].SummaryAr, topicExtras[t.Id].InReview)).ToList(),
-                phaseProjects);
+                phaseProjects, phaseGuided);
         }).ToList();
 
         return new RoadmapDto(phases, ProgressCalculator.CurrentPhase(state)?.Id);

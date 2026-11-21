@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { ApiError } from '../../core/api-error';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -43,6 +43,7 @@ export default class TopicDetailPage {
   private readonly toast = inject(ToastService);
   private readonly confirm = inject(ConfirmService);
   private readonly sessions = inject(SessionDialogService);
+  private readonly router = inject(Router);
 
   /** Route parameter :id, bound via withComponentInputBinding(). */
   readonly id = input.required<string>();
@@ -115,23 +116,31 @@ export default class TopicDetailPage {
     });
   }
 
-  protected async update(changes: Partial<{ status: TopicStatus; knowledge: KnowledgeLevel; confidence: number | null }>): Promise<void> {
+  protected async update(changes: Partial<{ status: TopicStatus; knowledge: KnowledgeLevel; confidence: number | null }>): Promise<boolean> {
     const t = this.data.value();
-    if (!t) return;
+    if (!t) return false;
     const body = { status: t.status, knowledge: t.knowledge, confidence: t.confidence, ...changes };
     this.saving.set(true);
     try {
       const saved = await this.api.updateTopicProgress(t.id, body) as { completedAt: string | null };
       this.data.update(v => ({ ...v, ...body, completedAt: saved.completedAt }));
       this.toast.success(this.i18n.t('topic.saved'));
+      return true;
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
+      return false;
     } finally {
       this.saving.set(false);
     }
   }
 
-  protected markKnown(): Promise<void> {
+  /** The end-of-lesson button: marks the topic complete and, when there is a next topic, opens it. */
+  protected async finishAndContinue(): Promise<void> {
+    const next = this.data.value()?.next;
+    if (await this.update({ status: 'Completed' }) && next) await this.router.navigate(['/topics', next.id]);
+  }
+
+  protected markKnown(): Promise<boolean> {
     const t = this.data.value();
     return this.update({ status: 'Skipped', knowledge: 'AlreadyKnow', confidence: t?.confidence ?? 4 });
   }

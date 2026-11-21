@@ -59,6 +59,50 @@ public class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>, IAsyncLif
     }
 
     [Fact]
+    public async Task Each_phase_lists_its_library_projects_and_the_main_projects_it_unlocks()
+    {
+        var phases = (await Json(await _client.GetAsync("/api/roadmap")))["phases"]!.AsArray();
+        var guided = phases.SelectMany(p => p!["guidedProjects"]!.AsArray().Select(g => g!["id"]!.GetValue<int>())).ToList();
+        var library = (await Json(await _client.GetAsync("/api/guided-projects"))).AsArray();
+        // Every library project appears once, in one phase.
+        Assert.Equal(guided.Count, guided.Distinct().Count());
+        Assert.Equal(library.Count, guided.Count);
+
+        // A project sits in a phase that teaches one of the topics it uses.
+        var first = phases.First(p => p!["guidedProjects"]!.AsArray().Count > 0)!;
+        var id = first["guidedProjects"]![0]!["id"]!.GetValue<int>();
+        var usedHere = false;
+        foreach (var topic in first["topics"]!.AsArray())
+        {
+            var detail = await Json(await _client.GetAsync($"/api/topics/{topic!["id"]}"));
+            usedHere |= detail["guidedProjects"]!.AsArray().Any(g => g!["id"]!.GetValue<int>() == id);
+        }
+        Assert.True(usedHere);
+
+        // Main projects show in the phase after which they start, as well as in the final projects phase.
+        var projects = (await Json(await _client.GetAsync("/api/projects"))).AsArray();
+        foreach (var project in projects)
+        {
+            var startAfter = project!["startAfterPhase"]!["id"]!.GetValue<int>();
+            var phase = phases.Single(p => p!["id"]!.GetValue<int>() == startAfter)!;
+            Assert.Contains(phase["projects"]!.AsArray(), p => p!["id"]!.GetValue<int>() == project["id"]!.GetValue<int>());
+        }
+        Assert.Equal(projects.Count, phases[^1]!["projects"]!.AsArray().Count);
+    }
+
+    [Fact]
+    public async Task Every_main_project_points_to_library_projects_that_prepare_for_it()
+    {
+        foreach (var project in (await Json(await _client.GetAsync("/api/projects"))).AsArray())
+        {
+            var detail = await Json(await _client.GetAsync($"/api/projects/{project!["id"]}"));
+            var guided = detail["guidedProjects"]!.AsArray();
+            Assert.InRange(guided.Count, 1, 6);
+            Assert.Equal(guided.Count, guided.Select(g => g!["id"]!.GetValue<int>()).Distinct().Count());
+        }
+    }
+
+    [Fact]
     public async Task Roadmap_has_14_phases_and_enums_are_strings()
     {
         var json = await Json(await _client.GetAsync("/api/roadmap"));

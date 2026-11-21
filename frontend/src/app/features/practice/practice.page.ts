@@ -64,6 +64,11 @@ import { ProjectPlacesComponent } from '../../shared/project-places.component';
       </section>
 
       <div class="toolbar practice-filters" data-tour="practice-filters">
+        <!-- The strongest filter, first and visible: exercises whose code runs and is checked right here. -->
+        <button type="button" class="btn btn-sm run-toggle" [class.btn-primary]="filters().runnable" [class.btn-secondary]="!filters().runnable"
+                [attr.aria-pressed]="filters().runnable" (click)="set('runnable', !filters().runnable)">
+          <app-icon name="play" [size]="14" /> {{ 'practice.runnableOnly' | t }} <span class="run-count">{{ runnableCount() }}</span>
+        </button>
         <label class="sr-only" for="pr-q">{{ 'practice.search' | t }}</label>
         <input id="pr-q" class="input input-sm" type="search" [ngModel]="filters().q" (ngModelChange)="set('q', $event)" [placeholder]="'practice.search' | t">
         <label class="sr-only" for="pr-skill">{{ 'library.allSkills' | t }}</label>
@@ -86,7 +91,6 @@ import { ProjectPlacesComponent } from '../../shared/project-places.component';
           <option value="">{{ 'practice.anyStatus' | t }}</option>
           @for (s of statuses; track s) { <option [value]="s">{{ 'practiceStatus.' + s | t }}</option> }
         </select>
-        <label class="check-label small"><input type="checkbox" [ngModel]="filters().runnable" (ngModelChange)="set('runnable', $event)"> {{ 'practice.runnableOnly' | t }}</label>
         @if (filtered()) { <button type="button" class="btn btn-ghost btn-sm" (click)="clear()">{{ 'common.clear' | t }}</button> }
       </div>
       <p class="muted small" aria-live="polite">{{ 'practice.showing' | t: { n: visible().length, total: overview.total } }}</p>
@@ -167,6 +171,8 @@ export default class PracticePage {
     const f = this.filters();
     return !!(f.q || f.skill || f.type || f.difficulty || f.status || f.runnable);
   });
+  protected readonly runnableCount = computed(() => (this.data.value()?.exercises ?? []).filter(e => e.runner !== 'None').length);
+
   protected readonly visible = computed(() => {
     const f = this.filters();
     const q = f.q.trim().toLowerCase();

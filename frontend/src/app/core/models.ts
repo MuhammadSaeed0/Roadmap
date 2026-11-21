@@ -48,6 +48,8 @@ export interface Phase {
   id: number; slug: string; order: number; titleEn: string; titleAr: string; descriptionEn: string; descriptionAr: string;
   topicCount: number; doneCount: number; percent: number; remainingMinutes: number;
   topics: TopicSummary[]; projects: ProjectBrief[];
+  /** Library projects that practise this phase (each project sits in the latest phase among its topics). */
+  guidedProjects: GuidedProjectRef[];
 }
 export interface Roadmap { phases: Phase[]; currentPhaseId: number | null; }
 
@@ -124,6 +126,8 @@ export interface PortfolioItem { id: number; key: string; titleEn: string; title
 export interface ProjectDetail {
   summary: ProjectSummary; requirementsEn: string[]; requirementsAr: string[]; repositoryUrl: string | null;
   milestones: Milestone[]; changeRequests: ProjectTask[]; portfolio: PortfolioItem[]; noteCount: number;
+  /** Library projects that practise this project's topics, closest first. */
+  guidedProjects: GuidedProjectRef[];
 }
 
 export interface ExerciseSummary {
@@ -373,6 +377,8 @@ export interface PublicProfile {
   paths: { id: number; nameEn: string; nameAr: string; iconName: string; percent: number }[];
   projects: { id: number; titleEn: string; titleAr: string; techStack: string; repositoryUrl: string | null; peerReviewed: boolean }[];
   libraryProjects: { id: number; titleEn: string; titleAr: string; techStack: string; level: Difficulty; repositoryUrl: string | null }[];
+  /** Roadmap phases with every topic done. */
+  completedPhases: { id: number; order: number; titleEn: string; titleAr: string }[];
 }
 
 // ---- Learning Paths ----

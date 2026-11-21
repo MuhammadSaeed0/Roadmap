@@ -26,7 +26,7 @@ public record ProjectBriefDto(int Id, string Slug, string TitleEn, string TitleA
 public record PhaseDto(
     int Id, string Slug, int Order, string TitleEn, string TitleAr, string DescriptionEn, string DescriptionAr,
     int TopicCount, int DoneCount, double Percent, int RemainingMinutes,
-    IReadOnlyList<TopicSummaryDto> Topics, IReadOnlyList<ProjectBriefDto> Projects);
+    IReadOnlyList<TopicSummaryDto> Topics, IReadOnlyList<ProjectBriefDto> Projects, IReadOnlyList<GuidedProjectRefDto> GuidedProjects);
 
 public record RoadmapDto(IReadOnlyList<PhaseDto> Phases, int? CurrentPhaseId);
 

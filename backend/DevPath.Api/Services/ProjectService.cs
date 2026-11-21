@@ -66,8 +66,24 @@ public class ProjectService(AppDbContext db, TimeProvider clock)
             .Select(i => new PortfolioItemDto(i.Id, i.Key, i.TitleEn, i.TitleAr, i.DescriptionEn, i.DescriptionAr, done.Contains(i.Id)))
             .ToList();
 
+        // The library projects that share the most topics with this project prepare for it best.
+        var topicIds = topics.Keys.ToList();
+        var guided = (await db.GuidedProjectTopics.AsNoTracking()
+            .Where(l => topicIds.Contains(l.TopicId))
+            .GroupBy(l => l.ProjectId)
+            .Select(g => new { ProjectId = g.Key, Shared = g.Count() })
+            .ToListAsync(ct))
+            .OrderByDescending(g => g.Shared).ThenBy(g => g.ProjectId).Take(6).ToList();
+        var guidedIds = guided.Select(g => g.ProjectId).ToList();
+        var guidedRefs = await db.GuidedProjects.AsNoTracking()
+            .Where(g => guidedIds.Contains(g.Id))
+            .Select(g => new GuidedProjectRefDto(g.Id, g.Skill, g.Level, g.TitleEn, g.TitleAr,
+                g.Steps.Count, g.Steps.Count(st => st.ProgressRows.Any())))
+            .ToDictionaryAsync(g => g.Id, ct);
+
         return new ProjectDetailDto(summary, SplitLines(project.RequirementsEn), SplitLines(project.RequirementsAr),
-            project.Repositories.FirstOrDefault()?.RepositoryUrl, milestones, changeRequests, portfolio, noteCount);
+            project.Repositories.FirstOrDefault()?.RepositoryUrl, milestones, changeRequests, portfolio, noteCount,
+            guidedIds.Select(id => guidedRefs[id]).ToList());
     }
 
     public async Task<IReadOnlyList<ProjectTaskDto>> GetTasksAsync(int projectId, CancellationToken ct)

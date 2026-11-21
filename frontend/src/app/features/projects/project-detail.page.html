@@ -73,6 +73,23 @@
         </ul>
       </section>
 
+      @if (d.guidedProjects.length > 0) {
+        <section class="card" aria-labelledby="prep-h">
+          <h2 id="prep-h" class="card-title"><app-icon name="layers" /> {{ 'projects.prepare' | t }}</h2>
+          <p class="muted small">{{ 'projects.prepareIntro' | t }}</p>
+          <ul class="prep-list" role="list">
+            @for (g of d.guidedProjects; track g.id) {
+              @let gs = g.doneSteps === g.stepCount ? 'Completed' : g.doneSteps > 0 ? 'InProgress' : 'NotStarted';
+              <li>
+                <app-icon [name]="statusIcon(gs)" [size]="15" class="status-icon" [attr.data-status]="gs" />
+                <a [routerLink]="['/project-library', g.id]">{{ g | loc: 'title' }}</a>
+                <span class="muted small">{{ 'guides.levels.' + g.level | t }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+
       <section class="card" aria-labelledby="pf-h" data-tour="project-portfolio">
         <h2 id="pf-h" class="card-title"><app-icon name="award" /> {{ 'projects.portfolio' | t }} <span class="muted small">{{ d.summary.portfolioDone }}/{{ d.summary.portfolioTotal }}</span></h2>
         <ul class="checkbox-list" role="list">
