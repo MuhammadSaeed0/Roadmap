@@ -660,6 +660,7 @@ export const ar: Translations = {
     libraryProjects: 'مكتبة المشاريع',
   },
   reviews: {
+    openCount: 'طلبات مفتوحة يمكنك مراجعتها: {n}',
     title: 'مراجعات الأقران', subtitle: 'راجع المشاريع التي أنهاها متعلمون آخرون، واطلب مراجعة مشاريعك. مراجعة الأقران تُحتسب أكثر من تقييمك لنفسك.',
     tabs: { open: 'طلبات للمراجعة', reviewing: 'مراجعاتي', requested: 'طلباتي' },
     status: { Open: 'بانتظار مراجِع', Claimed: 'قيد المراجعة', Completed: 'تمت مراجعته', Cancelled: 'ملغى' },

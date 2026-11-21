@@ -32,6 +32,16 @@ public class PeerReviewService(AppDbContext db, ICurrentUser currentUser, SkillR
         return new ReviewRequestListsDto(Criteria(), open.Select(ToDto).ToList(), requested.Select(ToDto).ToList(), reviewing.Select(ToDto).ToList());
     }
 
+    /// <summary>How many open requests the current account could review now (shown next to "Peer reviews" in the menu).</summary>
+    public async Task<int> OpenCountAsync(CancellationToken ct)
+    {
+        var me = UserId;
+        var finished = await ProjectCompletion.CompletedProjectIdsAsync(db, me, ct);
+        if (finished.Count == 0) return 0;
+        return await db.ProjectReviewRequests.AsNoTracking()
+            .CountAsync(r => r.Status == ReviewRequestStatus.Open && r.RequesterId != me && finished.Contains(r.ProjectId), ct);
+    }
+
     /// <summary>The current account's latest request for a project, or null.</summary>
     public async Task<ReviewRequestDto?> LatestForProjectAsync(int projectId, CancellationToken ct)
     {

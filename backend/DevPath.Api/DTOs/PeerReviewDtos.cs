@@ -14,3 +14,6 @@ public record ReviewRequestListsDto(
     IReadOnlyList<ReviewRequestDto> Reviewing);
 
 public record SubmitReviewRequest(Dictionary<string, int> Scores, string? Notes);
+
+/// <summary>How many open requests the current account can review.</summary>
+public record OpenReviewCountDto(int Count);

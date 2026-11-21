@@ -57,6 +57,23 @@ public class PeerReviewTests(ApiFactory factory) : IClassFixture<ApiFactory>
     }
 
     [Fact]
+    public async Task The_menu_count_shows_only_requests_I_can_review()
+    {
+        var requester = await factory.CreateUserClientAsync();
+        await FinishProjectAsync(requester);
+        await requester.PostAsync($"/api/projects/{ProjectId}/review-request", null);
+        var count = async (HttpClient c) => (await Json(await c.GetAsync("/api/review-requests/open-count")))["count"]!.GetValue<int>();
+
+        var newcomer = await factory.CreateUserClientAsync();
+        Assert.Equal(0, await count(newcomer));
+        var reviewer = await factory.CreateUserClientAsync();
+        await FinishProjectAsync(reviewer);
+        var open = (await Json(await reviewer.GetAsync("/api/review-requests")))["open"]!.AsArray().Count;
+        Assert.True(open >= 1);
+        Assert.Equal(open, await count(reviewer));
+    }
+
+    [Fact]
     public async Task Only_someone_who_finished_the_same_project_can_claim_and_nobody_reviews_themselves()
     {
         var requester = await factory.CreateUserClientAsync();

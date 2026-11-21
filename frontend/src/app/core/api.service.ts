@@ -187,6 +187,7 @@ export class ApiService {
 
   // ----- Peer reviews -----
   reviewRequests() { return this.get<M.ReviewRequestLists>('/review-requests'); }
+  openReviewCount() { return this.get<{ count: number }>('/review-requests/open-count'); }
   /** The account's latest request for this project; null (204) when there is none. */
   projectReviewRequest(projectId: number) { return this.get<M.ReviewRequest | null>(`/projects/${projectId}/review-request`); }
   requestReview(projectId: number) { return this.post<M.ReviewRequest>(`/projects/${projectId}/review-request`, {}); }

@@ -658,6 +658,7 @@ export const en = {
     libraryProjects: 'Project library',
   },
   reviews: {
+    openCount: '{n} open requests you can review',
     title: 'Peer reviews', subtitle: 'Review finished projects of other learners, and get yours reviewed. A peer review counts more than reviewing yourself.',
     tabs: { open: 'Requests to review', reviewing: 'My reviews', requested: 'My requests' },
     status: { Open: 'Waiting for a reviewer', Claimed: 'Being reviewed', Completed: 'Reviewed', Cancelled: 'Cancelled' },

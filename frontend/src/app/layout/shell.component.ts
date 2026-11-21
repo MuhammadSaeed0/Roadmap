@@ -81,6 +81,9 @@ const NARROW_MAX = 960;
                            (click)="closeNav()" #rla="routerLinkActive" [attr.aria-current]="rla.isActive ? 'page' : null">
                           <app-icon [name]="item.icon" [size]="18" />
                           <span>{{ item.key | t }}</span>
+                          @if (item.path === '/reviews' && openReviews() > 0) {
+                            <span class="nav-count" [attr.aria-label]="'reviews.openCount' | t: { n: openReviews() }">{{ openReviews() }}</span>
+                          }
                         </a>
                       </li>
                     }
@@ -186,6 +189,9 @@ export class ShellComponent {
   });
   protected readonly apiOffline = signal(false);
   protected readonly titleKey = signal('nav.dashboard');
+  /** Open peer-review requests this learner can take, shown next to "Peer reviews" so requests don't wait unseen. */
+  protected readonly openReviews = signal(0);
+  private reviewsCheckedAt = 0;
 
   /** Pages that belong together share a menu, and a skin (see app.routes.ts and skins.css). */
   private readonly baseGroups: { key: string; items: NavItem[] }[] = [
@@ -218,6 +224,14 @@ export class ShellComponent {
     ] },
   ];
   protected readonly groups = computed(() => this.baseGroups);
+
+  /** Refreshed on page changes, at most once a minute (and right away on the Peer reviews page, where claims change it). */
+  private async refreshOpenReviews(): Promise<void> {
+    const now = Date.now();
+    if (now - this.reviewsCheckedAt < 60_000 && !this.router.url.startsWith('/reviews')) return;
+    this.reviewsCheckedAt = now;
+    try { this.openReviews.set((await this.api.openReviewCount()).count); } catch { /* the badge is optional */ }
+  }
   /** The menu that is open (wide screens open one at a time). */
   protected readonly openGroup = signal<string | null>(null);
   private readonly url = signal('/');
@@ -249,6 +263,7 @@ export class ShellComponent {
       this.accountOpen.set(false);
       this.url.set(this.router.url);
       this.closeNav();
+      if (!this.authLayout()) void this.refreshOpenReviews();
     });
 
     void this.checkHealth();
