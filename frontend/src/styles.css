@@ -505,6 +505,11 @@ html[lang='ar'] .eyebrow { text-transform: none; letter-spacing: 0; font-size: 0
 }
 .project-tile .icon { color: var(--accent); }
 .guided-intro { margin-top: 16px; }
+.nav-count {
+  margin-inline-start: auto; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+  display: inline-grid; place-items: center; font-size: 0.75rem; font-weight: 600;
+  background: var(--accent); color: var(--on-accent);
+}
 .prep-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
 .prep-list li { display: flex; align-items: center; gap: 8px; }
 .prep-list a { flex: 1; min-width: 0; }
@@ -1233,6 +1238,8 @@ fieldset:disabled .quiz-option { cursor: default; }
 .skill-progress.selected { border-color: var(--accent); box-shadow: var(--focus); }
 .skill-progress-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .practice-filters .input-sm { width: auto; }
+.run-toggle { display: inline-flex; align-items: center; gap: 6px; }
+.run-toggle .run-count { font-size: 0.78rem; opacity: 0.8; font-variant-numeric: tabular-nums; }
 .exercise-layout { display: grid; gap: 16px; }
 .exercise-layout > * { min-width: 0; }
 .exercise-extras { display: grid; gap: 14px; min-width: 0; }
