@@ -154,4 +154,49 @@ public class PeerReviewTests(ApiFactory factory) : IClassFixture<ApiFactory>
         Assert.Equal("Open", (await Json(await reviewer.PostAsync($"/api/review-requests/{id}/release", null)))["status"]!.GetValue<string>());
         Assert.Equal(HttpStatusCode.NoContent, (await requester.DeleteAsync($"/api/review-requests/{id}")).StatusCode);
     }
+
+    /// <summary>Ticks every step of a library project and, optionally, saves its repository link.</summary>
+    private static async Task FinishGuidedAsync(HttpClient client, int id, bool withRepository = true)
+    {
+        var detail = await Json(await client.GetAsync($"/api/guided-projects/{id}"));
+        foreach (var step in detail["steps"]!.AsArray())
+            (await client.PutAsJsonAsync($"/api/guided-projects/{id}/steps/{step!["id"]!.GetValue<int>()}", new { done = true })).EnsureSuccessStatusCode();
+        if (withRepository)
+            (await client.PutAsJsonAsync($"/api/guided-projects/{id}/repository", new { repositoryUrl = "https://github.com/learner/library-project" })).EnsureSuccessStatusCode();
+    }
+
+    [Fact]
+    public async Task Library_projects_can_be_peer_reviewed_by_someone_who_finished_them_too()
+    {
+        var learner = await factory.CreateUserClientAsync();
+        var id = (await Json(await learner.GetAsync("/api/guided-projects"))).AsArray()[0]!["id"]!.GetValue<int>();
+        Assert.Equal("project_not_finished", await Code(await learner.PostAsync($"/api/guided-projects/{id}/review-request", null)));
+        await FinishGuidedAsync(learner, id, withRepository: false);
+        Assert.Equal("repository_required", await Code(await learner.PostAsync($"/api/guided-projects/{id}/review-request", null)));
+        await FinishGuidedAsync(learner, id);
+
+        var request = await Json(await learner.PostAsync($"/api/guided-projects/{id}/review-request", null));
+        var requestId = request["id"]!.GetValue<int>();
+        Assert.Equal(id, request["guidedProjectId"]!.GetValue<int>());
+        Assert.Null(request["projectId"]);
+        Assert.Equal(requestId, (await Json(await learner.GetAsync($"/api/guided-projects/{id}/review-request")))["id"]!.GetValue<int>());
+
+        // Someone who did not finish this library project can't see or take it; finishing the main project doesn't count.
+        var outsider = await factory.CreateUserClientAsync();
+        await FinishProjectAsync(outsider);
+        Assert.DoesNotContain((await Json(await outsider.GetAsync("/api/review-requests")))["open"]!.AsArray(), r => r!["id"]!.GetValue<int>() == requestId);
+        Assert.Equal("project_not_finished", await Code(await outsider.PostAsync($"/api/review-requests/{requestId}/claim", null)));
+
+        var reviewer = await factory.CreateUserClientAsync();
+        await FinishGuidedAsync(reviewer, id, withRepository: false);
+        Assert.Contains((await Json(await reviewer.GetAsync("/api/review-requests")))["open"]!.AsArray(), r => r!["id"]!.GetValue<int>() == requestId);
+        Assert.True((await Json(await reviewer.GetAsync("/api/review-requests/open-count")))["count"]!.GetValue<int>() >= 1);
+        Assert.Equal("Claimed", (await Json(await reviewer.PostAsync($"/api/review-requests/{requestId}/claim", null)))["status"]!.GetValue<string>());
+        var done = await Json(await reviewer.PutAsJsonAsync($"/api/review-requests/{requestId}/review", new { scores = await AllScores(reviewer, 3), notes = "Clear code." }));
+        Assert.Equal("Completed", done["status"]!.GetValue<string>());
+
+        // The requester is told, with a link to the library project.
+        var notes = (await Json(await learner.GetAsync("/api/notifications")))["items"]!.AsArray();
+        Assert.Contains(notes, n => n!["kind"]!.GetValue<string>() == "ReviewCompleted" && n["guidedProjectId"]?.GetValue<int>() == id);
+    }
 }

@@ -1044,6 +1044,9 @@ namespace DevPath.Api.Migrations
                     b.Property<int?>("DiscussionId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("GuidedProjectId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
@@ -1686,11 +1689,14 @@ namespace DevPath.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("GuidedProjectId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Notes")
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)");
 
-                    b.Property<int>("ProjectId")
+                    b.Property<int?>("ProjectId")
                         .HasColumnType("int");
 
                     b.Property<string>("RepositoryUrl")
@@ -1718,15 +1724,24 @@ namespace DevPath.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GuidedProjectId");
+
                     b.HasIndex("ProjectId");
 
                     b.HasIndex("ReviewerId");
 
+                    b.HasIndex("RequesterId", "GuidedProjectId");
+
                     b.HasIndex("RequesterId", "ProjectId");
+
+                    b.HasIndex("Status", "GuidedProjectId");
 
                     b.HasIndex("Status", "ProjectId");
 
-                    b.ToTable("ProjectReviewRequests");
+                    b.ToTable("ProjectReviewRequests", t =>
+                        {
+                            t.HasCheckConstraint("CK_ProjectReviewRequests_OneProject", "(ProjectId IS NULL AND GuidedProjectId IS NOT NULL) OR (ProjectId IS NOT NULL AND GuidedProjectId IS NULL)");
+                        });
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.ProjectTask", b =>
@@ -3259,11 +3274,15 @@ namespace DevPath.Api.Migrations
 
             modelBuilder.Entity("DevPath.Api.Models.ProjectReviewRequest", b =>
                 {
+                    b.HasOne("DevPath.Api.Models.GuidedProject", "GuidedProject")
+                        .WithMany()
+                        .HasForeignKey("GuidedProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("DevPath.Api.Models.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DevPath.Api.Models.AppUser", "Requester")
                         .WithMany()
@@ -3275,6 +3294,8 @@ namespace DevPath.Api.Migrations
                         .WithMany()
                         .HasForeignKey("ReviewerId")
                         .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("GuidedProject");
 
                     b.Navigation("Project");
 

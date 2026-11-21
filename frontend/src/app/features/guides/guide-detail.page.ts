@@ -10,6 +10,7 @@ import { GuidedProjectDetail, GuidedStep } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
 import { isolateLatin } from '../../shared/bidi';
 import { CodeBlockComponent } from '../../shared/code-block.component';
+import { PeerReviewCardComponent } from '../reviews/peer-review-card.component';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
 import { lessonBlocks } from '../topics/topic-tutorial.component';
@@ -21,7 +22,8 @@ const URL_PATTERN = /^https?:\/\/\S+$/i;
   selector: 'app-guide-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './guides.css',
-  imports: [RouterLink, ReactiveFormsModule, IconComponent, TranslatePipe, CodeBlockComponent, SkeletonComponent, ErrorStateComponent, ProgressBarComponent],
+  imports: [RouterLink, ReactiveFormsModule, IconComponent, TranslatePipe, CodeBlockComponent, SkeletonComponent, ErrorStateComponent, ProgressBarComponent,
+    PeerReviewCardComponent],
   template: `
     @if (data.initialLoading() || (data.loading() && !data.value())) {
       <div class="card"><app-skeleton [rows]="2" [height]="30" /></div>
@@ -181,6 +183,7 @@ const URL_PATTERN = /^https?:\/\/\S+$/i;
                 </div>
               </form>
             </section>
+            <app-peer-review-card [projectId]="p.id" kind="library" [finished]="true" [hasRepository]="!!p.repositoryUrl" />
           }
 
           @if (p.sameSkill.length > 0) {

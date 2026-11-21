@@ -72,6 +72,8 @@ public class Notification
     public Discussion? Discussion { get; set; }
     /// <summary>For peer-review notifications: the project they are about. No foreign key; it only builds a link.</summary>
     public int? ProjectId { get; set; }
+    /// <summary>A Project library project (peer reviews of library projects link there).</summary>
+    public int? GuidedProjectId { get; set; }
     public string? ActorId { get; set; }
     public AppUser? Actor { get; set; }
 

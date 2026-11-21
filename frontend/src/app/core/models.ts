@@ -352,7 +352,7 @@ export interface DiscussionDetail {
 export interface PagedDiscussions { items: DiscussionSummary[]; page: number; pageSize: number; total: number; }
 
 export interface NotificationDto {
-  id: number; kind: string; discussionId: number | null; projectId: number | null;
+  id: number; kind: string; discussionId: number | null; projectId: number | null; guidedProjectId?: number | null;
   actorName: string | null; messageEn: string; messageAr: string;
   isRead: boolean; createdAt: string;
 }
@@ -362,7 +362,8 @@ export interface UnreadCount { count: number; }
 // ---- Peer reviews ----
 export type ReviewStatus = 'Open' | 'Claimed' | 'Completed' | 'Cancelled';
 export interface ReviewRequest {
-  id: number; projectId: number; projectTitleEn: string; projectTitleAr: string; techStack: string;
+  /** A main project, or null when the request is for the Project library project in guidedProjectId. */
+  id: number; projectId: number | null; guidedProjectId: number | null; projectTitleEn: string; projectTitleAr: string; techStack: string;
   requesterName: string; repositoryUrl: string; status: ReviewStatus; reviewerName: string | null;
   isMine: boolean; isReviewer: boolean; scores: Record<string, number> | null; notes: string | null;
   createdAt: string; claimedAt: string | null; completedAt: string | null;

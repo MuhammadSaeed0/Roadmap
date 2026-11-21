@@ -612,7 +612,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.Property(x => x.Notes).HasMaxLength(4000);
             e.HasIndex(x => new { x.Status, x.ProjectId });
             e.HasIndex(x => new { x.RequesterId, x.ProjectId });
+            e.HasIndex(x => new { x.Status, x.GuidedProjectId });
+            e.HasIndex(x => new { x.RequesterId, x.GuidedProjectId });
             e.HasOne(x => x.Project).WithMany().HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.GuidedProject).WithMany().HasForeignKey(x => x.GuidedProjectId).OnDelete(DeleteBehavior.Cascade);
+            e.ToTable(t => t.HasCheckConstraint("CK_ProjectReviewRequests_OneProject",
+                "(ProjectId IS NULL AND GuidedProjectId IS NOT NULL) OR (ProjectId IS NOT NULL AND GuidedProjectId IS NULL)"));
             e.HasOne(x => x.Requester).WithMany().HasForeignKey(x => x.RequesterId).OnDelete(DeleteBehavior.Cascade);
             e.HasOne(x => x.Reviewer).WithMany().HasForeignKey(x => x.ReviewerId).OnDelete(DeleteBehavior.NoAction);
         });

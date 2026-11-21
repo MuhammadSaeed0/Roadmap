@@ -22,8 +22,10 @@ public class PeerReviewService(AppDbContext db, ICurrentUser currentUser, SkillR
     {
         var me = UserId;
         var finished = await ProjectCompletion.CompletedProjectIdsAsync(db, me, ct);
+        var finishedGuided = await ProjectCompletion.CompletedGuidedProjectIdsAsync(db, me, ct);
         var open = await Query()
-            .Where(r => r.Status == ReviewRequestStatus.Open && r.RequesterId != me && finished.Contains(r.ProjectId))
+            .Where(r => r.Status == ReviewRequestStatus.Open && r.RequesterId != me
+                && ((r.ProjectId != null && finished.Contains(r.ProjectId.Value)) || (r.GuidedProjectId != null && finishedGuided.Contains(r.GuidedProjectId.Value))))
             .OrderBy(r => r.CreatedAt).ToListAsync(ct);
         var requested = await Query().Where(r => r.RequesterId == me).OrderByDescending(r => r.CreatedAt).ToListAsync(ct);
         var reviewing = await Query()
@@ -37,9 +39,11 @@ public class PeerReviewService(AppDbContext db, ICurrentUser currentUser, SkillR
     {
         var me = UserId;
         var finished = await ProjectCompletion.CompletedProjectIdsAsync(db, me, ct);
-        if (finished.Count == 0) return 0;
+        var finishedGuided = await ProjectCompletion.CompletedGuidedProjectIdsAsync(db, me, ct);
+        if (finished.Count == 0 && finishedGuided.Count == 0) return 0;
         return await db.ProjectReviewRequests.AsNoTracking()
-            .CountAsync(r => r.Status == ReviewRequestStatus.Open && r.RequesterId != me && finished.Contains(r.ProjectId), ct);
+            .CountAsync(r => r.Status == ReviewRequestStatus.Open && r.RequesterId != me
+                && ((r.ProjectId != null && finished.Contains(r.ProjectId.Value)) || (r.GuidedProjectId != null && finishedGuided.Contains(r.GuidedProjectId.Value))), ct);
     }
 
     /// <summary>The current account's latest request for a project, or null.</summary>
@@ -74,6 +78,39 @@ public class PeerReviewService(AppDbContext db, ICurrentUser currentUser, SkillR
         return await GetAsync(request.Id, ct);
     }
 
+    /// <summary>The current account's latest request for a Project library project, or null.</summary>
+    public async Task<ReviewRequestDto?> LatestForGuidedAsync(int guidedProjectId, CancellationToken ct)
+    {
+        var me = UserId;
+        var r = await Query().Where(x => x.RequesterId == me && x.GuidedProjectId == guidedProjectId && x.Status != ReviewRequestStatus.Cancelled)
+            .OrderByDescending(x => x.CreatedAt).FirstOrDefaultAsync(ct);
+        return r is null ? null : ToDto(r);
+    }
+
+    /// <summary>Asks for a review of a finished Project library project, with the repository link saved for it.</summary>
+    public async Task<ReviewRequestDto> RequestGuidedAsync(int guidedProjectId, CancellationToken ct)
+    {
+        var me = UserId;
+        if (!await db.GuidedProjects.AnyAsync(p => p.Id == guidedProjectId, ct)) throw new NotFoundException("GuidedProject", guidedProjectId);
+        if (!(await ProjectCompletion.CompletedGuidedProjectIdsAsync(db, me, ct)).Contains(guidedProjectId))
+            throw new BusinessRuleException("project_not_finished", "Finish every step of the project before asking for a review.");
+        var repository = await db.GuidedProjectRepositories.Where(r => r.ProjectId == guidedProjectId).Select(r => r.Url).FirstOrDefaultAsync(ct);
+        if (string.IsNullOrWhiteSpace(repository))
+            throw new BusinessRuleException("repository_required", "Add the project's repository link so a reviewer can read your code.");
+        if (await db.ProjectReviewRequests.AnyAsync(r => r.RequesterId == me && r.GuidedProjectId == guidedProjectId
+                && (r.Status == ReviewRequestStatus.Open || r.Status == ReviewRequestStatus.Claimed), ct))
+            throw new BusinessRuleException("review_pending", "This project already has a review request in progress.");
+
+        var request = new ProjectReviewRequest
+        {
+            GuidedProjectId = guidedProjectId, RequesterId = me, RepositoryUrl = repository,
+            Status = ReviewRequestStatus.Open, CreatedAt = clock.GetUtcNow().UtcDateTime,
+        };
+        db.ProjectReviewRequests.Add(request);
+        await db.SaveChangesAsync(ct);
+        return await GetAsync(request.Id, ct);
+    }
+
     public async Task<ReviewRequestDto> ClaimAsync(int id, CancellationToken ct)
     {
         var me = UserId;
@@ -81,7 +118,10 @@ public class PeerReviewService(AppDbContext db, ICurrentUser currentUser, SkillR
             ?? throw new NotFoundException("Review request", id);
         if (request.RequesterId == me)
             throw new BusinessRuleException("own_review", "You can't review your own project.");
-        if (!(await ProjectCompletion.CompletedProjectIdsAsync(db, me, ct)).Contains(request.ProjectId))
+        var finishedIt = request.ProjectId is int projectId
+            ? (await ProjectCompletion.CompletedProjectIdsAsync(db, me, ct)).Contains(projectId)
+            : (await ProjectCompletion.CompletedGuidedProjectIdsAsync(db, me, ct)).Contains(request.GuidedProjectId!.Value);
+        if (!finishedIt)
             throw new BusinessRuleException("project_not_finished", "Finish this project yourself before reviewing someone else's.");
 
         // Only one reviewer can win: the update succeeds only while the request is still open.
@@ -92,7 +132,7 @@ public class PeerReviewService(AppDbContext db, ICurrentUser currentUser, SkillR
                 .SetProperty(r => r.ReviewerId, me).SetProperty(r => r.ClaimedAt, now), ct);
         if (claimed == 0) throw new BusinessRuleException("review_not_open", "Someone else already took this request, or it was cancelled.");
 
-        await NotifyAsync(request.RequesterId, NotificationKind.ReviewClaimed, request.ProjectId, me,
+        await NotifyAsync(request.RequesterId, NotificationKind.ReviewClaimed, request.ProjectId, request.GuidedProjectId, me,
             "{0} started reviewing your project", "بدأ {0} مراجعة مشروعك", ct);
         return await GetAsync(id, ct);
     }
@@ -129,7 +169,7 @@ public class PeerReviewService(AppDbContext db, ICurrentUser currentUser, SkillR
         request.CompletedAt = clock.GetUtcNow().UtcDateTime;
         await db.SaveChangesAsync(ct);
 
-        await NotifyAsync(request.RequesterId, NotificationKind.ReviewCompleted, request.ProjectId, me,
+        await NotifyAsync(request.RequesterId, NotificationKind.ReviewCompleted, request.ProjectId, request.GuidedProjectId, me,
             "{0} finished reviewing your project", "أنهى {0} مراجعة مشروعك", ct);
         return await GetAsync(id, ct);
     }
@@ -148,7 +188,8 @@ public class PeerReviewService(AppDbContext db, ICurrentUser currentUser, SkillR
     private IReadOnlyList<string> Criteria() => rules.ReviewCriteria.Select(c => c.Key).ToList();
 
     private IQueryable<ProjectReviewRequest> Query() =>
-        db.ProjectReviewRequests.AsNoTracking().Include(r => r.Project).Include(r => r.Requester).Include(r => r.Reviewer);
+        db.ProjectReviewRequests.AsNoTracking().Include(r => r.Project).Include(r => r.GuidedProject)
+            .Include(r => r.Requester).Include(r => r.Reviewer);
 
     /// <summary>Only the two parties and eligible reviewers of an open request may read it.</summary>
     private async Task<ReviewRequestDto> GetAsync(int id, CancellationToken ct)
@@ -163,18 +204,20 @@ public class PeerReviewService(AppDbContext db, ICurrentUser currentUser, SkillR
     {
         var me = currentUser.Id;
         var scores = r.Scores is null ? null : JsonSerializer.Deserialize<Dictionary<string, int>>(r.Scores);
+        var (titleEn, titleAr, techStack) = r.Project is { } p ? (p.TitleEn, p.TitleAr, p.TechStack)
+            : (r.GuidedProject!.TitleEn, r.GuidedProject.TitleAr, r.GuidedProject.TechStack);
         return new ReviewRequestDto(
-            r.Id, r.ProjectId, r.Project.TitleEn, r.Project.TitleAr, r.Project.TechStack,
+            r.Id, r.ProjectId, titleEn, titleAr, techStack,
             r.Requester.FullName, r.RepositoryUrl, r.Status.ToString(), r.Reviewer?.FullName,
-            r.RequesterId == me, r.ReviewerId == me, scores, r.Notes, r.CreatedAt, r.ClaimedAt, r.CompletedAt);
+            r.RequesterId == me, r.ReviewerId == me, scores, r.Notes, r.CreatedAt, r.ClaimedAt, r.CompletedAt, r.GuidedProjectId);
     }
 
-    private async Task NotifyAsync(string recipientId, NotificationKind kind, int projectId, string actorId, string en, string ar, CancellationToken ct)
+    private async Task NotifyAsync(string recipientId, NotificationKind kind, int? projectId, int? guidedProjectId, string actorId, string en, string ar, CancellationToken ct)
     {
         var name = await db.Users.Where(u => u.Id == actorId).Select(u => u.FullName).FirstOrDefaultAsync(ct) ?? "";
         db.Notifications.Add(new Notification
         {
-            RecipientId = recipientId, Kind = kind, ProjectId = projectId, ActorId = actorId,
+            RecipientId = recipientId, Kind = kind, ProjectId = projectId, GuidedProjectId = guidedProjectId, ActorId = actorId,
             MessageEn = string.Format(en, name), MessageAr = string.Format(ar, name), CreatedAt = clock.GetUtcNow().UtcDateTime,
         });
         await db.SaveChangesAsync(ct);

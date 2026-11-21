@@ -31,7 +31,7 @@ public class NotificationsController(AppDbContext db, ICurrentUser currentUser) 
         var dtos = items.Select(n => new NotificationDto(
             n.Id, n.Kind.ToString(), n.DiscussionId, n.ProjectId,
             n.Actor?.FullName, n.MessageEn, n.MessageAr,
-            n.IsRead, n.CreatedAt)).ToList();
+            n.IsRead, n.CreatedAt, n.GuidedProjectId)).ToList();
 
         return Ok(new PagedNotificationsDto(dtos, page, pageSize, total));
     }

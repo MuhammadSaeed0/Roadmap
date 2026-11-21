@@ -43,7 +43,7 @@ public record AcceptReplyRequest([Required] int? ReplyId);
 public record NotificationDto(
     long Id, string Kind, int? DiscussionId, int? ProjectId,
     string? ActorName, string MessageEn, string MessageAr,
-    bool IsRead, DateTime CreatedAt);
+    bool IsRead, DateTime CreatedAt, int? GuidedProjectId = null);
 
 public record MarkReadRequest(long[] Ids);
 
