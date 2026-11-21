@@ -104,7 +104,7 @@ public class HostingTests : IAsyncLifetime
         Assert.Equal(HttpStatusCode.Unauthorized, (await client.SendAsync(publicSite)).StatusCode);
     }
 
-    private sealed class WebRootFactory(string webRoot) : ApiFactory
+    internal sealed class WebRootFactory(string webRoot) : ApiFactory
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
