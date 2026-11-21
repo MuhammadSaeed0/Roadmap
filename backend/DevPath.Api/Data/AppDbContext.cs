@@ -318,9 +318,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.HasOne(x => x.Project).WithMany().HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.ClientSetNull);
             e.HasOne(x => x.ProjectTask).WithMany().HasForeignKey(x => x.ProjectTaskId).OnDelete(DeleteBehavior.ClientSetNull);
             e.HasOne(x => x.InterviewQuestion).WithMany().HasForeignKey(x => x.InterviewQuestionId).OnDelete(DeleteBehavior.ClientSetNull);
-            e.ToTable(t => t.HasCheckConstraint("CK_Note_SingleLink",
-                "(CASE WHEN TopicId IS NULL THEN 0 ELSE 1 END + CASE WHEN ProjectId IS NULL THEN 0 ELSE 1 END + " +
-                "CASE WHEN ProjectTaskId IS NULL THEN 0 ELSE 1 END + CASE WHEN InterviewQuestionId IS NULL THEN 0 ELSE 1 END) <= 1"));
+            e.HasIndex(x => x.GuidedProjectId);
+            // Library projects are re-seeded; a removed one just unlinks its notes.
+            e.HasOne(x => x.GuidedProject).WithMany().HasForeignKey(x => x.GuidedProjectId).OnDelete(DeleteBehavior.SetNull);
+            e.ToTable(t =>
+            {
+                t.HasCheckConstraint("CK_Note_SingleLink",
+                    "(CASE WHEN TopicId IS NULL THEN 0 ELSE 1 END + CASE WHEN ProjectId IS NULL THEN 0 ELSE 1 END + " +
+                    "CASE WHEN ProjectTaskId IS NULL THEN 0 ELSE 1 END + CASE WHEN InterviewQuestionId IS NULL THEN 0 ELSE 1 END + " +
+                    "CASE WHEN GuidedProjectId IS NULL THEN 0 ELSE 1 END) <= 1");
+                t.HasCheckConstraint("CK_Note_StepNeedsProject", "GuidedStepOrder IS NULL OR GuidedProjectId IS NOT NULL");
+            });
         });
 
         b.Entity<ProjectTaskProgress>(e =>
@@ -560,6 +568,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
         // ---------- Community discussions ----------
         b.Entity<Discussion>(e =>
         {
+            e.HasIndex(x => x.GuidedProjectId);
+            e.HasOne(x => x.GuidedProject).WithMany().HasForeignKey(x => x.GuidedProjectId).OnDelete(DeleteBehavior.SetNull);
             e.HasIndex(x => new { x.TopicId, x.IsPinned, x.CreatedAt });
             e.HasIndex(x => new { x.TopicId, x.Score });
             e.Property(x => x.Title).HasMaxLength(200);

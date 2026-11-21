@@ -379,6 +379,7 @@ export const en = {
     toRoadmap: 'Open the roadmap', toPaths: 'Browse learning paths', toLibrary: 'Practise with projects',
   },
   guides: {
+    notesTitle: 'My notes on this project', noteStep: 'About', wholeProject: 'The whole project', noNotes: 'No notes for this project yet.', askStep: 'Ask about this step', noteOnStep: 'Note',
     openInPlayground: 'Open this code in the playground',
     title: 'Project library',
     subtitle: 'Build real projects at your own pace. Every skill has simple, medium and advanced projects, each with step-by-step instructions and hints.',
@@ -682,6 +683,7 @@ export const en = {
     waiting: 'Your request is waiting for a reviewer.', inReview: '{name} is reviewing your project.', done: 'Reviewed by {name}.',
   },
   discussions: {
+    aboutStep: 'About:', unlinkStep: 'Not about this',
     title: 'Discussions', ask: 'Ask a question', reply: 'Reply', accept: 'Accept answer', pin: 'Pin', unpin: 'Unpin',
     sortNewest: 'Newest', sortVotes: 'Top voted', noDiscussions: 'No discussions yet.', beFirst: 'Be the first to ask!',
     replies: 'Replies: {n}', accepted: 'Accepted answer', deleted: 'Deleted user',

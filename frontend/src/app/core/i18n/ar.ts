@@ -381,6 +381,7 @@ export const ar: Translations = {
     toRoadmap: 'افتح خارطة الطريق', toPaths: 'تصفح مسارات التعلم', toLibrary: 'تدرّب بالمشاريع',
   },
   guides: {
+    notesTitle: 'ملاحظاتي عن هذا المشروع', noteStep: 'عن', wholeProject: 'المشروع كله', noNotes: 'لا توجد ملاحظات لهذا المشروع بعد.', askStep: 'اسأل عن هذه الخطوة', noteOnStep: 'ملاحظة',
     openInPlayground: 'افتح هذا الكود في ساحة الكود',
     title: 'مكتبة المشاريع',
     subtitle: 'ابنِ مشاريع حقيقية بالسرعة التي تناسبك. لكل مهارة مشاريع بسيطة ومتوسطة ومتقدمة، ولكل مشروع خطوات مفصلة وتلميحات.',
@@ -684,6 +685,7 @@ export const ar: Translations = {
     waiting: 'طلبك بانتظار مراجِع.', inReview: 'يراجع {name} مشروعك الآن.', done: 'راجعه {name}.',
   },
   discussions: {
+    aboutStep: 'عن:', unlinkStep: 'ليس عن هذا',
     title: 'النقاشات', ask: 'اطرح سؤالاً', reply: 'ردّ', accept: 'قبول الإجابة', pin: 'تثبيت', unpin: 'إلغاء التثبيت',
     sortNewest: 'الأحدث', sortVotes: 'الأعلى تصويتًا', noDiscussions: 'لا توجد نقاشات بعد.', beFirst: 'كن أول من يسأل!',
     replies: 'الردود: {n}', accepted: 'إجابة مقبولة', deleted: 'مستخدم محذوف',

@@ -64,6 +64,11 @@ public class Note : IUserOwned
     public ProjectTask? ProjectTask { get; set; }
     public int? InterviewQuestionId { get; set; }
     public InterviewQuestion? InterviewQuestion { get; set; }
+    /// <summary>A Project library project; with <see cref="GuidedStepOrder"/>, one of its steps.</summary>
+    public int? GuidedProjectId { get; set; }
+    public GuidedProject? GuidedProject { get; set; }
+    /// <summary>The step number within the library project (no foreign key: steps are re-seeded).</summary>
+    public int? GuidedStepOrder { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

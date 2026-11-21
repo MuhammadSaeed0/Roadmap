@@ -172,14 +172,17 @@ export interface InterviewQuestion {
 export interface InterviewCategoryStats { category: InterviewCategory; total: number; confident: number; partial: number; needReview: number; }
 export interface InterviewList { questions: InterviewQuestion[]; categories: InterviewCategoryStats[]; }
 
-export type NoteLinkType = 'topic' | 'project' | 'task' | 'question';
+export type NoteLinkType = 'topic' | 'project' | 'task' | 'question' | 'guided';
 export interface Note {
   id: number; title: string; content: string; linkType: NoteLinkType | null; linkId: number | null;
   linkTitleEn: string | null; linkTitleAr: string | null; linkParentId: number | null; createdAt: string; updatedAt: string;
+  /** For a Project library link: the step the note is about, if any. */
+  guidedStepOrder?: number | null;
 }
 export interface NoteRequest {
   title: string; content: string; topicId: number | null; projectId: number | null;
   projectTaskId: number | null; interviewQuestionId: number | null;
+  guidedProjectId?: number | null; guidedStepOrder?: number | null;
 }
 
 export interface ReviewItem {
@@ -336,7 +339,10 @@ export interface DiscussionSummary {
   title: string; body: string;
   authorName: string | null; score: number; isPinned: boolean; hasAcceptedReply: boolean;
   replyCount: number; createdAt: string; myVote: number | null;
+  /** The Project library project (and step) the question is about. */
+  guided?: GuidedRef | null;
 }
+export interface GuidedRef { id: number; titleEn: string; titleAr: string; stepOrder: number | null; }
 export interface ReplyDto {
   id: number; discussionId: number; authorId: string | null; authorName: string | null;
   body: string; score: number; isAccepted: boolean;
@@ -348,6 +354,7 @@ export interface DiscussionDetail {
   authorId: string | null; authorName: string | null; score: number; isPinned: boolean;
   acceptedReplyId: number | null; createdAt: string; updatedAt: string;
   myVote: number | null; replies: ReplyDto[];
+  guided?: GuidedRef | null;
 }
 export interface PagedDiscussions { items: DiscussionSummary[]; page: number; pageSize: number; total: number; }
 
@@ -418,6 +425,8 @@ export interface GuidedProjectDetail {
   acceptanceEn: string[]; acceptanceAr: string[]; stretchEn: string[]; stretchAr: string[];
   steps: GuidedStep[]; sameSkill: GuidedProjectSummary[];
   repositoryUrl: string | null;
+  /** The roadmap topics the project practises, in roadmap order. */
+  topicIds: number[];
 }
 /** A library project suggested on a topic page. */
 export interface GuidedProjectRef {

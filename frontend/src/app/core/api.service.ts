@@ -136,7 +136,7 @@ export class ApiService {
   // ----- Discussions -----
   discussions(query: Query = {}) { return this.get<M.PagedDiscussions>('/discussions', query); }
   discussion(id: number) { return this.get<M.DiscussionDetail>(`/discussions/${id}`); }
-  createDiscussion(body: { topicId: number; title: string; body: string }) {
+  createDiscussion(body: { topicId: number; title: string; body: string; guidedProjectId?: number | null; guidedStepOrder?: number | null }) {
     return this.post<M.DiscussionDetail>('/discussions', body);
   }
   updateDiscussion(id: number, body: { title: string; body: string }) {

@@ -6,22 +6,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevPath.Api.Services;
 
-public record NoteQuery(string? Q, int? TopicId, int? ProjectId, int? ProjectTaskId, int? InterviewQuestionId);
+public record NoteQuery(string? Q, int? TopicId, int? ProjectId, int? ProjectTaskId, int? InterviewQuestionId, int? GuidedProjectId = null);
 
 public class NoteService(AppDbContext db, TimeProvider clock)
 {
     private static readonly Expression<Func<Note, NoteDto>> Projection = n => new NoteDto(
         n.Id, n.Title, n.Content,
         n.TopicId != null ? "topic" : n.ProjectId != null ? "project" : n.ProjectTaskId != null ? "task"
-            : n.InterviewQuestionId != null ? "question" : null,
-        n.TopicId ?? n.ProjectId ?? n.ProjectTaskId ?? n.InterviewQuestionId,
+            : n.InterviewQuestionId != null ? "question" : n.GuidedProjectId != null ? "guided" : null,
+        n.TopicId ?? n.ProjectId ?? n.ProjectTaskId ?? n.InterviewQuestionId ?? n.GuidedProjectId,
         n.Topic != null ? n.Topic.TitleEn : n.Project != null ? n.Project.TitleEn
-            : n.ProjectTask != null ? n.ProjectTask.TitleEn : n.InterviewQuestion != null ? n.InterviewQuestion.QuestionEn : null,
+            : n.ProjectTask != null ? n.ProjectTask.TitleEn : n.InterviewQuestion != null ? n.InterviewQuestion.QuestionEn
+            : n.GuidedProject != null ? n.GuidedProject.TitleEn : null,
         n.Topic != null ? n.Topic.TitleAr : n.Project != null ? n.Project.TitleAr
-            : n.ProjectTask != null ? n.ProjectTask.TitleAr : n.InterviewQuestion != null ? n.InterviewQuestion.QuestionAr : null,
+            : n.ProjectTask != null ? n.ProjectTask.TitleAr : n.InterviewQuestion != null ? n.InterviewQuestion.QuestionAr
+            : n.GuidedProject != null ? n.GuidedProject.TitleAr : null,
         // For a task, the UI needs the project id to build the link.
         n.ProjectTask != null ? n.ProjectTask.Milestone.ProjectId : null,
-        n.CreatedAt, n.UpdatedAt);
+        n.CreatedAt, n.UpdatedAt, n.GuidedStepOrder);
 
     public async Task<IReadOnlyList<NoteDto>> ListAsync(NoteQuery query, CancellationToken ct)
     {
@@ -36,6 +38,7 @@ public class NoteService(AppDbContext db, TimeProvider clock)
             q = q.Where(n => n.ProjectId == projectId || (n.ProjectTask != null && n.ProjectTask.Milestone.ProjectId == projectId));
         if (query.ProjectTaskId is { } taskId) q = q.Where(n => n.ProjectTaskId == taskId);
         if (query.InterviewQuestionId is { } questionId) q = q.Where(n => n.InterviewQuestionId == questionId);
+        if (query.GuidedProjectId is { } guidedId) q = q.Where(n => n.GuidedProjectId == guidedId);
 
         return await q.OrderByDescending(n => n.UpdatedAt).Take(200).Select(Projection).ToListAsync(ct);
     }
@@ -78,6 +81,8 @@ public class NoteService(AppDbContext db, TimeProvider clock)
         note.ProjectId = r.ProjectId;
         note.ProjectTaskId = r.ProjectTaskId;
         note.InterviewQuestionId = r.InterviewQuestionId;
+        note.GuidedProjectId = r.GuidedProjectId;
+        note.GuidedStepOrder = r.GuidedProjectId is null ? null : r.GuidedStepOrder;
         note.UpdatedAt = now;
     }
 
@@ -92,5 +97,12 @@ public class NoteService(AppDbContext db, TimeProvider clock)
             throw new RequestValidationException("projectTaskId", "notFound", "Project task does not exist.");
         if (r.InterviewQuestionId is { } q && !await db.InterviewQuestions.AnyAsync(x => x.Id == q, ct))
             throw new RequestValidationException("interviewQuestionId", "notFound", "Interview question does not exist.");
+        if (r.GuidedProjectId is { } g)
+        {
+            var steps = await db.GuidedProjects.Where(x => x.Id == g).Select(x => (int?)x.Steps.Count).FirstOrDefaultAsync(ct)
+                ?? throw new RequestValidationException("guidedProjectId", "notFound", "Library project does not exist.");
+            if (r.GuidedStepOrder is { } order && order > steps)
+                throw new RequestValidationException("guidedStepOrder", "notFound", "That step does not exist in this project.");
+        }
     }
 }

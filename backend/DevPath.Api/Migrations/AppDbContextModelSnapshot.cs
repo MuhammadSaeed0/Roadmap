@@ -366,6 +366,12 @@ namespace DevPath.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("GuidedProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("GuidedStepOrder")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsPinned")
                         .HasColumnType("bit");
 
@@ -390,6 +396,8 @@ namespace DevPath.Api.Migrations
                         .HasFilter("[AcceptedReplyId] IS NOT NULL");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("GuidedProjectId");
 
                     b.HasIndex("TopicId", "Score");
 
@@ -983,6 +991,12 @@ namespace DevPath.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("GuidedProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("GuidedStepOrder")
+                        .HasColumnType("int");
+
                     b.Property<int?>("InterviewQuestionId")
                         .HasColumnType("int");
 
@@ -1010,6 +1024,8 @@ namespace DevPath.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GuidedProjectId");
+
                     b.HasIndex("InterviewQuestionId");
 
                     b.HasIndex("ProjectId");
@@ -1022,7 +1038,9 @@ namespace DevPath.Api.Migrations
 
                     b.ToTable("Notes", t =>
                         {
-                            t.HasCheckConstraint("CK_Note_SingleLink", "(CASE WHEN TopicId IS NULL THEN 0 ELSE 1 END + CASE WHEN ProjectId IS NULL THEN 0 ELSE 1 END + CASE WHEN ProjectTaskId IS NULL THEN 0 ELSE 1 END + CASE WHEN InterviewQuestionId IS NULL THEN 0 ELSE 1 END) <= 1");
+                            t.HasCheckConstraint("CK_Note_SingleLink", "(CASE WHEN TopicId IS NULL THEN 0 ELSE 1 END + CASE WHEN ProjectId IS NULL THEN 0 ELSE 1 END + CASE WHEN ProjectTaskId IS NULL THEN 0 ELSE 1 END + CASE WHEN InterviewQuestionId IS NULL THEN 0 ELSE 1 END + CASE WHEN GuidedProjectId IS NULL THEN 0 ELSE 1 END) <= 1");
+
+                            t.HasCheckConstraint("CK_Note_StepNeedsProject", "GuidedStepOrder IS NULL OR GuidedProjectId IS NOT NULL");
                         });
                 });
 
@@ -2871,6 +2889,11 @@ namespace DevPath.Api.Migrations
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("DevPath.Api.Models.GuidedProject", "GuidedProject")
+                        .WithMany()
+                        .HasForeignKey("GuidedProjectId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("DevPath.Api.Models.Topic", "Topic")
                         .WithMany()
                         .HasForeignKey("TopicId")
@@ -2880,6 +2903,8 @@ namespace DevPath.Api.Migrations
                     b.Navigation("AcceptedReply");
 
                     b.Navigation("Author");
+
+                    b.Navigation("GuidedProject");
 
                     b.Navigation("Topic");
                 });
@@ -3081,6 +3106,11 @@ namespace DevPath.Api.Migrations
 
             modelBuilder.Entity("DevPath.Api.Models.Note", b =>
                 {
+                    b.HasOne("DevPath.Api.Models.GuidedProject", "GuidedProject")
+                        .WithMany()
+                        .HasForeignKey("GuidedProjectId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("DevPath.Api.Models.InterviewQuestion", "InterviewQuestion")
                         .WithMany()
                         .HasForeignKey("InterviewQuestionId");
@@ -3102,6 +3132,8 @@ namespace DevPath.Api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("GuidedProject");
 
                     b.Navigation("InterviewQuestion");
 

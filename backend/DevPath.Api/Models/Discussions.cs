@@ -11,6 +11,10 @@ public class Discussion
     public int Id { get; set; }
     public int TopicId { get; set; }
     public Topic Topic { get; set; } = null!;
+    /// <summary>Optional: the Project library project (and step number) the question is about, e.g. "stuck on step 5".</summary>
+    public int? GuidedProjectId { get; set; }
+    public GuidedProject? GuidedProject { get; set; }
+    public int? GuidedStepOrder { get; set; }
     public string? AuthorId { get; set; }
     public AppUser? Author { get; set; }
 

@@ -352,4 +352,32 @@ public class DiscussionsAndPathsTests(ApiFactory factory) : IClassFixture<ApiFac
         Assert.Equal(HttpStatusCode.OK, (await _a.DeleteAsync($"/api/paths/{id}/activate")).StatusCode);
         Assert.Empty((await Json(await _a.GetAsync("/api/paths/active"))).AsArray());
     }
+
+    [Fact]
+    public async Task A_question_and_a_note_can_point_to_a_library_project_step()
+    {
+        var guided = (await Json(await _a.GetAsync("/api/guided-projects"))).AsArray()[0]!;
+        var id = guided["id"]!.GetValue<int>();
+        var detail = await Json(await _a.GetAsync($"/api/guided-projects/{id}"));
+        var topicId = detail["topicIds"]!.AsArray()[0]!.GetValue<int>();
+
+        var asked = await _a.PostAsJsonAsync("/api/discussions", new { topicId, title = "Stuck on step 2", body = "The loop never ends.", guidedProjectId = id, guidedStepOrder = 2 });
+        Assert.Equal(HttpStatusCode.Created, asked.StatusCode);
+        var discussion = await Json(asked);
+        Assert.Equal(id, discussion["guided"]!["id"]!.GetValue<int>());
+        Assert.Equal(2, discussion["guided"]!["stepOrder"]!.GetValue<int>());
+        var listed = (await Json(await _b.GetAsync($"/api/discussions?guidedProjectId={id}")))["items"]!.AsArray();
+        Assert.Contains(listed, d => d!["id"]!.GetValue<int>() == discussion["id"]!.GetValue<int>());
+        // A step that doesn't exist is refused.
+        Assert.Equal(HttpStatusCode.BadRequest, (await _a.PostAsJsonAsync("/api/discussions", new { topicId, title = "x", body = "y", guidedProjectId = id, guidedStepOrder = 199 })).StatusCode);
+
+        var note = await Json(await _a.PostAsJsonAsync("/api/notes", new { title = "Step 2 idea", content = "Use a while loop", guidedProjectId = id, guidedStepOrder = 2 }));
+        Assert.Equal("guided", note["linkType"]!.GetValue<string>());
+        Assert.Equal(id, note["linkId"]!.GetValue<int>());
+        Assert.Equal(2, note["guidedStepOrder"]!.GetValue<int>());
+        Assert.Single((await Json(await _a.GetAsync($"/api/notes?guidedProjectId={id}"))).AsArray());
+        // Still one link per note, and a step needs its project.
+        Assert.Equal(HttpStatusCode.BadRequest, (await _a.PostAsJsonAsync("/api/notes", new { title = "x", topicId, guidedProjectId = id })).StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest, (await _a.PostAsJsonAsync("/api/notes", new { title = "x", guidedStepOrder = 2 })).StatusCode);
+    }
 }

@@ -10,8 +10,8 @@ public class NotesController(NoteService notes) : ControllerBase
 {
     [HttpGet]
     public Task<IReadOnlyList<NoteDto>> List([FromQuery] string? q, [FromQuery] int? topicId, [FromQuery] int? projectId,
-        [FromQuery] int? projectTaskId, [FromQuery] int? interviewQuestionId, CancellationToken ct) =>
-        notes.ListAsync(new NoteQuery(q, topicId, projectId, projectTaskId, interviewQuestionId), ct);
+        [FromQuery] int? projectTaskId, [FromQuery] int? interviewQuestionId, [FromQuery] int? guidedProjectId, CancellationToken ct) =>
+        notes.ListAsync(new NoteQuery(q, topicId, projectId, projectTaskId, interviewQuestionId, guidedProjectId), ct);
 
     [HttpGet("{id:int}")]
     public Task<NoteDto> Get(int id, CancellationToken ct) => notes.GetAsync(id, ct);
