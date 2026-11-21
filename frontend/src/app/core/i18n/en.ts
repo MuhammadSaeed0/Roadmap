@@ -454,6 +454,14 @@ export const en = {
     resetConfirm: 'Clear your attempt and revealed hints for this exercise?',
   },
   interviews: {
+    mockMode: 'Mock interview', allTopics: 'All topics',
+    mock: {
+      title: 'Mock interview', intro: 'A timed run through questions from several areas, like a real technical interview. Answer each one out loud before the time runs out, then compare with the expected answer and rate yourself.',
+      howMany: 'Questions', perQuestion: 'Time per question', minutes: '{n} min', categories: 'Areas to include',
+      start: 'Start the interview', timeLeft: 'Time left', done: 'I answered, show the answer', timeUp: 'Time is up. Here is the expected answer.',
+      end: 'End the interview', summary: 'How the interview went', totalTime: 'Total time', skipped: 'Not rated', overTime: 'time ran out',
+      again: 'New interview', change: 'Change the settings',
+    },
     title: 'Interview Preparation', subtitle: 'Questions linked to roadmap topics. Study the answers, then practise one at a time.',
     studyMode: 'Study mode', practiceMode: 'Practice mode', showAnswer: 'Show answer', hideAnswer: 'Hide answer',
     followUp: 'Follow-up question', example: 'Example', rateYourself: 'How well did you answer?', questionOf: 'Question {n} of {total}',
