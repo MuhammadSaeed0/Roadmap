@@ -126,6 +126,8 @@ export interface PortfolioItem { id: number; key: string; titleEn: string; title
 export interface ProjectDetail {
   summary: ProjectSummary; requirementsEn: string[]; requirementsAr: string[]; repositoryUrl: string | null;
   milestones: Milestone[]; changeRequests: ProjectTask[]; portfolio: PortfolioItem[]; noteCount: number;
+  /** Library projects that practise this project's topics, closest first. */
+  guidedProjects: GuidedProjectRef[];
 }
 
 export interface ExerciseSummary {

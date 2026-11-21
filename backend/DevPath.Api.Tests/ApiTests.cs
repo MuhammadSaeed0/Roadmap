@@ -91,6 +91,18 @@ public class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>, IAsyncLif
     }
 
     [Fact]
+    public async Task Every_main_project_points_to_library_projects_that_prepare_for_it()
+    {
+        foreach (var project in (await Json(await _client.GetAsync("/api/projects"))).AsArray())
+        {
+            var detail = await Json(await _client.GetAsync($"/api/projects/{project!["id"]}"));
+            var guided = detail["guidedProjects"]!.AsArray();
+            Assert.InRange(guided.Count, 1, 6);
+            Assert.Equal(guided.Count, guided.Select(g => g!["id"]!.GetValue<int>()).Distinct().Count());
+        }
+    }
+
+    [Fact]
     public async Task Roadmap_has_14_phases_and_enums_are_strings()
     {
         var json = await Json(await _client.GetAsync("/api/roadmap"));

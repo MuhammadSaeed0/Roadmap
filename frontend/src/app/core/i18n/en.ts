@@ -418,7 +418,7 @@ export const en = {
   projects: {
     title: 'Main Projects', subtitle: 'Four practical projects, from a console app to your main portfolio system.',
     tasks: '{done} of {total} tasks', startAfter: 'Start after: {phase}', currentMilestone: 'Current milestone',
-    requirements: 'Requirements', milestones: 'Milestones', changeRequests: 'Change requests',
+    prepare: 'Get ready with the library', prepareIntro: 'Smaller library projects that practise the skills this project needs.', requirements: 'Requirements', milestones: 'Milestones', changeRequests: 'Change requests',
     crIntro: 'Realistic requests from a stakeholder. They unlock as the project progresses and teach you to change existing code safely. They are optional.',
     locked: 'Unlocks at {pct}%', blockedReason: 'What is blocking this task?', blockedReasonPlaceholder: 'e.g. Waiting for SQL Server setup',
     acceptance: 'Acceptance criteria', relatedTopics: 'Related topics', portfolio: 'Portfolio checklist', repository: 'Repository URL',

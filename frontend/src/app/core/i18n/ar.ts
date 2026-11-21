@@ -420,7 +420,7 @@ export const ar: Translations = {
   projects: {
     title: 'المشاريع الرئيسية', subtitle: 'أربعة مشاريع عملية، من تطبيق Console إلى نظامك الرئيسي في معرض الأعمال.',
     tasks: 'المهام: {done} من {total}', startAfter: 'ابدأ بعد: {phase}', currentMilestone: 'المرحلة الحالية',
-    requirements: 'المتطلبات', milestones: 'مراحل المشروع', changeRequests: 'طلبات التغيير',
+    prepare: 'استعد بمشاريع المكتبة', prepareIntro: 'مشاريع أصغر من المكتبة تتدرّب فيها على مهارات هذا المشروع.', requirements: 'المتطلبات', milestones: 'مراحل المشروع', changeRequests: 'طلبات التغيير',
     crIntro: 'طلبات واقعية من أصحاب المصلحة، تُفتح مع تقدم المشروع وتعلّمك تعديل الكود الموجود بأمان. وهي اختيارية.',
     locked: 'يُفتح عند {pct}%', blockedReason: 'ما الذي يوقف هذه المهمة؟', blockedReasonPlaceholder: 'مثال: بانتظار إعداد SQL Server',
     acceptance: 'معايير القبول', relatedTopics: 'مواضيع مرتبطة', portfolio: 'قائمة تحقق معرض الأعمال', repository: 'رابط المستودع',
