@@ -11,6 +11,7 @@ import { ToastService } from '../../core/ui-services';
 import { isolateLatin } from '../../shared/bidi';
 import { CodeBlockComponent } from '../../shared/code-block.component';
 import { PeerReviewCardComponent } from '../reviews/peer-review-card.component';
+import { templateForLanguage } from '../../core/workspace/templates';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
 import { lessonBlocks } from '../topics/topic-tutorial.component';
@@ -108,6 +109,10 @@ const URL_PATTERN = /^https?:\/\/\S+$/i;
                       @if (s.code) {
                         <p class="step-label">{{ 'guides.code' | t }}</p>
                         <app-code-block [code]="s.code" [language]="s.codeLanguage" />
+                        @if (playgroundTemplate(s.codeLanguage); as tpl) {
+                          <a class="btn btn-ghost btn-sm open-playground" [routerLink]="['/playground/new', tpl]" [queryParams]="{ guide: p.id, step: s.id }">
+                            <app-icon name="terminal" [size]="14" /> {{ 'guides.openInPlayground' | t }}</a>
+                        }
                       }
                       @let hints = i18n.lang() === 'ar' ? s.hintsAr : s.hintsEn;
                       @let shown = revealed()[s.id] ?? 0;
@@ -220,6 +225,7 @@ export default class GuideDetailPage {
   protected readonly revealed = signal<Record<number, number>>({});
   protected readonly busy = signal<number | null>(null);
   protected readonly savingRepo = signal(false);
+  protected readonly playgroundTemplate = templateForLanguage;
   protected readonly repoUrl = new FormControl('', { nonNullable: true, validators: [Validators.maxLength(500), Validators.pattern(URL_PATTERN)] });
 
   protected readonly doneCount = computed(() => this.data.value()?.steps.filter(s => s.done).length ?? 0);

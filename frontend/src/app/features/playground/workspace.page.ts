@@ -80,6 +80,11 @@ export default class WorkspacePage {
   /** Route parameters (component input binding). */
   readonly id = input<string>();
   readonly templateKey = input<string | undefined>(undefined, { alias: 'template' });
+  /** ?guide=<id>&step=<id>: start from the code of a Project library step instead of the template's own files. */
+  readonly guide = input<string | undefined>(undefined);
+  readonly step = input<string | undefined>(undefined);
+  /** Where this draft is kept in the browser: per template, or per library step. */
+  private draftKey = '';
 
   protected readonly kind = signal<WorkspaceKind | null>(null);
   protected readonly files = signal<WorkspaceFile[]>([]);
@@ -102,11 +107,12 @@ export default class WorkspacePage {
     effect(() => {
       const id = this.id();
       const template = this.templateKey();
-      untracked(() => void this.open(id, template));
+      const from = { guide: Number(this.guide()) || 0, step: Number(this.step()) || 0 };
+      untracked(() => void this.open(id, template, from));
     });
   }
 
-  private async open(id: string | undefined, templateKey: string | undefined): Promise<void> {
+  private async open(id: string | undefined, templateKey: string | undefined, from: { guide: number; step: number } = { guide: 0, step: 0 }): Promise<void> {
     this.loading.set(true);
     this.failed.set(false);
     try {
@@ -132,8 +138,19 @@ export default class WorkspacePage {
         this.entry.set(tpl.entry);
         this.projectId.set(null);
         this.saveState.set('draft');
-        const draft = readDraft(tpl.key);
-        this.latest = draft ?? tpl.files;
+        this.draftKey = tpl.key;
+        let start = tpl.files;
+        if (from.guide && from.step) {
+          const guide = await this.api.guidedProject(from.guide);
+          const step = guide.steps.find(s => s.id === from.step);
+          if (step?.code) {
+            this.draftKey = `${tpl.key}:guided-${step.id}`;
+            this.name.set(`${this.i18n.pick(guide.titleEn, guide.titleAr)} · ${this.i18n.t('guides.step', { n: step.order })}`);
+            start = tpl.files.map(f => (f.path === tpl.entry ? { ...f, content: step.code! } : f));
+          }
+        }
+        const draft = readDraft(this.draftKey);
+        this.latest = draft ?? start;
         this.files.set(this.latest);
       }
     } catch {
@@ -146,7 +163,7 @@ export default class WorkspacePage {
   protected onChanged(files: WorkspaceFile[]): void {
     this.latest = files;
     const id = this.projectId();
-    if (!id) { writeDraft(this.template()!, files); return; }
+    if (!id) { writeDraft(this.draftKey || this.template()!, files); return; }
     this.saveState.set('saving');
     clearTimeout(this.saveTimer);
     this.saveTimer = setTimeout(() => void this.persist(id), 600);
@@ -183,7 +200,7 @@ export default class WorkspacePage {
         this.name.set(name);
       } else {
         const project = await this.api.createPlaygroundProject({ name, kind: this.kind()!, template: this.template(), files: this.latest });
-        clearDraft(this.template()!);
+        clearDraft(this.draftKey || this.template()!);
         this.toast.success(this.i18n.t('playground.saved'));
         await this.router.navigate(['/playground', project.summary.id], { replaceUrl: true });
       }

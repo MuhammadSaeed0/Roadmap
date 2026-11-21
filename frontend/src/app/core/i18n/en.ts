@@ -379,6 +379,7 @@ export const en = {
     toRoadmap: 'Open the roadmap', toPaths: 'Browse learning paths', toLibrary: 'Practise with projects',
   },
   guides: {
+    openInPlayground: 'Open this code in the playground',
     title: 'Project library',
     subtitle: 'Build real projects at your own pace. Every skill has simple, medium and advanced projects, each with step-by-step instructions and hints.',
     search: 'Search projects or technologies…', allSkills: 'All skills', allLevels: 'All levels',
