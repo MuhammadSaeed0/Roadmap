@@ -14,7 +14,7 @@ const project = (done: boolean, repositoryUrl: string | null = null): GuidedProj
   id: 5, key: 'cs-todo-console', skill: 'CSharp', level: 'Beginner', estimatedHours: 4,
   titleEn: 'To-do list', titleAr: 'قائمة مهام', summaryEn: 'S', summaryAr: 'م', techStack: 'C# · .NET console',
   goalsEn: [], goalsAr: [], requirementsEn: [], requirementsAr: [], acceptanceEn: [], acceptanceAr: [], stretchEn: [], stretchAr: [],
-  steps: [step(1, true), step(2, done)], sameSkill: [], repositoryUrl,
+  steps: [step(1, true), step(2, done)], sameSkill: [], repositoryUrl, topicIds: [3],
 });
 
 async function render(data: GuidedProjectDetail, saved: (string | null)[] = []): Promise<HTMLElement> {

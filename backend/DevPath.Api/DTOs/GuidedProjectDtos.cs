@@ -24,7 +24,9 @@ public record GuidedProjectDetailDto(
     /// <summary>The other projects of the same skill, easiest first, so the learner can move up a level.</summary>
     IReadOnlyList<GuidedProjectSummaryDto> SameSkill,
     /// <summary>The learner's repository for this project, once they built it.</summary>
-    string? RepositoryUrl = null);
+    string? RepositoryUrl = null,
+    /// <summary>The roadmap topics the project practises, in roadmap order.</summary>
+    IReadOnlyList<int>? TopicIds = null);
 
 /// <summary>A library project suggested on a topic page because it practises that topic.</summary>
 public record GuidedProjectRefDto(int Id, SkillArea Skill, Difficulty Level, string TitleEn, string TitleAr, int StepCount, int DoneSteps);

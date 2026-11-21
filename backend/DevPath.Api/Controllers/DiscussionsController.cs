@@ -14,14 +14,16 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
 {
     [HttpGet]
     public async Task<ActionResult<PagedDiscussionsDto>> List(
-        [FromQuery] int? topicId, [FromQuery] string sort = "newest", [FromQuery] int page = 1, CancellationToken ct = default)
+        [FromQuery] int? topicId, [FromQuery] string sort = "newest", [FromQuery] int page = 1,
+        [FromQuery] int? guidedProjectId = null, CancellationToken ct = default)
     {
         const int pageSize = 20;
         page = Math.Max(1, page);
         var userId = currentUser.Id;
 
-        IQueryable<Discussion> q = db.Discussions.AsNoTracking().Include(d => d.Author).Include(d => d.Topic);
+        IQueryable<Discussion> q = db.Discussions.AsNoTracking().Include(d => d.Author).Include(d => d.Topic).Include(d => d.GuidedProject);
         if (topicId.HasValue) q = q.Where(d => d.TopicId == topicId.Value);
+        if (guidedProjectId.HasValue) q = q.Where(d => d.GuidedProjectId == guidedProjectId.Value);
 
         q = sort == "votes"
             ? q.OrderByDescending(d => d.IsPinned).ThenByDescending(d => d.Score).ThenByDescending(d => d.CreatedAt)
@@ -43,7 +45,7 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
             d.Title, d.Body,
             d.Author?.FullName, d.Score, d.IsPinned, d.AcceptedReplyId.HasValue,
             replyCounts.GetValueOrDefault(d.Id), d.CreatedAt,
-            myVotes.GetValueOrDefault(d.Id))).ToList();
+            myVotes.GetValueOrDefault(d.Id), Guided(d))).ToList();
 
         return Ok(new PagedDiscussionsDto(dtos, page, pageSize, total));
     }
@@ -52,7 +54,7 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
     public async Task<ActionResult<DiscussionDetailDto>> Get(int id, CancellationToken ct)
     {
         var d = await db.Discussions.AsNoTracking()
-            .Include(x => x.Author).Include(x => x.Topic)
+            .Include(x => x.Author).Include(x => x.Topic).Include(x => x.GuidedProject)
             .Include(x => x.Replies.OrderBy(r => r.CreatedAt)).ThenInclude(r => r.Author)
             .FirstOrDefaultAsync(x => x.Id == id, ct);
         if (d is null) return NotFound();
@@ -77,19 +79,30 @@ public class DiscussionsController(AppDbContext db, ICurrentUser currentUser, Ti
             d.Title, d.Body,
             d.AuthorId, d.Author?.FullName, d.Score, d.IsPinned,
             d.AcceptedReplyId, d.CreatedAt, d.UpdatedAt,
-            (int?)discussionVote, replies));
+            (int?)discussionVote, replies, Guided(d)));
     }
+
+    private static GuidedRefDto? Guided(Discussion d) =>
+        d.GuidedProject is { } g ? new GuidedRefDto(g.Id, g.TitleEn, g.TitleAr, d.GuidedStepOrder) : null;
 
     [HttpPost]
     public async Task<ActionResult<DiscussionDetailDto>> Create(CreateDiscussionRequest request, CancellationToken ct)
     {
         var topic = await db.Topics.AsNoTracking().FirstOrDefaultAsync(t => t.Id == request.TopicId, ct);
         if (topic is null) return BadRequest(Problem("Topic not found", statusCode: 400));
+        if (request.GuidedProjectId is { } guidedId)
+        {
+            var steps = await db.GuidedProjects.Where(g => g.Id == guidedId).Select(g => (int?)g.Steps.Count).FirstOrDefaultAsync(ct);
+            if (steps is null || request.GuidedStepOrder > steps)
+                throw new RequestValidationException("guidedProjectId", "notFound", "Library project or step does not exist.");
+        }
 
         var now = clock.GetUtcNow().UtcDateTime;
         var d = new Discussion
         {
             TopicId = request.TopicId!.Value,
+            GuidedProjectId = request.GuidedProjectId,
+            GuidedStepOrder = request.GuidedProjectId is null ? null : request.GuidedStepOrder,
             AuthorId = currentUser.Id,
             Title = request.Title.Trim(), Body = request.Body.Trim(),
             CreatedAt = now, UpdatedAt = now

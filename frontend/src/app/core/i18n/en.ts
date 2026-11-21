@@ -379,6 +379,8 @@ export const en = {
     toRoadmap: 'Open the roadmap', toPaths: 'Browse learning paths', toLibrary: 'Practise with projects',
   },
   guides: {
+    notesTitle: 'My notes on this project', noteStep: 'About', wholeProject: 'The whole project', noNotes: 'No notes for this project yet.', askStep: 'Ask about this step', noteOnStep: 'Note',
+    openInPlayground: 'Open this code in the playground',
     title: 'Project library',
     subtitle: 'Build real projects at your own pace. Every skill has simple, medium and advanced projects, each with step-by-step instructions and hints.',
     search: 'Search projects or technologies…', allSkills: 'All skills', allLevels: 'All levels',
@@ -454,6 +456,14 @@ export const en = {
     resetConfirm: 'Clear your attempt and revealed hints for this exercise?',
   },
   interviews: {
+    mockMode: 'Mock interview', allTopics: 'All topics',
+    mock: {
+      title: 'Mock interview', intro: 'A timed run through questions from several areas, like a real technical interview. Answer each one out loud before the time runs out, then compare with the expected answer and rate yourself.',
+      howMany: 'Questions', perQuestion: 'Time per question', minutes: '{n} min', categories: 'Areas to include',
+      start: 'Start the interview', timeLeft: 'Time left', done: 'I answered, show the answer', timeUp: 'Time is up. Here is the expected answer.',
+      end: 'End the interview', summary: 'How the interview went', totalTime: 'Total time', skipped: 'Not rated', overTime: 'time ran out',
+      again: 'New interview', change: 'Change the settings',
+    },
     title: 'Interview Preparation', subtitle: 'Questions linked to roadmap topics. Study the answers, then practise one at a time.',
     studyMode: 'Study mode', practiceMode: 'Practice mode', showAnswer: 'Show answer', hideAnswer: 'Hide answer',
     followUp: 'Follow-up question', example: 'Example', rateYourself: 'How well did you answer?', questionOf: 'Question {n} of {total}',
@@ -673,6 +683,7 @@ export const en = {
     waiting: 'Your request is waiting for a reviewer.', inReview: '{name} is reviewing your project.', done: 'Reviewed by {name}.',
   },
   discussions: {
+    aboutStep: 'About:', unlinkStep: 'Not about this',
     title: 'Discussions', ask: 'Ask a question', reply: 'Reply', accept: 'Accept answer', pin: 'Pin', unpin: 'Unpin',
     sortNewest: 'Newest', sortVotes: 'Top voted', noDiscussions: 'No discussions yet.', beFirst: 'Be the first to ask!',
     replies: 'Replies: {n}', accepted: 'Accepted answer', deleted: 'Deleted user',
@@ -686,6 +697,7 @@ export const en = {
     title: 'Notifications', noNotifications: 'No notifications yet.',
   },
   paths: {
+    guidedTitle: 'Projects for this path', guidedIntro: 'Project library projects that use only what this path teaches. Build them as you go.',
     title: 'Learning Paths', create: 'Create path', activate: 'Activate', deactivate: 'Deactivate', activated: 'Active',
     builtIn: 'Built-in', custom: 'Custom', topics: '{n} topics', progress: '{n}% complete',
     noPaths: 'No learning paths yet.', nameLabel: 'Path name', descriptionLabel: 'Description',

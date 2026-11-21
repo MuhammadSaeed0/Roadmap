@@ -136,7 +136,7 @@ export class ApiService {
   // ----- Discussions -----
   discussions(query: Query = {}) { return this.get<M.PagedDiscussions>('/discussions', query); }
   discussion(id: number) { return this.get<M.DiscussionDetail>(`/discussions/${id}`); }
-  createDiscussion(body: { topicId: number; title: string; body: string }) {
+  createDiscussion(body: { topicId: number; title: string; body: string; guidedProjectId?: number | null; guidedStepOrder?: number | null }) {
     return this.post<M.DiscussionDetail>('/discussions', body);
   }
   updateDiscussion(id: number, body: { title: string; body: string }) {
@@ -191,6 +191,8 @@ export class ApiService {
   /** The account's latest request for this project; null (204) when there is none. */
   projectReviewRequest(projectId: number) { return this.get<M.ReviewRequest | null>(`/projects/${projectId}/review-request`); }
   requestReview(projectId: number) { return this.post<M.ReviewRequest>(`/projects/${projectId}/review-request`, {}); }
+  guidedReviewRequest(id: number) { return this.get<M.ReviewRequest | null>(`/guided-projects/${id}/review-request`); }
+  requestGuidedReview(id: number) { return this.post<M.ReviewRequest>(`/guided-projects/${id}/review-request`, {}); }
   claimReview(id: number) { return this.post<M.ReviewRequest>(`/review-requests/${id}/claim`, {}); }
   releaseReview(id: number) { return this.post<M.ReviewRequest>(`/review-requests/${id}/release`, {}); }
   submitReview(id: number, body: { scores: Record<string, number>; notes: string | null }) {

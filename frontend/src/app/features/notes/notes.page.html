@@ -99,7 +99,7 @@
           <span class="small muted">
             @if (selected(); as n) {
               {{ 'notes.updated' | t: { date: (n.updatedAt | fmtDate) } }}
-              @if (linkRoute(n); as link) { · <a [routerLink]="link">{{ n | loc: 'linkTitle' }}</a> }
+              @if (linkRoute(n); as link) { · <a [routerLink]="link" [fragment]="n.guidedStepOrder ? 'step-' + n.guidedStepOrder : undefined">{{ n | loc: 'linkTitle' }}@if (n.guidedStepOrder) { · {{ 'guides.step' | t: { n: n.guidedStepOrder } }} }</a> }
             }
             @if (form.dirty) { · {{ 'notes.unsaved' | t }} }
           </span>

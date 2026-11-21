@@ -128,6 +128,8 @@ export default class NotesPage {
       // Task and interview-question links are kept when editing a note that already has one.
       projectTaskId: this.selected()?.linkType === 'task' && v.linkKind === 'none' ? this.selected()!.linkId : null,
       interviewQuestionId: this.selected()?.linkType === 'question' && v.linkKind === 'none' ? this.selected()!.linkId : null,
+      guidedProjectId: this.selected()?.linkType === 'guided' && v.linkKind === 'none' ? this.selected()!.linkId : null,
+      guidedStepOrder: this.selected()?.linkType === 'guided' && v.linkKind === 'none' ? this.selected()!.guidedStepOrder ?? null : null,
     };
     this.saving.set(true);
     try {
@@ -170,6 +172,7 @@ export default class NotesPage {
       case 'project': return ['/projects', note.linkId];
       case 'task': return ['/projects', note.linkParentId];
       case 'question': return ['/interviews'];
+      case 'guided': return ['/project-library', note.linkId];
       default: return null;
     }
   }

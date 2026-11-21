@@ -22,6 +22,13 @@ public class PeerReviewsController(PeerReviewService reviews) : ControllerBase
     [HttpPost("api/projects/{projectId:int}/review-request")]
     public Task<ReviewRequestDto> RequestReview(int projectId, CancellationToken ct) => reviews.RequestAsync(projectId, ct);
 
+    [HttpGet("api/guided-projects/{guidedProjectId:int}/review-request")]
+    public async Task<ActionResult<ReviewRequestDto>> LatestGuided(int guidedProjectId, CancellationToken ct) =>
+        await reviews.LatestForGuidedAsync(guidedProjectId, ct) is { } r ? r : NoContent();
+
+    [HttpPost("api/guided-projects/{guidedProjectId:int}/review-request")]
+    public Task<ReviewRequestDto> RequestGuidedReview(int guidedProjectId, CancellationToken ct) => reviews.RequestGuidedAsync(guidedProjectId, ct);
+
     [HttpPost("api/review-requests/{id:int}/claim")]
     public Task<ReviewRequestDto> Claim(int id, CancellationToken ct) => reviews.ClaimAsync(id, ct);
 

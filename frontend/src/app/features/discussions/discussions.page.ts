@@ -31,6 +31,13 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
                             [placeholder]="'quickAdd.chooseTopic' | t" [label]="'discussions.topicLabel' | t"
                             (valueChange)="askTopic.set($event ?? 0)" />
         </div>
+        @if (askGuided(); as g) {
+          <p class="callout small ask-about">
+            <app-icon name="layers" [size]="15" />
+            <span>{{ 'discussions.aboutStep' | t }} <strong>{{ i18n.pick(g.titleEn, g.titleAr) }}@if (askStep()) { · {{ 'guides.step' | t: { n: askStep() } }} }</strong></span>
+            <button type="button" class="btn btn-ghost btn-xs" (click)="askGuided.set(null)">{{ 'discussions.unlinkStep' | t }}</button>
+          </p>
+        }
         <div class="field">
           <label for="ask-title">{{ 'discussions.titleLabel' | t }}</label>
           <input id="ask-title" class="input" maxlength="200" #titleIn />
@@ -84,6 +91,9 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
                 <p class="discussion-excerpt muted small" dir="auto">{{ d.body }}</p>
                 <p class="row-gap tiny muted">
                   <span class="chip chip-sm">{{ i18n.pick(d.topicTitleEn, d.topicTitleAr) }}</span>
+                  @if (d.guided; as g) {
+                    <span class="chip chip-sm chip-ghost"><app-icon name="layers" [size]="12" /> {{ i18n.pick(g.titleEn, g.titleAr) }}@if (g.stepOrder) { · {{ 'guides.step' | t: { n: g.stepOrder } }} }</span>
+                  }
                   <span>{{ d.authorName ?? ('discussions.deleted' | t) }}</span>
                   <span>{{ d.createdAt | fmtDate }}</span>
                   <span class="discussion-replies" [class.is-answered]="d.hasAcceptedReply">
@@ -120,6 +130,9 @@ export default class DiscussionsPage {
   protected readonly showForm = signal(this.route.snapshot.queryParamMap.has('ask'));
   protected readonly posting = signal(false);
   protected readonly askTopic = signal(this.topicId() ?? 0);
+  /** From a library project step ("Ask about this step"): ?guide=<id>&step=<n>. */
+  protected readonly askGuided = signal<{ id: number; titleEn: string; titleAr: string } | null>(null);
+  protected readonly askStep = signal(Number(this.route.snapshot.queryParamMap.get('step')) || 0);
   private readonly pageSize = 20;
 
   private readonly roadmap = createLoader(() => this.api.roadmap());
@@ -128,6 +141,19 @@ export default class DiscussionsPage {
   protected readonly data = createLoader(() => this.api.discussions({ topicId: this.topicId(), sort: this.sort(), page: this.page() }));
   protected readonly discussions = computed(() => this.data.value()?.items ?? []);
   protected readonly totalPages = computed(() => Math.ceil((this.data.value()?.total ?? 0) / this.pageSize));
+
+  constructor() {
+    void this.loadAskGuided();
+  }
+
+  private async loadAskGuided(): Promise<void> {
+    const id = Number(this.route.snapshot.queryParamMap.get('guide')) || 0;
+    if (!id) return;
+    try {
+      const g = await this.api.guidedProject(id);
+      this.askGuided.set({ id: g.id, titleEn: g.titleEn, titleAr: g.titleAr });
+    } catch { /* the question is simply not linked */ }
+  }
 
   protected setTopic(id: number | null) {
     this.topicId.set(id);
@@ -154,7 +180,11 @@ export default class DiscussionsPage {
     }
     this.posting.set(true);
     try {
-      const d = await this.api.createDiscussion({ topicId: this.askTopic(), title: title.trim(), body: body.trim() });
+      const guided = this.askGuided();
+      const d = await this.api.createDiscussion({
+        topicId: this.askTopic(), title: title.trim(), body: body.trim(),
+        guidedProjectId: guided?.id ?? null, guidedStepOrder: guided && this.askStep() ? this.askStep() : null,
+      });
       void this.router.navigate(['/discussions', d.id]);
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));

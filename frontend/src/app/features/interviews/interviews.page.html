@@ -6,9 +6,21 @@
     <button type="button" role="radio" [attr.aria-checked]="mode() === 'practice'" [class.active]="mode() === 'practice'" (click)="setMode('practice')">
       <app-icon name="play" [size]="15" /> {{ 'interviews.practiceMode' | t }}
     </button>
+    <button type="button" role="radio" [attr.aria-checked]="mode() === 'mock'" [class.active]="mode() === 'mock'" (click)="setMode('mock')">
+      <app-icon name="clock" [size]="15" /> {{ 'interviews.mockMode' | t }}
+    </button>
   </div>
 </app-page-header>
 
+@if (mode() === 'mock') {
+  @if (pool.value(); as all) {
+    <app-mock-interview [pool]="all.questions" (rated)="onMockRated($event)" />
+  } @else if (pool.error()) {
+    <app-error-state [error]="pool.error()" (retry)="pool.reload()" />
+  } @else {
+    <div class="card"><app-skeleton [rows]="5" /></div>
+  }
+} @else {
 @if (data.value(); as list) {
   <div class="category-chips" data-tour="interviews-categories" role="group" [attr.aria-label]="'interviews.allCategories' | t">
     <button type="button" class="chip chip-btn" [class.active]="category() === ''" (click)="setCategory('')">{{ 'interviews.allCategories' | t }}</button>
@@ -27,6 +39,11 @@
       <input id="iq-q" type="search" class="input input-sm" [placeholder]="'interviews.searchPlaceholder' | t" (input)="onSearch($any($event.target).value)" />
     </div>
   </div>
+  <label class="sr-only" for="iq-topic">{{ 'interviews.allTopics' | t }}</label>
+  <select id="iq-topic" class="input input-sm topic-filter" (change)="setTopic(+$any($event.target).value)">
+    <option value="0" [selected]="topic() === 0">{{ 'interviews.allTopics' | t }}</option>
+    @for (tp of topics(); track tp.id) { <option [value]="tp.id" [selected]="topic() === tp.id">{{ tp | loc: 'title' }} ({{ tp.count }})</option> }
+  </select>
   <label class="sr-only" for="iq-difficulty">{{ 'interviews.anyDifficulty' | t }}</label>
   <select id="iq-difficulty" class="input input-sm" (change)="setDifficulty($any($event.target).value)">
     <option value="">{{ 'interviews.anyDifficulty' | t }}</option>
@@ -133,4 +150,5 @@
       </div>
     </section>
   }
+}
 }

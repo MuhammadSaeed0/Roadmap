@@ -253,14 +253,16 @@ public class SkillAssessmentService(AppDbContext db, SkillRules rules, TimeProvi
         // Peer reviews are shared rows too. A completed review of your project replaces your self-review,
         // and counts as Reviewed; reviews you completed for others earn you XP.
         var peerReviews = userId is null ? [] : await db.ProjectReviewRequests.AsNoTracking()
-            .Where(r => r.RequesterId == userId && r.Status == ReviewRequestStatus.Completed)
+            .Where(r => r.RequesterId == userId && r.Status == ReviewRequestStatus.Completed && r.ProjectId != null)
             .OrderBy(r => r.CompletedAt)
-            .Select(r => new { r.ProjectId, r.Scores, r.CompletedAt })
+            .Select(r => new { ProjectId = r.ProjectId!.Value, r.Scores, r.CompletedAt })
             .ToListAsync(ct);
         var latestPeerReview = peerReviews.GroupBy(r => r.ProjectId).ToDictionary(g => g.Key, g => g.Last());
         var given = userId is null ? [] : await db.ProjectReviewRequests.AsNoTracking()
             .Where(r => r.ReviewerId == userId && r.Status == ReviewRequestStatus.Completed && r.RequesterId != userId)
-            .Select(r => new ReviewGivenFact(r.Id, r.Project.TitleEn, r.Project.TitleAr, r.CompletedAt!.Value))
+            .Select(r => new ReviewGivenFact(r.Id,
+                r.Project != null ? r.Project.TitleEn : r.GuidedProject!.TitleEn,
+                r.Project != null ? r.Project.TitleAr : r.GuidedProject!.TitleAr, r.CompletedAt!.Value))
             .ToListAsync(ct);
 
         // Library projects with every step done (step progress is filtered to the signed-in learner).

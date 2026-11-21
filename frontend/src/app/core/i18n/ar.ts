@@ -381,6 +381,8 @@ export const ar: Translations = {
     toRoadmap: 'افتح خارطة الطريق', toPaths: 'تصفح مسارات التعلم', toLibrary: 'تدرّب بالمشاريع',
   },
   guides: {
+    notesTitle: 'ملاحظاتي عن هذا المشروع', noteStep: 'عن', wholeProject: 'المشروع كله', noNotes: 'لا توجد ملاحظات لهذا المشروع بعد.', askStep: 'اسأل عن هذه الخطوة', noteOnStep: 'ملاحظة',
+    openInPlayground: 'افتح هذا الكود في ساحة الكود',
     title: 'مكتبة المشاريع',
     subtitle: 'ابنِ مشاريع حقيقية بالسرعة التي تناسبك. لكل مهارة مشاريع بسيطة ومتوسطة ومتقدمة، ولكل مشروع خطوات مفصلة وتلميحات.',
     search: 'ابحث في المشاريع أو التقنيات…', allSkills: 'كل المهارات', allLevels: 'كل المستويات',
@@ -456,6 +458,14 @@ export const ar: Translations = {
     resetConfirm: 'هل تريد مسح محاولتك والتلميحات المكشوفة لهذا التمرين؟',
   },
   interviews: {
+    mockMode: 'مقابلة تجريبية', allTopics: 'كل المواضيع',
+    mock: {
+      title: 'مقابلة تجريبية', intro: 'أسئلة من عدة مجالات بمؤقت، كأنها مقابلة تقنية حقيقية. أجب عن كل سؤال بصوت عالٍ قبل انتهاء الوقت، ثم قارن إجابتك بالإجابة المتوقعة وقيّم نفسك.',
+      howMany: 'عدد الأسئلة', perQuestion: 'الوقت لكل سؤال', minutes: '{n} دقائق', categories: 'المجالات المشمولة',
+      start: 'ابدأ المقابلة', timeLeft: 'الوقت المتبقي', done: 'أجبت، أظهر الإجابة', timeUp: 'انتهى الوقت. هذه هي الإجابة المتوقعة.',
+      end: 'إنهاء المقابلة', summary: 'نتيجة المقابلة', totalTime: 'الوقت الكلي', skipped: 'بلا تقييم', overTime: 'انتهى الوقت',
+      again: 'مقابلة جديدة', change: 'تغيير الإعدادات',
+    },
     title: 'التحضير للمقابلات', subtitle: 'أسئلة مرتبطة بمواضيع خارطة الطريق. ادرس الإجابات ثم تدرّب سؤالًا بسؤال.',
     studyMode: 'وضع الدراسة', practiceMode: 'وضع التدريب', showAnswer: 'إظهار الإجابة', hideAnswer: 'إخفاء الإجابة',
     followUp: 'سؤال متابعة', example: 'مثال', rateYourself: 'ما مدى جودة إجابتك؟', questionOf: 'السؤال {n} من {total}',
@@ -675,6 +685,7 @@ export const ar: Translations = {
     waiting: 'طلبك بانتظار مراجِع.', inReview: 'يراجع {name} مشروعك الآن.', done: 'راجعه {name}.',
   },
   discussions: {
+    aboutStep: 'عن:', unlinkStep: 'ليس عن هذا',
     title: 'النقاشات', ask: 'اطرح سؤالاً', reply: 'ردّ', accept: 'قبول الإجابة', pin: 'تثبيت', unpin: 'إلغاء التثبيت',
     sortNewest: 'الأحدث', sortVotes: 'الأعلى تصويتًا', noDiscussions: 'لا توجد نقاشات بعد.', beFirst: 'كن أول من يسأل!',
     replies: 'الردود: {n}', accepted: 'إجابة مقبولة', deleted: 'مستخدم محذوف',
@@ -688,6 +699,7 @@ export const ar: Translations = {
     title: 'الإشعارات', noNotifications: 'لا توجد إشعارات بعد.',
   },
   paths: {
+    guidedTitle: 'مشاريع لهذا المسار', guidedIntro: 'مشاريع من المكتبة تستخدم ما يعلّمه هذا المسار فقط. ابنِها وأنت تتقدّم فيه.',
     title: 'مسارات التعلم', create: 'إنشاء مسار', activate: 'تفعيل', deactivate: 'إلغاء التفعيل', activated: 'مفعّل',
     builtIn: 'مدمج', custom: 'مخصص', topics: '{n} موضوع', progress: '{n}% مكتمل',
     noPaths: 'لا توجد مسارات تعلم بعد.', nameLabel: 'اسم المسار', descriptionLabel: 'الوصف',

@@ -9,9 +9,10 @@ import { Difficulty, INTERVIEW_CATEGORIES, InterviewCategory, InterviewQuestion,
 import { ToastService } from '../../core/ui-services';
 import { CodeBlockComponent } from '../../shared/code-block.component';
 import { IconComponent } from '../../shared/icon.component';
+import { MockInterviewComponent } from './mock-interview.component';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
 
-type Mode = 'study' | 'practice';
+type Mode = 'study' | 'practice' | 'mock';
 
 /** Study mode renders questions in batches of this size; there are hundreds of them. */
 const PAGE_SIZE = 40;
@@ -20,7 +21,7 @@ const PAGE_SIZE = 40;
   selector: 'app-interviews-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, CodeBlockComponent, PageHeaderComponent,
-    ProgressBarComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
+    ProgressBarComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent, MockInterviewComponent],
   templateUrl: './interviews.page.html',
 })
 export default class InterviewsPage {
@@ -35,10 +36,12 @@ export default class InterviewsPage {
   protected readonly difficulties: Difficulty[] = ['Beginner', 'Intermediate', 'Advanced'];
   private readonly query = this.route.snapshot.queryParamMap;
 
-  protected readonly mode = signal<Mode>(this.query.get('mode') === 'practice' ? 'practice' : 'study');
+  protected readonly mode = signal<Mode>(readMode(this.query.get('mode')));
   protected readonly category = signal<InterviewCategory | ''>((this.query.get('category') ?? '') as InterviewCategory | '');
   protected readonly rating = signal<string>('');
   protected readonly difficulty = signal<Difficulty | ''>('');
+  /** Topic filter (?topic=<id>); 0 means every topic. */
+  protected readonly topic = signal(Number(this.query.get('topic')) || 0);
   protected readonly search = signal('');
   protected readonly limit = signal(PAGE_SIZE);
   protected readonly focusId = signal<number | null>(Number(this.query.get('question')) || null);
@@ -47,12 +50,26 @@ export default class InterviewsPage {
   protected readonly busy = signal(false);
 
   protected readonly data = createLoader(() => this.api.interviews({ category: this.category(), rating: this.rating() }));
-  /** Category and rating are filtered by the API; difficulty and text search in the browser. */
+  /** Every question, for the mock interview (loaded the first time that mode opens). */
+  protected readonly pool = createLoader(() => this.api.interviews(), { immediate: false });
+  /** The topics the loaded questions belong to, for the topic filter, in alphabetical order. */
+  protected readonly topics = computed(() => {
+    const seen = new Map<number, { id: number; titleEn: string; titleAr: string; count: number }>();
+    for (const q of this.data.value()?.questions ?? []) {
+      const t = seen.get(q.topicId) ?? { id: q.topicId, titleEn: q.topicTitleEn, titleAr: q.topicTitleAr, count: 0 };
+      t.count++;
+      seen.set(q.topicId, t);
+    }
+    return [...seen.values()].sort((a, b) => this.i18n.pick(a.titleEn, a.titleAr).localeCompare(this.i18n.pick(b.titleEn, b.titleAr), this.i18n.lang()));
+  });
+  /** Category and rating are filtered by the API; topic, difficulty and text search in the browser. */
   protected readonly questions = computed(() => {
     const level = this.difficulty();
+    const topic = this.topic();
     const term = this.search().trim().toLowerCase();
     return (this.data.value()?.questions ?? []).filter(q =>
       (!level || q.difficulty === level) &&
+      (!topic || q.topicId === topic) &&
       (!term || [q.questionEn, q.questionAr, q.topicTitleEn, q.topicTitleAr].some(text => text.toLowerCase().includes(term))));
   });
   protected readonly visible = computed(() => this.questions().slice(0, this.limit()));
@@ -77,6 +94,7 @@ export default class InterviewsPage {
 
   protected setMode(mode: Mode): void {
     this.mode.set(mode);
+    if (mode === 'mock' && !this.pool.value() && !this.pool.loading()) void this.pool.reload();
     this.index.set(0);
     this.revealed.set(new Set());
     this.syncUrl();
@@ -84,6 +102,7 @@ export default class InterviewsPage {
 
   protected setCategory(category: InterviewCategory | ''): void {
     this.category.set(category);
+    this.topic.set(0);
     this.index.set(0);
     this.limit.set(PAGE_SIZE);
     this.syncUrl();
@@ -101,6 +120,19 @@ export default class InterviewsPage {
     this.difficulty.set(difficulty);
     this.index.set(0);
     this.limit.set(PAGE_SIZE);
+  }
+
+  protected setTopic(id: number): void {
+    this.topic.set(id);
+    this.index.set(0);
+    this.limit.set(PAGE_SIZE);
+    this.syncUrl();
+  }
+
+  /** A rating saved during the mock interview: keep the study and practice lists in step. */
+  protected onMockRated(saved: InterviewQuestion): void {
+    this.data.update(v => ({ ...v, questions: v.questions.map(x => (x.id === saved.id ? saved : x)) }));
+    this.pool.update(v => ({ ...v, questions: v.questions.map(x => (x.id === saved.id ? saved : x)) }));
   }
 
   protected onSearch(term: string): void {
@@ -145,8 +177,12 @@ export default class InterviewsPage {
 
   private syncUrl(): void {
     void this.router.navigate([], {
-      queryParams: { mode: this.mode() === 'practice' ? 'practice' : null, category: this.category() || null },
+      queryParams: { mode: this.mode() === 'study' ? null : this.mode(), category: this.category() || null, topic: this.topic() || null },
       replaceUrl: true,
     });
   }
+}
+
+function readMode(value: string | null): Mode {
+  return value === 'practice' || value === 'mock' ? value : 'study';
 }

@@ -16,7 +16,9 @@ public record PathDetailDto(
     bool IsBuiltIn, bool IsPublic, string? CreatorId, string? CreatorName,
     DateTime CreatedAt, bool IsActivated,
     IReadOnlyList<PathPhaseDto> Phases,
-    IReadOnlyList<PathTopicDto> Topics);
+    IReadOnlyList<PathTopicDto> Topics,
+    /// <summary>Project library projects whose topics are all in this path: practice that fits it, easiest first.</summary>
+    IReadOnlyList<GuidedProjectRefDto>? GuidedProjects = null);
 
 public record PathPhaseDto(int PhaseId, string PhaseNameEn, string PhaseNameAr, int SortOrder, IReadOnlyList<PathTopicDto> Topics);
 

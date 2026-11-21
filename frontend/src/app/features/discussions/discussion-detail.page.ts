@@ -54,6 +54,10 @@ import { DiscussionTextComponent } from './discussion-text.component';
             <h2 class="discussion-heading" dir="auto">{{ d.title }}</h2>
             <p class="row-gap tiny muted">
               <a class="chip chip-sm chip-link" [routerLink]="['/topics', d.topicId]">{{ i18n.pick(d.topicTitleEn, d.topicTitleAr) }}</a>
+              @if (d.guided; as g) {
+                <a class="chip chip-sm chip-link" [routerLink]="['/project-library', g.id]" [fragment]="g.stepOrder ? 'step-' + g.stepOrder : undefined">
+                  <app-icon name="layers" [size]="12" /> {{ i18n.pick(g.titleEn, g.titleAr) }}@if (g.stepOrder) { · {{ 'guides.step' | t: { n: g.stepOrder } }} }</a>
+              }
               <span>{{ d.authorName ?? ('discussions.deleted' | t) }}</span>
               <span>{{ d.createdAt | fmtDate }}</span>
               @if (d.updatedAt > d.createdAt) { <span>{{ 'discussions.edited' | t }}</span> }

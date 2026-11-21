@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, untracked, viewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
@@ -10,6 +10,9 @@ import { GuidedProjectDetail, GuidedStep } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
 import { isolateLatin } from '../../shared/bidi';
 import { CodeBlockComponent } from '../../shared/code-block.component';
+import { PeerReviewCardComponent } from '../reviews/peer-review-card.component';
+import { GuideNotesComponent } from './guide-notes.component';
+import { templateForLanguage } from '../../core/workspace/templates';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, ProgressBarComponent, SkeletonComponent } from '../../shared/ui.components';
 import { lessonBlocks } from '../topics/topic-tutorial.component';
@@ -21,7 +24,8 @@ const URL_PATTERN = /^https?:\/\/\S+$/i;
   selector: 'app-guide-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './guides.css',
-  imports: [RouterLink, ReactiveFormsModule, IconComponent, TranslatePipe, CodeBlockComponent, SkeletonComponent, ErrorStateComponent, ProgressBarComponent],
+  imports: [RouterLink, ReactiveFormsModule, IconComponent, TranslatePipe, CodeBlockComponent, SkeletonComponent, ErrorStateComponent, ProgressBarComponent,
+    PeerReviewCardComponent, GuideNotesComponent],
   template: `
     @if (data.initialLoading() || (data.loading() && !data.value())) {
       <div class="card"><app-skeleton [rows]="2" [height]="30" /></div>
@@ -106,6 +110,10 @@ const URL_PATTERN = /^https?:\/\/\S+$/i;
                       @if (s.code) {
                         <p class="step-label">{{ 'guides.code' | t }}</p>
                         <app-code-block [code]="s.code" [language]="s.codeLanguage" />
+                        @if (playgroundTemplate(s.codeLanguage); as tpl) {
+                          <a class="btn btn-ghost btn-sm open-playground" [routerLink]="['/playground/new', tpl]" [queryParams]="{ guide: p.id, step: s.id }">
+                            <app-icon name="terminal" [size]="14" /> {{ 'guides.openInPlayground' | t }}</a>
+                        }
                       }
                       @let hints = i18n.lang() === 'ar' ? s.hintsAr : s.hintsEn;
                       @let shown = revealed()[s.id] ?? 0;
@@ -123,6 +131,12 @@ const URL_PATTERN = /^https?:\/\/\S+$/i;
                             <app-icon name="bulb" [size]="14" /> {{ 'guides.hint' | t: { n: shown + 1, total: hints.length } }}
                           </button>
                         }
+                        @if (p.topicIds.length > 0) {
+                          <a class="btn btn-ghost btn-sm" routerLink="/discussions" [queryParams]="{ ask: 1, topicId: p.topicIds[0], guide: p.id, step: s.order }">
+                            <app-icon name="message-square" [size]="14" /> {{ 'guides.askStep' | t }}</a>
+                        }
+                        <button type="button" class="btn btn-ghost btn-sm" (click)="notes()?.openForm(s.order)">
+                          <app-icon name="note" [size]="14" /> {{ 'guides.noteOnStep' | t }}</button>
                         @if (!s.done) {
                           <button type="button" class="btn btn-primary btn-sm push-end" [disabled]="busy() === s.id" (click)="setDone(p, s, true)">
                             <app-icon name="check" [size]="14" /> {{ 'guides.markDone' | t }}
@@ -181,7 +195,10 @@ const URL_PATTERN = /^https?:\/\/\S+$/i;
                 </div>
               </form>
             </section>
+            <app-peer-review-card [projectId]="p.id" kind="library" [finished]="true" [hasRepository]="!!p.repositoryUrl" />
           }
+
+          <app-guide-notes [projectId]="p.id" [stepCount]="p.steps.length" />
 
           @if (p.sameSkill.length > 0) {
             <section class="card" aria-labelledby="same-h">
@@ -217,6 +234,8 @@ export default class GuideDetailPage {
   protected readonly revealed = signal<Record<number, number>>({});
   protected readonly busy = signal<number | null>(null);
   protected readonly savingRepo = signal(false);
+  protected readonly playgroundTemplate = templateForLanguage;
+  protected readonly notes = viewChild(GuideNotesComponent);
   protected readonly repoUrl = new FormControl('', { nonNullable: true, validators: [Validators.maxLength(500), Validators.pattern(URL_PATTERN)] });
 
   protected readonly doneCount = computed(() => this.data.value()?.steps.filter(s => s.done).length ?? 0);

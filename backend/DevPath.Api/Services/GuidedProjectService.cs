@@ -28,6 +28,8 @@ public class GuidedProjectService(AppDbContext db, TimeProvider clock)
         var sameSkill = (await Summaries(db.GuidedProjects.AsNoTracking().Where(x => x.Skill == p.Skill && x.Id != id)).ToListAsync(ct))
             .OrderBy(x => x.Level).ThenBy(x => x.Id).ToList();
 
+        var topicIds = await db.GuidedProjectTopics.AsNoTracking().Where(l => l.ProjectId == id)
+            .OrderBy(l => l.Topic.Phase.Order).ThenBy(l => l.Topic.Order).Select(l => l.TopicId).ToListAsync(ct);
         var repository = await db.GuidedProjectRepositories.AsNoTracking()
             .Where(r => r.ProjectId == id).Select(r => r.Url).FirstOrDefaultAsync(ct);
 
@@ -41,7 +43,7 @@ public class GuidedProjectService(AppDbContext db, TimeProvider clock)
                 return new GuidedStepDto(s.Id, s.Key, s.Order, s.TitleEn, s.TitleAr, s.BodyEn, s.BodyAr, s.Code, s.CodeLanguage,
                     Lines(s.HintsEn), Lines(s.HintsAr), done is not null, done?.CompletedAt);
             }).ToList(),
-            sameSkill, repository);
+            sameSkill, repository, topicIds);
     }
 
     /// <summary>Marks a step done or not done. Idempotent: setting the state it already has changes nothing.</summary>

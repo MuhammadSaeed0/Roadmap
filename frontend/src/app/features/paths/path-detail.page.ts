@@ -73,6 +73,23 @@ import { ErrorStateComponent, PageHeaderComponent, ProgressRingComponent, Skelet
           </ul>
         </section>
       }
+      @if (p.guidedProjects?.length) {
+        <section class="card" aria-labelledby="path-guided-h">
+          <h2 id="path-guided-h" class="card-title"><app-icon name="layers" /> {{ 'paths.guidedTitle' | t }}</h2>
+          <p class="muted small">{{ 'paths.guidedIntro' | t }}</p>
+          <ul class="guided-tiles" role="list">
+            @for (g of p.guidedProjects; track g.id) {
+              <li>
+                <a class="guided-tile" [routerLink]="['/project-library', g.id]">
+                  <app-icon [name]="g.doneSteps === g.stepCount ? 'check-circle' : 'circle'" [size]="16" />
+                  <span class="guided-tile-title">{{ i18n.pick(g.titleEn, g.titleAr) }}</span>
+                  <span class="muted small">{{ 'guides.levels.' + g.level | t }}</span>
+                </a>
+              </li>
+            }
+          </ul>
+        </section>
+      }
     }
 
     <ng-template #topic let-t>

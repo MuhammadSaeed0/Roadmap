@@ -10,8 +10,11 @@ public enum ReviewRequestStatus { Open, Claimed, Completed, Cancelled }
 public class ProjectReviewRequest
 {
     public int Id { get; set; }
-    public int ProjectId { get; set; }
-    public Project Project { get; set; } = null!;
+    /// <summary>A main project, or (when null) the Project library project in <see cref="GuidedProjectId"/>. Exactly one is set.</summary>
+    public int? ProjectId { get; set; }
+    public Project? Project { get; set; }
+    public int? GuidedProjectId { get; set; }
+    public GuidedProject? GuidedProject { get; set; }
 
     public required string RequesterId { get; set; }
     public AppUser Requester { get; set; } = null!;

@@ -9,7 +9,7 @@ import { ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import { ReviewScaleComponent } from './review-scale.component';
 
-/** On a project page: ask another learner to review the finished project, and see their review. */
+/** On a main project or Project library page: ask another learner to review the finished project, and see their review. */
 @Component({
   selector: 'app-peer-review-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,6 +48,8 @@ export class PeerReviewCardComponent {
   private readonly i18n = inject(I18nService);
 
   readonly projectId = input.required<number>();
+  /** "library" when projectId is a Project library project. */
+  readonly kind = input<'main' | 'library'>('main');
   readonly finished = input(false);
   readonly hasRepository = input(false);
 
@@ -58,13 +60,15 @@ export class PeerReviewCardComponent {
   constructor() {
     effect(() => {
       const id = this.projectId();
-      untracked(() => void this.load(id));
+      const kind = this.kind();
+      untracked(() => void this.load(id, kind));
     });
   }
 
-  private async load(id: number): Promise<void> {
+  private async load(id: number, kind: 'main' | 'library'): Promise<void> {
     try {
-      const [r, lists] = await Promise.all([this.api.projectReviewRequest(id), this.api.reviewRequests()]);
+      const latest = kind === 'library' ? this.api.guidedReviewRequest(id) : this.api.projectReviewRequest(id);
+      const [r, lists] = await Promise.all([latest, this.api.reviewRequests()]);
       this.request.set(r ?? null);
       this.criteria.set(lists.criteria);
     } catch { /* the card stays in its empty state */ }
@@ -73,7 +77,7 @@ export class PeerReviewCardComponent {
   protected async ask(): Promise<void> {
     this.busy.set(true);
     try {
-      this.request.set(await this.api.requestReview(this.projectId()));
+      this.request.set(await (this.kind() === 'library' ? this.api.requestGuidedReview(this.projectId()) : this.api.requestReview(this.projectId())));
       this.toast.success(this.i18n.t('reviews.asked'));
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));

@@ -56,11 +56,21 @@ public class PathsController(AppDbContext db, ICurrentUser currentUser, TimeProv
                 .ToListAsync(ct))
             .Select(t => new PathTopicDto(t.TopicId, t.TitleEn, t.TitleAr, t.SortOrder, Status(t.TopicId))).ToList();
 
+        // Library projects that only use topics this path teaches.
+        var pathTopics = phases.SelectMany(ph => ph.Topics).Select(t => t.TopicId).Concat(topics.Select(t => t.TopicId)).ToHashSet();
+        var links = await db.GuidedProjectTopics.AsNoTracking().Select(l => new { l.ProjectId, l.TopicId }).ToListAsync(ct);
+        var fitting = links.GroupBy(l => l.ProjectId).Where(g => g.All(l => pathTopics.Contains(l.TopicId))).Select(g => g.Key).ToList();
+        var guided = (await db.GuidedProjects.AsNoTracking().Where(g => fitting.Contains(g.Id))
+                .Select(g => new GuidedProjectRefDto(g.Id, g.Skill, g.Level, g.TitleEn, g.TitleAr,
+                    g.Steps.Count, g.Steps.Count(st => st.ProgressRows.Any())))
+                .ToListAsync(ct))
+            .OrderBy(g => g.Level).ThenBy(g => g.Id).ToList();
+
         return Ok(new PathDetailDto(
             p.Id, p.Slug, p.NameEn, p.NameAr,
             p.DescriptionEn, p.DescriptionAr, p.IconName,
             p.IsBuiltIn, p.IsPublic, p.CreatorId, p.CreatorName,
-            p.CreatedAt, isActivated, phases, topics));
+            p.CreatedAt, isActivated, phases, topics, guided));
     }
 
     [HttpPost]

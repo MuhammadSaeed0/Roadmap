@@ -156,6 +156,16 @@ public static class ProjectCompletion
     /// <summary>Projects of the account that another learner reviewed.</summary>
     public static Task<List<int>> PeerReviewedProjectIdsAsync(AppDbContext db, string userId, CancellationToken ct) =>
         db.ProjectReviewRequests.AsNoTracking()
-            .Where(r => r.RequesterId == userId && r.Status == ReviewRequestStatus.Completed)
-            .Select(r => r.ProjectId).Distinct().ToListAsync(ct);
+            .Where(r => r.RequesterId == userId && r.Status == ReviewRequestStatus.Completed && r.ProjectId != null)
+            .Select(r => r.ProjectId!.Value).Distinct().ToListAsync(ct);
+
+    /// <summary>Project library projects whose every step the account finished.</summary>
+    public static async Task<HashSet<int>> CompletedGuidedProjectIdsAsync(AppDbContext db, string userId, CancellationToken ct)
+    {
+        var done = db.GuidedStepProgress.IgnoreQueryFilters().Where(r => r.UserId == userId);
+        return (await db.GuidedProjects.AsNoTracking()
+            .Select(p => new { p.Id, Steps = p.Steps.Count, Done = done.Count(r => r.Step.ProjectId == p.Id) })
+            .Where(p => p.Steps > 0 && p.Done == p.Steps)
+            .Select(p => p.Id).ToListAsync(ct)).ToHashSet();
+    }
 }

@@ -484,6 +484,17 @@ export function templatesFor(kind: WorkspaceKind): WorkspaceTemplate[] {
   return TEMPLATES.filter(t => t.kind === kind);
 }
 
+/** The playground template that can run code written in this language (Project library steps), if any. */
+export function templateForLanguage(language: string | null | undefined): string | null {
+  switch ((language ?? '').toLowerCase()) {
+    case 'csharp': case 'cs': case 'c#': return 'csharp-console';
+    case 'sql': case 'tsql': return 'sql-empty';
+    case 'typescript': case 'ts': return 'typescript';
+    case 'javascript': case 'js': return 'javascript';
+    default: return null;
+  }
+}
+
 export function templateByKey(key: string | null | undefined): WorkspaceTemplate | undefined {
   return TEMPLATES.find(t => t.key === key);
 }

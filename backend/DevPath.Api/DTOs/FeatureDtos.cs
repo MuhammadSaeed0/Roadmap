@@ -124,18 +124,23 @@ public record RateInterviewRequest([Required] InterviewRating? Rating);
 
 public record NoteDto(
     int Id, string Title, string Content, string? LinkType, int? LinkId, string? LinkTitleEn, string? LinkTitleAr,
-    int? LinkParentId, DateTime CreatedAt, DateTime UpdatedAt);
+    int? LinkParentId, DateTime CreatedAt, DateTime UpdatedAt,
+    /// <summary>For a library project link: the step number, when the note is about one step.</summary>
+    int? GuidedStepOrder = null);
 
 public record NoteRequest(
     [Required, MinLength(1), MaxLength(200)] string? Title,
     [MaxLength(20000)] string? Content,
-    int? TopicId, int? ProjectId, int? ProjectTaskId, int? InterviewQuestionId) : IValidatableObject
+    int? TopicId, int? ProjectId, int? ProjectTaskId, int? InterviewQuestionId,
+    int? GuidedProjectId = null, [Range(1, 200)] int? GuidedStepOrder = null) : IValidatableObject
 {
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        var links = new[] { TopicId, ProjectId, ProjectTaskId, InterviewQuestionId }.Count(x => x.HasValue);
+        var links = new[] { TopicId, ProjectId, ProjectTaskId, InterviewQuestionId, GuidedProjectId }.Count(x => x.HasValue);
         if (links > 1)
             yield return new ValidationResult("A note can be linked to only one item.", [nameof(TopicId)]);
+        if (GuidedStepOrder.HasValue && !GuidedProjectId.HasValue)
+            yield return new ValidationResult("A step needs its library project.", [nameof(GuidedStepOrder)]);
     }
 }
 
