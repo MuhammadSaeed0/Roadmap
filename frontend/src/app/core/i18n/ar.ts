@@ -316,7 +316,7 @@ export const ar: Translations = {
   roadmap: {
     views: { phases: 'المراحل', list: 'قائمة' }, viewLabel: 'طريقة العرض',
     title: 'خارطة طريقي', subtitle: '14 مرحلة من أول برنامج C# إلى مشاريع Full-Stack، خطوة بخطوة.',
-    current: 'المرحلة الحالية', topicsDone: 'المواضيع: {done} من {total}', remaining: 'متبقٍ {n} دقيقة', projectsIntro: 'طبّق ما تعلمته في أربعة مشاريع.',
+    current: 'المرحلة الحالية', topicsDone: 'المواضيع: {done} من {total}', remaining: 'متبقٍ {n} دقيقة', projectsUnlocked: 'مشاريع رئيسية يمكنك بدؤها بعد هذه المرحلة.', libraryIntro: 'مشاريع من المكتبة للتدرّب على هذه المرحلة:', phaseDone: 'أكملت المرحلة', projectsIntro: 'طبّق ما تعلمته في أربعة مشاريع.',
     expandAll: 'توسيع الكل', collapseAll: 'طي الكل', locked: 'المتطلبات السابقة لم تكتمل',
     phase: 'المرحلة {n}',
   },

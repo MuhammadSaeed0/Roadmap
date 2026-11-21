@@ -48,6 +48,8 @@ export interface Phase {
   id: number; slug: string; order: number; titleEn: string; titleAr: string; descriptionEn: string; descriptionAr: string;
   topicCount: number; doneCount: number; percent: number; remainingMinutes: number;
   topics: TopicSummary[]; projects: ProjectBrief[];
+  /** Library projects that practise this phase (each project sits in the latest phase among its topics). */
+  guidedProjects: GuidedProjectRef[];
 }
 export interface Roadmap { phases: Phase[]; currentPhaseId: number | null; }
 

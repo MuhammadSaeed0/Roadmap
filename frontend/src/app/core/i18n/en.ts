@@ -314,7 +314,7 @@ export const en = {
   roadmap: {
     views: { phases: 'Phases', list: 'List' }, viewLabel: 'View',
     title: 'My Roadmap', subtitle: '14 phases from your first C# program to full-stack projects, one step at a time.',
-    current: 'Current phase', topicsDone: '{done} of {total} topics', remaining: '{n} min left', projectsIntro: 'Apply what you learned in four projects.',
+    current: 'Current phase', topicsDone: '{done} of {total} topics', remaining: '{n} min left', projectsUnlocked: 'Main projects you can start after this phase.', libraryIntro: 'Library projects to practise this phase:', phaseDone: 'Phase complete', projectsIntro: 'Apply what you learned in four projects.',
     expandAll: 'Expand all', collapseAll: 'Collapse all', locked: 'Prerequisites not finished',
     phase: 'Phase {n}',
   },

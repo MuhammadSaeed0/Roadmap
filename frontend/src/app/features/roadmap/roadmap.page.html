@@ -47,6 +47,9 @@
             <span class="phase-eyebrow">
               {{ 'roadmap.phase' | t: { n: phase.order } }}
               @if (current) { <span class="badge badge-accent">{{ 'roadmap.current' | t }}</span> }
+              @if (phase.topicCount > 0 && phase.percent >= 100) {
+                <span class="badge phase-badge" data-status="Completed"><app-icon name="award" [size]="12" /> {{ 'roadmap.phaseDone' | t }}</span>
+              }
             </span>
             <span class="phase-title">{{ phase | loc: 'title' }}</span>
             <span class="phase-desc">{{ phase | loc: 'description' }}</span>
@@ -100,7 +103,7 @@
             }
 
             @if (phase.projects.length > 0) {
-              <p class="muted">{{ 'roadmap.projectsIntro' | t }}</p>
+              <p class="muted">{{ (phase.topicCount === 0 ? 'roadmap.projectsIntro' : 'roadmap.projectsUnlocked') | t }}</p>
               <div class="project-tiles">
                 @for (p of phase.projects; track p.id) {
                   <a class="project-tile" [routerLink]="['/projects', p.id]">
@@ -111,6 +114,22 @@
                   </a>
                 }
               </div>
+            }
+
+            @if (phase.guidedProjects.length > 0) {
+              <p class="muted guided-intro">{{ 'roadmap.libraryIntro' | t }}</p>
+              <ul class="guided-tiles" role="list">
+                @for (g of phase.guidedProjects; track g.id) {
+                  @let gs = g.doneSteps === g.stepCount ? 'Completed' : g.doneSteps > 0 ? 'InProgress' : 'NotStarted';
+                  <li>
+                    <a class="guided-tile" [routerLink]="['/project-library', g.id]">
+                      <app-icon [name]="statusIcon(gs)" [size]="15" class="status-icon" [attr.data-status]="gs" />
+                      <span class="guided-tile-title">{{ g | loc: 'title' }}</span>
+                      <span class="muted small">{{ 'guides.levels.' + g.level | t }}</span>
+                    </a>
+                  </li>
+                }
+              </ul>
             }
           </div>
         }
