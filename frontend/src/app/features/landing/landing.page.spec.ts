@@ -59,6 +59,10 @@ describe('Landing page', () => {
     const images = [...el.querySelectorAll<HTMLImageElement>('.ld-shots img')];
     expect(images.length).toBe(4);
     expect(images.every(i => i.getAttribute('src')!.startsWith('marketing/') && i.getAttribute('loading') === 'lazy' && i.alt.length > 0)).toBe(true);
+    // Small WebP copies, not the full-size marketing JPEGs, so they don't hold up the next page's download.
+    expect(images.map(i => i.getAttribute('src'))).toEqual([
+      'marketing/web/01-roadmap.webp', 'marketing/web/03-lesson.webp', 'marketing/web/04-playground.webp', 'marketing/web/06-project-library.webp',
+    ]);
     // Beginners can open the public Pre-Roadmap guide without an account, from the top and from its feature card.
     expect(el.querySelectorAll('a[href="/pre-roadmap"]').length).toBe(2);
     expect(el.querySelector('.ld-pre')?.textContent).toContain('Never coded before?');
