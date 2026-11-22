@@ -116,11 +116,17 @@ public class SkillLevelApiTests(ApiFactory factory) : IClassFixture<ApiFactory>
         Assert.True(verified["stats"]!["verifiedPoints"]!.GetValue<int>() > 0);
         Assert.Equal(VerificationTier.QuizVerified, (await LedgerAsync(email)).Last(r => r.SourceKey == $"topic:{topic}").Verification);
 
-        // The same answers again: more attempts and answers on record, but the same points.
+        // Each attempt draws 5 of the topic's 8 questions, so retakes bring new questions that earn their points once.
+        // After enough attempts every question has been answered (missing one in 15 draws is ~1 in 300,000).
+        for (var i = 0; i < 15; i++) await PassLevelOneAsync(client, topic);
+        var allAnswered = (await Level(client))["xp"]!.GetValue<int>();
+        Assert.True(allAnswered >= xp);
+
+        // Answering them again: more attempts on record, but no more points.
         await PassLevelOneAsync(client, topic);
         var retaken = await Level(client);
-        Assert.Equal(xp, retaken["xp"]!.GetValue<int>());
-        Assert.Equal(2, retaken["stats"]!["quizAttempts"]!.GetValue<int>());
+        Assert.Equal(allAnswered, retaken["xp"]!.GetValue<int>());
+        Assert.Equal(17, retaken["stats"]!["quizAttempts"]!.GetValue<int>());
         Assert.Equal(100, retaken["stats"]!["accuracy"]!.GetValue<double>());
     }
 
