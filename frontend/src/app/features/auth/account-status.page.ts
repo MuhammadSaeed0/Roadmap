@@ -118,6 +118,6 @@ export default class AccountStatusPage {
 
   protected async signOut(): Promise<void> {
     await this.auth.signOut().catch(() => undefined);
-    await this.router.navigateByUrl('/sign-in');
+    await this.router.navigateByUrl('/', { onSameUrlNavigation: 'reload' });
   }
 }

@@ -202,7 +202,6 @@ export class ShellComponent {
   /** Open peer-review requests this learner can take, shown next to "Peer reviews" so requests don't wait unseen. */
   protected readonly openReviews = signal(0);
   /** Set when the user signs out on purpose (until the next sign-in), so the "session ended" redirect to sign-in stays out of the way. */
-  private signingOut = false;
   private reviewsCheckedAt = 0;
 
   /** Pages that belong together share a menu, and a skin (see app.routes.ts and skins.css). */
@@ -292,11 +291,11 @@ export class ShellComponent {
     // The session ended while an app page was open (the cookie expired, or the password was
     // changed or reset on another device): go to sign-in, and come back afterwards.
     effect(() => {
-      if (this.auth.account()) { this.signingOut = false; return; }
+      if (this.auth.account()) { this.auth.signedOutByUser = false; return; }
       if (!this.auth.ready()) return;
       untracked(() => {
         // A deliberate sign-out goes to the front page instead (see signOut); the flag clears at the next sign-in.
-        if (this.signingOut || this.authLayout() || !this.router.navigated) return;
+        if (this.auth.signedOutByUser || this.authLayout() || !this.router.navigated) return;
         const url = this.router.url;
         void this.router.navigate(['/sign-in'], { queryParams: url !== '/' ? { returnUrl: url } : {} });
       });
@@ -336,14 +335,14 @@ export class ShellComponent {
   /** Signing out leads to the public front page (signed out, "/" is the landing page), not to the sign-in form. */
   protected async signOut(): Promise<void> {
     this.accountOpen.set(false);
-    this.signingOut = true;
     try {
       await this.auth.signOut();
       this.apiOffline.set(false);
-      await this.router.navigateByUrl('/');
+      // From the dashboard the URL is already "/": 'reload' makes the router match it again, now as the landing page.
+      await this.router.navigateByUrl('/', { onSameUrlNavigation: 'reload' });
       this.toast.info(this.i18n.t('auth.signedOut'));
     } catch {
-      this.signingOut = false;
+      this.auth.signedOutByUser = false;
       this.toast.error(this.i18n.t('auth.errors.generic'));
     }
   }

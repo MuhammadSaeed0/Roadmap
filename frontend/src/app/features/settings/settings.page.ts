@@ -128,7 +128,8 @@ export default class SettingsPage {
   protected async signOut(): Promise<void> {
     try {
       await this.auth.signOut();
-      await this.router.navigateByUrl('/sign-in');
+      // Signed out, "/" is the public landing page, as from the account menu.
+      await this.router.navigateByUrl('/', { onSameUrlNavigation: 'reload' });
       this.toast.info(this.i18n.t('auth.signedOut'));
     } catch (e) {
       this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
