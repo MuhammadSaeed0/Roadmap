@@ -82,6 +82,8 @@ export class IdeComponent implements OnDestroy {
   readonly saveLabel = input('');
   /** Run the code once as soon as the editor is ready (opening a lesson's example from its topic page). */
   readonly autoRun = input(false);
+  /** SQL: every run starts from a fresh copy of the database (a lesson example can be edited and re-run freely). */
+  readonly freshEachRun = input(false);
 
   /** Debounced copy of the files after every edit. */
   readonly changed = output<WorkspaceFile[]>();
@@ -480,7 +482,7 @@ export class IdeComponent implements OnDestroy {
     if (!source.trim()) { this.print('system', this.i18n.t('ide.noCode')); return false; }
     const { sql, conversions } = rewriteTsql(source);
     this.sqlConversions.set(conversions);
-    const r = await this.runner.runSql({ sql, setup: datasetSetup(this.dataset()), fresh: this.mode() === 'exercise' });
+    const r = await this.runner.runSql({ sql, setup: datasetSetup(this.dataset()), fresh: this.mode() === 'exercise' || this.freshEachRun() });
     this.sqlResult.set(r);
     this.schema.set(r.schema);
     setSqlCompletionSchema(r.schema);

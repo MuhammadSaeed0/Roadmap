@@ -160,10 +160,19 @@ public static class PriceService
 
 // ---------- SQL ----------
 
-const sqlTemplate = (dataset: 'shop' | 'hr' | 'school', nameEn: string, nameAr: string, descEn: string, descAr: string, query: string): WorkspaceTemplate => ({
+const sqlTemplate = (dataset: 'shop' | 'hr' | 'school' | 'college', nameEn: string, nameAr: string, descEn: string, descAr: string, query: string): WorkspaceTemplate => ({
   key: `sql-${dataset}`, kind: 'Sql', dataset, entry: 'query.sql', nameEn, nameAr, descriptionEn: descEn, descriptionAr: descAr,
   files: [f('query.sql', query)],
 });
+
+/** The database of the SQL lessons (see SQL_DATASETS.college): lesson examples open here. */
+const sqlCollege = sqlTemplate('college', 'College (SQL lessons)', 'الكلية (دروس SQL)',
+  'Students, courses and enrollments: the database the SQL lessons use.', 'الطلاب والمقررات والتسجيلات: قاعدة البيانات التي تستخدمها دروس SQL.',
+  `SELECT s.Name, c.Title, e.Grade
+FROM Students AS s
+JOIN Enrollments AS e ON e.StudentId = s.Id
+JOIN Courses AS c ON c.Id = e.CourseId
+ORDER BY s.Name;`);
 
 const sqlShop = sqlTemplate('shop', 'Online shop', 'متجر إلكتروني',
   'Categories, products, customers, orders and order lines.', 'التصنيفات والمنتجات والعملاء والطلبات وأسطر الطلبات.', `
@@ -478,18 +487,31 @@ export class AboutComponent {}
   ],
 };
 
-export const TEMPLATES: WorkspaceTemplate[] = [csConsole, csOop, csLinq, csAsync, sqlShop, sqlHr, sqlSchool, sqlEmpty, js, ts, web, angular];
+export const TEMPLATES: WorkspaceTemplate[] = [csConsole, csOop, csLinq, csAsync, sqlShop, sqlHr, sqlSchool, sqlCollege, sqlEmpty, js, ts, web, angular];
 
 export function templatesFor(kind: WorkspaceKind): WorkspaceTemplate[] {
   return TEMPLATES.filter(t => t.kind === kind);
 }
 
 /** Tables of each SQL sample database (kept in step with runners/sql-datasets.ts by templates.spec.ts). */
-export const SQL_DATASET_TABLES: Record<'shop' | 'hr' | 'school', readonly string[]> = {
+export const SQL_DATASET_TABLES: Record<'college' | 'shop' | 'hr' | 'school', readonly string[]> = {
+  // First: the SQL lessons are written against the College database.
+  college: ['courses', 'enrollments', 'students'],
   shop: ['categories', 'customers', 'orderlines', 'orders', 'products'],
   hr: ['departments', 'employeeprojects', 'employees', 'projects'],
   school: ['courses', 'enrollments', 'students', 'teachers'],
 };
+
+/**
+ * T-SQL the in-browser database (SQLite) can't run: procedures and functions, variables and control flow, session
+ * settings, index options and full-text search. Lessons that need them explain SQL Server itself, so they get no button.
+ */
+const SQL_SERVER_ONLY = new RegExp([
+  String.raw`\bCREATE\s+(?:OR\s+ALTER\s+)?(?:PROC(?:EDURE)?|FUNCTION)\b`, String.raw`\bEXEC(?:UTE)?\b`, String.raw`\bDECLARE\b`,
+  String.raw`^\s*IF\b`, String.raw`\bBEGIN\s+TRY\b`, String.raw`\bTHROW\b`, String.raw`\bSET\s+(?:STATISTICS|SHOWPLAN|XACT_ABORT|NOCOUNT|TRANSACTION)\b`,
+  String.raw`\b(?:NON)?CLUSTERED\b`, String.raw`\bINCLUDE\s*\(`, String.raw`\bFULLTEXT\b`, String.raw`\bCONTAINS\s*\(`, String.raw`\bROWVERSION\b`,
+  String.raw`\bOPTION\s*\(`, String.raw`@@\w+`, String.raw`\bALTER\s+DATABASE\b`,
+].join('|'), 'im');
 
 /** Words that follow FROM/JOIN and name something other than a table. */
 const NOT_TABLES = new Set(['select', 'values', 'openjson', 'string_split', 'inserted', 'deleted']);
@@ -512,7 +534,9 @@ export function lessonTemplate(language: string | null | undefined, code: string
   const created = names(/\bCREATE\s+(?:OR\s+ALTER\s+)?(?:TABLE|VIEW|PROC(?:EDURE)?|FUNCTION)\s+(?:dbo\.)?\[?(\w+)/gi);
   const used = [...names(/\b(?:FROM|JOIN|INTO|UPDATE)\s+(?:dbo\.)?\[?(\w+)/gi)]
     .filter(t => !created.has(t) && !NOT_TABLES.has(t) && !t.startsWith('@') && !t.startsWith('#'));
-  if (/\bsys\.\w+|INFORMATION_SCHEMA/i.test(sql)) return null;
+  if (/\bsys\.\w+|INFORMATION_SCHEMA/i.test(sql) || SQL_SERVER_ONLY.test(sql)) return null;
+  // Two transactions in one script show two sessions side by side (a deadlock); one connection can't run that.
+  if ((sql.match(/\bBEGIN\s+TRAN/gi) ?? []).length > 1) return null;
   if (used.length === 0) return created.size > 0 ? 'sql-empty' : null;
   const dataset = (Object.keys(SQL_DATASET_TABLES) as (keyof typeof SQL_DATASET_TABLES)[])
     .find(k => used.every(t => SQL_DATASET_TABLES[k].includes(t)));

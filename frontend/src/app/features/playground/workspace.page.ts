@@ -8,6 +8,7 @@ import { TranslatePipe } from '../../core/i18n/pipes';
 import { WorkspaceFile, WorkspaceKind } from '../../core/models';
 import { ConfirmService, ToastService } from '../../core/ui-services';
 import { templateByKey } from '../../core/workspace/templates';
+import { withPracticeData } from '../../core/workspace/sql-practice';
 import { IconComponent } from '../../shared/icon.component';
 import { IdeComponent } from '../../shared/ide/ide.component';
 import { EmptyStateComponent, SkeletonComponent } from '../../shared/ui.components';
@@ -69,7 +70,7 @@ const DRAFT_PREFIX = 'devpath.playground.draft.';
       </app-empty-state>
     } @else if (kind(); as k) {
       <app-ide data-tour="workspace-ide" [kind]="k" [files]="files()" [entry]="entry()" [dataset]="dataset()" [name]="name()"
-               [saveLabel]="saveLabel()" [autoRun]="autoRun()" (changed)="onChanged($event)" (saveRequested)="saveNow($event)" />
+               [saveLabel]="saveLabel()" [autoRun]="autoRun()" [freshEachRun]="fromTopic() !== null" (changed)="onChanged($event)" (saveRequested)="saveNow($event)" />
     }
   `,
 })
@@ -167,7 +168,10 @@ export default class WorkspacePage {
             // A lesson's example always opens as written (no saved draft), so it runs exactly as the lesson shows.
             this.draftKey = `${tpl.key}:lesson-${lesson.id}`;
             this.name.set(this.i18n.pick(lesson.titleEn, lesson.titleAr));
-            start = tpl.files.map(f => (f.path === tpl.entry ? { ...f, content: lesson.code! } : f));
+            // SQL in an empty database: the example creates its tables, so add rows that fit them (and stand-ins
+            // for tables it refers to), so there is data to practise on. Sample-database examples run as written.
+            const code = tpl.kind === 'Sql' && !tpl.dataset ? withPracticeData(lesson.code) : lesson.code;
+            start = tpl.files.map(f => (f.path === tpl.entry ? { ...f, content: code } : f));
             clearDraft(this.draftKey);
             this.fromTopic.set(from.topic);
             this.autoRun.set(true);

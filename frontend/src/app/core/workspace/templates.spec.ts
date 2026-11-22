@@ -29,12 +29,19 @@ describe('Running a topic lesson example', () => {
     expect(lessonTemplate('typescript', '@Component({}) export class A {}', null)).toBeNull();
     expect(lessonTemplate('html', '<h1>Hi</h1>')).toBe('web');
     // SQL: the sample database the query uses, an empty one when it creates its own tables.
-    expect(lessonTemplate('sql', 'SELECT s.Name FROM Students s JOIN Enrollments e ON e.StudentId = s.Id;')).toBe('sql-school');
-    expect(lessonTemplate('sql', 'INSERT INTO Students (Name) VALUES (N\'Mona\'); -- From the first lesson')).toBe('sql-school');
+    // The SQL lessons are written against the College database (Students, Courses, Enrollments).
+    expect(lessonTemplate('sql', 'SELECT s.Name FROM Students s JOIN Enrollments e ON e.StudentId = s.Id;')).toBe('sql-college');
+    expect(lessonTemplate('sql', 'INSERT INTO Students (Name) VALUES (N\'Mona\'); -- From the first lesson')).toBe('sql-college');
+    expect(lessonTemplate('sql', 'SELECT * FROM Teachers t JOIN Courses c ON c.TeacherId = t.Id;')).toBe('sql-school');
     expect(lessonTemplate('sql', 'SELECT * FROM Orders o JOIN Customers c ON c.Id = o.CustomerId;')).toBe('sql-shop');
     expect(lessonTemplate('sql', 'CREATE TABLE Notes (Id int); INSERT INTO Notes VALUES (1); SELECT * FROM Notes;')).toBe('sql-empty');
     // Code the browser can't run gets no button.
     expect(lessonTemplate('sql', 'SELECT * FROM sys.indexes;')).toBeNull();
+    // SQL Server-only T-SQL (procedures, variables, index options) and two-session demos.
+    expect(lessonTemplate('sql', 'EXEC GetCourseStudents @CourseId = 1;')).toBeNull();
+    expect(lessonTemplate('sql', 'DECLARE @LastId INT = 2; SELECT TOP 2 Id FROM Students WHERE Id > @LastId;')).toBeNull();
+    expect(lessonTemplate('sql', 'CREATE NONCLUSTERED INDEX IX ON Students (City);')).toBeNull();
+    expect(lessonTemplate('sql', 'BEGIN TRAN; UPDATE Students SET Year = 2 WHERE Id = 1;\nBEGIN TRAN; UPDATE Students SET Year = 3 WHERE Id = 2;')).toBeNull();
     expect(lessonTemplate('aspnet', 'app.MapGet("/", () => "Hi");')).toBeNull();
     expect(lessonTemplate('bash', 'dotnet new console')).toBeNull();
     expect(lessonTemplate('csharp', '   ')).toBeNull();
