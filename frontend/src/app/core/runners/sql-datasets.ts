@@ -3,7 +3,7 @@
  * The backend lists the same names (DbSeeder.SqlDatasets), so every SQL exercise points at one of these.
  * Changing the data changes exercise answers: frontend/src/app/core/runners/sql-exercises.spec.ts re-checks them.
  */
-export interface SqlDataset { key: 'shop' | 'hr' | 'school'; setup: string; }
+export interface SqlDataset { key: 'shop' | 'hr' | 'school' | 'college'; setup: string; }
 
 const shop = `
 CREATE TABLE Categories (
@@ -187,10 +187,50 @@ INSERT INTO Enrollments (StudentId, CourseId, EnrolledOn, Grade) VALUES
   (11, 6, '2025-09-18', 66), (12, 2, '2025-09-15', 58);
 `;
 
+/**
+ * The College database of the SQL lessons (topics in phases 5 and 6): the Students, Courses and Enrollments tables
+ * the lesson examples are written against, with data to practise on. Used by "Run this example" on topic pages, not by
+ * exercises (the backend's DbSeeder.SqlDatasets lists the exercise databases).
+ */
+const college = `
+CREATE TABLE Students (
+  Id INTEGER PRIMARY KEY,
+  Name NVARCHAR(50) NOT NULL,
+  City NVARCHAR(50) NOT NULL,
+  Year INT NOT NULL,
+  Gpa DECIMAL(3,2) NULL
+);
+CREATE TABLE Courses (
+  Id INTEGER PRIMARY KEY AUTOINCREMENT,
+  Title NVARCHAR(100) NOT NULL,
+  Hours TINYINT NOT NULL,
+  Price DECIMAL(8,2) NULL,
+  Seats INT NOT NULL,
+  CreatedAt DATETIME2 NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE Enrollments (
+  Id INTEGER UNIQUE,
+  StudentId INT NOT NULL REFERENCES Students(Id),
+  CourseId INT NOT NULL REFERENCES Courses(Id),
+  Grade INT NULL,
+  EnrolledAt DATE NOT NULL DEFAULT CURRENT_DATE,
+  PRIMARY KEY (StudentId, CourseId)
+);
+INSERT INTO Students (Id, Name, City, Year, Gpa) VALUES
+  (1, 'Sara', 'Cairo', 1, 3.60), (2, 'Omar', 'Giza', 2, 2.90), (3, 'Mona', 'Cairo', 1, 3.20),
+  (4, 'Ali', 'Alexandria', 3, NULL), (5, 'Nour', 'Giza', 1, 3.80);
+INSERT INTO Courses (Title, Hours, Price, Seats, CreatedAt) VALUES
+  ('Programming', 4, 1200.00, 30, '2025-09-01'), ('Databases', 3, 1500.00, 25, '2025-09-01'), ('Math', 3, NULL, 40, '2025-09-01');
+INSERT INTO Enrollments (Id, StudentId, CourseId, Grade, EnrolledAt) VALUES
+  (1, 1, 1, 90, '2026-01-12'), (2, 1, 2, 85, '2026-01-12'), (3, 2, 1, 70, '2026-01-13'),
+  (4, 3, 1, 88, '2026-01-14'), (5, 3, 3, 75, '2026-02-03'), (6, 5, 2, 95, '2026-02-10');
+`;
+
 export const SQL_DATASETS: Record<SqlDataset['key'], SqlDataset> = {
   shop: { key: 'shop', setup: shop.trim() },
   hr: { key: 'hr', setup: hr.trim() },
   school: { key: 'school', setup: school.trim() },
+  college: { key: 'college', setup: college.trim() },
 };
 
 export function datasetSetup(key: string | null | undefined): string {
