@@ -178,6 +178,7 @@ builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<DbSeeder>();
 builder.Services.AddScoped<LearningStateLoader>();
 builder.Services.AddScoped<TopicService>();
+builder.Services.AddSingleton<GlossaryService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<StudySessionService>();
 builder.Services.AddScoped<UsageService>();

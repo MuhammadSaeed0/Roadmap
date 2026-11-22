@@ -25,6 +25,7 @@ export class ApiService {
   health() { return this.get<{ status: string; database: string }>('/health'); }
   dashboard() { return this.get<M.Dashboard>('/dashboard'); }
   roadmap() { return this.get<M.Roadmap>('/roadmap'); }
+  glossary() { return this.get<M.GlossaryTerm[]>('/glossary'); }
   topics(query: Query) { return this.get<M.PagedResult<M.TopicSummary>>('/topics', query); }
   topic(id: number) { return this.get<M.TopicDetail>(`/topics/${id}`); }
   updateTopicProgress(id: number, body: M.TopicProgressUpdate) { return this.put<unknown>(`/topics/${id}/progress`, body); }

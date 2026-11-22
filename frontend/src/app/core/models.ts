@@ -52,6 +52,11 @@ export interface Phase {
   guidedProjects: GuidedProjectRef[];
 }
 export interface Roadmap { phases: Phase[]; currentPhaseId: number | null; }
+/** GET /glossary: a term in both languages and the topic that explains it. */
+export interface GlossaryTerm {
+  term: string; arabic: string; shortEn: string; shortAr: string;
+  topicId: number; topicSlug: string; topicTitleEn: string; topicTitleAr: string;
+}
 
 export interface Resource {
   id: number; key: string; titleEn: string; titleAr: string | null; url: string; sourceName: string;
