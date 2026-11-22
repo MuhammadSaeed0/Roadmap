@@ -24,6 +24,11 @@ export class AuthService {
 
   /** The signed-in account, or null. */
   readonly account = signal<Account | null>(null);
+  /**
+   * True from a deliberate sign-out until the next sign-in. The shell then sends the visitor to the landing page
+   * itself instead of treating the missing account as an expired session (which goes to the sign-in form).
+   */
+  signedOutByUser = false;
   /** True once the API has said whether the cookie is still valid, so guards don't redirect too early. */
   readonly ready = signal(false);
   readonly displayName = computed(() => this.account()?.fullName.trim() || this.account()?.email || '');
@@ -62,6 +67,7 @@ export class AuthService {
   }
 
   async signOut(): Promise<void> {
+    this.signedOutByUser = true;
     try {
       await this.call<void>('POST', '/auth/logout', {});
     } finally {
