@@ -65,7 +65,7 @@ export const en = {
     title: 'The API is offline', body: 'Start the backend with “dotnet run” in backend/DevPath.Api, then try again.', retry: 'Check again',
   },
   auth: {
-    newToCoding: 'Never coded before?', startPreRoadmap: 'Start with “Before the roadmap”', signInTitle: 'Sign in to DevPath', signInBody: 'Welcome back. Pick up where you left off.',
+    signInTitle: 'Sign in to DevPath', signInBody: 'Welcome back. Pick up where you left off.',
     signUpTitle: 'Create your account', signUpBody: 'Your progress, notes and saved videos stay private to your account.',
     forgotTitle: 'Reset your password', forgotBody: 'Enter your account email and we’ll send you a link to choose a new password.',
     resetTitle: 'Choose a new password', resetBody: 'Set a new password for {email}.', resetBodyGeneric: 'Choose a new password for your account.',
