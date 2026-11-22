@@ -94,7 +94,7 @@ describe('Glossary terms in lessons', () => {
     const el = fixture.nativeElement as HTMLElement;
 
     const run = el.querySelector<HTMLAnchorElement>('a.try-it')!;
-    expect(run.getAttribute('href')).toBe('/playground/new/sql-school?topic=7&lesson=11');
+    expect(run.getAttribute('href')).toBe('/playground/new/sql-college?topic=7&lesson=11');
     expect(run.textContent).toContain('Run this example in the editor');
 
     [...el.querySelectorAll<HTMLButtonElement>('.lesson-nav button')][1].click();
