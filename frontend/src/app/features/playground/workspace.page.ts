@@ -25,7 +25,11 @@ const DRAFT_PREFIX = 'devpath.playground.draft.';
   imports: [FormsModule, RouterLink, IconComponent, TranslatePipe, IdeComponent, SkeletonComponent, EmptyStateComponent],
   template: `
     <div class="workspace-head">
-      <a routerLink="/playground" class="link-btn link-sm"><app-icon name="chevron-left" [size]="14" /> {{ 'playground.title' | t }}</a>
+      @if (fromTopic(); as topicId) {
+        <a [routerLink]="['/topics', topicId]" fragment="tutorial" class="link-btn link-sm"><app-icon name="chevron-left" [size]="14" class="flip-rtl" /> {{ 'playground.backToLesson' | t }}</a>
+      } @else {
+        <a routerLink="/playground" class="link-btn link-sm"><app-icon name="chevron-left" [size]="14" /> {{ 'playground.title' | t }}</a>
+      }
       @if (kind(); as k) {
         <div class="workspace-title" data-tour="workspace-title">
           @if (editingName()) {
@@ -66,7 +70,7 @@ const DRAFT_PREFIX = 'devpath.playground.draft.';
     } @else if (kind(); as k) {
       @if (!projectId()) { <p class="callout small">{{ 'playground.draftNote' | t }}</p> }
       <app-ide data-tour="workspace-ide" [kind]="k" [files]="files()" [entry]="entry()" [dataset]="dataset()" [name]="name()"
-               [saveLabel]="saveLabel()" (changed)="onChanged($event)" (saveRequested)="saveNow($event)" />
+               [saveLabel]="saveLabel()" [autoRun]="autoRun()" (changed)="onChanged($event)" (saveRequested)="saveNow($event)" />
     }
   `,
 })
@@ -83,6 +87,12 @@ export default class WorkspacePage {
   /** ?guide=<id>&step=<id>: start from the code of a Project library step instead of the template's own files. */
   readonly guide = input<string | undefined>(undefined);
   readonly step = input<string | undefined>(undefined);
+  /** ?topic=<id>&lesson=<id>: start from a topic lesson's example and run it right away. */
+  readonly topic = input<string | undefined>(undefined);
+  readonly lesson = input<string | undefined>(undefined);
+  protected readonly autoRun = signal(false);
+  /** Where the learner came from, for the "back to the lesson" link. */
+  protected readonly fromTopic = signal<number | null>(null);
   /** Where this draft is kept in the browser: per template, or per library step. */
   private draftKey = '';
 
@@ -107,12 +117,15 @@ export default class WorkspacePage {
     effect(() => {
       const id = this.id();
       const template = this.templateKey();
-      const from = { guide: Number(this.guide()) || 0, step: Number(this.step()) || 0 };
+      const from = { guide: Number(this.guide()) || 0, step: Number(this.step()) || 0, topic: Number(this.topic()) || 0, lesson: Number(this.lesson()) || 0 };
       untracked(() => void this.open(id, template, from));
     });
   }
 
-  private async open(id: string | undefined, templateKey: string | undefined, from: { guide: number; step: number } = { guide: 0, step: 0 }): Promise<void> {
+  private async open(id: string | undefined, templateKey: string | undefined,
+                     from: { guide: number; step: number; topic?: number; lesson?: number } = { guide: 0, step: 0 }): Promise<void> {
+    this.autoRun.set(false);
+    this.fromTopic.set(null);
     this.loading.set(true);
     this.failed.set(false);
     try {
@@ -147,6 +160,18 @@ export default class WorkspacePage {
             this.draftKey = `${tpl.key}:guided-${step.id}`;
             this.name.set(`${this.i18n.pick(guide.titleEn, guide.titleAr)} · ${this.i18n.t('guides.step', { n: step.order })}`);
             start = tpl.files.map(f => (f.path === tpl.entry ? { ...f, content: step.code! } : f));
+          }
+        }
+        if (from.topic && from.lesson) {
+          const lesson = (await this.api.lessons(from.topic)).find(l => l.id === from.lesson);
+          if (lesson?.code) {
+            // A lesson's example always opens as written (no saved draft), so it runs exactly as the lesson shows.
+            this.draftKey = `${tpl.key}:lesson-${lesson.id}`;
+            this.name.set(this.i18n.pick(lesson.titleEn, lesson.titleAr));
+            start = tpl.files.map(f => (f.path === tpl.entry ? { ...f, content: lesson.code! } : f));
+            clearDraft(this.draftKey);
+            this.fromTopic.set(from.topic);
+            this.autoRun.set(true);
           }
         }
         const draft = readDraft(this.draftKey);

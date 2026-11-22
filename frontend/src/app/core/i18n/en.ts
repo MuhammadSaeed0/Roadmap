@@ -668,7 +668,7 @@ export const en = {
       scale: { 0: 'Missing', 1: 'Weak', 2: 'Acceptable', 3: 'Good', 4: 'Excellent' },
     },
   },
-  tutorial: { title: 'Tutorial', lessons: 'Lessons', example: 'Example', output: 'Output', tryIt: 'Try it in the playground' },
+  tutorial: { title: 'Tutorial', lessons: 'Lessons', example: 'Example', output: 'Output', tryIt: 'Run this example in the editor' },
   challenges: {
     title: 'Challenges', subtitle: 'Exercises that check themselves. Solve them in the editor and earn points',
     yourScore: 'Your score', points: 'points', solved: 'solved',

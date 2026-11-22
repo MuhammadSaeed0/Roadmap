@@ -78,4 +78,27 @@ describe('Glossary terms in lessons', () => {
     expect(el.querySelector('.gl-card a[href="/topics/7"]')).toBeNull();
     el.remove();
   });
+
+  it('runs a lesson example in the editor that fits its language, and offers nothing for code the browser cannot run', async () => {
+    const lesson = (id: number, codeLanguage: string, code: string): Lesson =>
+      ({ id, key: 'l' + id, order: id, titleEn: 'Lesson ' + id, titleAr: 'درس ' + id, bodyEn: 'Text.', bodyAr: 'نص.', code, codeLanguage, output: null });
+    const lessons = [lesson(11, 'sql', 'SELECT Name FROM Students;'), lesson(12, 'aspnet', 'app.MapGet("/", () => "Hi");')];
+    TestBed.configureTestingModule({
+      providers: [provideRouter([]), { provide: ApiService, useValue: { lessons: () => Promise.resolve(lessons), glossary: () => Promise.resolve([]) } }],
+    });
+    TestBed.inject(I18nService).lang.set('en');
+    const fixture = TestBed.createComponent(TopicTutorialComponent);
+    fixture.componentRef.setInput('topicId', 7);
+    fixture.detectChanges();
+    for (let i = 0; i < 3; i++) { await fixture.whenStable(); await new Promise(r => setTimeout(r, 0)); fixture.detectChanges(); }
+    const el = fixture.nativeElement as HTMLElement;
+
+    const run = el.querySelector<HTMLAnchorElement>('a.try-it')!;
+    expect(run.getAttribute('href')).toBe('/playground/new/sql-school?topic=7&lesson=11');
+    expect(run.textContent).toContain('Run this example in the editor');
+
+    [...el.querySelectorAll<HTMLButtonElement>('.lesson-nav button')][1].click();
+    fixture.detectChanges();
+    expect(el.querySelector('a.try-it')).toBeNull();
+  });
 });
