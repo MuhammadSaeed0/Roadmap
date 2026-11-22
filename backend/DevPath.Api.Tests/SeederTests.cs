@@ -45,6 +45,10 @@ public class SeederTests : IAsyncLifetime
         Assert.All(Enum.GetValues<SkillArea>().Where(s => s != SkillArea.Professional), s => Assert.Contains(s, skills));
         Assert.True(await _db.PracticeExercises.CountAsync(e => e.Type == ExerciseType.FullStack) >= 10);
         Assert.True(await _db.InterviewQuestions.CountAsync() >= 50);
+        // Every topic has at least two interview questions, each in both languages with a model answer.
+        var questionsPerTopic = await _db.Topics.Select(t => new { t.Slug, Count = _db.InterviewQuestions.Count(q => q.TopicId == t.Id) }).ToListAsync();
+        Assert.All(questionsPerTopic, t => Assert.True(t.Count >= 2, $"{t.Slug} has {t.Count} interview question(s); every topic needs at least 2"));
+        Assert.False(await _db.InterviewQuestions.AnyAsync(q => q.QuestionAr == "" || q.AnswerAr == "" || q.QuestionEn == "" || q.AnswerEn == ""));
         // Every topic has bilingual content and a code sample.
         Assert.False(await _db.Topics.AnyAsync(t => t.TitleAr == "" || t.SummaryAr == "" || t.CodeSample == null));
         // Every topic has 2–4 curated English videos and at most two Arabic ones, all with valid YouTube ids.
@@ -194,6 +198,8 @@ public class SeederTests : IAsyncLifetime
             Edit(file, n => RemoveWhere(n.AsArray(), q => slugs.Contains((string)q["topic"]!)));
         foreach (var file in Directory.GetFiles(Path.Combine(dir, "tutorials")))
             Edit(file, n => RemoveWhere(n.AsArray(), t => slugs.Contains((string)t["topic"]!)));
+        foreach (var file in Directory.GetFiles(Path.Combine(dir, "interviews")))
+            Edit(file, n => RemoveWhere(n.AsArray(), q => slugs.Contains((string)q["topic"]!)));
         foreach (var file in Directory.GetFiles(Path.Combine(dir, "guided-projects")))
             Edit(file, n => { foreach (var p in n.AsArray()) if (p!["topics"] is System.Text.Json.Nodes.JsonArray t) RemoveWhere(t, s => slugs.Contains((string)s!)); });
         Edit(Path.Combine(dir, "videos.json"), n => { foreach (var s in slugs) n.AsObject().Remove(s); });
