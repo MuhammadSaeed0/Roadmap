@@ -187,8 +187,11 @@ export class ShellComponent {
   protected readonly accountOpen = signal(false);
   /** Account pages (sign-in, sign-up…) hide the sidebar and the app's top bar. */
   // Set from the URL before the first navigation finishes, so neither layout flashes on load.
-  /** True on a first load of "/" until the first navigation settles (landing page or dashboard). */
-  protected readonly deciding = signal(['', '/'].includes(inject(Location).path().split(/[?#]/)[0]));
+  /**
+   * True on a first load of a page that has a public and a signed-in version ("/" is the landing page or the
+   * dashboard, /pre-roadmap the public or the app page) until the first navigation settles, so no layout flashes.
+   */
+  protected readonly deciding = signal(['', '/', '/pre-roadmap'].includes(inject(Location).path().split(/[?#]/)[0]));
   protected readonly authLayout = signal(/^\/(sign-in|sign-up|forgot-password|reset-password|verify-email|account-status|change-password)\b/.test(inject(Location).path()));
   protected readonly initials = computed(() => {
     const words = this.auth.displayName().split(/[\s@._-]+/).filter(Boolean);
