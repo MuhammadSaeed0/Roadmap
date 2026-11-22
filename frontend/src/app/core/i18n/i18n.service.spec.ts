@@ -80,4 +80,16 @@ describe('I18nService', () => {
     TestBed.tick();
     expect(document.title).toBe('مسار المبرمج');
   });
+
+  it('keeps the meta description in step with the page and the language', () => {
+    const i18n = create();
+    const description = () => document.querySelector('meta[name="description"]')?.getAttribute('content');
+    expect(description()).toContain('bilingual roadmap');
+    i18n.descriptionKey.set('preRoadmap.metaDescription');
+    TestBed.tick();
+    expect(description()).toContain('New to programming?');
+    i18n.setLang('ar');
+    TestBed.tick();
+    expect(description()).toContain('جديد في البرمجة');
+  });
 });

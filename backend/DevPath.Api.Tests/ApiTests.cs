@@ -103,6 +103,23 @@ public class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>, IAsyncLif
     }
 
     [Fact]
+    public async Task The_catalog_is_public_and_holds_no_progress()
+    {
+        var anonymous = factory.CreateClient();
+        Assert.Equal(HttpStatusCode.Unauthorized, (await anonymous.GetAsync("/api/roadmap")).StatusCode);
+        var response = await anonymous.GetAsync("/api/catalog");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var catalog = await Json(response);
+        var phases = catalog["phases"]!.AsArray();
+        Assert.Equal(14, phases.Count);
+        Assert.Equal(166, phases.Sum(p => p!["topics"]!.AsArray().Count));
+        Assert.NotEmpty(catalog["paths"]!.AsArray());
+        var body = catalog.ToJsonString();
+        foreach (var personal in new[] { "status", "percent", "knowledge", "confidence" })
+            Assert.DoesNotContain($"\"{personal}\"", body, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public async Task Roadmap_has_14_phases_and_enums_are_strings()
     {
         var json = await Json(await _client.GetAsync("/api/roadmap"));

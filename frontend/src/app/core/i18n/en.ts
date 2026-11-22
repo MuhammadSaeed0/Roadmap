@@ -2,7 +2,7 @@
 // Placeholders use {name} and are filled by I18nService.t(key, params).
 
 export const en = {
-  app: { name: 'DevPath', fullName: 'DevPath' },
+  app: { name: 'DevPath', fullName: 'DevPath', description: 'A free, bilingual roadmap to become a full-stack .NET and Angular developer: lessons, videos, exercises, projects and interview practice.' },
   nav: {
     preRoadmap: 'Pre-Roadmap',
     guides: 'Project library',
@@ -329,6 +329,7 @@ export const en = {
     practice: { name: 'Practice Lab', what: 'short exercises and challenges that check your code in the browser.', link: 'Practice Lab: quick exercises' },
   },
   landing: {
+    metaDescription: 'Learn to code from zero to your first developer job with a free .NET and Angular roadmap in English and Arabic: 166 topics, 178 exercises, 66 projects.',
     tabTitle: 'DevPath: learn .NET and Angular step by step',
     kicker: 'Free · in English and Arabic',
     headline: 'From your first line of code to your first developer job',
@@ -378,6 +379,8 @@ export const en = {
     device: { desktop: 'Desktop', mobile: 'Phone', cover: 'Cover' },
   },
   preRoadmap: {
+    tabTitle: 'Before the roadmap: start programming from zero', metaDescription: 'New to programming? What programming is, the main career fields and the fundamentals to learn first, with videos in Arabic and English.',
+    joinLead: 'Ready for the roadmap? Create a free account to follow it, track your progress and practise in the browser.',
     title: 'Pre-Roadmap',
     subtitle: 'New to programming? Start here: what programming is, the main career fields, and the fundamentals to learn before you choose a roadmap.',
     journeyLabel: 'Sections of this page',

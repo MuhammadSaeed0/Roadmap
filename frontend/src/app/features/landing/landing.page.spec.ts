@@ -1,6 +1,6 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { routes } from '../../app.routes';
 import { ApiService } from '../../core/api.service';
@@ -19,7 +19,7 @@ function auth(account: { status: string } | null) {
   };
 }
 
-async function openRoot(account: { status: string } | null) {
+async function openRoot(account: { status: string } | null, url = '/') {
   TestBed.configureTestingModule({
     providers: [
       provideRouter(routes),
@@ -30,7 +30,7 @@ async function openRoot(account: { status: string } | null) {
   });
   TestBed.inject(I18nService).lang.set('en');
   const harness = await RouterTestingHarness.create();
-  await harness.navigateByUrl('/');
+  await harness.navigateByUrl(url);
   return harness;
 }
 
@@ -72,5 +72,21 @@ describe('Landing page', () => {
     vi.spyOn(navigator, 'language', 'get').mockReturnValue('en-US');
     expect(browserLang()).toBe('en');
     vi.restoreAllMocks();
+  });
+
+  it('lets a visitor without an account read the Pre-Roadmap guide in the public layout', async () => {
+    const harness = await openRoot(null, '/pre-roadmap');
+    expect(TestBed.inject(Router).url).toBe('/pre-roadmap');
+    expect(harness.routeNativeElement?.tagName.toLowerCase()).toBe('app-pre-roadmap-page');
+    const route = routes.find(r => r.path === 'pre-roadmap' && r.canMatch);
+    expect(route?.data?.['layout']).toBe('auth');
+  });
+
+  it('still sends a visitor without an account from app pages to sign-in', async () => {
+    for (const url of ['/roadmap', '/topics/12', '/practice']) {
+      TestBed.resetTestingModule();
+      await openRoot(null, url);
+      expect(TestBed.inject(Router).url).toMatch(/^\/sign-in\?returnUrl=/);
+    }
   });
 });

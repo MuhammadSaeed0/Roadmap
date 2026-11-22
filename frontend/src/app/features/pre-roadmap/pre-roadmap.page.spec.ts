@@ -1,29 +1,34 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ApiService } from '../../core/api.service';
+import { AuthService } from '../../core/auth.service';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { PathSummary, Roadmap } from '../../core/models';
+import { Catalog } from '../../core/models';
 import PreRoadmapPage from './pre-roadmap.page';
 
 // Only what the page reads: slugs, ids and titles. The frontend phase is missing on purpose (its link is hidden).
-const roadmap = {
-  currentPhaseId: null,
+const catalog = {
   phases: [
     { id: 8, slug: 'angular', titleEn: 'Angular', titleAr: 'أنجولار', topics: [] },
     { id: 4, slug: 'aspnet-core', titleEn: 'ASP.NET Core Web API', titleAr: 'ASP.NET Core Web API', topics: [
       { id: 61, slug: 'api-http-rest', titleEn: 'HTTP and REST', titleAr: 'HTTP و REST' },
     ] },
   ],
-} as unknown as Roadmap;
-const paths = [{ id: 4, slug: 'frontend-developer', nameEn: 'Frontend Developer', nameAr: 'مطوّر الواجهات' }] as PathSummary[];
+  paths: [{ id: 4, slug: 'frontend-developer', nameEn: 'Frontend Developer', nameAr: 'مطوّر الواجهات' }],
+} as unknown as Catalog;
 
 async function settle(fixture: ComponentFixture<unknown>): Promise<void> {
   for (let i = 0; i < 3; i++) { await fixture.whenStable(); fixture.detectChanges(); }
 }
 
-async function render(lang: 'en' | 'ar' = 'en'): Promise<{ el: HTMLElement; fixture: ComponentFixture<PreRoadmapPage> }> {
+async function render(lang: 'en' | 'ar' = 'en', signedIn = true): Promise<{ el: HTMLElement; fixture: ComponentFixture<PreRoadmapPage> }> {
   TestBed.configureTestingModule({
-    providers: [provideRouter([]), { provide: ApiService, useValue: { roadmap: () => Promise.resolve(roadmap), paths: () => Promise.resolve(paths) } }],
+    providers: [
+      provideRouter([]),
+      { provide: ApiService, useValue: { catalog: () => Promise.resolve(catalog) } },
+      { provide: AuthService, useValue: { account: signal(signedIn ? { status: 'Approved' } : null) } },
+    ],
   });
   TestBed.inject(I18nService).lang.set(lang);
   const fixture = TestBed.createComponent(PreRoadmapPage);
@@ -127,5 +132,24 @@ describe('PreRoadmapPage', () => {
     expect(el.querySelector('#pre-fields h2')?.textContent).toContain('مجالات البرمجة');
     expect(fieldCards(el)[0].textContent).toContain('تطوير الواجهات الأمامية');
     expect(el.querySelector('.pre-question-body')?.textContent).toContain('تعليمات دقيقة');
+  });
+
+  it('ends with a sign-up invitation for a visitor without an account, and keeps the roadmap links', async () => {
+    const { el, fixture } = await render('en', false);
+    const next = el.querySelector('#pre-next')!;
+    expect(next.querySelector('a.pre-join-cta')?.getAttribute('href')).toBe('/sign-up');
+    expect(next.querySelector('a[href="/sign-in"]')).not.toBeNull();
+    expect(next.querySelector('a[href="/roadmap"]')).toBeNull();
+    // Links into the roadmap still render (from the public catalog); following one leads a visitor to sign-in.
+    fieldCards(el)[0].click();
+    await settle(fixture);
+    expect(el.querySelector('#pre-field-detail a[href="/roadmap#phase-8"]')).not.toBeNull();
+  });
+
+  it('shows the usual next steps to a signed-in learner', async () => {
+    const { el } = await render('en', true);
+    const next = el.querySelector('#pre-next')!;
+    expect(next.querySelector('a.pre-join-cta')).toBeNull();
+    expect(next.querySelector('a[href="/roadmap"]')).not.toBeNull();
   });
 });

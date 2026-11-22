@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, afterNextRender, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
+import { AuthService } from '../../core/auth.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
@@ -41,6 +42,7 @@ function readUnderstood(): ReadonlySet<string> {
 })
 export default class PreRoadmapPage {
   private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
   protected readonly i18n = inject(I18nService);
   protected readonly languages = inject(VideoLanguageService);
   private readonly router = inject(Router);
@@ -56,9 +58,10 @@ export default class PreRoadmapPage {
   protected readonly introVideos = [...PRE_VIDEOS['intro'] ?? [], ...PRE_VIDEOS['choose'] ?? []];
   protected readonly languageOptions: VideoLanguageFilter[] = ['all', 'Arabic', 'English'];
 
-  // Only used to turn slugs into links; if either fails to load, its links are simply not shown.
-  private readonly roadmap = createLoader(() => this.api.roadmap());
-  private readonly paths = createLoader(() => this.api.paths());
+  /** Signed out: the page is public, so it ends with a sign-up invitation (links into the app lead to sign-in). */
+  protected readonly signedOut = computed(() => !this.auth.account());
+  // Only used to turn slugs into links (public, so it works without an account); if it fails, links are simply not shown.
+  private readonly catalog = createLoader(() => this.api.catalog());
 
   // --- Introduction ---
   protected readonly openQuestions = signal<ReadonlySet<string>>(new Set([INTRO[0].id]));
@@ -91,9 +94,9 @@ export default class PreRoadmapPage {
   // --- Journey: the section in view is highlighted ---
   protected readonly activeStep = signal<JourneyStep>('intro');
 
-  private readonly phaseBySlug = computed(() => new Map((this.roadmap.value()?.phases ?? []).map(p => [p.slug, p])));
-  private readonly topicBySlug = computed(() => new Map((this.roadmap.value()?.phases ?? []).flatMap(p => p.topics).map(t => [t.slug, t])));
-  private readonly pathBySlug = computed(() => new Map((this.paths.value() ?? []).map(p => [p.slug, p])));
+  private readonly phaseBySlug = computed(() => new Map((this.catalog.value()?.phases ?? []).map(p => [p.slug, p])));
+  private readonly topicBySlug = computed(() => new Map((this.catalog.value()?.phases ?? []).flatMap(p => p.topics).map(t => [t.slug, t])));
+  private readonly pathBySlug = computed(() => new Map((this.catalog.value()?.paths ?? []).map(p => [p.slug, p])));
 
   constructor() {
     afterNextRender(() => {
