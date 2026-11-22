@@ -1,5 +1,8 @@
+import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
+import { provideRouter } from '@angular/router';
+import { ApiService } from '../../core/api.service';
 import { ApiError } from '../../core/api-error';
 import { safeReturnUrl } from '../../core/auth.guard';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -58,6 +61,25 @@ describe('authErrorKey()', () => {
     expect(authErrorKey(i18n, new ApiError(0, 'offline', ''))).toBe('offline');
     expect(authErrorKey(i18n, new ApiError(500, 'something_new', ''))).toBe('generic');
     expect(authErrorKey(i18n, new Error('boom'))).toBe('generic');
+  });
+});
+
+describe('Sign-in and sign-up pages', () => {
+  // The "Before the roadmap" link lives on the landing page only (owner decision, 2026-11-22).
+  it.each([
+    ['sign-in', () => import('./sign-in.page')],
+    ['sign-up', () => import('./sign-up.page')],
+  ])('%s has no link to the Pre-Roadmap page', async (_name, load) => {
+    TestBed.configureTestingModule({
+      providers: [provideRouter([]), { provide: ApiService, useValue: {} }],
+    });
+    const page: Type<unknown> = (await load()).default;
+    const fixture = TestBed.createComponent(page);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('a[href="/sign-up"], a[href="/sign-in"]')).not.toBeNull();
+    expect(el.querySelector('a[href="/pre-roadmap"]')).toBeNull();
   });
 });
 

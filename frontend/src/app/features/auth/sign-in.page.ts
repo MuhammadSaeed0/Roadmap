@@ -54,10 +54,6 @@ import { AuthCardComponent, authErrorKey, normaliseEmail, PasswordInputComponent
         {{ 'auth.noAccount' | t }}
         <a routerLink="/sign-up" [queryParams]="returnParams">{{ 'auth.createOne' | t }}</a>
       </p>
-      <p class="auth-switch auth-pre">
-        {{ 'auth.newToCoding' | t }}
-        <a routerLink="/pre-roadmap">{{ 'auth.startPreRoadmap' | t }}</a>
-      </p>
     </app-auth-card>
   `,
 })

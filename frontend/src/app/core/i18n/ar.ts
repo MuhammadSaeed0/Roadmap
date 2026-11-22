@@ -67,7 +67,7 @@ export const ar: Translations = {
     title: 'الواجهة البرمجية غير متصلة', body: 'شغّل الخلفية بالأمر «dotnet run» داخل backend/DevPath.Api ثم حاول مرة أخرى.', retry: 'تحقق مجددًا',
   },
   auth: {
-    newToCoding: 'أول مرة تبرمج؟', startPreRoadmap: 'ابدأ بصفحة «قبل خارطة الطريق»', signInTitle: 'تسجيل الدخول إلى مسار المبرمج', signInBody: 'مرحبًا بعودتك. تابع من حيث توقفت.',
+    signInTitle: 'تسجيل الدخول إلى مسار المبرمج', signInBody: 'مرحبًا بعودتك. تابع من حيث توقفت.',
     signUpTitle: 'أنشئ حسابك', signUpBody: 'تقدمك وملاحظاتك والفيديوهات المحفوظة خاصة بحسابك وحدك.',
     forgotTitle: 'إعادة تعيين كلمة المرور', forgotBody: 'أدخل البريد الإلكتروني لحسابك وسنرسل لك رابطًا لاختيار كلمة مرور جديدة.',
     resetTitle: 'اختر كلمة مرور جديدة', resetBody: 'عيّن كلمة مرور جديدة للحساب {email}.', resetBodyGeneric: 'اختر كلمة مرور جديدة لحسابك.',
