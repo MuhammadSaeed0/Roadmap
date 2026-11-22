@@ -212,6 +212,7 @@ export class ShellComponent {
       { path: '/pre-roadmap', key: 'nav.preRoadmap', icon: 'compass' },
       { path: '/roadmap', key: 'nav.roadmap', icon: 'map' },
       { path: '/paths', key: 'nav.paths', icon: 'route' },
+      { path: '/glossary', key: 'nav.glossary', icon: 'book' },
     ] },
     { key: 'nav.watch', items: [
       { path: '/videos', key: 'nav.videos', icon: 'video' },

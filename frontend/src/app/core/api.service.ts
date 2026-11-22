@@ -27,6 +27,7 @@ export class ApiService {
   roadmap() { return this.get<M.Roadmap>('/roadmap'); }
   /** Public: phase, topic and built-in path names and ids, no progress (works without an account). */
   catalog() { return this.get<M.Catalog>('/catalog'); }
+  glossary() { return this.get<M.GlossaryTerm[]>('/glossary'); }
   topics(query: Query) { return this.get<M.PagedResult<M.TopicSummary>>('/topics', query); }
   topic(id: number) { return this.get<M.TopicDetail>(`/topics/${id}`); }
   updateTopicProgress(id: number, body: M.TopicProgressUpdate) { return this.put<unknown>(`/topics/${id}/progress`, body); }

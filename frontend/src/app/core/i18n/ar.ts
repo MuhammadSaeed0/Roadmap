@@ -8,7 +8,7 @@ export const ar: Translations = {
   nav: {
     preRoadmap: 'قبل خارطة الطريق',
     guides: 'مكتبة المشاريع',
-    dashboard: 'لوحة المعلومات', roadmap: 'خارطة طريقي', library: 'مكتبة التعلم', projects: 'المشاريع الرئيسية',
+    dashboard: 'لوحة المعلومات', glossary: 'قاموس المصطلحات', roadmap: 'خارطة طريقي', library: 'مكتبة التعلم', projects: 'المشاريع الرئيسية',
     practice: 'مختبر التدريب', interviews: 'التحضير للمقابلات', resources: 'المصادر', notes: 'ملاحظاتي',
     progress: 'المراجعة والجلسات', career: 'الجاهزية المهنية', settings: 'الإعدادات', search: 'بحث',
     learn: 'تعلّم', build: 'ابنِ وتدرّب', track: 'تقدّمي', manage: 'الإدارة', admin: 'لوحة الإدارة', marketing: 'استوديو التسويق',
@@ -379,6 +379,11 @@ export const ar: Translations = {
     gallery: 'لقطات الشاشة', galleryHint: 'لقطات حقيقية من التطبيق، بترتيب النشر المقترح.', count: '{count} صور',
     downloadAll: 'نزّل الكل', download: 'تنزيل', view: 'عرض بالحجم الكامل', close: 'إغلاق', previous: 'السابقة', next: 'التالية',
     device: { desktop: 'سطح المكتب', mobile: 'الجوال', cover: 'الغلاف' },
+  },
+  glossary: {
+    title: 'قاموس المصطلحات', subtitle: 'المصطلحات التقنية المستخدمة في الدروس، بالإنجليزية والعربية، وكل مصطلح مربوط بالموضوع الذي يشرحه.',
+    search: 'ابحث عن مصطلح بالإنجليزية أو بالعربية…', order: 'ترتيب العرض', count: 'عدد المصطلحات: {n}', empty: 'لا يوجد مصطلح يطابق هذا البحث.',
+    explain: 'ما معنى «{term}»؟', letters: 'انتقل إلى حرف', learnIt: 'يُشرح في',
   },
   preRoadmap: {
     tabTitle: 'قبل خارطة الطريق: ابدأ البرمجة من الصفر', metaDescription: 'جديد في البرمجة؟ اعرف البرمجة يعني إيه، وإيه مجالاتها، والأساسيات اللي تتعلمها الأول، بفيديوهات بالعربي والإنجليزي.',

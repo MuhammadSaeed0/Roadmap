@@ -57,6 +57,11 @@ export interface Catalog {
   phases: { id: number; slug: string; order: number; titleEn: string; titleAr: string; topics: { id: number; slug: string; titleEn: string; titleAr: string }[] }[];
   paths: { id: number; slug: string; nameEn: string; nameAr: string }[];
 }
+/** GET /glossary: a term in both languages and the topic that explains it. */
+export interface GlossaryTerm {
+  term: string; arabic: string; shortEn: string; shortAr: string;
+  topicId: number; topicSlug: string; topicTitleEn: string; topicTitleAr: string;
+}
 
 export interface Resource {
   id: number; key: string; titleEn: string; titleAr: string | null; url: string; sourceName: string;

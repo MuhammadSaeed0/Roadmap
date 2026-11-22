@@ -6,7 +6,7 @@ export const en = {
   nav: {
     preRoadmap: 'Pre-Roadmap',
     guides: 'Project library',
-    dashboard: 'Dashboard', roadmap: 'My Roadmap', library: 'Learning Library', projects: 'Main Projects',
+    dashboard: 'Dashboard', glossary: 'Glossary', roadmap: 'My Roadmap', library: 'Learning Library', projects: 'Main Projects',
     practice: 'Practice Lab', interviews: 'Interview Preparation', resources: 'Resources', notes: 'My Notes',
     progress: 'Reviews & Sessions', career: 'Career Readiness', settings: 'Settings', search: 'Search',
     learn: 'Learn', build: 'Build & practise', track: 'My progress', manage: 'Manage', admin: 'Administration', marketing: 'Marketing Studio',
@@ -377,6 +377,11 @@ export const en = {
     gallery: 'Screenshots', galleryHint: 'Real screenshots of the app, in the recommended posting order.', count: '{count} images',
     downloadAll: 'Download all', download: 'Download', view: 'View full size', close: 'Close', previous: 'Previous', next: 'Next',
     device: { desktop: 'Desktop', mobile: 'Phone', cover: 'Cover' },
+  },
+  glossary: {
+    title: 'Glossary', subtitle: 'The technical terms used in the lessons, in English and Arabic, each linked to the topic that explains it.',
+    search: 'Search terms in English or Arabic…', order: 'Sort order', count: '{n} terms', empty: 'No term matches this search.',
+    explain: 'What does "{term}" mean?', letters: 'Jump to a letter', learnIt: 'Explained in',
   },
   preRoadmap: {
     tabTitle: 'Before the roadmap: start programming from zero', metaDescription: 'New to programming? What programming is, the main career fields and the fundamentals to learn first, with videos in Arabic and English.',

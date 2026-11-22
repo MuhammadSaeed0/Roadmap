@@ -1,0 +1,1297 @@
+[
+  {
+    "term": "solution",
+    "arabic": "الحل (Solution)",
+    "shortEn": "A container that groups related projects so they build and open together.",
+    "shortAr": "حاوية تجمع المشاريع المرتبطة ببعضها لتُبنى وتُفتح معًا.",
+    "topicSlug": "cs-project-structure"
+  },
+  {
+    "term": "project",
+    "arabic": "المشروع",
+    "shortEn": "One buildable unit (a .csproj file) that produces an app or a library.",
+    "shortAr": "وحدة واحدة قابلة للبناء (ملف .csproj) تنتج تطبيقًا أو مكتبة.",
+    "topicSlug": "cs-project-structure"
+  },
+  {
+    "term": "NuGet",
+    "arabic": "نيوجت",
+    "shortEn": "The package manager for .NET: it downloads and updates libraries for your projects.",
+    "shortAr": "مدير الحزم في .NET: ينزّل المكتبات لمشاريعك ويحدّثها.",
+    "topicSlug": "cs-project-structure"
+  },
+  {
+    "term": "variable",
+    "arabic": "المتغيّر",
+    "shortEn": "A named place in memory that holds a value of a given type.",
+    "shortAr": "مكان مسمّى في الذاكرة يحفظ قيمة من نوع معيّن.",
+    "topicSlug": "cs-variables-types"
+  },
+  {
+    "term": "type inference",
+    "arabic": "استنتاج النوع",
+    "shortEn": "The compiler works out a variable's type from its value, as with var.",
+    "shortAr": "المترجم يستنتج نوع المتغيّر من قيمته، كما في var.",
+    "topicSlug": "cs-variables-types"
+  },
+  {
+    "term": "string interpolation",
+    "arabic": "دمج القيم في النص",
+    "shortEn": "Building text with values inside it, such as $\"Hello {name}\".",
+    "shortAr": "بناء نص بداخله قيم، مثل $\"Hello {name}\".",
+    "topicSlug": "cs-operators"
+  },
+  {
+    "term": "operator",
+    "arabic": "العامل (Operator)",
+    "shortEn": "A symbol that performs an operation on values, such as +, == or &&.",
+    "shortAr": "رمز ينفّذ عملية على القيم، مثل + أو == أو &&.",
+    "topicSlug": "cs-operators"
+  },
+  {
+    "term": "condition",
+    "arabic": "الشرط",
+    "shortEn": "An expression that is true or false and decides which code runs.",
+    "shortAr": "تعبير نتيجته صح أو خطأ ويحدد أي كود يُنفَّذ.",
+    "topicSlug": "cs-conditions"
+  },
+  {
+    "term": "loop",
+    "arabic": "الحلقة التكرارية",
+    "shortEn": "Code that repeats while a condition holds or for each item in a collection.",
+    "shortAr": "كود يتكرر ما دام شرطٌ ما صحيحًا أو لكل عنصر في مجموعة.",
+    "topicSlug": "cs-loops"
+  },
+  {
+    "term": "method",
+    "arabic": "الدالة (Method)",
+    "shortEn": "A named block of code that does one job and can take parameters and return a value.",
+    "shortAr": "كتلة كود مسمّاة تؤدي مهمة واحدة، وقد تأخذ معاملات وتعيد قيمة.",
+    "topicSlug": "cs-methods"
+  },
+  {
+    "term": "parameter",
+    "arabic": "المعامل (Parameter)",
+    "shortEn": "A named input a method receives when it is called.",
+    "shortAr": "مُدخل مسمّى تستقبله الدالة عند استدعائها.",
+    "topicSlug": "cs-methods"
+  },
+  {
+    "term": "overload",
+    "arabic": "التحميل الزائد (Overload)",
+    "shortEn": "Several methods with the same name but different parameters.",
+    "shortAr": "عدة دوال بنفس الاسم لكن بمعاملات مختلفة.",
+    "topicSlug": "cs-methods"
+  },
+  {
+    "term": "array",
+    "arabic": "المصفوفة",
+    "shortEn": "A fixed-size, ordered list of values of one type.",
+    "shortAr": "قائمة مرتّبة بحجم ثابت لقيم من نوع واحد.",
+    "topicSlug": "cs-collections"
+  },
+  {
+    "term": "List<T>",
+    "arabic": "القائمة",
+    "shortEn": "A resizable, ordered collection you can add to and remove from.",
+    "shortAr": "مجموعة مرتّبة يتغيّر حجمها، تضيف إليها وتحذف منها.",
+    "topicSlug": "cs-collections"
+  },
+  {
+    "term": "Dictionary",
+    "arabic": "القاموس",
+    "shortEn": "A collection of key-value pairs with fast lookup by key.",
+    "shortAr": "مجموعة أزواج مفتاح وقيمة يسهل البحث فيها بالمفتاح بسرعة.",
+    "topicSlug": "cs-collections"
+  },
+  {
+    "term": "exception",
+    "arabic": "الاستثناء",
+    "shortEn": "An object that signals an error and interrupts normal flow until it is caught.",
+    "shortAr": "كائن يعلن عن خطأ ويوقف التنفيذ الطبيعي حتى يُلتقط.",
+    "topicSlug": "cs-exceptions"
+  },
+  {
+    "term": "try/catch",
+    "arabic": "المحاولة والالتقاط",
+    "shortEn": "A block that runs code and handles exceptions it throws.",
+    "shortAr": "كتلة تنفّذ الكود وتتعامل مع الاستثناءات التي يرميها.",
+    "topicSlug": "cs-exceptions"
+  },
+  {
+    "term": "stack trace",
+    "arabic": "تتبّع الاستدعاءات",
+    "shortEn": "The list of method calls that led to an exception, used to find where it happened.",
+    "shortAr": "قائمة استدعاءات الدوال التي أدّت إلى الاستثناء، وتُستخدم لمعرفة مكانه.",
+    "topicSlug": "cs-exceptions"
+  },
+  {
+    "term": "generic",
+    "arabic": "النوع العام (Generic)",
+    "shortEn": "Code written once for any type, using a type parameter such as T.",
+    "shortAr": "كود يُكتب مرة واحدة لأي نوع باستخدام معامل نوع مثل T.",
+    "topicSlug": "cs-generics"
+  },
+  {
+    "term": "delegate",
+    "arabic": "المفوَّض (Delegate)",
+    "shortEn": "A type that holds a reference to a method, so methods can be passed around.",
+    "shortAr": "نوع يحمل مرجعًا لدالة، فيمكن تمرير الدوال كقيم.",
+    "topicSlug": "cs-delegates"
+  },
+  {
+    "term": "lambda expression",
+    "arabic": "تعبير لامدا",
+    "shortEn": "A short inline function, such as x => x * 2.",
+    "shortAr": "دالة قصيرة مكتوبة في نفس المكان، مثل x => x * 2.",
+    "topicSlug": "cs-lambdas"
+  },
+  {
+    "term": "class",
+    "arabic": "الكلاس (Class)",
+    "shortEn": "A blueprint that groups data (properties) and behaviour (methods).",
+    "shortAr": "قالب يجمع البيانات (الخصائص) والسلوك (الدوال).",
+    "topicSlug": "oop-classes-objects"
+  },
+  {
+    "term": "object",
+    "arabic": "الكائن",
+    "shortEn": "One instance of a class, created with new.",
+    "shortAr": "نسخة واحدة من كلاس، تُنشأ بـ new.",
+    "topicSlug": "oop-classes-objects"
+  },
+  {
+    "term": "property",
+    "arabic": "الخاصية",
+    "shortEn": "A named value on an object, read and written through get and set.",
+    "shortAr": "قيمة مسمّاة في الكائن تُقرأ وتُكتب عبر get وset.",
+    "topicSlug": "oop-classes-objects"
+  },
+  {
+    "term": "constructor",
+    "arabic": "المُنشئ (Constructor)",
+    "shortEn": "A special method that runs when an object is created and sets its starting state.",
+    "shortAr": "دالة خاصة تعمل عند إنشاء الكائن وتضبط حالته الأولى.",
+    "topicSlug": "oop-classes-objects"
+  },
+  {
+    "term": "encapsulation",
+    "arabic": "التغليف",
+    "shortEn": "Hiding an object's internal data and exposing only safe operations.",
+    "shortAr": "إخفاء بيانات الكائن الداخلية وإتاحة العمليات الآمنة فقط.",
+    "topicSlug": "oop-encapsulation"
+  },
+  {
+    "term": "access modifier",
+    "arabic": "معدِّل الوصول",
+    "shortEn": "A keyword such as public or private that controls who can use a member.",
+    "shortAr": "كلمة مثل public أو private تحدد من يستطيع استخدام العنصر.",
+    "topicSlug": "oop-encapsulation"
+  },
+  {
+    "term": "inheritance",
+    "arabic": "الوراثة",
+    "shortEn": "A class reusing and extending another class's members.",
+    "shortAr": "كلاس يعيد استخدام عناصر كلاس آخر ويوسّعها.",
+    "topicSlug": "oop-inheritance"
+  },
+  {
+    "term": "composition",
+    "arabic": "التركيب",
+    "shortEn": "Building an object from other objects it holds, instead of inheriting from them.",
+    "shortAr": "بناء كائن من كائنات أخرى يحتفظ بها، بدل الوراثة منها.",
+    "topicSlug": "oop-inheritance"
+  },
+  {
+    "term": "polymorphism",
+    "arabic": "تعدد الأشكال",
+    "shortEn": "Calling the same method on different types and getting each type's own behaviour.",
+    "shortAr": "استدعاء نفس الدالة على أنواع مختلفة، فينفّذ كل نوع سلوكه الخاص.",
+    "topicSlug": "oop-polymorphism"
+  },
+  {
+    "term": "abstract class",
+    "arabic": "الكلاس المجرّد",
+    "shortEn": "A class that cannot be created directly and is meant to be inherited.",
+    "shortAr": "كلاس لا يمكن إنشاؤه مباشرةً، ومصمَّم ليُورَث.",
+    "topicSlug": "oop-polymorphism"
+  },
+  {
+    "term": "interface",
+    "arabic": "الواجهة (Interface)",
+    "shortEn": "A contract listing members a type promises to implement, without the implementation.",
+    "shortAr": "عقد يحدد العناصر التي يلتزم النوع بتنفيذها، دون التنفيذ نفسه.",
+    "topicSlug": "oop-interfaces"
+  },
+  {
+    "term": "SOLID",
+    "arabic": "مبادئ SOLID",
+    "shortEn": "Five design principles that keep classes focused, extensible and easy to change.",
+    "shortAr": "خمسة مبادئ تصميم تجعل الكلاسات مركّزة وقابلة للتوسعة وسهلة التعديل.",
+    "topicSlug": "oop-solid"
+  },
+  {
+    "term": "design pattern",
+    "arabic": "نمط التصميم",
+    "shortEn": "A named, proven solution to a recurring design problem.",
+    "shortAr": "حل معروف ومجرّب لمشكلة تصميم تتكرر.",
+    "topicSlug": "arch-design-patterns"
+  },
+  {
+    "term": "nullable reference types",
+    "arabic": "أنواع المرجع القابلة لـ null",
+    "shortEn": "A compiler feature that warns when a value might be null where it should not be.",
+    "shortAr": "ميزة في المترجم تحذّرك حين قد تكون القيمة null في مكان لا يجب أن تكون فيه.",
+    "topicSlug": "cs-nullable-reference-types"
+  },
+  {
+    "term": "record",
+    "arabic": "السجلّ (Record)",
+    "shortEn": "A type compared by its values, convenient for immutable data.",
+    "shortAr": "نوع تتم مقارنته بقيمه، ومناسب للبيانات غير القابلة للتعديل.",
+    "topicSlug": "cs-records"
+  },
+  {
+    "term": "immutable",
+    "arabic": "غير قابل للتعديل",
+    "shortEn": "Cannot be changed after creation; you create a new value instead.",
+    "shortAr": "لا يمكن تغييره بعد إنشائه؛ تنشئ قيمة جديدة بدلًا منه.",
+    "topicSlug": "cs-records"
+  },
+  {
+    "term": "DTO",
+    "arabic": "كائن نقل البيانات",
+    "shortEn": "A simple object that carries data between layers or over an API, with no behaviour.",
+    "shortAr": "كائن بسيط ينقل البيانات بين الطبقات أو عبر الـ API، بلا سلوك.",
+    "topicSlug": "cs-records"
+  },
+  {
+    "term": "pattern matching",
+    "arabic": "مطابقة الأنماط",
+    "shortEn": "Testing a value's type or shape and extracting parts of it in one expression.",
+    "shortAr": "فحص نوع القيمة أو شكلها واستخراج أجزاء منها في تعبير واحد.",
+    "topicSlug": "cs-pattern-matching"
+  },
+  {
+    "term": "LINQ",
+    "arabic": "لينك",
+    "shortEn": "Query syntax in C# for filtering, sorting and shaping collections and databases.",
+    "shortAr": "أسلوب استعلام في C# لفلترة المجموعات وقواعد البيانات وترتيبها وتشكيلها.",
+    "topicSlug": "linq-fundamentals"
+  },
+  {
+    "term": "deferred execution",
+    "arabic": "التنفيذ المؤجَّل",
+    "shortEn": "A LINQ query runs only when its results are enumerated, not when it is written.",
+    "shortAr": "استعلام LINQ يُنفَّذ فقط عند المرور على نتائجه، لا عند كتابته.",
+    "topicSlug": "linq-deferred-execution"
+  },
+  {
+    "term": "async/await",
+    "arabic": "البرمجة غير المتزامنة",
+    "shortEn": "Keywords for writing non-blocking code that waits for slow work such as I/O.",
+    "shortAr": "كلمات لكتابة كود لا يعطّل التنفيذ وهو ينتظر عملًا بطيئًا مثل الإدخال والإخراج.",
+    "topicSlug": "cs-async-await"
+  },
+  {
+    "term": "Task",
+    "arabic": "المهمة (Task)",
+    "shortEn": "An object representing work that will finish later, which you can await.",
+    "shortAr": "كائن يمثّل عملًا سينتهي لاحقًا، ويمكنك انتظاره بـ await.",
+    "topicSlug": "cs-async-await"
+  },
+  {
+    "term": "cancellation token",
+    "arabic": "رمز الإلغاء",
+    "shortEn": "A signal passed to async work so it can stop early when no longer needed.",
+    "shortAr": "إشارة تُمرَّر للعمل غير المتزامن ليتوقف مبكرًا حين لا تعود هناك حاجة له.",
+    "topicSlug": "cs-cancellation-tokens"
+  },
+  {
+    "term": "value type",
+    "arabic": "نوع القيمة",
+    "shortEn": "A type whose variables hold the data itself and copy it on assignment, such as int or struct.",
+    "shortAr": "نوع تحمل متغيراته البيانات نفسها وتنسخها عند الإسناد، مثل int أو struct.",
+    "topicSlug": "cs-value-reference-types"
+  },
+  {
+    "term": "reference type",
+    "arabic": "نوع المرجع",
+    "shortEn": "A type whose variables hold a reference to an object, so copies share it, such as a class.",
+    "shortAr": "نوع تحمل متغيراته مرجعًا لكائن، فتشترك النسخ فيه، مثل الكلاس.",
+    "topicSlug": "cs-value-reference-types"
+  },
+  {
+    "term": "endpoint",
+    "arabic": "نقطة النهاية (Endpoint)",
+    "shortEn": "A URL and HTTP method that the API answers, such as GET /api/products.",
+    "shortAr": "عنوان URL مع طريقة HTTP يرد عليه الـ API، مثل GET /api/products.",
+    "topicSlug": "api-startup"
+  },
+  {
+    "term": "HTTP",
+    "arabic": "بروتوكول HTTP",
+    "shortEn": "The request-response protocol browsers and APIs use to talk over the web.",
+    "shortAr": "بروتوكول الطلب والرد الذي تتواصل به المتصفحات والـ APIs عبر الويب.",
+    "topicSlug": "api-http-rest"
+  },
+  {
+    "term": "REST",
+    "arabic": "أسلوب REST",
+    "shortEn": "An API style built on resources (URLs) and standard HTTP methods and status codes.",
+    "shortAr": "أسلوب لتصميم الـ API يقوم على الموارد (عناوين URL) وطرق HTTP ورموز الحالة القياسية.",
+    "topicSlug": "api-http-rest"
+  },
+  {
+    "term": "HTTP header",
+    "arabic": "ترويسة HTTP",
+    "shortEn": "A name-value pair sent with a request or response, such as Content-Type or Authorization.",
+    "shortAr": "زوج اسم وقيمة يُرسل مع الطلب أو الرد، مثل Content-Type أو Authorization.",
+    "topicSlug": "api-http-rest"
+  },
+  {
+    "term": "JSON",
+    "arabic": "صيغة JSON",
+    "shortEn": "A text format for data with objects, arrays, strings and numbers, used by most web APIs.",
+    "shortAr": "صيغة نصية للبيانات فيها كائنات ومصفوفات ونصوص وأرقام، وتستخدمها أغلب واجهات الويب.",
+    "topicSlug": "api-http-rest"
+  },
+  {
+    "term": "controller",
+    "arabic": "المتحكّم (Controller)",
+    "shortEn": "A class whose action methods handle HTTP requests in ASP.NET Core.",
+    "shortAr": "كلاس تتعامل دوال الأفعال فيه مع طلبات HTTP في ASP.NET Core.",
+    "topicSlug": "api-controllers-routing"
+  },
+  {
+    "term": "routing",
+    "arabic": "التوجيه",
+    "shortEn": "Matching an incoming URL to the code that should handle it.",
+    "shortAr": "ربط عنوان URL الوارد بالكود الذي يجب أن يتعامل معه.",
+    "topicSlug": "api-controllers-routing"
+  },
+  {
+    "term": "dependency injection",
+    "arabic": "حقن الاعتماديات",
+    "shortEn": "A class receives the objects it needs from outside instead of creating them itself.",
+    "shortAr": "يستقبل الكلاس الكائنات التي يحتاجها من الخارج بدل أن ينشئها بنفسه.",
+    "topicSlug": "api-dependency-injection"
+  },
+  {
+    "term": "service lifetime",
+    "arabic": "عمر الخدمة",
+    "shortEn": "How long DI keeps an object: singleton, scoped (per request) or transient (each time).",
+    "shortAr": "المدة التي يحتفظ فيها الـ DI بالكائن: Singleton أو Scoped لكل طلب أو Transient في كل مرة.",
+    "topicSlug": "api-service-lifetimes"
+  },
+  {
+    "term": "configuration",
+    "arabic": "الإعدادات",
+    "shortEn": "Settings read from appsettings.json, environment variables and other sources.",
+    "shortAr": "قيم تُقرأ من appsettings.json ومتغيرات البيئة ومصادر أخرى.",
+    "topicSlug": "api-configuration"
+  },
+  {
+    "term": "user secrets",
+    "arabic": "أسرار المطوّر",
+    "shortEn": "A local store for development secrets that is kept out of the repository.",
+    "shortAr": "مخزن محلي لأسرار بيئة التطوير يبقى خارج المستودع.",
+    "topicSlug": "api-configuration"
+  },
+  {
+    "term": "mapping",
+    "arabic": "التحويل بين النماذج",
+    "shortEn": "Copying data between models, such as from an entity to a DTO.",
+    "shortAr": "نسخ البيانات بين النماذج، مثل التحويل من كيان إلى DTO.",
+    "topicSlug": "api-dtos"
+  },
+  {
+    "term": "validation",
+    "arabic": "التحقق من الصحة",
+    "shortEn": "Checking that input meets the rules before using it, and returning clear errors if not.",
+    "shortAr": "فحص أن المدخلات تطابق القواعد قبل استخدامها، وإرجاع أخطاء واضحة إن لم تطابقها.",
+    "topicSlug": "api-validation"
+  },
+  {
+    "term": "status code",
+    "arabic": "رمز الحالة",
+    "shortEn": "The three-digit number in an HTTP response, such as 200, 404 or 500.",
+    "shortAr": "الرقم المكوَّن من ثلاث خانات في رد HTTP، مثل 200 أو 404 أو 500.",
+    "topicSlug": "api-status-codes"
+  },
+  {
+    "term": "ProblemDetails",
+    "arabic": "تفاصيل المشكلة",
+    "shortEn": "A standard JSON shape for describing API errors.",
+    "shortAr": "شكل JSON قياسي لوصف أخطاء الـ API.",
+    "topicSlug": "api-error-handling"
+  },
+  {
+    "term": "middleware",
+    "arabic": "الوسيط (Middleware)",
+    "shortEn": "A step in the request pipeline that can act on the request and the response.",
+    "shortAr": "خطوة في مسار الطلب يمكنها التعامل مع الطلب والرد.",
+    "topicSlug": "api-middleware"
+  },
+  {
+    "term": "logging",
+    "arabic": "التسجيل",
+    "shortEn": "Writing structured records of what the application does, to diagnose problems.",
+    "shortAr": "كتابة سجلات منظمة لما يفعله التطبيق، لتشخيص المشكلات.",
+    "topicSlug": "api-logging"
+  },
+  {
+    "term": "authentication",
+    "arabic": "المصادقة",
+    "shortEn": "Proving who the user is, for example with a password, a cookie or a token.",
+    "shortAr": "إثبات هوية المستخدم، مثلًا بكلمة مرور أو Cookie أو Token.",
+    "topicSlug": "api-authentication"
+  },
+  {
+    "term": "authorization",
+    "arabic": "التفويض",
+    "shortEn": "Deciding what an authenticated user is allowed to do.",
+    "shortAr": "تحديد ما يُسمح للمستخدم الذي ثبتت هويته بفعله.",
+    "topicSlug": "api-authentication"
+  },
+  {
+    "term": "cookie",
+    "arabic": "ملف تعريف الارتباط (Cookie)",
+    "shortEn": "A small value the browser stores and sends back with each request to the same site.",
+    "shortAr": "قيمة صغيرة يحفظها المتصفح ويرسلها مع كل طلب لنفس الموقع.",
+    "topicSlug": "api-authentication"
+  },
+  {
+    "term": "JWT",
+    "arabic": "رمز JWT",
+    "shortEn": "A signed token carrying claims about the user, sent in the Authorization header.",
+    "shortAr": "رمز موقَّع يحمل معلومات عن المستخدم، ويُرسل في ترويسة Authorization.",
+    "topicSlug": "api-authentication"
+  },
+  {
+    "term": "policy",
+    "arabic": "سياسة التفويض",
+    "shortEn": "A named authorization rule, such as \"must be an administrator\".",
+    "shortAr": "قاعدة تفويض مسمّاة، مثل «يجب أن يكون مسؤولًا».",
+    "topicSlug": "api-authorization"
+  },
+  {
+    "term": "API versioning",
+    "arabic": "إصدارات الـ API",
+    "shortEn": "Keeping old API versions working while you release changed ones.",
+    "shortAr": "إبقاء الإصدارات القديمة من الـ API تعمل أثناء إصدار نسخ معدّلة.",
+    "topicSlug": "api-versioning"
+  },
+  {
+    "term": "pagination",
+    "arabic": "التقسيم إلى صفحات",
+    "shortEn": "Returning a large list in pages instead of all at once.",
+    "shortAr": "إرجاع القائمة الكبيرة على صفحات بدل إرجاعها كلها مرة واحدة.",
+    "topicSlug": "api-pagination"
+  },
+  {
+    "term": "relational database",
+    "arabic": "قاعدة البيانات العلائقية",
+    "shortEn": "A database that stores data in tables linked by keys and queried with SQL.",
+    "shortAr": "قاعدة بيانات تحفظ البيانات في جداول مرتبطة بالمفاتيح، ويُستعلم منها بـ SQL.",
+    "topicSlug": "db-relational-basics"
+  },
+  {
+    "term": "connection string",
+    "arabic": "نص الاتصال",
+    "shortEn": "The settings an app uses to reach a database: server, database name and credentials.",
+    "shortAr": "الإعدادات التي يستخدمها التطبيق للوصول إلى القاعدة: الخادم واسم القاعدة وبيانات الدخول.",
+    "topicSlug": "db-relational-basics"
+  },
+  {
+    "term": "SQL",
+    "arabic": "لغة SQL",
+    "shortEn": "The language for querying and changing data in relational databases.",
+    "shortAr": "اللغة المستخدمة للاستعلام عن البيانات وتعديلها في قواعد البيانات العلائقية.",
+    "topicSlug": "sql-select-basics"
+  },
+  {
+    "term": "NULL",
+    "arabic": "القيمة NULL",
+    "shortEn": "A marker for a missing or unknown value in a database column.",
+    "shortAr": "علامة على قيمة ناقصة أو غير معروفة في عمود بالقاعدة.",
+    "topicSlug": "sql-select-basics"
+  },
+  {
+    "term": "primary key",
+    "arabic": "المفتاح الأساسي",
+    "shortEn": "A column (or columns) that uniquely identifies each row of a table.",
+    "shortAr": "عمود (أو أكثر) يحدد كل صف في الجدول بشكل فريد.",
+    "topicSlug": "sql-tables-keys"
+  },
+  {
+    "term": "foreign key",
+    "arabic": "المفتاح الأجنبي",
+    "shortEn": "A column that refers to a row in another table, enforcing the link.",
+    "shortAr": "عمود يشير إلى صف في جدول آخر ويفرض صحة هذا الربط.",
+    "topicSlug": "sql-tables-keys"
+  },
+  {
+    "term": "JOIN",
+    "arabic": "الربط بين الجداول",
+    "shortEn": "Combining rows from two tables through the columns that link them.",
+    "shortAr": "دمج صفوف جدولين عن طريق الأعمدة التي تربطهما.",
+    "topicSlug": "sql-joins"
+  },
+  {
+    "term": "GROUP BY",
+    "arabic": "التجميع",
+    "shortEn": "Grouping rows so aggregates such as COUNT and SUM are calculated per group.",
+    "shortAr": "تجميع الصفوف لحساب دوال التجميع مثل COUNT وSUM لكل مجموعة.",
+    "topicSlug": "sql-aggregates"
+  },
+  {
+    "term": "ORM",
+    "arabic": "محوّل الكائنات والعلاقات",
+    "shortEn": "A library that maps database tables to classes, such as Entity Framework Core.",
+    "shortAr": "مكتبة تربط جداول القاعدة بالكلاسات، مثل Entity Framework Core.",
+    "topicSlug": "ef-dbcontext"
+  },
+  {
+    "term": "DbContext",
+    "arabic": "سياق قاعدة البيانات",
+    "shortEn": "The EF Core class that represents a session with the database and tracks changes.",
+    "shortAr": "كلاس EF Core الذي يمثّل جلسة مع القاعدة ويتتبّع التغييرات.",
+    "topicSlug": "ef-dbcontext"
+  },
+  {
+    "term": "unit of work",
+    "arabic": "وحدة العمل",
+    "shortEn": "Grouping changes so they are saved together in one transaction.",
+    "shortAr": "تجميع التغييرات لتُحفظ معًا في معاملة واحدة.",
+    "topicSlug": "ef-dbset"
+  },
+  {
+    "term": "entity",
+    "arabic": "الكيان",
+    "shortEn": "A class mapped to a database table, with an identity (key).",
+    "shortAr": "كلاس مرتبط بجدول في القاعدة وله هوية (مفتاح).",
+    "topicSlug": "ef-entities"
+  },
+  {
+    "term": "data annotations",
+    "arabic": "سمات البيانات",
+    "shortEn": "Attributes such as [Required] or [MaxLength] that configure validation and mapping.",
+    "shortAr": "سمات مثل [Required] أو [MaxLength] تضبط التحقق والربط بالقاعدة.",
+    "topicSlug": "ef-entities"
+  },
+  {
+    "term": "migration",
+    "arabic": "الترحيل (Migration)",
+    "shortEn": "A versioned script, generated from your model, that updates the database schema.",
+    "shortAr": "سكربت بإصدار، يُولَّد من نموذجك، ويحدّث بنية القاعدة.",
+    "topicSlug": "ef-migrations"
+  },
+  {
+    "term": "navigation property",
+    "arabic": "خاصية التنقّل",
+    "shortEn": "A property that links one entity to related entities, such as order.Customer.",
+    "shortAr": "خاصية تربط كيانًا بكيانات مرتبطة به، مثل order.Customer.",
+    "topicSlug": "ef-relationships"
+  },
+  {
+    "term": "cascade delete",
+    "arabic": "الحذف المتتالي",
+    "shortEn": "Deleting a row automatically deletes the rows that depend on it.",
+    "shortAr": "حذف صف يحذف تلقائيًا الصفوف التي تعتمد عليه.",
+    "topicSlug": "ef-relationships"
+  },
+  {
+    "term": "change tracking",
+    "arabic": "تتبّع التغييرات",
+    "shortEn": "EF Core remembering loaded entities' original values to know what to save.",
+    "shortAr": "احتفاظ EF Core بالقيم الأصلية للكيانات المحمّلة ليعرف ما الذي يحفظه.",
+    "topicSlug": "ef-tracking"
+  },
+  {
+    "term": "lazy loading",
+    "arabic": "التحميل الكسول",
+    "shortEn": "Loading related data automatically the first time it is accessed.",
+    "shortAr": "تحميل البيانات المرتبطة تلقائيًا عند الوصول إليها أول مرة.",
+    "topicSlug": "ef-loading"
+  },
+  {
+    "term": "eager loading",
+    "arabic": "التحميل المسبق",
+    "shortEn": "Loading related data in the same query with Include.",
+    "shortAr": "تحميل البيانات المرتبطة في نفس الاستعلام باستخدام Include.",
+    "topicSlug": "ef-loading"
+  },
+  {
+    "term": "IQueryable",
+    "arabic": "الاستعلام القابل للترجمة",
+    "shortEn": "A query that EF Core translates to SQL and runs in the database.",
+    "shortAr": "استعلام يترجمه EF Core إلى SQL ويُنفَّذ في قاعدة البيانات.",
+    "topicSlug": "ef-iqueryable-ienumerable"
+  },
+  {
+    "term": "transaction",
+    "arabic": "المعاملة (Transaction)",
+    "shortEn": "A group of database changes that succeed or fail together.",
+    "shortAr": "مجموعة تغييرات في القاعدة تنجح كلها معًا أو تفشل كلها معًا.",
+    "topicSlug": "ef-transactions"
+  },
+  {
+    "term": "optimistic concurrency",
+    "arabic": "التزامن المتفائل",
+    "shortEn": "Detecting that a row changed since you read it, instead of locking it.",
+    "shortAr": "اكتشاف أن الصف تغيّر منذ قرأته، بدل قفله.",
+    "topicSlug": "ef-concurrency"
+  },
+  {
+    "term": "N+1 problem",
+    "arabic": "مشكلة N+1",
+    "shortEn": "Running one query for a list and then one more query for each item.",
+    "shortAr": "تنفيذ استعلام للقائمة ثم استعلام إضافي لكل عنصر فيها.",
+    "topicSlug": "ef-n-plus-one"
+  },
+  {
+    "term": "index",
+    "arabic": "الفهرس",
+    "shortEn": "A database structure that finds rows quickly without scanning the whole table.",
+    "shortAr": "بنية في القاعدة تجد الصفوف بسرعة دون المرور على الجدول كله.",
+    "topicSlug": "sql-indexing"
+  },
+  {
+    "term": "clustered index",
+    "arabic": "الفهرس العنقودي",
+    "shortEn": "The index that defines the physical order of a table's rows; one per table.",
+    "shortAr": "الفهرس الذي يحدد ترتيب صفوف الجدول فعليًا؛ واحد لكل جدول.",
+    "topicSlug": "sql-indexing"
+  },
+  {
+    "term": "execution plan",
+    "arabic": "خطة التنفيذ",
+    "shortEn": "The steps the database chose to run a query, used to find slow parts.",
+    "shortAr": "الخطوات التي اختارتها القاعدة لتنفيذ الاستعلام، وتُستخدم لاكتشاف الأجزاء البطيئة.",
+    "topicSlug": "sql-execution-plans"
+  },
+  {
+    "term": "isolation level",
+    "arabic": "مستوى العزل",
+    "shortEn": "How much one transaction sees of other transactions' uncommitted or new changes.",
+    "shortAr": "مقدار ما تراه المعاملة من تغييرات المعاملات الأخرى غير المحفوظة أو الجديدة.",
+    "topicSlug": "sql-isolation-levels"
+  },
+  {
+    "term": "deadlock",
+    "arabic": "الجمود (Deadlock)",
+    "shortEn": "Two transactions each waiting for a lock the other holds, so one is cancelled.",
+    "shortAr": "معاملتان تنتظر كل منهما قفلًا تمسكه الأخرى، فتُلغى إحداهما.",
+    "topicSlug": "sql-deadlocks"
+  },
+  {
+    "term": "parameterized query",
+    "arabic": "الاستعلام بمعاملات",
+    "shortEn": "A query that sends values separately from the SQL text, preventing injection.",
+    "shortAr": "استعلام يرسل القيم منفصلة عن نص SQL، فيمنع الحقن.",
+    "topicSlug": "sql-parameterization"
+  },
+  {
+    "term": "SQL injection",
+    "arabic": "حقن SQL",
+    "shortEn": "An attack that sneaks SQL into a query through unsafe string building.",
+    "shortAr": "هجوم يدسّ أوامر SQL في الاستعلام عبر بناء النصوص بطريقة غير آمنة.",
+    "topicSlug": "sql-injection"
+  },
+  {
+    "term": "stored procedure",
+    "arabic": "الإجراء المخزَّن",
+    "shortEn": "A named, parameterised T-SQL program saved in the database.",
+    "shortAr": "برنامج T-SQL مسمّى بمعاملات ومحفوظ في قاعدة البيانات.",
+    "topicSlug": "sql-stored-procedures"
+  },
+  {
+    "term": "view",
+    "arabic": "العرض (View)",
+    "shortEn": "A saved SELECT query that you can query like a table.",
+    "shortAr": "استعلام SELECT محفوظ يمكنك الاستعلام منه كأنه جدول.",
+    "topicSlug": "sql-stored-procedures"
+  },
+  {
+    "term": "connection pool",
+    "arabic": "مجمّع الاتصالات",
+    "shortEn": "A set of open database connections reused between requests to save time.",
+    "shortAr": "مجموعة اتصالات مفتوحة بالقاعدة يُعاد استخدامها بين الطلبات لتوفير الوقت.",
+    "topicSlug": "sql-connection-management"
+  },
+  {
+    "term": "keyset pagination",
+    "arabic": "التقسيم بالمفتاح",
+    "shortEn": "Paging by \"rows after the last key seen\" instead of skipping rows; fast on deep pages.",
+    "shortAr": "التقسيم إلى صفحات بـ «الصفوف بعد آخر مفتاح ظهر» بدل تخطي الصفوف؛ سريع في الصفحات البعيدة.",
+    "topicSlug": "sql-pagination"
+  },
+  {
+    "term": "HTML",
+    "arabic": "لغة HTML",
+    "shortEn": "The markup language that describes the structure and meaning of a web page.",
+    "shortAr": "لغة الترميز التي تصف بنية صفحة الويب ومعناها.",
+    "topicSlug": "web-html-css"
+  },
+  {
+    "term": "CSS",
+    "arabic": "لغة CSS",
+    "shortEn": "The language that controls how a page looks: layout, colours and fonts.",
+    "shortAr": "اللغة التي تتحكم في شكل الصفحة: التخطيط والألوان والخطوط.",
+    "topicSlug": "web-html-css"
+  },
+  {
+    "term": "DOM",
+    "arabic": "شجرة عناصر الصفحة (DOM)",
+    "shortEn": "The browser's tree of a page's elements, which scripts read and change.",
+    "shortAr": "شجرة عناصر الصفحة في المتصفح، التي تقرؤها السكربتات وتعدّلها.",
+    "topicSlug": "web-javascript-essentials"
+  },
+  {
+    "term": "event loop",
+    "arabic": "حلقة الأحداث",
+    "shortEn": "How JavaScript runs one task at a time and queues callbacks for later.",
+    "shortAr": "الطريقة التي تنفّذ بها JavaScript مهمة واحدة في كل مرة وتضع الاستدعاءات في طابور لوقت لاحق.",
+    "topicSlug": "web-javascript-essentials"
+  },
+  {
+    "term": "TypeScript",
+    "arabic": "تايب سكربت",
+    "shortEn": "JavaScript with static types, checked at build time and compiled to JavaScript.",
+    "shortAr": "لغة JavaScript مع أنواع ثابتة تُفحص وقت البناء وتُترجم إلى JavaScript.",
+    "topicSlug": "ts-types-inference"
+  },
+  {
+    "term": "union type",
+    "arabic": "النوع الاتحادي",
+    "shortEn": "A type that can be one of several types, such as string | number.",
+    "shortAr": "نوع يمكن أن يكون واحدًا من عدة أنواع، مثل string | number.",
+    "topicSlug": "ts-interfaces-aliases"
+  },
+  {
+    "term": "type guard",
+    "arabic": "حارس النوع",
+    "shortEn": "A check that narrows a value's type inside a block, such as typeof x === \"string\".",
+    "shortAr": "فحص يضيّق نوع القيمة داخل كتلة كود، مثل typeof x === \"string\".",
+    "topicSlug": "ts-narrowing"
+  },
+  {
+    "term": "module",
+    "arabic": "الوحدة (Module)",
+    "shortEn": "A file that exports some of its code and imports code from other files.",
+    "shortAr": "ملف يصدّر جزءًا من كوده ويستورد كودًا من ملفات أخرى.",
+    "topicSlug": "ts-modules"
+  },
+  {
+    "term": "Promise",
+    "arabic": "الوعد (Promise)",
+    "shortEn": "An object for a value that arrives later, or an error if the work fails.",
+    "shortAr": "كائن لقيمة تصل لاحقًا، أو لخطأ إذا فشل العمل.",
+    "topicSlug": "ts-promises"
+  },
+  {
+    "term": "component",
+    "arabic": "المكوّن",
+    "shortEn": "A reusable piece of UI: a template, styles and the class behind them.",
+    "shortAr": "جزء قابل لإعادة الاستخدام من الواجهة: قالب وتنسيقات والكلاس الذي خلفهما.",
+    "topicSlug": "ng-architecture"
+  },
+  {
+    "term": "standalone component",
+    "arabic": "المكوّن المستقل",
+    "shortEn": "An Angular component that imports what it needs directly, without an NgModule.",
+    "shortAr": "مكوّن Angular يستورد ما يحتاجه مباشرةً دون NgModule.",
+    "topicSlug": "ng-standalone-components"
+  },
+  {
+    "term": "template",
+    "arabic": "القالب",
+    "shortEn": "The HTML of a component, with bindings and control flow such as @if and @for.",
+    "shortAr": "الـ HTML الخاص بالمكوّن، مع الربط وجمل التحكم مثل @if و@for.",
+    "topicSlug": "ng-templates-binding"
+  },
+  {
+    "term": "data binding",
+    "arabic": "ربط البيانات",
+    "shortEn": "Keeping the template and the component's data in sync.",
+    "shortAr": "إبقاء القالب وبيانات المكوّن متزامنين.",
+    "topicSlug": "ng-templates-binding"
+  },
+  {
+    "term": "input",
+    "arabic": "المُدخل (Input)",
+    "shortEn": "A value a parent component passes into a child component.",
+    "shortAr": "قيمة يمرّرها المكوّن الأب إلى المكوّن الابن.",
+    "topicSlug": "ng-inputs-outputs"
+  },
+  {
+    "term": "output",
+    "arabic": "المُخرج (Output)",
+    "shortEn": "An event a child component emits for its parent to handle.",
+    "shortAr": "حدث يطلقه المكوّن الابن ليتعامل معه الأب.",
+    "topicSlug": "ng-inputs-outputs"
+  },
+  {
+    "term": "service",
+    "arabic": "الخدمة",
+    "shortEn": "A class holding shared logic or data, injected where it is needed.",
+    "shortAr": "كلاس يحمل منطقًا أو بيانات مشتركة، ويُحقن حيث نحتاجه.",
+    "topicSlug": "ng-services"
+  },
+  {
+    "term": "route guard",
+    "arabic": "حارس المسار",
+    "shortEn": "A function that decides whether navigation to a route may continue.",
+    "shortAr": "دالة تقرر هل يُسمح بالانتقال إلى مسار معيّن أم لا.",
+    "topicSlug": "ng-routing"
+  },
+  {
+    "term": "reactive forms",
+    "arabic": "النماذج التفاعلية",
+    "shortEn": "Angular forms defined in code with FormControl and FormGroup, easy to validate and test.",
+    "shortAr": "نماذج Angular تُعرَّف في الكود بـ FormControl وFormGroup، وسهلة التحقق والاختبار.",
+    "topicSlug": "ng-reactive-forms"
+  },
+  {
+    "term": "interceptor",
+    "arabic": "المعترض (Interceptor)",
+    "shortEn": "Code that runs on every HTTP request or response, such as adding a token or handling errors.",
+    "shortAr": "كود يعمل على كل طلب أو رد HTTP، مثل إضافة Token أو التعامل مع الأخطاء.",
+    "topicSlug": "ng-http-client"
+  },
+  {
+    "term": "Observable",
+    "arabic": "المرصود (Observable)",
+    "shortEn": "An RxJS stream of values over time that you subscribe to.",
+    "shortAr": "تدفّق قيم عبر الزمن من RxJS، تشترك فيه لتستقبلها.",
+    "topicSlug": "ng-rxjs"
+  },
+  {
+    "term": "RxJS",
+    "arabic": "مكتبة RxJS",
+    "shortEn": "A library for working with streams of events and async data using operators.",
+    "shortAr": "مكتبة للتعامل مع تدفقات الأحداث والبيانات غير المتزامنة باستخدام المعاملات.",
+    "topicSlug": "ng-rxjs"
+  },
+  {
+    "term": "signal",
+    "arabic": "الإشارة (Signal)",
+    "shortEn": "A value Angular watches; reading it in a template or computed updates them when it changes.",
+    "shortAr": "قيمة يراقبها Angular؛ قراءتها في قالب أو قيمة محسوبة تحدّثهما عند تغيّرها.",
+    "topicSlug": "ng-signals"
+  },
+  {
+    "term": "skeleton screen",
+    "arabic": "الهيكل المؤقت",
+    "shortEn": "Grey placeholder shapes shown where content will appear while it loads.",
+    "shortAr": "أشكال رمادية مؤقتة تظهر مكان المحتوى أثناء تحميله.",
+    "topicSlug": "ng-loading-error-states"
+  },
+  {
+    "term": "CORS",
+    "arabic": "مشاركة الموارد بين المصادر",
+    "shortEn": "Browser rules that decide whether a page may call an API on another origin.",
+    "shortAr": "قواعد المتصفح التي تحدد هل يمكن لصفحة استدعاء API على مصدر آخر.",
+    "topicSlug": "fs-cors"
+  },
+  {
+    "term": "origin",
+    "arabic": "المصدر (Origin)",
+    "shortEn": "The scheme, host and port of a page, such as https://example.com:443.",
+    "shortAr": "البروتوكول والمضيف والمنفذ لصفحة ما، مثل https://example.com:443.",
+    "topicSlug": "fs-cors"
+  },
+  {
+    "term": "API contract",
+    "arabic": "عقد الـ API",
+    "shortEn": "The agreed shape of requests and responses between frontend and backend.",
+    "shortAr": "الشكل المتفق عليه للطلبات والردود بين الواجهة والخادم.",
+    "topicSlug": "fs-api-contracts"
+  },
+  {
+    "term": "CRUD",
+    "arabic": "عمليات CRUD",
+    "shortEn": "Create, read, update and delete: the four basic data operations.",
+    "shortAr": "الإنشاء والقراءة والتعديل والحذف: العمليات الأساسية الأربع على البيانات.",
+    "topicSlug": "fs-crud-workflows"
+  },
+  {
+    "term": "full-text search",
+    "arabic": "البحث النصي الكامل",
+    "shortEn": "Searching words inside text columns with an index built for language.",
+    "shortAr": "البحث عن الكلمات داخل الأعمدة النصية بفهرس مصمَّم للغة.",
+    "topicSlug": "fs-search-filtering"
+  },
+  {
+    "term": "unit test",
+    "arabic": "اختبار الوحدة",
+    "shortEn": "A small automated test of one piece of code in isolation.",
+    "shortAr": "اختبار آلي صغير لجزء واحد من الكود بمعزل عن غيره.",
+    "topicSlug": "test-unit-csharp"
+  },
+  {
+    "term": "Arrange-Act-Assert",
+    "arabic": "التهيئة والتنفيذ والتحقق",
+    "shortEn": "The three steps of a test: set up, run the code, check the result.",
+    "shortAr": "خطوات الاختبار الثلاث: التهيئة، ثم تنفيذ الكود، ثم التحقق من النتيجة.",
+    "topicSlug": "test-unit-csharp"
+  },
+  {
+    "term": "integration test",
+    "arabic": "اختبار التكامل",
+    "shortEn": "A test that runs several parts together, such as the API with a real database.",
+    "shortAr": "اختبار يشغّل عدة أجزاء معًا، مثل الـ API مع قاعدة بيانات حقيقية.",
+    "topicSlug": "test-integration"
+  },
+  {
+    "term": "mock",
+    "arabic": "الكائن البديل (Mock)",
+    "shortEn": "A fake object that stands in for a real dependency in a test and records calls.",
+    "shortAr": "كائن مزيّف يحل محل اعتمادية حقيقية في الاختبار ويسجّل الاستدعاءات.",
+    "topicSlug": "test-mocking"
+  },
+  {
+    "term": "repository",
+    "arabic": "المستودع (Repository)",
+    "shortEn": "A class that hides how data is stored behind methods like GetById and Add.",
+    "shortAr": "كلاس يخفي طريقة حفظ البيانات خلف دوال مثل GetById وAdd.",
+    "topicSlug": "test-mocking"
+  },
+  {
+    "term": "end-to-end test",
+    "arabic": "الاختبار الشامل",
+    "shortEn": "A test that drives the whole app through the UI like a real user.",
+    "shortAr": "اختبار يشغّل التطبيق كله عبر الواجهة كما يفعل مستخدم حقيقي.",
+    "topicSlug": "test-strategy"
+  },
+  {
+    "term": "repository (Git)",
+    "arabic": "المستودع (Git)",
+    "shortEn": "A project folder whose full history of changes Git tracks.",
+    "shortAr": "مجلد مشروع يتتبّع Git تاريخ تغييراته كاملًا.",
+    "topicSlug": "git-fundamentals"
+  },
+  {
+    "term": "commit",
+    "arabic": "الإيداع (Commit)",
+    "shortEn": "A saved snapshot of changes with a message, in a repository's history.",
+    "shortAr": "لقطة محفوظة من التغييرات مع رسالة، في تاريخ المستودع.",
+    "topicSlug": "git-fundamentals"
+  },
+  {
+    "term": "remote",
+    "arabic": "المستودع البعيد",
+    "shortEn": "A copy of the repository on a server, such as GitHub, that you push to and pull from.",
+    "shortAr": "نسخة من المستودع على خادم مثل GitHub، ترفع إليها وتسحب منها.",
+    "topicSlug": "git-fundamentals"
+  },
+  {
+    "term": "branch",
+    "arabic": "الفرع",
+    "shortEn": "A separate line of work in a repository that can later be merged.",
+    "shortAr": "خط عمل منفصل داخل المستودع يمكن دمجه لاحقًا.",
+    "topicSlug": "git-branching"
+  },
+  {
+    "term": "rebase",
+    "arabic": "إعادة التأسيس (Rebase)",
+    "shortEn": "Replaying your commits on top of another branch to keep history linear.",
+    "shortAr": "إعادة تطبيق الـ Commits الخاصة بك فوق فرع آخر ليبقى التاريخ خطيًا.",
+    "topicSlug": "git-branching"
+  },
+  {
+    "term": "merge",
+    "arabic": "الدمج",
+    "shortEn": "Combining the changes of one branch into another.",
+    "shortAr": "ضم تغييرات فرع إلى فرع آخر.",
+    "topicSlug": "git-merging"
+  },
+  {
+    "term": "merge conflict",
+    "arabic": "تعارض الدمج",
+    "shortEn": "Both branches changed the same lines, so Git asks you to choose.",
+    "shortAr": "الفرعان عدّلا نفس السطور، فيطلب منك Git أن تختار.",
+    "topicSlug": "git-conflicts"
+  },
+  {
+    "term": "pull request",
+    "arabic": "طلب الدمج (Pull Request)",
+    "shortEn": "A request to review and merge a branch, with discussion and checks.",
+    "shortAr": "طلب لمراجعة فرع ودمجه، مع نقاش وفحوصات.",
+    "topicSlug": "git-pull-requests"
+  },
+  {
+    "term": "README",
+    "arabic": "ملف التعريف (README)",
+    "shortEn": "The front page of a repository: what the project is and how to run it.",
+    "shortAr": "الصفحة الأولى في المستودع: ما المشروع وكيف تشغّله.",
+    "topicSlug": "git-readme"
+  },
+  {
+    "term": "debugger",
+    "arabic": "المصحّح (Debugger)",
+    "shortEn": "A tool that pauses a running program so you can inspect values step by step.",
+    "shortAr": "أداة توقف البرنامج أثناء عمله لتفحص القيم خطوة بخطوة.",
+    "topicSlug": "pro-debugging"
+  },
+  {
+    "term": "breakpoint",
+    "arabic": "نقطة التوقف",
+    "shortEn": "A marked line where the debugger pauses the program.",
+    "shortAr": "سطر معلَّم يوقف المصحّح البرنامج عنده.",
+    "topicSlug": "pro-reading-codebases"
+  },
+  {
+    "term": "user story",
+    "arabic": "قصة المستخدم",
+    "shortEn": "A short description of a feature from the user's point of view and its value.",
+    "shortAr": "وصف قصير لميزة من وجهة نظر المستخدم والقيمة التي تقدمها.",
+    "topicSlug": "pro-requirements"
+  },
+  {
+    "term": "Scrum",
+    "arabic": "منهجية Scrum",
+    "shortEn": "An Agile framework that delivers work in short sprints with set roles and events.",
+    "shortAr": "إطار Agile يسلّم العمل على فترات قصيرة (Sprints) بأدوار وأحداث محددة.",
+    "topicSlug": "pro-agile-scrum"
+  },
+  {
+    "term": "sprint",
+    "arabic": "السبرنت",
+    "shortEn": "A fixed time box, often two weeks, in which a Scrum team delivers a goal.",
+    "shortAr": "فترة زمنية ثابتة، غالبًا أسبوعان، يحقق فيها فريق Scrum هدفًا محددًا.",
+    "topicSlug": "pro-agile-scrum"
+  },
+  {
+    "term": "code review",
+    "arabic": "مراجعة الكود",
+    "shortEn": "Teammates reading a change before it is merged to catch problems and share knowledge.",
+    "shortAr": "قراءة أعضاء الفريق للتغيير قبل دمجه لاكتشاف المشكلات ونشر المعرفة.",
+    "topicSlug": "pro-code-review"
+  },
+  {
+    "term": "refactoring",
+    "arabic": "إعادة الهيكلة",
+    "shortEn": "Improving code's structure without changing what it does.",
+    "shortAr": "تحسين بنية الكود دون تغيير ما يفعله.",
+    "topicSlug": "pro-refactoring"
+  },
+  {
+    "term": "Clean Architecture",
+    "arabic": "المعمارية النظيفة",
+    "shortEn": "Layers around the business rules, with dependencies pointing inward to the domain.",
+    "shortAr": "طبقات حول قواعد العمل، تتجه اعتمادياتها للداخل نحو الـ Domain.",
+    "topicSlug": "arch-clean-architecture"
+  },
+  {
+    "term": "CQRS",
+    "arabic": "فصل الأوامر عن الاستعلامات",
+    "shortEn": "Separating operations that change data from those that only read it.",
+    "shortAr": "الفصل بين العمليات التي تغيّر البيانات والعمليات التي تقرؤها فقط.",
+    "topicSlug": "arch-clean-architecture"
+  },
+  {
+    "term": "Domain-Driven Design",
+    "arabic": "التصميم الموجَّه بالمجال",
+    "shortEn": "Modelling the code around the business domain and its language.",
+    "shortAr": "بناء نموذج الكود حول مجال العمل ولغته.",
+    "topicSlug": "arch-domain-driven-design"
+  },
+  {
+    "term": "value object",
+    "arabic": "كائن القيمة",
+    "shortEn": "An immutable object defined only by its values, such as Money or Address.",
+    "shortAr": "كائن غير قابل للتعديل يُعرَّف بقيمه فقط، مثل Money أو Address.",
+    "topicSlug": "arch-domain-driven-design"
+  },
+  {
+    "term": "aggregate",
+    "arabic": "التجميعة (Aggregate)",
+    "shortEn": "A cluster of objects kept consistent together and changed through one root.",
+    "shortAr": "مجموعة كائنات تبقى متسقة معًا وتُعدَّل عبر جذر واحد.",
+    "topicSlug": "arch-domain-driven-design"
+  },
+  {
+    "term": "bounded context",
+    "arabic": "السياق المحدود",
+    "shortEn": "The boundary within which one domain model and its terms apply.",
+    "shortAr": "الحدّ الذي يسري داخله نموذج مجال واحد ومصطلحاته.",
+    "topicSlug": "arch-domain-driven-design"
+  },
+  {
+    "term": "strangler fig",
+    "arabic": "نمط التين الخانق",
+    "shortEn": "Replacing an old system piece by piece, routing more traffic to the new one over time.",
+    "shortAr": "استبدال نظام قديم جزءًا بعد جزء، مع توجيه مزيد من الطلبات إلى الجديد بمرور الوقت.",
+    "topicSlug": "dotnet-legacy-modernization"
+  },
+  {
+    "term": "OWASP Top 10",
+    "arabic": "قائمة OWASP لأخطر عشرة",
+    "shortEn": "A widely used list of the most critical web application security risks.",
+    "shortAr": "قائمة شائعة الاستخدام لأخطر مخاطر الأمان في تطبيقات الويب.",
+    "topicSlug": "pro-security"
+  },
+  {
+    "term": "trace id",
+    "arabic": "معرّف التتبّع",
+    "shortEn": "An id attached to one request's logs across services to follow it end to end.",
+    "shortAr": "معرّف يُرفق بسجلات طلب واحد عبر الخدمات لتتبّعه من البداية للنهاية.",
+    "topicSlug": "pro-logging-diagnostics"
+  },
+  {
+    "term": "health check",
+    "arabic": "فحص الحالة",
+    "shortEn": "An endpoint that reports whether the app and its dependencies are working.",
+    "shortAr": "نقطة نهاية تبلّغ هل التطبيق واعتمادياته تعمل.",
+    "topicSlug": "pro-deployment"
+  },
+  {
+    "term": "postmortem",
+    "arabic": "تحليل ما بعد الحادث",
+    "shortEn": "A blameless write-up of an incident: what happened, why and what will change.",
+    "shortAr": "تقرير بلا لوم عن حادث: ماذا حدث، ولماذا، وما الذي سيتغيّر.",
+    "topicSlug": "pro-incident-investigation"
+  },
+  {
+    "term": "Docker",
+    "arabic": "دوكر",
+    "shortEn": "A tool that packages an app and its dependencies into containers.",
+    "shortAr": "أداة تحزم التطبيق واعتمادياته في حاويات.",
+    "topicSlug": "devops-docker"
+  },
+  {
+    "term": "container",
+    "arabic": "الحاوية",
+    "shortEn": "A lightweight, isolated running environment for an app, created from an image.",
+    "shortAr": "بيئة تشغيل خفيفة ومعزولة لتطبيق، تُنشأ من صورة.",
+    "topicSlug": "devops-docker"
+  },
+  {
+    "term": "image",
+    "arabic": "الصورة (Image)",
+    "shortEn": "A read-only template with an app and everything it needs, used to start containers.",
+    "shortAr": "قالب للقراءة فقط فيه التطبيق وكل ما يحتاجه، ويُستخدم لتشغيل الحاويات.",
+    "topicSlug": "devops-docker"
+  },
+  {
+    "term": "CI/CD",
+    "arabic": "التكامل والنشر المستمر",
+    "shortEn": "Automatically building, testing and deploying every change.",
+    "shortAr": "بناء كل تغيير واختباره ونشره تلقائيًا.",
+    "topicSlug": "devops-ci-cd"
+  },
+  {
+    "term": "pipeline",
+    "arabic": "خط التشغيل (Pipeline)",
+    "shortEn": "The automated sequence of build, test and deploy steps.",
+    "shortAr": "سلسلة الخطوات الآلية للبناء والاختبار والنشر.",
+    "topicSlug": "devops-ci-cd"
+  },
+  {
+    "term": "cloud region",
+    "arabic": "منطقة السحابة",
+    "shortEn": "A geographic area where a cloud provider runs data centres.",
+    "shortAr": "منطقة جغرافية يشغّل فيها مزوّد السحابة مراكز بياناته.",
+    "topicSlug": "cloud-fundamentals"
+  },
+  {
+    "term": "managed identity",
+    "arabic": "الهوية المُدارة",
+    "shortEn": "A cloud-provided identity for an app, so it can reach other services without stored secrets.",
+    "shortAr": "هوية يوفرها مزوّد السحابة للتطبيق، فيصل إلى خدمات أخرى دون أسرار محفوظة.",
+    "topicSlug": "cloud-fundamentals"
+  },
+  {
+    "term": "App Service",
+    "arabic": "خدمة App Service",
+    "shortEn": "Azure's managed hosting for web apps and APIs.",
+    "shortAr": "خدمة Azure المُدارة لاستضافة تطبيقات الويب والـ APIs.",
+    "topicSlug": "cloud-azure-app-service"
+  },
+  {
+    "term": "LLM",
+    "arabic": "نموذج اللغة الكبير",
+    "shortEn": "A large language model that generates text from a prompt, called over an API.",
+    "shortAr": "نموذج لغة كبير يولّد نصًا من تعليمات، ويُستدعى عبر API.",
+    "topicSlug": "ai-dotnet-llm"
+  },
+  {
+    "term": "prompt",
+    "arabic": "التعليمات (Prompt)",
+    "shortEn": "The instructions and context you send to a language model.",
+    "shortAr": "التعليمات والسياق التي ترسلها لنموذج اللغة.",
+    "topicSlug": "ai-dotnet-llm"
+  },
+  {
+    "term": "embedding",
+    "arabic": "التمثيل المتجهي",
+    "shortEn": "A list of numbers representing a text's meaning, used to find similar texts.",
+    "shortAr": "قائمة أرقام تمثّل معنى النص، وتُستخدم لإيجاد النصوص المتشابهة.",
+    "topicSlug": "ai-dotnet-llm"
+  },
+  {
+    "term": "RAG",
+    "arabic": "التوليد المعزَّز بالاسترجاع",
+    "shortEn": "Finding relevant documents and adding them to the prompt so the model answers from them.",
+    "shortAr": "البحث عن المستندات المناسبة وإضافتها إلى التعليمات ليجيب النموذج منها.",
+    "topicSlug": "ai-dotnet-llm"
+  },
+  {
+    "term": "Kubernetes",
+    "arabic": "كوبرنيتس",
+    "shortEn": "A system that runs, scales and heals containers across a cluster of machines.",
+    "shortAr": "نظام يشغّل الحاويات ويوسّعها ويعالج أعطالها عبر مجموعة من الأجهزة.",
+    "topicSlug": "devops-kubernetes"
+  },
+  {
+    "term": "microservices",
+    "arabic": "الخدمات المصغّرة",
+    "shortEn": "An architecture of small services that are deployed and scaled independently.",
+    "shortAr": "معمارية من خدمات صغيرة تُنشر وتُوسَّع بشكل مستقل.",
+    "topicSlug": "arch-microservices"
+  },
+  {
+    "term": "circuit breaker",
+    "arabic": "قاطع الدائرة",
+    "shortEn": "A pattern that stops calling a failing service for a while so it can recover.",
+    "shortAr": "نمط يوقف استدعاء خدمة متعطلة لفترة حتى تتعافى.",
+    "topicSlug": "arch-microservices"
+  },
+  {
+    "term": "eventual consistency",
+    "arabic": "الاتساق المؤجَّل",
+    "shortEn": "Copies of data may differ briefly but become consistent over time.",
+    "shortAr": "قد تختلف نسخ البيانات لفترة قصيرة، لكنها تتسق مع مرور الوقت.",
+    "topicSlug": "arch-microservices"
+  },
+  {
+    "term": "outbox pattern",
+    "arabic": "نمط Outbox",
+    "shortEn": "Saving outgoing messages in the same transaction as the data, then publishing them.",
+    "shortAr": "حفظ الرسائل الصادرة في نفس معاملة البيانات، ثم نشرها لاحقًا.",
+    "topicSlug": "arch-microservices"
+  },
+  {
+    "term": "message broker",
+    "arabic": "وسيط الرسائل",
+    "shortEn": "A server that stores messages between senders and receivers, such as RabbitMQ.",
+    "shortAr": "خادم يحفظ الرسائل بين المرسلين والمستقبلين، مثل RabbitMQ.",
+    "topicSlug": "arch-message-brokers"
+  },
+  {
+    "term": "idempotent",
+    "arabic": "متماثل التكرار (Idempotent)",
+    "shortEn": "Doing it twice has the same effect as doing it once.",
+    "shortAr": "تنفيذه مرتين له نفس أثر تنفيذه مرة واحدة.",
+    "topicSlug": "arch-message-brokers"
+  },
+  {
+    "term": "dead-letter queue",
+    "arabic": "طابور الرسائل الميتة",
+    "shortEn": "A queue that collects messages that could not be processed.",
+    "shortAr": "طابور يجمع الرسائل التي تعذّرت معالجتها.",
+    "topicSlug": "arch-message-brokers"
+  }
+]
