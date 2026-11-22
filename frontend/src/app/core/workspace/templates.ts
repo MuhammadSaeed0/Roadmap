@@ -484,6 +484,41 @@ export function templatesFor(kind: WorkspaceKind): WorkspaceTemplate[] {
   return TEMPLATES.filter(t => t.kind === kind);
 }
 
+/** Tables of each SQL sample database (kept in step with runners/sql-datasets.ts by templates.spec.ts). */
+export const SQL_DATASET_TABLES: Record<'shop' | 'hr' | 'school', readonly string[]> = {
+  shop: ['categories', 'customers', 'orderlines', 'orders', 'products'],
+  hr: ['departments', 'employeeprojects', 'employees', 'projects'],
+  school: ['courses', 'enrollments', 'students', 'teachers'],
+};
+
+/** Words that follow FROM/JOIN and name something other than a table. */
+const NOT_TABLES = new Set(['select', 'values', 'openjson', 'string_split', 'inserted', 'deleted']);
+
+/**
+ * The playground template that runs a topic lesson's example as it is, or null when the code can't run in the browser.
+ * SQL picks the sample database whose tables the query uses; code that creates every table it uses starts empty; code
+ * that needs anything else (system views such as sys.indexes) gets no "try it" button. TypeScript and JavaScript need
+ * the lesson's printed output: without one the example is a fragment that would not run on its own.
+ */
+export function lessonTemplate(language: string | null | undefined, code: string | null | undefined, output?: string | null): string | null {
+  const lang = (language ?? '').toLowerCase();
+  if (!code?.trim()) return null;
+  if (lang === 'html') return 'web';
+  // TypeScript and JavaScript examples without a printed output are fragments (Angular classes, parts of a file).
+  if (['typescript', 'ts', 'javascript', 'js'].includes(lang) && !output?.trim()) return null;
+  if (lang !== 'sql') return templateForLanguage(lang);
+  const sql = code.replace(/--[^\n]*/g, '').replace(/\/\*[\s\S]*?\*\//g, ''); // comments are not code
+  const names = (pattern: RegExp) => new Set([...sql.matchAll(pattern)].map(m => m[1].toLowerCase()));
+  const created = names(/\bCREATE\s+(?:OR\s+ALTER\s+)?(?:TABLE|VIEW|PROC(?:EDURE)?|FUNCTION)\s+(?:dbo\.)?\[?(\w+)/gi);
+  const used = [...names(/\b(?:FROM|JOIN|INTO|UPDATE)\s+(?:dbo\.)?\[?(\w+)/gi)]
+    .filter(t => !created.has(t) && !NOT_TABLES.has(t) && !t.startsWith('@') && !t.startsWith('#'));
+  if (/\bsys\.\w+|INFORMATION_SCHEMA/i.test(sql)) return null;
+  if (used.length === 0) return created.size > 0 ? 'sql-empty' : null;
+  const dataset = (Object.keys(SQL_DATASET_TABLES) as (keyof typeof SQL_DATASET_TABLES)[])
+    .find(k => used.every(t => SQL_DATASET_TABLES[k].includes(t)));
+  return dataset ? `sql-${dataset}` : null;
+}
+
 /** The playground template that can run code written in this language (Project library steps), if any. */
 export function templateForLanguage(language: string | null | undefined): string | null {
   switch ((language ?? '').toLowerCase()) {

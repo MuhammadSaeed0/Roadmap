@@ -5,6 +5,7 @@ import { workspaceEn } from './workspace.en';
 
 export const workspaceAr: Widen<typeof workspaceEn> = {
   playground: {
+    backToLesson: 'رجوع للدرس',
     title: 'ساحة البرمجة', subtitle: 'بيئات برمجة داخل المتصفح لكل تقنية في خارطة الطريق. اكتب مشروعات متعددة الملفات وشغّلها واحفظها.',
     securityNote: 'يعمل كودك داخل متصفحك أنت في بيئة معزولة، ولا يعمل أبدًا على الخادم ولا يستطيع الوصول إلى حسابك. يُحمَّل مترجم C# مرة واحدة (نحو 9 ميجابايت) عند أول تشغيل لكود C#.',
     environments: 'البيئات', myProjects: 'مشروعاتي', noProjects: 'لا توجد مشروعات محفوظة بعد',

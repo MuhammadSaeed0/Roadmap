@@ -7,6 +7,7 @@ import { LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
 import { GlossaryTerm, Lesson } from '../../core/models';
 import { GlossaryService, TermSpan, markTerms, termMatcher } from '../../core/glossary';
+import { lessonTemplate } from '../../core/workspace/templates';
 import { CodeBlockComponent } from '../../shared/code-block.component';
 import { IconComponent } from '../../shared/icon.component';
 
@@ -152,8 +153,9 @@ export function lessonBlocks(body: string): Block[] {
                 <button type="button" class="btn btn-ghost btn-sm" [disabled]="index() === 0" (click)="go(index() - 1)">
                   <app-icon name="chevron-left" [size]="14" class="flip-rtl" /> {{ 'common.previous' | t }}
                 </button>
-                @if (l.code && l.codeLanguage === 'csharp') {
-                  <a class="btn btn-secondary btn-sm" routerLink="/playground"><app-icon name="terminal" [size]="14" /> {{ 'tutorial.tryIt' | t }}</a>
+                @if (tryTemplate(l); as tpl) {
+                  <a class="btn btn-secondary btn-sm try-it" [routerLink]="['/playground/new', tpl]" [queryParams]="{ topic: topicId(), lesson: l.id }">
+                    <app-icon name="terminal" [size]="14" /> {{ 'tutorial.tryIt' | t }}</a>
                 }
                 <button type="button" class="btn btn-primary btn-sm" [disabled]="index() >= lessons().length - 1" (click)="go(index() + 1)">
                   {{ 'common.next' | t }} <app-icon name="chevron-right" [size]="14" class="flip-rtl" />
@@ -199,6 +201,11 @@ export class TopicTutorialComponent {
   protected go(i: number): void {
     this.open.set(null);
     this.index.set(Math.max(0, Math.min(i, this.lessons().length - 1)));
+  }
+
+  /** The playground template that runs this lesson's example, or null when it can't run in the browser. */
+  protected tryTemplate(l: Lesson): string | null {
+    return lessonTemplate(l.codeLanguage, l.code, l.output);
   }
 
   protected refId(block: number, term: GlossaryTerm): string {

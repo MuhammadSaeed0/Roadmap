@@ -69,6 +69,8 @@ export class IdeComponent implements OnDestroy {
   readonly runnable = input(true);
   /** Shown in the toolbar, e.g. "Saved" — the host page does the saving. */
   readonly saveLabel = input('');
+  /** Run the code once as soon as the editor is ready (opening a lesson's example from its topic page). */
+  readonly autoRun = input(false);
 
   /** Debounced copy of the files after every edit. */
   readonly changed = output<WorkspaceFile[]>();
@@ -196,6 +198,7 @@ export class IdeComponent implements OnDestroy {
     this.editorState.set('ready');
     if (this.engine() === 'csharp' && this.runnable()) this.runner.warmup('csharp');
     if (this.kind() === 'Sql') void this.refreshSchema(true);
+    if (this.autoRun() && this.runnable()) void this.run();
   }
 
   private load(files: WorkspaceFile[], entry: string | null): void {

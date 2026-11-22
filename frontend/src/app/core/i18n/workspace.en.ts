@@ -3,6 +3,7 @@
 
 export const workspaceEn = {
   playground: {
+    backToLesson: 'Back to the lesson',
     title: 'Code Playground', subtitle: 'Browser-based coding environments for every technology in the roadmap. Write, run and save multi-file projects.',
     securityNote: 'Your code runs inside your own browser, in an isolated sandbox: never on our server, and it can’t reach your account. The C# compiler downloads once (about 9 MB) the first time you run C#.',
     environments: 'Environments', myProjects: 'My projects', noProjects: 'No saved projects yet',

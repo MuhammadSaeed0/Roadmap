@@ -670,7 +670,7 @@ export const ar: Translations = {
       scale: { 0: 'غير موجود', 1: 'ضعيف', 2: 'مقبول', 3: 'جيد', 4: 'ممتاز' },
     },
   },
-  tutorial: { title: 'الشرح', lessons: 'الدروس', example: 'مثال', output: 'الناتج', tryIt: 'جرّبه في ساحة البرمجة' },
+  tutorial: { title: 'الشرح', lessons: 'الدروس', example: 'مثال', output: 'الناتج', tryIt: 'شغّل المثال في المحرر' },
   challenges: {
     title: 'التحديات', subtitle: 'تمارين تفحص نفسها. حلّها في المحرر واكسب النقاط',
     yourScore: 'نتيجتك', points: 'نقطة', solved: 'محلولة',
