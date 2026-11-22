@@ -59,6 +59,9 @@ describe('Landing page', () => {
     const images = [...el.querySelectorAll<HTMLImageElement>('.ld-shots img')];
     expect(images.length).toBe(4);
     expect(images.every(i => i.getAttribute('src')!.startsWith('marketing/') && i.getAttribute('loading') === 'lazy' && i.alt.length > 0)).toBe(true);
+    // Beginners can open the public Pre-Roadmap guide without an account, from the top and from its feature card.
+    expect(el.querySelectorAll('a[href="/pre-roadmap"]').length).toBe(2);
+    expect(el.querySelector('.ld-pre')?.textContent).toContain('Never coded before?');
   });
 
   it('opens in Arabic for a first visit from an Arabic browser', () => {
