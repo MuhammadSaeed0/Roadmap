@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../core/api.service';
+import { AuthService } from '../core/auth.service';
 import { I18nService } from '../core/i18n/i18n.service';
 import { FormatDatePipe, TranslatePipe } from '../core/i18n/pipes';
 import { NotificationDto } from '../core/models';
@@ -49,6 +50,7 @@ const POLL_MS = 60_000;
 })
 export class NotificationBellComponent {
   private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
   protected readonly i18n = inject(I18nService);
 
   protected readonly count = signal(0);
@@ -56,12 +58,14 @@ export class NotificationBellComponent {
   protected readonly open = signal(false);
 
   constructor() {
-    void this.refreshCount();
+    // As soon as the account is known (and again after signing in), fetch the count.
+    effect(() => { if (this.auth.account()) untracked(() => void this.refreshCount()); });
     const timer = setInterval(() => void this.refreshCount(), POLL_MS);
     inject(DestroyRef).onDestroy(() => clearInterval(timer));
   }
 
   private async refreshCount(): Promise<void> {
+    if (!this.auth.account()) return; // a visitor without an account has no notifications
     try { this.count.set((await this.api.unreadCount()).count); } catch { /* offline: keep the last count */ }
   }
 
