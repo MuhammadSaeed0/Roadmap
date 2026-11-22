@@ -65,7 +65,7 @@ export const en = {
     title: 'The API is offline', body: 'Start the backend with “dotnet run” in backend/DevPath.Api, then try again.', retry: 'Check again',
   },
   auth: {
-    signInTitle: 'Sign in to DevPath', signInBody: 'Welcome back. Pick up where you left off.',
+    newToCoding: 'Never coded before?', startPreRoadmap: 'Start with “Before the roadmap”', signInTitle: 'Sign in to DevPath', signInBody: 'Welcome back. Pick up where you left off.',
     signUpTitle: 'Create your account', signUpBody: 'Your progress, notes and saved videos stay private to your account.',
     forgotTitle: 'Reset your password', forgotBody: 'Enter your account email and we’ll send you a link to choose a new password.',
     resetTitle: 'Choose a new password', resetBody: 'Set a new password for {email}.', resetBodyGeneric: 'Choose a new password for your account.',
@@ -329,6 +329,7 @@ export const en = {
     practice: { name: 'Practice Lab', what: 'short exercises and challenges that check your code in the browser.', link: 'Practice Lab: quick exercises' },
   },
   landing: {
+    newToCoding: 'Never coded before?', startPreRoadmap: 'Start with “Before the roadmap”, free and no account needed.', readFree: 'Read it now, no account needed',
     metaDescription: 'Learn to code from zero to your first developer job with a free .NET and Angular roadmap in English and Arabic: 166 topics, 178 exercises, 66 projects.',
     tabTitle: 'DevPath: learn .NET and Angular step by step',
     kicker: 'Free · in English and Arabic',

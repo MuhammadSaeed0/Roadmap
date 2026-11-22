@@ -7,6 +7,8 @@
     <a class="btn btn-ghost" routerLink="/sign-in">{{ 'landing.signIn' | t }}</a>
   </div>
   <p class="ld-note muted small">{{ 'landing.free' | t }}</p>
+  <p class="ld-pre"><app-icon name="compass" [size]="16" /> {{ 'landing.newToCoding' | t }}
+    <a routerLink="/pre-roadmap">{{ 'landing.startPreRoadmap' | t }}</a></p>
 </section>
 
 <section class="ld-facts" [attr.aria-label]="'landing.factsLabel' | t">
@@ -44,6 +46,7 @@
         <div>
           <h3>{{ 'landing.features.' + f.key + '.title' | t }}</h3>
           <p>{{ 'landing.features.' + f.key + '.body' | t }}</p>
+          @if (f.key === 'preRoadmap') { <a class="ld-feature-link small" routerLink="/pre-roadmap">{{ 'landing.readFree' | t }}</a> }
         </div>
       </li>
     }

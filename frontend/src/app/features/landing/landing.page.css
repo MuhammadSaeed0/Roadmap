@@ -10,6 +10,9 @@ h3 { font-size: 1rem; margin: 0 0 4px; }
 .ld-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 .ld-cta { padding-inline: 24px; }
 .ld-note { margin: 12px 0 0; }
+.ld-pre { margin: 16px 0 0; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.ld-pre .icon { color: var(--accent); }
+.ld-feature-link { display: inline-block; margin-top: 6px; font-weight: 600; }
 
 .ld-facts dl {
   margin: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px;

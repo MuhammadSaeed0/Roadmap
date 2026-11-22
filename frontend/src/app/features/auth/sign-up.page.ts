@@ -83,6 +83,10 @@ type Field = 'fullName' | 'email' | 'password' | 'confirmPassword';
           {{ 'auth.haveAccount' | t }}
           <a routerLink="/sign-in" [queryParams]="returnParams">{{ 'auth.signInLink' | t }}</a>
         </p>
+        <p class="auth-switch auth-pre">
+          {{ 'auth.newToCoding' | t }}
+          <a routerLink="/pre-roadmap">{{ 'auth.startPreRoadmap' | t }}</a>
+        </p>
     </app-auth-card>
   `,
 })
