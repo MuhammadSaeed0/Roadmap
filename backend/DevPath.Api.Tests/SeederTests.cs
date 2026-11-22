@@ -63,12 +63,35 @@ public class SeederTests : IAsyncLifetime
         Assert.All(await _db.CuratedVideos.Select(v => v.VideoId).ToListAsync(), id => Assert.True(DevPath.Api.Services.YouTubeIds.IsValid(id)));
         // Every project task has videos, and every topic has a quiz with a valid answer for each question.
         Assert.False(await _db.ProjectTasks.AnyAsync(t => !_db.ProjectTaskVideos.Any(v => v.ProjectTaskId == t.Id)));
-        Assert.False(await _db.Topics.AnyAsync(t => _db.QuizQuestions.Count(q => q.TopicId == t.Id) < 3));
+        // A bank of 8 per topic, so each level-1 attempt (5 questions) draws a different set.
+        Assert.False(await _db.Topics.AnyAsync(t => _db.QuizQuestions.Count(q => q.TopicId == t.Id) < 8));
         Assert.All(await _db.QuizQuestions.ToListAsync(), q =>
         {
             Assert.Equal(q.OptionsEn.Count, q.OptionsAr.Count);
             Assert.InRange(q.AnswerIndex, 0, q.OptionsEn.Count - 1);
+            Assert.Equal(q.OptionsEn.Count, q.OptionsEn.Distinct().Count());
+            Assert.Equal(q.OptionsAr.Count, q.OptionsAr.Distinct().Count());
         });
+    }
+
+    /// <summary>
+    /// The right answer must not give itself away by length: when it is a phrase, it may not be clearly longer than
+    /// every wrong option (the wrong ones used to be a word or two next to a full sentence).
+    /// </summary>
+    [Fact]
+    public async Task Quiz_answers_are_not_the_obviously_longest_option()
+    {
+        static bool GivesAway(IReadOnlyList<string> options, int answer)
+        {
+            var right = options[answer].Length;
+            var longestWrong = options.Where((_, i) => i != answer).Max(o => o.Length);
+            return right >= 20 && right > longestWrong * 1.15 + 4;
+        }
+        await Seeder().SeedAsync();
+        var offenders = (await _db.QuizQuestions.ToListAsync())
+            .Where(q => GivesAway(q.OptionsEn, q.AnswerIndex) || GivesAway(q.OptionsAr, q.AnswerIndex))
+            .Select(q => q.Key).ToList();
+        Assert.True(offenders.Count == 0, "Answers stand out by length: " + string.Join(", ", offenders.Take(10)));
     }
 
     [Fact]

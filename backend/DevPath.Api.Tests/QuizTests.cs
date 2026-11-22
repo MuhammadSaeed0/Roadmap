@@ -51,6 +51,24 @@ public class QuizTests(ApiFactory factory) : IClassFixture<ApiFactory>
     }
 
     [Fact]
+    public async Task Level_one_draws_five_questions_from_a_bigger_bank()
+    {
+        var client = await factory.CreateUserClientAsync();
+        var (_, topic) = await TopicIdsAsync();
+        var seen = new HashSet<int>();
+        for (var i = 0; i < 12; i++)
+        {
+            var quiz = await Json(await client.GetAsync($"/api/topics/{topic}/quiz?level=1"));
+            var ids = quiz["questions"]!.AsArray().Select(q => q!["id"]!.GetValue<int>()).ToList();
+            Assert.Equal(5, ids.Count);
+            Assert.Equal(5, quiz["levels"]!.AsArray()[0]!["questionCount"]!.GetValue<int>());
+            seen.UnionWith(ids);
+        }
+        // Twelve draws of 5 from 8 cover more than one fixed set (the chance they don't is negligible).
+        Assert.True(seen.Count > 5, $"only {seen.Count} distinct questions were served");
+    }
+
+    [Fact]
     public async Task Answers_are_graded_and_levels_unlock_in_order()
     {
         var client = await factory.CreateUserClientAsync();
