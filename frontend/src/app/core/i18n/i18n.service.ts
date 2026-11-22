@@ -59,16 +59,20 @@ export class I18nService {
       const description = this.t(this.descriptionKey() ?? 'app.description');
       this.meta.updateTag({ name: 'description', content: description });
       this.title.setTitle(!name || name === page ? app : name.includes(app) ? name : `${name} · ${app}`);
-      try { localStorage.setItem(STORAGE_KEY, lang); } catch { /* storage unavailable: preference just isn't remembered */ }
     });
   }
 
+  /**
+   * The visitor's own choice: shown at once and remembered. A language picked from the browser on the first visit is
+   * not saved, so it keeps following the browser until the visitor chooses.
+   */
   setLang(lang: Lang): void {
     this.lang.set(lang);
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch { /* storage unavailable: preference just isn't remembered */ }
   }
 
   toggle(): void {
-    this.lang.update(l => (l === 'en' ? 'ar' : 'en'));
+    this.setLang(this.lang() === 'en' ? 'ar' : 'en');
   }
 
   /** Translate a dotted key such as "nav.dashboard", replacing {placeholders}. */
