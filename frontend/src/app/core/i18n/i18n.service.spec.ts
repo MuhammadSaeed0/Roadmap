@@ -30,6 +30,42 @@ describe('I18nService', () => {
     expect(localStorage.getItem('devpath.lang')).toBe('ar');
   });
 
+  describe('first visit', () => {
+    function browserLanguages(language: string, languages: string[] = [language]): void {
+      vi.spyOn(navigator, 'language', 'get').mockReturnValue(language);
+      vi.spyOn(navigator, 'languages', 'get').mockReturnValue(languages);
+    }
+    afterEach(() => vi.restoreAllMocks());
+
+    it('uses Arabic when nothing is saved and the browser prefers Arabic', () => {
+      browserLanguages('ar-EG');
+      const i18n = create();
+      expect(i18n.lang()).toBe('ar');
+      expect(document.documentElement.dir).toBe('rtl');
+      // Detected, not chosen: nothing is saved until the visitor picks a language.
+      expect(localStorage.getItem('devpath.lang')).toBeNull();
+    });
+
+    it('finds Arabic anywhere in the browser preference list', () => {
+      browserLanguages('en-US', ['en-US', 'ar']);
+      expect(create().lang()).toBe('ar');
+    });
+
+    it('uses English for any other browser language', () => {
+      browserLanguages('fr-FR');
+      expect(create().lang()).toBe('en');
+    });
+
+    it('keeps a saved choice even when the browser prefers Arabic', () => {
+      browserLanguages('ar');
+      localStorage.setItem('devpath.lang', 'en');
+      const i18n = create();
+      expect(i18n.lang()).toBe('en');
+      expect(document.documentElement.dir).toBe('ltr');
+      expect(localStorage.getItem('devpath.lang')).toBe('en');
+    });
+  });
+
   it('restores the saved language on the next visit', () => {
     localStorage.setItem('devpath.lang', 'ar');
     expect(create().lang()).toBe('ar');
