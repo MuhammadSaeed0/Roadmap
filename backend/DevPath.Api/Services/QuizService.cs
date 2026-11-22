@@ -7,13 +7,14 @@ namespace DevPath.Api.Services;
 
 /// <summary>
 /// Short multiple-choice quizzes on a topic page, in three levels that open one after another:
-/// 1. the topic itself; 2. the topic mixed with the topics just before it in the roadmap;
+/// 1. the topic itself (a different draw from the topic's question bank each time); 2. the topic mixed with the topics just before it in the roadmap;
 /// 3. a wider review of the topics leading up to it. Questions are served without their answers
 /// and graded here, so the correct options never reach the browser before the user answers.
 /// </summary>
 public class QuizService(AppDbContext db, TimeProvider clock)
 {
     public const int PassPercent = 75;
+    private const int Level1Size = 5;      // drawn from the topic's bank (8 questions), so attempts differ
     private const int Level2Size = 6;
     private const int Level2Previous = 3;   // topics before this one that level 2 draws from
     private const int Level3Size = 10;
@@ -92,7 +93,7 @@ public class QuizService(AppDbContext db, TimeProvider clock)
         }
 
         var current = Of([topicId]);
-        var pools = new Dictionary<int, Pool> { [1] = new(1, current.Count, current, []) };
+        var pools = new Dictionary<int, Pool> { [1] = new(1, Math.Min(Level1Size, current.Count), current, []) };
         var prev2 = Of(previous3);
         if (prev2.Count > 0 && current.Count > 0)
             pools[2] = new(2, Math.Min(Level2Size, Math.Min(current.Count, CurrentTopicShare) + prev2.Count), current, prev2);
@@ -133,11 +134,11 @@ public class QuizService(AppDbContext db, TimeProvider clock)
         return pool;
     }
 
-    /// <summary>Level 1: every question of the topic, in a new order each time. Levels 2 and 3: a couple from this topic plus a spread over earlier topics.</summary>
+    /// <summary>Level 1: a random draw from the topic's questions, in a new order each time. Levels 2 and 3: a couple from this topic plus a spread over earlier topics.</summary>
     private static List<QuizQuestion> Pick(Pool pool, List<QuizQuestion> questions)
     {
         var byId = questions.ToDictionary(q => q.Id);
-        if (pool.Level == 1) return Shuffle(pool.CurrentIds).Select(id => byId[id]).ToList();
+        if (pool.Level == 1) return Shuffle(pool.CurrentIds).Take(pool.Size).Select(id => byId[id]).ToList();
 
         var current = Shuffle(pool.CurrentIds).Take(CurrentTopicShare);
         // Round-robin over earlier topics so one topic doesn't dominate the review.

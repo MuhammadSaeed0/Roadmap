@@ -224,6 +224,8 @@ export const en = {
     failed: 'Not quite yet. Review the explanations, then try again.',
     correct: 'Correct', wrong: 'Not correct', correctAnswer: 'Correct answer: {answer}',
     retry: 'Try again', nextLevel: 'Go to the next level', allDone: 'You passed every level for this topic.',
+    submitFailed: 'Your answers couldn’t be sent. They are still here: try again.', resend: 'Send again',
+    changed: 'These questions were updated since you opened the quiz. Here is a fresh set.',
   },
   validation: {
     required: 'This field is required.', maxLength: 'Use at most {max} characters.', min: 'The minimum is {min}.',

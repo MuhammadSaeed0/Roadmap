@@ -63,7 +63,8 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
                   <span class="quiz-q" [innerHTML]="bidi(question | loc: 'question')"></span>
                 </legend>
                 <div class="quiz-options">
-                  @for (option of options(question); track $index; let o = $index) {
+                  @for (o of orderOf(question); track o) {
+                    @let option = options(question)[o];
                     <label class="quiz-option" [class.chosen]="answers()[question.id] === o"
                            [class.is-correct]="resultFor(question.id)?.correctIndex === o"
                            [class.is-wrong]="resultFor(question.id) && answers()[question.id] === o && !resultFor(question.id)!.isCorrect">
@@ -98,9 +99,16 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
             <button type="button" class="btn btn-secondary" (click)="open(level())"><app-icon name="refresh" [size]="14" /> {{ 'quiz.retry' | t }}</button>
           </div>
         } @else {
+          @if (submitError(); as err) {
+            <div class="callout callout-warn" role="alert">
+              <app-icon name="alert" />
+              <span>{{ 'quiz.submitFailed' | t }} <span class="muted small">{{ errorText(err) }}</span></span>
+            </div>
+          }
+          @if (changedNote()) { <p class="callout callout-info" role="status"><app-icon name="info" /> {{ 'quiz.changed' | t }}</p> }
           <div class="row-gap">
             <button type="button" class="btn btn-primary" [disabled]="!allAnswered() || busy()" (click)="submit()">
-              @if (busy()) { <app-icon name="refresh" class="spin" [size]="14" /> } {{ 'quiz.submit' | t }}
+              @if (busy()) { <app-icon name="refresh" class="spin" [size]="14" /> } {{ (submitError() ? 'quiz.resend' : 'quiz.submit') | t }}
             </button>
             @if (!allAnswered()) { <span class="muted small">{{ 'quiz.answerAll' | t: { total: q.questions.length } }}</span> }
           </div>
@@ -123,6 +131,11 @@ export class TopicQuizComponent {
   protected readonly loading = signal(false);
   protected readonly busy = signal(false);
   protected readonly error = signal<ApiError | null>(null);
+  /** A failed submission: the answers stay on screen and can be sent again. */
+  protected readonly submitError = signal<ApiError | null>(null);
+  protected readonly changedNote = signal(false);
+  /** The order each question's options are shown in (indexes into the option list), shuffled per quiz. */
+  private readonly optionOrder = signal<Record<number, number[]>>({});
 
   protected readonly passPercent = computed(() => this.quiz()?.passPercent ?? 75);
   protected readonly allAnswered = computed(() => {
@@ -152,6 +165,14 @@ export class TopicQuizComponent {
     return this.i18n.lang() === 'ar' ? question.optionsAr : question.optionsEn;
   }
 
+  protected orderOf(question: QuizQuestion): number[] {
+    return this.optionOrder()[question.id] ?? question.optionsEn.map((_, i) => i);
+  }
+
+  protected errorText(error: ApiError): string {
+    return this.i18n.errorMessage(error);
+  }
+
   protected resultFor(questionId: number): QuizResultItem | undefined {
     return this.results().get(questionId);
   }
@@ -162,8 +183,10 @@ export class TopicQuizComponent {
   }
 
   /** Loads a fresh set of questions for a level (also used for "try again"). */
-  protected async open(level: QuizLevel): Promise<void> {
+  protected async open(level: QuizLevel, changed = false): Promise<void> {
     const id = ++this.requestId;
+    this.submitError.set(null);
+    this.changedNote.set(changed);
     this.level.set(level);
     this.loading.set(true);
     this.error.set(null);
@@ -172,6 +195,7 @@ export class TopicQuizComponent {
     try {
       const quiz = await this.api.quiz(this.topicId(), level);
       if (id !== this.requestId) return;
+      this.optionOrder.set(Object.fromEntries(quiz.questions.map((q) => [q.id, shuffled(q.optionsEn.map((_, i) => i))])));
       this.quiz.set(quiz);
       this.levels.set(quiz.levels);
     } catch (e) {
@@ -185,16 +209,41 @@ export class TopicQuizComponent {
     const quiz = this.quiz();
     if (!quiz || !this.allAnswered()) return;
     this.busy.set(true);
-    this.error.set(null);
+    this.submitError.set(null);
+    const answers = quiz.questions.map((q) => ({ questionId: q.id, choice: this.answers()[q.id] }));
     try {
-      const answers = quiz.questions.map((q) => ({ questionId: q.id, choice: this.answers()[q.id] }));
-      const result = await this.api.submitQuiz(this.topicId(), quiz.level, answers);
+      let result: QuizResult;
+      try {
+        result = await this.api.submitQuiz(this.topicId(), quiz.level, answers);
+      } catch (e) {
+        // A dropped connection or a server waking up: one quiet retry before telling the learner.
+        if (!isTransient(ApiError.from(e))) throw e;
+        await new Promise((r) => setTimeout(r, 1500));
+        result = await this.api.submitQuiz(this.topicId(), quiz.level, answers);
+      }
       this.result.set(result);
       this.levels.set(result.levels);
+      this.changedNote.set(false);
     } catch (e) {
-      this.error.set(ApiError.from(e));
+      const err = ApiError.from(e);
+      // The questions changed on the server (new content was published) while this quiz was open.
+      if (err.code === 'quiz_invalid_answers') { this.busy.set(false); await this.open(quiz.level, true); return; }
+      this.submitError.set(err);
     } finally {
       this.busy.set(false);
     }
   }
+}
+
+function isTransient(error: ApiError): boolean {
+  return error.status === 0 || error.status === 502 || error.status === 503 || error.status === 504;
+}
+
+function shuffled<T>(items: T[]): T[] {
+  const list = [...items];
+  for (let i = list.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [list[i], list[j]] = [list[j], list[i]];
+  }
+  return list;
 }
