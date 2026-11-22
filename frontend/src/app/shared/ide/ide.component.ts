@@ -31,6 +31,17 @@ export interface TestSummary { passed: number; total: number; }
 const ENGINE: Partial<Record<WorkspaceKind, RunnerEngine>> = { CSharp: 'csharp', Sql: 'sql', JavaScript: 'javascript', TypeScript: 'javascript' };
 const PREVIEW: Partial<Record<WorkspaceKind, string>> = { Web: 'runners/preview/web.html', Angular: 'runners/preview/angular.html' };
 let instances = 0;
+
+const SIDEBAR_KEY = 'devpath.ide.sidebarCollapsed';
+const KIND_ICONS: Record<string, string> = { CSharp: 'code', Sql: 'database', JavaScript: 'terminal', TypeScript: 'terminal', Web: 'globe', Angular: 'layers' };
+/** Up to this width the workspace shows one pane at a time (keep in step with the 900px rules in styles.css). */
+const isNarrow = () => typeof matchMedia === 'function' && matchMedia('(max-width: 900px)').matches;
+function readFlag(key: string): boolean {
+  try { return localStorage.getItem(key) === '1'; } catch { return false; }
+}
+function writeFlag(key: string, on: boolean): void {
+  try { if (on) localStorage.setItem(key, '1'); else localStorage.removeItem(key); } catch { /* storage blocked: not remembered */ }
+}
 let angularTypes: Promise<void> | null = null;
 
 /**
@@ -100,6 +111,13 @@ export class IdeComponent implements OnDestroy {
   protected readonly stdin = signal('');
   protected readonly fullscreen = signal(false);
   protected readonly explorerOpen = signal(true);
+  /** Wide screens: the file explorer folded away for more editing room (remembered in this browser). */
+  protected readonly sidebarCollapsed = signal(readFlag(SIDEBAR_KEY));
+  /** Narrow screens show one pane at a time: the code, the output panel or the preview. */
+  protected readonly mobileView = signal<'code' | 'output' | 'preview'>('code');
+  /** Cursor position for the status bar. */
+  protected readonly cursor = signal<{ line: number; column: number } | null>(null);
+  protected readonly activeLanguage = computed(() => languageOf(this.active() ?? ''));
   protected readonly lastRun = signal<{ ms: number; ok: boolean } | null>(null);
   /** Inline "new file / new folder / rename" input in the explorer. */
   protected readonly naming = signal<{ action: 'newFile' | 'newFolder' | 'rename'; parent: string; from?: string } | null>(null);
@@ -185,7 +203,12 @@ export class IdeComponent implements OnDestroy {
         fontSize: 14, tabSize: 4, scrollBeyondLastLine: false, theme: this.theme.resolved() === 'dark' ? 'vs-dark' : 'vs',
         readOnly: this.readonly(), renderWhitespace: 'selection', bracketPairColorization: { enabled: true },
         fixedOverflowWidgets: true, ariaLabel: this.i18n.t('ide.editorLabel'),
+        lineHeight: 21, padding: { top: 12, bottom: 12 }, lineNumbersMinChars: 3,
+        cursorBlinking: 'smooth', cursorSmoothCaretAnimation: 'on', smoothScrolling: true, renderLineHighlight: 'all',
+        roundedSelection: true, scrollbar: { verticalScrollbarSize: 10, horizontalScrollbarSize: 10, useShadows: false },
+        guides: { indentation: true, bracketPairs: false }, overviewRulerBorder: false, hideCursorInOverviewRuler: true,
       });
+      this.editor.onDidChangeCursorPosition(e => this.zone.run(() => this.cursor.set({ line: e.position.lineNumber, column: e.position.column })));
       this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => this.zone.run(() => void this.run()));
       this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => this.zone.run(() => void this.runTests()));
       this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => this.zone.run(() => this.saveRequested.emit(this.workspace())));
@@ -346,7 +369,24 @@ export class IdeComponent implements OnDestroy {
     } finally {
       this.running.set(false);
       this.lastRun.set({ ms: Math.round(performance.now() - started), ok });
+      // On a phone the result replaces the code, so the learner sees it without scrolling.
+      if (isNarrow()) this.mobileView.set(this.hasPreview() ? 'preview' : 'output');
     }
+  }
+
+  protected kindIcon(): string {
+    return KIND_ICONS[this.kind()] ?? 'code';
+  }
+
+  protected isNarrowNow(): boolean {
+    return isNarrow();
+  }
+
+  /** The explorer button: a drawer on narrow screens, a fold-away column on wide ones. */
+  protected toggleSidebar(): void {
+    if (isNarrow()) { this.explorerOpen.update(v => !v); return; }
+    this.sidebarCollapsed.update(v => !v);
+    writeFlag(SIDEBAR_KEY, this.sidebarCollapsed());
   }
 
   protected async runTests(): Promise<void> {
@@ -378,6 +418,7 @@ export class IdeComponent implements OnDestroy {
       this.reportRunError(e);
     } finally {
       this.running.set(false);
+      if (isNarrow()) this.mobileView.set('output');
     }
   }
 

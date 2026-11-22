@@ -27,6 +27,7 @@ export const workspaceAr: Widen<typeof workspaceEn> = {
     },
   },
   ide: {
+    views: 'أقسام مساحة العمل', viewCode: 'الكود', statusBar: 'شريط الحالة', cursorAt: 'سطر {line}، عمود {column}', errorsCount: 'الأخطاء: {n}', runHint: 'للتشغيل اضغط Ctrl+Enter',
     toolbar: 'أدوات المحرر', explorer: 'الملفات', run: 'تشغيل', preview: 'تشغيل المعاينة', stop: 'إيقاف', runTests: 'تشغيل الفحوص',
     runShortcut: 'تشغيل (Ctrl+Enter)', testsShortcut: 'تشغيل الفحوص التلقائية (Ctrl+Shift+Enter)', running: 'جارٍ التشغيل…',
     engineLoading: {

@@ -1,49 +1,68 @@
 <div class="ide-toolbar" role="toolbar" [attr.aria-label]="'ide.toolbar' | t">
-  <button type="button" class="icon-btn ide-explorer-toggle" (click)="explorerOpen.set(!explorerOpen())"
-          [attr.aria-expanded]="explorerOpen()" [attr.aria-controls]="'ide-sidebar-' + id" [title]="'ide.explorer' | t" [attr.aria-label]="'ide.explorer' | t">
-    <app-icon name="folder" [size]="16" />
-  </button>
-  @if (!runnable()) {
-    <span class="chip chip-sm chip-ghost" [title]="'ide.notRunnableHint' | t"><app-icon name="info" [size]="13" /> {{ 'ide.notRunnable' | t }}</span>
-  } @else if (running()) {
-    <button type="button" class="btn btn-sm btn-danger" (click)="stop()"><app-icon name="stop" [size]="14" /> {{ 'ide.stop' | t }}</button>
-  } @else {
-    <button type="button" class="btn btn-sm btn-primary" (click)="run()" [disabled]="editorState() !== 'ready'" [title]="'ide.runShortcut' | t">
-      <app-icon name="play" [size]="14" /> {{ (hasPreview() ? 'ide.preview' : 'ide.run') | t }}
+  <div class="ide-toolbar-start">
+    <button type="button" class="icon-btn ide-explorer-toggle" (click)="toggleSidebar()"
+            [attr.aria-expanded]="isNarrowNow() ? explorerOpen() : !sidebarCollapsed()" [attr.aria-controls]="'ide-sidebar-' + id"
+            [title]="'ide.explorer' | t" [attr.aria-label]="'ide.explorer' | t">
+      <app-icon name="sidebar" [size]="16" />
     </button>
-  }
-  @if (hasTests()) {
-    <button type="button" class="btn btn-sm btn-secondary" (click)="runTests()" [disabled]="running() || editorState() !== 'ready'" [title]="'ide.testsShortcut' | t">
-      <app-icon name="flask" [size]="14" /> {{ 'ide.runTests' | t }}
-    </button>
-  }
-  <span class="ide-status small muted" aria-live="polite">
-    @switch (engineStatus()) {
-      @case ('loading') { <app-icon name="refresh" class="spin" [size]="13" /> {{ ('ide.engineLoading.' + kind()) | t }} }
-      @case ('running') { <app-icon name="refresh" class="spin" [size]="13" /> {{ 'ide.running' | t }} }
-      @case ('failed') { <span class="text-danger">{{ 'ide.engineFailed' | t }}</span> }
-      @default {
-        @if (lastRun(); as r) { {{ (r.ok ? 'ide.lastRunOk' : 'ide.lastRunFailed') | t: { ms: r.ms } }} }
+    <span class="ide-kind"><span class="ide-kind-icon"><app-icon [name]="kindIcon()" [size]="14" /></span><span class="ide-kind-label">{{ ('playground.kind.' + kind()) | t }}</span></span>
+    <span class="ide-status" aria-live="polite"
+          [attr.data-state]="engineStatus() === 'loading' || engineStatus() === 'running' ? 'busy' : engineStatus() === 'failed' ? 'failed' : lastRun() ? (lastRun()!.ok ? 'ok' : 'failed') : 'idle'">
+      @switch (engineStatus()) {
+        @case ('loading') { <app-icon name="refresh" class="spin" [size]="12" /> {{ ('ide.engineLoading.' + kind()) | t }} }
+        @case ('running') { <app-icon name="refresh" class="spin" [size]="12" /> {{ 'ide.running' | t }} }
+        @case ('failed') { <span class="ide-dot"></span> {{ 'ide.engineFailed' | t }} }
+        @default {
+          @if (lastRun(); as r) { <span class="ide-dot"></span> {{ (r.ok ? 'ide.lastRunOk' : 'ide.lastRunFailed') | t: { ms: r.ms } }} }
+        }
       }
+    </span>
+  </div>
+  <div class="ide-toolbar-end">
+    @if (saveLabel()) { <span class="ide-save" aria-live="polite">{{ saveLabel() }}</span> }
+    <div class="ide-actions">
+      @if (canFormat()) {
+        <button type="button" class="icon-btn" (click)="format()" [title]="'ide.format' | t" [attr.aria-label]="'ide.format' | t"><app-icon name="format" [size]="16" /></button>
+      }
+      @if (!readonly()) {
+        <button type="button" class="icon-btn" (click)="chooseImport()" [title]="'ide.import' | t" [attr.aria-label]="'ide.import' | t"><app-icon name="upload" [size]="16" /></button>
+      }
+      <button type="button" class="icon-btn" (click)="download()" [title]="'ide.download' | t" [attr.aria-label]="'ide.download' | t"><app-icon name="download" [size]="16" /></button>
+      <button type="button" class="icon-btn" (click)="toggleFullscreen()" [title]="(fullscreen() ? 'ide.exitFullscreen' : 'ide.fullscreen') | t"
+              [attr.aria-label]="(fullscreen() ? 'ide.exitFullscreen' : 'ide.fullscreen') | t" [attr.aria-pressed]="fullscreen()">
+        <app-icon [name]="fullscreen() ? 'minimize' : 'maximize'" [size]="16" />
+      </button>
+    </div>
+    @if (hasTests()) {
+      <button type="button" class="btn btn-sm btn-secondary" (click)="runTests()" [disabled]="running() || editorState() !== 'ready'" [title]="'ide.testsShortcut' | t">
+        <app-icon name="flask" [size]="14" /> {{ 'ide.runTests' | t }}
+      </button>
     }
-  </span>
-  <span class="grow"></span>
-  @if (saveLabel()) { <span class="ide-save small muted" aria-live="polite">{{ saveLabel() }}</span> }
-  @if (canFormat()) {
-    <button type="button" class="icon-btn" (click)="format()" [title]="'ide.format' | t" [attr.aria-label]="'ide.format' | t"><app-icon name="format" [size]="16" /></button>
-  }
-  <button type="button" class="icon-btn" (click)="download()" [title]="'ide.download' | t" [attr.aria-label]="'ide.download' | t"><app-icon name="download" [size]="16" /></button>
-  @if (!readonly()) {
-    <button type="button" class="icon-btn" (click)="chooseImport()" [title]="'ide.import' | t" [attr.aria-label]="'ide.import' | t"><app-icon name="upload" [size]="16" /></button>
-  }
-  <button type="button" class="icon-btn" (click)="toggleFullscreen()" [title]="(fullscreen() ? 'ide.exitFullscreen' : 'ide.fullscreen') | t"
-          [attr.aria-label]="(fullscreen() ? 'ide.exitFullscreen' : 'ide.fullscreen') | t" [attr.aria-pressed]="fullscreen()">
-    <app-icon [name]="fullscreen() ? 'minimize' : 'maximize'" [size]="16" />
-  </button>
+    @if (!runnable()) {
+      <span class="chip chip-sm chip-ghost" [title]="'ide.notRunnableHint' | t"><app-icon name="info" [size]="13" /> {{ 'ide.notRunnable' | t }}</span>
+    } @else if (running()) {
+      <button type="button" class="btn btn-sm btn-danger ide-run" (click)="stop()"><app-icon name="stop" [size]="14" /> {{ 'ide.stop' | t }}</button>
+    } @else {
+      <button type="button" class="btn btn-sm btn-primary ide-run" (click)="run()" [disabled]="editorState() !== 'ready'" [title]="'ide.runShortcut' | t">
+        <app-icon name="play" [size]="14" /> {{ (hasPreview() ? 'ide.preview' : 'ide.run') | t }}
+      </button>
+    }
+  </div>
   <input #importInput type="file" hidden accept=".zip,.cs,.sql,.ts,.js,.html,.css,.scss,.json,.md,.txt" (change)="importFiles($event)">
 </div>
 
-<div class="ide-body">
+<!-- Narrow screens: one pane at a time. -->
+<div class="ide-views" role="tablist" [attr.aria-label]="'ide.views' | t">
+  <button type="button" role="tab" [attr.aria-selected]="mobileView() === 'code'" (click)="mobileView.set('code')"><app-icon name="code" [size]="14" /> {{ 'ide.viewCode' | t }}</button>
+  <button type="button" role="tab" [attr.aria-selected]="mobileView() === 'output'" (click)="mobileView.set('output')">
+    <app-icon name="terminal" [size]="14" /> {{ 'ide.output' | t }}@if (errorCount()) { <span class="badge badge-danger">{{ errorCount() }}</span> }
+  </button>
+  @if (hasPreview()) {
+    <button type="button" role="tab" [attr.aria-selected]="mobileView() === 'preview'" (click)="mobileView.set('preview')"><app-icon name="globe" [size]="14" /> {{ 'ide.previewPane' | t }}</button>
+  }
+</div>
+
+<div class="ide-body" [attr.data-view]="mobileView()" [class.sidebar-collapsed]="sidebarCollapsed()">
   <aside class="ide-sidebar" [id]="'ide-sidebar-' + id" [class.open]="explorerOpen()" [attr.aria-label]="'ide.explorer' | t">
     @if (kind() === 'Sql') {
       <div class="segmented ide-sidebar-tabs" role="tablist">
@@ -213,3 +232,12 @@
     </section>
   }
 </div>
+
+<footer class="ide-statusbar" [attr.aria-label]="'ide.statusBar' | t">
+  <span class="ide-sb-item"><app-icon [name]="kindIcon()" [size]="12" /> {{ ('playground.kind.' + kind()) | t }}</span>
+  @if (active(); as file) { <span class="ide-sb-item ide-sb-file" dir="ltr">{{ file }}</span> }
+  @if (cursor(); as c) { <span class="ide-sb-item" dir="ltr">{{ 'ide.cursorAt' | t: { line: c.line, column: c.column } }}</span> }
+  <span class="grow"></span>
+  @if (errorCount()) { <button type="button" class="ide-sb-item ide-sb-errors" (click)="panel.set('problems'); mobileView.set('output')">{{ 'ide.errorsCount' | t: { n: errorCount() } }}</button> }
+  @if (runnable()) { <span class="ide-sb-item ide-sb-hint">{{ 'ide.runHint' | t }}</span> }
+</footer>

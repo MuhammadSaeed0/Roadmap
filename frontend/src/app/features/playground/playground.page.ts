@@ -30,14 +30,21 @@ const KINDS: WorkspaceKind[] = ['CSharp', 'Sql', 'Angular', 'TypeScript', 'JavaS
       <div class="grid grid-3">
         @for (kind of kinds; track kind) {
           <article class="card env-card" [attr.data-kind]="kind">
-            <h3><span class="stat-icon"><app-icon [name]="icons[kind]" /></span> {{ ('playground.kind.' + kind) | t }}</h3>
-            <p class="muted small">{{ ('playground.kindInfo.' + kind) | t }}</p>
+            <header class="env-head">
+              <span class="env-icon"><app-icon [name]="icons[kind]" [size]="18" /></span>
+              <h3>{{ ('playground.kind.' + kind) | t }}</h3>
+              <span class="env-count">{{ templates(kind).length }}</span>
+            </header>
+            <p class="env-info">{{ ('playground.kindInfo.' + kind) | t }}</p>
             <ul class="env-templates">
               @for (tpl of templates(kind); track tpl.key) {
                 <li>
                   <a [routerLink]="['/playground/new', tpl.key]" class="env-template">
-                    <strong>{{ tpl | loc: 'name' }}</strong>
-                    <span class="small muted">{{ tpl | loc: 'description' }}</span>
+                    <span class="env-template-text">
+                      <strong>{{ tpl | loc: 'name' }}</strong>
+                      <span class="small muted">{{ tpl | loc: 'description' }}</span>
+                    </span>
+                    <app-icon name="chevron-right" [size]="16" class="env-go" />
                   </a>
                 </li>
               }
