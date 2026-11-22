@@ -203,7 +203,7 @@ export class IdeComponent implements OnDestroy {
         fontSize: 14, tabSize: 4, scrollBeyondLastLine: false, theme: this.theme.resolved() === 'dark' ? 'vs-dark' : 'vs',
         readOnly: this.readonly(), renderWhitespace: 'selection', bracketPairColorization: { enabled: true },
         fixedOverflowWidgets: true, ariaLabel: this.i18n.t('ide.editorLabel'),
-        lineHeight: 21, padding: { top: 12, bottom: 12 }, fontLigatures: true, lineNumbersMinChars: 3,
+        lineHeight: 21, padding: { top: 12, bottom: 12 }, lineNumbersMinChars: 3,
         cursorBlinking: 'smooth', cursorSmoothCaretAnimation: 'on', smoothScrolling: true, renderLineHighlight: 'all',
         roundedSelection: true, scrollbar: { verticalScrollbarSize: 10, horizontalScrollbarSize: 10, useShadows: false },
         guides: { indentation: true, bracketPairs: false }, overviewRulerBorder: false, hideCursorInOverviewRuler: true,
@@ -418,6 +418,7 @@ export class IdeComponent implements OnDestroy {
       this.reportRunError(e);
     } finally {
       this.running.set(false);
+      if (isNarrow()) this.mobileView.set('output');
     }
   }
 

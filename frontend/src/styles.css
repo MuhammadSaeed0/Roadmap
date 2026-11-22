@@ -1399,9 +1399,11 @@ fieldset:disabled .quiz-option { cursor: default; }
   .ide-toolbar { gap: 6px; min-height: 48px; padding: 6px; }
   .ide-toolbar .btn { min-height: 34px; font-size: 0.82rem; padding: 4px 12px; }
   .ide-run { min-width: 0; }
-  .ide-kind-label, .ide-save, .ide-status { display: none; }
+  .ide-kind, .ide-save, .ide-status { display: none; }
+  .ide-toolbar { flex-wrap: wrap; }
+  .ide-toolbar-end { flex: 1 1 auto; flex-wrap: wrap; justify-content: flex-end; row-gap: 6px; }
+  .ide-actions .icon-btn, .ide-explorer-toggle { width: 34px; height: 34px; }
   .ide-actions { border: 0; padding: 0; }
-  .ide-actions .icon-btn, .ide-explorer-toggle { width: 36px; height: 36px; }
   .ide-tab > button[role='tab'] { padding: 6px 3px 6px 10px; font-size: 0.76rem; }
   .ide-tab .icon-btn { opacity: 1; width: 24px; height: 24px; }
   .ide-panel-tabs > button[role='tab'] { padding: 6px 9px; font-size: 0.76rem; }
