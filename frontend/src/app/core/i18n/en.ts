@@ -380,7 +380,7 @@ export const en = {
   glossary: {
     title: 'Glossary', subtitle: 'The technical terms used in the lessons, in English and Arabic, each linked to the topic that explains it.',
     search: 'Search terms in English or Arabic…', order: 'Sort order', count: '{n} terms', empty: 'No term matches this search.',
-    letters: 'Jump to a letter', learnIt: 'Explained in',
+    explain: 'What does "{term}" mean?', letters: 'Jump to a letter', learnIt: 'Explained in',
   },
   preRoadmap: {
     title: 'Pre-Roadmap',
