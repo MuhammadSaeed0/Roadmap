@@ -25,6 +25,7 @@ export const workspaceEn = {
     },
   },
   ide: {
+    views: 'Workspace views', viewCode: 'Code', statusBar: 'Status bar', cursorAt: 'Ln {line}, Col {column}', errorsCount: '{n} errors', runHint: 'Ctrl+Enter to run',
     toolbar: 'Editor actions', explorer: 'Files', run: 'Run', preview: 'Run preview', stop: 'Stop', runTests: 'Run checks',
     runShortcut: 'Run (Ctrl+Enter)', testsShortcut: 'Run the automatic checks (Ctrl+Shift+Enter)', running: 'Running…',
     engineLoading: {

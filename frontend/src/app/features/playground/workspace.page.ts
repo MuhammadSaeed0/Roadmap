@@ -41,13 +41,13 @@ const DRAFT_PREFIX = 'devpath.playground.draft.';
             </form>
           } @else {
             <h1 class="workspace-name">{{ name() }}</h1>
-            <span class="chip chip-sm">{{ ('playground.kind.' + k) | t }}</span>
             @if (projectId()) {
               <button type="button" class="icon-btn" (click)="startRename()" [attr.aria-label]="'playground.rename' | t"><app-icon name="edit" [size]="15" /></button>
             }
           }
+          @if (!projectId()) { <p class="workspace-note"><app-icon name="info" [size]="13" /> {{ 'playground.draftNote' | t }}</p> }
         </div>
-        <div class="row-gap">
+        <div class="row-gap workspace-actions">
           @if (!projectId()) {
             <button type="button" class="btn btn-primary btn-sm" (click)="startRename()" data-tour="workspace-save"><app-icon name="check" [size]="14" /> {{ 'playground.saveProject' | t }}</button>
           }
@@ -68,7 +68,6 @@ const DRAFT_PREFIX = 'devpath.playground.draft.';
         <a routerLink="/playground" class="btn btn-secondary">{{ 'playground.title' | t }}</a>
       </app-empty-state>
     } @else if (kind(); as k) {
-      @if (!projectId()) { <p class="callout small">{{ 'playground.draftNote' | t }}</p> }
       <app-ide data-tour="workspace-ide" [kind]="k" [files]="files()" [entry]="entry()" [dataset]="dataset()" [name]="name()"
                [saveLabel]="saveLabel()" [autoRun]="autoRun()" (changed)="onChanged($event)" (saveRequested)="saveNow($event)" />
     }
