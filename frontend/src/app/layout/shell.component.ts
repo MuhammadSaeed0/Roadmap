@@ -261,6 +261,7 @@ export class ShellComponent {
       while (r.firstChild) r = r.firstChild;
       this.titleKey.set((r.snapshot.data['titleKey'] as string) ?? 'app.name');
       this.i18n.pageKey.set((r.snapshot.data['titleKey'] as string) ?? null);
+      this.i18n.descriptionKey.set((r.snapshot.data['descriptionKey'] as string) ?? null);
       this.authLayout.set(r.snapshot.data['layout'] === 'auth');
       this.deciding.set(false);
       // Each page borrows the look of a familiar app; styles in skins.css key off <html data-skin>.

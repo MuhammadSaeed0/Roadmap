@@ -52,6 +52,11 @@ export interface Phase {
   guidedProjects: GuidedProjectRef[];
 }
 export interface Roadmap { phases: Phase[]; currentPhaseId: number | null; }
+/** GET /catalog: the roadmap's names and ids for public pages. */
+export interface Catalog {
+  phases: { id: number; slug: string; order: number; titleEn: string; titleAr: string; topics: { id: number; slug: string; titleEn: string; titleAr: string }[] }[];
+  paths: { id: number; slug: string; nameEn: string; nameAr: string }[];
+}
 
 export interface Resource {
   id: number; key: string; titleEn: string; titleAr: string | null; url: string; sourceName: string;

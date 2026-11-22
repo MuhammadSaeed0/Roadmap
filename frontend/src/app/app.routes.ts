@@ -52,7 +52,7 @@ const appRoutes: Routes = [
 // Account pages use the minimal `auth` layout (no sidebar). guestGuard sends signed-in users to the app.
 const authRoutes: Routes = [
   { path: 'sign-in', loadComponent: () => import('./features/auth/sign-in.page'), data: { titleKey: 'auth.signInTitle' } },
-  { path: 'sign-up', loadComponent: () => import('./features/auth/sign-up.page'), data: { titleKey: 'auth.signUpTitle' } },
+  { path: 'sign-up', loadComponent: () => import('./features/auth/sign-up.page'), data: { titleKey: 'auth.signUpTitle', descriptionKey: 'landing.metaDescription' } },
   { path: 'forgot-password', loadComponent: () => import('./features/auth/forgot-password.page'), data: { titleKey: 'auth.forgotTitle' } },
   // Opened from the reset link (it carries a one-time token).
   { path: 'reset-password', loadComponent: () => import('./features/auth/reset-password.page'), data: { titleKey: 'auth.resetTitle' } },
@@ -64,7 +64,10 @@ const authRoutes: Routes = [
 export const routes: Routes = [
   // The public front page: "/" for a visitor without an account (signed-in learners fall through to the dashboard).
   { path: '', pathMatch: 'full', canMatch: [guestMatch], loadComponent: () => import('./features/landing/landing.page'),
-    data: { titleKey: 'landing.tabTitle', layout: 'auth', skin: 'bird' } },
+    data: { titleKey: 'landing.tabTitle', descriptionKey: 'landing.metaDescription', layout: 'auth', skin: 'bird' } },
+  // The Pre-Roadmap guide is readable without an account (public layout); signed-in learners get the app route below.
+  { path: 'pre-roadmap', canMatch: [guestMatch], loadComponent: () => import('./features/pre-roadmap/pre-roadmap.page'),
+    data: { titleKey: 'preRoadmap.tabTitle', descriptionKey: 'preRoadmap.metaDescription', layout: 'auth', skin: 'threads' } },
   ...authRoutes.map((route) => ({ ...route, canActivate: [guestGuard], data: { ...route.data, layout: 'auth', skin: 'bird' } })),
   // A public profile: readable by anyone, signed in or not.
   { path: 'u/:handle', loadComponent: () => import('./features/profile/public-profile.page'), data: { titleKey: 'profile.title', layout: 'auth', skin: 'bird' } },

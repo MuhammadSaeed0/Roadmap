@@ -17,6 +17,8 @@ public class SocialPreviewTests : IAsyncLifetime
     {
         File.Copy(Path.Combine(Frontend, "src", "index.html"), Path.Combine(_webRoot, "index.html"));
         File.Copy(Path.Combine(Frontend, "public", "og-image.jpg"), Path.Combine(_webRoot, "og-image.jpg"));
+        File.Copy(Path.Combine(Frontend, "public", "robots.txt"), Path.Combine(_webRoot, "robots.txt"));
+        File.Copy(Path.Combine(Frontend, "public", "sitemap.xml"), Path.Combine(_webRoot, "sitemap.xml"));
         _factory = new HostingTests.WebRootFactory(_webRoot);
         await _factory.InitializeAsync();
     }
@@ -57,6 +59,28 @@ public class SocialPreviewTests : IAsyncLifetime
         Assert.Matches(@"[؀-ۿ]", Meta("og:title")!);
         // .NET inside Arabic text needs a left-to-right mark, or the dot shows on the wrong side.
         Assert.Contains("‎.NET", Meta("og:description")!);
+    }
+
+    [Fact]
+    public async Task Robots_and_sitemap_are_public_and_list_only_public_pages()
+    {
+        var client = _factory.CreateClient();
+        var robots = await client.GetAsync("/robots.txt");
+        Assert.Equal(HttpStatusCode.OK, robots.StatusCode);
+        Assert.Equal("text/plain", robots.Content.Headers.ContentType?.MediaType);
+        var rules = await robots.Content.ReadAsStringAsync();
+        foreach (var allowed in new[] { "Allow: /$", "Allow: /pre-roadmap", "Allow: /u/" }) Assert.Contains(allowed, rules);
+        foreach (var blocked in new[] { "Disallow: /api/", "Disallow: /roadmap", "Disallow: /topics/", "Disallow: /admin" }) Assert.Contains(blocked, rules);
+        // Scripts and styles must stay crawlable, or search engines can't render the public pages.
+        Assert.DoesNotContain(rules.Split((char)10), line => line.Trim() == "Disallow: /");
+        Assert.Contains("Sitemap: https://dotnetfullstackroadmap.runasp.net/sitemap.xml", rules);
+
+        var sitemap = await client.GetAsync("/sitemap.xml");
+        Assert.Equal(HttpStatusCode.OK, sitemap.StatusCode);
+        var urls = System.Xml.Linq.XDocument.Parse(await sitemap.Content.ReadAsStringAsync())
+            .Descendants(System.Xml.Linq.XName.Get("loc", "http://www.sitemaps.org/schemas/sitemap/0.9")).Select(e => e.Value).ToList();
+        Assert.Contains("https://dotnetfullstackroadmap.runasp.net/pre-roadmap", urls);
+        Assert.All(urls, u => Assert.DoesNotContain("/roadmap", u.Replace("/pre-roadmap", "")));
     }
 
     /// <summary>Width and height from the first start-of-frame marker of a JPEG.</summary>

@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { ar } from './ar';
 import { en, Translations } from './en';
 
@@ -35,6 +35,7 @@ function find(lang: Lang, key: string): unknown {
 export class I18nService {
   private readonly document = inject(DOCUMENT);
   private readonly title = inject(Title);
+  private readonly meta = inject(Meta);
 
   readonly lang = signal<Lang>(readSavedLang());
   readonly dir = computed(() => (this.lang() === 'ar' ? 'rtl' : 'ltr'));
@@ -43,6 +44,8 @@ export class I18nService {
   readonly locale = computed(() => (this.lang() === 'ar' ? 'ar-EG-u-nu-latn' : 'en-GB'));
   /** Translation key of the page being shown (set by the shell from the route); the browser tab reads "Page · DevPath". */
   readonly pageKey = signal<string | null>(null);
+  /** Translation key of the page's meta description (route data.descriptionKey); null = the site's description. */
+  readonly descriptionKey = signal<string | null>(null);
 
   constructor() {
     effect(() => {
@@ -53,6 +56,8 @@ export class I18nService {
       const app = dictionaries[lang].app.fullName;
       const page = this.pageKey();
       const name = page ? this.t(page) : '';
+      const description = this.t(this.descriptionKey() ?? 'app.description');
+      this.meta.updateTag({ name: 'description', content: description });
       this.title.setTitle(!name || name === page ? app : name.includes(app) ? name : `${name} · ${app}`);
       try { localStorage.setItem(STORAGE_KEY, lang); } catch { /* storage unavailable: preference just isn't remembered */ }
     });

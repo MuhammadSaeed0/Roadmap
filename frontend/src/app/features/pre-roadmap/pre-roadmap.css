@@ -1,5 +1,5 @@
 /* Pre-Roadmap page. Uses the app's tokens only, so the skin, dark mode and RTL all apply. */
-:host { display: block; container-type: inline-size; }
+:host { display: block; container-type: inline-size; width: 100%; }
 
 /* Level badge (same look as the Project library) */
 .level-badge {
@@ -117,6 +117,7 @@
 .pre-cta p { margin: 0 0 14px; max-width: 70ch; color: var(--text-2); line-height: 1.6; }
 .pre-cta-icon { display: grid; place-items: center; width: 52px; height: 52px; flex: none; border-radius: 14px; background: var(--accent); color: var(--on-accent); }
 .pre-cta-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.pre-join { margin: 0 0 12px; }
 
 /* Videos inside the page */
 .pre-video-grid { margin-bottom: 4px; }

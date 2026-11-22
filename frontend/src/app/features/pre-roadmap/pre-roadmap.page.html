@@ -233,10 +233,18 @@
     <div class="grow">
       <h2 id="pre-next-title">{{ 'preRoadmap.nextTitle' | t }}</h2>
       <p>{{ 'preRoadmap.nextLead' | t }}</p>
+      @if (signedOut()) {
+        <p class="pre-join">{{ 'preRoadmap.joinLead' | t }}</p>
+      }
       <div class="pre-cta-actions">
+        @if (signedOut()) {
+          <a routerLink="/sign-up" class="btn btn-primary pre-join-cta">{{ 'landing.cta' | t }}</a>
+          <a routerLink="/sign-in" class="btn btn-ghost">{{ 'landing.signIn' | t }}</a>
+        } @else {
         <a routerLink="/roadmap" class="btn btn-primary">{{ 'preRoadmap.toRoadmap' | t }} <app-icon name="arrow-right" [size]="16" class="flip-rtl" /></a>
         <a routerLink="/paths" class="btn btn-secondary">{{ 'preRoadmap.toPaths' | t }}</a>
         <a routerLink="/project-library" class="btn btn-ghost">{{ 'preRoadmap.toLibrary' | t }}</a>
+        }
       </div>
     </div>
   </div>
