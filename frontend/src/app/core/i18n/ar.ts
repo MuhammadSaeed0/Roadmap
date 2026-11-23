@@ -580,6 +580,18 @@ export const ar: Translations = {
     reviewNow: 'راجع الآن', howConfident: 'ما مدى ثقتك الآن؟', remove: 'إزالة', overdue: 'متأخرة: {n} يوم',
     next: 'القادمة: {date}', reviewed: 'تم تسجيل المراجعة', added: 'أُضيف إلى قائمة المراجعة', removed: 'أُزيل من قائمة المراجعة',
   },
+  quickReview: {
+    start: 'مراجعة سريعة', startHint: 'بطاقات للمواضيع المستحقة الآن وعددها {n}، بضع بطاقات لكل موضوع',
+    title: 'مراجعة سريعة', topicOf: 'الموضوع {n} من {total}', cardOf: 'البطاقة {n} من {total}',
+    explain: 'هل تستطيع شرح هذا؟', question: 'سؤال', answer: 'الإجابة', why: 'السبب',
+    showAnswer: 'اعرض الإجابة', flipHint: 'اضغط على البطاقة أو اسحبها أو اضغط مفتاح المسافة لترى الإجابة.',
+    rateLabel: 'إلى أي حد كنت تعرفها؟', again: 'مرة أخرى', good: 'جيد', easy: 'سهل',
+    againHint: 'لم أكن أعرفها', goodHint: 'عرفتها ببعض الجهد', easyHint: 'عرفتها فورًا',
+    keysHint: 'المفاتيح: 1 مرة أخرى، 2 جيد، 3 سهل', answerShown: 'ظهرت الإجابة.',
+    saved: '{title}: المراجعة القادمة بعد {days} يوم', saveFailed: 'لم نتمكن من حفظ إجاباتك لهذا الموضوع.', retry: 'حاول مرة أخرى',
+    noCards: 'لا توجد بطاقات لهذا الموضوع بعد، فتم تخطيه.', loadFailed: 'لم نتمكن من تحميل البطاقات.',
+    stop: 'إيقاف', doneTitle: 'انتهت المراجعة السريعة', done: 'عدد المواضيع التي راجعتها: {n}. كل موضوع جُدول من جديد حسب إجاباتك.', close: 'العودة إلى قائمة المراجعة',
+  },
   weakReasons: {
     completedLowConfidence: 'مكتمل لكن الثقة منخفضة', markedNeedReview: 'محدد كموضوع يحتاج مراجعة',
     inProgressLowConfidence: 'قيد التعلم بثقة منخفضة جدًا',

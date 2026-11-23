@@ -457,3 +457,9 @@ export interface GuidedProjectRef {
 export interface CurrentGuidedProject extends GuidedProjectRef {
   nextStepTitleEn: string; nextStepTitleAr: string;
 }
+
+// ----- Quick review flashcards (GET /api/reviews/{topicId}/cards) -----
+export interface Flashcard {
+  kind: 'question' | 'objective'; frontEn: string; frontAr: string; backEn: string; backAr: string; whyEn: string; whyAr: string;
+}
+export interface FlashcardDeck { topicId: number; titleEn: string; titleAr: string; cards: Flashcard[]; }

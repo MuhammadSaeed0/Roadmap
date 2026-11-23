@@ -15,6 +15,10 @@ public class ReviewsController(ReviewService reviews) : ControllerBase
     [HttpPut("{topicId:int}")]
     public Task<ReviewStateDto> Add(int topicId, CancellationToken ct) => reviews.AddAsync(topicId, ct);
 
+    /// <summary>Flashcards for a quick review of one topic, built from its quiz questions and objectives. Changes nothing.</summary>
+    [HttpGet("{topicId:int}/cards")]
+    public Task<FlashcardDeckDto> Cards(int topicId, CancellationToken ct) => reviews.CardsAsync(topicId, ct);
+
     [HttpPost("{topicId:int}/complete")]
     public Task<ReviewStateDto> Complete(int topicId, CompleteReviewRequest request, CancellationToken ct) =>
         reviews.CompleteAsync(topicId, request.Confidence!.Value, ct);

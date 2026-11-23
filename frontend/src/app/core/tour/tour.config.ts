@@ -35,7 +35,7 @@ export const SECTION_IDS = [
   'interviews-modes', 'interviews-categories', 'interviews-filters', 'interviews-list',
   'resources-verify', 'resources-filters', 'resources-list', 'notes-new', 'notes-list', 'notes-editor',
   // Progress, career, settings, search, admin
-  'progress-tabs', 'progress-panel', 'career-gaps', 'career-areas', 'career-portfolio',
+  'progress-tabs', 'progress-panel', 'progress-quick-review', 'career-gaps', 'career-areas', 'career-portfolio',
   // Developer level (and the project review card on the project page)
   'challenges-list', 'topic-tutorial',
   'skills-level', 'skills-progress', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history', 'project-review',
@@ -77,7 +77,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   interviews: ['interviews-modes', 'interviews-categories', 'interviews-filters', 'interviews-list'],
   resources: ['resources-verify', 'resources-filters', 'resources-list'],
   notes: ['notes-new', 'notes-list', 'notes-editor'],
-  progress: ['progress-tabs', 'progress-panel'],
+  progress: ['progress-tabs', 'progress-panel', 'progress-quick-review'],
   skills: ['skills-level', 'skills-progress', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history', 'career-gaps', 'career-areas', 'career-portfolio'],
   cv: ['cv-new', 'cv-list', 'cv-templates'],
   'cv-editor': ['cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview'],

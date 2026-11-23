@@ -578,6 +578,18 @@ export const en = {
     reviewNow: 'Review now', howConfident: 'How confident do you feel now?', remove: 'Remove', overdue: '{n} days overdue',
     next: 'Next: {date}', reviewed: 'Review recorded', added: 'Added to review queue', removed: 'Removed from review queue',
   },
+  quickReview: {
+    start: 'Quick review', startHint: 'Flashcards for the {n} topics due now, a few cards each',
+    title: 'Quick review', topicOf: 'Topic {n} of {total}', cardOf: 'Card {n} of {total}',
+    explain: 'Can you explain this?', question: 'Question', answer: 'Answer', why: 'Why',
+    showAnswer: 'Show answer', flipHint: 'Tap the card, swipe it or press Space to see the answer.',
+    rateLabel: 'How well did you know it?', again: 'Again', good: 'Good', easy: 'Easy',
+    againHint: 'I didn’t know it', goodHint: 'I knew it with some effort', easyHint: 'I knew it at once',
+    keysHint: 'Keys: 1 Again, 2 Good, 3 Easy', answerShown: 'Answer shown.',
+    saved: '{title}: next review in {days} days', saveFailed: 'Your answers for this topic couldn’t be saved.', retry: 'Try again',
+    noCards: 'This topic has no cards yet, so it was skipped.', loadFailed: 'The cards couldn’t be loaded.',
+    stop: 'Stop', doneTitle: 'Quick review finished', done: 'Topics reviewed: {n}. Each one is scheduled again from your answers.', close: 'Back to the review queue',
+  },
   weakReasons: {
     completedLowConfidence: 'Completed, but confidence is low', markedNeedReview: 'Marked as needing review',
     inProgressLowConfidence: 'In progress with very low confidence',

@@ -102,6 +102,8 @@ export class ApiService {
   addReview(topicId: number) { return this.put<M.ReviewState>(`/reviews/${topicId}`, {}); }
   completeReview(topicId: number, confidence: number) { return this.post<M.ReviewState>(`/reviews/${topicId}/complete`, { confidence }); }
   removeReview(topicId: number) { return this.delete(`/reviews/${topicId}`); }
+  /** Flashcards for a quick review of one topic. Reading them changes nothing; completeReview reschedules. */
+  reviewCards(topicId: number) { return this.get<M.FlashcardDeck>(`/reviews/${topicId}/cards`); }
 
   // ----- Insights -----
   progress() { return this.get<M.ProgressReport>('/progress'); }

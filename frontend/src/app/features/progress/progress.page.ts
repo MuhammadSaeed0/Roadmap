@@ -8,6 +8,7 @@ import { createLoader } from '../../core/loader';
 import { Reason, ReviewItem, StudySession } from '../../core/models';
 import { ConfirmService, ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
+import { QuickReviewComponent } from './quick-review.component';
 import {
   ConfidencePickerComponent, EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, SkeletonComponent,
 } from '../../shared/ui.components';
@@ -24,7 +25,7 @@ function isoDate(d: Date): string {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, FormatDatePipe, DurationPipe,
     PageHeaderComponent, ConfidencePickerComponent, SkeletonComponent,
-    ErrorStateComponent, EmptyStateComponent],
+    ErrorStateComponent, EmptyStateComponent, QuickReviewComponent],
   templateUrl: './progress.page.html',
 })
 export default class ProgressPage {
@@ -42,6 +43,8 @@ export default class ProgressPage {
   protected readonly weekly = createLoader(() => this.api.weekly(this.weekOf()));
   protected readonly reviews = createLoader(() => this.api.reviews());
   protected readonly reviewing = signal<number | null>(null);
+  /** The flashcard mode of the review tab (?tab=review&mode=quick). */
+  protected readonly quick = signal(this.route.snapshot.queryParamMap.get('mode') === 'quick');
   protected readonly sessions = createLoader(() => this.api.sessions());
   protected readonly deleting = signal<number | null>(null);
 
@@ -54,8 +57,23 @@ export default class ProgressPage {
 
   protected setTab(tab: Tab): void {
     this.tab.set(tab);
-    void this.router.navigate([], { queryParams: { tab: tab === 'weekly' ? null : tab }, replaceUrl: true });
+    this.quick.set(false);
+    void this.router.navigate([], { queryParams: { tab: tab === 'weekly' ? null : tab, mode: null }, replaceUrl: true });
   }
+
+  protected startQuick(): void {
+    this.quick.set(true);
+    void this.router.navigate([], { queryParams: { tab: 'review', mode: 'quick' }, replaceUrl: true });
+  }
+
+  /** Leaves the flashcards and shows the queue with the new dates. */
+  protected endQuick(): void {
+    this.quick.set(false);
+    void this.router.navigate([], { queryParams: { tab: 'review', mode: null }, replaceUrl: true });
+    void this.reviews.reload();
+  }
+
+  protected quickSaved(message: string): void { this.toast.success(message); }
 
   protected shiftWeek(days: number): void {
     const start = this.weekly.value()?.weekStart;

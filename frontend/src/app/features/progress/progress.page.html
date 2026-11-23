@@ -94,8 +94,17 @@
     } @else if (reviews.value(); as q) {
       <div class="detail-layout">
         <div class="detail-main">
+          @if (quick() && q.due.length > 0) {
+            <app-quick-review [items]="q.due" (saved)="quickSaved($event)" (closed)="endQuick()" />
+          } @else {
           <section class="card" aria-labelledby="due-h">
             <h2 id="due-h" class="card-title"><app-icon name="repeat" /> {{ 'review.due' | t }} <span class="badge badge-accent">{{ q.due.length }}</span></h2>
+            @if (q.due.length > 0) {
+              <div class="quick-start" data-tour="progress-quick-review">
+                <button type="button" class="btn btn-primary" (click)="startQuick()"><app-icon name="layers" [size]="16" /> {{ 'quickReview.start' | t }}</button>
+                <span class="tiny muted">{{ 'quickReview.startHint' | t: { n: q.due.length } }}</span>
+              </div>
+            }
             @if (q.due.length === 0) {
               <app-empty-state icon="check-circle" [title]="'review.empty' | t" />
             } @else {
@@ -116,6 +125,7 @@
               </ul>
             }
           </section>
+          }
 
           <section class="card" aria-labelledby="up-h">
             <h2 id="up-h" class="card-title"><app-icon name="calendar" /> {{ 'review.upcoming' | t }}</h2>

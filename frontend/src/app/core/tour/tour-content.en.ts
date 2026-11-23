@@ -144,6 +144,7 @@ export const content: TourContent = {
 
     'progress-tabs': { title: 'Three views', body: 'Weekly review: what you did this week, with suggestions. Review queue: the spaced-review topics. Study sessions: every session you logged, where you can delete a wrong one. Your overall progress is in Developer Level, Progress tab.' },
     'progress-panel': { title: 'This view', body: 'In the Review tab, rate how confident you are for each due topic; DevPath schedules the next review sooner for weak topics and later for strong ones.' },
+    'progress-quick-review': { title: 'Quick review', body: 'Flashcards for the topics due today. Flip each card, say how well you knew it, and the topic is scheduled again from your answers.' },
 
     'career-gaps': { title: 'Top gaps', body: 'The few things that would raise your readiness the most right now, with links to act on them.' },
     'career-areas': { title: 'Readiness areas', body: 'Eight areas employers look at, such as core topics, confidence, projects, tests, debugging and interview practice, each with a level and the evidence behind it.' },
