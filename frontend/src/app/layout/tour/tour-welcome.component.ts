@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, viewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { TranslatePipe } from '../../core/i18n/pipes';
 import { TourService } from '../../core/tour/tour.service';
 import { IconComponent } from '../../shared/icon.component';
 
@@ -9,7 +11,7 @@ import { IconComponent } from '../../shared/icon.component';
 @Component({
   selector: 'app-tour-welcome',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IconComponent],
+  imports: [IconComponent, TranslatePipe],
   template: `
     <dialog #dialog class="dialog tour-welcome" (cancel)="$event.preventDefault(); dismiss()" aria-labelledby="tour-welcome-title"
             aria-describedby="tour-welcome-body">
@@ -38,12 +40,16 @@ import { IconComponent } from '../../shared/icon.component';
             <app-icon name="compass" [size]="16" /> {{ c.ui.startTour }}
           </button>
         </div>
+        <p class="tour-welcome-placement small">
+          <button type="button" class="link-btn" (click)="placement()"><app-icon name="target" [size]="14" /> {{ 'placement.offer' | t }}</button>
+        </p>
       }
     </dialog>
   `,
 })
 export class TourWelcomeComponent {
   protected readonly tour = inject(TourService);
+  private readonly router = inject(Router);
   /** Off on the sign-in style pages, where there is nothing to tour. */
   readonly enabled = input(true);
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
@@ -66,6 +72,13 @@ export class TourWelcomeComponent {
   protected skip(): void {
     this.dialog().nativeElement.close();
     this.tour.dismissWelcome('skipped');
+  }
+
+  /** Opens the optional placement check; the welcome counts as seen, so it isn't shown again. */
+  protected placement(): void {
+    this.dialog().nativeElement.close();
+    this.tour.dismissWelcome('skipped');
+    void this.router.navigateByUrl('/placement');
   }
 
   protected dismiss(): void {

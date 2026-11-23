@@ -48,6 +48,18 @@
         <app-progress-ring [value]="d.overall.percent" [size]="128" [stroke]="11" [label]="'dashboard.overall' | t" />
       </section>
 
+      <!-- Placement check: offered until the first topic is done -->
+      @if (d.overall.doneTopics === 0) {
+        <aside class="callout callout-info placement-offer" aria-labelledby="placement-offer-h">
+          <app-icon name="target" />
+          <div class="placement-offer-text">
+            <p id="placement-offer-h"><strong>{{ 'placement.offer' | t }}</strong></p>
+            <p class="small muted">{{ 'placement.offerBody' | t }}</p>
+          </div>
+          <a class="btn btn-primary btn-sm" routerLink="/placement">{{ 'placement.offerStart' | t }}</a>
+        </aside>
+      }
+
       <!-- Quick actions -->
       <nav class="quick-row" [attr.aria-label]="'dashboard.quickActions' | t" data-tour="dashboard-actions">
         @if (activeProject(); as p) {

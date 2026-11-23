@@ -81,4 +81,13 @@ describe('DashboardPage', () => {
     const none = await render('Mohamed');
     expect(none.querySelector('.due-banner')).toBeNull();
   });
+
+  it('offers the placement check only while no topic is done', async () => {
+    const fresh = await render('Mohamed', null, { ...dashboard, overall: { ...dashboard.overall, doneTopics: 0 } });
+    const offer = fresh.querySelector('.placement-offer')!;
+    expect(offer.textContent).toContain('Already know some of this? Take a 10-minute check');
+    expect(offer.querySelector('a')?.getAttribute('href')).toBe('/placement');
+    TestBed.resetTestingModule();
+    expect((await render('Mohamed')).querySelector('.placement-offer')).toBeNull();
+  });
 });

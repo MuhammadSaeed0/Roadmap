@@ -262,3 +262,23 @@ public record SubmitQuizRequest([Required, Range(1, 3)] int? Level, [Required, M
 public record QuizResultItemDto(int QuestionId, int Choice, int CorrectIndex, bool IsCorrect, string ExplanationEn, string ExplanationAr);
 
 public record QuizResultDto(int Level, int Score, int Total, bool Passed, IReadOnlyList<QuizResultItemDto> Results, IReadOnlyList<QuizLevelDto> Levels);
+
+// ---------- Placement check ----------
+
+/// <summary>A placement question as shown before answering: no correct option and no explanation.</summary>
+public record PlacementQuestionDto(
+    int Id, int PhaseId, string QuestionEn, string QuestionAr, IReadOnlyList<string> OptionsEn, IReadOnlyList<string> OptionsAr);
+
+public record PlacementQuizDto(int PerPhase, IReadOnlyList<PlacementQuestionDto> Questions);
+
+public record SubmitPlacementRequest([Required, MinLength(1), MaxLength(40)] List<QuizAnswerRequest>? Answers);
+
+/// <param name="Known">Every answer for this phase was right ("you seem to know this").</param>
+public record PlacementPhaseResultDto(int PhaseId, int Order, string TitleEn, string TitleAr, int TopicCount, int Correct, int Total, bool Known);
+
+public record PlacementResultDto(IReadOnlyList<PlacementPhaseResultDto> Phases);
+
+public record ApplyPlacementRequest([Required, MaxLength(20)] List<int>? PhaseIds);
+
+/// <param name="TopicsMarked">Topics whose progress changed; 0 when the same request is sent again.</param>
+public record ApplyPlacementResultDto(IReadOnlyList<int> PhaseIds, int TopicsMarked);

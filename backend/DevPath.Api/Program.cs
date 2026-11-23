@@ -203,6 +203,7 @@ builder.Services.AddScoped<ProfileService>();
 builder.Services.AddScoped<PeerReviewService>();
 builder.Services.AddScoped<TopicVideoService>();
 builder.Services.AddScoped<QuizService>();
+builder.Services.AddScoped<PlacementService>();
 builder.Services.AddScoped<PlaygroundService>();
 // CV builder. The fonts embedded in exported CVs ship with the app (Resources/Fonts).
 CvPdfRenderer.EnsureConfigured(Path.Combine(AppContext.BaseDirectory, "Resources", "Fonts"));

@@ -21,6 +21,8 @@ export const SECTION_IDS = [
   'pre-journey', 'pre-intro', 'pre-fields', 'pre-fundamentals', 'pre-next',
   // Glossary
   'glossary-search', 'glossary-list',
+  // Placement check
+  'placement-intro', 'placement-questions', 'placement-result',
   'topic-header', 'topic-content', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-notes', 'topic-related', 'topic-guided',
   // Projects
   'projects-list', 'project-hero', 'project-milestones', 'project-changes', 'project-portfolio', 'project-repo',
@@ -55,7 +57,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
   'resources', 'notes', 'progress', 'skills', 'settings', 'search', 'admin', 'marketing', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
-  'discussions', 'discussion', 'paths', 'path', 'path-create', 'reviews', 'guides', 'guide', 'pre-roadmap', 'glossary',
+  'discussions', 'discussion', 'paths', 'path', 'path-create', 'reviews', 'guides', 'guide', 'pre-roadmap', 'glossary', 'placement',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
 
@@ -92,6 +94,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   guides: ['guides-filters', 'guides-list'],
   'pre-roadmap': ['pre-journey', 'pre-intro', 'pre-fields', 'pre-fundamentals', 'pre-next'],
   glossary: ['glossary-search', 'glossary-list'],
+  placement: ['placement-intro', 'placement-questions', 'placement-result'],
   guide: ['guide-overview', 'guide-steps', 'guide-progress', 'guide-repo'],
 };
 
