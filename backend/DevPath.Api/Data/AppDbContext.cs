@@ -41,6 +41,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<GuidedStepProgress> GuidedStepProgress => Set<GuidedStepProgress>();
     public DbSet<GuidedProjectTopic> GuidedProjectTopics => Set<GuidedProjectTopic>();
     public DbSet<GuidedProjectRepository> GuidedProjectRepositories => Set<GuidedProjectRepository>();
+    public DbSet<Certificate> Certificates => Set<Certificate>();
     public DbSet<PageViewDaily> PageViews => Set<PageViewDaily>();
 
     // User data
@@ -504,6 +505,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.HasIndex(x => x.TopicId);
             e.HasOne(x => x.Project).WithMany(p => p.TopicLinks).HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Cascade);
             e.HasOne(x => x.Topic).WithMany().HasForeignKey(x => x.TopicId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<Certificate>(e =>
+        {
+            OwnedByUser(e);
+            e.Property(x => x.Code).HasMaxLength(Certificate.CodeLength).IsUnicode(false);
+            e.HasIndex(x => x.Code).IsUnique();
+            e.HasIndex(x => new { x.UserId, x.PhaseId }).IsUnique();   // one certificate per learner and phase
+            e.HasOne(x => x.Phase).WithMany().HasForeignKey(x => x.PhaseId).OnDelete(DeleteBehavior.Cascade);
         });
 
         b.Entity<GuidedProjectRepository>(e =>

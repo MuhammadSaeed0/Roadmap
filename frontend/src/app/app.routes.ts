@@ -73,6 +73,8 @@ export const routes: Routes = [
   ...authRoutes.map((route) => ({ ...route, canActivate: [guestGuard], data: { ...route.data, layout: 'auth', skin: 'bird' } })),
   // A public profile: readable by anyone, signed in or not.
   { path: 'u/:handle', loadComponent: () => import('./features/profile/public-profile.page'), data: { titleKey: 'profile.title', layout: 'auth', skin: 'bird' } },
+  // A phase certificate: verifiable by anyone with the link, signed in or not; printable to PDF.
+  { path: 'c/:code', loadComponent: () => import('./features/certificate/certificate.page'), data: { titleKey: 'certificate.title', layout: 'auth', skin: 'bird' } },
   // Opened from the verification email; works whether or not this browser is signed in.
   { path: 'verify-email', loadComponent: () => import('./features/auth/verify-email.page'), data: { titleKey: 'verify.title', layout: 'auth', skin: 'bird' } },
   // Where signed-in accounts wait for verification or approval, or learn that they were rejected or suspended.

@@ -15,7 +15,7 @@ export const SECTION_IDS = [
   'dashboard-hero', 'dashboard-today', 'dashboard-continue', 'dashboard-plan', 'dashboard-skills',
   'dashboard-projects', 'dashboard-library', 'dashboard-activity', 'dashboard-actions',
   // Roadmap and library
-  'roadmap-header', 'roadmap-phases', 'library-filters', 'library-list',
+  'roadmap-header', 'roadmap-phases', 'roadmap-certificate', 'library-filters', 'library-list',
   // Topic page
   // Pre-Roadmap
   'pre-journey', 'pre-intro', 'pre-fields', 'pre-fundamentals', 'pre-next',
@@ -65,7 +65,7 @@ export type HelpId = (typeof HELP_IDS)[number];
 export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   dashboard: ['dashboard-hero', 'dashboard-today', 'dashboard-continue', 'dashboard-plan', 'dashboard-skills',
     'dashboard-projects', 'dashboard-library', 'dashboard-activity', 'dashboard-actions'],
-  roadmap: ['roadmap-header', 'roadmap-phases', 'library-filters', 'library-list'],
+  roadmap: ['roadmap-header', 'roadmap-phases', 'roadmap-certificate', 'library-filters', 'library-list'],
   topic: ['topic-header', 'topic-content', 'topic-tutorial', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-guided', 'topic-notes', 'topic-related'],
   projects: ['projects-list'],
   project: ['project-hero', 'project-milestones', 'project-changes', 'project-portfolio', 'project-repo', 'project-review'],

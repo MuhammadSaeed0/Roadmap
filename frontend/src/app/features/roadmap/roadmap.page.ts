@@ -32,6 +32,8 @@ export default class RoadmapPage {
   protected readonly data = createLoader(() => this.api.roadmap());
   protected readonly expanded = signal(new Set<number>());
   protected readonly busy = signal<number | null>(null);
+  /** The phase whose certificate is being fetched. */
+  protected readonly certificateBusy = signal<number | null>(null);
   protected readonly statusIcon = statusIcon;
 
   constructor() {
@@ -90,5 +92,18 @@ export default class RoadmapPage {
   protected setView(view: 'phases' | 'list'): void {
     // Switching drops the list's filters; they belong to the list view only.
     void this.router.navigate([], { queryParams: view === 'list' ? { view } : {}, replaceUrl: true });
+  }
+
+  /** Gets the phase certificate (issued on the first request) and opens its page. */
+  protected async openCertificate(phaseId: number): Promise<void> {
+    this.certificateBusy.set(phaseId);
+    try {
+      const certificate = await this.api.issueCertificate(phaseId);
+      await this.router.navigate(['/c', certificate.code]);
+    } catch (e) {
+      this.toast.error(this.i18n.errorMessage(ApiError.from(e)));
+    } finally {
+      this.certificateBusy.set(null);
+    }
   }
 }

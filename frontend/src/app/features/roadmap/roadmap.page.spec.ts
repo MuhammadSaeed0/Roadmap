@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { Phase, Roadmap, TopicSummary } from '../../core/models';
@@ -10,8 +10,8 @@ const phase = (id: number, percent: number, extra: Partial<Phase> = {}): Phase =
   topicCount: 2, doneCount: percent >= 100 ? 2 : 0, percent, remainingMinutes: 0, topics: [], projects: [], guidedProjects: [], ...extra,
 });
 
-async function render(data: Roadmap): Promise<HTMLElement> {
-  TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: ApiService, useValue: { roadmap: () => Promise.resolve(data) } }] });
+async function render(data: Roadmap, api: Partial<ApiService> = {}): Promise<HTMLElement> {
+  TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: ApiService, useValue: { roadmap: () => Promise.resolve(data), ...api } }] });
   TestBed.inject(I18nService).lang.set('en');
   const fixture = TestBed.createComponent(RoadmapPage);
   fixture.detectChanges();
@@ -24,6 +24,26 @@ async function render(data: Roadmap): Promise<HTMLElement> {
 }
 
 describe('RoadmapPage', () => {
+  it('offers a certificate only for a finished phase and opens its page', async () => {
+    const issued: number[] = [];
+    const el = await render({ currentPhaseId: 2, phases: [phase(1, 100), phase(2, 40), phase(3, 100, { topicCount: 0 })] }, {
+      issueCertificate: (phaseId: number) => { issued.push(phaseId); return Promise.resolve({ code: 'ABCDEFGHJKMN', phaseId, issuedAt: '2026-11-23T10:00:00Z' }); },
+    });
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    const [done, open, empty] = [...el.querySelectorAll('.phase')];
+    const button = done.querySelector<HTMLButtonElement>('.phase-cert button')!;
+    expect(button.textContent).toContain('Get your certificate');
+    // Not inside the header button, and absent for unfinished or empty phases.
+    expect(button.closest('.phase-head')).toBeNull();
+    expect(open.querySelector('.phase-cert')).toBeNull();
+    expect(empty.querySelector('.phase-cert')).toBeNull();
+
+    button.click();
+    await new Promise(r => setTimeout(r, 0));
+    expect(issued).toEqual([1]);
+    expect(navigate).toHaveBeenCalledWith(['/c', 'ABCDEFGHJKMN']);
+  });
+
   it('marks a finished phase and lists its library and main projects inside it', async () => {
     const el = await render({
       currentPhaseId: 1,

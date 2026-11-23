@@ -92,6 +92,7 @@ export const content: TourContent = {
 
     'roadmap-header': { title: 'Roadmap controls', body: 'Expand or collapse all 14 phases at once.' },
     'roadmap-phases': { title: 'Phases and topics', body: 'The curriculum in order, with your progress in each phase and the current one marked. Open a phase to see its topics and mark each one complete when you finish it. Locked topics need their prerequisites first.' },
+    'roadmap-certificate': { title: 'Phase certificates', body: 'When every topic of a phase is completed or skipped, "Get your certificate" appears under it. The certificate has a link anyone can open to verify it; download it as a PDF or add it to your LinkedIn profile. It records your self-paced progress and is not an accredited qualification.' },
     'library-filters': { title: 'Search and filters', body: 'Search every topic by name and narrow the list by skill, phase, status, priority or what you already know.' },
     'library-list': { title: 'All topics', body: 'Each row shows the topic’s skill, priority, estimated time and your status. Click a title to open the topic.' },
 

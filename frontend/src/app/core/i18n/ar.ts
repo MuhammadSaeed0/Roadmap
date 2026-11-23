@@ -31,6 +31,7 @@ export const ar: Translations = {
     title: 'حدث خطأ ما', offline: 'تعذّر الوصول إلى واجهة مسار المبرمج البرمجية.', server: 'حدثت مشكلة في الخادم. حاول مرة أخرى.',
     notFound: 'لم نعثر على هذه الصفحة أو هذا السجل.', generic: 'خطأ غير متوقع.',
     codes: {
+      phase_not_finished: 'أكمل كل مواضيع هذه المرحلة أو تخطَّها أولًا.', certificate_revoked: 'أُلغيت هذه الشهادة.',
       project_not_finished: 'أنهِ كل مهام المشروع أولًا.', repository_required: 'أضف رابط مستودع المشروع أولًا.',
       review_pending: 'لهذا المشروع مراجعة جارية بالفعل.', own_review: 'لا يمكنك مراجعة مشروعك.',
       review_not_open: 'أخذ شخص آخر هذا الطلب.', not_reviewer: 'لا يقوم بهذا إلا المراجِع.',
@@ -192,7 +193,7 @@ export const ar: Translations = {
         topic: 'صفحة موضوع من خارطة الطريق', project: 'مشروع رئيسي', guide: 'مشروع من مكتبة المشاريع', exercise: 'تمرين تدريبي',
         workspaceNew: 'مساحة عمل جديدة في ساحة الكود', workspace: 'مساحة عمل في ساحة الكود', cvEditor: 'سيرة ذاتية في المحرر',
         discussion: 'نقاش', pathNew: 'إنشاء مسار تعلم', pathEdit: 'تعديل مسار تعلم', path: 'مسار تعلم',
-        profile: 'ملف شخصي عام',
+        profile: 'ملف شخصي عام', certificate: 'شهادة إتمام مرحلة',
       },
     },
     audit: {
@@ -347,7 +348,7 @@ export const ar: Translations = {
   roadmap: {
     views: { phases: 'المراحل', list: 'قائمة' }, viewLabel: 'طريقة العرض',
     title: 'خارطة طريقي', subtitle: '14 مرحلة من أول برنامج C# إلى مشاريع Full-Stack، خطوة بخطوة.',
-    current: 'المرحلة الحالية', topicsDone: 'المواضيع: {done} من {total}', remaining: 'متبقٍ {n} دقيقة', projectsUnlocked: 'مشاريع رئيسية يمكنك بدؤها بعد هذه المرحلة.', libraryIntro: 'مشاريع من المكتبة للتدرّب على هذه المرحلة:', phaseDone: 'أكملت المرحلة', projectsIntro: 'طبّق ما تعلمته في أربعة مشاريع.',
+    current: 'المرحلة الحالية', topicsDone: 'المواضيع: {done} من {total}', remaining: 'متبقٍ {n} دقيقة', projectsUnlocked: 'مشاريع رئيسية يمكنك بدؤها بعد هذه المرحلة.', libraryIntro: 'مشاريع من المكتبة للتدرّب على هذه المرحلة:', getCertificate: 'احصل على شهادتك', phaseDone: 'أكملت المرحلة', projectsIntro: 'طبّق ما تعلمته في أربعة مشاريع.',
     expandAll: 'توسيع الكل', collapseAll: 'طي الكل', locked: 'المتطلبات السابقة لم تكتمل',
     phase: 'المرحلة {n}',
   },
@@ -739,6 +740,16 @@ export const ar: Translations = {
   },
   quickAdd: { title: 'إضافة سريعة', note: 'ملاحظة جديدة', session: 'تسجيل جلسة دراسة', topicLabel: 'الموضوع', chooseTopic: 'اختر موضوعًا…' },
   notFound: { title: 'الصفحة غير موجودة', body: 'الصفحة التي تبحث عنها غير موجودة.', home: 'العودة إلى لوحة المعلومات' },
+  certificate: {
+    title: 'شهادة', kicker: 'شهادة إتمام', presentedTo: 'تُمنح هذه الشهادة إلى',
+    body: 'لإتمام المرحلة {n} من خارطة طريق DevPath للتعلّم الذاتي:',
+    issued: 'تاريخ الإصدار', topics: 'عدد المواضيع', code: 'رقم الشهادة', verifyAt: 'رابط التحقق:',
+    disclaimer: 'منصة DevPath خارطة طريق للتعلّم الذاتي. تسجّل هذه الشهادة تقدّمًا حدّده المتعلّم في DevPath، وليست مؤهلًا معتمدًا.',
+    verified: 'شهادة موثّقة: أصدرتها منصة DevPath.',
+    download: 'تنزيل PDF', copyLink: 'نسخ الرابط', linkedIn: 'إضافة إلى LinkedIn',
+    copied: 'نُسخ الرابط', copyFailed: 'تعذّر نسخ الرابط، انسخه من شريط العنوان.',
+    notFound: 'لم نجد هذه الشهادة', notFoundHint: 'تأكد من الرابط. الشهادة الملغاة لا يمكن التحقق منها.',
+  },
   profile: {
     title: 'الملف الشخصي', settingsTitle: 'الملف الشخصي العام',
     settingsIntro: 'شارك تقدمك برابط: مستواك والمسارات والمشاريع التي أكملتها. لا يظهر بريدك ولا ملاحظاتك أبدًا، ويبقى الملف خاصًا حتى تفعّله.',
