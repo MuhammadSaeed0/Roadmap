@@ -39,7 +39,12 @@ public class SeederTests : IAsyncLifetime
         Assert.Equal(166, await _db.Topics.CountAsync());
         Assert.Equal(4, await _db.Projects.CountAsync());
         Assert.True(await _db.Resources.CountAsync() > 100);
-        Assert.True(await _db.PracticeExercises.CountAsync() >= 140);
+        Assert.True(await _db.PracticeExercises.CountAsync() >= 250);
+        // Every topic has at least one Practice Lab exercise, in both languages, with hints and a solution.
+        var exercisesPerTopic = await _db.Topics.Select(t => new { t.Slug, Count = _db.PracticeExercises.Count(e => e.TopicId == t.Id) }).ToListAsync();
+        Assert.All(exercisesPerTopic, t => Assert.True(t.Count >= 1, $"{t.Slug} has no practice exercise"));
+        Assert.False(await _db.PracticeExercises.AnyAsync(e => e.TitleAr == "" || e.ProblemAr == "" || e.SolutionAr == ""
+            || e.HintsEn == "" || e.HintsAr == "" || e.SolutionEn == ""));
         // Every technology of the roadmap has exercises, and the full-stack challenges are complete.
         var skills = await _db.PracticeExercises.Select(e => e.Topic!.Skill).Distinct().ToListAsync();
         Assert.All(Enum.GetValues<SkillArea>().Where(s => s != SkillArea.Professional), s => Assert.Contains(s, skills));
@@ -224,6 +229,8 @@ public class SeederTests : IAsyncLifetime
             Edit(file, n => RemoveWhere(n.AsArray(), t => slugs.Contains((string)t["topic"]!)));
         foreach (var file in Directory.GetFiles(Path.Combine(dir, "interviews")))
             Edit(file, n => RemoveWhere(n.AsArray(), q => slugs.Contains((string)q["topic"]!)));
+        foreach (var file in Directory.GetFiles(Path.Combine(dir, "practice")))
+            Edit(file, n => RemoveWhere(n.AsArray(), e => slugs.Contains((string)e["topic"]!)));
         foreach (var file in Directory.GetFiles(Path.Combine(dir, "guided-projects")))
             Edit(file, n => { foreach (var p in n.AsArray()) if (p!["topics"] is System.Text.Json.Nodes.JsonArray t) RemoveWhere(t, s => slugs.Contains((string)s!)); });
         Edit(Path.Combine(dir, "videos.json"), n => { foreach (var s in slugs) n.AsObject().Remove(s); });

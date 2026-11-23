@@ -1,0 +1,89 @@
+{
+  "checks": [
+    {
+      "nameEn": "DepartmentSummary exists and is a view",
+      "nameAr": "العرض DepartmentSummary موجود وهو View",
+      "sql": "SELECT type FROM sqlite_schema WHERE name = 'DepartmentSummary'",
+      "expected": {
+        "columns": [
+          "type"
+        ],
+        "rows": [
+          [
+            "view"
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "One row per department with active employees and payroll",
+      "nameAr": "صف لكل قسم بعدد الموظفين النشطين وإجمالي الرواتب",
+      "sql": "SELECT Department, ActiveEmployees, MonthlyPayroll FROM DepartmentSummary ORDER BY Department",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "Department",
+          "ActiveEmployees",
+          "MonthlyPayroll"
+        ],
+        "rows": [
+          [
+            "Engineering",
+            6,
+            202500
+          ],
+          [
+            "Finance",
+            2,
+            68000
+          ],
+          [
+            "Marketing",
+            3,
+            80000
+          ],
+          [
+            "Research",
+            2,
+            88000
+          ],
+          [
+            "Sales",
+            3,
+            95500
+          ],
+          [
+            "Support",
+            3,
+            61500
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "The view can be queried like a table",
+      "nameAr": "يمكن الاستعلام من العرض مثل الجدول",
+      "sql": "SELECT Department FROM DepartmentSummary WHERE ActiveEmployees >= 3 ORDER BY MonthlyPayroll DESC",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "Department"
+        ],
+        "rows": [
+          [
+            "Engineering"
+          ],
+          [
+            "Sales"
+          ],
+          [
+            "Marketing"
+          ],
+          [
+            "Support"
+          ]
+        ]
+      }
+    }
+  ]
+}
