@@ -103,7 +103,8 @@ public class VideoTests : IAsyncLifetime
         var noKey = await Json(await _client.GetAsync("/api/topics/3/videos"));
         Assert.Equal("ok", noKey["status"]!.GetValue<string>());
         var curated = Ids(noKey);
-        Assert.InRange(curated.Count, 2, 4);
+        // 2-4 English videos plus up to 2 Arabic ones (the seed rules in SeederTests).
+        Assert.InRange(curated.Count, 2, 6);
         Assert.All(curated, id => Assert.True(YouTubeIds.IsValid(id)));
         Assert.All(noKey["videos"]!.AsArray(), v => Assert.Equal("suggested", v!["source"]!.GetValue<string>()));
 
