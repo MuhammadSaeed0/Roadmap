@@ -63,7 +63,7 @@ public class AdminController(AdminService admin, UsageService usage) : Controlle
 
     /// <summary>Page views per route and Project library uptake for the last <paramref name="days"/> days. Counts only.</summary>
     [HttpGet("usage")]
-    public Task<UsageReportDto> Usage([FromQuery] int days = 30, CancellationToken ct = default) => usage.ReportAsync(days, ct);
+    public Task<UsageReportDto> Usage([FromQuery] int days = 60, CancellationToken ct = default) => usage.ReportAsync(days, ct);
 
     [HttpGet("audit")]
     public Task<IReadOnlyList<AdminAuditDto>> Audit([FromQuery] int take = 50, CancellationToken ct = default) => admin.AuditAsync(take, ct);

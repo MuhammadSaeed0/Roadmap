@@ -45,11 +45,13 @@ public class UsageTests(ApiFactory factory) : IClassFixture<ApiFactory>
         Assert.Equal(HttpStatusCode.Forbidden, (await learner.GetAsync("/api/admin/usage")).StatusCode);
 
         var (admin, _) = await factory.CreateAdminClientAsync();
-        var report = await Json(await admin.GetAsync("/api/admin/usage?days=30"));
+        // The default window is the last 60 days, today included.
+        var report = await Json(await admin.GetAsync("/api/admin/usage"));
         var pages = report["topPages"]!.AsArray();
         Assert.Equal(3, pages.Single(p => p!["route"]!.GetValue<string>() == route)!["views"]!.GetValue<int>());
         Assert.Equal(5, pages.Single(p => p!["route"]!.GetValue<string>() == route + "/:id")!["views"]!.GetValue<int>());
-        Assert.Equal(30, report["daily"]!.AsArray().Count);
+        Assert.Equal(60, report["daily"]!.AsArray().Count);
+        Assert.Equal(DateOnly.Parse(report["to"]!.GetValue<string>()).AddDays(-59), DateOnly.Parse(report["from"]!.GetValue<string>()));
         Assert.True(report["daily"]!.AsArray()[^1]!["views"]!.GetValue<int>() >= 8);
         // Counts only: nothing that names a person.
         var text = report.ToJsonString();

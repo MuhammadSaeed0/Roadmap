@@ -65,7 +65,7 @@ export class AdminApiService {
   promote(email: string) { return this.run(this.http.post<AdminUser>(`${this.base}/admins`, { email })); }
   revoke(id: string) { return this.run(this.http.delete<AdminUser>(`${this.base}/admins/${encodeURIComponent(id)}`)); }
   audit(take = 100) { return this.run(this.http.get<AdminAudit[]>(`${this.base}/audit`, { params: { take } })); }
-  usage(days = 30) { return this.run(this.http.get<AdminUsage>(`${this.base}/usage`, { params: { days } })); }
+  usage(days = 60) { return this.run(this.http.get<AdminUsage>(`${this.base}/usage`, { params: { days } })); }
   testEmail() { return this.run(this.http.post<void>(`${this.base}/test-email`, {})); }
 
   private async run<T>(request: Observable<T>): Promise<T> {
