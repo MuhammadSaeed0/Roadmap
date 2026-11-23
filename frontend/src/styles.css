@@ -227,6 +227,19 @@ code, kbd, pre { font-family: var(--font-mono); }
 .hit-text { display: flex; flex-direction: column; min-width: 0; }
 .hit-title { font-weight: 550; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hit-sub { font-size: 0.78rem; color: var(--muted); }
+.search-trigger { display: none; }
+.search-overlay { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; padding: 0; border: 0;
+  background: var(--surface); color: var(--text); }
+.search-overlay::backdrop { background: rgb(0 0 0 / 0.35); }
+.search-overlay-bar { display: flex; align-items: center; gap: 8px; padding: 12px; border-bottom: 1px solid var(--border); }
+.search-overlay-bar .global-search { flex: 1; min-width: 0; }
+.search-overlay-body { padding: 8px; overflow-y: auto; height: calc(100dvh - 65px); }
+.search-overlay .hit-title { white-space: normal; }
+/* The dialog sits inside the top bar in the DOM, so undo the bar's field colours (skins.css). */
+.topbar .search-overlay .global-search input { background: var(--surface-2); color: var(--text); border-color: var(--border); }
+.topbar .search-overlay .global-search input:focus { border-color: var(--accent); box-shadow: var(--focus); }
+.topbar .search-overlay .global-search input::placeholder { color: var(--muted); opacity: 1; }
+.topbar .search-overlay .search-icon { color: var(--muted); }
 .search-all {
   display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 6px; padding: 9px; border: 0;
   border-radius: var(--radius-xs); background: var(--surface-2); color: var(--accent-text); font-weight: 600; cursor: pointer;
@@ -1428,4 +1441,10 @@ fieldset:disabled .quiz-option { cursor: default; }
   .rm-row .topic-actions { grid-column: 3; grid-row: 2; width: auto; padding-inline-start: 0; flex-wrap: nowrap; }
   .rm-row .chip-extra, .rm-row .chip-lock, .rm-row .topic-badge-lg { display: none; }
   .rm-row .topic-badge-sm { display: inline-flex; }
+}
+
+/* Phones: the top bar shows only a search button; the search opens in a full-width dialog. */
+@media (max-width: 600px) {
+  .topbar .topbar-search { flex: 1 1 0; min-width: 40px; display: flex; justify-content: flex-end; }
+  .topbar-search > .search-trigger { display: inline-grid; color: var(--bar-text, var(--text)); }
 }
