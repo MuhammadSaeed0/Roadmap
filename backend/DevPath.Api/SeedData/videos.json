@@ -87,6 +87,22 @@
       "language": "en",
       "duration": "4:14",
       "description": "📃 Watch related playlists - Playlist with all my videos on Xamarin Forms: Download Visual Studio 2019 here:"
+    },
+    {
+      "videoId": "HO81aLm2Kas",
+      "title": "8 - C# - Operators - العمليات الحسابية",
+      "channel": "GoSharp",
+      "language": "ar",
+      "duration": "14:34",
+      "description": "شرح كيف تتم عمليات الضرب والقسمة والجمع والطرح و كيف يتم استنتاج ناتج خارج القسمة"
+    },
+    {
+      "videoId": "1RAAvlojmS0",
+      "title": "تعلم سي شارب C# ARITHMETIC OPERATORS VISUAL STUDIO #21",
+      "channel": "Hassouna Academy",
+      "language": "ar",
+      "duration": "16:37",
+      "description": "تعلم سي شارب C# ARITHMETIC OPERATORS VISUAL STUDIO #21"
     }
   ],
   "cs-conditions": [
@@ -105,6 +121,20 @@
       "language": "en",
       "duration": "8:26",
       "description": "If else statement in C# are known as selection statements. If else statements in C# are used to make any decision in C# program."
+    },
+    {
+      "videoId": "OT4iF-JQt40",
+      "title": "019 C# If else Condition قاعدة الشرط اف الس في لغة السي شارب",
+      "channel": "محمود السكري | كود عربي",
+      "language": "ar",
+      "duration": "11:50"
+    },
+    {
+      "videoId": "Tz4t_t23h3Q",
+      "title": "31. Conditional Statements IF Statement  | شرح سي شارب  | C# Course For Beginners in Arabic",
+      "channel": "Codographia",
+      "language": "ar",
+      "duration": "9:04"
     }
   ],
   "cs-loops": [
@@ -131,6 +161,21 @@
       "language": "en",
       "duration": "9:13",
       "description": "In this series we will learn C# from the basics to advanced topics. In this video we will see how to use the for loops in switch sharp to iterate through a set number of iterations in code."
+    },
+    {
+      "videoId": "lq5C79U6hmY",
+      "title": "022 C# For Loop جملة التكرار فور لوب في لغة السي شارب",
+      "channel": "محمود السكري | كود عربي",
+      "language": "ar",
+      "duration": "9:36"
+    },
+    {
+      "videoId": "g8YjmpLKD9A",
+      "title": "46. while and do while loops in C# | شرح سي شارب  | C# Course For Beginners in Arabic",
+      "channel": "Codographia",
+      "language": "ar",
+      "duration": "10:01",
+      "description": "while and do while loops in C#"
     }
   ],
   "cs-methods": [
@@ -655,6 +700,21 @@
       "language": "en",
       "duration": "4:46",
       "description": "The advantages of Composition over Inheritance - Class-based vs Prototype-based Inheritance; - Classes vs Types vs Interfaces;"
+    },
+    {
+      "videoId": "948Bzy82fDQ",
+      "title": "#003  Composition / Inheritance [ شرح بالعربي ] #designprinciples  #solid #composition #inheritance",
+      "channel": "Metigator | عصام عبدالنبي",
+      "language": "ar",
+      "duration": "32:07",
+      "description": "🎓 من أول سطر كود لحد بناء تطبيقات Production-Ready!"
+    },
+    {
+      "videoId": "R4y-LfCacYI",
+      "title": "OOP in Arabic - #9 Composition",
+      "channel": "Omar Ahmed",
+      "language": "ar",
+      "duration": "22:02"
     }
   ],
   "linq-advanced": [
@@ -780,6 +840,22 @@
       "language": "en",
       "duration": "2:18",
       "description": "In this video tutorial, we are going to talk about a design principle called the Open Closed Principle (OCP), which is one of the five SOLID Principles of Object-Oriented Design (OOD)."
+    },
+    {
+      "videoId": "L6XR-D4IMXo",
+      "title": "SOLID Principles Crash Course | شرح عربي في ربع ساعة",
+      "channel": "تراب الماث",
+      "language": "ar",
+      "duration": "16:03",
+      "description": "Software SOLID principles crash course in one video  شرح عربي لمبادئ solid"
+    },
+    {
+      "videoId": "_3m31uhZVRE",
+      "title": "(6) Intro to SOLID Principles - بالعربي",
+      "channel": "Tarek Alabd",
+      "language": "ar",
+      "duration": "19:09",
+      "description": "Intro to SOLID Principles in Arabic"
     }
   ],
   "oop-object-modeling": [
@@ -798,6 +874,21 @@
       "language": "en",
       "duration": "1:38:00",
       "description": "Master Object-Oriented Programming (OOP) | Full Workshop Replay Welcome to the ultimate OOP workshop! In this session, we deep-dive into **Object-Oriented Programming (OOP)** concepts, design principles, and real-world applications."
+    },
+    {
+      "videoId": "ErrYTi9ibx4",
+      "title": "#002 UML Class Diagram [ شرح بالعربي ] #class_diagram #uml",
+      "channel": "Metigator | عصام عبدالنبي",
+      "language": "ar",
+      "duration": "19:17",
+      "description": "🎓 من أول سطر كود لحد بناء تطبيقات Production-Ready!"
+    },
+    {
+      "videoId": "FZdR7lDoFR0",
+      "title": "#4 UML | Class Diagram (Part 1) | Association | Aggregation | Composition",
+      "channel": "Mahmoud Sobhy",
+      "language": "ar",
+      "duration": "17:31"
     }
   ],
   "cs-nullable-reference-types": [
@@ -1493,6 +1584,21 @@
       "language": "en",
       "duration": "11:06",
       "description": "🐢 Is EF Core slowing you down? Speed up your inserts by up to 14x and reduce saving time by 94% with Entity Framework Extensions. Enhance performance with support for Bulk Insert, Update, Delete, and Merge — all fully integrated into EF Core."
+    },
+    {
+      "videoId": "zwp3Qvxxzgc",
+      "title": "#5 [arabic] ASP.NET Core 9 Web API – DTOs & Validation | شرح شامل لـ DTOs والتحقق من صحة البيانات",
+      "channel": "CodingClass",
+      "language": "ar",
+      "duration": "22:23"
+    },
+    {
+      "videoId": "1siD1jcYrYg",
+      "title": "DTO s in .NET Core Web API شرح",
+      "channel": "JoeTv92",
+      "language": "ar",
+      "duration": "4:55",
+      "description": "في هذا الدرس الثامن من سلسلة بناء مشروع E-commerce باستعمال .NET Core Web API، سنتعرف على:"
     }
   ],
   "api-validation": [
@@ -1527,6 +1633,21 @@
       "language": "en",
       "duration": "13:51",
       "description": "Learn how to implement Fluent Validation in .NET to create clean, maintainable, and scalable validation logic."
+    },
+    {
+      "videoId": "HmFeHkXlAIQ",
+      "title": "26.Model Validation in  ASP.Net Core MVC شرح بالعربي",
+      "channel": "Coding-Future",
+      "language": "ar",
+      "duration": "15:52"
+    },
+    {
+      "videoId": "nt2NxIZEzwI",
+      "title": "[بالعربي] Model Validation by Fluent Validation in .Net 8 (Core) - 01. Create First Validation",
+      "channel": "DotNet Nights",
+      "language": "ar",
+      "duration": "8:01",
+      "description": "ان شاء الله هنتكلم عن مكتبة من احسن المكتبات لعمل Validation On Model"
     }
   ],
   "api-status-codes": [
@@ -1561,6 +1682,21 @@
       "language": "en",
       "duration": "19:05",
       "description": "🔥 Want to master HTTP Status Codes once and for all? In this complete tutorial, you'll learn every important HTTP Status Code family (1xx, 2xx, 3xx, 4xx, and 5xx) with easy explanations, real-world examples, and live practical demonstrations using Flask APIs and Postman."
+    },
+    {
+      "videoId": "Es7pynx2IG0",
+      "title": "HTTP Status Codes - شرح اكواد الردود في الويب",
+      "channel": "Osama Al-Fahad",
+      "language": "ar",
+      "duration": "6:36"
+    },
+    {
+      "videoId": "oxbTXFFPEJM",
+      "title": "HTTP Status Codes - REST API testing تعرف علي اشهر الاخطاء والاستجابات",
+      "channel": "Vodlara فودلارا",
+      "language": "ar",
+      "duration": "15:47",
+      "description": "list of Hypertext Transfer Protocol (HTTP) response status codes"
     }
   ],
   "api-error-handling": [
@@ -1667,6 +1803,22 @@
       "title": ".NET 8  💥  - Introduction to Serilog Integration",
       "channel": "Mohamad Lawand",
       "language": "en"
+    },
+    {
+      "videoId": "StjHw6wlxEs",
+      "title": ".NET Structured Logging With Serilog (Arabic - بالعربي)",
+      "channel": "Bishoy Youssef",
+      "language": "ar",
+      "duration": "30:00",
+      "description": "If you're building Web APIs with ASPNET Core, you should be using Serilog with structured logging."
+    },
+    {
+      "videoId": "yYgpp0bz2TU",
+      "title": "1- “ليه لازم تستخدم Serilog؟ شرح كامل مع ربطه بـ Seq في .NET Core” - الحلقة الأولى -Resofty",
+      "channel": "Resofty",
+      "language": "ar",
+      "duration": "20:10",
+      "description": "في الفيديو ده هنشرح خطوة بخطوة إزاي تعمل Logging احترافي في مشاريع .NET Core باستخدام Serilog وربطه مع Seq علشان تقدر تتابع كل الـ logs بشكل منظم وسهل وواضح."
     }
   ],
   "api-authentication": [
@@ -1848,6 +2000,20 @@
       "language": "en",
       "duration": "6:40",
       "description": "Adding search functionality to ASP.NET Core Web API alongside existing pagination and filtering for a complete data flow."
+    },
+    {
+      "videoId": "19LQUVKeH8A",
+      "title": "Asp Net Core - RESTFUL API - Filtering",
+      "channel": "bedoo Bader",
+      "language": "ar",
+      "duration": "13:52"
+    },
+    {
+      "videoId": "rpIZ_8xxiVE",
+      "title": "[Arabic] Entity Framework Core - 42 Filtering Data Using .Where",
+      "channel": "DevCreed | محمد الهلالي",
+      "language": "ar",
+      "duration": "6:10"
     }
   ],
   "api-sorting": [
@@ -1880,6 +2046,13 @@
       "title": "Adding Filtering, Sorting And Pagination To a REST API | .NET 7",
       "channel": "Milan Jovanović",
       "language": "en"
+    },
+    {
+      "videoId": "fZySEck4pgQ",
+      "title": "[Arabic] Entity Framework Core - 47 Data Sorting Using .OrderBy",
+      "channel": "DevCreed | محمد الهلالي",
+      "language": "ar",
+      "duration": "5:49"
     }
   ],
   "db-relational-basics": [
@@ -1948,6 +2121,22 @@
       "language": "en",
       "duration": "9:33",
       "description": "How to sort your SQL results with ORDER BY, lowest or highest first, instead of the order the database happens to pick. *🏆 My Academy (recommended)*"
+    },
+    {
+      "videoId": "rqhxIKxWzBE",
+      "title": "شرح أوامر SELECT و WHERE في SQL كاملة | Mohamed Tahseen",
+      "channel": "ElSearshgy - السيرشجى",
+      "language": "ar",
+      "duration": "28:02",
+      "description": "لو عايز تتعلم SQL بطريقة سهلة وبسيطة، فالفيديو ده هيشرحلك بالتفصيل أمر SELECT وأمر WHERE مع أمثلة عملية خطوة بخطوة. هتعرف إزاي تعرض البيانات من الجداول، وإزاي تعمل فلترة للبيانات باستخدام شروط مختلفة، وكمان هتشوف…"
+    },
+    {
+      "videoId": "EcZ8XgCRiCQ",
+      "title": "تعلم SQL Server للمبتدئين | شرح SELECT Statement من الصفر + TOP + DISTINCT",
+      "channel": "افهمها ببساطه",
+      "language": "ar",
+      "duration": "18:59",
+      "description": "تعلم SQL Server للمبتدئين | شرح SELECT Statement من الصفر +"
     }
   ],
   "sql-modify-data": [
@@ -2015,6 +2204,22 @@
       "language": "en",
       "duration": "17:04",
       "description": "Visually explained the difference between NULL, empty strings, and blank spaces in SQL with clear examples. *🏆 My Academy (recommended)*"
+    },
+    {
+      "videoId": "txhNypfH-7g",
+      "title": "تعلم SQL شرح DDL و Create Table و Constraints خطوة بخطوة",
+      "channel": "ElSearshgy - السيرشجى",
+      "language": "ar",
+      "duration": "45:26",
+      "description": "في الفيديو ده هنتعلم أساسيات SQL بشكل بسيط وعملي، وهنتعرف على أوامر DDL، وإزاي تنشئ جدول باستخدام Create Table، وأنواع البيانات Data Types، وإزاي تستخدم Constraints زي Primary Key وForeign Key وUnique وNot Null،…"
+    },
+    {
+      "videoId": "J0uOfegJvcM",
+      "title": "Primary Key vs Foreign Key | شرح مفصل مع أمثلة",
+      "channel": "افهمها ببساطه",
+      "language": "ar",
+      "duration": "15:32",
+      "description": "\"هل ترغب في تعلم كيفية بناء قاعدة بيانات قوية وفعالة؟ في هذا الفيديو الشيق، سوف نتناول الفرق بين Primary Key، Foreign Key، Single Key، و Composite Key في قواعد البيانات، مع شرح مفصل لكيفية عمل العلاقات بين الجداول.…"
     }
   ],
   "sql-joins": [
@@ -2041,6 +2246,22 @@
       "language": "en",
       "duration": "14:49",
       "description": "*🏆 My Academy (recommended)* 📬 *Newsletter for data friends* *Get 25% OFF DataCamp's Here* if you enroll. Thank you for supporting the channel."
+    },
+    {
+      "videoId": "ExcYO38TFiw",
+      "title": "LEFT JOIN في SQL Server   الفرق بين LEFT و INNER JOIN بطريقة عملية 🔥",
+      "channel": "افهمها ببساطه",
+      "language": "ar",
+      "duration": "17:50",
+      "description": "في الفيديو ده هنتعلم LEFT JOIN في SQL Server بشكل عملي، وهنفهم الفرق بينه وبين INNER JOIN، وليه اختيار نوع الـJOIN المناسب ممكن يغيّر البيانات اللي بتظهر في نتيجة الـQuery."
+    },
+    {
+      "videoId": "18ttJRctFYE",
+      "title": "شرح SQL JOINs INNER, LEFT, RIGHT, FULL, SELF باستخدام مثال عملي  SQL Server 2022",
+      "channel": "OK Dev",
+      "language": "ar",
+      "duration": "18:46",
+      "description": "في الفيديو ده هنشرح SQL JOIN بشكل عملي وبسيط"
     }
   ],
   "sql-aggregates": [
@@ -2075,6 +2296,21 @@
       "language": "en",
       "duration": "7:57",
       "description": "DBMS: GROUP BY and HAVING Clause in SQL 1. GROUP BY Clause in SQL. Axol x Alex Skrindo - You [NCS Release]"
+    },
+    {
+      "videoId": "6ZLBx4ssWKQ",
+      "title": "شرح group by فى SQL بالتفصيل   السيرشجى محمد تحسين",
+      "channel": "ElSearshgy - السيرشجى",
+      "language": "ar",
+      "duration": "31:42",
+      "description": "في الفيديو ده هنتعلم GROUP BY في SQL بالتفصيل وبطريقة سهلة جدًا، وهنشرح استخدامه خطوة بخطوة مع أمثلة عملية تقدر تطبقها بنفسك."
+    },
+    {
+      "videoId": "PSsxpu7H0Ps",
+      "title": "29 - | MS SQL Server For Beginners | - | Aggregate Functions | - |Summary Functions|",
+      "channel": "‫محمد الدسوقى (‪Mohamed El Desouki‬‏)‬‎",
+      "language": "ar",
+      "duration": "20:58"
     }
   ],
   "ef-dbcontext": [
@@ -2150,6 +2386,14 @@
       "language": "en",
       "duration": "8:04",
       "description": "🎯 Use Entity Framework Core to build real APIs with Minimal APIs: 💻 Download the code example💻 📖 Learn .NET and C# with our online courses 📖"
+    },
+    {
+      "videoId": "fKaIu43bW6g",
+      "title": "#006 EF-Core DbContext [ شرح بالعربي ] #dbcontext",
+      "channel": "Metigator | عصام عبدالنبي",
+      "language": "ar",
+      "duration": "48:57",
+      "description": "🎓 من أول سطر كود لحد بناء تطبيقات Production-Ready!"
     }
   ],
   "ef-entities": [
@@ -2184,6 +2428,21 @@
       "language": "en",
       "duration": "2:09:51",
       "description": "Fluent API Configurations in Entity Framework In this article, I am going to discuss Fluent API Configurations in Entity Framework Code First Approach with Examples. Please read our previous article where we discussed ConcurrencyCheck Attribute in Entity Framework with Examples."
+    },
+    {
+      "videoId": "GHyeugqpMPU",
+      "title": "#007 EF-Core Configuration [ شرح بالعربي ]  #ef-configuration #efcore",
+      "channel": "Metigator | عصام عبدالنبي",
+      "language": "ar",
+      "duration": "38:31",
+      "description": "🎓 من أول سطر كود لحد بناء تطبيقات Production-Ready!"
+    },
+    {
+      "videoId": "cQMQGzHNzZs",
+      "title": "26.Configuration Using Fluent Api Part1 In Web Api Clean Architecture شرح بالعربي",
+      "channel": "Coding-Future",
+      "language": "ar",
+      "duration": "9:57"
     }
   ],
   "ef-migrations": [
@@ -2259,6 +2518,21 @@
       "language": "en",
       "duration": "16:05",
       "description": "Learn how to set up and use Many-to-Many relationships in  Entity Framework Core  using .NET 9 and ASP.NET Core Minimal APIs."
+    },
+    {
+      "videoId": "rD22JYpR1cA",
+      "title": "Learn EF Core In Arabic | Relationships — One-to-Many | شرح بالعربي",
+      "channel": "CodeVerse - Aziz Nader",
+      "language": "ar",
+      "duration": "19:57",
+      "description": "في الفيديو ده هنتعلم Relationships — One-to-Many ، وهنشرح المفاهيم الأساسية بالتطبيق العملي خطوة بخطوة، مع أمثلة تساعدك تفهم الموضوع وتستخدمه في مشاريعك الحقيقية."
+    },
+    {
+      "videoId": "JKRL2-BqJVM",
+      "title": "[Arabic] Entity Framework Core - 25 One To Many Relationship - Part 1",
+      "channel": "DevCreed | محمد الهلالي",
+      "language": "ar",
+      "duration": "13:28"
     }
   ],
   "ef-crud": [
@@ -2293,6 +2567,22 @@
       "language": "en",
       "duration": "25:45",
       "description": "CRUD Operations in ASP.NET Core MVC using Entity Framework Core 🔴 Learn step-by-step CRUD operations in ASP.NET Core 9 MVC from scratch! In this tutorial, we will build a complete Student Management System using Entity Framework Core and SQL Server."
+    },
+    {
+      "videoId": "zENnFL8opFw",
+      "title": "7 - Entity Framework Core -  CRUD Operations - Arabic",
+      "channel": "GoSharp",
+      "language": "ar",
+      "duration": "26:00",
+      "description": "شرح كيف إضافة او تعديل او مسح او قرأءه البيانات من الداتابيز"
+    },
+    {
+      "videoId": "46O_VAlgedk",
+      "title": "#018 Save Data in EF Core [ بالعربي ] #efcore  #change_tracking #executeupdate #executedelete",
+      "channel": "Metigator | عصام عبدالنبي",
+      "language": "ar",
+      "duration": "1:12:24",
+      "description": "🎓 من أول سطر كود لحد بناء تطبيقات Production-Ready!"
     }
   ],
   "ef-tracking": [
@@ -2560,6 +2850,21 @@
       "title": "Don't SUCK With Entity Framework - N + 1 Query Problem - Performance Tips Part 1",
       "channel": "Code It Up by AMBITIONED",
       "language": "en"
+    },
+    {
+      "videoId": "im9xwBvTef8",
+      "title": "N+1 Problem In EF Core",
+      "channel": "Programming Advices",
+      "language": "ar",
+      "duration": "10:07"
+    },
+    {
+      "videoId": "ITcLdySfLM0",
+      "title": "💊 Lazy Loading vs Eager Loading: كيف تدير العلاقات في الـ ORM بدون تدمير الذاكرة؟",
+      "channel": "مصطفى سليمان",
+      "language": "ar",
+      "duration": "10:41",
+      "description": "هل تساءلت يوماً لماذا تتباطأ الاستجابة (Latency) في بعض الـ APIs بشكل مفاجئ، بينما تظهر سجلات الخادم (Logs) سيلاً متتالياً من الاستعلامات المكررة حتى لو كان الطلب بسيطاً؟ 🤯"
     }
   ],
   "ef-query-performance": [
@@ -2621,6 +2926,13 @@
       "channel": "Nick Chapsas",
       "language": "en",
       "duration": "19:50"
+    },
+    {
+      "videoId": "WTbEEuJdZE4",
+      "title": "[Arabic] Entity Framework Core - 3 Add First Migration",
+      "channel": "DevCreed | محمد الهلالي",
+      "language": "ar",
+      "duration": "9:17"
     }
   ],
   "sql-indexing": [
@@ -5248,6 +5560,22 @@
       "title": "All 23 GoF Design Patterns Explained with Real C# Code [.NET 8 eCommerce API]",
       "channel": "Real World Devs",
       "language": "en"
+    },
+    {
+      "videoId": "c5G6r8_r80s",
+      "title": "#004 Strategy Design Pattern [ شرح بالعربي ]  #design_patterns #strategy_design_pattern",
+      "channel": "Metigator | عصام عبدالنبي",
+      "language": "ar",
+      "duration": "39:27",
+      "description": "🎓 من أول سطر كود لحد بناء تطبيقات Production-Ready!"
+    },
+    {
+      "videoId": "PBQp5vtiQdg",
+      "title": "#006 Decorator Design Pattern [ شرح بالعربي ]  #design_patterns #decorator_design_pattern",
+      "channel": "Metigator | عصام عبدالنبي",
+      "language": "ar",
+      "duration": "24:32",
+      "description": "🎓 من أول سطر كود لحد بناء تطبيقات Production-Ready!"
     }
   ],
   "sql-stored-procedures": [
