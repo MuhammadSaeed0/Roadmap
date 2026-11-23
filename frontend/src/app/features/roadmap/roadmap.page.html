@@ -69,27 +69,35 @@
             @if (phase.topics.length > 0) {
               <ul class="topic-list" role="list">
                 @for (topic of phase.topics; track topic.id) {
-                  <li class="topic-row" [attr.data-status]="topic.status">
+                  <li class="topic-row rm-row" [attr.data-status]="topic.status">
                     <app-icon [name]="statusIcon(topic.status)" class="status-icon" [attr.data-status]="topic.status" />
                     <div class="topic-main">
-                      <a class="topic-title" [routerLink]="['/topics', topic.id]">{{ topic | loc: 'title' }}</a>
+                      @let locked = !topic.prerequisitesMet && topic.status === 'NotStarted';
+                      <div class="topic-head">
+                        <a class="topic-title" [routerLink]="['/topics', topic.id]">{{ topic | loc: 'title' }}</a>
+                        @if (locked) {
+                          <!-- Phones: a lock next to the title instead of the full chip below. -->
+                          <span class="topic-lock" [title]="'roadmap.locked' | t"><app-icon name="lock" [size]="13" /><span class="sr-only">{{ 'roadmap.locked' | t }}</span></span>
+                        }
+                      </div>
                       <div class="chips">
-                        <span class="chip chip-sm" [attr.data-priority]="topic.priority">{{ 'priority.' + topic.priority | t }}</span>
+                        <span class="badge topic-badge-sm" [attr.data-status]="topic.status">{{ 'topicStatus.' + topic.status | t }}</span>
+                        <span class="chip chip-sm chip-extra" [attr.data-priority]="topic.priority">{{ 'priority.' + topic.priority | t }}</span>
                         <span class="chip chip-sm chip-ghost"><app-icon name="clock" [size]="12" /> {{ topic.estimatedMinutes | duration }}</span>
                         @if (topic.knowledge !== 'Unassessed') {
-                          <span class="chip chip-sm" [attr.data-knowledge]="topic.knowledge">{{ 'knowledge.' + topic.knowledge | t }}</span>
+                          <span class="chip chip-sm chip-extra" [attr.data-knowledge]="topic.knowledge">{{ 'knowledge.' + topic.knowledge | t }}</span>
                         }
                         @if (topic.confidence !== null) {
-                          <span class="chip chip-sm chip-ghost">{{ 'confidence.label' | t }} {{ topic.confidence }}/5</span>
+                          <span class="chip chip-sm chip-ghost chip-extra">{{ 'confidence.label' | t }} {{ topic.confidence }}/5</span>
                         }
-                        @if (!topic.prerequisitesMet && topic.status === 'NotStarted') {
-                          <span class="chip chip-sm chip-ghost muted"><app-icon name="lock" [size]="12" /> {{ 'roadmap.locked' | t }}</span>
+                        @if (locked) {
+                          <span class="chip chip-sm chip-ghost muted chip-lock"><app-icon name="lock" [size]="12" /> {{ 'roadmap.locked' | t }}</span>
                         }
                         @if (topic.inReview) { <span class="chip chip-sm chip-ghost"><app-icon name="repeat" [size]="12" /></span> }
                       </div>
                     </div>
                     <div class="topic-actions">
-                      <span class="badge" [attr.data-status]="topic.status">{{ 'topicStatus.' + topic.status | t }}</span>
+                      <span class="badge topic-badge-lg" [attr.data-status]="topic.status">{{ 'topicStatus.' + topic.status | t }}</span>
                       @if (topic.status !== 'Completed' && topic.status !== 'Skipped') {
                         <button type="button" class="btn btn-ghost btn-xs" [disabled]="busy() === topic.id" (click)="setStatus(topic, 'Completed')"
                                 [attr.aria-label]="('topic.markComplete' | t) + ': ' + (topic | loc: 'title')">

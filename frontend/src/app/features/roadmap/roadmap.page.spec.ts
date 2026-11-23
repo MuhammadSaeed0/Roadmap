@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { Phase, Roadmap } from '../../core/models';
+import { Phase, Roadmap, TopicSummary } from '../../core/models';
 import RoadmapPage from './roadmap.page';
 
 const phase = (id: number, percent: number, extra: Partial<Phase> = {}): Phase => ({
@@ -43,5 +43,24 @@ describe('RoadmapPage', () => {
     expect(library.getAttribute('href')).toBe('/project-library/12');
     expect(library.textContent).toContain('Console to-do list');
     expect(library.querySelector('[data-status="Completed"]')).not.toBeNull();
+  });
+
+  it('gives a topic with unfinished prerequisites a lock beside its title (named for screen readers) and keeps the full chip', async () => {
+    const topic = (id: number, prerequisitesMet: boolean) => ({
+      id, slug: 't' + id, phaseId: 1, order: id, skill: 'CSharp', priority: 'Core', estimatedMinutes: 30, titleEn: 'Topic ' + id, titleAr: 'موضوع ' + id,
+      summaryEn: '', summaryAr: '', status: 'NotStarted', knowledge: 'Unassessed', confidence: null, inReview: false, prerequisitesMet,
+    }) as unknown as TopicSummary;
+    const el = await render({ currentPhaseId: 1, phases: [phase(1, 0, { topics: [topic(1, false), topic(2, true)] })] });
+    const [locked, open] = [...el.querySelectorAll('.rm-row')];
+
+    const lock = locked.querySelector('.topic-head .topic-lock')!;
+    expect(lock.getAttribute('title')).toBe('Prerequisites not finished');
+    expect(lock.querySelector('.sr-only')?.textContent).toBe('Prerequisites not finished');
+    expect(locked.querySelector('.chip-lock')?.textContent).toContain('Prerequisites not finished');   // desktop keeps the chip
+    expect(open.querySelector('.topic-lock, .chip-lock')).toBeNull();
+
+    // Line 2 on phones: status and duration, then the "mark as completed" button with its label.
+    expect(locked.querySelector('.chips .topic-badge-sm')?.textContent).toBe('Not started');
+    expect(locked.querySelector('.topic-actions button')?.getAttribute('aria-label')).toBe('Mark as completed: Topic 1');
   });
 });
