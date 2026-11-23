@@ -116,6 +116,56 @@ public class ReviewService(AppDbContext db, TimeProvider clock)
         return ToState(schedule);
     }
 
+    /// <summary>Cards per quick review: one from the objectives when the topic has any, the rest from its quiz questions.</summary>
+    public const int CardsPerTopic = 4;
+
+    public async Task<FlashcardDeckDto> CardsAsync(int topicId, CancellationToken ct)
+    {
+        var topic = await db.Topics.AsNoTracking()
+            .Where(t => t.Id == topicId)
+            .Select(t => new { t.Id, t.TitleEn, t.TitleAr, t.SummaryEn, t.SummaryAr, t.WhyEn, t.WhyAr, t.ObjectivesEn, t.ObjectivesAr })
+            .SingleOrDefaultAsync(ct) ?? throw new NotFoundException("Topic", topicId);
+        var questions = await db.QuizQuestions.AsNoTracking().Where(q => q.TopicId == topicId).ToListAsync(ct);
+        return new FlashcardDeckDto(topic.Id, topic.TitleEn, topic.TitleAr,
+            BuildCards(topic.SummaryEn, topic.SummaryAr, topic.WhyEn, topic.WhyAr, topic.ObjectivesEn, topic.ObjectivesAr, questions, Random.Shared));
+    }
+
+    /// <summary>Builds a topic's deck: at most one objective card, then quiz questions in a random order, CardsPerTopic in all.</summary>
+    public static List<FlashcardDto> BuildCards(string summaryEn, string summaryAr, string whyEn, string whyAr,
+        string objectivesEn, string objectivesAr, IReadOnlyList<QuizQuestion> questions, Random random)
+    {
+        var cards = new List<FlashcardDto>();
+        var en = Lines(objectivesEn);
+        var ar = Lines(objectivesAr);
+        if (en.Count > 0 && en.Count == ar.Count)
+        {
+            var i = random.Next(en.Count);
+            cards.Add(new FlashcardDto("objective", en[i], ar[i], summaryEn, summaryAr, FirstSentence(whyEn), FirstSentence(whyAr)));
+        }
+        var shuffled = questions.ToArray();
+        random.Shuffle(shuffled);
+        foreach (var q in shuffled.Take(CardsPerTopic - cards.Count))
+            cards.Add(new FlashcardDto("question", q.QuestionEn, q.QuestionAr, q.OptionsEn[q.AnswerIndex], q.OptionsAr[q.AnswerIndex],
+                FirstSentence(q.ExplanationEn), FirstSentence(q.ExplanationAr)));
+        return cards;
+
+        static List<string> Lines(string text) => text.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+    }
+
+    /// <summary>The first sentence of a text, for the one-line "why" on the back of a card.</summary>
+    public static string FirstSentence(string text)
+    {
+        text = text.Trim();
+        for (var i = 0; i < text.Length - 1; i++)
+            if (text[i] is '.' or '!' or '?' or '؟' && char.IsWhiteSpace(text[i + 1]) && !EndsWithAbbreviation(text, i))
+                return text[..(i + 1)];
+        return text;
+
+        // "e.g. net10.0" must not end the sentence after "e.g.".
+        static bool EndsWithAbbreviation(string text, int dot) =>
+            dot >= 3 && text.AsSpan(dot - 3, 3) is "e.g" or "i.e";
+    }
+
     public async Task RemoveAsync(int topicId, CancellationToken ct)
     {
         if (await db.ReviewSchedules.Where(r => r.TopicId == topicId).ExecuteDeleteAsync(ct) == 0)

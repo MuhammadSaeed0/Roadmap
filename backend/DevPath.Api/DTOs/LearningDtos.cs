@@ -125,3 +125,12 @@ public record UpdatePreferencesRequest(
     [Required] bool? AllowSkippingPrerequisites,
     SkillArea? FocusSkill,
     [Required] DayOfWeek? WeekStartsOn);
+
+/// <summary>
+/// One flashcard for a quick review. Kind "question" comes from the topic's quiz bank: the front is the question and
+/// the back the correct option, with the first sentence of its explanation as the reason. Kind "objective" comes from
+/// the topic's learning objectives: the front is the objective (the page words it as a prompt) and the back the topic summary.
+/// </summary>
+public record FlashcardDto(string Kind, string FrontEn, string FrontAr, string BackEn, string BackAr, string WhyEn, string WhyAr);
+
+public record FlashcardDeckDto(int TopicId, string TitleEn, string TitleAr, IReadOnlyList<FlashcardDto> Cards);

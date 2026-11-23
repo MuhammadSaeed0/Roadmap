@@ -779,6 +779,7 @@ button.stat-card:hover { border-color: var(--accent); }
 .review-item:last-child { border-bottom: 0; }
 .review-item p { margin: 2px 0 0; }
 .review-rate { display: flex; flex-direction: column; gap: 4px; }
+.quick-start { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 12px; }
 .review-rate .conf-label { display: none; }
 .rules { display: flex; flex-direction: column; gap: 5px; font-size: 0.86rem; font-family: var(--font-sans); }
 
