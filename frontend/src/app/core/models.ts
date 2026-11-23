@@ -287,6 +287,15 @@ export interface Quiz { topicId: number; level: QuizLevel; passPercent: number; 
 export interface QuizResultItem { questionId: number; choice: number; correctIndex: number; isCorrect: boolean; explanationEn: string; explanationAr: string; }
 export interface QuizResult { level: QuizLevel; score: number; total: number; passed: boolean; results: QuizResultItem[]; levels: QuizLevelInfo[]; }
 
+// ----- Placement check (GET /api/placement) -----
+export interface PlacementQuestion { id: number; phaseId: number; questionEn: string; questionAr: string; optionsEn: string[]; optionsAr: string[]; }
+export interface PlacementQuiz { perPhase: number; questions: PlacementQuestion[]; }
+export interface PlacementPhaseResult {
+  phaseId: number; order: number; titleEn: string; titleAr: string; topicCount: number; correct: number; total: number; known: boolean;
+}
+export interface PlacementResult { phases: PlacementPhaseResult[]; }
+export interface PlacementApplied { phaseIds: number[]; topicsMarked: number; }
+
 // ----- Developer level (GET /api/skill-level) -----
 export type VerificationTier = 'SelfReported' | 'Evidenced' | 'AutoChecked' | 'QuizVerified' | 'Reviewed';
 export type EvidenceKind = 'Passive' | 'Knowledge' | 'Practical' | 'Project' | 'Quality';

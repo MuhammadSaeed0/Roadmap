@@ -81,3 +81,7 @@
 .due-banner { align-items: center; margin: 0; }
 .due-banner p { margin: 0; flex: 1; min-width: 0; }
 .due-banner .btn { flex: none; }
+.placement-offer { flex-wrap: wrap; align-items: center; margin: 0; }
+.placement-offer-text { flex: 1 1 240px; min-width: 0; }
+.placement-offer-text p { margin: 0; }
+.placement-offer .btn { flex: none; }

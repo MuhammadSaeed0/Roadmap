@@ -132,6 +132,13 @@ export class ApiService {
   submitQuiz(topicId: number, level: M.QuizLevel, answers: { questionId: number; choice: number }[]) {
     return this.post<M.QuizResult>(`/topics/${topicId}/quiz`, { level, answers });
   }
+  // ----- Placement check -----
+  /** Two questions per phase for the first phases, without their answers. */
+  placement() { return this.get<M.PlacementQuiz>('/placement'); }
+  /** Grades per phase; marks nothing. */
+  gradePlacement(answers: { questionId: number; choice: number }[]) { return this.post<M.PlacementResult>('/placement/grade', { answers }); }
+  /** Marks every topic of the chosen phases as already known, after the learner confirms. */
+  applyPlacement(phaseIds: number[]) { return this.post<M.PlacementApplied>('/placement/apply', { phaseIds }); }
   setVideoProgress(topicId: number, videoId: string, flags: { isWatched: boolean; isBookmarked: boolean }) {
     return this.put<void>(`/videos/${encodeURIComponent(videoId)}/progress`, { topicId, ...flags });
   }
