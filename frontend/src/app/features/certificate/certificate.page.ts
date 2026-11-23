@@ -5,21 +5,10 @@ import { ApiService } from '../../core/api.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { FormatDatePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
-import { PublicCertificate } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import { EmptyStateComponent, SkeletonComponent } from '../../shared/ui.components';
-
-/** LinkedIn's "Add licence or certification" form, filled in; the verify link goes in certUrl. */
-export function linkedInAddUrl(c: PublicCertificate, title: string, verifyUrl: string): string {
-  const issued = new Date(c.issuedAt);
-  const params = new URLSearchParams({
-    startTask: 'CERTIFICATION_NAME', name: title, organizationName: 'DevPath',
-    issueYear: String(issued.getUTCFullYear()), issueMonth: String(issued.getUTCMonth() + 1),
-    certUrl: verifyUrl, certId: c.code,
-  });
-  return 'https://www.linkedin.com/profile/add?' + params.toString();
-}
+import { linkedInAddUrl, linkedInTitle } from './certificate-links';
 
 /**
  * A phase certificate at /c/{code}: readable by anyone with the link, signed in or not. "Download PDF" opens the
@@ -125,10 +114,9 @@ export default class CertificatePage {
     return c ? this.i18n.pick(c.phaseTitleEn, c.phaseTitleAr) : '';
   });
   protected readonly verifyUrl = computed(() => `${this.document.location.origin}/c/${this.data.value()?.code ?? this.code}`);
-  /** LinkedIn gets the English title: the profile entry is read by recruiters in any language. */
   protected readonly linkedIn = computed(() => {
     const c = this.data.value();
-    return c ? linkedInAddUrl(c, `DevPath roadmap — Phase ${c.phaseOrder}: ${c.phaseTitleEn}`, this.verifyUrl()) : '';
+    return c ? linkedInAddUrl(c, linkedInTitle(c.phaseOrder, c.phaseTitleEn), this.verifyUrl()) : '';
   });
 
   protected print(): void {

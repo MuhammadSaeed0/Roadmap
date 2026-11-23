@@ -10,6 +10,7 @@ import { EvidenceScore, ItemRef, SkillAction, SkillRequirement, XpTransaction } 
 import { ToastService } from '../../core/ui-services';
 import { CareerReadinessComponent } from '../career/career-readiness.component';
 import { ProgressOverviewComponent } from '../progress/progress-overview.component';
+import { MyCertificatesComponent } from './my-certificates.component';
 import { IconComponent } from '../../shared/icon.component';
 import { ErrorStateComponent, PageHeaderComponent, ProgressBarComponent, ProgressRingComponent, SkeletonComponent } from '../../shared/ui.components';
 
@@ -20,12 +21,12 @@ type Tone = 'danger' | 'warning' | 'accent' | 'success';
  * exactly what the next level needs, adaptive skill checks and the points history. All numbers come from
  * GET /api/skill-level; the page only presents them.
  */
-type SkillsTab = 'level' | 'progress' | 'career';
+type SkillsTab = 'level' | 'progress' | 'career' | 'certificates';
 
 @Component({
   selector: 'app-skill-level-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, CareerReadinessComponent, ProgressOverviewComponent, TranslatePipe, LocalizePipe, FormatNumberPipe, FormatDatePipe, PageHeaderComponent,
+  imports: [RouterLink, IconComponent, CareerReadinessComponent, ProgressOverviewComponent, MyCertificatesComponent, TranslatePipe, LocalizePipe, FormatNumberPipe, FormatDatePipe, PageHeaderComponent,
     ProgressBarComponent, ProgressRingComponent, SkeletonComponent, ErrorStateComponent],
   styles: `
     /* One even gap between every block of the page (the global .card + .card rule misses a card followed by a grid). */
@@ -85,6 +86,8 @@ type SkillsTab = 'level' | 'progress' | 'career';
 
     @if (tab() === 'career') {
       <div role="tabpanel" id="skills-panel-career" aria-labelledby="skills-tab-career"><app-career-readiness /></div>
+    } @else if (tab() === 'certificates') {
+      <div role="tabpanel" id="skills-panel-certificates" aria-labelledby="skills-tab-certificates"><app-my-certificates /></div>
     } @else if (tab() === 'progress') {
       <div role="tabpanel" id="skills-panel-progress" aria-labelledby="skills-tab-progress" data-tour="skills-progress"><app-progress-overview /></div>
     } @else {
@@ -326,7 +329,7 @@ type SkillsTab = 'level' | 'progress' | 'career';
 export default class SkillLevelPage {
   private readonly api = inject(ApiService);
   private readonly router = inject(Router);
-  protected readonly tabs = ['level', 'progress', 'career'] as const;
+  protected readonly tabs = ['level', 'progress', 'career', 'certificates'] as const;
   protected readonly tab = signal<SkillsTab>('level');
 
   constructor() {

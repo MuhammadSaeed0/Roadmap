@@ -639,7 +639,7 @@ export const en = {
     portfolio: 'Portfolio checklist', portfolioIntro: 'Tick each item when your repository has it. No GitHub connection needed.',
   },
   devLevel: {
-    tabs: { level: 'Your level', progress: 'Progress', career: 'Job readiness' },
+    tabs: { level: 'Your level', progress: 'Progress', career: 'Job readiness', certificates: 'Certificates' },
     title: 'Developer Level', subtitle: 'Your level from what you have actually demonstrated: quizzes, exercises, projects and reviews, not time spent.',
     currentLevel: 'Current level', overall: 'Overall competency', overallLine: 'Overall competency {score}/100', xpLine: '{xp} XP',
     progressTo: 'Progress to {level}', topLevel: 'You have reached the top level. Keep your skills fresh with the skill checks below.',
@@ -738,6 +738,11 @@ export const en = {
   },
   quickAdd: { title: 'Quick add', note: 'New note', session: 'Log study session', topicLabel: 'Topic', chooseTopic: 'Choose a topic…' },
   notFound: { title: 'Page not found', body: 'The page you’re looking for doesn’t exist.', home: 'Back to dashboard' },
+  myCertificates: {
+    title: 'My certificates', intro: 'A certificate for every phase you finished (every topic completed or skipped). Each one has a link anyone can open to verify it.',
+    issuedOn: 'Issued {date}', notIssued: 'Phase finished: the certificate hasn’t been issued yet.', open: 'Open',
+    empty: 'No certificates yet', emptyHint: 'Finish every topic of a phase on the roadmap to earn its certificate.',
+  },
   certificate: {
     title: 'Certificate', kicker: 'Certificate of completion', presentedTo: 'This certifies that',
     body: 'completed phase {n} of the DevPath self-paced roadmap:',

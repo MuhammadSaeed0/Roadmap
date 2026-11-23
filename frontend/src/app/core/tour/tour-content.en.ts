@@ -160,6 +160,7 @@ export const content: TourContent = {
     'skills-checks': { title: 'Skill checks', body: 'Quizzes and exercises chosen at the right difficulty for each area: basics where you are weak, harder challenges where you are strong, and a re-check when your last quiz is old.' },
     'skills-profile': { title: 'Skill profile', body: 'Each technology with its knowledge, practical and project scores, completed work and answer accuracy.' },
     'skills-history': { title: 'Points history', body: 'Every change to your points, with how it was verified. Re-opened work shows as a reversal.' },
+    'skills-certificates': { title: 'My certificates', body: 'The Certificates tab lists every phase you finished. Open a certificate, copy its verify link or add it to LinkedIn; a finished phase without a certificate yet has a button to get it.' },
     'project-review': { title: 'Project review', body: 'Rate your finished project on ten criteria such as architecture, testing and security. It adds to your quality score once the project is complete.' },
     'cv-new': { title: 'New CV', body: 'Start a CV from any template. It begins with your name and e-mail; you can make as many versions as you need.' },
     'cv-list': { title: 'My CVs', body: 'Your CVs and their tailored versions. Open, copy, download as PDF or Word, or delete them. Only you can see them.' },

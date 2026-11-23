@@ -48,6 +48,26 @@ public class CertificateService(AppDbContext db, ICurrentUser currentUser, TimeP
         return new CertificateDto(certificate.Code, certificate.PhaseId, certificate.IssuedAt);
     }
 
+    /// <summary>
+    /// The learner's certificates page: every finished phase, with its certificate when one was issued (a phase
+    /// finished but never asked for has none yet), plus certificates of phases no longer finished (progress
+    /// changed after issuing). Revoked certificates are left out. Phases in roadmap order.
+    /// </summary>
+    public async Task<List<MyCertificateDto>> MineAsync(CancellationToken ct)
+    {
+        var finished = await PhaseCompletion.FinishedPhaseIdsAsync(db, currentUser.Id!, ct);
+        var issued = await db.Certificates.AsNoTracking().Where(c => c.RevokedAt == null)
+            .ToDictionaryAsync(c => c.PhaseId, c => new { c.Code, c.IssuedAt }, ct);
+        var phaseIds = finished.Union(issued.Keys).ToList();
+        var phases = await db.Phases.AsNoTracking().Where(p => phaseIds.Contains(p.Id)).OrderBy(p => p.Order)
+            .Select(p => new { p.Id, p.Order, p.TitleEn, p.TitleAr, Topics = p.Topics.Count }).ToListAsync(ct);
+        return phases.Select(p =>
+        {
+            var certificate = issued.GetValueOrDefault(p.Id);
+            return new MyCertificateDto(p.Id, p.Order, p.TitleEn, p.TitleAr, p.Topics, certificate?.Code, certificate?.IssuedAt);
+        }).ToList();
+    }
+
     /// <summary>Public verification. Unknown, malformed and revoked codes all return null (404), so they can't be told apart.</summary>
     public async Task<PublicCertificateDto?> VerifyAsync(string code, CancellationToken ct)
     {

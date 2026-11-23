@@ -9,6 +9,10 @@ namespace DevPath.Api.Controllers;
 [Route("api/certificates")]
 public class CertificatesController(CertificateService certificates) : ControllerBase
 {
+    /// <summary>The signed-in learner's finished phases and their certificates.</summary>
+    [HttpGet]
+    public Task<List<MyCertificateDto>> Mine(CancellationToken ct) => certificates.MineAsync(ct);
+
     /// <summary>Gets (and on the first call issues) the signed-in learner's certificate for a finished phase.</summary>
     [HttpPost]
     public Task<CertificateDto> Issue(IssueCertificateRequest request, CancellationToken ct) => certificates.IssueAsync(request.PhaseId, ct);
