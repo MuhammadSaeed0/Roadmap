@@ -29,6 +29,7 @@ export const en = {
     title: 'Something went wrong', offline: 'Cannot reach the DevPath API.', server: 'The server had a problem. Please try again.',
     notFound: 'We couldn’t find that page or record.', generic: 'Unexpected error.',
     codes: {
+      phase_not_finished: 'Complete or skip every topic of this phase first.', certificate_revoked: 'This certificate was revoked.',
       project_not_finished: 'Finish every task of the project first.', repository_required: 'Add the project’s repository link first.',
       review_pending: 'This project already has a review in progress.', own_review: 'You can’t review your own project.',
       review_not_open: 'Someone else already took this request.', not_reviewer: 'Only the reviewer can do that.',
@@ -190,7 +191,7 @@ export const en = {
         topic: 'A roadmap topic', project: 'A main project', guide: 'A Project library project', exercise: 'A practice exercise',
         workspaceNew: 'A new playground workspace', workspace: 'A playground workspace', cvEditor: 'A CV in the editor',
         discussion: 'A discussion', pathNew: 'Creating a learning path', pathEdit: 'Editing a learning path', path: 'A learning path',
-        profile: 'A public profile',
+        profile: 'A public profile', certificate: 'A phase certificate',
       },
     },
     audit: {
@@ -345,7 +346,7 @@ export const en = {
   roadmap: {
     views: { phases: 'Phases', list: 'List' }, viewLabel: 'View',
     title: 'My Roadmap', subtitle: '14 phases from your first C# program to full-stack projects, one step at a time.',
-    current: 'Current phase', topicsDone: '{done} of {total} topics', remaining: '{n} min left', projectsUnlocked: 'Main projects you can start after this phase.', libraryIntro: 'Library projects to practise this phase:', phaseDone: 'Phase complete', projectsIntro: 'Apply what you learned in four projects.',
+    current: 'Current phase', topicsDone: '{done} of {total} topics', remaining: '{n} min left', projectsUnlocked: 'Main projects you can start after this phase.', libraryIntro: 'Library projects to practise this phase:', getCertificate: 'Get your certificate', phaseDone: 'Phase complete', projectsIntro: 'Apply what you learned in four projects.',
     expandAll: 'Expand all', collapseAll: 'Collapse all', locked: 'Prerequisites not finished',
     phase: 'Phase {n}',
   },
@@ -737,6 +738,16 @@ export const en = {
   },
   quickAdd: { title: 'Quick add', note: 'New note', session: 'Log study session', topicLabel: 'Topic', chooseTopic: 'Choose a topic…' },
   notFound: { title: 'Page not found', body: 'The page you’re looking for doesn’t exist.', home: 'Back to dashboard' },
+  certificate: {
+    title: 'Certificate', kicker: 'Certificate of completion', presentedTo: 'This certifies that',
+    body: 'completed phase {n} of the DevPath self-paced roadmap:',
+    issued: 'Issued', topics: 'Topics', code: 'Certificate ID', verifyAt: 'Verify at',
+    disclaimer: 'DevPath is a self-paced learning roadmap. This certificate records progress the learner marked in DevPath; it is not an accredited qualification.',
+    verified: 'Verified: this certificate was issued by DevPath.',
+    download: 'Download PDF', copyLink: 'Copy link', linkedIn: 'Add to LinkedIn',
+    copied: 'Link copied', copyFailed: 'Couldn’t copy the link. Copy it from the address bar.',
+    notFound: 'Certificate not found', notFoundHint: 'Check the link. A revoked certificate can no longer be verified.',
+  },
   profile: {
     title: 'Profile', settingsTitle: 'Public profile',
     settingsIntro: 'Share your progress with a link: your level, completed paths and projects. Your email and notes are never shown. It stays private until you turn it on.',

@@ -216,6 +216,9 @@ export class ApiService {
   profileSettings() { return this.get<M.ProfileSettings>('/profile'); }
   updateProfileSettings(body: M.ProfileSettings) { return this.put<M.ProfileSettings>('/profile', body); }
   publicProfile(handle: string) { return this.get<M.PublicProfile>(`/profiles/${encodeURIComponent(handle)}`); }
+  /** Issues the learner's certificate for a finished phase the first time, then returns the same one. */
+  issueCertificate(phaseId: number) { return this.post<M.Certificate>('/certificates', { phaseId }); }
+  certificate(code: string) { return this.get<M.PublicCertificate>(`/certificates/${encodeURIComponent(code)}`); }
 
   // ----- plumbing -----
   private get<T>(path: string, query: Query = {}): Promise<T> {

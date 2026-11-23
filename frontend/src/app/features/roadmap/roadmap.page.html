@@ -63,6 +63,14 @@
           </span>
           <app-icon name="chevron-down" class="chev" [class.open]="isOpen(phase.id)" />
         </button>
+        @if (phase.topicCount > 0 && phase.percent >= 100) {
+          <!-- Outside the header button: a button can't hold another button. -->
+          <div class="phase-cert" data-tour="roadmap-certificate">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="openCertificate(phase.id)" [disabled]="certificateBusy() === phase.id">
+              <app-icon name="award" [size]="15" /> {{ 'roadmap.getCertificate' | t }}
+            </button>
+          </div>
+        }
 
         @if (isOpen(phase.id)) {
           <div class="phase-body" [id]="'phase-body-' + phase.id">

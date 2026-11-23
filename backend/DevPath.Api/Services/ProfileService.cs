@@ -92,12 +92,7 @@ public partial class ProfileService(AppDbContext db, ICurrentUser currentUser)
             .ToListAsync(ct);
 
         // Phase badges: every topic of the phase completed or skipped as already known.
-        var doneTopics = (await db.TopicProgress.IgnoreQueryFilters()
-            .Where(p => p.UserId == id && (p.Status == TopicStatus.Completed || p.Status == TopicStatus.Skipped))
-            .Select(p => p.TopicId).ToListAsync(ct)).ToHashSet();
-        var phaseTopics = await db.Topics.AsNoTracking().Select(t => new { t.Id, t.PhaseId }).ToListAsync(ct);
-        var finishedPhaseIds = phaseTopics.GroupBy(t => t.PhaseId)
-            .Where(g => g.All(t => doneTopics.Contains(t.Id))).Select(g => g.Key).ToHashSet();
+        var finishedPhaseIds = await PhaseCompletion.FinishedPhaseIdsAsync(db, id, ct);
         var phaseBadges = await db.Phases.AsNoTracking().Where(p => finishedPhaseIds.Contains(p.Id)).OrderBy(p => p.Order)
             .Select(p => new PublicPhaseBadgeDto(p.Id, p.Order, p.TitleEn, p.TitleAr)).ToListAsync(ct);
 

@@ -486,6 +486,8 @@ html[lang='ar'] .eyebrow { text-transform: none; letter-spacing: 0; font-size: 0
   padding: 18px 20px; border: 0; background: none; cursor: pointer; text-align: start; color: var(--text);
 }
 .phase-head:hover { background: var(--surface-2); }
+/* "Get your certificate" sits under the finished phase's title, outside the header button. */
+.phase-cert { padding-block: 0 16px; padding-inline: calc(20px + 44px + 16px) 20px; }
 .phase-num {
   display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; font-weight: 600; font-size: 1.05rem;
   background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border);
@@ -1095,6 +1097,7 @@ button.stat-card:hover { border-color: var(--accent); }
   .grid-2, .two-col, .two-col-list { grid-template-columns: minmax(0, 1fr); }
   .phase-head { grid-template-columns: 40px minmax(0, 1fr) 24px; }
   .phase-stats { grid-column: 2 / 3; text-align: start; }
+  .phase-cert { padding-inline: calc(20px + 40px + 16px) 20px; }
 }
 @media (max-width: 640px) {
   .hide-sm { display: none; }
@@ -1127,6 +1130,9 @@ button.stat-card:hover { border-color: var(--accent); }
 @media print {
   .topbar, .toasts { display: none !important; }
   .shell { display: block; }
+  /* Public pages (a certificate) print on their own: no layout padding, plain white page. */
+  body:has(.auth-layout) { background: #fff; }
+  .auth-layout .content, .auth-layout .main-col { padding: 0 !important; margin: 0 !important; min-height: 0 !important; }
 }
 
 /* ---------- Topic quiz ---------- */

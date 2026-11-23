@@ -398,6 +398,14 @@ export interface ReviewRequestLists { criteria: string[]; open: ReviewRequest[];
 
 // ---- Public profile ----
 export interface ProfileSettings { isPublic: boolean; handle: string | null; }
+/** POST /certificates: the learner's own certificate for a finished phase; the code is the verify link /c/{code}. */
+export interface Certificate { code: string; phaseId: number; issuedAt: string; }
+
+/** GET /certificates/{code}: what anyone with the code sees (no email). */
+export interface PublicCertificate {
+  code: string; name: string; phaseOrder: number; phaseTitleEn: string; phaseTitleAr: string; topicCount: number; issuedAt: string;
+}
+
 export interface PublicProfile {
   handle: string; name: string; memberSince: string; level: string; xp: number;
   topicsCompleted: number; acceptedAnswers: number; reviewedProjects: number;
