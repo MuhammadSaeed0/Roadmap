@@ -8,6 +8,7 @@ import { ConfirmService, ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../../shared/ui.components';
 import { AdminUsageComponent } from './admin-usage.component';
+import { AdminUserPickerComponent } from './admin-user-picker.component';
 import { AdminApiService, AdminAudit, AdminOverview, AdminUser, AdminUserList, StatusAction } from './admin-api.service';
 
 type Tab = 'users' | 'admins' | 'activity' | 'usage';
@@ -29,7 +30,7 @@ const PAGE_SIZE = 20;
 @Component({
   selector: 'app-admin-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, AdminUsageComponent, IconComponent, TranslatePipe, FormatDatePipe, FormatNumberPipe, PageHeaderComponent, SkeletonComponent,
+  imports: [FormsModule, AdminUsageComponent, AdminUserPickerComponent, IconComponent, TranslatePipe, FormatDatePipe, FormatNumberPipe, PageHeaderComponent, SkeletonComponent,
     ErrorStateComponent, EmptyStateComponent],
   template: `
     <app-page-header [title]="'admin.title' | t" [subtitle]="'admin.subtitle' | t">
@@ -195,12 +196,8 @@ const PAGE_SIZE = 20;
             <form class="toolbar" (ngSubmit)="promote()">
               <div class="field grow">
                 <label for="promote-email">{{ 'admin.promoteLabel' | t }}</label>
-                <input id="promote-email" class="input" type="email" name="promoteEmail" [(ngModel)]="promoteEmail" dir="ltr"
-                       (ngModelChange)="suggestEmails($event)" (focus)="suggestEmails(promoteEmail)" list="promote-suggestions"
-                       autocomplete="off" maxlength="254" [placeholder]="'admin.promotePlaceholder' | t" aria-describedby="promote-help" />
-                <datalist id="promote-suggestions">
-                  @for (e of emailSuggestions(); track e) { <option [value]="e"></option> }
-                </datalist>
+                <app-admin-user-picker [(value)]="promoteEmail" inputId="promote-email" describedBy="promote-help"
+                                       [placeholder]="'admin.promotePlaceholder' | t" />
                 <small id="promote-help" class="muted small">{{ 'admin.promoteHelp' | t }}</small>
               </div>
               <button type="submit" class="btn btn-primary" [disabled]="promoting() || !promoteEmail.trim()">
@@ -318,9 +315,6 @@ export default class AdminPage implements OnInit {
   protected readonly busyId = signal<string | null>(null);
 
   protected promoteEmail = '';
-  /** Emails of accounts that are not administrators yet, matching what is typed in the promote field. */
-  protected readonly emailSuggestions = signal<string[]>([]);
-  private suggestTimer: ReturnType<typeof setTimeout> | undefined;
   protected readonly promoting = signal(false);
   protected readonly testing = signal(false);
 
@@ -506,19 +500,6 @@ export default class AdminPage implements OnInit {
     } finally {
       this.busyId.set(null);
     }
-  }
-
-  /** Looks up matching emails shortly after typing stops (all accounts when the field is empty). */
-  protected suggestEmails(text: string): void {
-    clearTimeout(this.suggestTimer);
-    this.suggestTimer = setTimeout(async () => {
-      try {
-        const list = await this.api.users({ q: text, role: 'user', page: 1, pageSize: 20 });
-        this.emailSuggestions.set(list.items.filter(u => u.status === 'Approved').map(u => u.email));
-      } catch {
-        this.emailSuggestions.set([]);
-      }
-    }, 200);
   }
 
   protected async promote(): Promise<void> {
