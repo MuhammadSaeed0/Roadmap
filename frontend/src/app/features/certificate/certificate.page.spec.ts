@@ -4,7 +4,8 @@ import { ApiService } from '../../core/api.service';
 import { ApiError } from '../../core/api-error';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { PublicCertificate } from '../../core/models';
-import CertificatePage, { linkedInAddUrl } from './certificate.page';
+import { linkedInAddUrl } from './certificate-links';
+import CertificatePage from './certificate.page';
 
 const certificate: PublicCertificate = {
   code: 'K7QX2MNP4RTA', name: 'Sara Ali', phaseOrder: 3, phaseTitleEn: 'Modern C#', phaseTitleAr: 'C# الحديثة',

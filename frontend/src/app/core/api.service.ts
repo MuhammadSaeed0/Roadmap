@@ -218,6 +218,7 @@ export class ApiService {
   publicProfile(handle: string) { return this.get<M.PublicProfile>(`/profiles/${encodeURIComponent(handle)}`); }
   /** Issues the learner's certificate for a finished phase the first time, then returns the same one. */
   issueCertificate(phaseId: number) { return this.post<M.Certificate>('/certificates', { phaseId }); }
+  myCertificates() { return this.get<M.MyCertificate[]>('/certificates'); }
   certificate(code: string) { return this.get<M.PublicCertificate>(`/certificates/${encodeURIComponent(code)}`); }
 
   // ----- plumbing -----

@@ -106,6 +106,33 @@ public class CertificateTests(ApiFactory factory) : IClassFixture<ApiFactory>
     }
 
     [Fact]
+    public async Task My_certificates_lists_finished_phases_with_their_certificate_once_issued()
+    {
+        var learner = await factory.CreateUserClientAsync();
+        Assert.Empty((await Json(await learner.GetAsync("/api/certificates"))).AsArray());
+
+        var (phaseId, topics) = await FirstPhaseAsync(learner);
+        await FinishAsync(learner, topics);
+        // Finished but not asked for yet: listed without a code.
+        var before = (await Json(await learner.GetAsync("/api/certificates"))).AsArray().Single()!;
+        Assert.Equal(phaseId, before["phaseId"]!.GetValue<int>());
+        Assert.Equal(1, before["phaseOrder"]!.GetValue<int>());
+        Assert.Null(before["code"]);
+
+        var code = (await Json(await Issue(learner, phaseId)))["code"]!.GetValue<string>();
+        var after = (await Json(await learner.GetAsync("/api/certificates"))).AsArray().Single()!;
+        Assert.Equal(code, after["code"]!.GetValue<string>());
+        Assert.NotNull(after["issuedAt"]);
+
+        // An issued certificate stays listed even if a topic is reopened later; another learner sees none of it.
+        (await learner.PutAsJsonAsync($"/api/topics/{topics[0]}/progress", new { status = "InProgress", knowledge = "NeedReview", confidence = 2 })).EnsureSuccessStatusCode();
+        Assert.Equal(code, (await Json(await learner.GetAsync("/api/certificates"))).AsArray().Single()!["code"]!.GetValue<string>());
+        var other = await factory.CreateUserClientAsync();
+        Assert.Empty((await Json(await other.GetAsync("/api/certificates"))).AsArray());
+        Assert.Equal(HttpStatusCode.Unauthorized, (await factory.CreateClient().GetAsync("/api/certificates")).StatusCode);
+    }
+
+    [Fact]
     public async Task Issuing_needs_an_account_and_a_real_phase()
     {
         Assert.Equal(HttpStatusCode.Unauthorized, (await Issue(factory.CreateClient(), 1)).StatusCode);

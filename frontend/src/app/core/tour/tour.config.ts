@@ -38,7 +38,7 @@ export const SECTION_IDS = [
   'progress-tabs', 'progress-panel', 'progress-quick-review', 'career-gaps', 'career-areas', 'career-portfolio',
   // Developer level (and the project review card on the project page)
   'challenges-list', 'topic-tutorial',
-  'skills-level', 'skills-progress', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history', 'project-review',
+  'skills-level', 'skills-progress', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history', 'skills-certificates', 'project-review',
   // CV builder
   'cv-new', 'cv-list', 'cv-templates', 'cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview',
   'settings-appearance', 'settings-learning', 'settings-account', 'settings-about', 'search-results',
@@ -78,7 +78,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   resources: ['resources-verify', 'resources-filters', 'resources-list'],
   notes: ['notes-new', 'notes-list', 'notes-editor'],
   progress: ['progress-tabs', 'progress-panel', 'progress-quick-review'],
-  skills: ['skills-level', 'skills-progress', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history', 'career-gaps', 'career-areas', 'career-portfolio'],
+  skills: ['skills-level', 'skills-progress', 'skills-next', 'skills-categories', 'skills-weak', 'skills-checks', 'skills-profile', 'skills-history', 'career-gaps', 'career-areas', 'career-portfolio', 'skills-certificates'],
   cv: ['cv-new', 'cv-list', 'cv-templates'],
   'cv-editor': ['cv-download', 'cv-editor', 'cv-suggestions', 'cv-tools', 'cv-preview'],
   settings: ['settings-appearance', 'settings-learning', 'settings-account', 'settings-about'],
