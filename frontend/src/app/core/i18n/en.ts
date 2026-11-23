@@ -713,6 +713,7 @@ export const en = {
   search: {
     title: 'Search', placeholder: 'Search topics, projects, notes…', minChars: 'Type at least 2 characters.', noResults: 'No results for “{q}”.',
     resultsFor: 'Results for “{q}”',
+    open: 'Open search', close: 'Close search', dialog: 'Search DevPath', recent: 'Recent searches',
     categories: { topics: 'Topics', projects: 'Projects', tasks: 'Project tasks', practice: 'Practice exercises', interview: 'Interview questions', resources: 'Resources', notes: 'Notes', discussions: 'Discussions' },
   },
   quickAdd: { title: 'Quick add', note: 'New note', session: 'Log study session', topicLabel: 'Topic', chooseTopic: 'Choose a topic…' },
