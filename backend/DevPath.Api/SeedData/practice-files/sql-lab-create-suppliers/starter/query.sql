@@ -1,0 +1,1 @@
+-- Create the Suppliers table, then add the three suppliers from the task

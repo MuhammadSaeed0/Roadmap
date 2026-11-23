@@ -1,0 +1,88 @@
+{
+  "checks": [
+    {
+      "nameEn": "The columns, their order and NOT NULL rules",
+      "nameAr": "الأعمدة وترتيبها وقواعد NOT NULL",
+      "sql": "SELECT name, \"notnull\", pk FROM pragma_table_info('Suppliers') ORDER BY cid",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "name",
+          "notnull",
+          "pk"
+        ],
+        "rows": [
+          [
+            "Id",
+            0,
+            1
+          ],
+          [
+            "Name",
+            1,
+            0
+          ],
+          [
+            "Email",
+            1,
+            0
+          ],
+          [
+            "City",
+            0,
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "Email is unique",
+      "nameAr": "البريد Email فريد لا يتكرر",
+      "sql": "SELECT ii.name FROM pragma_index_list('Suppliers') il JOIN pragma_index_info(il.name) ii WHERE il.\"unique\" = 1 AND il.origin = 'u'",
+      "expected": {
+        "columns": [
+          "name"
+        ],
+        "rows": [
+          [
+            "Email"
+          ]
+        ]
+      }
+    },
+    {
+      "nameEn": "The three suppliers, City empty for the remote one",
+      "nameAr": "الموردون الثلاثة، والمدينة فارغة للمورد البعيد",
+      "sql": "SELECT Id, Name, Email, City FROM Suppliers ORDER BY Id",
+      "ordered": true,
+      "expected": {
+        "columns": [
+          "Id",
+          "Name",
+          "Email",
+          "City"
+        ],
+        "rows": [
+          [
+            1,
+            "Nile Electronics",
+            "sales@nile.example",
+            "Cairo"
+          ],
+          [
+            2,
+            "Delta Cables",
+            "hello@delta.example",
+            "Tanta"
+          ],
+          [
+            3,
+            "Remote Parts",
+            "parts@remote.example",
+            null
+          ]
+        ]
+      }
+    }
+  ]
+}
