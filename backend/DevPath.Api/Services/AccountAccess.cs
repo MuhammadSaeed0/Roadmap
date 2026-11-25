@@ -34,6 +34,9 @@ public record AccountSnapshot(string Id, string Email, string FullName, AccountS
 /// </summary>
 public class AccountAccess(AppDbContext db, ICurrentUser currentUser, IHttpContextAccessor http, IOptions<IdentityOptions> identity)
 {
+    /// <summary>HttpContext.Items key: true when this request's account is an approved administrator.</summary>
+    public const string AdminItemKey = "devpath.isAdmin";
+
     private AccountSnapshot? _snapshot;
     private bool _loaded;
 
@@ -53,6 +56,8 @@ public class AccountAccess(AppDbContext db, ICurrentUser currentUser, IHttpConte
             .SingleOrDefaultAsync(ct);
         var cookieStamp = http.HttpContext?.User.FindFirst(identity.Value.ClaimsIdentity.SecurityStampClaimType)?.Value;
         _snapshot = row is not null && string.Equals(row.SecurityStamp ?? "", cookieStamp ?? "", StringComparison.Ordinal) ? row.Account : null;
+        // Lets ICurrentUser.CanSeeDrafts use the database's answer, not the cookie's (a role granted later isn't in it).
+        if (http.HttpContext is { } context) context.Items[AdminItemKey] = _snapshot is { IsAdmin: true, Status: AccountStatus.Approved };
         return _snapshot;
     }
 

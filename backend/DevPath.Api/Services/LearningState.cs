@@ -16,7 +16,8 @@ public record TopicState(
     public bool IsDone => Status is TopicStatus.Completed or TopicStatus.Skipped;
 }
 
-public record PhaseState(int Id, string Slug, int Order, string TitleEn, string TitleAr);
+/// <summary>A phase. <see cref="Order"/> is its place in the whole catalog; <see cref="Position"/> its number in the roadmap.</summary>
+public record PhaseState(int Id, string Slug, int Order, string TitleEn, string TitleAr, int Position = 0);
 
 /// <summary>
 /// Snapshot of the whole roadmap with progress. The roadmap is small (~150 topics),
@@ -50,10 +51,15 @@ public class LearningState
         topic.PrerequisiteIds.Select(id => ById[id]).Where(p => !p.IsDone);
 }
 
-public class LearningStateLoader(AppDbContext db)
+public class LearningStateLoader(AppDbContext db, TrackContext tracks)
 {
-    public async Task<LearningState> LoadAsync(CancellationToken ct)
+    /// <summary>
+    /// The learner's active roadmap: its phases in roadmap order and their topics. With <paramref name="wholeCatalog"/>,
+    /// every phase and topic the user can see instead (for pages that open any topic by id: search, topic detail).
+    /// </summary>
+    public async Task<LearningState> LoadAsync(CancellationToken ct, bool wholeCatalog = false)
     {
+        var track = wholeCatalog ? null : await tracks.GetAsync(ct);
         var phases = await db.Phases.AsNoTracking()
             .OrderBy(p => p.Order)
             .Select(p => new PhaseState(p.Id, p.Slug, p.Order, p.TitleEn, p.TitleAr))
@@ -83,6 +89,18 @@ public class LearningStateLoader(AppDbContext db)
                 p?.Status ?? TopicStatus.NotStarted, p?.Knowledge ?? KnowledgeLevel.Unassessed, p?.Confidence, p?.CompletedAt, r.Prereqs);
         }).ToList();
 
-        return new LearningState(phases, topics);
+        if (track is null)
+            return new LearningState(phases.Select(p => p with { Position = p.Order }).ToList(), topics);
+
+        // Only the roadmap's phases, in its order; prerequisites outside it are dropped so nothing looks up a topic the
+        // state doesn't hold (seed validation keeps them inside every roadmap anyway).
+        var inTrack = phases.Where(p => track.Positions.ContainsKey(p.Id))
+            .Select(p => p with { Position = track.Positions[p.Id] }).OrderBy(p => p.Position).ToList();
+        var position = inTrack.ToDictionary(p => p.Id, p => p.Position);
+        var trackTopics = topics.Where(t => position.ContainsKey(t.PhaseId))
+            .OrderBy(t => position[t.PhaseId]).ThenBy(t => t.Order).ToList();
+        var ids = trackTopics.Select(t => t.Id).ToHashSet();
+        return new LearningState(inTrack,
+            trackTopics.Select(t => t with { PrerequisiteIds = t.PrerequisiteIds.Where(ids.Contains).ToList() }).ToList());
     }
 }

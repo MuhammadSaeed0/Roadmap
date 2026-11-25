@@ -18,6 +18,11 @@ public class Phase
     public required string TitleAr { get; set; }
     public string DescriptionEn { get; set; } = "";
     public string DescriptionAr { get; set; } = "";
+    /// <summary>
+    /// Set by the seeder: the phase belongs only to unpublished roadmaps. Drafts (and their topics, lessons, quizzes,
+    /// exercises and questions) are hidden from everyone but administrators by AppDbContext's query filters.
+    /// </summary>
+    public bool IsDraft { get; set; }
 
     public List<Topic> Topics { get; set; } = [];
 }
@@ -29,6 +34,8 @@ public class Topic
     public int PhaseId { get; set; }
     public Phase Phase { get; set; } = null!;
     public int Order { get; set; }
+    /// <summary>Copied from its phase by the seeder, so the draft filter needs no join.</summary>
+    public bool IsDraft { get; set; }
 
     public SkillArea Skill { get; set; }
     public TopicPriority Priority { get; set; }

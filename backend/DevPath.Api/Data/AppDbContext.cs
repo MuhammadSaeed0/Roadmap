@@ -18,9 +18,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     /// <summary>The signed-in user's id, or null outside a request (start-up, seeding): user tables then read as empty.</summary>
     public string? CurrentUserId => currentUser?.Id;
 
+    /// <summary>Administrators, and code outside a request such as the seeder, see draft roadmaps' content.</summary>
+    public bool ShowDrafts => currentUser?.CanSeeDrafts ?? true;
+
     // Content (seeded)
     public DbSet<Phase> Phases => Set<Phase>();
     public DbSet<Topic> Topics => Set<Topic>();
+    public DbSet<Track> Tracks => Set<Track>();
+    public DbSet<TrackPhase> TrackPhases => Set<TrackPhase>();
+    public DbSet<UserTrack> UserTracks => Set<UserTrack>();
     public DbSet<TopicDemand> TopicDemand => Set<TopicDemand>();
     public DbSet<TopicPrerequisite> TopicPrerequisites => Set<TopicPrerequisite>();
     public DbSet<Resource> Resources => Set<Resource>();
@@ -686,6 +692,38 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
         });
 
         // ---------- Shared caches ----------
+        // ---------- Roadmaps (tracks) ----------
+        b.Entity<Track>(e =>
+        {
+            e.HasIndex(x => x.Slug).IsUnique();
+            e.Property(x => x.Slug).HasMaxLength(60);
+            e.Property(x => x.Icon).HasMaxLength(30);
+            e.Property(x => x.Technologies).HasMaxLength(400);
+        });
+        b.Entity<TrackPhase>(e =>
+        {
+            e.HasKey(x => new { x.TrackId, x.PhaseId });
+            e.HasOne(x => x.Track).WithMany(t => t.Phases).HasForeignKey(x => x.TrackId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.Phase).WithMany().HasForeignKey(x => x.PhaseId).OnDelete(DeleteBehavior.Cascade);
+            e.HasIndex(x => x.PhaseId);
+        });
+        b.Entity<UserTrack>(e =>
+        {
+            OwnedByUser(e);
+            e.HasKey(x => x.UserId);
+            e.Property(x => x.TrackSlug).HasMaxLength(60);
+        });
+
+        // Draft roadmaps: content of phases that belong only to unpublished roadmaps is invisible to everyone but
+        // administrators (and the seeder), so it can be merged phase by phase before the roadmap goes live.
+        b.Entity<Phase>().HasQueryFilter(x => !x.IsDraft || ShowDrafts);
+        b.Entity<Topic>().HasQueryFilter(x => !x.IsDraft || ShowDrafts);
+        b.Entity<PracticeExercise>().HasQueryFilter(x => !x.Topic.IsDraft || ShowDrafts);
+        b.Entity<InterviewQuestion>().HasQueryFilter(x => !x.Topic.IsDraft || ShowDrafts);
+        b.Entity<QuizQuestion>().HasQueryFilter(x => !x.Topic.IsDraft || ShowDrafts);
+        b.Entity<TopicLesson>().HasQueryFilter(x => !x.Topic.IsDraft || ShowDrafts);
+        b.Entity<CuratedVideo>().HasQueryFilter(x => !x.Topic.IsDraft || ShowDrafts);
+
         b.Entity<TopicVideoCache>(e =>
         {
             e.HasKey(x => x.TopicId);

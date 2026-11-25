@@ -1,0 +1,34 @@
+[
+  {
+    "slug": "dotnet-fullstack",
+    "order": 1,
+    "published": true,
+    "icon": "layers",
+    "titleEn": ".NET full-stack developer",
+    "titleAr": "مطوّر Full-Stack بـ .NET",
+    "summaryEn": "From your first line of C# to complete web apps with ASP.NET Core, EF Core, SQL Server and Angular.",
+    "summaryAr": "من أول سطر C# حتى تطبيقات ويب كاملة بـ ASP.NET Core و EF Core و SQL Server و Angular.",
+    "outcomeEn": "You can build, test and deploy a full-stack web application and apply for junior .NET roles.",
+    "outcomeAr": "تبني تطبيق ويب كاملًا وتختبره وتنشره، وتتقدّم لوظائف .NET للمبتدئين.",
+    "technologies": ["C#", "ASP.NET Core", "EF Core", "SQL Server", "TypeScript", "Angular"],
+    "phases": [
+      "csharp-fundamentals", "object-oriented-programming", "modern-csharp", "aspnet-core", "ef-core",
+      "sql-server-for-dotnet", "typescript", "angular", "full-stack-integration", "testing", "git-github",
+      "professional-skills", "cloud-devops", "full-stack-projects"
+    ]
+  },
+  {
+    "slug": "ai-app-developer",
+    "order": 2,
+    "published": false,
+    "icon": "sparkle",
+    "titleEn": "AI application developer",
+    "titleAr": "مطوّر تطبيقات الذكاء الاصطناعي",
+    "summaryEn": "Build apps on top of large language models with C# and .NET: prompts, RAG, tools and agents, with some Python.",
+    "summaryAr": "ابنِ تطبيقات فوق النماذج اللغوية الكبيرة بـ C# و .NET: الأوامر و RAG والأدوات والوكلاء، مع لمسة Python.",
+    "outcomeEn": "You can build, evaluate and deploy a chat assistant that answers from your own documents and uses tools.",
+    "outcomeAr": "تبني مساعد محادثة يجيب من مستنداتك ويستخدم الأدوات، وتقيّمه وتنشره.",
+    "technologies": ["C#", "ASP.NET Core", "Microsoft.Extensions.AI", "Semantic Kernel", "RAG", "Python"],
+    "phases": ["csharp-fundamentals", "object-oriented-programming", "modern-csharp", "aspnet-core"]
+  }
+]

@@ -11,6 +11,11 @@ public record PhaseSeed(
     string Slug, int Order, string TitleEn, string TitleAr,
     string DescriptionEn, string DescriptionAr, List<TopicSeed> Topics);
 
+/// <summary>A roadmap (tracks.json): its phases in order, by slug. Unpublished roadmaps are drafts, seen by admins only.</summary>
+public record TrackSeed(
+    string Slug, int Order, bool Published, string TitleEn, string TitleAr, string SummaryEn, string SummaryAr,
+    string OutcomeEn, string OutcomeAr, List<string> Technologies, string Icon, List<string> Phases);
+
 public record TopicSeed(
     string Slug, SkillArea Skill, TopicPriority Priority, int Minutes,
     string TitleEn, string TitleAr,

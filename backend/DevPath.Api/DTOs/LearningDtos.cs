@@ -26,9 +26,11 @@ public record ProjectBriefDto(int Id, string Slug, string TitleEn, string TitleA
 public record PhaseDto(
     int Id, string Slug, int Order, string TitleEn, string TitleAr, string DescriptionEn, string DescriptionAr,
     int TopicCount, int DoneCount, double Percent, int RemainingMinutes,
-    IReadOnlyList<TopicSummaryDto> Topics, IReadOnlyList<ProjectBriefDto> Projects, IReadOnlyList<GuidedProjectRefDto> GuidedProjects);
+    IReadOnlyList<TopicSummaryDto> Topics, IReadOnlyList<ProjectBriefDto> Projects, IReadOnlyList<GuidedProjectRefDto> GuidedProjects,
+    int Position, IReadOnlyList<string> SharedWith);
 
-public record RoadmapDto(IReadOnlyList<PhaseDto> Phases, int? CurrentPhaseId);
+/// <summary>The learner's roadmap. Phase.Position is its number here; SharedWith names other roadmaps that hold it.</summary>
+public record RoadmapDto(IReadOnlyList<PhaseDto> Phases, int? CurrentPhaseId, string? TrackSlug);
 
 public record ResourceDto(
     int Id, string Key, string TitleEn, string? TitleAr, string Url, string SourceName,

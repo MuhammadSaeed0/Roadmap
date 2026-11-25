@@ -1178,6 +1178,9 @@ namespace DevPath.Api.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<bool>("IsDraft")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
@@ -2325,6 +2328,9 @@ namespace DevPath.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDraft")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ObjectivesAr")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -2590,6 +2596,85 @@ namespace DevPath.Api.Migrations
                     b.ToTable("TopicVideoCache");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.Track", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OutcomeAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OutcomeEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("SummaryAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SummaryEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Technologies")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("TitleAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
+
+                    b.ToTable("Tracks");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.TrackPhase", b =>
+                {
+                    b.Property<int>("TrackId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PhaseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
+
+                    b.HasKey("TrackId", "PhaseId");
+
+                    b.HasIndex("PhaseId");
+
+                    b.ToTable("TrackPhases");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.UserLearningPath", b =>
                 {
                     b.Property<int>("Id")
@@ -2661,6 +2746,25 @@ namespace DevPath.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("UserTopicVideos");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.UserTrack", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ChosenAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TrackSlug")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserTracks");
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.VideoProgress", b =>
@@ -3654,6 +3758,25 @@ namespace DevPath.Api.Migrations
                     b.Navigation("Topic");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.TrackPhase", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.Phase", "Phase")
+                        .WithMany()
+                        .HasForeignKey("PhaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevPath.Api.Models.Track", "Track")
+                        .WithMany("Phases")
+                        .HasForeignKey("TrackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Phase");
+
+                    b.Navigation("Track");
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.UserLearningPath", b =>
                 {
                     b.HasOne("DevPath.Api.Models.LearningPath", "LearningPath")
@@ -3686,6 +3809,15 @@ namespace DevPath.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.UserTrack", b =>
+                {
+                    b.HasOne("DevPath.Api.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DevPath.Api.Models.VideoProgress", b =>
@@ -3850,6 +3982,11 @@ namespace DevPath.Api.Migrations
                     b.Navigation("ResourceLinks");
 
                     b.Navigation("ReviewRows");
+                });
+
+            modelBuilder.Entity("DevPath.Api.Models.Track", b =>
+                {
+                    b.Navigation("Phases");
                 });
 #pragma warning restore 612, 618
         }
