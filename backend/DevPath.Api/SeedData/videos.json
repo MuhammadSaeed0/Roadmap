@@ -5771,5 +5771,365 @@
       "channel": "Mike Møller Nielsen",
       "language": "en"
     }
+  ],
+  "ai-what-is-llm": [
+    {
+      "videoId": "LPZh9BOjkQs",
+      "title": "Large Language Models explained briefly",
+      "channel": "3Blue1Brown",
+      "language": "en"
+    },
+    {
+      "videoId": "5sLYAQS9sWQ",
+      "title": "How Large Language Models Work",
+      "channel": "IBM Technology",
+      "language": "en"
+    },
+    {
+      "videoId": "zjkBMFhNj_g",
+      "title": "[1hr Talk] Intro to Large Language Models",
+      "channel": "Andrej Karpathy",
+      "language": "en"
+    },
+    {
+      "videoId": "FaWnCoM0sUM",
+      "title": "الحلقة الأولى من AI ببساطة | النماذج اللغوية الكبيرة (LLMs)",
+      "channel": "WideBot AI وايدبوت للذكاء الاصطناعي",
+      "language": "ar"
+    },
+    {
+      "videoId": "5kjo-WFaDEM",
+      "title": "أساسيات نماذج اللغات الكبيرة Large Language Models (LLMs) Basics",
+      "channel": "Mustafa Othman",
+      "language": "ar"
+    }
+  ],
+  "ai-tokens-context": [
+    {
+      "videoId": "-QVoIxEpFkM",
+      "title": "What is a Context Window? Unlocking LLM Secrets",
+      "channel": "IBM Technology",
+      "language": "en"
+    },
+    {
+      "videoId": "TeQDr4DkLYo",
+      "title": "Why LLMs get dumb (Context Windows Explained)",
+      "channel": "NetworkChuck",
+      "language": "en"
+    },
+    {
+      "videoId": "DNuYa0ODQy4",
+      "title": "How LLMs Actually Work — Tokens, Context Windows & Next-Word Prediction",
+      "channel": "Engineering Animated",
+      "language": "en"
+    },
+    {
+      "videoId": "eAlmLU8VM24",
+      "title": "3. الـ Token: العملة الرسمية في عالم الذكاء الاصطناعي AI 💰💰💰",
+      "channel": "نادر كمال || Nader Kamal",
+      "language": "ar"
+    },
+    {
+      "videoId": "qXbCJ8aZ3A8",
+      "title": "22 – الجزء الأول: أسعار DeepSeek API | Tokens، Context Window و Caching Essentials",
+      "channel": "AI Plus - محمد الشامي",
+      "language": "ar"
+    }
+  ],
+  "ai-model-choice": [
+    {
+      "videoId": "pYax2rupKEY",
+      "title": "How to Choose Large Language Models: A Developer’s Guide to LLMs",
+      "channel": "IBM Technology",
+      "language": "en"
+    },
+    {
+      "videoId": "y9k-U9AuDeM",
+      "title": "Should You Use Open Source Large Language Models?",
+      "channel": "IBM Technology",
+      "language": "en"
+    },
+    {
+      "videoId": "UtSSMs6ObqY",
+      "title": "Learn Ollama in 15 Minutes - Run LLM Models Locally for FREE",
+      "channel": "Tech With Tim",
+      "language": "en"
+    },
+    {
+      "videoId": "xKCuk6_GrW8",
+      "title": "كيف تشغّل نماذج الذكاء الاصطناعي محليًا | Ollama",
+      "channel": "Tariq Elouzeh | طارق العوزة",
+      "language": "ar"
+    },
+    {
+      "videoId": "CBM_Bj2zLrc",
+      "title": "كل حاجه هتحتاج تعرفها عن تشغيل الموديل دى لوكل على جهازك  || Ollama 🦙 local LLM",
+      "channel": "Sherif Oneway",
+      "language": "ar"
+    }
+  ],
+  "ai-sampling": [
+    {
+      "videoId": "-BBulGM6xF0",
+      "title": "LLM Prompt Engineering with Random Sampling: Temperature, Top-k, Top-p",
+      "channel": "DataMListic",
+      "language": "en"
+    },
+    {
+      "videoId": "MkaazQttbpc",
+      "title": "The Secret Controls for your LLM: Temperature, Top-K, Top-P, etc",
+      "channel": "Gary Explains",
+      "language": "en"
+    },
+    {
+      "videoId": "IWSutLJbURU",
+      "title": "LLM Temperature Explained in 5 Minutes",
+      "channel": "KodeKloud",
+      "language": "en"
+    },
+    {
+      "videoId": "dWQo6bhU_4s",
+      "title": "كيف يتحكم GPT في التوليد باستخدام Softmax و Temperature",
+      "channel": "freeCodeCamp Arabic",
+      "language": "ar"
+    }
+  ],
+  "ai-hallucinations": [
+    {
+      "videoId": "cfqtFvWOfg0",
+      "title": "Why Large Language Models Hallucinate",
+      "channel": "IBM Technology",
+      "language": "en"
+    },
+    {
+      "videoId": "005JLRt3gXI",
+      "title": "Why do AI models hallucinate?",
+      "channel": "Claude",
+      "language": "en"
+    },
+    {
+      "videoId": "gn6v2q443Ew",
+      "title": "Why LLMs hallucinate | Yann LeCun and Lex Fridman",
+      "channel": "Lex Clips",
+      "language": "en"
+    },
+    {
+      "videoId": "EUK6uHxqJB8",
+      "title": "7. لماذا ChatGPT يكذب؟|  معنى Hallucination في الذكاء الاصطناعي",
+      "channel": "نادر كمال || Nader Kamal",
+      "language": "ar"
+    },
+    {
+      "videoId": "2gxUvzB1Mn4",
+      "title": "الذكاء الاصطناعي يهلوس ؟؟",
+      "channel": "D7ii",
+      "language": "ar"
+    }
+  ],
+  "ai-responsible-use": [
+    {
+      "videoId": "w_3L1Bf2P_g",
+      "title": "Introduction to Responsible AI",
+      "channel": "Google Cloud",
+      "language": "en"
+    },
+    {
+      "videoId": "8Ra5L1aQ5YM",
+      "title": "Responsible AI Principles AI-3017 | Episode 3",
+      "channel": "Microsoft Learn",
+      "language": "en"
+    }
+  ],
+  "py-for-csharp-devs": [
+    {
+      "videoId": "iwxrBTmLVY4",
+      "title": "Python for C# Developers 1 Introduction",
+      "channel": "CloudCasts - Alan Smith",
+      "language": "en"
+    },
+    {
+      "videoId": "EDweq1AryoM",
+      "title": "The Differences Between C# & Python",
+      "channel": "Jabrils",
+      "language": "en"
+    },
+    {
+      "videoId": "Gx5qb1uHss4",
+      "title": "10 Important Python Concepts In 20 Minutes",
+      "channel": "Indently",
+      "language": "en"
+    },
+    {
+      "videoId": "9OgOay9bRU8",
+      "title": "1 كورس شرح أساسيات البرمجة في بايثون خلال ساعة واحدة - جزء | Python in 1 Hour - Part 1 - Algorithms",
+      "channel": "Yehia Tech يحيى تك",
+      "language": "ar"
+    },
+    {
+      "videoId": "Drjvm8p013o",
+      "title": "تعلم لغة بايثون من الصفر الى الاحتراف | كورس كامل",
+      "channel": "Python Arabic Community",
+      "language": "ar"
+    }
+  ],
+  "py-collections": [
+    {
+      "videoId": "3dt4OGnU5sM",
+      "title": "Python Tutorial: Comprehensions - How they work and why you should be using them",
+      "channel": "Corey Schafer",
+      "language": "en"
+    },
+    {
+      "videoId": "MZZSMaEAC2g",
+      "title": "Python dictionaries are easy 📙",
+      "channel": "Bro Code",
+      "language": "en"
+    },
+    {
+      "videoId": "YlY2g2xrl6Q",
+      "title": "Learn Python LIST COMPREHENSIONS in 10 minutes! 📃",
+      "channel": "Bro Code",
+      "language": "en"
+    },
+    {
+      "videoId": "EpZH9JozUzA",
+      "title": "Learn Python in Arabic #021 - Lists",
+      "channel": "Elzero Web School",
+      "language": "ar"
+    },
+    {
+      "videoId": "BQ7jFrysbQU",
+      "title": "Learn Python in Arabic #030 - Dictionary",
+      "channel": "Elzero Web School",
+      "language": "ar"
+    }
+  ],
+  "py-functions-modules": [
+    {
+      "videoId": "Y21OR1OPC9A",
+      "title": "Python Virtual Environments - Full Tutorial for Beginners",
+      "channel": "Tech With Tim",
+      "language": "en"
+    },
+    {
+      "videoId": "GUXxLy68EF8",
+      "title": "Modules, Packages, Libraries - What's The Difference?",
+      "channel": "NeuralNine",
+      "language": "en"
+    },
+    {
+      "videoId": "eDe-z2Qy9x4",
+      "title": "Python Virtual Environment and pip for Beginners",
+      "channel": "Dave Gray",
+      "language": "en"
+    },
+    {
+      "videoId": "RSZEZ3WJn18",
+      "title": "Learn Python in Arabic #150 - Virtual Environment Part 1",
+      "channel": "Elzero Web School",
+      "language": "ar"
+    },
+    {
+      "videoId": "KSLCicalor0",
+      "title": "Python Virtual Environment | تثبيت وتفعيل البيئة الافتراضية لبايثون",
+      "channel": "شبكة علوم | OLOMWEB",
+      "language": "ar"
+    }
+  ],
+  "py-json-http": [
+    {
+      "videoId": "tb8gHvYlCFs",
+      "title": "Python Requests Tutorial: Request Web Pages, Download Images, POST Data, Read JSON, and More",
+      "channel": "Corey Schafer",
+      "language": "en"
+    },
+    {
+      "videoId": "Xnbef8F_Yfc",
+      "title": "Master Python Requests In 15 Minutes. Call Any API",
+      "channel": "Tech With Tim",
+      "language": "en"
+    },
+    {
+      "videoId": "-51jxlQaxyA",
+      "title": "How To Use JSON In Python",
+      "channel": "Tech With Tim",
+      "language": "en"
+    },
+    {
+      "videoId": "FQuskLyitPI",
+      "title": "شرح مكتبة  requests في بايثون 1| ما هو ال HTTP | ما هو ال Web Scraping",
+      "channel": "Pythonic",
+      "language": "ar"
+    },
+    {
+      "videoId": "4Hy9Fzy3-FQ",
+      "title": "شرح مفصل للـ API وطرق التعامل مع HTTP Methods باستخدام Requests",
+      "channel": "cryptodome",
+      "language": "ar"
+    }
+  ],
+  "py-pandas-basics": [
+    {
+      "videoId": "ZyhVh-qRZPA",
+      "title": "Python Pandas Tutorial (Part 1): Getting Started with Data Analysis - Installation and Loading Data",
+      "channel": "Corey Schafer",
+      "language": "en"
+    },
+    {
+      "videoId": "EXIgjIBu4EU",
+      "title": "Learn Pandas in 30 Minutes - Python Pandas Tutorial",
+      "channel": "Tech With Tim",
+      "language": "en"
+    },
+    {
+      "videoId": "DkjCaAMBGWM",
+      "title": "Learning Pandas for Data Analysis? Start Here.",
+      "channel": "Rob Mulla",
+      "language": "en"
+    },
+    {
+      "videoId": "szVK9A5rcAo",
+      "title": "الحلقه الثامنه :  Pandas in Python | شرح مكتبة Pandas لتحليل البيانات في Machine Learning للمبتدئين",
+      "channel": "Mohamed Al Assaal - اتعلم مع العسال",
+      "language": "ar"
+    },
+    {
+      "videoId": "qna-C9e2yI4",
+      "title": "كورس Pandas | ١. سلسلة البيانات وإطار البيانات (Series & DataFrames)",
+      "channel": "Shady Amgad شادي أمجد",
+      "language": "ar"
+    }
+  ],
+  "py-call-llm": [
+    {
+      "videoId": "czvVibB2lRA",
+      "title": "The OpenAI (Python) API | Introduction & Example Code",
+      "channel": "Shaw Talebi",
+      "language": "en"
+    },
+    {
+      "videoId": "Xujt_rFf9Us",
+      "title": "How to use the OpenAI API in Python",
+      "channel": "Kie Codes",
+      "language": "en"
+    },
+    {
+      "videoId": "CbpsDMwFG2g",
+      "title": "OpenAI API With Python Tuorial 1-ChatCompletion API and Completion API",
+      "channel": "Krish Naik",
+      "language": "en"
+    },
+    {
+      "videoId": "_bCylo0oKw4",
+      "title": "07 – كيف تبدأ مع OpenAI API؟ شرح التسجيل، الفوترة، وإعداد مفتاح الـ API بسهولة",
+      "channel": "AI Plus - محمد الشامي",
+      "language": "ar"
+    },
+    {
+      "videoId": "sRCwU7OumEY",
+      "title": "6 | بناء أول AI Agent باستخدام Python و OpenAI",
+      "channel": "Sarah Ghanem – AI & Automation (بالعربي)",
+      "language": "ar"
+    }
   ]
 }
