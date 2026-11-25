@@ -554,8 +554,9 @@ export function lessonTemplate(language: string | null | undefined, code: string
   const lang = (language ?? '').toLowerCase();
   if (!code?.trim()) return null;
   if (lang === 'html') return 'web';
-  // TypeScript and JavaScript examples without a printed output are fragments (Angular classes, parts of a file).
-  if (['typescript', 'ts', 'javascript', 'js'].includes(lang) && !output?.trim()) return null;
+  // TypeScript, JavaScript and Python examples without a printed output are fragments (Angular classes, parts of a
+  // file, code that needs packages the browser runner doesn't have, such as pandas).
+  if (['typescript', 'ts', 'javascript', 'js', 'python', 'py'].includes(lang) && !output?.trim()) return null;
   if (lang !== 'sql') return templateForLanguage(lang);
   const sql = code.replace(/--[^\n]*/g, '').replace(/\/\*[\s\S]*?\*\//g, ''); // comments are not code
   const names = (pattern: RegExp) => new Set([...sql.matchAll(pattern)].map(m => m[1].toLowerCase()));

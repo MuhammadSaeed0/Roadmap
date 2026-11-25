@@ -24,7 +24,8 @@ describe('Running a topic lesson example', () => {
   it('opens each language in the editor that runs it', async () => {
     const { lessonTemplate } = await import('./templates');
     expect(lessonTemplate('csharp', 'Console.WriteLine("Hi");')).toBe('csharp-console');
-    expect(lessonTemplate('python', 'print("Hi")')).toBe('python');
+    expect(lessonTemplate('python', 'print("Hi")', 'Hi')).toBe('python');
+    expect(lessonTemplate('python', 'import pandas as pd')).toBeNull();
     expect(templateByKey('python')?.kind).toBe('Python');
     expect(lessonTemplate('typescript', 'console.log(1 + 1);', '2')).toBe('typescript');
     // A TypeScript fragment with no printed output (an Angular class, part of a file) doesn't run on its own.

@@ -1,0 +1,146 @@
+[
+  {
+    "key": "py-lab-grades",
+    "type": "Coding",
+    "topic": "py-for-csharp-devs",
+    "difficulty": "Beginner",
+    "minutes": 15,
+    "titleEn": "Grades in Python",
+    "titleAr": "التقديرات بلغة Python",
+    "problemEn": "In grades.py implement letter(score): A for 90 and above, B for 80-89, C for 70-79, D for 60-69, F below 60, and raise ValueError for scores below 0 or above 100. Then implement report(scores), which takes a dict of name to score and returns one line per student in the given order, such as \"Sara: 92 (A)\".",
+    "problemAr": "في الملف grades.py نفّذ الدالة letter(score): التقدير A من 90 فأعلى، وB من 80 إلى 89، وC من 70 إلى 79، وD من 60 إلى 69، وF أقل من 60، وارمِ ValueError للدرجات الأقل من 0 أو الأكبر من 100. ثم نفّذ report(scores) التي تأخذ قاموسًا يربط الاسم بالدرجة وتُرجع سطرًا لكل طالب بالترتيب المعطى، مثل \"Sara: 92 (A)\".",
+    "expectedEn": "letter(89) is \"B\", letter(101) raises ValueError, and report({\"Sara\": 92}) is [\"Sara: 92 (A)\"].",
+    "expectedAr": "الناتج letter(89) يساوي \"B\"، وletter(101) يرمي ValueError، وreport({\"Sara\": 92}) يساوي [\"Sara: 92 (A)\"].",
+    "hintsEn": [
+      "Use if / elif / else, checking from the highest grade down.",
+      "An f-string builds each line: f\"{name}: {score} ({letter(score)})\"."
+    ],
+    "hintsAr": [
+      "استخدم if / elif / else وابدأ من أعلى تقدير نزولًا.",
+      "صيغة f-string تبني كل سطر: f\"{name}: {score} ({letter(score)})\"."
+    ],
+    "solutionEn": "letter first rejects invalid scores with raise ValueError(...), then checks score >= 90, >= 80, >= 70 and >= 60 in that order and returns F otherwise. report uses a list comprehension over scores.items(), which keeps the dictionary's insertion order.",
+    "solutionAr": "الدالة letter ترفض أولًا الدرجات غير الصالحة بـ raise ValueError(...)، ثم تفحص score >= 90 ثم >= 80 ثم >= 70 ثم >= 60 بهذا الترتيب وتُرجع F في غير ذلك. والدالة report تستخدم صيغة إنشاء مختصرة على scores.items()، وهي تحافظ على ترتيب إدخال القاموس.",
+    "runner": "Python"
+  },
+  {
+    "key": "py-lab-orders",
+    "type": "Coding",
+    "topic": "py-collections",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Orders with dicts and sets",
+    "titleAr": "الطلبات بالقواميس والـ sets",
+    "problemEn": "In orders.py, each order is a dict with a customer and a list of lines (product, qty, price). Implement total_by_customer(orders), which returns a dict of customer to the total of qty * price; top_customers(orders, n), the n customers with the highest totals, highest first, with ties in name order; and products_bought(orders), every product name once, sorted A-Z.",
+    "problemAr": "في الملف orders.py كل طلب قاموس فيه customer وقائمة أسطر (product وqty وprice). نفّذ total_by_customer(orders) التي تُرجع قاموسًا يربط العميل بمجموع qty * price، وtop_customers(orders, n) التي تُرجع أعلى n عملاء من الأعلى مع ترتيب المتساويين بالاسم، وproducts_bought(orders) التي تُرجع كل اسم منتج مرة واحدة مرتبًا أبجديًا.",
+    "expectedEn": "Totals {\"Sara\": 450, \"Omar\": 3200, \"Mona\": 240}, top 2 [\"Omar\", \"Sara\"], products [\"Cable\", \"Monitor\", \"Mouse\"].",
+    "expectedAr": "المجاميع {\"Sara\": 450, \"Omar\": 3200, \"Mona\": 240}، وأعلى اثنين [\"Omar\", \"Sara\"]، والمنتجات [\"Cable\", \"Monitor\", \"Mouse\"].",
+    "hintsEn": [
+      "totals.get(name, 0) + amount adds to an existing total or starts at 0.",
+      "sorted(totals, key=lambda name: (-totals[name], name)) sorts by total descending, then by name."
+    ],
+    "hintsAr": [
+      "التعبير totals.get(name, 0) + amount يضيف إلى المجموع الموجود أو يبدأ من 0.",
+      "التعبير sorted(totals, key=lambda name: (-totals[name], name)) يرتّب بالمجموع تنازليًا ثم بالاسم."
+    ],
+    "solutionEn": "Loop over orders, sum each order's lines with a generator expression, and accumulate in a dict with get. For the top customers, sort the names with a key that returns (-total, name) and slice [:n]. For the products, build a set with a nested comprehension and pass it to sorted.",
+    "solutionAr": "مُر على الطلبات، واجمع أسطر كل طلب بتعبير مولّد، وراكم النتيجة في قاموس باستخدام get. ولأعلى العملاء رتّب الأسماء بمفتاح يُرجع (-total, name) ثم قطّع [:n]. وللمنتجات ابنِ set بصيغة إنشاء متداخلة ومرّره إلى sorted.",
+    "runner": "Python"
+  },
+  {
+    "key": "py-lab-text-tools",
+    "type": "Coding",
+    "topic": "py-functions-modules",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "A small text-tools module",
+    "titleAr": "وحدة أدوات نصية صغيرة",
+    "problemEn": "In text_tools.py implement word_count(text), the number of whitespace-separated words, and top_words(text, n=3, *, ignore_case=True), the n most common words as (word, count) pairs, most common first and ties in A-Z order. ignore_case must be keyword-only, and when it is True words are compared and reported in lower case. main.py imports the module and prints a sample.",
+    "problemAr": "في الملف text_tools.py نفّذ word_count(text) التي تُرجع عدد الكلمات المفصولة بمسافات، وtop_words(text, n=3, *, ignore_case=True) التي تُرجع أكثر n كلمات تكرارًا كأزواج (word, count) من الأكثر، مع ترتيب المتساوية أبجديًا. ويجب أن يُمرَّر ignore_case بالاسم فقط، وعندما يكون True تُقارن الكلمات وتُعرض بحروف صغيرة. والملف main.py يستورد الوحدة ويطبع مثالًا.",
+    "expectedEn": "top_words(\"the model reads the prompt and the model writes\", 2) is [(\"the\", 3), (\"model\", 2)], and top_words(\"A a\", 2, False) raises TypeError.",
+    "expectedAr": "الناتج top_words(\"the model reads the prompt and the model writes\", 2) يساوي [(\"the\", 3), (\"model\", 2)]، وtop_words(\"A a\", 2, False) يرمي TypeError.",
+    "hintsEn": [
+      "text.split() with no argument splits on any whitespace and drops empty strings.",
+      "Put a lone * before ignore_case in the def line to make it keyword-only."
+    ],
+    "hintsAr": [
+      "الدالة text.split() دون معاملات تقسم على أي مسافة وتتجاهل النصوص الفارغة.",
+      "ضع * منفردة قبل ignore_case في سطر def ليصبح بالاسم فقط."
+    ],
+    "solutionEn": "word_count returns len(text.split()). top_words counts words in a dict (lower-casing them when ignore_case is on), then returns sorted(counts.items(), key=lambda pair: (-pair[1], pair[0]))[:n]. The * in def top_words(text, n=3, *, ignore_case=True) makes ignore_case keyword-only, so a positional third argument raises TypeError.",
+    "solutionAr": "الدالة word_count تُرجع len(text.split()). والدالة top_words تعدّ الكلمات في قاموس (وتحوّلها لحروف صغيرة عند تفعيل ignore_case)، ثم تُرجع sorted(counts.items(), key=lambda pair: (-pair[1], pair[0]))[:n]. والـ * في def top_words(text, n=3, *, ignore_case=True) تجعل ignore_case بالاسم فقط، فيرمي المعامل الثالث بالموضع TypeError.",
+    "runner": "Python"
+  },
+  {
+    "key": "py-lab-eval-json",
+    "type": "Coding",
+    "topic": "py-json-http",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Summarise evaluation results from JSON",
+    "titleAr": "تلخيص نتائج التقييم من JSON",
+    "problemEn": "In evaluation.py implement parse_results(text) for a JSON array of objects with id, score and an optional answer (missing answers become None); summary(results, threshold=3), which returns count, the average score rounded to 2 places and the ids that scored below the threshold, without crashing on an empty list; and to_json(summary), pretty JSON with indent 2 that keeps Arabic text readable.",
+    "problemAr": "في الملف evaluation.py نفّذ parse_results(text) لمصفوفة JSON من كائنات فيها id وscore وanswer اختياري (الإجابة الغائبة تصبح None)، وsummary(results, threshold=3) التي تُرجع count ومتوسط الدرجات مقرّبًا لرقمين وأرقام id التي درجتها أقل من الحد، دون أن تتعطل مع قائمة فارغة، وto_json(summary) التي تكتب JSON مرتبًا بإزاحة 2 ويُبقي النص العربي مقروءًا.",
+    "expectedEn": "For three results with scores 5, 2 and 4 the summary is {\"count\": 3, \"average\": 3.67, \"failed\": [2]}, and to_json keeps \"مرحبًا\" as it is.",
+    "expectedAr": "لثلاث نتائج درجاتها 5 و2 و4 يكون الملخص {\"count\": 3, \"average\": 3.67, \"failed\": [2]}، وتُبقي to_json الكلمة \"مرحبًا\" كما هي.",
+    "hintsEn": [
+      "json.loads turns the text into a list of dicts; item.get(\"answer\") gives None when the key is missing.",
+      "json.dumps(obj, ensure_ascii=False, indent=2) keeps Arabic readable."
+    ],
+    "hintsAr": [
+      "الدالة json.loads تحوّل النص إلى قائمة قواميس، وitem.get(\"answer\") تعطي None عند غياب المفتاح.",
+      "الدالة json.dumps(obj, ensure_ascii=False, indent=2) تُبقي العربية مقروءة."
+    ],
+    "solutionEn": "parse_results maps json.loads(text) to dicts with item.get(\"answer\"). summary collects the scores, guards the empty case before dividing, rounds the mean with round(..., 2) and keeps the ids with score < threshold in order. to_json returns json.dumps(summary, ensure_ascii=False, indent=2), which is still valid JSON.",
+    "solutionAr": "الدالة parse_results تحوّل ناتج json.loads(text) إلى قواميس باستخدام item.get(\"answer\"). والدالة summary تجمع الدرجات، وتتعامل مع الحالة الفارغة قبل القسمة، وتقرّب المتوسط بـ round(..., 2)، وتحفظ أرقام id التي درجتها أقل من الحد بترتيبها. والدالة to_json تُرجع json.dumps(summary, ensure_ascii=False, indent=2)، وهو ما يزال JSON صحيحًا.",
+    "runner": "Python"
+  },
+  {
+    "key": "py-lab-pandas-report",
+    "type": "Scenario",
+    "topic": "py-pandas-basics",
+    "difficulty": "Intermediate",
+    "minutes": 25,
+    "titleEn": "Which prompt is better?",
+    "titleAr": "أي الطلبين أفضل؟",
+    "problemEn": "You have results.csv with the columns question, language (ar or en), prompt (A or B) and score (1-5), 400 rows in all. Write the pandas steps, and the reasoning, to answer: which prompt is better overall, which is better for Arabic, whether long questions (over 120 characters) behave differently, and which questions both prompts fail. Run it on your machine with pip install pandas.",
+    "problemAr": "لديك الملف results.csv بالأعمدة question وlanguage (ar أو en) وprompt (A أو B) وscore (من 1 إلى 5)، وفيه 400 صف. اكتب خطوات pandas والتفكير وراءها للإجابة عن: أي الطلبين أفضل إجمالًا، وأيهما أفضل للعربية، وهل تختلف الأسئلة الطويلة (أكثر من 120 حرفًا)، وما الأسئلة التي يفشل فيها الطلبان. وشغّل ذلك على جهازك بعد pip install pandas.",
+    "expectedEn": "A short script with read_csv, a check of missing values, groupby comparisons per prompt, language and length, and a list of questions where both prompts score below 3.",
+    "expectedAr": "سكربت قصير فيه read_csv، وفحص القيم المفقودة، ومقارنات groupby حسب الطلب واللغة والطول، وقائمة بالأسئلة التي تقل درجة الطلبين فيها عن 3.",
+    "hintsEn": [
+      "df.groupby([\"prompt\", \"language\"])[\"score\"].agg([\"mean\", \"count\"]) shows the average and how many rows each group has.",
+      "Pivot the scores so each question has one column per prompt, then filter where both are below 3."
+    ],
+    "hintsAr": [
+      "التعبير df.groupby([\"prompt\", \"language\"])[\"score\"].agg([\"mean\", \"count\"]) يعرض المتوسط وعدد صفوف كل مجموعة.",
+      "حوّل الدرجات بحيث يكون لكل سؤال عمود لكل طلب، ثم صفِّ حيث يكون الاثنان أقل من 3."
+    ],
+    "solutionEn": "df = pd.read_csv(\"results.csv\"); check df.isna().sum(). Overall: df.groupby(\"prompt\")[\"score\"].mean(). Arabic: df[df[\"language\"] == \"ar\"].groupby(\"prompt\")[\"score\"].agg([\"mean\", \"count\"]). Length: df[\"long\"] = df[\"question\"].str.len() > 120, then group by [\"prompt\", \"long\"]. Both failing: wide = df.pivot_table(index=\"question\", columns=\"prompt\", values=\"score\"); wide[(wide[\"A\"] < 3) & (wide[\"B\"] < 3)]. Report the counts with the means, because a group of eight rows can look good or bad by chance, and read some answers before deciding.",
+    "solutionAr": "اكتب df = pd.read_csv(\"results.csv\") وافحص df.isna().sum(). وللمقارنة الإجمالية: df.groupby(\"prompt\")[\"score\"].mean(). وللعربية: df[df[\"language\"] == \"ar\"].groupby(\"prompt\")[\"score\"].agg([\"mean\", \"count\"]). وللطول: df[\"long\"] = df[\"question\"].str.len() > 120 ثم جمّع حسب [\"prompt\", \"long\"]. ولفشل الاثنين: wide = df.pivot_table(index=\"question\", columns=\"prompt\", values=\"score\") ثم wide[(wide[\"A\"] < 3) & (wide[\"B\"] < 3)]. واذكر الأعداد مع المتوسطات، لأن مجموعة من ثمانية صفوف قد تبدو جيدة أو سيئة بالصدفة، واقرأ بعض الإجابات قبل أن تقرر.",
+    "runner": "None"
+  },
+  {
+    "key": "py-lab-chat-request",
+    "type": "Coding",
+    "topic": "py-call-llm",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Build a chat request and read the reply",
+    "titleAr": "ابنِ طلب محادثة واقرأ الرد",
+    "problemEn": "In chat.py implement build_request(question, *, model, temperature, max_tokens, history=None), which returns the JSON body of a chat call with a system message, then the history if there is any, then the question as a user message. Implement read_reply(response), which returns the answer text and the total tokens (prompt plus completion) and raises ValueError(\"empty reply\") when there are no choices. No network is needed.",
+    "problemAr": "في الملف chat.py نفّذ build_request(question, *, model, temperature, max_tokens, history=None) التي تُرجع محتوى JSON لاستدعاء محادثة فيه رسالة نظام، ثم التاريخ إن وُجد، ثم السؤال كرسالة مستخدم. ونفّذ read_reply(response) التي تُرجع نص الإجابة ومجموع التوكنات (الطلب والإجابة) وترمي ValueError(\"empty reply\") عندما لا توجد اختيارات. لا تحتاج إلى شبكة.",
+    "expectedEn": "build_request(\"What is a token?\")[\"messages\"] has the roles [\"system\", \"user\"], and read_reply of a response with 24 prompt and 9 completion tokens returns (text, 33).",
+    "expectedAr": "الرسائل في build_request(\"What is a token?\")[\"messages\"] أدوارها [\"system\", \"user\"]، وread_reply لاستجابة فيها 24 توكن طلب و9 توكن إجابة تُرجع (text, 33).",
+    "hintsEn": [
+      "messages = [system] + (history or []) + [user] keeps the order.",
+      "response.get(\"choices\") or [] handles both a missing and an empty list."
+    ],
+    "hintsAr": [
+      "التعبير messages = [system] + (history or []) + [user] يحافظ على الترتيب.",
+      "التعبير response.get(\"choices\") or [] يتعامل مع القائمة الغائبة والفارغة معًا."
+    ],
+    "solutionEn": "build_request starts the messages with {\"role\": \"system\", \"content\": \"You are a helpful tutor.\"}, extends them with history or [], appends the user question, and returns the dict with model, messages, temperature and max_tokens. read_reply checks the choices, raises ValueError when there are none, and returns choices[0][\"message\"][\"content\"] with the sum of the usage counts. This is the shape every chat SDK sends and receives.",
+    "solutionAr": "الدالة build_request تبدأ الرسائل بـ {\"role\": \"system\", \"content\": \"You are a helpful tutor.\"}، وتضيف إليها history or []، ثم تضيف سؤال المستخدم، وتُرجع قاموسًا فيه model وmessages وtemperature وmax_tokens. والدالة read_reply تفحص الاختيارات وترمي ValueError عندما لا توجد، وتُرجع choices[0][\"message\"][\"content\"] مع مجموع أعداد الاستهلاك. وهذا هو الشكل الذي ترسله كل مكتبات المحادثة وتستقبله.",
+    "runner": "Python"
+  }
+]

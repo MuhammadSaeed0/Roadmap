@@ -1,0 +1,147 @@
+[
+  {
+    "topic": "py-for-csharp-devs",
+    "lessons": [
+      {
+        "key": "tut-py-for-csharp-devs-1",
+        "titleEn": "From C# to Python in ten minutes",
+        "titleAr": "من C# إلى Python في عشر دقائق",
+        "bodyEn": "Python marks blocks with indentation. A line that opens a block ends with a colon, and the block is indented four spaces. There are no braces and no semicolons.\n\nVariables need no declared type: `score = 95` creates an int, and the same name can later hold a string. Types still exist; they belong to the values. Optional type hints such as `def describe(score: int) -> str:` document what you expect.\n\n- `print()` writes a line, and `input()` reads one.\n- `True`, `False` and `None` start with a capital letter.\n- `and`, `or` and `not` replace `&&`, `||` and `!`.\n- f-strings format text: `f\"{name}: {score}\"`.",
+        "bodyAr": "تحدد Python الكتل بالإزاحة. السطر الذي يفتح كتلة ينتهي بنقطتين رأسيتين، وتُزاح الكتلة أربع مسافات. لا توجد أقواس معقوفة ولا فواصل منقوطة.\n\nالمتغيرات لا تحتاج نوعًا مُعلنًا: `score = 95` تنشئ int، ويمكن للاسم نفسه أن يحمل نصًا لاحقًا. الأنواع موجودة لكنها تخص القيم. وتلميحات الأنواع الاختيارية مثل `def describe(score: int) -> str:` توضح ما تتوقعه.\n\n- الدالة `print()` تكتب سطرًا، و`input()` تقرأ سطرًا.\n- القيم `True` و`False` و`None` تبدأ بحرف كبير.\n- الكلمات `and` و`or` و`not` تحل محل `&&` و`||` و`!`.\n- صيغة f-strings تنسّق النص: `f\"{name}: {score}\"`.",
+        "code": "def describe(score: int) -> str:\n    if score >= 90:\n        return \"excellent\"\n    elif score >= 60:\n        return \"passed\"\n    return \"try again\"\n\nfor score in [95, 72, 40]:\n    print(f\"{score}: {describe(score)}\")",
+        "language": "python",
+        "output": "95: excellent\n72: passed\n40: try again"
+      },
+      {
+        "key": "tut-py-for-csharp-devs-2",
+        "titleEn": "Loops, ranges and errors",
+        "titleAr": "الحلقات والنطاقات والأخطاء",
+        "bodyEn": "A `for` loop goes over the items of anything iterable, like `foreach` in C#. Use `range(start, stop)` to count; the stop value is not included. `enumerate` gives you the index and the item together.\n\nErrors are exceptions. Catch them with `try` and `except`, the same idea as `try` and `catch`, and raise your own with `raise ValueError(\"message\")`.",
+        "bodyAr": "حلقة `for` تمر على عناصر أي شيء قابل للتكرار، مثل `foreach` في C#. واستخدم `range(start, stop)` للعدّ، وقيمة النهاية غير داخلة. والدالة `enumerate` تعطيك الموضع والعنصر معًا.\n\nالأخطاء استثناءات. التقطها بـ `try` و`except`، وهي فكرة `try` و`catch` نفسها، وارمِ استثناءك بـ `raise ValueError(\"message\")`.",
+        "code": "total = 0\nfor n in range(1, 6):\n    total += n\nprint(\"1 + ... + 5 =\", total)\n\nfor i, city in enumerate([\"Cairo\", \"Giza\"], start=1):\n    print(i, city)\n\ntry:\n    age = int(\"twenty\")\nexcept ValueError:\n    print(\"Please type a number\")",
+        "language": "python",
+        "output": "1 + ... + 5 = 15\n1 Cairo\n2 Giza\nPlease type a number"
+      }
+    ]
+  },
+  {
+    "topic": "py-collections",
+    "lessons": [
+      {
+        "key": "tut-py-collections-1",
+        "titleEn": "Lists and dictionaries",
+        "titleAr": "القوائم والقواميس",
+        "bodyEn": "A list holds items in order and grows as you `append`. Slices copy part of it: `items[1:3]` takes the second and third items. A dictionary maps keys to values; `d.get(key, default)` avoids an error when the key is missing.\n\n- `len`, `min`, `max` and `sum` work on any collection.\n- `sorted(items, key=...)` returns a new sorted list, like `OrderBy`.\n- Loop over a dictionary's pairs with `for key, value in d.items():`.",
+        "bodyAr": "القائمة تحفظ العناصر بترتيبها وتكبر مع `append`. والتقطيع ينسخ جزءًا منها: `items[1:3]` يأخذ العنصرين الثاني والثالث. والقاموس يربط المفاتيح بالقيم، و`d.get(key, default)` تتجنب الخطأ عندما يغيب المفتاح.\n\n- الدوال `len` و`min` و`max` و`sum` تعمل على أي مجموعة.\n- الدالة `sorted(items, key=...)` تُرجع قائمة مرتبة جديدة، مثل `OrderBy`.\n- مُر على أزواج القاموس بـ `for key, value in d.items():`.",
+        "code": "prices = {\"Keyboard\": 450, \"Mouse\": 130, \"Monitor\": 3200}\nprices[\"Cable\"] = 60\n\nprint(len(prices), \"products\")\nprint(\"Cheapest:\", min(prices, key=prices.get))\nprint(\"Webcam:\", prices.get(\"Webcam\", \"not sold\"))\n\nfor name, price in sorted(prices.items(), key=lambda item: item[1]):\n    print(f\"{name:<8} {price:>5}\")",
+        "language": "python",
+        "output": "4 products\nCheapest: Cable\nWebcam: not sold\nCable       60\nMouse      130\nKeyboard   450\nMonitor   3200"
+      },
+      {
+        "key": "tut-py-collections-2",
+        "titleEn": "Comprehensions, the LINQ of Python",
+        "titleAr": "صيغ الإنشاء المختصرة، LINQ في Python",
+        "bodyEn": "A comprehension builds a new collection from another in one line: the expression first, then the loop, then an optional filter. `[p['name'] for p in products if p['price'] < 1000]` is a `Where` followed by a `Select`.\n\nUse square brackets for a list, braces with `key: value` for a dictionary, and braces alone for a set. When a comprehension needs more than one condition or becomes hard to read, write a normal loop instead.",
+        "bodyAr": "صيغة الإنشاء المختصرة تبني مجموعة جديدة من أخرى في سطر واحد: التعبير أولًا ثم الحلقة ثم شرط اختياري. فالتعبير `[p['name'] for p in products if p['price'] < 1000]` هو `Where` يتبعه `Select`.\n\nاستخدم الأقواس المربعة للقائمة، والأقواس المعقوفة مع `key: value` للقاموس، والأقواس المعقوفة وحدها للـ set. وعندما تحتاج الصيغة أكثر من شرط أو تصعب قراءتها، اكتب حلقة عادية بدلًا منها.",
+        "code": "messages = [\n    {\"role\": \"system\", \"content\": \"Be brief.\"},\n    {\"role\": \"user\", \"content\": \"What is a token?\"},\n    {\"role\": \"assistant\", \"content\": \"A piece of a word.\"},\n    {\"role\": \"user\", \"content\": \"And what is a context window?\"},\n]\n\nquestions = [m[\"content\"] for m in messages if m[\"role\"] == \"user\"]\nwords = {q: len(q.split()) for q in questions}\nroles = {m[\"role\"] for m in messages}\n\nprint(questions)\nprint(max(words, key=words.get))\nprint(sorted(roles))",
+        "language": "python",
+        "output": "['What is a token?', 'And what is a context window?']\nAnd what is a context window?\n['assistant', 'system', 'user']"
+      }
+    ]
+  },
+  {
+    "topic": "py-functions-modules",
+    "lessons": [
+      {
+        "key": "tut-py-functions-modules-1",
+        "titleEn": "Arguments and several return values",
+        "titleAr": "المعاملات وإرجاع عدة قيم",
+        "bodyEn": "Parameters can have defaults, and any argument can be passed by name. Parameters after a lone `*` must be passed by name, which keeps calls readable.\n\nA function returns several values as a tuple, and the caller unpacks them: `low, high = min_max(scores)`. A string right under the `def` line is the docstring, shown by editors and by `help()`.",
+        "bodyAr": "المعاملات يمكن أن تكون لها قيم افتراضية، وأي معامل يمكن تمريره بالاسم. والمعاملات بعد `*` المنفردة يجب أن تُمرَّر بالاسم، فتبقى الاستدعاءات مقروءة.\n\nوالدالة ترجع عدة قيم على شكل tuple، والمستدعي يفكّها: `low, high = min_max(scores)`. والنص الموجود مباشرة تحت سطر `def` هو التوثيق (Docstring) الذي تعرضه المحررات و`help()`.",
+        "code": "def average(values, *, digits=1):\n    \"\"\"Average of the values, rounded.\"\"\"\n    values = list(values)\n    return round(sum(values) / len(values), digits) if values else 0\n\ndef min_max(values):\n    return min(values), max(values)\n\nscores = [72, 95, 88, 64]\nlow, high = min_max(scores)\nprint(average(scores), average(scores, digits=0), low, high)",
+        "language": "python",
+        "output": "79.8 80.0 64 95"
+      },
+      {
+        "key": "tut-py-functions-modules-2",
+        "titleEn": "Modules, pip and virtual environments",
+        "titleAr": "الوحدات وpip والبيئات الافتراضية",
+        "bodyEn": "Every `.py` file is a module. `from helpers import average` loads `helpers.py` from the same folder. Code under `if __name__ == \"__main__\":` runs only when you start that file, not when another file imports it.\n\nPackages come from PyPI and are installed with `pip`. Give every project its own virtual environment so versions do not clash, and list the packages in `requirements.txt`.\n\n- `python -m venv .venv` creates the environment.\n- Activate it, then `pip install` what you need.\n- `pip freeze > requirements.txt` saves the list; `pip install -r requirements.txt` restores it.\n- Add `.venv/` and `.env` to `.gitignore`.",
+        "bodyAr": "كل ملف `.py` وحدة. فالأمر `from helpers import average` يحمّل `helpers.py` من المجلد نفسه. والكود تحت `if __name__ == \"__main__\":` يعمل فقط عندما تشغّل ذلك الملف، لا عندما يستورده ملف آخر.\n\nالحزم تأتي من PyPI وتُثبَّت بـ `pip`. أعطِ كل مشروع بيئته الافتراضية الخاصة حتى لا تتعارض الإصدارات، واكتب الحزم في `requirements.txt`.\n\n- الأمر `python -m venv .venv` ينشئ البيئة.\n- فعّلها ثم ثبّت ما تحتاجه بـ `pip install`.\n- الأمر `pip freeze > requirements.txt` يحفظ القائمة، و`pip install -r requirements.txt` يستعيدها.\n- أضف `.venv/` و`.env` إلى `.gitignore`.",
+        "code": "python -m venv .venv\n.venv\\Scripts\\activate            # Windows\nsource .venv/bin/activate         # macOS / Linux\n\npip install requests python-dotenv\npip freeze > requirements.txt\npython main.py",
+        "language": "bash"
+      }
+    ]
+  },
+  {
+    "topic": "py-json-http",
+    "lessons": [
+      {
+        "key": "tut-py-json-http-1",
+        "titleEn": "Reading and writing JSON",
+        "titleAr": "قراءة JSON وكتابته",
+        "bodyEn": "`json.loads` turns JSON text into dictionaries and lists, and `json.dumps` turns them back into text. Pass `ensure_ascii=False` so Arabic stays readable instead of becoming escape codes.\n\nFor files, use `json.load` and `json.dump` with a file opened with `encoding=\"utf-8\"`. Read optional fields with `.get` and a default, because data from outside is often incomplete.",
+        "bodyAr": "الدالة `json.loads` تحوّل نص JSON إلى قواميس وقوائم، و`json.dumps` تعيدها نصًا. ومرّر `ensure_ascii=False` لتبقى العربية مقروءة بدل أن تتحول إلى رموز.\n\nوللملفات استخدم `json.load` و`json.dump` مع ملف مفتوح بـ `encoding=\"utf-8\"`. واقرأ الحقول الاختيارية بـ `.get` مع قيمة افتراضية، لأن البيانات القادمة من الخارج كثيرًا ما تكون ناقصة.",
+        "code": "import json\n\ntext = '{\"model\": \"small\", \"usage\": {\"input\": 120, \"output\": 45}, \"answer\": \"مرحبًا\"}'\ndata = json.loads(text)\n\nusage = data[\"usage\"]\nprint(\"tokens:\", usage[\"input\"] + usage[\"output\"])\nprint(\"cached:\", data.get(\"cached\", False))\nprint(json.dumps({\"answer\": data[\"answer\"]}, ensure_ascii=False))",
+        "language": "python",
+        "output": "tokens: 165\ncached: False\n{\"answer\": \"مرحبًا\"}"
+      },
+      {
+        "key": "tut-py-json-http-2",
+        "titleEn": "HTTP requests that fail safely",
+        "titleAr": "طلبات HTTP تفشل بأمان",
+        "bodyEn": "`requests.post(url, json=payload)` sends a JSON body and sets the content type for you. Always pass a `timeout`, or a stuck server can block your script forever.\n\nCall `response.raise_for_status()` so a 4xx or 5xx becomes an exception instead of silently giving you an error page. Read the API key from an environment variable, and catch `requests.exceptions.RequestException` for network problems.",
+        "bodyAr": "الأمر `requests.post(url, json=payload)` يرسل محتوى JSON ويضبط نوع المحتوى بنفسه. ومرّر دائمًا `timeout`، وإلا قد يوقف خادم عالق سكربتك إلى الأبد.\n\nواستدعِ `response.raise_for_status()` لتتحول أخطاء 4xx و5xx إلى استثناءات بدل أن تعطيك صفحة خطأ بصمت. واقرأ مفتاح الـ API من متغير بيئة، والتقط `requests.exceptions.RequestException` لمشكلات الشبكة.",
+        "code": "import os\nimport requests\n\ndef ask(question: str) -> str:\n    try:\n        response = requests.post(\n            \"https://api.example.com/v1/answers\",\n            json={\"question\": question},\n            headers={\"Authorization\": f\"Bearer {os.environ['API_KEY']}\"},\n            timeout=30,\n        )\n        response.raise_for_status()\n        return response.json().get(\"answer\", \"(no answer)\")\n    except requests.exceptions.Timeout:\n        return \"The service took too long. Try again.\"\n    except requests.exceptions.RequestException as error:\n        return f\"Request failed: {error}\"",
+        "language": "python"
+      }
+    ]
+  },
+  {
+    "topic": "py-pandas-basics",
+    "lessons": [
+      {
+        "key": "tut-py-pandas-basics-1",
+        "titleEn": "A first look at a dataset",
+        "titleAr": "نظرة أولى على مجموعة بيانات",
+        "bodyEn": "A DataFrame is a table with named columns. `pd.read_csv` loads one from a file. Before anything else, look at it: `head()` shows the first rows, `shape` the size, `info()` the columns and their types, and `describe()` quick statistics for numbers.\n\nThis lesson's code needs pandas, which the in-browser runner does not include. Run it on your machine after `pip install pandas`.",
+        "bodyAr": "الـ DataFrame جدول بأعمدة مسمّاة، و`pd.read_csv` يحمّل واحدًا من ملف. وقبل أي شيء انظر إليه: `head()` تعرض أول الصفوف، و`shape` الحجم، و`info()` الأعمدة وأنواعها، و`describe()` إحصاءات سريعة للأرقام.\n\nكود هذا الدرس يحتاج pandas، وهي غير موجودة في مشغّل المتصفح. شغّله على جهازك بعد `pip install pandas`.",
+        "code": "import pandas as pd\n\ndf = pd.read_csv(\"results.csv\")   # question, language, prompt, score\nprint(df.shape)\nprint(df.head())\nprint(df.info())\nprint(df.describe())\nprint(df.isna().sum())            # missing values per column",
+        "language": "python"
+      },
+      {
+        "key": "tut-py-pandas-basics-2",
+        "titleEn": "Filter, group and compare",
+        "titleAr": "التصفية والتجميع والمقارنة",
+        "bodyEn": "Filter rows with a condition inside square brackets, combine conditions with `&` and `|`, and add new columns computed from others.\n\n`groupby` splits the table by one or more columns and summarises each group, which is how you compare two prompt versions or two models. Sort the summary and save it with `to_csv` to share it.\n\n- `df[df[\"score\"] < 3]` keeps the low scores.\n- `df.groupby(\"prompt\")[\"score\"].mean()` averages per version.\n- `sort_values(ascending=False)` puts the best first.",
+        "bodyAr": "صفِّ الصفوف بشرط داخل أقواس مربعة، واجمع الشروط بـ `&` و`|`، وأضف أعمدة جديدة محسوبة من غيرها.\n\nوالدالة `groupby` تقسم الجدول حسب عمود أو أكثر وتلخّص كل مجموعة، وهكذا تقارن نسختين من الطلب أو نموذجين. رتّب الملخص واحفظه بـ `to_csv` لتشاركه.\n\n- التعبير `df[df[\"score\"] < 3]` يُبقي الدرجات المنخفضة.\n- التعبير `df.groupby(\"prompt\")[\"score\"].mean()` يحسب المتوسط لكل نسخة.\n- الدالة `sort_values(ascending=False)` تضع الأفضل أولًا.",
+        "code": "import pandas as pd\n\ndf = pd.read_csv(\"results.csv\")\n\nlow = df[(df[\"score\"] < 3) & (df[\"language\"] == \"ar\")]\nprint(len(low), \"weak Arabic answers\")\n\ndf[\"long_question\"] = df[\"question\"].str.len() > 120\nsummary = df.groupby([\"prompt\", \"long_question\"])[\"score\"].mean().round(2)\nprint(summary.sort_values(ascending=False))\nsummary.to_csv(\"summary.csv\")",
+        "language": "python"
+      }
+    ]
+  },
+  {
+    "topic": "py-call-llm",
+    "lessons": [
+      {
+        "key": "tut-py-call-llm-1",
+        "titleEn": "Your first model call in Python",
+        "titleAr": "أول استدعاء لنموذج في Python",
+        "bodyEn": "Install the provider's SDK with `pip`, keep the key in an environment variable, and create the client once. A call sends the model name, a list of messages and settings such as temperature and a maximum length, and returns the text and the token usage.\n\nThe same shape works for other providers and for local models served by Ollama, which offers an OpenAI-compatible endpoint.",
+        "bodyAr": "ثبّت مكتبة المزوّد بـ `pip`، واحفظ المفتاح في متغير بيئة، وأنشئ العميل مرة واحدة. والاستدعاء يرسل اسم النموذج وقائمة الرسائل وإعدادات مثل درجة الحرارة والحد الأقصى للطول، ويُرجع النص واستهلاك التوكنات.\n\nوالشكل نفسه يعمل مع مزوّدين آخرين ومع النماذج المحلية التي يقدّمها Ollama، لأنه يوفر نقطة نهاية متوافقة مع OpenAI.",
+        "code": "import os\nfrom openai import OpenAI\n\nclient = OpenAI(api_key=os.environ[\"OPENAI_API_KEY\"])\n# A local model instead: OpenAI(base_url=\"http://localhost:11434/v1\", api_key=\"ollama\")\n\nresponse = client.chat.completions.create(\n    model=\"gpt-4o-mini\",\n    messages=[\n        {\"role\": \"system\", \"content\": \"You are a patient tutor.\"},\n        {\"role\": \"user\", \"content\": \"Explain a foreign key in two sentences.\"},\n    ],\n    temperature=0.2,\n    max_tokens=200,\n)\n\nprint(response.choices[0].message.content)\nprint(response.usage.prompt_tokens, \"in,\", response.usage.completion_tokens, \"out\")",
+        "language": "python"
+      },
+      {
+        "key": "tut-py-call-llm-2",
+        "titleEn": "What the SDK sends",
+        "titleAr": "ما الذي ترسله المكتبة",
+        "bodyEn": "An SDK is a convenience around an HTTP request. Building the request yourself shows exactly what is sent, which helps when you debug or call a provider without an SDK.\n\nThe program below builds the JSON body of a chat request and reads a saved response, without calling any server, so you can run it here. In a real call, the body is posted with an `Authorization` header and a timeout.",
+        "bodyAr": "المكتبة مجرد تسهيل حول طلب HTTP. وبناء الطلب بنفسك يوضح بالضبط ما يُرسل، وهذا يساعدك عند تتبع الأخطاء أو عند استدعاء مزوّد بلا مكتبة.\n\nالبرنامج بالأسفل يبني محتوى JSON لطلب محادثة ويقرأ استجابة محفوظة، دون استدعاء أي خادم، فتستطيع تشغيله هنا. وفي الاستدعاء الحقيقي يُرسل المحتوى مع ترويسة `Authorization` ومهلة.",
+        "code": "import json\n\ndef build_request(question, model=\"gpt-4o-mini\", temperature=0.2):\n    return {\n        \"model\": model,\n        \"messages\": [\n            {\"role\": \"system\", \"content\": \"Answer in one sentence.\"},\n            {\"role\": \"user\", \"content\": question},\n        ],\n        \"temperature\": temperature,\n        \"max_tokens\": 100,\n    }\n\nbody = build_request(\"What is a token?\")\nprint(json.dumps(body)[:60] + \"...\")\n\nsaved = '{\"choices\": [{\"message\": {\"content\": \"A token is a piece of a word.\"}}], \"usage\": {\"prompt_tokens\": 24, \"completion_tokens\": 9}}'\nreply = json.loads(saved)\nprint(reply[\"choices\"][0][\"message\"][\"content\"])\nprint(\"tokens:\", sum(reply[\"usage\"].values()))",
+        "language": "python",
+        "output": "{\"model\": \"gpt-4o-mini\", \"messages\": [{\"role\": \"system\", \"co...\nA token is a piece of a word.\ntokens: 33"
+      }
+    ]
+  }
+]

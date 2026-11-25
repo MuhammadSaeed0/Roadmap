@@ -1,0 +1,1010 @@
+[
+  {
+    "key": "qz-py-for-csharp-devs-1",
+    "topic": "py-for-csharp-devs",
+    "questionEn": "How does Python mark a block of code?",
+    "questionAr": "كيف تحدد Python كتلة الكود؟",
+    "optionsEn": [
+      "With braces",
+      "With indentation",
+      "With semicolons",
+      "With BEGIN and END"
+    ],
+    "optionsAr": [
+      "بالأقواس المعقوفة",
+      "بالإزاحة",
+      "بالفواصل المنقوطة",
+      "بـ BEGIN وEND"
+    ],
+    "answer": 1,
+    "explanationEn": "A colon opens the block and its lines are indented.",
+    "explanationAr": "النقطتان الرأسيتان تفتحان الكتلة وتُزاح أسطرها."
+  },
+  {
+    "key": "qz-py-for-csharp-devs-2",
+    "topic": "py-for-csharp-devs",
+    "questionEn": "Where do types live in Python?",
+    "questionAr": "أين توجد الأنواع في Python؟",
+    "optionsEn": [
+      "On the variables",
+      "On the values",
+      "Nowhere at all",
+      "Only in classes"
+    ],
+    "optionsAr": [
+      "في المتغيرات",
+      "في القيم",
+      "لا توجد أبدًا",
+      "في الأصناف فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "A name can hold any value; each value has its type.",
+    "explanationAr": "الاسم يحمل أي قيمة، ولكل قيمة نوعها."
+  },
+  {
+    "key": "qz-py-for-csharp-devs-3",
+    "topic": "py-for-csharp-devs",
+    "questionEn": "What do type hints do at run time?",
+    "questionAr": "ماذا تفعل تلميحات الأنواع وقت التشغيل؟",
+    "optionsEn": [
+      "They block bad calls",
+      "Nothing: they document",
+      "They speed code up",
+      "They convert values"
+    ],
+    "optionsAr": [
+      "تمنع الاستدعاءات الخاطئة",
+      "لا شيء: هي توثيق",
+      "تسرّع الكود",
+      "تحوّل القيم"
+    ],
+    "answer": 1,
+    "explanationEn": "Hints help readers and editors; Python does not enforce them.",
+    "explanationAr": "التلميحات تساعد القارئ والمحرر، ولا تفرضها Python."
+  },
+  {
+    "key": "qz-py-for-csharp-devs-4",
+    "topic": "py-for-csharp-devs",
+    "questionEn": "Which line prints 'Sara: 90'?",
+    "questionAr": "أي سطر يطبع 'Sara: 90'؟",
+    "optionsEn": [
+      "print(f\"{name}: {score}\")",
+      "print(\"{name}: {score}\")",
+      "print($\"{name}: {score}\")",
+      "print(name + \": \" + score)"
+    ],
+    "optionsAr": [
+      "print(f\"{name}: {score}\")",
+      "print(\"{name}: {score}\")",
+      "print($\"{name}: {score}\")",
+      "print(name + \": \" + score)"
+    ],
+    "answer": 0,
+    "explanationEn": "f-strings start with f; adding a str and an int raises an error.",
+    "explanationAr": "صيغة f-strings تبدأ بـ f، وجمع نص مع رقم يسبب خطأ."
+  },
+  {
+    "key": "qz-py-for-csharp-devs-5",
+    "topic": "py-for-csharp-devs",
+    "questionEn": "What does range(1, 4) give?",
+    "questionAr": "ماذا تعطي range(1, 4)؟",
+    "optionsEn": [
+      "1, 2, 3",
+      "1, 2, 3, 4",
+      "0, 1, 2, 3",
+      "4, 3, 2, 1"
+    ],
+    "optionsAr": [
+      "1, 2, 3",
+      "1, 2, 3, 4",
+      "0, 1, 2, 3",
+      "4, 3, 2, 1"
+    ],
+    "answer": 0,
+    "explanationEn": "The stop value is not included.",
+    "explanationAr": "قيمة النهاية غير داخلة."
+  },
+  {
+    "key": "qz-py-for-csharp-devs-6",
+    "topic": "py-for-csharp-devs",
+    "questionEn": "How do you catch an error in Python?",
+    "questionAr": "كيف تلتقط خطأ في Python؟",
+    "optionsEn": [
+      "try / catch",
+      "try / except",
+      "on error / resume",
+      "if error / then"
+    ],
+    "optionsAr": [
+      "try / catch",
+      "try / except",
+      "on error / resume",
+      "if error / then"
+    ],
+    "answer": 1,
+    "explanationEn": "Python uses except where C# uses catch.",
+    "explanationAr": "تستخدم Python كلمة except حيث تستخدم C# كلمة catch."
+  },
+  {
+    "key": "qz-py-for-csharp-devs-7",
+    "topic": "py-for-csharp-devs",
+    "questionEn": "How is 'nothing' written in Python?",
+    "questionAr": "كيف تُكتب القيمة الفارغة في Python؟",
+    "optionsEn": [
+      "null",
+      "None",
+      "nil",
+      "undefined"
+    ],
+    "optionsAr": [
+      "null",
+      "None",
+      "nil",
+      "undefined"
+    ],
+    "answer": 1,
+    "explanationEn": "None is Python's null.",
+    "explanationAr": "القيمة None هي null في Python."
+  },
+  {
+    "key": "qz-py-for-csharp-devs-8",
+    "topic": "py-for-csharp-devs",
+    "questionEn": "How do you run main.py?",
+    "questionAr": "كيف تشغّل main.py؟",
+    "optionsEn": [
+      "dotnet run main.py",
+      "python main.py",
+      "compile main.py",
+      "npm start main.py"
+    ],
+    "optionsAr": [
+      "dotnet run main.py",
+      "python main.py",
+      "compile main.py",
+      "npm start main.py"
+    ],
+    "answer": 1,
+    "explanationEn": "The interpreter runs the file directly; there is no build step.",
+    "explanationAr": "المفسّر يشغّل الملف مباشرة دون خطوة بناء."
+  },
+  {
+    "key": "qz-py-collections-1",
+    "topic": "py-collections",
+    "questionEn": "What is the C# twin of a Python dict?",
+    "questionAr": "ما المقابل في C# للـ dict في Python؟",
+    "optionsEn": [
+      "List<T>",
+      "Dictionary<K,V>",
+      "HashSet<T>",
+      "Tuple<T1,T2>"
+    ],
+    "optionsAr": [
+      "List<T>",
+      "Dictionary<K,V>",
+      "HashSet<T>",
+      "Tuple<T1,T2>"
+    ],
+    "answer": 1,
+    "explanationEn": "Both map keys to values.",
+    "explanationAr": "كلاهما يربط المفاتيح بالقيم."
+  },
+  {
+    "key": "qz-py-collections-2",
+    "topic": "py-collections",
+    "questionEn": "What does items[1:3] return?",
+    "questionAr": "ماذا يُرجع items[1:3]؟",
+    "optionsEn": [
+      "Items at 1, 2 and 3",
+      "Items at 1 and 2",
+      "Items at 0 to 3",
+      "Only the item at 3"
+    ],
+    "optionsAr": [
+      "العناصر 1 و2 و3",
+      "العنصرين 1 و2",
+      "العناصر من 0 إلى 3",
+      "العنصر 3 فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Slices stop before the end index.",
+    "explanationAr": "التقطيع يتوقف قبل موضع النهاية."
+  },
+  {
+    "key": "qz-py-collections-3",
+    "topic": "py-collections",
+    "questionEn": "How do you avoid an error for a missing key?",
+    "questionAr": "كيف تتجنب الخطأ عند غياب مفتاح؟",
+    "optionsEn": [
+      "d[key] or 0",
+      "d.get(key, 0)",
+      "d.find(key)",
+      "d.try(key)"
+    ],
+    "optionsAr": [
+      "d[key] or 0",
+      "d.get(key, 0)",
+      "d.find(key)",
+      "d.try(key)"
+    ],
+    "answer": 1,
+    "explanationEn": "get returns the default instead of raising KeyError.",
+    "explanationAr": "الدالة get تُرجع القيمة الافتراضية بدل KeyError."
+  },
+  {
+    "key": "qz-py-collections-4",
+    "topic": "py-collections",
+    "questionEn": "Which line keeps the even numbers?",
+    "questionAr": "أي سطر يُبقي الأعداد الزوجية؟",
+    "optionsEn": [
+      "[n for n in nums if n % 2 == 0]",
+      "[n if n % 2 for n in nums]",
+      "nums.where(n % 2 == 0)",
+      "{n: n % 2 for n in nums}"
+    ],
+    "optionsAr": [
+      "[n for n in nums if n % 2 == 0]",
+      "[n if n % 2 for n in nums]",
+      "nums.where(n % 2 == 0)",
+      "{n: n % 2 for n in nums}"
+    ],
+    "answer": 0,
+    "explanationEn": "The filter comes after the loop in a comprehension.",
+    "explanationAr": "الشرط يأتي بعد الحلقة في صيغة الإنشاء."
+  },
+  {
+    "key": "qz-py-collections-5",
+    "topic": "py-collections",
+    "questionEn": "What does a set do with duplicates?",
+    "questionAr": "ماذا يفعل الـ set بالعناصر المكررة؟",
+    "optionsEn": [
+      "Keeps them all in order",
+      "Keeps only one of each",
+      "Raises a KeyError",
+      "Counts how many there are"
+    ],
+    "optionsAr": [
+      "يحفظها كلها بترتيبها",
+      "يُبقي نسخة واحدة من كل عنصر",
+      "يرمي خطأ KeyError",
+      "يعدّ كم مرة تكررت"
+    ],
+    "answer": 1,
+    "explanationEn": "Sets hold unique items.",
+    "explanationAr": "الـ set يحفظ عناصر فريدة."
+  },
+  {
+    "key": "qz-py-collections-6",
+    "topic": "py-collections",
+    "questionEn": "How do you sort products by price?",
+    "questionAr": "كيف ترتّب المنتجات حسب السعر؟",
+    "optionsEn": [
+      "sorted(products, key=lambda p: p['price'])",
+      "products.OrderBy(lambda p: p['price'])",
+      "sort(products, by=lambda p: p['price'])",
+      "products.sorted(key=p['price'])"
+    ],
+    "optionsAr": [
+      "sorted(products, key=lambda p: p['price'])",
+      "products.OrderBy(lambda p: p['price'])",
+      "sort(products, by=lambda p: p['price'])",
+      "products.sorted(key=p['price'])"
+    ],
+    "answer": 0,
+    "explanationEn": "sorted takes a key function, like OrderBy's selector.",
+    "explanationAr": "الدالة sorted تأخذ دالة مفتاح مثل محدد OrderBy."
+  },
+  {
+    "key": "qz-py-collections-7",
+    "topic": "py-collections",
+    "questionEn": "How do you loop over a dict's keys and values?",
+    "questionAr": "كيف تمر على مفاتيح القاموس وقيمه؟",
+    "optionsEn": [
+      "for k, v in d:",
+      "for k, v in d.items():",
+      "foreach (k, v) in d",
+      "for d.each(k, v):"
+    ],
+    "optionsAr": [
+      "for k, v in d:",
+      "for k, v in d.items():",
+      "foreach (k, v) in d",
+      "for d.each(k, v):"
+    ],
+    "answer": 1,
+    "explanationEn": "items() yields (key, value) pairs.",
+    "explanationAr": "الدالة items() تُخرج أزواج (مفتاح، قيمة)."
+  },
+  {
+    "key": "qz-py-collections-8",
+    "topic": "py-collections",
+    "questionEn": "When should a comprehension become a loop?",
+    "questionAr": "متى تتحول صيغة الإنشاء إلى حلقة؟",
+    "optionsEn": [
+      "Never",
+      "When it is hard to read",
+      "When the list is short",
+      "When it uses a filter"
+    ],
+    "optionsAr": [
+      "أبدًا",
+      "عندما تصعب قراءتها",
+      "عندما تكون القائمة قصيرة",
+      "عندما تستخدم شرطًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Readability comes first.",
+    "explanationAr": "سهولة القراءة أولًا."
+  },
+  {
+    "key": "qz-py-functions-modules-1",
+    "topic": "py-functions-modules",
+    "questionEn": "What does a lone * in a def mean?",
+    "questionAr": "ماذا تعني * المنفردة في def؟",
+    "optionsEn": [
+      "Any number of args",
+      "Later args go by name",
+      "Return a pointer",
+      "Make it private"
+    ],
+    "optionsAr": [
+      "أي عدد من المعاملات",
+      "ما بعدها يُمرَّر بالاسم",
+      "إرجاع مؤشر",
+      "جعلها خاصة"
+    ],
+    "answer": 1,
+    "explanationEn": "Parameters after * are keyword-only.",
+    "explanationAr": "المعاملات بعد * تُمرَّر بالاسم فقط."
+  },
+  {
+    "key": "qz-py-functions-modules-2",
+    "topic": "py-functions-modules",
+    "questionEn": "How does a function return two values?",
+    "questionAr": "كيف ترجع الدالة قيمتين؟",
+    "optionsEn": [
+      "With out parameters",
+      "As a tuple",
+      "It cannot",
+      "With a global"
+    ],
+    "optionsAr": [
+      "بمعاملات out",
+      "على شكل tuple",
+      "لا تستطيع",
+      "بمتغير عام"
+    ],
+    "answer": 1,
+    "explanationEn": "return a, b gives a tuple the caller can unpack.",
+    "explanationAr": "الأمر return a, b يعطي tuple يفكّه المستدعي."
+  },
+  {
+    "key": "qz-py-functions-modules-3",
+    "topic": "py-functions-modules",
+    "questionEn": "What is a module?",
+    "questionAr": "ما هي الوحدة (Module)؟",
+    "optionsEn": [
+      "A .py file you import",
+      "A NuGet package",
+      "A class with methods",
+      "A compiled DLL"
+    ],
+    "optionsAr": [
+      "ملف .py تستورده",
+      "حزمة NuGet",
+      "صنف فيه دوال",
+      "ملف DLL مُترجم"
+    ],
+    "answer": 0,
+    "explanationEn": "Every Python file can be imported as a module.",
+    "explanationAr": "كل ملف Python يمكن استيراده كوحدة."
+  },
+  {
+    "key": "qz-py-functions-modules-4",
+    "topic": "py-functions-modules",
+    "questionEn": "Why use if __name__ == '__main__'?",
+    "questionAr": "لماذا تستخدم if __name__ == '__main__'؟",
+    "optionsEn": [
+      "To make imports faster",
+      "So imports don't run it",
+      "To declare a main() function",
+      "To hide the file from others"
+    ],
+    "optionsAr": [
+      "لتسريع عملية الاستيراد",
+      "كي لا يعمل عند الاستيراد",
+      "للإعلان عن الدالة main()",
+      "لإخفاء الملف عن الآخرين"
+    ],
+    "answer": 1,
+    "explanationEn": "That block runs only when the file is started directly.",
+    "explanationAr": "هذه الكتلة تعمل فقط عند تشغيل الملف مباشرة."
+  },
+  {
+    "key": "qz-py-functions-modules-5",
+    "topic": "py-functions-modules",
+    "questionEn": "What does a virtual environment give each project?",
+    "questionAr": "ماذا تعطي البيئة الافتراضية كل مشروع؟",
+    "optionsEn": [
+      "Its own packages",
+      "A faster Python",
+      "A free server",
+      "A GUI editor"
+    ],
+    "optionsAr": [
+      "حزمه الخاصة",
+      "Python أسرع",
+      "خادمًا مجانيًا",
+      "محررًا رسوميًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Separate environments keep versions from clashing.",
+    "explanationAr": "البيئات المنفصلة تمنع تعارض الإصدارات."
+  },
+  {
+    "key": "qz-py-functions-modules-6",
+    "topic": "py-functions-modules",
+    "questionEn": "Which file lists a project's packages?",
+    "questionAr": "أي ملف يذكر حزم المشروع؟",
+    "optionsEn": [
+      "package.json",
+      "requirements.txt",
+      "project.csproj",
+      "setup.ini"
+    ],
+    "optionsAr": [
+      "package.json",
+      "requirements.txt",
+      "project.csproj",
+      "setup.ini"
+    ],
+    "answer": 1,
+    "explanationEn": "pip install -r requirements.txt recreates the environment.",
+    "explanationAr": "الأمر pip install -r requirements.txt يعيد إنشاء البيئة."
+  },
+  {
+    "key": "qz-py-functions-modules-7",
+    "topic": "py-functions-modules",
+    "questionEn": "What should never be committed?",
+    "questionAr": "ما الذي لا يُرفع إلى المستودع أبدًا؟",
+    "optionsEn": [
+      "requirements.txt",
+      "The .venv folder",
+      "The README file",
+      "The main.py file"
+    ],
+    "optionsAr": [
+      "الملف requirements.txt",
+      "مجلد .venv",
+      "ملف README",
+      "الملف main.py"
+    ],
+    "answer": 1,
+    "explanationEn": "Environments are recreated from requirements.txt; keys stay out too.",
+    "explanationAr": "البيئات تُعاد من requirements.txt، والمفاتيح تبقى خارجه أيضًا."
+  },
+  {
+    "key": "qz-py-functions-modules-8",
+    "topic": "py-functions-modules",
+    "questionEn": "Where do pip packages come from?",
+    "questionAr": "من أين تأتي حزم pip؟",
+    "optionsEn": [
+      "NuGet",
+      "PyPI",
+      "npm",
+      "Maven"
+    ],
+    "optionsAr": [
+      "NuGet",
+      "PyPI",
+      "npm",
+      "Maven"
+    ],
+    "answer": 1,
+    "explanationEn": "PyPI is Python's package index.",
+    "explanationAr": "PyPI هو فهرس حزم Python."
+  },
+  {
+    "key": "qz-py-json-http-1",
+    "topic": "py-json-http",
+    "questionEn": "What does json.loads return for an object?",
+    "questionAr": "ماذا تُرجع json.loads لكائن JSON؟",
+    "optionsEn": [
+      "A string",
+      "A dict",
+      "A class",
+      "A tuple"
+    ],
+    "optionsAr": [
+      "نصًا",
+      "قاموسًا dict",
+      "صنفًا",
+      "tuple"
+    ],
+    "answer": 1,
+    "explanationEn": "JSON objects become dicts and arrays become lists.",
+    "explanationAr": "الكائنات تصبح قواميس والمصفوفات قوائم."
+  },
+  {
+    "key": "qz-py-json-http-2",
+    "topic": "py-json-http",
+    "questionEn": "Why pass ensure_ascii=False?",
+    "questionAr": "لماذا تمرّر ensure_ascii=False؟",
+    "optionsEn": [
+      "To shrink the file",
+      "To keep Arabic readable",
+      "To sort the keys",
+      "To validate JSON"
+    ],
+    "optionsAr": [
+      "لتصغير الملف",
+      "لإبقاء العربية مقروءة",
+      "لترتيب المفاتيح",
+      "للتحقق من JSON"
+    ],
+    "answer": 1,
+    "explanationEn": "Otherwise non-ASCII text becomes \\u escapes.",
+    "explanationAr": "وإلا يتحول النص غير اللاتيني إلى رموز \\u."
+  },
+  {
+    "key": "qz-py-json-http-3",
+    "topic": "py-json-http",
+    "questionEn": "Why always pass a timeout?",
+    "questionAr": "لماذا تمرّر مهلة دائمًا؟",
+    "optionsEn": [
+      "To make each call cheaper",
+      "So a stuck server can't hang you",
+      "To retry failed calls automatically",
+      "To compress the request body"
+    ],
+    "optionsAr": [
+      "لتقليل تكلفة كل استدعاء",
+      "كي لا يعلّقك خادم عالق",
+      "لإعادة المحاولة تلقائيًا عند الفشل",
+      "لضغط محتوى الطلب"
+    ],
+    "answer": 1,
+    "explanationEn": "requests waits forever by default.",
+    "explanationAr": "المكتبة requests تنتظر للأبد افتراضيًا."
+  },
+  {
+    "key": "qz-py-json-http-4",
+    "topic": "py-json-http",
+    "questionEn": "What does raise_for_status() do?",
+    "questionAr": "ماذا تفعل raise_for_status()؟",
+    "optionsEn": [
+      "Retries the call once",
+      "Turns 4xx/5xx into errors",
+      "Prints the status code",
+      "Logs the whole request"
+    ],
+    "optionsAr": [
+      "تعيد الاستدعاء مرة واحدة",
+      "تحوّل 4xx/5xx إلى أخطاء",
+      "تطبع رمز الحالة",
+      "تسجّل الطلب كاملًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Without it an error page can pass silently.",
+    "explanationAr": "بدونها قد تمر صفحة الخطأ بصمت."
+  },
+  {
+    "key": "qz-py-json-http-5",
+    "topic": "py-json-http",
+    "questionEn": "Where should an API key come from?",
+    "questionAr": "من أين يأتي مفتاح الـ API؟",
+    "optionsEn": [
+      "A string in the code",
+      "An environment variable",
+      "A comment in main.py",
+      "The README file"
+    ],
+    "optionsAr": [
+      "نص داخل الكود",
+      "متغير بيئة",
+      "تعليق في main.py",
+      "ملف README"
+    ],
+    "answer": 1,
+    "explanationEn": "Keys never belong in source code.",
+    "explanationAr": "المفاتيح لا مكان لها في الكود."
+  },
+  {
+    "key": "qz-py-json-http-6",
+    "topic": "py-json-http",
+    "questionEn": "How do you read a field that may be missing?",
+    "questionAr": "كيف تقرأ حقلًا قد يغيب؟",
+    "optionsEn": [
+      "data[\"x\"] or default",
+      "data.get(\"x\", default)",
+      "data.x ?? default",
+      "data.find(\"x\", default)"
+    ],
+    "optionsAr": [
+      "data[\"x\"] or default",
+      "data.get(\"x\", default)",
+      "data.x ?? default",
+      "data.find(\"x\", default)"
+    ],
+    "answer": 1,
+    "explanationEn": "get returns the default instead of raising.",
+    "explanationAr": "الدالة get تُرجع القيمة الافتراضية بدل الخطأ."
+  },
+  {
+    "key": "qz-py-json-http-7",
+    "topic": "py-json-http",
+    "questionEn": "Which argument sends a JSON body?",
+    "questionAr": "أي معامل يرسل محتوى JSON؟",
+    "optionsEn": [
+      "data=payload",
+      "json=payload",
+      "body=payload",
+      "text=payload"
+    ],
+    "optionsAr": [
+      "data=payload",
+      "json=payload",
+      "body=payload",
+      "text=payload"
+    ],
+    "answer": 1,
+    "explanationEn": "json= serialises the dict and sets the content type.",
+    "explanationAr": "المعامل json= يحوّل القاموس ويضبط نوع المحتوى."
+  },
+  {
+    "key": "qz-py-json-http-8",
+    "topic": "py-json-http",
+    "questionEn": "Which exception covers network failures?",
+    "questionAr": "أي استثناء يغطي أعطال الشبكة؟",
+    "optionsEn": [
+      "ValueError",
+      "RequestException",
+      "KeyError",
+      "TypeError"
+    ],
+    "optionsAr": [
+      "ValueError",
+      "RequestException",
+      "KeyError",
+      "TypeError"
+    ],
+    "answer": 1,
+    "explanationEn": "requests.exceptions.RequestException is the base class.",
+    "explanationAr": "الصنف requests.exceptions.RequestException هو الأساس."
+  },
+  {
+    "key": "qz-py-pandas-basics-1",
+    "topic": "py-pandas-basics",
+    "questionEn": "What is a DataFrame?",
+    "questionAr": "ما هو الـ DataFrame؟",
+    "optionsEn": [
+      "A type of chart",
+      "A table with named columns",
+      "A small database server",
+      "A JSON document"
+    ],
+    "optionsAr": [
+      "نوع من الرسوم البيانية",
+      "جدول بأعمدة مسمّاة",
+      "خادم قواعد بيانات صغير",
+      "مستند بصيغة JSON"
+    ],
+    "answer": 1,
+    "explanationEn": "Rows and named columns, held in memory.",
+    "explanationAr": "صفوف وأعمدة مسمّاة في الذاكرة."
+  },
+  {
+    "key": "qz-py-pandas-basics-2",
+    "topic": "py-pandas-basics",
+    "questionEn": "Which call loads a CSV file?",
+    "questionAr": "أي استدعاء يحمّل ملف CSV؟",
+    "optionsEn": [
+      "pd.read_csv(path)",
+      "pd.open(path)",
+      "pd.load_table(path)",
+      "csv.frame(path)"
+    ],
+    "optionsAr": [
+      "pd.read_csv(path)",
+      "pd.open(path)",
+      "pd.load_table(path)",
+      "csv.frame(path)"
+    ],
+    "answer": 0,
+    "explanationEn": "read_csv returns a DataFrame.",
+    "explanationAr": "الدالة read_csv تُرجع DataFrame."
+  },
+  {
+    "key": "qz-py-pandas-basics-3",
+    "topic": "py-pandas-basics",
+    "questionEn": "What should you do first with new data?",
+    "questionAr": "ماذا تفعل أولًا مع بيانات جديدة؟",
+    "optionsEn": [
+      "Train a model on it right away",
+      "Look at it with head() and info()",
+      "Delete every row with a gap",
+      "Draw a chart of every column"
+    ],
+    "optionsAr": [
+      "تدرّب نموذجًا عليها فورًا",
+      "تنظر إليها بـ head() وinfo()",
+      "تحذف كل صف فيه نقص",
+      "ترسم مخططًا لكل عمود"
+    ],
+    "answer": 1,
+    "explanationEn": "Inspect size, columns, types and missing values first.",
+    "explanationAr": "افحص الحجم والأعمدة والأنواع والقيم المفقودة أولًا."
+  },
+  {
+    "key": "qz-py-pandas-basics-4",
+    "topic": "py-pandas-basics",
+    "questionEn": "Which line keeps rows with score below 3?",
+    "questionAr": "أي سطر يُبقي الصفوف التي درجتها أقل من 3؟",
+    "optionsEn": [
+      "df[df[\"score\"] < 3]",
+      "df.where(\"score\" < 3)",
+      "df.filter(score < 3)",
+      "df[\"score\" < 3]"
+    ],
+    "optionsAr": [
+      "df[df[\"score\"] < 3]",
+      "df.where(\"score\" < 3)",
+      "df.filter(score < 3)",
+      "df[\"score\" < 3]"
+    ],
+    "answer": 0,
+    "explanationEn": "A boolean condition inside brackets filters rows.",
+    "explanationAr": "شرط منطقي داخل الأقواس يصفّي الصفوف."
+  },
+  {
+    "key": "qz-py-pandas-basics-5",
+    "topic": "py-pandas-basics",
+    "questionEn": "Which call averages score per prompt?",
+    "questionAr": "أي استدعاء يحسب متوسط الدرجة لكل طلب؟",
+    "optionsEn": [
+      "df.groupby(\"prompt\")[\"score\"].mean()",
+      "df.mean(by=\"prompt\", column=\"score\")",
+      "df[\"prompt\"].average(\"score\")",
+      "df.sum(\"score\") / len(df[\"prompt\"])"
+    ],
+    "optionsAr": [
+      "df.groupby(\"prompt\")[\"score\"].mean()",
+      "df.mean(by=\"prompt\", column=\"score\")",
+      "df[\"prompt\"].average(\"score\")",
+      "df.sum(\"score\") / len(df[\"prompt\"])"
+    ],
+    "answer": 0,
+    "explanationEn": "groupby splits, then mean summarises each group.",
+    "explanationAr": "الدالة groupby تقسم ثم mean تلخّص كل مجموعة."
+  },
+  {
+    "key": "qz-py-pandas-basics-6",
+    "topic": "py-pandas-basics",
+    "questionEn": "How do you count missing values?",
+    "questionAr": "كيف تعدّ القيم المفقودة؟",
+    "optionsEn": [
+      "df.isna().sum()",
+      "df.count_null()",
+      "df.missing()",
+      "len(df.null)"
+    ],
+    "optionsAr": [
+      "df.isna().sum()",
+      "df.count_null()",
+      "df.missing()",
+      "len(df.null)"
+    ],
+    "answer": 0,
+    "explanationEn": "isna marks missing cells; sum counts them per column.",
+    "explanationAr": "الدالة isna تحدد الخلايا الفارغة وsum تعدّها لكل عمود."
+  },
+  {
+    "key": "qz-py-pandas-basics-7",
+    "topic": "py-pandas-basics",
+    "questionEn": "Why can't this lesson run in the browser runner?",
+    "questionAr": "لماذا لا يعمل هذا الدرس في مشغّل المتصفح؟",
+    "optionsEn": [
+      "pandas isn't included",
+      "Python is too old",
+      "CSV is not allowed",
+      "It needs a GPU"
+    ],
+    "optionsAr": [
+      "لأن pandas غير موجودة",
+      "لأن Python قديمة جدًا",
+      "لأن CSV غير مسموح",
+      "لأنه يحتاج GPU"
+    ],
+    "answer": 0,
+    "explanationEn": "Install pandas locally with pip to run it.",
+    "explanationAr": "ثبّت pandas محليًا بـ pip لتشغيله."
+  },
+  {
+    "key": "qz-py-pandas-basics-8",
+    "topic": "py-pandas-basics",
+    "questionEn": "pandas is a little like which C# feature?",
+    "questionAr": "مكتبة pandas تشبه قليلًا أي ميزة في C#؟",
+    "optionsEn": [
+      "LINQ over a table",
+      "async and await",
+      "Dependency injection",
+      "Generics"
+    ],
+    "optionsAr": [
+      "LINQ على جدول",
+      "async وawait",
+      "حقن الاعتماديات",
+      "الأنواع العامة"
+    ],
+    "answer": 0,
+    "explanationEn": "Filtering, grouping and projecting data in memory.",
+    "explanationAr": "تصفية البيانات وتجميعها وتحويلها في الذاكرة."
+  },
+  {
+    "key": "qz-py-call-llm-1",
+    "topic": "py-call-llm",
+    "questionEn": "What does a provider SDK wrap?",
+    "questionAr": "ماذا تغلّف مكتبة المزوّد؟",
+    "optionsEn": [
+      "A database driver",
+      "The HTTP API",
+      "A local GPU",
+      "A web browser"
+    ],
+    "optionsAr": [
+      "مشغّل قاعدة بيانات",
+      "الـ HTTP API",
+      "GPU محليًا",
+      "متصفح ويب"
+    ],
+    "answer": 1,
+    "explanationEn": "It builds and sends the HTTP request for you.",
+    "explanationAr": "تبني طلب HTTP وترسله نيابة عنك."
+  },
+  {
+    "key": "qz-py-call-llm-2",
+    "topic": "py-call-llm",
+    "questionEn": "Where does the key go in a Python script?",
+    "questionAr": "أين يوضع المفتاح في سكربت Python؟",
+    "optionsEn": [
+      "In a string in the code",
+      "In an environment variable",
+      "Inside the prompt text",
+      "In requirements.txt"
+    ],
+    "optionsAr": [
+      "في نص داخل الكود",
+      "في متغير بيئة",
+      "داخل نص الطلب",
+      "في ملف requirements.txt"
+    ],
+    "answer": 1,
+    "explanationEn": "Or in a .env file that git ignores.",
+    "explanationAr": "أو في ملف .env يتجاهله git."
+  },
+  {
+    "key": "qz-py-call-llm-3",
+    "topic": "py-call-llm",
+    "questionEn": "What do messages contain?",
+    "questionAr": "ماذا تحتوي الرسائل؟",
+    "optionsEn": [
+      "role and content",
+      "url and method",
+      "key and secret",
+      "id and timestamp"
+    ],
+    "optionsAr": [
+      "role وcontent",
+      "url وmethod",
+      "key وsecret",
+      "id وtimestamp"
+    ],
+    "answer": 0,
+    "explanationEn": "Each message has a role (system, user, assistant) and text.",
+    "explanationAr": "لكل رسالة دور (system أو user أو assistant) ونص."
+  },
+  {
+    "key": "qz-py-call-llm-4",
+    "topic": "py-call-llm",
+    "questionEn": "Where is the token count in the response?",
+    "questionAr": "أين عدد التوكنات في الاستجابة؟",
+    "optionsEn": [
+      "In the HTTP headers only",
+      "In the usage data",
+      "Inside the prompt you sent",
+      "It isn't returned at all"
+    ],
+    "optionsAr": [
+      "في ترويسات HTTP فقط",
+      "في بيانات الاستهلاك usage",
+      "داخل الطلب الذي أرسلته",
+      "لا يُرجع أبدًا"
+    ],
+    "answer": 1,
+    "explanationEn": "usage reports prompt and completion tokens.",
+    "explanationAr": "بيانات usage تذكر توكنات الطلب والإجابة."
+  },
+  {
+    "key": "qz-py-call-llm-5",
+    "topic": "py-call-llm",
+    "questionEn": "What does HTTP 429 mean?",
+    "questionAr": "ماذا يعني الرمز HTTP 429؟",
+    "optionsEn": [
+      "Wrong model name",
+      "Too many requests",
+      "Invalid JSON body",
+      "Server is down"
+    ],
+    "optionsAr": [
+      "اسم نموذج خاطئ",
+      "طلبات كثيرة جدًا",
+      "محتوى JSON غير صالح",
+      "الخادم متوقف"
+    ],
+    "answer": 1,
+    "explanationEn": "Back off and retry after a pause.",
+    "explanationAr": "انتظر ثم أعد المحاولة بعد فترة."
+  },
+  {
+    "key": "qz-py-call-llm-6",
+    "topic": "py-call-llm",
+    "questionEn": "How can the same code use a local model?",
+    "questionAr": "كيف يستخدم الكود نفسه نموذجًا محليًا؟",
+    "optionsEn": [
+      "Point it at Ollama's endpoint",
+      "Install a newer Python version",
+      "Connect through a VPN first",
+      "Remove the system message"
+    ],
+    "optionsAr": [
+      "وجّهه إلى نقطة Ollama",
+      "ثبّت إصدارًا أحدث من Python",
+      "اتصل عبر VPN أولًا",
+      "احذف رسالة النظام"
+    ],
+    "answer": 0,
+    "explanationEn": "Ollama offers an OpenAI-compatible URL.",
+    "explanationAr": "يوفر Ollama رابطًا متوافقًا مع OpenAI."
+  },
+  {
+    "key": "qz-py-call-llm-7",
+    "topic": "py-call-llm",
+    "questionEn": "Why keep prompts in separate files?",
+    "questionAr": "لماذا تحفظ الطلبات في ملفات منفصلة؟",
+    "optionsEn": [
+      "To hide them from users",
+      "To compare versions easily",
+      "To make calls faster",
+      "To save tokens"
+    ],
+    "optionsAr": [
+      "لإخفائها عن المستخدمين",
+      "لمقارنة النسخ بسهولة",
+      "لتسريع الاستدعاءات",
+      "لتوفير التوكنات"
+    ],
+    "answer": 1,
+    "explanationEn": "Versioned prompts make experiments repeatable.",
+    "explanationAr": "الطلبات ذات الإصدارات تجعل التجارب قابلة للتكرار."
+  },
+  {
+    "key": "qz-py-call-llm-8",
+    "topic": "py-call-llm",
+    "questionEn": "Why try a prompt in Python first?",
+    "questionAr": "لماذا تجرّب الطلب في Python أولًا؟",
+    "optionsEn": [
+      "Models answer better in Python",
+      "It's the quickest way to experiment",
+      "The API only accepts Python",
+      ".NET has no way to call models"
+    ],
+    "optionsAr": [
+      "النماذج تجيب أفضل في Python",
+      "أسرع طريقة للتجربة",
+      "الـ API تقبل Python فقط",
+      "لا تستطيع .NET استدعاء النماذج"
+    ],
+    "answer": 1,
+    "explanationEn": "Then build the feature in .NET with the same ideas.",
+    "explanationAr": "ثم ابنِ الميزة في .NET بالأفكار نفسها."
+  }
+]
