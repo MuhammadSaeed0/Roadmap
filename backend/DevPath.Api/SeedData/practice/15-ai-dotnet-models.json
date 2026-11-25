@@ -1,0 +1,170 @@
+[
+  {
+    "key": "ai-lab-chat-service",
+    "type": "Coding",
+    "topic": "ai-dotnet-ichatclient",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "A tutor service behind an interface",
+    "titleAr": "خدمة معلّم خلف واجهة",
+    "problemEn": "Tutor.cs uses IChatModel, a small stand-in for IChatClient. Implement AskAsync(question, history, ct): trim the question and throw ArgumentException when it is empty, without calling the model; send the system prompt first, then the history in order, then the question as a user message; return the model's answer trimmed. The checks use a fake model that records what it was sent.",
+    "problemAr": "الملف Tutor.cs يستخدم IChatModel، وهي بديل صغير لـ IChatClient. نفّذ AskAsync(question, history, ct): أزل المسافات من السؤال وارمِ ArgumentException إذا كان فارغًا دون استدعاء النموذج، وأرسل رسالة النظام أولًا ثم التاريخ بترتيبه ثم السؤال كرسالة مستخدم، وأرجِع إجابة النموذج بعد إزالة المسافات. والفحوص تستخدم نموذجًا وهميًا يسجّل ما أُرسل إليه.",
+    "expectedEn": "With history [(user, Hi), (assistant, Hello!)] the roles sent are system, user, assistant, user, and an empty question never reaches the model.",
+    "expectedAr": "مع التاريخ [(user, Hi), (assistant, Hello!)] تكون الأدوار المرسلة system ثم user ثم assistant ثم user، والسؤال الفارغ لا يصل إلى النموذج أبدًا.",
+    "hintsEn": [
+      "Build a List<(string Role, string Text)>, add the system message, AddRange(history), then add the user message.",
+      "Check the question before calling the model, so a fake model's Sent list stays empty."
+    ],
+    "hintsAr": [
+      "ابنِ List<(string Role, string Text)> وأضف رسالة النظام ثم AddRange(history) ثم رسالة المستخدم.",
+      "افحص السؤال قبل استدعاء النموذج حتى تبقى قائمة Sent في النموذج الوهمي فارغة."
+    ],
+    "solutionEn": "Trim the question, throw ArgumentException when it is empty, build the list as system, history, user, await model.CompleteAsync(messages, ct) and Trim() the result. Because Tutor depends on an interface, the tests inject a fake that returns a fixed answer and records the messages, exactly how you test a service that uses IChatClient.",
+    "solutionAr": "أزل المسافات من السؤال، وارمِ ArgumentException إذا كان فارغًا، وابنِ القائمة بالترتيب نظام ثم تاريخ ثم مستخدم، ثم await model.CompleteAsync(messages, ct) وطبّق Trim() على النتيجة. ولأن Tutor تعتمد على واجهة، تحقن الاختبارات نسخة وهمية تُرجع إجابة ثابتة وتسجّل الرسائل، وهي بالضبط طريقة اختبار خدمة تستخدم IChatClient.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "ai-lab-secrets-review",
+    "type": "CodeReview",
+    "topic": "ai-dotnet-secrets",
+    "difficulty": "Beginner",
+    "minutes": 15,
+    "titleEn": "Review how a team stores its AI key",
+    "titleAr": "راجع كيف يحفظ فريق مفتاح الذكاء الاصطناعي",
+    "problemEn": "A pull request adds an AI feature. appsettings.json contains \"Ai\": { \"ApiKey\": \"sk-live-...\", \"Model\": \"gpt-4o-mini\" }, the Angular service calls the provider directly with the same key \"to save a server round trip\", and Program.cs logs the whole Ai section at start. List every problem and the fix for each.",
+    "problemAr": "طلب دمج يضيف ميزة ذكاء اصطناعي. الملف appsettings.json فيه \"Ai\": { \"ApiKey\": \"sk-live-...\", \"Model\": \"gpt-4o-mini\" }، وخدمة Angular تستدعي المزوّد مباشرة بالمفتاح نفسه «لتوفير رحلة إلى الخادم»، والملف Program.cs يسجّل قسم Ai كاملًا عند البدء. اذكر كل مشكلة وطريقة إصلاحها.",
+    "expectedEn": "At least four problems: the key in a committed file, the key in front-end code, the key in logs, and the leaked key itself, each with its fix.",
+    "expectedAr": "أربع مشكلات على الأقل: المفتاح في ملف مرفوع، والمفتاح في كود الواجهة، والمفتاح في السجلات، والمفتاح المتسرب نفسه، ومع كل منها إصلاحها.",
+    "hintsEn": [
+      "Anything in the repository or the browser should be treated as public.",
+      "A key that was ever committed must be considered leaked."
+    ],
+    "hintsAr": [
+      "تعامل مع أي شيء في المستودع أو المتصفح على أنه علني.",
+      "أي مفتاح رُفع مرة واحدة يجب اعتباره متسربًا."
+    ],
+    "solutionEn": "1) The key is committed in appsettings.json: remove it, keep only Model and Endpoint there, use user secrets locally and environment variables, Key Vault or managed identity in production. 2) The key was pushed, so revoke and rotate it now, then check the provider's usage. 3) Angular calls the provider with the key: every user can read it; call the model only from the API, with authentication and rate limits. 4) Logging the Ai section writes the key to logs: log only non-secret settings, at most the key's last four characters. Also add ValidateOnStart and a secret scanner in CI.",
+    "solutionAr": "1) المفتاح مرفوع داخل appsettings.json: احذفه واترك فيه Model وEndpoint فقط، واستخدم User secrets محليًا، ومتغيرات البيئة أو Key Vault أو الهوية المُدارة في الإنتاج. 2) المفتاح رُفع، فألغِه وبدّله الآن ثم راجع استهلاك المزوّد. 3) Angular تستدعي المزوّد بالمفتاح فيستطيع كل مستخدم قراءته؛ استدعِ النموذج من الـ API فقط مع التوثيق وتحديد المعدل. 4) تسجيل قسم Ai يكتب المفتاح في السجلات؛ سجّل الإعدادات غير السرية فقط، وعلى الأكثر آخر أربعة حروف من المفتاح. وأضف أيضًا ValidateOnStart وأداة لكشف الأسرار في CI.",
+    "runner": "None"
+  },
+  {
+    "key": "ai-lab-stream-collect",
+    "type": "Coding",
+    "topic": "ai-dotnet-streaming",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Collect a streamed answer, with Stop",
+    "titleAr": "اجمع إجابة متدفقة مع زر إيقاف",
+    "problemEn": "In StreamCollector.cs implement CollectAsync(pieces, onPiece, ct): read the async stream with await foreach, call onPiece for every non-empty piece (as a UI would show it), and return the full text with the number of non-empty pieces. When the token is cancelled, stop reading and return what was received so far with Stopped = true, instead of throwing.",
+    "problemAr": "في الملف StreamCollector.cs نفّذ CollectAsync(pieces, onPiece, ct): اقرأ التدفق غير المتزامن بـ await foreach، واستدعِ onPiece لكل جزء غير فارغ (كما تعرضه الواجهة)، وأرجِع النص الكامل مع عدد الأجزاء غير الفارغة. وعندما يُلغى الـ Token توقّف عن القراءة وأرجِع ما وصل حتى الآن مع Stopped = true بدل رمي استثناء.",
+    "expectedEn": "Three pieces give \"A token is a piece of a word.\" with Pieces = 3, and cancelling after the second piece returns \"one two \" with Stopped = true.",
+    "expectedAr": "ثلاثة أجزاء تعطي \"A token is a piece of a word.\" مع Pieces = 3، والإلغاء بعد الجزء الثاني يُرجع \"one two \" مع Stopped = true.",
+    "hintsEn": [
+      "pieces.WithCancellation(ct) passes the token to the stream; ct.ThrowIfCancellationRequested() checks it after each piece.",
+      "Catch OperationCanceledException when ct.IsCancellationRequested and return the partial result."
+    ],
+    "hintsAr": [
+      "الدالة pieces.WithCancellation(ct) تمرّر الـ Token إلى التدفق، وct.ThrowIfCancellationRequested() تفحصه بعد كل جزء.",
+      "التقط OperationCanceledException عندما يكون ct.IsCancellationRequested صحيحًا وأرجِع النتيجة الجزئية."
+    ],
+    "solutionEn": "Use a StringBuilder and a counter. Loop with await foreach (var piece in pieces.WithCancellation(ct)), skip empty pieces, call onPiece, append and count, then call ct.ThrowIfCancellationRequested(). Wrap the loop in try/catch (OperationCanceledException) when ct.IsCancellationRequested and return the partial text with Stopped = true. This is what a chat endpoint does with GetStreamingResponseAsync: show pieces as they come, keep the full text for saving, and stop cleanly when the user presses Stop.",
+    "solutionAr": "استخدم StringBuilder وعدّادًا. كرّر بـ await foreach (var piece in pieces.WithCancellation(ct))، وتجاوز الأجزاء الفارغة، واستدعِ onPiece وأضف الجزء وعدّه، ثم استدعِ ct.ThrowIfCancellationRequested(). وغلّف الحلقة بـ try/catch (OperationCanceledException) when ct.IsCancellationRequested وأرجِع النص الجزئي مع Stopped = true. وهذا ما يفعله Endpoint المحادثة مع GetStreamingResponseAsync: يعرض الأجزاء أثناء وصولها، ويحتفظ بالنص كاملًا لحفظه، ويتوقف بسلاسة عندما يضغط المستخدم «إيقاف».",
+    "runner": "CSharp"
+  },
+  {
+    "key": "ai-lab-triage-json",
+    "type": "Coding",
+    "topic": "ai-dotnet-structured-output",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Validate a model's JSON answer",
+    "titleAr": "تحقّق من إجابة JSON من النموذج",
+    "problemEn": "In Triage.cs implement TriageParser.Parse(json): deserialize the model's answer into TicketTriage with System.Text.Json (camelCase names), then validate it. The category must be one of the allowed values (ignore case, return it in lower case), the priority 1 to 5, and the summary non-empty and at most 120 characters. Return the triage, or null with every problem found; text that is not JSON returns null with the single problem \"not valid JSON\".",
+    "problemAr": "في الملف Triage.cs نفّذ TriageParser.Parse(json): حوّل إجابة النموذج إلى TicketTriage بـ System.Text.Json (أسماء بنمط camelCase)، ثم تحقّق منها. يجب أن يكون التصنيف من القيم المسموحة (تجاهل حالة الحروف وأرجِعه بحروف صغيرة)، والأولوية من 1 إلى 5، والملخص غير فارغ ولا يتجاوز 120 حرفًا. أرجِع التصنيف، أو null مع كل المشكلات التي وجدتها، والنص الذي ليس JSON يُرجع null مع مشكلة واحدة هي \"not valid JSON\".",
+    "expectedEn": "{\"category\":\"Billing\",\"priority\":3,...} is accepted as billing; {\"category\":\"refund\",\"priority\":9,\"summary\":\"\"} gives three problems.",
+    "expectedAr": "النص {\"category\":\"Billing\",\"priority\":3,...} يُقبل بتصنيف billing، والنص {\"category\":\"refund\",\"priority\":9,\"summary\":\"\"} يعطي ثلاث مشكلات.",
+    "hintsEn": [
+      "JsonSerializer.Deserialize<TicketTriage>(json, JsonSerializerOptions.Web) handles camelCase; catch JsonException for free text.",
+      "Collect problems in a list instead of returning at the first one."
+    ],
+    "hintsAr": [
+      "الدالة JsonSerializer.Deserialize<TicketTriage>(json, JsonSerializerOptions.Web) تتعامل مع camelCase، والتقط JsonException للنص الحر.",
+      "اجمع المشكلات في قائمة بدل الرجوع عند أول مشكلة."
+    ],
+    "solutionEn": "Deserialize inside try/catch (JsonException) and return (null, [\"not valid JSON\"]) on failure. Normalise the category with Trim().ToLowerInvariant(), then add a problem for an unknown category, a priority outside 1-5, an empty summary or one longer than 120 characters. Return t with { Category = category } when the list is empty, otherwise null with the list. This is the check every structured model answer needs before code acts on it.",
+    "solutionAr": "حوّل داخل try/catch (JsonException) وأرجِع (null, [\"not valid JSON\"]) عند الفشل. ووحّد التصنيف بـ Trim().ToLowerInvariant()، ثم أضف مشكلة للتصنيف غير المعروف، والأولوية خارج 1-5، والملخص الفارغ أو الأطول من 120 حرفًا. وأرجِع t with { Category = category } عندما تكون القائمة فارغة، وإلا null مع القائمة. وهذا هو الفحص الذي تحتاجه كل إجابة منظمة من النموذج قبل أن يتصرف الكود بناءً عليها.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "ai-lab-retry-policy",
+    "type": "Coding",
+    "topic": "ai-dotnet-resilience",
+    "difficulty": "Intermediate",
+    "minutes": 25,
+    "titleEn": "A retry policy for model calls",
+    "titleAr": "سياسة إعادة محاولة لاستدعاءات النموذج",
+    "problemEn": "In Retry.cs implement IsTransient(status), true for 429, 408 and 5xx. Then implement RunAsync(operation, maxAttempts, delay): call the operation, and on a transient ModelException wait and try again, up to maxAttempts calls in all. The wait is the exception's RetryAfter when it has one, otherwise 1, 2, 4... seconds. Waiting goes through the delay function so tests don't sleep. Rethrow non-transient errors at once, and rethrow the last failure.",
+    "problemAr": "في الملف Retry.cs نفّذ IsTransient(status) التي تُرجع true لـ 429 و408 و5xx. ثم نفّذ RunAsync(operation, maxAttempts, delay): استدعِ العملية، وعند ModelException مؤقت انتظر وأعد المحاولة حتى maxAttempts استدعاءً إجمالًا. ومدة الانتظار هي RetryAfter الخاصة بالاستثناء إن وُجدت، وإلا 1 ثم 2 ثم 4 ثوانٍ. والانتظار يمر عبر الدالة delay حتى لا تنام الاختبارات فعلًا. وارمِ الأخطاء غير المؤقتة فورًا، وارمِ آخر فشل.",
+    "expectedEn": "Two 503s and then success wait 1s and 2s; a 429 with Retry-After 7s waits 7s; a 401 is called once and rethrown.",
+    "expectedAr": "فشلان بـ 503 ثم نجاح ينتظران ثانية ثم ثانيتين، و429 مع Retry-After 7 ثوانٍ ينتظر 7 ثوانٍ، و401 يُستدعى مرة واحدة ثم يُرمى.",
+    "hintsEn": [
+      "A catch filter keeps the logic short: catch (ModelException e) when (IsTransient(e.Status) && attempt < maxAttempts).",
+      "TimeSpan.FromSeconds(Math.Pow(2, attempt - 1)) gives 1, 2, 4 seconds."
+    ],
+    "hintsAr": [
+      "مرشّح catch يجعل المنطق قصيرًا: catch (ModelException e) when (IsTransient(e.Status) && attempt < maxAttempts).",
+      "التعبير TimeSpan.FromSeconds(Math.Pow(2, attempt - 1)) يعطي 1 و2 و4 ثوانٍ."
+    ],
+    "solutionEn": "IsTransient returns status is 429 or 408 || status >= 500. RunAsync loops for attempt = 1, 2, ...: return await operation(attempt); a catch filter catches only transient ModelExceptions while attempts remain, and awaits delay(e.RetryAfter ?? TimeSpan.FromSeconds(Math.Pow(2, attempt - 1))). Anything else, including the last transient failure, escapes the filter and is rethrown. In a real app you would add jitter and let Microsoft.Extensions.Http.Resilience do this for the provider's HttpClient.",
+    "solutionAr": "الدالة IsTransient تُرجع status is 429 or 408 || status >= 500. والدالة RunAsync تكرّر attempt = 1, 2, ...: return await operation(attempt)، ومرشّح catch يلتقط فقط ModelException المؤقتة ما دامت المحاولات متبقية، وينتظر delay(e.RetryAfter ?? TimeSpan.FromSeconds(Math.Pow(2, attempt - 1))). وأي شيء آخر، ومنه آخر فشل مؤقت، يفلت من المرشح ويُرمى. وفي تطبيق حقيقي تضيف العشوائية وتترك Microsoft.Extensions.Http.Resilience يقوم بذلك لـ HttpClient الخاص بالمزوّد.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "ai-lab-usage-meter",
+    "type": "Coding",
+    "topic": "ai-dotnet-usage-cost",
+    "difficulty": "Intermediate",
+    "minutes": 20,
+    "titleEn": "Meter tokens, cost and daily limits",
+    "titleAr": "عدّاد للتوكنات والتكلفة والحدود اليومية",
+    "problemEn": "In UsageMeter.cs implement Record(user, feature, model, inputTokens, outputTokens, day), which stores the call and returns its cost from the model's prices per million tokens (throw KeyNotFoundException for an unknown model); CanCall(user, day), true while the user's input plus output tokens that day are below the daily limit; and CostByFeature(), the total cost per feature.",
+    "problemAr": "في الملف UsageMeter.cs نفّذ Record(user, feature, model, inputTokens, outputTokens, day) التي تخزّن الاستدعاء وتُرجع تكلفته من أسعار النموذج لكل مليون توكن (وارمِ KeyNotFoundException لنموذج غير معروف)، وCanCall(user, day) التي تُرجع true ما دامت توكنات المدخلات والمخرجات للمستخدم في ذلك اليوم أقل من الحد اليومي، وCostByFeature() التي تُرجع إجمالي التكلفة لكل ميزة.",
+    "expectedEn": "6,000 input and 300 output tokens on the small model cost 0.00345, and a user with a 1,000-token limit is blocked after using 1,000 tokens that day.",
+    "expectedAr": "6,000 توكن مدخلات و300 توكن مخرجات على النموذج الصغير تكلّف 0.00345، والمستخدم صاحب حد 1,000 توكن يُمنع بعد استهلاك 1,000 توكن في ذلك اليوم.",
+    "hintsEn": [
+      "Keep a private list of (user, feature, tokens, cost, day) records.",
+      "prices[model] throws KeyNotFoundException by itself for an unknown model."
+    ],
+    "hintsAr": [
+      "احتفظ بقائمة خاصة من السجلات (user, feature, tokens, cost, day).",
+      "التعبير prices[model] يرمي KeyNotFoundException بنفسه لنموذج غير معروف."
+    ],
+    "solutionEn": "Store each call in a list with its tokens and its cost: input * InputPerMillion / 1,000,000 + output * OutputPerMillion / 1,000,000 (decimal for money). CanCall sums the user's tokens for that day and compares with the limit using <, so reaching the limit blocks. CostByFeature groups by feature and sums the cost. A real app keeps this in a database table or metrics and checks CanCall before every call, answering 429 when it is false.",
+    "solutionAr": "خزّن كل استدعاء في قائمة مع توكناته وتكلفته: input * InputPerMillion / 1,000,000 + output * OutputPerMillion / 1,000,000 (باستخدام decimal للمال). والدالة CanCall تجمع توكنات المستخدم في ذلك اليوم وتقارنها بالحد بعلامة <، فالوصول إلى الحد يمنع. والدالة CostByFeature تجمّع حسب الميزة وتجمع التكلفة. والتطبيق الحقيقي يحفظ ذلك في جدول بقاعدة البيانات أو في مقاييس، ويفحص CanCall قبل كل استدعاء ويُجيب بـ 429 عندما تكون false.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "ai-lab-explain-endpoint",
+    "type": "Practical",
+    "topic": "ai-dotnet-api-feature",
+    "difficulty": "Advanced",
+    "minutes": 90,
+    "titleEn": "Build a tested AI endpoint",
+    "titleAr": "ابنِ Endpoint ذكاء اصطناعي مُختبَرًا",
+    "problemEn": "In an ASP.NET Core project, add POST /api/topics/{id}/explain that takes { question } (required, at most 500 characters) and returns { explanation, practiceQuestions[3] }. Use IChatClient (Ollama locally works), a 30-second timeout, MaxOutputTokens and structured output into a record, validate the result, and record token usage. Map failures to 400, 429, 502 and 503. Write unit tests with a fake IChatClient (good answer, invalid JSON, timeout) and one integration test with WebApplicationFactory.",
+    "problemAr": "في مشروع ASP.NET Core أضف POST /api/topics/{id}/explain يستقبل { question } (مطلوب وبحد أقصى 500 حرف) ويُرجع { explanation, practiceQuestions[3] }. استخدم IChatClient (يعمل Ollama محليًا)، ومهلة 30 ثانية، وMaxOutputTokens، ومخرجات منظمة في record، وتحقّق من النتيجة، وسجّل استهلاك التوكنات. وحوّل الأعطال إلى 400 و429 و502 و503. واكتب اختبارات وحدات بـ IChatClient وهمي (إجابة جيدة، وJSON غير صالح، وانتهاء مهلة) واختبار تكامل واحدًا بـ WebApplicationFactory.",
+    "expectedEn": "A working endpoint behind authentication and rate limiting, a service that owns the prompt, and at least four passing tests that need no key.",
+    "expectedAr": "Endpoint يعمل خلف التوثيق وتحديد المعدل، وخدمة تملك الطلب، وأربعة اختبارات ناجحة على الأقل لا تحتاج أي مفتاح.",
+    "hintsEn": [
+      "Keep the controller thin: validation and status codes there, prompt and model call in a TopicTutor service.",
+      "In the integration test, remove the registered IChatClient and add your fake with ConfigureTestServices."
+    ],
+    "hintsAr": [
+      "اجعل الـ Controller خفيفًا: التحقق ورموز الحالة هناك، والطلب واستدعاء النموذج في خدمة TopicTutor.",
+      "في اختبار التكامل احذف IChatClient المسجّل وأضف نسختك الوهمية بـ ConfigureTestServices."
+    ],
+    "solutionEn": "Request DTO with [Required, MaxLength(500)]; controller with [Authorize] and a rate-limit policy calls TopicTutor.ExplainAsync. The service loads the topic, builds system and user messages, creates a linked CancellationTokenSource with CancelAfter(30s), calls GetResponseAsync<ExplainResult>(messages, new ChatOptions { MaxOutputTokens = 500, Temperature = 0.2f }, ct), validates that the explanation is non-empty and there are exactly three questions, records response.Usage, and returns null for unusable output. The controller returns 502 for null and 503 for a timeout (OperationCanceledException when the request itself was not cancelled); a usage check returns 429. Tests: a fake IChatClient whose GetResponseAsync returns a ChatResponse with fixed text, throws OperationCanceledException, or returns invalid JSON; WebApplicationFactory replaces the client and checks the 200 and 400 responses.",
+    "solutionAr": "DTO الطلب عليه [Required, MaxLength(500)]، والـ Controller عليه [Authorize] وسياسة تحديد معدل ويستدعي TopicTutor.ExplainAsync. والخدمة تحمّل الموضوع، وتبني رسائل النظام والمستخدم، وتنشئ CancellationTokenSource مرتبطًا مع CancelAfter(30s)، وتستدعي GetResponseAsync<ExplainResult>(messages, new ChatOptions { MaxOutputTokens = 500, Temperature = 0.2f }, ct)، وتتحقق أن الشرح غير فارغ وأن الأسئلة ثلاثة بالضبط، وتسجّل response.Usage، وتُرجع null للمخرجات التي لا يمكن استخدامها. والـ Controller يُرجع 502 عند null و503 عند انتهاء المهلة (OperationCanceledException عندما لا يكون الطلب نفسه قد أُلغي)، وفحص الاستهلاك يُرجع 429. والاختبارات: IChatClient وهمي تُرجع GetResponseAsync فيه ChatResponse بنص ثابت، أو ترمي OperationCanceledException، أو تُرجع JSON غير صالح، وWebApplicationFactory تستبدل العميل وتفحص الاستجابتين 200 و400.",
+    "runner": "None"
+  }
+]
