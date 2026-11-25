@@ -71,7 +71,8 @@
       "csharp-fundamentals": "fundamentals", "object-oriented-programming": "csharp", "modern-csharp": "csharp",
       "aspnet-core": "dotnet", "ef-core": "efcore", "sql-server-for-dotnet": "database", "typescript": "frontend",
       "angular": "frontend", "full-stack-integration": "apis", "testing": "testing", "git-github": "git",
-      "professional-skills": "architecture", "cloud-devops": "devops"
+      "professional-skills": "architecture", "cloud-devops": "devops",
+      "ai-llm-foundations": "dotnet"
     }
   },
 
@@ -79,7 +80,8 @@
     "csharp-fundamentals": "Beginner", "object-oriented-programming": "Beginner", "modern-csharp": "Intermediate",
     "aspnet-core": "Intermediate", "ef-core": "Intermediate", "sql-server-for-dotnet": "Intermediate", "typescript": "Beginner",
     "angular": "Intermediate", "full-stack-integration": "Intermediate", "testing": "Intermediate", "git-github": "Beginner",
-    "professional-skills": "Advanced", "cloud-devops": "Advanced"
+    "professional-skills": "Advanced", "cloud-devops": "Advanced",
+    "ai-llm-foundations": "Beginner"
   },
 
   "exerciseExtraCategories": {

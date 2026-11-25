@@ -1,0 +1,148 @@
+[
+  {
+    "topic": "ai-what-is-llm",
+    "lessons": [
+      {
+        "key": "tut-ai-what-is-llm-1",
+        "titleEn": "A model that predicts the next token",
+        "titleAr": "نموذج يتوقّع التوكن التالي",
+        "bodyEn": "A large language model reads text as tokens and, at every step, gives a probability to each possible next token. The app picks one, appends it, and asks again. Repeating this a few hundred times produces a paragraph.\n\nThe model never looks a fact up. It produces text that is likely given everything it read during training. That is why it writes fluently, translates and summarises well, and also why it can be confidently wrong.\n\nThe tiny program below imitates one step with a hand-made table of probabilities: given the word `foreign`, it picks the most likely next word.",
+        "bodyAr": "النموذج اللغوي الكبير يقرأ النص على شكل توكنات، وفي كل خطوة يعطي احتمالًا لكل توكن ممكن بعده. يختار التطبيق واحدًا ويضيفه ثم يسأل مرة أخرى. وتكرار ذلك بضع مئات من المرات ينتج فقرة كاملة.\n\nالنموذج لا يبحث عن الحقائق أبدًا. هو ينتج نصًا محتملًا بالنسبة لكل ما قرأه أثناء التدريب. ولهذا يكتب بطلاقة ويترجم ويلخّص جيدًا، ولهذا أيضًا قد يخطئ وهو واثق.\n\nالبرنامج الصغير بالأسفل يقلّد خطوة واحدة بجدول احتمالات مكتوب يدويًا: بعد كلمة `foreign` يختار الكلمة التالية الأكثر احتمالًا.",
+        "code": "var nextWord = new Dictionary<string, double>\n{\n    [\"key\"] = 0.62,\n    [\"language\"] = 0.21,\n    [\"policy\"] = 0.12,\n    [\"banana\"] = 0.05,\n};\n\nvar best = nextWord.MaxBy(p => p.Value);\nConsole.WriteLine($\"foreign {best.Key} ({best.Value:P0})\");",
+        "language": "csharp",
+        "output": "foreign key (62%)"
+      },
+      {
+        "key": "tut-ai-what-is-llm-2",
+        "titleEn": "Training, inference and memory",
+        "titleAr": "التدريب والاستخدام والذاكرة",
+        "bodyEn": "Training happens once, at the provider, and is very expensive. Your app only does inference: it sends messages and receives generated text over an HTTP API.\n\nThe model keeps nothing between requests. A chat feels continuous only because the app sends the earlier messages again each time. The model also knows nothing after its training cut-off date and nothing about your private data unless you put it in the request.\n\n- The system message sets the rules, for example the tone and what to refuse.\n- User messages carry the user's text.\n- Assistant messages are earlier replies, sent back so the model can continue.",
+        "bodyAr": "التدريب يحدث مرة واحدة عند المزوّد وتكلفته عالية جدًا. أما تطبيقك فيقوم بالاستخدام (Inference) فقط: يرسل رسائل ويستقبل نصًا مولّدًا عبر HTTP API.\n\nالنموذج لا يحتفظ بشيء بين الطلبات. وتبدو المحادثة متصلة فقط لأن التطبيق يرسل الرسائل السابقة مرة أخرى في كل طلب. والنموذج لا يعرف شيئًا بعد تاريخ انتهاء تدريبه، ولا شيئًا عن بياناتك الخاصة إلا إذا وضعتها في الطلب.\n\n- رسالة النظام (System) تحدد القواعد، مثل الأسلوب وما يجب رفضه.\n- رسائل المستخدم (User) تحمل نص المستخدم.\n- رسائل المساعد (Assistant) هي الردود السابقة، تُرسل مرة أخرى ليكمل النموذج.",
+        "code": "using Microsoft.Extensions.AI;\n\nList<ChatMessage> history =\n[\n    new(ChatRole.System, \"You are a patient tutor for first-year students.\"),\n    new(ChatRole.User, \"What is a foreign key?\"),\n];\n\nChatResponse reply = await chat.GetResponseAsync(history);\nhistory.AddMessages(reply);                 // remember it ourselves: the model won't\n\nhistory.Add(new(ChatRole.User, \"Show an example with two tables.\"));\nConsole.WriteLine((await chat.GetResponseAsync(history)).Text);",
+        "language": "aspnet"
+      }
+    ]
+  },
+  {
+    "topic": "ai-tokens-context",
+    "lessons": [
+      {
+        "key": "tut-ai-tokens-context-1",
+        "titleEn": "Tokens and the context window",
+        "titleAr": "التوكنات ونافذة السياق",
+        "bodyEn": "Models count in tokens. A common English word is usually one token, a long or rare word several, and Arabic text often takes more tokens per word than English.\n\nThe context window is the most tokens one request can hold: the system prompt, the conversation so far, any documents you add, and the answer. When a conversation grows past it, the app must drop or summarise older messages.\n\nThe rough rule below, about four characters per token for English, is good enough for planning. For billing, always use the counts the API returns.",
+        "bodyAr": "النماذج تحسب بالتوكنات. الكلمة الإنجليزية الشائعة غالبًا توكن واحد، والكلمة الطويلة أو النادرة عدة توكنات، والنص العربي يأخذ غالبًا توكنات أكثر لكل كلمة من الإنجليزية.\n\nونافذة السياق هي أكبر عدد من التوكنات يسعه طلب واحد: رسالة النظام، والمحادثة حتى الآن، وأي مستندات تضيفها، والإجابة. وعندما تتجاوزها المحادثة يجب أن يحذف التطبيق الرسائل القديمة أو يلخّصها.\n\nالقاعدة التقريبية بالأسفل، حوالي أربعة حروف لكل توكن في الإنجليزية، تكفي للتخطيط. أما للفوترة فاستخدم دائمًا الأعداد التي تعيدها الـ API.",
+        "code": "static int EstimateTokens(string text) => (int)Math.Ceiling(text.Length / 4.0);\n\nvar system = \"You are a helpful assistant for an online shop.\";\nvar question = \"Can I return a jacket I bought three weeks ago?\";\nvar window = 8000;\nvar reservedForAnswer = 500;\n\nvar used = EstimateTokens(system) + EstimateTokens(question);\nConsole.WriteLine($\"Prompt: about {used} tokens\");\nConsole.WriteLine($\"Room left for documents: {window - reservedForAnswer - used} tokens\");",
+        "language": "csharp",
+        "output": "Prompt: about 24 tokens\nRoom left for documents: 7476 tokens"
+      },
+      {
+        "key": "tut-ai-tokens-context-2",
+        "titleEn": "What a call costs",
+        "titleAr": "تكلفة الاستدعاء",
+        "bodyEn": "Providers charge per million tokens, with one price for input and a higher one for output. The cost of a call is the input tokens times the input price plus the output tokens times the output price.\n\nSmall numbers add up: a feature that costs a third of a cent per call costs dollars an hour at scale. Cap the output with a maximum token count on every request, send only the text the model needs, and log the real usage per feature so surprises show up early.",
+        "bodyAr": "يحاسب المزوّدون لكل مليون توكن، بسعر للمدخلات وسعر أعلى للمخرجات. وتكلفة الاستدعاء هي توكنات المدخلات في سعر المدخلات زائد توكنات المخرجات في سعر المخرجات.\n\nالأرقام الصغيرة تتراكم: ميزة تكلّف ثلث سنت للاستدعاء تكلّف دولارات في الساعة مع الاستخدام الكثيف. حدّد أقصى عدد لتوكنات المخرجات في كل طلب، وأرسل فقط النص الذي يحتاجه النموذج، وسجّل الاستخدام الحقيقي لكل ميزة لتظهر المفاجآت مبكرًا.",
+        "code": "static decimal Cost(long input, long output, decimal inPerMillion, decimal outPerMillion) =>\n    input * inPerMillion / 1_000_000m + output * outPerMillion / 1_000_000m;\n\nvar perCall = Cost(6_000, 300, 0.50m, 1.50m);\nConsole.WriteLine($\"One call: ${perCall}\");\nConsole.WriteLine($\"10,000 calls a day: ${perCall * 10_000}\");",
+        "language": "csharp",
+        "output": "One call: $0.00345\n10,000 calls a day: $34.50000"
+      }
+    ]
+  },
+  {
+    "topic": "ai-model-choice",
+    "lessons": [
+      {
+        "key": "tut-ai-model-choice-1",
+        "titleEn": "Hosted, open-weight and local models",
+        "titleAr": "نماذج مستضافة ومفتوحة الأوزان ومحلية",
+        "bodyEn": "Hosted models run at a provider and are called over an API. They are usually the most capable and need no hardware, but your data travels to the provider.\n\nOpen-weight models publish their parameters, so you can run them on your own server or laptop, for example with Ollama. Data stays with you, but you need a good machine, and small local models are less capable than large hosted ones.\n\n- Use a hosted model when quality matters most and the data may leave your servers.\n- Use a local model when data must stay in-house, for offline work, or to experiment for free.\n- In both cases, pick the smallest model that passes your tests.",
+        "bodyAr": "النماذج المستضافة تعمل عند مزوّد وتُستدعى عبر API. وهي غالبًا الأقوى ولا تحتاج عتادًا، لكن بياناتك تنتقل إلى المزوّد.\n\nالنماذج مفتوحة الأوزان تنشر معاملاتها، فتستطيع تشغيلها على خادمك أو حاسوبك، مثلًا عبر Ollama. تبقى البيانات عندك، لكنك تحتاج جهازًا جيدًا، والنماذج المحلية الصغيرة أقل قدرة من النماذج المستضافة الكبيرة.\n\n- استخدم نموذجًا مستضافًا عندما تكون الجودة أهم شيء ويُسمح للبيانات بمغادرة خوادمك.\n- استخدم نموذجًا محليًا عندما يجب أن تبقى البيانات داخل المؤسسة، أو للعمل دون إنترنت، أو للتجربة مجانًا.\n- وفي الحالتين اختر أصغر نموذج ينجح في اختباراتك.",
+        "code": "# Run an open-weight model on your own machine with Ollama\nollama pull llama3.2\nollama run llama3.2 \"Explain a foreign key in one sentence.\"\n\n# It also serves an HTTP API that .NET can call\ncurl http://localhost:11434/api/generate -d '{\"model\": \"llama3.2\", \"prompt\": \"Hello\"}'",
+        "language": "bash"
+      },
+      {
+        "key": "tut-ai-model-choice-2",
+        "titleEn": "Comparing models with a small test set",
+        "titleAr": "مقارنة النماذج بمجموعة اختبار صغيرة",
+        "bodyEn": "Leaderboards measure general skills, not your feature. Collect ten real examples of what users will send, with what a good answer looks like, and run each candidate model on them.\n\nScore what matters to you: correctness, Arabic quality, speed and cost. Then hide the provider behind one interface so the winner is a configuration value and you can switch when prices or models change.\n\nThe example below picks the cheapest model whose score passes the bar.",
+        "bodyAr": "لوحات الترتيب تقيس مهارات عامة لا ميزتك أنت. اجمع عشرة أمثلة حقيقية لما سيرسله المستخدمون مع شكل الإجابة الجيدة، وشغّل كل نموذج مرشح عليها.\n\nقيّم ما يهمك: الصحة، وجودة العربية، والسرعة، والتكلفة. ثم اخفِ المزوّد خلف واجهة واحدة ليصبح الفائز قيمة في الإعدادات وتستطيع التبديل عندما تتغير الأسعار أو النماذج.\n\nالمثال بالأسفل يختار أرخص نموذج تتجاوز درجته الحد المطلوب.",
+        "code": "var candidates = new[]\n{\n    (Name: \"large-hosted\", Score: 9.1, CostPerCall: 0.0120m),\n    (Name: \"small-hosted\", Score: 8.4, CostPerCall: 0.0011m),\n    (Name: \"local-8b\", Score: 7.2, CostPerCall: 0.0000m),\n};\nconst double bar = 8.0;\n\nvar pick = candidates.Where(c => c.Score >= bar).MinBy(c => c.CostPerCall);\nConsole.WriteLine($\"Use {pick.Name}: score {pick.Score}, ${pick.CostPerCall} per call\");",
+        "language": "csharp",
+        "output": "Use small-hosted: score 8.4, $0.0011 per call"
+      }
+    ]
+  },
+  {
+    "topic": "ai-sampling",
+    "lessons": [
+      {
+        "key": "tut-ai-sampling-1",
+        "titleEn": "How temperature changes the choice",
+        "titleAr": "كيف تغيّر درجة الحرارة الاختيار",
+        "bodyEn": "For each next token the model produces scores. A softmax turns the scores into probabilities, and the temperature divides the scores first.\n\nA low temperature makes the top token dominate, so answers are steady. A high temperature flattens the probabilities, so less likely tokens get picked more often and answers vary.\n\nRun the program and compare the three rows: the same scores give very different chances.",
+        "bodyAr": "لكل توكن تالٍ يُخرج النموذج درجات، ودالة Softmax تحوّل الدرجات إلى احتمالات، ودرجة الحرارة تقسم الدرجات أولًا.\n\nدرجة الحرارة المنخفضة تجعل التوكن الأول مسيطرًا، فتكون الإجابات ثابتة. ودرجة الحرارة المرتفعة تسطّح الاحتمالات، فتُختار التوكنات الأقل احتمالًا أكثر وتتنوع الإجابات.\n\nشغّل البرنامج وقارن الصفوف الثلاثة: الدرجات نفسها تعطي فرصًا مختلفة جدًا.",
+        "code": "static double[] Softmax(double[] scores, double temperature)\n{\n    var scaled = scores.Select(s => s / temperature).ToArray();\n    var max = scaled.Max();\n    var exps = scaled.Select(s => Math.Exp(s - max)).ToArray();\n    var sum = exps.Sum();\n    return exps.Select(e => e / sum).ToArray();\n}\n\ndouble[] scores = [2.0, 1.0, 0.0];\nforeach (var t in new[] { 0.5, 1.0, 2.0 })\n    Console.WriteLine($\"T={t}: {string.Join(\", \", Softmax(scores, t).Select(p => p.ToString(\"0.00\")))}\");",
+        "language": "csharp",
+        "output": "T=0.5: 0.87, 0.12, 0.02\nT=1: 0.67, 0.24, 0.09\nT=2: 0.51, 0.31, 0.19"
+      },
+      {
+        "key": "tut-ai-sampling-2",
+        "titleEn": "Top-p and testing varied output",
+        "titleAr": "طريقة top-p واختبار المخرجات المتغيرة",
+        "bodyEn": "Top-p keeps only the most likely tokens whose probabilities add up to p, then samples among them. With p = 0.9, the long tail of unlikely tokens is never chosen.\n\nBecause output varies, do not test it word for word. Check properties instead: the answer is valid JSON, has the required fields, uses a label from a fixed list, or stays under a length limit.\n\n- Extraction, classification and code: temperature near 0.\n- Writing and brainstorming: a higher temperature.\n- Change one setting at a time and measure.",
+        "bodyAr": "طريقة top-p تُبقي فقط التوكنات الأكثر احتمالًا التي يصل مجموع احتمالاتها إلى p، ثم تختار من بينها. فعند p = 0.9 لا يُختار أبدًا الذيل الطويل من التوكنات غير المحتملة.\n\nولأن المخرجات تتغير، لا تختبرها كلمة بكلمة. افحص الخصائص بدلًا من ذلك: الإجابة JSON صحيح، وفيها الحقول المطلوبة، وتستخدم تصنيفًا من قائمة ثابتة، أو لا تتجاوز طولًا معينًا.\n\n- الاستخراج والتصنيف والكود: درجة حرارة قريبة من 0.\n- الكتابة والعصف الذهني: درجة حرارة أعلى.\n- غيّر إعدادًا واحدًا في كل مرة وقِس النتيجة.",
+        "code": "double[] probabilities = [0.50, 0.25, 0.15, 0.06, 0.04];\nconst double p = 0.85;\n\nvar kept = new List<int>();\ndouble total = 0;\nforeach (var (prob, index) in probabilities.Select((v, i) => (v, i)).OrderByDescending(x => x.v))\n{\n    kept.Add(index);\n    total += prob;\n    if (total >= p) break;\n}\nConsole.WriteLine($\"Top-p {p} keeps {kept.Count} of {probabilities.Length} tokens: {string.Join(\", \", kept)}\");",
+        "language": "csharp",
+        "output": "Top-p 0.85 keeps 3 of 5 tokens: 0, 1, 2"
+      }
+    ]
+  },
+  {
+    "topic": "ai-hallucinations",
+    "lessons": [
+      {
+        "key": "tut-ai-hallucinations-1",
+        "titleEn": "Why models invent things",
+        "titleAr": "لماذا تختلق النماذج أشياء",
+        "bodyEn": "A model generates likely text. When the true answer is not in what it learned, likely text still comes out: a plausible book title, a method name that sounds right, a believable statistic. This is called a hallucination.\n\nModels are also weak at exact arithmetic, counting letters or items, and anything that happened after their training. They know nothing about your company's data.\n\nThe example shows the safer habit: compute exact values in code and give the model the result to explain, instead of asking it to calculate.",
+        "bodyAr": "النموذج يولّد نصًا محتملًا. وعندما لا تكون الإجابة الصحيحة ضمن ما تعلّمه يخرج نص محتمل رغم ذلك: عنوان كتاب معقول، أو اسم دالة يبدو صحيحًا، أو إحصائية قابلة للتصديق. وهذا يسمى هلوسة.\n\nوالنماذج ضعيفة أيضًا في الحساب الدقيق، وعدّ الحروف أو العناصر، وكل ما حدث بعد تدريبها. ولا تعرف شيئًا عن بيانات شركتك.\n\nالمثال يوضح العادة الأسلم: احسب القيم الدقيقة في الكود وأعطِ النموذج النتيجة ليشرحها، بدل أن تطلب منه الحساب.",
+        "code": "var lines = new[] { (Item: \"Keyboard\", Qty: 3, Price: 450.75m), (Item: \"Mouse\", Qty: 5, Price: 129.90m) };\n\n// Exact in code, never in the prompt\nvar total = lines.Sum(l => l.Qty * l.Price);\n\nvar prompt = $\"Write one friendly sentence telling the customer their order total is {total:0.00} EGP.\";\nConsole.WriteLine(prompt);",
+        "language": "csharp",
+        "output": "Write one friendly sentence telling the customer their order total is 2001.75 EGP."
+      },
+      {
+        "key": "tut-ai-hallucinations-2",
+        "titleEn": "Designing around the limits",
+        "titleAr": "التصميم حول الحدود",
+        "bodyEn": "You cannot remove hallucinations completely, but you can make them rare and visible.\n\n- Ground the model: give it the relevant facts and tell it to answer only from them.\n- Allow `I don't know`: say exactly what to reply when the facts do not cover the question.\n- Ask for sources: show which document each answer came from.\n- Use tools: databases for numbers, code for maths, search for recent events.\n- Validate: check structured output against a schema before using it.\n- Keep a human in charge of anything important.",
+        "bodyAr": "لا تستطيع إزالة الهلوسة تمامًا، لكن تستطيع جعلها نادرة وظاهرة.\n\n- أسّس النموذج على البيانات: أعطه الحقائق المتعلقة واطلب منه أن يجيب منها فقط.\n- اسمح بعبارة `I don't know`: حدّد بالضبط ما يرد به عندما لا تغطي الحقائق السؤال.\n- اطلب المصادر: اعرض المستند الذي جاءت منه كل إجابة.\n- استخدم الأدوات: قواعد البيانات للأرقام، والكود للحساب، والبحث للأحداث الحديثة.\n- تحقّق: افحص المخرجات المنظمة مقابل Schema قبل استخدامها.\n- أبقِ إنسانًا مسؤولًا عن كل ما هو مهم.",
+        "code": "using Microsoft.Extensions.AI;\n\nList<ChatMessage> messages =\n[\n    new(ChatRole.System,\n        \"Answer only from the policy text below. Name the section you used. \" +\n        \"If the policy does not answer the question, reply exactly: I don't know.\"),\n    new(ChatRole.User, $\"{policyText}\\n\\nQuestion: {question}\"),\n];\n\nvar answer = (await chat.GetResponseAsync(messages, new ChatOptions { Temperature = 0f })).Text;",
+        "language": "aspnet"
+      }
+    ]
+  },
+  {
+    "topic": "ai-responsible-use",
+    "lessons": [
+      {
+        "key": "tut-ai-responsible-use-1",
+        "titleEn": "Send only what the model needs",
+        "titleAr": "أرسل فقط ما يحتاجه النموذج",
+        "bodyEn": "Every request sends text to a provider. Before you build, read the provider's data terms: whether API data is used for training, how long it is kept, and in which region it is stored.\n\nThen minimise. Remove names, phone numbers, emails and national IDs that the feature does not need, or replace them with placeholders. The model can still summarise a complaint without knowing who wrote it.\n\nThe program masks emails and phone numbers before a ticket is sent.",
+        "bodyAr": "كل طلب يرسل نصًا إلى مزوّد. وقبل أن تبني، اقرأ شروط المزوّد للبيانات: هل تُستخدم بيانات الـ API في التدريب، وكم تُحفظ، وفي أي منطقة تُخزّن.\n\nثم قلّل البيانات. احذف الأسماء وأرقام الهواتف وعناوين البريد وأرقام الهويات التي لا تحتاجها الميزة، أو استبدلها برموز. فالنموذج يستطيع تلخيص شكوى دون أن يعرف من كتبها.\n\nالبرنامج يخفي عناوين البريد وأرقام الهواتف قبل إرسال التذكرة.",
+        "code": "using System.Text.RegularExpressions;\n\nvar ticket = \"Call me on 0100 123 4567 or write to sara@example.com about order 42.\";\n\nvar masked = Regex.Replace(ticket, @\"[\\w.+-]+@[\\w-]+\\.[\\w.]+\", \"[email]\");\nmasked = Regex.Replace(masked, @\"\\+?\\d[\\d\\s-]{7,}\\d\", \"[phone]\");\n\nConsole.WriteLine(masked);",
+        "language": "csharp",
+        "output": "Call me on [phone] or write to [email] about order 42."
+      },
+      {
+        "key": "tut-ai-responsible-use-2",
+        "titleEn": "Honesty, fairness and accountability",
+        "titleAr": "الصدق والعدل والمساءلة",
+        "bodyEn": "Tell users when they are talking to a bot and when content was generated by AI. Let them reach a person.\n\nTest with varied names, genders, dialects and languages, and compare the answers: a feature that treats some groups worse is a bug. Use the provider's content filters and add rules for your domain.\n\nCheck licences: open models have terms of use, and generated code is still your responsibility. Finally, log the decisions AI helps with and make sure a person can review and change them.\n\n- Data: read the terms, mask what you do not need.\n- Transparency: label AI output.\n- Fairness: test with varied users.\n- Accountability: a person can override.",
+        "bodyAr": "أخبر المستخدمين عندما يتحدثون مع بوت وعندما يكون المحتوى مولّدًا بالذكاء الاصطناعي، واسمح لهم بالوصول إلى إنسان.\n\nاختبر بأسماء وأجناس ولهجات ولغات متنوعة وقارن الإجابات: الميزة التي تعامل بعض الفئات أسوأ من غيرها فيها خلل. استخدم فلاتر المحتوى عند المزوّد وأضف قواعد لمجالك.\n\nراجع التراخيص: للنماذج المفتوحة شروط استخدام، والكود المولّد يبقى مسؤوليتك. وأخيرًا سجّل القرارات التي يساعد فيها الذكاء الاصطناعي وتأكد أن إنسانًا يستطيع مراجعتها وتغييرها.\n\n- البيانات: اقرأ الشروط، وأخفِ ما لا تحتاجه.\n- الشفافية: ميّز مخرجات الذكاء الاصطناعي.\n- العدل: اختبر بمستخدمين متنوعين.\n- المساءلة: يستطيع إنسان أن يغيّر القرار.",
+        "code": "public record AiSuggestion(string Text, string Model, DateTime CreatedAt)\n{\n    public const string Notice = \"Suggested by AI. Please check before using it.\";\n}\n\n// Shown to the agent with the notice, saved with the model name, and editable before it is sent.\nvar suggestion = new AiSuggestion(reply.Text, \"gpt-4o-mini\", DateTime.UtcNow);",
+        "language": "aspnet"
+      }
+    ]
+  }
+]

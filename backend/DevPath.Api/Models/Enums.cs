@@ -17,7 +17,9 @@ public enum SkillArea
     Git,
     Professional,
     /// <summary>Containers, CI/CD, cloud platforms and the infrastructure an application runs on.</summary>
-    DevOps
+    DevOps,
+    /// <summary>Building applications on language models: prompts, RAG, tools and agents (the AI roadmap).</summary>
+    AI
 }
 
 public enum TopicPriority

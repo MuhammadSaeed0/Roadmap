@@ -1,0 +1,1010 @@
+[
+  {
+    "key": "qz-ai-what-is-llm-1",
+    "topic": "ai-what-is-llm",
+    "questionEn": "What does a language model do at each step?",
+    "questionAr": "ماذا يفعل النموذج اللغوي في كل خطوة؟",
+    "optionsEn": [
+      "Looks up a fact",
+      "Predicts the next token",
+      "Runs a SQL query",
+      "Copies a web page"
+    ],
+    "optionsAr": [
+      "يبحث عن حقيقة",
+      "يتوقع التوكن التالي",
+      "ينفّذ استعلام SQL",
+      "ينسخ صفحة ويب"
+    ],
+    "answer": 1,
+    "explanationEn": "It gives a probability to every possible next token and one is picked.",
+    "explanationAr": "يعطي احتمالًا لكل توكن ممكن ثم يُختار واحد."
+  },
+  {
+    "key": "qz-ai-what-is-llm-2",
+    "topic": "ai-what-is-llm",
+    "questionEn": "What does your app do when it calls a model?",
+    "questionAr": "ماذا يفعل تطبيقك عندما يستدعي نموذجًا؟",
+    "optionsEn": [
+      "Training",
+      "Fine-tuning",
+      "Inference",
+      "Indexing"
+    ],
+    "optionsAr": [
+      "تدريب",
+      "ضبط دقيق",
+      "استخدام (Inference)",
+      "فهرسة"
+    ],
+    "answer": 2,
+    "explanationEn": "Training happens at the provider; apps only run inference.",
+    "explanationAr": "التدريب يحدث عند المزوّد، والتطبيقات تقوم بالاستخدام فقط."
+  },
+  {
+    "key": "qz-ai-what-is-llm-3",
+    "topic": "ai-what-is-llm",
+    "questionEn": "How does a chat remember earlier messages?",
+    "questionAr": "كيف تتذكر المحادثة الرسائل السابقة؟",
+    "optionsEn": [
+      "The model stores them",
+      "The app resends them",
+      "The provider caches them",
+      "It cannot at all"
+    ],
+    "optionsAr": [
+      "النموذج يخزّنها",
+      "التطبيق يعيد إرسالها",
+      "المزوّد يحفظها مؤقتًا",
+      "لا يمكن ذلك أبدًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Models keep no state; the app sends the history with every request.",
+    "explanationAr": "النماذج لا تحتفظ بحالة، والتطبيق يرسل التاريخ مع كل طلب."
+  },
+  {
+    "key": "qz-ai-what-is-llm-4",
+    "topic": "ai-what-is-llm",
+    "questionEn": "Which message sets the rules for the model?",
+    "questionAr": "أي رسالة تحدد القواعد للنموذج؟",
+    "optionsEn": [
+      "User message",
+      "Assistant message",
+      "System message",
+      "Tool message"
+    ],
+    "optionsAr": [
+      "رسالة المستخدم",
+      "رسالة المساعد",
+      "رسالة النظام",
+      "رسالة الأداة"
+    ],
+    "answer": 2,
+    "explanationEn": "The system message holds the instructions, tone and limits.",
+    "explanationAr": "رسالة النظام تحمل التعليمات والأسلوب والحدود."
+  },
+  {
+    "key": "qz-ai-what-is-llm-5",
+    "topic": "ai-what-is-llm",
+    "questionEn": "Why can't a model answer about last week's news?",
+    "questionAr": "لماذا لا يستطيع النموذج الإجابة عن أخبار الأسبوع الماضي؟",
+    "optionsEn": [
+      "Training cut-off date",
+      "Too many tokens",
+      "Wrong temperature",
+      "No API key"
+    ],
+    "optionsAr": [
+      "تاريخ انتهاء التدريب",
+      "توكنات كثيرة جدًا",
+      "درجة حرارة خاطئة",
+      "عدم وجود مفتاح API"
+    ],
+    "answer": 0,
+    "explanationEn": "It only knows text from before its training cut-off, unless you supply newer facts.",
+    "explanationAr": "يعرف فقط ما قبل تاريخ انتهاء تدريبه إلا إذا أعطيته حقائق أحدث."
+  },
+  {
+    "key": "qz-ai-what-is-llm-6",
+    "topic": "ai-what-is-llm",
+    "questionEn": "What are a model's parameters?",
+    "questionAr": "ما هي معاملات (Parameters) النموذج؟",
+    "optionsEn": [
+      "Settings sent with each request",
+      "Numbers learned in training",
+      "Text the user types in",
+      "Limits set by the provider"
+    ],
+    "optionsAr": [
+      "إعدادات تُرسل مع كل طلب",
+      "أرقام تعلّمها في التدريب",
+      "النص الذي يكتبه المستخدم",
+      "حدود يضعها المزوّد"
+    ],
+    "answer": 1,
+    "explanationEn": "Training adjusts billions of numbers that encode what the model learned.",
+    "explanationAr": "التدريب يعدّل مليارات الأرقام التي تمثل ما تعلّمه النموذج."
+  },
+  {
+    "key": "qz-ai-what-is-llm-7",
+    "topic": "ai-what-is-llm",
+    "questionEn": "What is a chat assistant?",
+    "questionAr": "ما هو مساعد المحادثة؟",
+    "optionsEn": [
+      "A search engine with a chat box",
+      "A database of stored answers",
+      "An LLM tuned to follow instructions",
+      "A script with fixed replies"
+    ],
+    "optionsAr": [
+      "محرك بحث بصندوق محادثة",
+      "قاعدة بيانات بإجابات مخزّنة",
+      "نموذج لغوي مضبوط ليتبع التعليمات",
+      "برنامج بردود ثابتة مكتوبة"
+    ],
+    "answer": 2,
+    "explanationEn": "It is a language model given extra training to follow instructions and converse.",
+    "explanationAr": "هو نموذج لغوي حصل على تدريب إضافي ليتبع التعليمات ويحاور."
+  },
+  {
+    "key": "qz-ai-what-is-llm-8",
+    "topic": "ai-what-is-llm",
+    "questionEn": "How does an app usually reach a hosted model?",
+    "questionAr": "كيف يصل التطبيق عادة إلى نموذج مستضاف؟",
+    "optionsEn": [
+      "Through an HTTP API",
+      "Through a DLL file",
+      "Through a shared folder",
+      "Through email"
+    ],
+    "optionsAr": [
+      "عبر HTTP API",
+      "عبر ملف DLL",
+      "عبر مجلد مشترك",
+      "عبر البريد الإلكتروني"
+    ],
+    "answer": 0,
+    "explanationEn": "The app sends a request with messages and receives the generated text.",
+    "explanationAr": "يرسل التطبيق طلبًا بالرسائل ويستقبل النص المولّد."
+  },
+  {
+    "key": "qz-ai-tokens-context-1",
+    "topic": "ai-tokens-context",
+    "questionEn": "What do models count text in?",
+    "questionAr": "بماذا تحسب النماذج النص؟",
+    "optionsEn": [
+      "Characters",
+      "Tokens",
+      "Lines",
+      "Bytes only"
+    ],
+    "optionsAr": [
+      "الحروف",
+      "التوكنات",
+      "الأسطر",
+      "البايتات فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Text is split into tokens from the model's vocabulary.",
+    "explanationAr": "يُقسَّم النص إلى توكنات من مفردات النموذج."
+  },
+  {
+    "key": "qz-ai-tokens-context-2",
+    "topic": "ai-tokens-context",
+    "questionEn": "What must fit in the context window?",
+    "questionAr": "ما الذي يجب أن يتسع داخل نافذة السياق؟",
+    "optionsEn": [
+      "Only the user's question",
+      "Only the model's answer",
+      "Prompt, history and answer",
+      "Only the attached documents"
+    ],
+    "optionsAr": [
+      "سؤال المستخدم وحده",
+      "إجابة النموذج وحدها",
+      "التعليمات والتاريخ والإجابة",
+      "المستندات المرفقة وحدها"
+    ],
+    "answer": 2,
+    "explanationEn": "Input and output share the same window.",
+    "explanationAr": "المدخلات والمخرجات تتشارك النافذة نفسها."
+  },
+  {
+    "key": "qz-ai-tokens-context-3",
+    "topic": "ai-tokens-context",
+    "questionEn": "Arabic text usually needs, per word…",
+    "questionAr": "النص العربي يحتاج عادة لكل كلمة…",
+    "optionsEn": [
+      "fewer tokens",
+      "more tokens",
+      "exactly one token",
+      "no tokens"
+    ],
+    "optionsAr": [
+      "توكنات أقل",
+      "توكنات أكثر",
+      "توكنًا واحدًا بالضبط",
+      "لا توكنات"
+    ],
+    "answer": 1,
+    "explanationEn": "Most tokenizers split Arabic words into more pieces than English ones.",
+    "explanationAr": "أغلب المقسّمات تقسم الكلمات العربية إلى قطع أكثر من الإنجليزية."
+  },
+  {
+    "key": "qz-ai-tokens-context-4",
+    "topic": "ai-tokens-context",
+    "questionEn": "Which tokens usually cost more?",
+    "questionAr": "أي التوكنات تكلّف أكثر عادة؟",
+    "optionsEn": [
+      "Input tokens",
+      "Output tokens",
+      "System tokens",
+      "They cost the same"
+    ],
+    "optionsAr": [
+      "توكنات المدخلات",
+      "توكنات المخرجات",
+      "توكنات النظام",
+      "تكلفتها واحدة"
+    ],
+    "answer": 1,
+    "explanationEn": "Providers usually price output several times higher than input.",
+    "explanationAr": "المزوّدون يسعّرون المخرجات غالبًا بعدة أضعاف المدخلات."
+  },
+  {
+    "key": "qz-ai-tokens-context-5",
+    "topic": "ai-tokens-context",
+    "questionEn": "Where should real token counts come from?",
+    "questionAr": "من أين تأتي أعداد التوكنات الحقيقية؟",
+    "optionsEn": [
+      "A guess from the text length",
+      "The API's usage data",
+      "A count in the user's browser",
+      "The size of the database"
+    ],
+    "optionsAr": [
+      "تخمين من طول النص",
+      "بيانات الاستخدام من الـ API",
+      "عدّ في متصفح المستخدم",
+      "حجم قاعدة البيانات كلها"
+    ],
+    "answer": 1,
+    "explanationEn": "Responses report the exact input and output token counts.",
+    "explanationAr": "الردود تذكر أعداد توكنات المدخلات والمخرجات بدقة."
+  },
+  {
+    "key": "qz-ai-tokens-context-6",
+    "topic": "ai-tokens-context",
+    "questionEn": "What protects you from a very long answer?",
+    "questionAr": "ما الذي يحميك من إجابة طويلة جدًا؟",
+    "optionsEn": [
+      "A lower price per token",
+      "A max output tokens limit",
+      "A bigger context window",
+      "A faster model version"
+    ],
+    "optionsAr": [
+      "سعر أقل لكل توكن",
+      "حد أقصى لتوكنات المخرجات",
+      "نافذة سياق أكبر حجمًا",
+      "إصدار أسرع من النموذج"
+    ],
+    "answer": 1,
+    "explanationEn": "Cap the output on every request to control cost and time.",
+    "explanationAr": "حدّد المخرجات في كل طلب لتتحكم في التكلفة والوقت."
+  },
+  {
+    "key": "qz-ai-tokens-context-7",
+    "topic": "ai-tokens-context",
+    "questionEn": "A chat grew past the context window. What now?",
+    "questionAr": "تجاوزت المحادثة نافذة السياق. ماذا الآن؟",
+    "optionsEn": [
+      "Send the full chat anyway",
+      "Trim or summarise old messages",
+      "Raise the model's temperature",
+      "Restart the web server first"
+    ],
+    "optionsAr": [
+      "أرسل المحادثة كاملة كما هي",
+      "اقصص الرسائل القديمة أو لخّصها",
+      "ارفع درجة حرارة النموذج",
+      "أعد تشغيل خادم الويب أولًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Older messages must be dropped or summarised to fit.",
+    "explanationAr": "يجب حذف الرسائل القديمة أو تلخيصها لتتسع."
+  },
+  {
+    "key": "qz-ai-tokens-context-8",
+    "topic": "ai-tokens-context",
+    "questionEn": "6,000 tokens in at $0.50/M plus 300 out at $1.50/M is about…",
+    "questionAr": "6,000 توكن مدخلات بسعر 0.50 دولار للمليون و300 مخرجات بسعر 1.50 دولار للمليون تساوي تقريبًا…",
+    "optionsEn": [
+      "$0.00345",
+      "$3.45",
+      "$0.345",
+      "$34.50"
+    ],
+    "optionsAr": [
+      "0.00345 دولار",
+      "3.45 دولار",
+      "0.345 دولار",
+      "34.50 دولار"
+    ],
+    "answer": 0,
+    "explanationEn": "0.003 for input plus 0.00045 for output.",
+    "explanationAr": "0.003 للمدخلات زائد 0.00045 للمخرجات."
+  },
+  {
+    "key": "qz-ai-model-choice-1",
+    "topic": "ai-model-choice",
+    "questionEn": "What is an open-weight model?",
+    "questionAr": "ما هو النموذج مفتوح الأوزان؟",
+    "optionsEn": [
+      "A model offered through a free API",
+      "A model whose parameters you can run",
+      "A model that has no usage limits",
+      "A model that only handles images"
+    ],
+    "optionsAr": [
+      "نموذج متاح عبر API مجانية",
+      "نموذج تستطيع تشغيل معاملاته",
+      "نموذج ليس له حدود استخدام",
+      "نموذج يتعامل مع الصور فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Its weights are published, so you can host it yourself.",
+    "explanationAr": "أوزانه منشورة فتستطيع استضافته بنفسك."
+  },
+  {
+    "key": "qz-ai-model-choice-2",
+    "topic": "ai-model-choice",
+    "questionEn": "Why run a model locally?",
+    "questionAr": "لماذا تشغّل نموذجًا محليًا؟",
+    "optionsEn": [
+      "It is always smarter",
+      "Data stays with you",
+      "It needs no hardware",
+      "It has no licence"
+    ],
+    "optionsAr": [
+      "هو أذكى دائمًا",
+      "تبقى البيانات عندك",
+      "لا يحتاج عتادًا",
+      "ليس له ترخيص"
+    ],
+    "answer": 1,
+    "explanationEn": "Local models keep data in-house, at the cost of hardware and capability.",
+    "explanationAr": "النماذج المحلية تُبقي البيانات داخلك مقابل العتاد والقدرة."
+  },
+  {
+    "key": "qz-ai-model-choice-3",
+    "topic": "ai-model-choice",
+    "questionEn": "Which tool runs open models on a laptop?",
+    "questionAr": "أي أداة تشغّل النماذج المفتوحة على حاسوب محمول؟",
+    "optionsEn": [
+      "Ollama",
+      "Postman",
+      "Docker Hub",
+      "NuGet"
+    ],
+    "optionsAr": [
+      "Ollama",
+      "Postman",
+      "Docker Hub",
+      "NuGet"
+    ],
+    "answer": 0,
+    "explanationEn": "Ollama downloads and serves open models with an HTTP API.",
+    "explanationAr": "يحمّل Ollama النماذج المفتوحة ويقدّمها عبر HTTP API."
+  },
+  {
+    "key": "qz-ai-model-choice-4",
+    "topic": "ai-model-choice",
+    "questionEn": "How should you choose between models?",
+    "questionAr": "كيف تختار بين النماذج؟",
+    "optionsEn": [
+      "By the biggest name",
+      "By a leaderboard only",
+      "By your own test examples",
+      "By the newest release"
+    ],
+    "optionsAr": [
+      "بالاسم الأشهر",
+      "بلوحة الترتيب فقط",
+      "بأمثلة اختبارك الخاصة",
+      "بأحدث إصدار"
+    ],
+    "answer": 2,
+    "explanationEn": "Run real examples of your feature and compare quality, speed and cost.",
+    "explanationAr": "شغّل أمثلة حقيقية لميزتك وقارن الجودة والسرعة والتكلفة."
+  },
+  {
+    "key": "qz-ai-model-choice-5",
+    "topic": "ai-model-choice",
+    "questionEn": "Which model size is usually best?",
+    "questionAr": "أي حجم نموذج هو الأفضل عادة؟",
+    "optionsEn": [
+      "Always the largest",
+      "The smallest that passes",
+      "Always the smallest",
+      "Any random one"
+    ],
+    "optionsAr": [
+      "الأكبر دائمًا",
+      "الأصغر الذي ينجح",
+      "الأصغر دائمًا",
+      "أي واحد عشوائي"
+    ],
+    "answer": 1,
+    "explanationEn": "Smaller models are cheaper and faster when they meet the bar.",
+    "explanationAr": "النماذج الأصغر أرخص وأسرع عندما تحقق المستوى المطلوب."
+  },
+  {
+    "key": "qz-ai-model-choice-6",
+    "topic": "ai-model-choice",
+    "questionEn": "Why put the provider behind IChatClient?",
+    "questionAr": "لماذا تضع المزوّد خلف IChatClient؟",
+    "optionsEn": [
+      "To make calls faster",
+      "To switch providers easily",
+      "To avoid API keys",
+      "To skip testing"
+    ],
+    "optionsAr": [
+      "لتسريع الاستدعاءات",
+      "لتبديل المزوّد بسهولة",
+      "لتجنّب مفاتيح الـ API",
+      "لتخطّي الاختبار"
+    ],
+    "answer": 1,
+    "explanationEn": "The rest of the app depends on the interface, not the provider.",
+    "explanationAr": "باقي التطبيق يعتمد على الواجهة لا على المزوّد."
+  },
+  {
+    "key": "qz-ai-model-choice-7",
+    "topic": "ai-model-choice",
+    "questionEn": "Customer data must stay in the country. Pick…",
+    "questionAr": "يجب أن تبقى بيانات العملاء داخل البلد. اختر…",
+    "optionsEn": [
+      "Any hosted model will do",
+      "One in an allowed region or on-site",
+      "The cheapest model available",
+      "The model with the longest context"
+    ],
+    "optionsAr": [
+      "أي نموذج مستضاف يكفي",
+      "نموذج بمنطقة مسموحة أو داخلي",
+      "أرخص نموذج متاح الآن",
+      "النموذج صاحب أطول نافذة سياق"
+    ],
+    "answer": 1,
+    "explanationEn": "Data residency rules decide where the model may run.",
+    "explanationAr": "قواعد مكان تخزين البيانات تحدد أين يعمل النموذج."
+  },
+  {
+    "key": "qz-ai-model-choice-8",
+    "topic": "ai-model-choice",
+    "questionEn": "What should you test yourself for Arabic users?",
+    "questionAr": "ماذا يجب أن تختبر بنفسك للمستخدمين العرب؟",
+    "optionsEn": [
+      "The model's logo",
+      "Arabic answer quality",
+      "The API's port",
+      "The server's OS"
+    ],
+    "optionsAr": [
+      "شعار النموذج",
+      "جودة الإجابات العربية",
+      "منفذ الـ API",
+      "نظام تشغيل الخادم"
+    ],
+    "answer": 1,
+    "explanationEn": "Language quality varies a lot between models.",
+    "explanationAr": "جودة اللغة تختلف كثيرًا بين النماذج."
+  },
+  {
+    "key": "qz-ai-sampling-1",
+    "topic": "ai-sampling",
+    "questionEn": "What does a low temperature do?",
+    "questionAr": "ماذا تفعل درجة الحرارة المنخفضة؟",
+    "optionsEn": [
+      "Makes answers steadier",
+      "Makes answers correct",
+      "Makes answers longer",
+      "Lowers the price"
+    ],
+    "optionsAr": [
+      "تجعل الإجابات أثبت",
+      "تجعل الإجابات صحيحة",
+      "تجعل الإجابات أطول",
+      "تقلّل السعر"
+    ],
+    "answer": 0,
+    "explanationEn": "The top token dominates, so output varies less; it is not more correct.",
+    "explanationAr": "التوكن الأول يسيطر فتقل التغيرات، لكنها ليست أصح بالضرورة."
+  },
+  {
+    "key": "qz-ai-sampling-2",
+    "topic": "ai-sampling",
+    "questionEn": "What turns scores into probabilities?",
+    "questionAr": "ما الذي يحوّل الدرجات إلى احتمالات؟",
+    "optionsEn": [
+      "A tokenizer",
+      "A softmax",
+      "A database",
+      "A regex"
+    ],
+    "optionsAr": [
+      "المقسّم",
+      "دالة Softmax",
+      "قاعدة البيانات",
+      "تعبير نمطي"
+    ],
+    "answer": 1,
+    "explanationEn": "Softmax normalises scores into probabilities that add up to one.",
+    "explanationAr": "دالة Softmax تحوّل الدرجات إلى احتمالات مجموعها واحد."
+  },
+  {
+    "key": "qz-ai-sampling-3",
+    "topic": "ai-sampling",
+    "questionEn": "What does top-p keep?",
+    "questionAr": "ماذا تُبقي طريقة top-p؟",
+    "optionsEn": [
+      "The p least likely tokens",
+      "Likely tokens adding up to p",
+      "Exactly p tokens",
+      "Every token"
+    ],
+    "optionsAr": [
+      "أقل p توكنات احتمالًا",
+      "التوكنات المحتملة حتى مجموع p",
+      "عدد p من التوكنات بالضبط",
+      "كل التوكنات"
+    ],
+    "answer": 1,
+    "explanationEn": "It keeps the smallest set of top tokens whose probabilities reach p.",
+    "explanationAr": "تُبقي أصغر مجموعة من أعلى التوكنات يصل مجموع احتمالاتها إلى p."
+  },
+  {
+    "key": "qz-ai-sampling-4",
+    "topic": "ai-sampling",
+    "questionEn": "Which feature needs a temperature near 0?",
+    "questionAr": "أي ميزة تحتاج درجة حرارة قريبة من 0؟",
+    "optionsEn": [
+      "Slogan ideas",
+      "Story writing",
+      "Ticket classification",
+      "Brainstorming names"
+    ],
+    "optionsAr": [
+      "أفكار شعارات",
+      "كتابة قصة",
+      "تصنيف التذاكر",
+      "عصف أسماء"
+    ],
+    "answer": 2,
+    "explanationEn": "Classification needs the same label for the same input.",
+    "explanationAr": "التصنيف يحتاج التصنيف نفسه للمدخلات نفسها."
+  },
+  {
+    "key": "qz-ai-sampling-5",
+    "topic": "ai-sampling",
+    "questionEn": "How should you test varied model output?",
+    "questionAr": "كيف تختبر مخرجات النموذج المتغيرة؟",
+    "optionsEn": [
+      "Compare exact text",
+      "Check properties",
+      "Skip testing it",
+      "Test it once"
+    ],
+    "optionsAr": [
+      "قارن النص حرفيًا",
+      "افحص الخصائص",
+      "لا تختبرها",
+      "اختبرها مرة واحدة"
+    ],
+    "answer": 1,
+    "explanationEn": "Check valid JSON, required fields or allowed labels, not exact words.",
+    "explanationAr": "افحص صحة الـ JSON والحقول المطلوبة والتصنيفات المسموحة لا الكلمات بالضبط."
+  },
+  {
+    "key": "qz-ai-sampling-6",
+    "topic": "ai-sampling",
+    "questionEn": "A high temperature makes rare tokens…",
+    "questionAr": "درجة الحرارة المرتفعة تجعل التوكنات النادرة…",
+    "optionsEn": [
+      "impossible",
+      "more likely",
+      "less likely",
+      "unchanged"
+    ],
+    "optionsAr": [
+      "مستحيلة",
+      "أكثر احتمالًا",
+      "أقل احتمالًا",
+      "كما هي"
+    ],
+    "answer": 1,
+    "explanationEn": "It flattens the distribution, so less likely tokens are chosen more often.",
+    "explanationAr": "تسطّح التوزيع فتُختار التوكنات الأقل احتمالًا أكثر."
+  },
+  {
+    "key": "qz-ai-sampling-7",
+    "topic": "ai-sampling",
+    "questionEn": "Does a fixed seed guarantee identical answers?",
+    "questionAr": "هل يضمن الـ Seed الثابت إجابات متطابقة؟",
+    "optionsEn": [
+      "Yes, always",
+      "No, not guaranteed",
+      "Only in Arabic",
+      "Only for short text"
+    ],
+    "optionsAr": [
+      "نعم دائمًا",
+      "لا، غير مضمون",
+      "في العربية فقط",
+      "للنصوص القصيرة فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Providers offer more repeatable results, not exact guarantees.",
+    "explanationAr": "المزوّدون يقدّمون نتائج أقرب للتكرار لا ضمانًا تامًا."
+  },
+  {
+    "key": "qz-ai-sampling-8",
+    "topic": "ai-sampling",
+    "questionEn": "What is a good tuning habit?",
+    "questionAr": "ما العادة الجيدة في ضبط الإعدادات؟",
+    "optionsEn": [
+      "Change everything at once",
+      "Change one setting and measure",
+      "Never change settings",
+      "Copy random values"
+    ],
+    "optionsAr": [
+      "غيّر كل شيء مرة واحدة",
+      "غيّر إعدادًا واحدًا وقِس",
+      "لا تغيّر الإعدادات أبدًا",
+      "انسخ قيمًا عشوائية"
+    ],
+    "answer": 1,
+    "explanationEn": "One change at a time shows which setting made the difference.",
+    "explanationAr": "تغيير واحد في كل مرة يوضح أي إعداد أحدث الفرق."
+  },
+  {
+    "key": "qz-ai-hallucinations-1",
+    "topic": "ai-hallucinations",
+    "questionEn": "What is a hallucination?",
+    "questionAr": "ما هي الهلوسة؟",
+    "optionsEn": [
+      "An answer that arrives slowly",
+      "Confident but false output",
+      "A request the model refuses",
+      "An error from the network"
+    ],
+    "optionsAr": [
+      "إجابة تصل ببطء شديد",
+      "مخرجات واثقة لكنها خاطئة",
+      "طلب يرفضه النموذج",
+      "خطأ قادم من الشبكة"
+    ],
+    "answer": 1,
+    "explanationEn": "Fluent, plausible text that is not true.",
+    "explanationAr": "نص سلس ومعقول لكنه غير صحيح."
+  },
+  {
+    "key": "qz-ai-hallucinations-2",
+    "topic": "ai-hallucinations",
+    "questionEn": "Why do models hallucinate?",
+    "questionAr": "لماذا تهلوس النماذج؟",
+    "optionsEn": [
+      "They generate likely text",
+      "They are hacked",
+      "Their servers crash",
+      "Users type fast"
+    ],
+    "optionsAr": [
+      "تولّد نصًا محتملًا",
+      "تتعرض للاختراق",
+      "تتعطل خوادمها",
+      "المستخدمون يكتبون بسرعة"
+    ],
+    "answer": 0,
+    "explanationEn": "Likely text comes out even when the true answer is unknown.",
+    "explanationAr": "يخرج نص محتمل حتى عندما تكون الإجابة الصحيحة مجهولة."
+  },
+  {
+    "key": "qz-ai-hallucinations-3",
+    "topic": "ai-hallucinations",
+    "questionEn": "Who should add up an invoice?",
+    "questionAr": "من يجب أن يجمع الفاتورة؟",
+    "optionsEn": [
+      "The model",
+      "Your code",
+      "The user",
+      "The provider"
+    ],
+    "optionsAr": [
+      "النموذج",
+      "الكود الخاص بك",
+      "المستخدم",
+      "المزوّد"
+    ],
+    "answer": 1,
+    "explanationEn": "Exact arithmetic belongs in code; the model can explain the result.",
+    "explanationAr": "الحساب الدقيق مكانه الكود، والنموذج يشرح النتيجة."
+  },
+  {
+    "key": "qz-ai-hallucinations-4",
+    "topic": "ai-hallucinations",
+    "questionEn": "What does grounding mean?",
+    "questionAr": "ماذا يعني التأسيس على البيانات (Grounding)؟",
+    "optionsEn": [
+      "Lowering the cost of a call",
+      "Answering from supplied facts",
+      "Running the model offline",
+      "Sending more tokens each time"
+    ],
+    "optionsAr": [
+      "تقليل التكلفة",
+      "الإجابة من حقائق مُعطاة",
+      "العمل دون إنترنت",
+      "استخدام توكنات أكثر"
+    ],
+    "answer": 1,
+    "explanationEn": "The model is given the relevant facts and told to answer only from them.",
+    "explanationAr": "يُعطى النموذج الحقائق المتعلقة ويُطلب منه أن يجيب منها فقط."
+  },
+  {
+    "key": "qz-ai-hallucinations-5",
+    "topic": "ai-hallucinations",
+    "questionEn": "What should a grounded bot say without an answer?",
+    "questionAr": "ماذا يقول البوت المؤسَّس على البيانات إن لم يجد إجابة؟",
+    "optionsEn": [
+      "Its best guess",
+      "I don't know",
+      "Nothing at all",
+      "An error code"
+    ],
+    "optionsAr": [
+      "أفضل تخمين لديه",
+      "لا أعرف",
+      "لا شيء أبدًا",
+      "رمز خطأ"
+    ],
+    "answer": 1,
+    "explanationEn": "An honest 'I don't know' is better than an invented answer.",
+    "explanationAr": "عبارة «لا أعرف» الصادقة أفضل من إجابة مختلقة."
+  },
+  {
+    "key": "qz-ai-hallucinations-6",
+    "topic": "ai-hallucinations",
+    "questionEn": "Which task is hard for a model alone?",
+    "questionAr": "أي مهمة صعبة على النموذج وحده؟",
+    "optionsEn": [
+      "Summarising text",
+      "Counting letters exactly",
+      "Translating a sentence",
+      "Rewriting politely"
+    ],
+    "optionsAr": [
+      "تلخيص نص",
+      "عدّ الحروف بدقة",
+      "ترجمة جملة",
+      "إعادة الصياغة بأدب"
+    ],
+    "answer": 1,
+    "explanationEn": "Exact counting and arithmetic are weak spots.",
+    "explanationAr": "العدّ والحساب الدقيق من نقاط الضعف."
+  },
+  {
+    "key": "qz-ai-hallucinations-7",
+    "topic": "ai-hallucinations",
+    "questionEn": "How should AI answers be shown to users?",
+    "questionAr": "كيف تُعرض إجابات الذكاء الاصطناعي للمستخدمين؟",
+    "optionsEn": [
+      "As final, checked facts",
+      "As suggestions with sources",
+      "With no label of any kind",
+      "Only in the English language"
+    ],
+    "optionsAr": [
+      "كحقائق نهائية مؤكدة",
+      "كاقتراحات مع المصادر",
+      "دون أي تمييز أو تنبيه",
+      "باللغة الإنجليزية فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Sources let users check; labels set the right trust.",
+    "explanationAr": "المصادر تتيح التحقق، والتمييز يضبط درجة الثقة."
+  },
+  {
+    "key": "qz-ai-hallucinations-8",
+    "topic": "ai-hallucinations",
+    "questionEn": "How can you catch bad structured output?",
+    "questionAr": "كيف تكتشف المخرجات المنظمة الخاطئة؟",
+    "optionsEn": [
+      "Trust it",
+      "Validate it against a schema",
+      "Print it twice",
+      "Raise the temperature"
+    ],
+    "optionsAr": [
+      "ثق بها",
+      "تحقّق منها مقابل Schema",
+      "اطبعها مرتين",
+      "ارفع درجة الحرارة"
+    ],
+    "answer": 1,
+    "explanationEn": "Check fields and types before your code uses the result.",
+    "explanationAr": "افحص الحقول والأنواع قبل أن يستخدم الكود النتيجة."
+  },
+  {
+    "key": "qz-ai-responsible-use-1",
+    "topic": "ai-responsible-use",
+    "questionEn": "What should you check before sending data to a provider?",
+    "questionAr": "ماذا تراجع قبل إرسال البيانات إلى مزوّد؟",
+    "optionsEn": [
+      "Its logo colours",
+      "Its data-use terms",
+      "Its office address",
+      "Its stock price"
+    ],
+    "optionsAr": [
+      "ألوان الشعار والموقع",
+      "شروط استخدام البيانات",
+      "عنوان مكتبه الرئيسي",
+      "سعر سهمه في البورصة"
+    ],
+    "answer": 1,
+    "explanationEn": "Know whether data is used for training, kept, and where it is stored.",
+    "explanationAr": "اعرف هل تُستخدم البيانات في التدريب وكم تُحفظ وأين تُخزّن."
+  },
+  {
+    "key": "qz-ai-responsible-use-2",
+    "topic": "ai-responsible-use",
+    "questionEn": "What is data minimisation?",
+    "questionAr": "ما هو تقليل البيانات؟",
+    "optionsEn": [
+      "Compressing files",
+      "Sending only needed data",
+      "Deleting the database",
+      "Using short prompts"
+    ],
+    "optionsAr": [
+      "ضغط الملفات قبل الرفع",
+      "إرسال البيانات اللازمة فقط",
+      "حذف قاعدة البيانات كلها",
+      "استخدام طلبات قصيرة دائمًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Remove personal details the feature does not need.",
+    "explanationAr": "احذف التفاصيل الشخصية التي لا تحتاجها الميزة."
+  },
+  {
+    "key": "qz-ai-responsible-use-3",
+    "topic": "ai-responsible-use",
+    "questionEn": "What should users be told?",
+    "questionAr": "ماذا يجب أن يعرف المستخدمون؟",
+    "optionsEn": [
+      "Nothing",
+      "That AI is involved",
+      "The API key",
+      "The model's weights"
+    ],
+    "optionsAr": [
+      "لا شيء على الإطلاق",
+      "أن الذكاء الاصطناعي مشارك",
+      "مفتاح الـ API الخاص بك",
+      "أوزان النموذج المستخدم"
+    ],
+    "answer": 1,
+    "explanationEn": "Be transparent when content is AI-generated or a bot is answering.",
+    "explanationAr": "كن شفافًا عندما يكون المحتوى مولّدًا أو يرد بوت."
+  },
+  {
+    "key": "qz-ai-responsible-use-4",
+    "topic": "ai-responsible-use",
+    "questionEn": "How do you look for unfair behaviour?",
+    "questionAr": "كيف تبحث عن السلوك غير العادل؟",
+    "optionsEn": [
+      "Test with varied users",
+      "Use one test name",
+      "Ask the model if it is fair",
+      "Ignore it"
+    ],
+    "optionsAr": [
+      "اختبر بمستخدمين متنوعين",
+      "استخدم اسم اختبار واحدًا",
+      "اسأل النموذج هل هو عادل",
+      "تجاهله"
+    ],
+    "answer": 0,
+    "explanationEn": "Compare answers across names, dialects and languages.",
+    "explanationAr": "قارن الإجابات بين الأسماء واللهجات واللغات."
+  },
+  {
+    "key": "qz-ai-responsible-use-5",
+    "topic": "ai-responsible-use",
+    "questionEn": "Who is responsible for AI-generated code?",
+    "questionAr": "من المسؤول عن الكود المولّد بالذكاء الاصطناعي؟",
+    "optionsEn": [
+      "The model",
+      "The provider",
+      "You",
+      "Nobody"
+    ],
+    "optionsAr": [
+      "النموذج",
+      "المزوّد",
+      "أنت",
+      "لا أحد"
+    ],
+    "answer": 2,
+    "explanationEn": "Review and own it like any code you commit.",
+    "explanationAr": "راجعه وتحمّل مسؤوليته مثل أي كود ترفعه."
+  },
+  {
+    "key": "qz-ai-responsible-use-6",
+    "topic": "ai-responsible-use",
+    "questionEn": "What should replace a phone number before sending?",
+    "questionAr": "بماذا تستبدل رقم الهاتف قبل الإرسال؟",
+    "optionsEn": [
+      "Nothing",
+      "A placeholder",
+      "Another real number",
+      "The user's email"
+    ],
+    "optionsAr": [
+      "لا شيء",
+      "رمز بديل",
+      "رقم حقيقي آخر",
+      "بريد المستخدم"
+    ],
+    "answer": 1,
+    "explanationEn": "A placeholder such as [phone] keeps the meaning without the data.",
+    "explanationAr": "رمز مثل [phone] يحفظ المعنى دون البيانات."
+  },
+  {
+    "key": "qz-ai-responsible-use-7",
+    "topic": "ai-responsible-use",
+    "questionEn": "Who should be able to change an AI-informed decision?",
+    "questionAr": "من يجب أن يستطيع تغيير قرار ساعد فيه الذكاء الاصطناعي؟",
+    "optionsEn": [
+      "Only the model",
+      "A responsible person",
+      "No one",
+      "Only the provider"
+    ],
+    "optionsAr": [
+      "النموذج فقط",
+      "شخص مسؤول",
+      "لا أحد",
+      "المزوّد فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "People stay accountable and can review and override.",
+    "explanationAr": "يبقى البشر مسؤولين ويستطيعون المراجعة والتغيير."
+  },
+  {
+    "key": "qz-ai-responsible-use-8",
+    "topic": "ai-responsible-use",
+    "questionEn": "What do open models come with?",
+    "questionAr": "ماذا يصاحب النماذج المفتوحة؟",
+    "optionsEn": [
+      "No rules at all",
+      "A licence and terms",
+      "A free server",
+      "Built-in filters only"
+    ],
+    "optionsAr": [
+      "لا قواعد أبدًا",
+      "ترخيص وشروط استخدام",
+      "خادم مجاني",
+      "فلاتر مدمجة فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Check the licence before using a model in a product.",
+    "explanationAr": "راجع الترخيص قبل استخدام النموذج في منتج."
+  }
+]
