@@ -1,0 +1,146 @@
+[
+  {
+    "key": "ai-lab-explain-llm",
+    "type": "Conceptual",
+    "topic": "ai-what-is-llm",
+    "difficulty": "Beginner",
+    "minutes": 15,
+    "titleEn": "Explain a language model to a friend",
+    "titleAr": "اشرح النموذج اللغوي لصديق",
+    "problemEn": "A friend says: \"ChatGPT searched the internet and found that my favourite book won a prize in 2019.\" The book won no prize. In five or six sentences, explain what actually happened: how the model produced the answer, why it sounded sure, why it does not know recent or private facts, and why it does not remember your earlier chats.",
+    "problemAr": "يقول لك صديق: «ChatGPT بحث في الإنترنت ووجد أن كتابي المفضل فاز بجائزة سنة 2019». والكتاب لم يفز بأي جائزة. في خمس أو ست جمل، اشرح ما حدث فعلًا: كيف أنتج النموذج الإجابة، ولماذا بدا واثقًا، ولماذا لا يعرف الحقائق الحديثة أو الخاصة، ولماذا لا يتذكر محادثاتك السابقة.",
+    "expectedEn": "A short, correct explanation that mentions next-token prediction, likely text instead of looked-up facts, the training cut-off, and that the app (not the model) resends the conversation.",
+    "expectedAr": "شرح قصير وصحيح يذكر توقّع التوكن التالي، والنص المحتمل بدل الحقائق المبحوث عنها، وتاريخ انتهاء التدريب، وأن التطبيق (لا النموذج) هو من يعيد إرسال المحادثة.",
+    "hintsEn": [
+      "The model predicts the next token from probabilities learned in training; it does not run a search unless the app gives it a search tool.",
+      "Think about what 'likely' means: a prize-winning book is a common pattern in text about books."
+    ],
+    "hintsAr": [
+      "النموذج يتوقع التوكن التالي من احتمالات تعلّمها في التدريب، ولا يبحث إلا إذا أعطاه التطبيق أداة بحث.",
+      "فكّر في معنى «محتمل»: كتاب فائز بجائزة نمط شائع في النصوص التي تتحدث عن الكتب."
+    ],
+    "solutionEn": "The model did not search anything: it generated the answer token by token, each time choosing a likely continuation based on patterns from its training text. Sentences about books often mention prizes, so a prize sounded likely, and the model has no built-in way to check facts, which is why it sounded sure while being wrong (a hallucination). It only knows text from before its training cut-off and nothing about private data unless the app puts it in the request. It does not remember earlier chats either: the app resends the conversation with every message, and a new chat starts empty. To get facts, the app must give the model sources or tools, and you should check the answer.",
+    "solutionAr": "النموذج لم يبحث عن شيء: ولّد الإجابة توكنًا بعد توكن، وفي كل مرة اختار تكملة محتملة بناءً على أنماط من نصوص تدريبه. والجمل التي تتحدث عن الكتب كثيرًا ما تذكر الجوائز، فبدت الجائزة محتملة، والنموذج ليس لديه طريقة مدمجة للتحقق من الحقائق، ولهذا بدا واثقًا وهو مخطئ (هلوسة). وهو لا يعرف إلا النصوص السابقة لتاريخ انتهاء تدريبه، ولا يعرف البيانات الخاصة إلا إذا وضعها التطبيق في الطلب. ولا يتذكر المحادثات السابقة أيضًا: التطبيق يعيد إرسال المحادثة مع كل رسالة، والمحادثة الجديدة تبدأ فارغة. وللحصول على الحقائق يجب أن يعطي التطبيق النموذج مصادر أو أدوات، ويجب أن تتحقق أنت من الإجابة.",
+    "runner": "None"
+  },
+  {
+    "key": "ai-lab-token-budget",
+    "type": "Coding",
+    "topic": "ai-tokens-context",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "A token budget for a chat",
+    "titleAr": "ميزانية توكنات لمحادثة",
+    "problemEn": "In TokenBudget.cs implement three methods. Estimate(text) estimates tokens as one per four characters, rounded up. Cost(input, output, inputPrice, outputPrice) returns the dollar cost when prices are per million tokens. Fit(messages, budget) keeps the newest messages that fit in the budget: walk backwards from the last message, stop at the first one that would go over, and return the kept messages in their original order.",
+    "problemAr": "في الملف TokenBudget.cs نفّذ ثلاث دوال. الدالة Estimate(text) تقدّر التوكنات بتوكن لكل أربعة حروف مع التقريب لأعلى. والدالة Cost(input, output, inputPrice, outputPrice) تُرجع التكلفة بالدولار عندما تكون الأسعار لكل مليون توكن. والدالة Fit(messages, budget) تُبقي أحدث الرسائل التي تتسع في الميزانية: ابدأ من آخر رسالة رجوعًا، وتوقّف عند أول رسالة تتجاوز الميزانية، وأرجِع الرسائل المحفوظة بترتيبها الأصلي.",
+    "expectedEn": "Estimate(\"abcde\") is 2, Cost(6000, 300, 0.50, 1.50) is 0.00345, and Fit keeps the last messages that fit, in order.",
+    "expectedAr": "الناتج Estimate(\"abcde\") يساوي 2، وCost(6000, 300, 0.50, 1.50) يساوي 0.00345، وFit تُبقي آخر الرسائل التي تتسع بترتيبها.",
+    "hintsEn": [
+      "Math.Ceiling(text.Length / 4.0) rounds up; cast the result to int.",
+      "In Fit, loop from messages.Count - 1 down to 0 and use kept.Insert(0, message) to keep the order."
+    ],
+    "hintsAr": [
+      "الدالة Math.Ceiling(text.Length / 4.0) تقرّب لأعلى، ثم حوّل الناتج إلى int.",
+      "في Fit، كرّر من messages.Count - 1 نزولًا إلى 0 واستخدم kept.Insert(0, message) لتحافظ على الترتيب."
+    ],
+    "solutionEn": "Estimate returns (int)Math.Ceiling(text.Length / 4.0). Cost returns input * inputPrice / 1,000,000 + output * outputPrice / 1,000,000, using decimal for money. Fit walks from the newest message backwards, adds each message's estimate to a running total, stops at the first message that would exceed the budget, and inserts kept messages at the front so they stay in order. This is how chat features keep the latest context inside the window.",
+    "solutionAr": "الدالة Estimate تُرجع (int)Math.Ceiling(text.Length / 4.0). والدالة Cost تُرجع input * inputPrice / 1,000,000 + output * outputPrice / 1,000,000 باستخدام decimal للمال. والدالة Fit تبدأ من أحدث رسالة رجوعًا، وتضيف تقدير كل رسالة إلى مجموع متراكم، وتتوقف عند أول رسالة تتجاوز الميزانية، وتُدرج الرسائل المحفوظة في البداية لتبقى مرتبة. وهكذا تُبقي ميزات المحادثة أحدث سياق داخل النافذة.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "ai-lab-model-decision",
+    "type": "Scenario",
+    "topic": "ai-model-choice",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Pick a model for two features",
+    "titleAr": "اختر نموذجًا لميزتين",
+    "problemEn": "A clinic wants two features: (1) a public FAQ bot that answers questions about opening hours and services in Arabic and English, and (2) an internal tool that summarises doctors' notes about patients. Patient data must not leave the clinic's servers. For each feature, choose a kind of model (hosted, open-weight on their servers, or small local), explain why, and describe how you would test your choice before launch.",
+    "problemAr": "عيادة تريد ميزتين: (1) بوت أسئلة شائعة عام يجيب عن مواعيد العمل والخدمات بالعربية والإنجليزية، و(2) أداة داخلية تلخّص ملاحظات الأطباء عن المرضى. ولا يجوز أن تغادر بيانات المرضى خوادم العيادة. لكل ميزة اختر نوع النموذج (مستضاف، أو مفتوح الأوزان على خوادمهم، أو محلي صغير)، واشرح السبب، وصف كيف ستختبر اختيارك قبل الإطلاق.",
+    "expectedEn": "A choice per feature that respects the data rule, with a short test plan using real examples, Arabic quality, speed and cost.",
+    "expectedAr": "اختيار لكل ميزة يحترم قاعدة البيانات، مع خطة اختبار قصيرة بأمثلة حقيقية وجودة العربية والسرعة والتكلفة.",
+    "hintsEn": [
+      "The FAQ questions contain no personal data; the notes do.",
+      "Whatever you choose, keep it behind one interface so you can switch later."
+    ],
+    "hintsAr": [
+      "أسئلة البوت لا تحتوي بيانات شخصية، أما الملاحظات فتحتويها.",
+      "مهما اخترت، ضعه خلف واجهة واحدة لتستطيع التبديل لاحقًا."
+    ],
+    "solutionEn": "FAQ bot: a small hosted model is a good fit: the questions contain no personal data, it is cheap, fast and good at Arabic; ground it in the clinic's own FAQ text. Notes summariser: patient data must stay in-house, so use an open-weight model on the clinic's servers (or a provider deployment inside an approved, contractually covered region if the rules allow it). Test both with 10–20 real examples, check Arabic quality, latency and cost, have a doctor review the summaries, and keep both behind IChatClient so the model is a configuration choice.",
+    "solutionAr": "بوت الأسئلة: نموذج مستضاف صغير مناسب، فالأسئلة لا تحتوي بيانات شخصية، وهو رخيص وسريع وجيد في العربية، مع تأسيسه على نص الأسئلة الشائعة للعيادة نفسها. وأداة تلخيص الملاحظات: بيانات المرضى يجب أن تبقى داخل العيادة، فاستخدم نموذجًا مفتوح الأوزان على خوادم العيادة (أو نشرًا عند مزوّد داخل منطقة معتمدة ومغطاة بعقد إن سمحت القواعد). اختبر الاثنين بـ 10 إلى 20 مثالًا حقيقيًا، وافحص جودة العربية والسرعة والتكلفة، واجعل طبيبًا يراجع الملخصات، وضع الاثنين خلف IChatClient ليصبح النموذج اختيارًا في الإعدادات.",
+    "runner": "None"
+  },
+  {
+    "key": "ai-lab-sampling",
+    "type": "Coding",
+    "topic": "ai-sampling",
+    "difficulty": "Intermediate",
+    "minutes": 25,
+    "titleEn": "Temperature and top-p by hand",
+    "titleAr": "درجة الحرارة وtop-p بيدك",
+    "problemEn": "In Sampling.cs implement Softmax(scores, temperature): divide every score by the temperature, then turn the scores into probabilities that add up to 1 (subtract the largest score before Math.Exp so very large scores do not overflow). Implement Greedy(probabilities), the index of the highest one, and TopP(probabilities, p): the indexes of the most likely tokens, highest first, stopping as soon as they add up to at least p.",
+    "problemAr": "في الملف Sampling.cs نفّذ الدالة Softmax(scores, temperature): اقسم كل درجة على درجة الحرارة، ثم حوّل الدرجات إلى احتمالات مجموعها 1 (اطرح أكبر درجة قبل Math.Exp حتى لا تتجاوز الدرجات الكبيرة جدًا الحد). ونفّذ Greedy(probabilities) التي تُرجع موضع أعلى احتمال، وTopP(probabilities, p) التي تُرجع مواضع التوكنات الأكثر احتمالًا من الأعلى، وتتوقف بمجرد أن يصل مجموعها إلى p على الأقل.",
+    "expectedEn": "Softmax([2, 1, 0], 1) is about [0.665, 0.245, 0.090], a temperature of 0.5 raises the first value to about 0.867, and TopP([0.50, 0.25, 0.15, 0.06, 0.04], 0.85) is [0, 1, 2].",
+    "expectedAr": "الناتج Softmax([2, 1, 0], 1) يساوي تقريبًا [0.665, 0.245, 0.090]، ودرجة حرارة 0.5 ترفع القيمة الأولى إلى نحو 0.867، وTopP([0.50, 0.25, 0.15, 0.06, 0.04], 0.85) يساوي [0, 1, 2].",
+    "hintsEn": [
+      "softmax(x)_i = exp(x_i) / sum of exp(x_j); subtracting the max from every x does not change the result.",
+      "For TopP, sort the indexes by probability descending and add them up until the total reaches p."
+    ],
+    "hintsAr": [
+      "الصيغة softmax(x)_i = exp(x_i) / مجموع exp(x_j)، وطرح الأكبر من كل x لا يغيّر النتيجة.",
+      "في TopP رتّب المواضع حسب الاحتمال تنازليًا واجمعها حتى يصل المجموع إلى p."
+    ],
+    "solutionEn": "Softmax: scaled = scores / temperature; max = scaled.Max(); exps = exp(s - max) for each; return exps / sum(exps). Subtracting the max keeps Math.Exp finite for scores like 1000. Greedy: Array.IndexOf(p, p.Max()). TopP: order indexes by probability descending, add each to the result and to a running total, and stop when the total is at least p. A low temperature sharpens the distribution (steady answers), a high one flattens it (varied answers); top-p removes the unlikely tail.",
+    "solutionAr": "الدالة Softmax: القيم المقسومة = الدرجات / درجة الحرارة، والأكبر = scaled.Max()، ثم exp(s - max) لكل قيمة، وأخيرًا القسمة على مجموعها. وطرح الأكبر يُبقي Math.Exp محدودة لدرجات مثل 1000. والدالة Greedy: Array.IndexOf(p, p.Max()). والدالة TopP: رتّب المواضع حسب الاحتمال تنازليًا، وأضف كل واحد إلى النتيجة وإلى مجموع متراكم، وتوقّف عندما يصل المجموع إلى p على الأقل. درجة الحرارة المنخفضة تحدّ التوزيع (إجابات ثابتة)، والمرتفعة تسطّحه (إجابات متنوعة)، وtop-p تحذف الذيل غير المحتمل.",
+    "runner": "CSharp"
+  },
+  {
+    "key": "ai-lab-failure-plan",
+    "type": "Scenario",
+    "topic": "ai-hallucinations",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "A failure plan for a shop assistant",
+    "titleAr": "خطة أعطال لمساعد متجر",
+    "problemEn": "An online shop adds a chat assistant that answers questions about orders, delivery times and the return policy. List the three most likely wrong answers it could give, and for each one say how the app should prevent it or catch it (grounding, tools, validation, 'I don't know', a human).",
+    "problemAr": "متجر إلكتروني يضيف مساعد محادثة يجيب عن أسئلة الطلبات ومواعيد التوصيل وسياسة الإرجاع. اذكر أكثر ثلاث إجابات خاطئة محتملة قد يقدّمها، ولكل واحدة قل كيف يمنعها التطبيق أو يكتشفها (التأسيس على البيانات، والأدوات، والتحقق، وعبارة «لا أعرف»، والإنسان).",
+    "expectedEn": "Three concrete failures with a matching safeguard each, using tools for live data and grounding for policies.",
+    "expectedAr": "ثلاثة أعطال محددة لكل منها وسيلة حماية مناسبة، مع استخدام الأدوات للبيانات الحية والتأسيس للسياسات.",
+    "hintsEn": [
+      "Which answers depend on live data the model cannot know?",
+      "Which answers depend on rules the shop wrote down?"
+    ],
+    "hintsAr": [
+      "أي الإجابات تعتمد على بيانات حية لا يمكن أن يعرفها النموذج؟",
+      "أي الإجابات تعتمد على قواعد كتبها المتجر؟"
+    ],
+    "solutionEn": "1) A wrong order status or delivery date: the model cannot know live data, so call the orders API as a tool and let the model only phrase the result. 2) An invented return rule (\"60 days, free\"): ground answers in the policy text, require the section name, and reply \"I don't know, here is a link to the policy\" when it is not covered. 3) A wrong refund amount: compute amounts in code, never in the model. Also show answers with their source, log conversations for review, and hand over to a human for refunds and complaints.",
+    "solutionAr": "1) حالة طلب أو موعد توصيل خاطئ: النموذج لا يعرف البيانات الحية، فاستدعِ API الطلبات كأداة ودع النموذج يصوغ النتيجة فقط. 2) قاعدة إرجاع مختلقة («60 يومًا مجانًا»): أسّس الإجابات على نص السياسة، واطلب اسم القسم، ورُد بـ «لا أعرف، وهذا رابط السياسة» عندما لا تغطيها. 3) مبلغ استرداد خاطئ: احسب المبالغ بالكود وليس بالنموذج أبدًا. واعرض الإجابات مع مصدرها، وسجّل المحادثات للمراجعة، وحوّل إلى إنسان في الاسترداد والشكاوى.",
+    "runner": "None"
+  },
+  {
+    "key": "ai-lab-redact",
+    "type": "Coding",
+    "topic": "ai-responsible-use",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Mask personal data before sending",
+    "titleAr": "أخفِ البيانات الشخصية قبل الإرسال",
+    "problemEn": "In Redactor.cs implement Mask(text): replace every email address with [email] and every phone number (9 or more digits, which may be separated by spaces or dashes and may start with +) with [phone]. Short numbers such as order ids and dates must stay.",
+    "problemAr": "في الملف Redactor.cs نفّذ الدالة Mask(text): استبدل كل عنوان بريد إلكتروني بـ [email] وكل رقم هاتف (9 أرقام أو أكثر، قد تفصلها مسافات أو شرطات وقد تبدأ بـ +) بـ [phone]. ويجب أن تبقى الأرقام القصيرة مثل أرقام الطلبات والتواريخ كما هي.",
+    "expectedEn": "\"Call 0100 123 4567 or write to sara@example.com about order 42\" becomes \"Call [phone] or write to [email] about order 42\".",
+    "expectedAr": "النص \"Call 0100 123 4567 or write to sara@example.com about order 42\" يصبح \"Call [phone] or write to [email] about order 42\".",
+    "hintsEn": [
+      "System.Text.RegularExpressions.Regex.Replace can take a function that decides the replacement for each match.",
+      "Mask emails first, then find digit runs and count their digits before replacing."
+    ],
+    "hintsAr": [
+      "الدالة Regex.Replace من System.Text.RegularExpressions تقبل دالة تحدد البديل لكل تطابق.",
+      "أخفِ البريد أولًا، ثم ابحث عن سلاسل الأرقام وعُدّ أرقامها قبل الاستبدال."
+    ],
+    "solutionEn": "Use one pattern for emails, such as [\\w.+-]+@[\\w-]+(\\.[\\w-]+)+, and one for runs of digits with spaces or dashes, such as \\+?\\d[\\d\\s-]{6,}\\d. Replace emails first, then replace a digit run only when it has at least 9 digits, so order ids and dates stay. Real systems combine rules like these with a data-loss-prevention service, but the idea is the same: the model gets only the data the feature needs.",
+    "solutionAr": "استخدم نمطًا للبريد مثل [\\w.+-]+@[\\w-]+(\\.[\\w-]+)+، ونمطًا لسلاسل الأرقام مع المسافات أو الشرطات مثل \\+?\\d[\\d\\s-]{6,}\\d. استبدل البريد أولًا، ثم استبدل سلسلة الأرقام فقط إذا كان فيها 9 أرقام على الأقل، فتبقى أرقام الطلبات والتواريخ. والأنظمة الحقيقية تجمع قواعد كهذه مع خدمة لمنع تسرب البيانات، لكن الفكرة نفسها: النموذج يحصل فقط على البيانات التي تحتاجها الميزة.",
+    "runner": "CSharp"
+  }
+]

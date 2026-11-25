@@ -39,7 +39,7 @@ public class VideoTests : IAsyncLifetime
         _factory.YouTube.Search = _ => [];
         using var scope = _factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        var expected = await db.Topics.Select(t => new { t.Id, t.Slug, Videos = db.CuratedVideos.Count(v => v.TopicId == t.Id) }).ToListAsync();
+        var expected = await db.Topics.Where(t => !t.IsDraft).Select(t => new { t.Id, t.Slug, Videos = db.CuratedVideos.Count(v => v.TopicId == t.Id) }).ToListAsync();
 
         foreach (var topic in expected)
         {

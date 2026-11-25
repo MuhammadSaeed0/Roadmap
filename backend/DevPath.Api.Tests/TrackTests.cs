@@ -151,10 +151,12 @@ public class TrackTests(TrackTests.Factory factory) : IClassFixture<TrackTests.F
         Assert.Equal(1, verified["phaseOrder"]!.GetValue<int>());
         Assert.Equal(".NET full-stack developer", (await Json(await learner.GetAsync("/api/certificates"))).AsArray()[0]!["trackTitleEn"]!.GetValue<string>());
 
-        // The placement check covers the first phases of the learner's roadmap: the AI draft holds four.
+        // The placement check covers the first phases of the learner's roadmap (up to PlacementService.LastPhaseOrder).
         var (admin, _) = await factory.CreateAdminClientAsync();
         await Json(await admin.PutAsJsonAsync("/api/tracks/active", new { slug = Ai }));
-        var aiPhases = (await Json(await admin.GetAsync("/api/roadmap")))["phases"]!.AsArray().Take(4).Select(p => p!["id"]!.GetValue<int>()).ToHashSet();
+        var aiPhases = (await Json(await admin.GetAsync("/api/roadmap")))["phases"]!.AsArray()
+            .Where(p => p!["position"]!.GetValue<int>() <= DevPath.Api.Services.PlacementService.LastPhaseOrder)
+            .Select(p => p!["id"]!.GetValue<int>()).ToHashSet();
         var placement = (await Json(await admin.GetAsync("/api/placement")))["questions"]!.AsArray();
         Assert.NotEmpty(placement);
         Assert.All(placement, q => Assert.Contains(q!["phaseId"]!.GetValue<int>(), aiPhases));

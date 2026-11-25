@@ -270,7 +270,7 @@ export const ar: Translations = {
   },
   skills: {
     CSharp: 'C#', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server', TypeScript: 'TypeScript',
-    Angular: 'Angular', FullStack: 'الدمج بين الواجهة والخلفية', Testing: 'الاختبار', Git: 'Git وGitHub', Professional: 'المهارات الاحترافية', DevOps: 'السحابة وDevOps',
+    Angular: 'Angular', FullStack: 'الدمج بين الواجهة والخلفية', Testing: 'الاختبار', Git: 'Git وGitHub', Professional: 'المهارات الاحترافية', DevOps: 'السحابة وDevOps', AI: 'تطبيقات الذكاء الاصطناعي',
   },
   priority: { Core: 'أساسي', Important: 'مهم', Optional: 'اختياري' },
   topicStatus: { NotStarted: 'لم يبدأ', InProgress: 'قيد التعلم', Completed: 'مكتمل', Skipped: 'أعرفه مسبقًا' },

@@ -3,7 +3,7 @@
 
 export type SkillArea =
   | 'CSharp' | 'AspNetCore' | 'EfCore' | 'SqlServer' | 'TypeScript'
-  | 'Angular' | 'FullStack' | 'Testing' | 'Git' | 'Professional' | 'DevOps';
+  | 'Angular' | 'FullStack' | 'Testing' | 'Git' | 'Professional' | 'DevOps' | 'AI';
 export type TopicPriority = 'Core' | 'Important' | 'Optional';
 export type TopicStatus = 'NotStarted' | 'InProgress' | 'Completed' | 'Skipped';
 export type KnowledgeLevel = 'Unassessed' | 'AlreadyKnow' | 'NeedReview' | 'NeedToLearn';
@@ -25,7 +25,7 @@ export type InterviewCategory =
 export type InterviewRating = 'NeedReview' | 'Partial' | 'Confident';
 export type DayOfWeek = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
 
-export const SKILLS: SkillArea[] = ['CSharp', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'FullStack', 'Testing', 'Git', 'DevOps', 'Professional'];
+export const SKILLS: SkillArea[] = ['CSharp', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'FullStack', 'Testing', 'Git', 'DevOps', 'AI', 'Professional'];
 export const INTERVIEW_CATEGORIES: InterviewCategory[] = ['CSharp', 'DotNet', 'AspNetCore', 'EfCore', 'SqlServer', 'TypeScript', 'Angular', 'RestApi', 'Testing', 'Git', 'FullStackDesign',
   'DataStructures', 'Algorithms', 'ObjectOrientedDesign', 'SystemDesign', 'Concurrency', 'Behavioral', 'DevOps'];
 export const EXERCISE_TYPES: ExerciseType[] = ['Conceptual', 'Coding', 'Debugging', 'Practical', 'MiniProject', 'FullStack', 'Challenge', 'Scenario', 'CodeReview'];

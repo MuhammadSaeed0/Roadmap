@@ -268,7 +268,7 @@ export const en = {
   },
   skills: {
     CSharp: 'C#', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server', TypeScript: 'TypeScript',
-    Angular: 'Angular', FullStack: 'Full-stack integration', Testing: 'Testing', Git: 'Git & GitHub', Professional: 'Professional skills', DevOps: 'Cloud & DevOps',
+    Angular: 'Angular', FullStack: 'Full-stack integration', Testing: 'Testing', Git: 'Git & GitHub', Professional: 'Professional skills', DevOps: 'Cloud & DevOps', AI: 'AI applications',
   },
   priority: { Core: 'Core', Important: 'Important', Optional: 'Optional' },
   topicStatus: { NotStarted: 'Not started', InProgress: 'In progress', Completed: 'Completed', Skipped: 'Already known' },
