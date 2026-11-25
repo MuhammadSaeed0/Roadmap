@@ -29,6 +29,6 @@
     "outcomeEn": "You can build, evaluate and deploy a chat assistant that answers from your own documents and uses tools.",
     "outcomeAr": "تبني مساعد محادثة يجيب من مستنداتك ويستخدم الأدوات، وتقيّمه وتنشره.",
     "technologies": ["C#", "ASP.NET Core", "Microsoft.Extensions.AI", "Semantic Kernel", "RAG", "Python"],
-    "phases": ["csharp-fundamentals", "object-oriented-programming", "modern-csharp", "aspnet-core", "ai-llm-foundations"]
+    "phases": ["csharp-fundamentals", "object-oriented-programming", "modern-csharp", "aspnet-core", "ai-llm-foundations", "ai-python-for-devs"]
   }
 ]

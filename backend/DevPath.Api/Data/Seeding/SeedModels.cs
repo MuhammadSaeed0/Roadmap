@@ -145,7 +145,7 @@ public class SnippetStore
     {
         [".cs"] = "csharp", [".ts"] = "typescript", [".sql"] = "sql", [".html"] = "html",
         [".css"] = "css", [".json"] = "json", [".sh"] = "bash", [".http"] = "http", [".txt"] = "text",
-        [".yml"] = "yaml", [".dockerfile"] = "dockerfile"
+        [".yml"] = "yaml", [".dockerfile"] = "dockerfile", [".py"] = "python"
     };
 
     private readonly Dictionary<string, (string Code, string Language)> _snippets = new(StringComparer.OrdinalIgnoreCase);
@@ -177,7 +177,7 @@ public class SnippetStore
 public class PracticeFileStore(string directory)
 {
     private static readonly System.Text.Json.JsonSerializerOptions Json = new(System.Text.Json.JsonSerializerDefaults.Web);
-    private static readonly string[] TestFiles = ["tests.cs", "tests.js", "tests.json"];
+    private static readonly string[] TestFiles = ["tests.cs", "tests.js", "tests.json", "tests.py"];
 
     public bool Has(string key) => Directory.Exists(Path.Combine(directory, key));
 

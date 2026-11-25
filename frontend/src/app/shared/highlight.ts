@@ -19,6 +19,9 @@ const KEYWORDS: Record<string, string[]> = {
     'end', 'create', 'alter', 'table', 'index', 'event', 'session', 'server', 'add', 'target', 'action', 'go', 'null',
     'is', 'in', 'desc', 'asc', 'case', 'when', 'then', 'else', 'with', 'state', 'start', 'count', 'sum', 'max', 'min'],
 };
+KEYWORDS['python'] = ['and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else',
+  'except', 'False', 'finally', 'for', 'from', 'if', 'import', 'in', 'is', 'lambda', 'None', 'not', 'or', 'pass', 'raise',
+  'return', 'True', 'try', 'while', 'with', 'yield', 'self', 'print', 'len', 'range', 'int', 'str', 'float', 'list', 'dict'];
 KEYWORDS['aspnet'] = KEYWORDS['csharp'];
 KEYWORDS['html'] = ['@if', '@else', '@for', '@switch', '@case', '@default', 'track'];
 
@@ -28,7 +31,7 @@ export function highlight(code: string, language: string | null | undefined): st
   if (lang === 'text' || lang === '') return escaped;
 
   const keywords = new Set(KEYWORDS[lang] ?? []);
-  const lineComment = lang === 'sql' ? '--' : lang === 'bash' || lang === 'http' ? '#' : '//';
+  const lineComment = lang === 'sql' ? '--' : lang === 'bash' || lang === 'http' || lang === 'python' ? '#' : '//';
 
   // One regex with alternatives: comments | strings | numbers | words.
   const commentPattern = lineComment === '#' ? '#[^\\n]*' : lineComment === '--' ? '--[^\\n]*' : '\\/\\/[^\\n]*|\\/\\*[\\s\\S]*?\\*\\/';
@@ -44,7 +47,7 @@ export function highlight(code: string, language: string | null | undefined): st
     if (word) {
       const check = lang === 'sql' ? word.toLowerCase() : word;
       if (keywords.has(check)) return `<span class="tok-keyword">${word}</span>`;
-      if (/^[A-Z]/.test(word) && lang !== 'sql') return `<span class="tok-type">${word}</span>`;
+      if (/^[A-Z]/.test(word) && lang !== 'sql' && lang !== 'python') return `<span class="tok-type">${word}</span>`;
     }
     return match;
   });

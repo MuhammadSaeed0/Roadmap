@@ -72,7 +72,8 @@
       "aspnet-core": "dotnet", "ef-core": "efcore", "sql-server-for-dotnet": "database", "typescript": "frontend",
       "angular": "frontend", "full-stack-integration": "apis", "testing": "testing", "git-github": "git",
       "professional-skills": "architecture", "cloud-devops": "devops",
-      "ai-llm-foundations": "dotnet"
+      "ai-llm-foundations": "dotnet",
+      "ai-python-for-devs": "fundamentals"
     }
   },
 
@@ -81,7 +82,8 @@
     "aspnet-core": "Intermediate", "ef-core": "Intermediate", "sql-server-for-dotnet": "Intermediate", "typescript": "Beginner",
     "angular": "Intermediate", "full-stack-integration": "Intermediate", "testing": "Intermediate", "git-github": "Beginner",
     "professional-skills": "Advanced", "cloud-devops": "Advanced",
-    "ai-llm-foundations": "Beginner"
+    "ai-llm-foundations": "Beginner",
+    "ai-python-for-devs": "Beginner"
   },
 
   "exerciseExtraCategories": {
