@@ -54,6 +54,7 @@ export const content: TourContent = {
     'cv-editor': { title: 'CV editor', summary: 'Edit your CV section by section beside a live preview of the real PDF. Changes are saved automatically.' },
     settings: { title: 'Settings', summary: 'Language and theme, your learning preferences, and your account.' },
     search: { title: 'Search', summary: 'Results from across DevPath for what you typed, grouped by kind.' },
+    tracks: { title: 'Roadmaps', summary: 'Choose the roadmap you follow: each card shows what it teaches, its technologies, its size and what you can do at the end. Switching keeps all your progress.' },
     marketing: { title: 'Invite friends', summary: 'A ready post, messages and real screenshots to share DevPath with friends, ready to copy, download and share from a phone.' },
     admin: { title: 'Administration', summary: 'For administrators: manage accounts and administrators, see how the site is used, and review what changed.' },
     playground: { title: 'Code Playground', summary: 'Coding environments for C#, SQL, TypeScript, JavaScript, HTML/CSS and Angular. Start from a template, write and run code in your browser, and save projects to your account.' },
@@ -177,6 +178,10 @@ export const content: TourContent = {
     'settings-about': { title: 'About your data', body: 'Your progress, notes, study sessions and videos are stored with your account and only you can see them.' },
     'search-results': { title: 'Results', body: 'Matches grouped by kind: topics, projects, tasks, exercises, interview questions, resources and notes. Click any result to open it.' },
 
+    'tracks-intro': { title: 'What a roadmap changes', body: 'The dashboard, recommendations, placement check and Developer Level follow the roadmap you choose.' },
+    'tracks-list': { title: 'The roadmaps', body: 'Each card shows the technologies, the number of phases and topics, the time it takes, and your progress if you already started. Phases two roadmaps share count in both.' },
+    'tracks-switch': { title: 'Switch any time', body: 'Pick another roadmap whenever you like. Your progress, notes, certificates and projects stay.' },
+    'roadmap-track': { title: 'Your roadmap', body: 'The roadmap you follow. Use Change to pick another one; phases shared with another roadmap are marked Shared.' },
     'marketing-post': { title: 'Facebook post', body: 'The post in Arabic and English. Edit it here if you like, then copy it in one tap or share it with the images from your phone.' },
     'marketing-kit': { title: 'Publishing kit', body: 'The app link, hashtags and a short caption to copy, the steps to publish, and a link-only share to Facebook.' },
     'marketing-gallery': { title: 'Screenshots', body: 'Real screenshots in posting order. Tap one to see it full size, download it, or download them all.' },

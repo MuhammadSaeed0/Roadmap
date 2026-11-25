@@ -29,6 +29,7 @@ Disallow: /search
 Disallow: /discussions
 Disallow: /reviews
 Disallow: /paths
+Disallow: /tracks
 Disallow: /marketing
 Disallow: /admin
 Disallow: /sign-in

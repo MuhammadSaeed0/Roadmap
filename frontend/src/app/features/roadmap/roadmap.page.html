@@ -1,4 +1,4 @@
-<app-page-header [title]="'roadmap.title' | t" [subtitle]="'roadmap.subtitle' | t">
+<app-page-header [title]="'roadmap.title' | t" [subtitle]="tracks.active() ? (tracks.active() | loc: 'summary') : ('roadmap.subtitle' | t)">
   <div class="row-gap" data-tour="roadmap-header">
     <div class="segmented" role="group" [attr.aria-label]="'roadmap.viewLabel' | t">
       <button type="button" [class.active]="view() === 'phases'" [attr.aria-pressed]="view() === 'phases'" (click)="setView('phases')">
@@ -13,6 +13,14 @@
   </div>
 </app-page-header>
 
+@if (tracks.active(); as active) {
+  <p class="track-line small" data-tour="roadmap-track">
+    <app-icon [name]="active.icon" [size]="16" />
+    <span>{{ 'tracks.yours' | t }} <strong>{{ active | loc: 'title' }}</strong></span>
+    @if (tracks.tracks().length > 1) { <a routerLink="/tracks">{{ 'tracks.change' | t }}</a> }
+  </p>
+}
+
 @if (view() === 'list') {
   <app-library-list />
 } @else if (data.initialLoading()) {
@@ -26,7 +34,7 @@
               (click)="jump(phase.id)" [attr.aria-current]="phase.id === roadmap.currentPhaseId ? 'step' : null"
               [attr.aria-label]="(phase | loc: 'title') + ' ' + (phase.percent | fmtNum) + '%'">
         <span class="phase-tile-ring" [style.--pct]="phase.percent" aria-hidden="true">
-          <span class="phase-tile-num">@if (phase.percent >= 100) { <app-icon name="check" [size]="16" /> } @else { {{ phase.order }} }</span>
+          <span class="phase-tile-num">@if (phase.percent >= 100) { <app-icon name="check" [size]="16" /> } @else { {{ phase.position || phase.order }} }</span>
         </span>
         <span class="phase-tile-text">
           <span class="phase-tile-name">{{ phase | loc: 'title' }}</span>
@@ -42,11 +50,14 @@
       <li class="phase card" [id]="'phase-' + phase.id" [class.current]="current" [class.done]="phase.percent >= 100">
         <button type="button" class="phase-head" (click)="toggle(phase.id)" [attr.aria-expanded]="isOpen(phase.id)"
                 [attr.aria-controls]="'phase-body-' + phase.id">
-          <span class="phase-num" aria-hidden="true">{{ phase.order }}</span>
+          <span class="phase-num" aria-hidden="true">{{ phase.position || phase.order }}</span>
           <span class="phase-info">
             <span class="phase-eyebrow">
-              {{ 'roadmap.phase' | t: { n: phase.order } }}
+              {{ 'roadmap.phase' | t: { n: phase.position || phase.order } }}
               @if (current) { <span class="badge badge-accent">{{ 'roadmap.current' | t }}</span> }
+              @if (phase.sharedWith?.length) {
+                <span class="badge" [title]="'tracks.sharedHint' | t"><app-icon name="link" [size]="12" /> {{ 'tracks.sharedPhase' | t }}</span>
+              }
               @if (phase.topicCount > 0 && phase.percent >= 100) {
                 <span class="badge phase-badge" data-status="Completed"><app-icon name="award" [size]="12" /> {{ 'roadmap.phaseDone' | t }}</span>
               }

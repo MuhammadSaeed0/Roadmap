@@ -7,6 +7,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { DurationPipe, FormatNumberPipe, LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
 import { Phase, TopicStatus, TopicSummary } from '../../core/models';
+import { TrackStore } from '../../core/track.service';
 import { ToastService } from '../../core/ui-services';
 import { LibraryListComponent } from '../library/library-list.component';
 import { IconComponent } from '../../shared/icon.component';
@@ -30,6 +31,8 @@ export default class RoadmapPage {
   protected readonly view = signal<'phases' | 'list'>('phases');
 
   protected readonly data = createLoader(() => this.api.roadmap());
+  /** The roadmap the learner follows, named above the phases with a link to switch. */
+  protected readonly tracks = inject(TrackStore);
   protected readonly expanded = signal(new Set<number>());
   protected readonly busy = signal<number | null>(null);
   /** The phase whose certificate is being fetched. */
@@ -37,6 +40,7 @@ export default class RoadmapPage {
   protected readonly statusIcon = statusIcon;
 
   constructor() {
+    void this.tracks.load();
     inject(ActivatedRoute).queryParamMap.pipe(takeUntilDestroyed())
       .subscribe(q => this.view.set(q.get('view') === 'list' ? 'list' : 'phases'));
     // Open the current phase the first time data arrives, and the phase a link points at (#phase-<id>, e.g. from the Pre-Roadmap page).

@@ -25,6 +25,8 @@ export class ApiService {
   health() { return this.get<{ status: string; database: string }>('/health'); }
   dashboard() { return this.get<M.Dashboard>('/dashboard'); }
   roadmap() { return this.get<M.Roadmap>('/roadmap'); }
+  tracks() { return this.get<M.Tracks>('/tracks'); }
+  chooseTrack(slug: string) { return this.put<M.Tracks>('/tracks/active', { slug }); }
   /** Public: phase, topic and built-in path names and ids, no progress (works without an account). */
   catalog() { return this.get<M.Catalog>('/catalog'); }
   glossary() { return this.get<M.GlossaryTerm[]>('/glossary'); }

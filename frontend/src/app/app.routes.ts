@@ -1,13 +1,15 @@
 import { inject } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { progressOverviewRedirect } from './features/progress/progress-redirect';
+import { trackChoiceGuard } from './core/track.guard';
 import { accountStatusGuard, adminGuard, authGuard, guestGuard, guestMatch } from './core/auth.guard';
 
 const appRoutes: Routes = [
-  { path: '', loadComponent: () => import('./features/dashboard/dashboard.page'), data: { titleKey: 'nav.dashboard', helpId: 'dashboard', skin: 'snap' } },
+  { path: '', loadComponent: () => import('./features/dashboard/dashboard.page'), canActivate: [trackChoiceGuard], data: { titleKey: 'nav.dashboard', helpId: 'dashboard', skin: 'snap' } },
   { path: 'pre-roadmap', loadComponent: () => import('./features/pre-roadmap/pre-roadmap.page'), data: { titleKey: 'nav.preRoadmap', helpId: 'pre-roadmap', skin: 'threads' } },
   { path: 'placement', loadComponent: () => import('./features/placement/placement.page'), data: { titleKey: 'placement.title', helpId: 'placement', skin: 'threads' } },
-  { path: 'roadmap', loadComponent: () => import('./features/roadmap/roadmap.page'), data: { titleKey: 'nav.roadmap', helpId: 'roadmap', skin: 'threads' } },
+  { path: 'tracks', loadComponent: () => import('./features/tracks/tracks.page'), data: { titleKey: 'nav.tracks', helpId: 'tracks', skin: 'threads' } },
+  { path: 'roadmap', loadComponent: () => import('./features/roadmap/roadmap.page'), canActivate: [trackChoiceGuard], data: { titleKey: 'nav.roadmap', helpId: 'roadmap', skin: 'threads' } },
   { path: 'glossary', loadComponent: () => import('./features/glossary/glossary.page'), data: { titleKey: 'nav.glossary', helpId: 'glossary', skin: 'threads' } },
   // The library is the roadmap's list view now; old links keep their filters.
   { path: 'library', redirectTo: ({ queryParams }) => inject(Router).createUrlTree(['/roadmap'], { queryParams: { ...queryParams, view: 'list' } }) },

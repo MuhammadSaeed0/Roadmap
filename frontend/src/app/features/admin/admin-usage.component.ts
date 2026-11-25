@@ -20,7 +20,7 @@ const PAGE_NAMES: Record<string, string> = {
   practice: 'nav.practice', 'practice/:id': 'admin.usage.pages.exercise',
   playground: 'nav.playground', 'playground/new/:template': 'admin.usage.pages.workspaceNew', 'playground/:id': 'admin.usage.pages.workspace',
   videos: 'nav.videos', interviews: 'nav.interviews', resources: 'nav.resources', notes: 'nav.notes', progress: 'nav.progress',
-  cv: 'nav.cv', 'cv/:id': 'admin.usage.pages.cvEditor', skills: 'nav.skills', settings: 'nav.settings', search: 'nav.search',
+  cv: 'nav.cv', 'cv/:id': 'admin.usage.pages.cvEditor', skills: 'nav.skills', tracks: 'nav.tracks', settings: 'nav.settings', search: 'nav.search',
   discussions: 'nav.discussions', 'discussions/:id': 'admin.usage.pages.discussion', reviews: 'nav.reviews',
   paths: 'nav.paths', 'paths/new': 'admin.usage.pages.pathNew', 'paths/:id/edit': 'admin.usage.pages.pathEdit', 'paths/:id': 'admin.usage.pages.path',
   marketing: 'nav.marketing', admin: 'nav.admin', 'u/:handle': 'admin.usage.pages.profile', 'c/:code': 'admin.usage.pages.certificate',
