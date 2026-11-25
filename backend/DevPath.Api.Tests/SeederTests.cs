@@ -66,6 +66,14 @@ public class SeederTests : IAsyncLifetime
             Arabic = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.Arabic),
         }).ToListAsync();
         Assert.All(videosPerTopic, n => { Assert.InRange(n.English, 2, 4); Assert.InRange(n.Arabic, 0, 2); });
+        // Draft topics may still be waiting for their videos, but once they have some, the same rule applies.
+        var draftVideos = await _db.Topics.Where(t => t.IsDraft).Select(t => new
+        {
+            English = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.English),
+            Arabic = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.Arabic),
+        }).ToListAsync();
+        Assert.True(draftVideos.Count(n => n.English > 0) >= 12, "the first two AI phases have their videos");
+        Assert.All(draftVideos.Where(n => n.English + n.Arabic > 0), n => { Assert.InRange(n.English, 2, 4); Assert.InRange(n.Arabic, 0, 2); });
         // Removing the channels the owner did not want (2026-11-20) left 82 of 166 topics with an Arabic video; Arabic videos
         // for phases 1-5 (2026-11-23) raised that to 105. Each later batch should raise this floor again.
         Assert.True(videosPerTopic.Count(n => n.Arabic > 0) >= videosPerTopic.Count * 63 / 100, "at least 63% of the topics should have an Arabic video");
