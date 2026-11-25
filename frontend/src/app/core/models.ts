@@ -50,8 +50,20 @@ export interface Phase {
   topics: TopicSummary[]; projects: ProjectBrief[];
   /** Library projects that practise this phase (each project sits in the latest phase among its topics). */
   guidedProjects: GuidedProjectRef[];
+  /** The phase's number in the learner's roadmap ("Phase 3"); order is its place in the whole catalog. */
+  position: number;
+  /** Slugs of the other roadmaps that hold this phase: progress here counts in them too. */
+  sharedWith: string[];
 }
-export interface Roadmap { phases: Phase[]; currentPhaseId: number | null; }
+export interface Roadmap { phases: Phase[]; currentPhaseId: number | null; trackSlug: string | null; }
+/** GET /tracks: a roadmap card. doneTopics and sharedPhases are the signed-in learner's (0 for visitors). */
+export interface Track {
+  slug: string; order: number; titleEn: string; titleAr: string; summaryEn: string; summaryAr: string;
+  outcomeEn: string; outcomeAr: string; technologies: string[]; icon: string; isDraft: boolean;
+  phaseCount: number; topicCount: number; minutes: number; doneTopics: number; sharedPhases: number;
+}
+/** chosenSlug is null until the learner picks a roadmap (new accounts); activeSlug is what they see meanwhile. */
+export interface Tracks { tracks: Track[]; activeSlug: string | null; chosenSlug: string | null; }
 /** GET /catalog: the roadmap's names and ids for public pages. */
 export interface Catalog {
   phases: { id: number; slug: string; order: number; titleEn: string; titleAr: string; topics: { id: number; slug: string; titleEn: string; titleAr: string }[] }[];

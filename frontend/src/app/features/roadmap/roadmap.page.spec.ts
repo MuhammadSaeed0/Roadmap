@@ -7,7 +7,7 @@ import RoadmapPage from './roadmap.page';
 
 const phase = (id: number, percent: number, extra: Partial<Phase> = {}): Phase => ({
   id, slug: 'p' + id, order: id, titleEn: 'Phase ' + id, titleAr: 'مرحلة ' + id, descriptionEn: '', descriptionAr: '',
-  topicCount: 2, doneCount: percent >= 100 ? 2 : 0, percent, remainingMinutes: 0, topics: [], projects: [], guidedProjects: [], ...extra,
+  topicCount: 2, doneCount: percent >= 100 ? 2 : 0, percent, remainingMinutes: 0, topics: [], projects: [], guidedProjects: [], position: id, sharedWith: [], ...extra,
 });
 
 async function render(data: Roadmap, api: Partial<ApiService> = {}): Promise<HTMLElement> {
@@ -26,7 +26,7 @@ async function render(data: Roadmap, api: Partial<ApiService> = {}): Promise<HTM
 describe('RoadmapPage', () => {
   it('offers a certificate only for a finished phase and opens its page', async () => {
     const issued: number[] = [];
-    const el = await render({ currentPhaseId: 2, phases: [phase(1, 100), phase(2, 40), phase(3, 100, { topicCount: 0 })] }, {
+    const el = await render({ currentPhaseId: 2, trackSlug: null, phases: [phase(1, 100), phase(2, 40), phase(3, 100, { topicCount: 0 })] }, {
       issueCertificate: (phaseId: number) => { issued.push(phaseId); return Promise.resolve({ code: 'ABCDEFGHJKMN', phaseId, issuedAt: '2026-11-23T10:00:00Z' }); },
     });
     const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
@@ -46,7 +46,7 @@ describe('RoadmapPage', () => {
 
   it('marks a finished phase and lists its library and main projects inside it', async () => {
     const el = await render({
-      currentPhaseId: 1,
+      currentPhaseId: 1, trackSlug: null,
       phases: [
         phase(1, 100, {
           guidedProjects: [{ id: 12, skill: 'CSharp', level: 'Beginner', titleEn: 'Console to-do list', titleAr: 'قائمة مهام', stepCount: 8, doneSteps: 8 }],
@@ -70,7 +70,7 @@ describe('RoadmapPage', () => {
       id, slug: 't' + id, phaseId: 1, order: id, skill: 'CSharp', priority: 'Core', estimatedMinutes: 30, titleEn: 'Topic ' + id, titleAr: 'موضوع ' + id,
       summaryEn: '', summaryAr: '', status: 'NotStarted', knowledge: 'Unassessed', confidence: null, inReview: false, prerequisitesMet,
     }) as unknown as TopicSummary;
-    const el = await render({ currentPhaseId: 1, phases: [phase(1, 0, { topics: [topic(1, false), topic(2, true)] })] });
+    const el = await render({ currentPhaseId: 1, trackSlug: null, phases: [phase(1, 0, { topics: [topic(1, false), topic(2, true)] })] });
     const [locked, open] = [...el.querySelectorAll('.rm-row')];
 
     const lock = locked.querySelector('.topic-head .topic-lock')!;

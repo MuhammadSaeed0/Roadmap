@@ -44,6 +44,7 @@ export const SECTION_IDS = [
   'settings-appearance', 'settings-learning', 'settings-account', 'settings-about', 'search-results',
   'admin-stats', 'admin-tabs', 'admin-users', 'admin-usage',
   'marketing-post', 'marketing-kit', 'marketing-gallery',
+  'tracks-intro', 'tracks-list', 'tracks-switch', 'roadmap-track',
   // Discussions and learning paths
   'discussions-ask', 'discussions-filters', 'discussions-list', 'discussion-post', 'discussion-reply',
   'paths-builtin', 'paths-mine', 'path-hero', 'path-topics', 'path-details', 'path-pick',
@@ -56,7 +57,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 /** Pages with a guide. Routes name theirs in `data.helpId` (see app.routes.ts), so /topics/:id etc. work. */
 export const HELP_IDS = [
   'dashboard', 'roadmap', 'topic', 'projects', 'project', 'practice', 'exercise', 'interviews',
-  'resources', 'notes', 'progress', 'skills', 'settings', 'search', 'admin', 'marketing', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
+  'resources', 'notes', 'progress', 'skills', 'settings', 'search', 'admin', 'marketing', 'tracks', 'playground', 'workspace', 'videos', 'cv', 'cv-editor',
   'discussions', 'discussion', 'paths', 'path', 'path-create', 'reviews', 'guides', 'guide', 'pre-roadmap', 'glossary', 'placement',
 ] as const;
 export type HelpId = (typeof HELP_IDS)[number];
@@ -65,7 +66,7 @@ export type HelpId = (typeof HELP_IDS)[number];
 export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   dashboard: ['dashboard-hero', 'dashboard-today', 'dashboard-continue', 'dashboard-plan', 'dashboard-skills',
     'dashboard-projects', 'dashboard-library', 'dashboard-activity', 'dashboard-actions'],
-  roadmap: ['roadmap-header', 'roadmap-phases', 'roadmap-certificate', 'library-filters', 'library-list'],
+  roadmap: ['roadmap-header', 'roadmap-track', 'roadmap-phases', 'roadmap-certificate', 'library-filters', 'library-list'],
   topic: ['topic-header', 'topic-content', 'topic-tutorial', 'topic-videos', 'topic-quiz', 'topic-progress', 'topic-guided', 'topic-notes', 'topic-related'],
   projects: ['projects-list'],
   project: ['project-hero', 'project-milestones', 'project-changes', 'project-portfolio', 'project-repo', 'project-review'],
@@ -85,6 +86,7 @@ export const PAGE_HELP: Record<HelpId, readonly SectionId[]> = {
   search: ['search-results'],
   admin: ['admin-stats', 'admin-tabs', 'admin-users', 'admin-usage'],
   marketing: ['marketing-post', 'marketing-kit', 'marketing-gallery'],
+  tracks: ['tracks-intro', 'tracks-list', 'tracks-switch'],
   discussions: ['discussions-ask', 'discussions-filters', 'discussions-list'],
   discussion: ['discussion-post', 'discussion-reply'],
   paths: ['paths-builtin', 'paths-mine'],

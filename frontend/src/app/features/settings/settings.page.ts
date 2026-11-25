@@ -42,6 +42,7 @@ import { ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../
 
       <section class="card" aria-labelledby="lp-h" data-tour="settings-learning">
         <h2 id="lp-h" class="card-title"><app-icon name="target" /> {{ 'settings.learning' | t }}</h2>
+        <p class="small settings-track"><app-icon name="map" [size]="15" /> {{ 'tracks.settingsHint' | t }} <a routerLink="/tracks">{{ 'tracks.change' | t }}</a></p>
         @if (loading()) {
           <app-skeleton [rows]="4" />
         } @else if (error()) {
