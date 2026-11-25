@@ -49,6 +49,7 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
             var phases = await SeedPhasesAsync(content.Phases, ct);
             var topics = await SeedTopicsAsync(content.Phases, phases, ct);
             await SyncPrerequisitesAsync(content.Phases, topics, ct);
+            await SyncTracksAsync(content.Tracks, phases, topics, ct);
             await SeedResourcesAsync(content.Resources, topics, ct);
             await SeedProjectsAsync(content.Projects, phases, topics, ct);
             await SeedChecklistAsync(content.Checklist, ct);
@@ -91,6 +92,53 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
         }
         await db.SaveChangesAsync(ct);
         return existing;
+    }
+
+    /// <summary>
+    /// Upserts the roadmaps and their phase lists, then marks draft content: a phase is a draft when every roadmap that
+    /// holds it is unpublished (a phase in no roadmap stays visible). Its topics copy the flag.
+    /// </summary>
+    private async Task SyncTracksAsync(
+        List<TrackSeed> seeds, Dictionary<string, Phase> phases, Dictionary<string, Topic> topics, CancellationToken ct)
+    {
+        var existing = await db.Tracks.Include(t => t.Phases).ToDictionaryAsync(t => t.Slug, ct);
+        foreach (var s in seeds)
+        {
+            if (!existing.TryGetValue(s.Slug, out var t))
+            {
+                t = new Track { Slug = s.Slug, TitleEn = s.TitleEn, TitleAr = s.TitleAr };
+                db.Tracks.Add(t);
+                existing[s.Slug] = t;
+            }
+            t.Order = s.Order;
+            t.IsPublished = s.Published;
+            t.TitleEn = s.TitleEn;
+            t.TitleAr = s.TitleAr;
+            t.SummaryEn = s.SummaryEn;
+            t.SummaryAr = s.SummaryAr;
+            t.OutcomeEn = s.OutcomeEn;
+            t.OutcomeAr = s.OutcomeAr;
+            t.Technologies = string.Join(',', s.Technologies);
+            t.Icon = s.Icon;
+
+            var wanted = s.Phases.Select((slug, i) => (Id: phases[slug].Id, Position: i + 1)).ToList();
+            t.Phases.RemoveAll(tp => wanted.All(w => w.Id != tp.PhaseId));
+            foreach (var (id, position) in wanted)
+            {
+                var row = t.Phases.FirstOrDefault(tp => tp.PhaseId == id);
+                if (row is null) t.Phases.Add(row = new TrackPhase { PhaseId = id });
+                row.Position = position;
+            }
+        }
+        foreach (var gone in existing.Values.Where(t => seeds.All(s => s.Slug != t.Slug)).ToList())
+            db.Tracks.Remove(gone);
+
+        var tracksOf = seeds.SelectMany(s => s.Phases.Select(slug => (slug, s.Published))).ToLookup(x => x.slug, x => x.Published);
+        foreach (var phase in phases.Values)
+            phase.IsDraft = tracksOf[phase.Slug].Any() && !tracksOf[phase.Slug].Any(published => published);
+        var draftIds = phases.Values.Where(p => p.IsDraft).Select(p => p.Id).ToHashSet();
+        foreach (var topic in topics.Values) topic.IsDraft = draftIds.Contains(topic.PhaseId);
+        await db.SaveChangesAsync(ct);
     }
 
     private async Task<Dictionary<string, Topic>> SeedTopicsAsync(
@@ -593,6 +641,8 @@ public class DbSeeder(AppDbContext db, ILogger<DbSeeder> logger, IHostEnvironmen
 public class SeedContent
 {
     public List<PhaseSeed> Phases { get; private init; } = [];
+    /// <summary>Optional tracks.json: without it there are no roadmaps and every phase is shown, in order.</summary>
+    public List<TrackSeed> Tracks { get; private init; } = [];
     public List<ResourceSeed> Resources { get; private init; } = [];
     public List<ProjectSeed> Projects { get; private init; } = [];
     public List<ChecklistSeed> Checklist { get; private init; } = [];
@@ -623,6 +673,7 @@ public class SeedContent
         {
             Phases = Directory.GetFiles(Path.Combine(dir, "roadmap"), "*.json").Order()
                 .Select(Read<PhaseSeed>).OrderBy(p => p.Order).ToList(),
+            Tracks = File.Exists(Path.Combine(dir, "tracks.json")) ? Read<List<TrackSeed>>(Path.Combine(dir, "tracks.json")) : [],
             Resources = Read<List<ResourceSeed>>(Path.Combine(dir, "resources.json")),
             Projects = Read<List<ProjectSeed>>(Path.Combine(dir, "projects.json")),
             Checklist = Read<List<ChecklistSeed>>(Path.Combine(dir, "portfolio-checklist.json")),
@@ -695,6 +746,29 @@ public class SeedContent
                     errors.Add($"Topic '{t.Slug}' comes before its prerequisite '{pre}'");
         }
         foreach (var slug in MarketDemand?.Topics.Keys ?? Enumerable.Empty<string>()) Ref(slug, "market-demand.json");
+
+        // Roadmaps: known phases, the same position for a shared phase everywhere (certificates say "Phase N"), and
+        // every prerequisite inside each roadmap that holds the topic, or the topic could never be unlocked there.
+        Unique(Tracks.Select(t => t.Slug), "roadmap slug");
+        var phaseBySlug = Phases.ToDictionary(p => p.Slug);
+        var positions = new Dictionary<string, (int Position, string Track)>();
+        foreach (var track in Tracks)
+        {
+            Unique(track.Phases, $"phase in roadmap '{track.Slug}'");
+            for (var i = 0; i < track.Phases.Count; i++)
+            {
+                var slug = track.Phases[i];
+                if (!phaseSet.Contains(slug)) { errors.Add($"Roadmap '{track.Slug}' references unknown phase '{slug}'"); continue; }
+                if (positions.TryGetValue(slug, out var seen) && seen.Position != i + 1)
+                    errors.Add($"Phase '{slug}' is phase {seen.Position} in '{seen.Track}' but phase {i + 1} in '{track.Slug}'");
+                positions.TryAdd(slug, (i + 1, track.Slug));
+            }
+            var inTrack = track.Phases.Where(phaseBySlug.ContainsKey).SelectMany(s => phaseBySlug[s].Topics).ToList();
+            var inTrackSet = inTrack.Select(t => t.Slug).ToHashSet();
+            foreach (var t in inTrack)
+                foreach (var pre in (t.Prerequisites ?? []).Where(pre => !inTrackSet.Contains(pre)))
+                    errors.Add($"Topic '{t.Slug}' in roadmap '{track.Slug}' needs '{pre}', which is not in that roadmap");
+        }
 
         foreach (var t in Phases.SelectMany(p => p.Topics))
             foreach (var pre in t.Prerequisites ?? [])

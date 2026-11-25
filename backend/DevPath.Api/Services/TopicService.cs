@@ -11,7 +11,7 @@ public record TopicQuery(
     KnowledgeLevel? Knowledge, int Page = 1, int PageSize = 20);
 
 public class TopicService(
-    AppDbContext db, LearningStateLoader stateLoader, ProjectService projects, ResourceService resources,
+    AppDbContext db, LearningStateLoader stateLoader, TrackContext tracks, ProjectService projects, ResourceService resources,
     IOptions<ProgressOptions> options, TimeProvider clock)
 {
     public async Task<RoadmapDto> GetRoadmapAsync(CancellationToken ct)
@@ -34,6 +34,12 @@ public class TopicService(
             .Where(g => guidedPhase.ContainsKey(g.Id))
             .ToLookup(g => guidedPhase[g.Id]);
 
+        var track = await tracks.GetAsync(ct);
+        // Other visible roadmaps that hold each phase (a shared phase counts in each of them).
+        var otherTracks = (await db.TrackPhases.AsNoTracking()
+                .Select(tp => new { tp.PhaseId, tp.Track.Slug, tp.Track.IsPublished }).ToListAsync(ct))
+            .Where(x => x.Slug != track?.Slug && (x.IsPublished || db.ShowDrafts))
+            .ToLookup(x => x.PhaseId, x => x.Slug);
         var byPhase = state.Topics.ToLookup(t => t.PhaseId);
         var lastPhaseId = state.Phases.LastOrDefault()?.Id;
 
@@ -55,10 +61,10 @@ public class TopicService(
                     : projectSummaries.Count == 0 ? 0 : Math.Round(projectSummaries.Average(s => s.Percent), 1),
                 topics.Where(t => !t.IsDone).Sum(t => t.Minutes),
                 topics.Select(t => ToSummary(t, state, topicExtras[t.Id].SummaryEn, topicExtras[t.Id].SummaryAr, topicExtras[t.Id].InReview)).ToList(),
-                phaseProjects, phaseGuided);
+                phaseProjects, phaseGuided, p.Position, otherTracks[p.Id].ToList());
         }).ToList();
 
-        return new RoadmapDto(phases, ProgressCalculator.CurrentPhase(state)?.Id);
+        return new RoadmapDto(phases, ProgressCalculator.CurrentPhase(state)?.Id, track?.Slug);
     }
 
     public async Task<PagedResult<TopicSummaryDto>> SearchAsync(TopicQuery query, CancellationToken ct)
@@ -92,7 +98,7 @@ public class TopicService(
             .Select(t => new { t.Id, t.SummaryEn, t.SummaryAr, InReview = t.ReviewRows.Any() })
             .ToListAsync(ct);
 
-        var state = await stateLoader.LoadAsync(ct);
+        var state = await stateLoader.LoadAsync(ct, wholeCatalog: true);
         var items = rows.Select(r => ToSummary(state.ById[r.Id], state, r.SummaryEn, r.SummaryAr, r.InReview)).ToList();
         return new PagedResult<TopicSummaryDto>(items, page, size, total);
     }
@@ -110,7 +116,8 @@ public class TopicService(
         // Resources link back to topics (a cycle), so they're loaded with their own query.
         var resourceList = await resources.ListAsync(id, null, null, null, ct);
 
-        var state = await stateLoader.LoadAsync(ct);
+        // Any topic can be opened, also one outside the learner's roadmap.
+        var state = await stateLoader.LoadAsync(ct, wholeCatalog: true);
         var me = state.ById[id];
         var ordered = state.Topics.OrderBy(t => t.PhaseOrder).ThenBy(t => t.Order).ThenBy(t => t.Id).ToList();
         var position = ordered.FindIndex(t => t.Id == id);

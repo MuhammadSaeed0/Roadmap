@@ -327,6 +327,36 @@ public class SeederTests : IAsyncLifetime
         }
     }
 
+    [Fact]
+    public void Roadmaps_must_list_known_phases_and_keep_a_shared_phase_at_one_position()
+    {
+        var dir = Directory.CreateTempSubdirectory("devpath-tracks-").FullName;
+        try
+        {
+            static string Track(string slug, string phases) =>
+                $$"""{"slug":"{{slug}}","order":1,"published":true,"titleEn":"T","titleAr":"T","summaryEn":"","summaryAr":"","outcomeEn":"","outcomeAr":"","technologies":[],"icon":"map","phases":{{phases}}}""";
+            File.WriteAllText(Path.Combine(dir, "tracks.json"), $"[{Track("x", """["p1","nope"]""")},{Track("y", """["nope","p1"]""")}]");
+            var error = ValidateSeed(dir, Topic("a", []));
+            Assert.Contains("Roadmap 'x' references unknown phase 'nope'", error.Message);
+            Assert.Contains("Phase 'p1' is phase 1 in 'x' but phase 2 in 'y'", error.Message);
+        }
+        finally
+        {
+            Directory.Delete(dir, recursive: true);
+        }
+    }
+
+    [Fact]
+    public void The_seeded_roadmaps_are_valid_and_the_ai_roadmap_stays_a_draft_until_it_is_complete()
+    {
+        var content = SeedContent.Load(DbSeeder.DefaultSeedDirectory, new JsonSerializerOptions { PropertyNameCaseInsensitive = true, Converters = { new JsonStringEnumConverter() } });
+        var dotnet = content.Tracks.Single(t => t.Slug == "dotnet-fullstack");
+        Assert.True(dotnet.Published);
+        Assert.Equal(content.Phases.Where(p => p.Order <= 14).Select(p => p.Slug), dotnet.Phases);
+        var ai = content.Tracks.Single(t => t.Slug == "ai-app-developer");
+        Assert.Equal(["csharp-fundamentals", "object-oriented-programming", "modern-csharp", "aspnet-core"], ai.Phases.Take(4));
+    }
+
     private static TopicSeed Topic(string slug, List<string> prerequisites) =>
         new(slug, SkillArea.CSharp, TopicPriority.Core, 10, slug, slug, "", "", "", "", "", "", "", "", "", "", "", "", prerequisites);
 
