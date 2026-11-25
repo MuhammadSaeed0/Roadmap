@@ -242,6 +242,9 @@ if (hasFrontend)
     // The in-browser C# runner compiles learner code against reference assemblies (.dll), served as plain data.
     var contentTypes = new FileExtensionContentTypeProvider();
     contentTypes.Mappings[".dll"] = "application/octet-stream";
+    // The Python runner (Pyodide) loads its WebAssembly glue as an ES module: browsers refuse modules without a JS type.
+    contentTypes.Mappings[".mjs"] = "text/javascript";
+    contentTypes.Mappings[".wasm"] = "application/wasm";
     app.UseMiddleware<PrecompressedStaticFiles>(contentTypes);
     app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = contentTypes, OnPrepareResponse = NoCacheForHtml });
 }

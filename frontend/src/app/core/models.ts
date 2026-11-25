@@ -14,8 +14,8 @@ export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
 export type VerificationStatus = 'Unverified' | 'Verified' | 'Broken';
 export type ExerciseType = 'Coding' | 'Debugging' | 'Scenario' | 'CodeReview' | 'Conceptual' | 'Practical' | 'MiniProject' | 'FullStack' | 'Challenge';
 /** Where an exercise's code runs. Everything runs in the learner's browser. */
-export type ExerciseRunner = 'None' | 'CSharp' | 'Sql' | 'JavaScript' | 'TypeScript' | 'Web' | 'Angular';
-export type WorkspaceKind = 'CSharp' | 'Sql' | 'JavaScript' | 'TypeScript' | 'Web' | 'Angular';
+export type ExerciseRunner = 'None' | 'CSharp' | 'Sql' | 'JavaScript' | 'TypeScript' | 'Web' | 'Angular' | 'Python';
+export type WorkspaceKind = 'CSharp' | 'Sql' | 'JavaScript' | 'TypeScript' | 'Web' | 'Angular' | 'Python';
 export type VideoLanguage = 'English' | 'Arabic';
 export type PracticeStatus = 'NotStarted' | 'Attempted' | 'Completed';
 export type InterviewCategory =

@@ -487,7 +487,35 @@ export class AboutComponent {}
   ],
 };
 
-export const TEMPLATES: WorkspaceTemplate[] = [csConsole, csOop, csLinq, csAsync, sqlShop, sqlHr, sqlSchool, sqlCollege, sqlEmpty, js, ts, web, angular];
+// ---------- Python ----------
+
+const python: WorkspaceTemplate = {
+  key: 'python', kind: 'Python', entry: 'main.py',
+  nameEn: 'Python', nameAr: 'Python',
+  descriptionEn: 'Python 3 in your browser: functions, lists, dictionaries and your own modules.',
+  descriptionAr: 'Python 3 في متصفحك: الدوال والقوائم والقواميس ووحداتك الخاصة.',
+  files: [
+    f('main.py', `
+# Write Python here and press Run (Ctrl+Enter). input() reads from the "Input" box.
+from helpers import average
+
+name = input() or "friend"
+print(f"Hello, {name}!")
+
+scores = {"Sara": 92, "Omar": 78, "Mona": 85}
+best = max(scores, key=scores.get)
+print(f"Best score: {best} ({scores[best]})")
+print(f"Average: {average(scores.values()):.1f}")
+`),
+    f('helpers.py', `
+def average(values):
+    values = list(values)
+    return sum(values) / len(values) if values else 0
+`),
+  ],
+};
+
+export const TEMPLATES: WorkspaceTemplate[] = [csConsole, csOop, csLinq, csAsync, sqlShop, sqlHr, sqlSchool, sqlCollege, sqlEmpty, js, ts, python, web, angular];
 
 export function templatesFor(kind: WorkspaceKind): WorkspaceTemplate[] {
   return TEMPLATES.filter(t => t.kind === kind);
@@ -550,6 +578,7 @@ export function templateForLanguage(language: string | null | undefined): string
     case 'sql': case 'tsql': return 'sql-empty';
     case 'typescript': case 'ts': return 'typescript';
     case 'javascript': case 'js': return 'javascript';
+    case 'python': case 'py': return 'python';
     default: return null;
   }
 }

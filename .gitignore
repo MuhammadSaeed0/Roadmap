@@ -32,3 +32,6 @@ deploy/production.env
 frontend/public/runners/csharp/
 frontend/public/runners/angular/vendor/
 frontend/public/runners/angular/types/
+# Pyodide (the Python runner), copied from node_modules by build-runners.mjs; the engine script is ours
+frontend/public/runners/python/*
+!frontend/public/runners/python/python-engine.js

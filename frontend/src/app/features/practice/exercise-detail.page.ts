@@ -15,7 +15,7 @@ import { ErrorStateComponent, SkeletonComponent } from '../../shared/ui.componen
 import { TYPE_ICONS } from './practice.page';
 
 const RUNNER_KIND: Record<Exclude<ExerciseRunner, 'None'>, WorkspaceKind> = {
-  CSharp: 'CSharp', Sql: 'Sql', JavaScript: 'JavaScript', TypeScript: 'TypeScript', Web: 'Web', Angular: 'Angular',
+  CSharp: 'CSharp', Sql: 'Sql', JavaScript: 'JavaScript', TypeScript: 'TypeScript', Web: 'Web', Angular: 'Angular', Python: 'Python',
 };
 
 /** The editor kind for an exercise: its runner, or (for code that doesn't run in the browser) its files' language. */

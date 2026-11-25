@@ -12,9 +12,9 @@ import { IconComponent } from '../../shared/icon.component';
 import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, SkeletonComponent } from '../../shared/ui.components';
 
 export const WORKSPACE_ICONS: Record<WorkspaceKind, string> = {
-  CSharp: 'code', Sql: 'database', JavaScript: 'terminal', TypeScript: 'terminal', Web: 'globe', Angular: 'layers',
+  CSharp: 'code', Sql: 'database', JavaScript: 'terminal', TypeScript: 'terminal', Web: 'globe', Angular: 'layers', Python: 'code',
 };
-const KINDS: WorkspaceKind[] = ['CSharp', 'Sql', 'Angular', 'TypeScript', 'JavaScript', 'Web'];
+const KINDS: WorkspaceKind[] = ['CSharp', 'Sql', 'Angular', 'TypeScript', 'JavaScript', 'Python', 'Web'];
 
 /** Code Playground: pick an environment and a template, or reopen a saved project. */
 @Component({

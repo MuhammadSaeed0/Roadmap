@@ -546,7 +546,7 @@ export const en = {
     skillLine: '{done} completed · {left} left', groupLine: '{done} of {total} completed', submissionsTitle: 'Your submissions', loadSubmission: 'Load this code',
     loadSubmissionConfirm: 'Replace the code in the editor with this submission?', search: 'Search exercises…', allTypes: 'All types', allDifficulties: 'All levels', anyStatus: 'Any status',
     runnableOnly: 'Runs in the browser', showing: 'Showing {n} of {total} exercises', bestScore: 'Best score {score}%', technologies: 'Technologies',
-    runner: { CSharp: 'Run C#', Sql: 'Run SQL', JavaScript: 'Run JS', TypeScript: 'Run TS', Web: 'Live preview', Angular: 'Angular preview' },
+    runner: { Python: 'Run Python', CSharp: 'Run C#', Sql: 'Run SQL', JavaScript: 'Run JS', TypeScript: 'Run TS', Web: 'Live preview', Angular: 'Angular preview' },
     scenario: 'Scenario', requirements: 'Requirements', acceptance: 'Acceptance criteria', acceptanceHint: 'Tick each one when your solution meets it.',
     bonus: 'Bonus requirements (optional)', yourNotes: 'Notes and explanation', notesHint: 'Optional: explain your approach in your own words. Saved code also counts as an attempt.',
     buildLocally: 'This challenge needs a real server, database or several apps working together. Build it in your own environment (VS Code, SQL Server); use the editor here for the starter files and to save your work.',
