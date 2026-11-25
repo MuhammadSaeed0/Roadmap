@@ -9,7 +9,7 @@ export const en = {
     dashboard: 'Dashboard', glossary: 'Glossary', roadmap: 'My Roadmap', library: 'Learning Library', projects: 'Main Projects',
     practice: 'Practice Lab', interviews: 'Interview Preparation', resources: 'Resources', notes: 'My Notes',
     progress: 'Reviews & Sessions', career: 'Career Readiness', settings: 'Settings', search: 'Search',
-    learn: 'Learn', build: 'Build & practise', track: 'My progress', manage: 'Manage', admin: 'Administration', marketing: 'Marketing Studio',
+    learn: 'Learn', build: 'Build & practise', track: 'My progress', manage: 'Manage', admin: 'Administration', marketing: 'Marketing Studio', invite: 'Invite friends',
     playground: 'Code Playground', videos: 'Video Library', cv: 'CV Builder', skills: 'Developer Level', challenges: 'Challenges',
     watch: 'Watch & read', prepare: 'Interviews & notes', account: 'Account',
     discussions: 'Discussions', paths: 'Learning Paths', reviews: 'Peer reviews',
@@ -402,6 +402,12 @@ export const en = {
     reset: 'Reset', characters: '{count} characters',
     share: 'Share post and images', shareHint: 'Opens your phone’s share menu with the images. The post is copied first, so paste it into Facebook.',
     shareToast: 'Post copied. Choose Facebook, then paste the text.', shareUnsupported: 'This browser cannot share files. Download the images instead.',
+    learner: {
+      title: 'Invite friends',
+      subtitle: 'Know someone learning to code? Copy a ready post or message, or share the screenshots. Your link tells us the site was shared by a learner.',
+      kitTitle: 'Messages to share', kitIntro: 'Short messages for a friend, your class chat or LinkedIn. Edit them in your own words before you send.',
+      linksHint: 'Use the link of the app you share in.',
+    },
     growth: {
       title: 'Growth kit', intro: 'Ready-to-post pieces for each channel, with links that the Usage tab can count. Nothing is posted for you: copy, check, post.',
       links: 'Tracked links', linksHint: 'Use the link of the channel you post on. Admin, Usage, “Where visitors come from” then shows its visits and new accounts.',

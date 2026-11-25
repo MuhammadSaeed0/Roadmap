@@ -1,18 +1,21 @@
 import { ChangeDetectionStrategy, Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
+import { AuthService } from '../../core/auth.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { FormatNumberPipe, TranslatePipe } from '../../core/i18n/pipes';
 import { ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import { PageHeaderComponent } from '../../shared/ui.components';
 import {
-  APP_URL, HASHTAGS, KIT, KIT_KINDS, KitItem, MarketingShot, POST_AR, POST_EN, SHORT_AR, SHORT_EN, SHOTS, SOURCES, shotUrl, trackedUrl,
+  APP_URL, HASHTAGS, KIT, KIT_KINDS, KitItem, LEARNER_POST_AR, LEARNER_POST_EN, LEARNER_SOURCES, MarketingShot, POST_AR, POST_EN,
+  SHORT_AR, SHORT_EN, SHOTS, SOURCES, shotUrl, trackedUrl,
 } from './marketing.content';
 
 type PostLang = 'ar' | 'en';
 
 /**
- * Marketing Studio (administrators only): the Facebook post, the publishing kit and the screenshot gallery, built to be
- * used from a phone. Copy uses the Clipboard API, sharing uses the Web Share API (with the images where the browser can
+ * Marketing Studio: the post, the publishing kit, the growth kit and the screenshot gallery, built to be used from a
+ * phone. Every signed-in learner can open it to invite friends; they get posts written in a learner's voice, while the
+ * owner's own posts ("I built DevPath") and the channel campaigns are shown to administrators only. Copy uses the Clipboard API, sharing uses the Web Share API (with the images where the browser can
  * share files), and nothing is ever posted automatically.
  */
 @Component({
@@ -26,22 +29,25 @@ export default class MarketingPage {
   private readonly i18n = inject(I18nService);
   private readonly toast = inject(ToastService);
 
-  protected readonly appUrl = APP_URL;
+  /** Administrators see the owner's kit; learners see the pieces written for them to share. */
+  protected readonly isAdmin = inject(AuthService).isAdmin;
+  protected readonly appUrl = this.isAdmin() ? APP_URL : trackedUrl('friend');
   protected readonly tagList = HASHTAGS;
   protected readonly hashtags = HASHTAGS.join(' ');
   protected readonly shots = SHOTS;
-  protected readonly sources = SOURCES;
+  protected readonly sources = this.isAdmin() ? SOURCES : LEARNER_SOURCES;
   protected readonly tracked = trackedUrl;
-  protected readonly kinds = KIT_KINDS;
-  protected readonly kind = signal<KitItem['kind']>('facebook');
-  protected readonly items = computed(() => KIT.filter(i => i.kind === this.kind()));
+  private readonly kit = KIT.filter(i => this.isAdmin() || i.audience === 'all');
+  protected readonly kinds = KIT_KINDS.filter(k => this.kit.some(i => i.kind === k));
+  protected readonly kind = signal<KitItem['kind']>(this.kinds[0]);
+  protected readonly items = computed(() => this.kit.filter(i => i.kind === this.kind()));
   protected readonly url = shotUrl;
-  protected readonly facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(APP_URL);
+  protected readonly facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(this.appUrl);
 
   protected readonly postLang = signal<PostLang>(this.i18n.lang() === 'en' ? 'en' : 'ar');
   /** The text being edited; null means the original post of the chosen language. */
   private readonly edits = signal<Record<PostLang, string | null>>({ ar: null, en: null });
-  protected readonly original = computed(() => (this.postLang() === 'ar' ? POST_AR : POST_EN));
+  protected readonly original = computed(() => (this.postLang() === 'ar' ? (this.isAdmin() ? POST_AR : LEARNER_POST_AR) : (this.isAdmin() ? POST_EN : LEARNER_POST_EN)));
   protected readonly text = computed(() => this.edits()[this.postLang()] ?? this.original());
   protected readonly edited = computed(() => this.text() !== this.original());
   protected readonly shortCaption = computed(() => (this.postLang() === 'ar' ? SHORT_AR : SHORT_EN));

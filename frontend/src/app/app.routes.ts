@@ -46,7 +46,7 @@ const appRoutes: Routes = [
   { path: 'paths/new', loadComponent: () => import('./features/paths/path-create.page'), data: { titleKey: 'nav.paths', helpId: 'path-create', skin: 'threads' } },
   { path: 'paths/:id/edit', loadComponent: () => import('./features/paths/path-create.page'), data: { titleKey: 'nav.paths', helpId: 'path-create', skin: 'threads' } },
   { path: 'paths/:id', loadComponent: () => import('./features/paths/path-detail.page'), data: { titleKey: 'nav.paths', helpId: 'path', skin: 'threads' } },
-  { path: 'marketing', loadComponent: () => import('./features/marketing/marketing.page'), canActivate: [adminGuard], data: { titleKey: 'nav.marketing', helpId: 'marketing', skin: 'bird' } },
+  { path: 'marketing', loadComponent: () => import('./features/marketing/marketing.page'), data: { titleKey: 'nav.invite', helpId: 'marketing', skin: 'bird' } },
   { path: 'admin', loadComponent: () => import('./features/admin/admin.page'), canActivate: [adminGuard], data: { titleKey: 'nav.admin', helpId: 'admin', skin: 'bird' } },
   { path: '**', loadComponent: () => import('./features/not-found.page'), data: { titleKey: 'notFound.title', skin: 'bird' } },
 ];

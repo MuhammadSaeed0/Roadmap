@@ -54,7 +54,7 @@ export const content: TourContent = {
     'cv-editor': { title: 'CV editor', summary: 'Edit your CV section by section beside a live preview of the real PDF. Changes are saved automatically.' },
     settings: { title: 'Settings', summary: 'Language and theme, your learning preferences, and your account.' },
     search: { title: 'Search', summary: 'Results from across DevPath for what you typed, grouped by kind.' },
-    marketing: { title: 'Marketing Studio', summary: 'For administrators: the Facebook post, the publishing kit and real screenshots, ready to copy, download and share from a phone.' },
+    marketing: { title: 'Invite friends', summary: 'A ready post, messages and real screenshots to share DevPath with friends, ready to copy, download and share from a phone.' },
     admin: { title: 'Administration', summary: 'For administrators: manage accounts and administrators, see how the site is used, and review what changed.' },
     playground: { title: 'Code Playground', summary: 'Coding environments for C#, SQL, TypeScript, JavaScript, HTML/CSS and Angular. Start from a template, write and run code in your browser, and save projects to your account.' },
     workspace: { title: 'Workspace', summary: 'A small IDE: a file explorer, tabs, the editor, and an output panel (with a live preview for web and Angular projects). Your code runs in your browser.' },

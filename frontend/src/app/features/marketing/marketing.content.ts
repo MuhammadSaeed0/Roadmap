@@ -19,6 +19,9 @@ export const SOURCES = ['facebook', 'whatsapp', 'telegram', 'linkedin', 'reddit'
 export type Source = (typeof SOURCES)[number];
 export const trackedUrl = (source: Source) => `${APP_URL}/?utm_source=${source}`;
 
+/** The links a learner gets: their shares are counted as "friend" (word of mouth), or by the app they post in. */
+export const LEARNER_SOURCES: readonly Source[] = ['friend', 'whatsapp', 'telegram', 'facebook', 'linkedin'];
+
 const LRM = '‎';
 const NET = `${LRM}.NET`;
 const CS = `C#${LRM}`;
@@ -117,6 +120,8 @@ export interface KitItem {
   id: string;
   kind: 'facebook' | 'reddit' | 'video' | 'linkedin' | 'intro' | 'referral';
   lang: 'ar' | 'en';
+  /** 'all': written in a learner's voice, so every signed-in user sees it. Otherwise it is the owner's (admins only). */
+  audience?: 'all';
   en: string;
   ar: string;
   text: string;
@@ -347,13 +352,65 @@ Feedback very welcome.`,
 
   // ---------- Referral: what a learner can send a friend ----------
   {
-    id: 'referral-ar', kind: 'referral', lang: 'ar', en: 'Send to a friend (WhatsApp, Arabic)', ar: 'رسالة لصديق على واتساب',
+    id: 'referral-ar', kind: 'referral', lang: 'ar', audience: 'all', en: 'Send to a friend (WhatsApp, Arabic)', ar: 'رسالة لصديق على واتساب',
     text: `لقيت موقع مجاني بيمشّيك في البرمجة خطوة بخطوة بالعربي، من الصفر لحد ${NET} و Angular، وفيه درس وتمرين لكل موضوع. تعالى نذاكر عليه سوا 👇
 ${trackedUrl('friend')}`,
   },
   {
-    id: 'referral-en', kind: 'referral', lang: 'en', en: 'Send to a friend (English)', ar: 'رسالة لصديق بالإنجليزية',
+    id: 'referral-en', kind: 'referral', lang: 'en', audience: 'all', en: 'Send to a friend (English)', ar: 'رسالة لصديق بالإنجليزية',
     text: `Found a free step-by-step roadmap for .NET and Angular, with a lesson and an exercise for every topic. Want to go through it together? 👇
 ${trackedUrl('friend')}`,
   },
+  {
+    id: 'learner-study-group', kind: 'referral', lang: 'ar', audience: 'all', en: 'Study group or class chat (Arabic)', ar: 'جروب الدفعة أو المذاكرة',
+    text: `يا جماعة، لو حد فيكم عايز يذاكر برمجة بترتيب واضح، فيه موقع مجاني اسمه "مسار المبرمج" (DevPath): خارطة طريق ${NET} و Angular بالعربي، لكل موضوع درس وتمرين، وفيه محرر بيشغّل الكود في المتصفح.
+ممكن نمشي عليه سوا ونسأل بعض 👇
+${trackedUrl('whatsapp')}`,
+  },
+  {
+    id: 'learner-linkedin-en', kind: 'linkedin', lang: 'en', audience: 'all', en: 'LinkedIn: share a finished phase', ar: 'لينكدإن: شارك مرحلة أنهيتها',
+    text: `I just finished a phase of the DevPath .NET and Angular roadmap 🎯
+
+It covered [write the phase name here], with a lesson, a quiz and exercises for every topic. Next up: [the next phase].
+
+If you're learning .NET too, the roadmap is free: ${trackedUrl('linkedin')}
+
+#dotnet #csharp #learning`,
+  },
+  {
+    id: 'learner-linkedin-ar', kind: 'linkedin', lang: 'ar', audience: 'all', en: 'LinkedIn (Arabic): share a finished phase', ar: 'لينكدإن بالعربية: شارك مرحلة أنهيتها',
+    text: `خلّصت مرحلة جديدة من خارطة طريق ${NET} و Angular على "مسار المبرمج" 🎯
+
+المرحلة كانت عن [اكتب اسم المرحلة هنا]، ولكل موضوع فيها درس واختبار وتمارين. الخطوة الجاية: [المرحلة اللي بعدها].
+
+لو بتتعلم ${NET} إنت كمان، الموقع مجاني 👇
+${trackedUrl('linkedin')}`,
+  },
 ];
+
+/** The post a learner shares about the site: in their voice, no claim that they built it, nothing they can't check. */
+export const LEARNER_POST_AR = `لو بتدوّر على مكان تذاكر فيه برمجة بترتيب واضح، جرّب "مسار المبرمج" (DevPath) 👇
+
+موقع مجاني بالعربي والإنجليزي بيمشّيك من أول سطر كود لحد تطبيق ويب كامل بـ ${NET} و Angular:
+
+🗺️ خارطة طريق من 14 مرحلة و166 موضوع، لكل موضوع درس مكتوب بالعربي واختبار قصير.
+💻 محرر بيشغّل ${CS} و SQL في المتصفح، من غير ما تنزّل أي برنامج.
+🧩 أكتر من 250 تمرين، و66 مشروع بخطوات.
+🎯 أكتر من 900 سؤال مقابلات بإجاباتهم.
+🏅 شهادة لكل مرحلة تخلّصها، تضيفها لـ LinkedIn.
+
+التسجيل بإيميل بس 👇
+${trackedUrl('friend')}`;
+
+export const LEARNER_POST_EN = `Looking for a clear, step-by-step way to learn programming? Try DevPath 👇
+
+A free site, in English and Arabic, that takes you from your first line of code to a complete web app with .NET and Angular:
+
+🗺️ A roadmap of 14 phases and 166 topics, each with a written lesson and a short quiz.
+💻 A code editor that runs C# and SQL in the browser, nothing to install.
+🧩 250+ exercises and 66 step-by-step projects.
+🎯 900+ interview questions with answers.
+🏅 A certificate for every phase you finish, ready to add to LinkedIn.
+
+Sign up with just an email 👇
+${trackedUrl('friend')}`;
