@@ -4,7 +4,9 @@ import { FormatNumberPipe, TranslatePipe } from '../../core/i18n/pipes';
 import { ToastService } from '../../core/ui-services';
 import { IconComponent } from '../../shared/icon.component';
 import { PageHeaderComponent } from '../../shared/ui.components';
-import { APP_URL, HASHTAGS, MarketingShot, POST_AR, POST_EN, SHORT_AR, SHORT_EN, SHOTS, shotUrl } from './marketing.content';
+import {
+  APP_URL, HASHTAGS, KIT, KIT_KINDS, KitItem, MarketingShot, POST_AR, POST_EN, SHORT_AR, SHORT_EN, SHOTS, SOURCES, shotUrl, trackedUrl,
+} from './marketing.content';
 
 type PostLang = 'ar' | 'en';
 
@@ -28,6 +30,11 @@ export default class MarketingPage {
   protected readonly tagList = HASHTAGS;
   protected readonly hashtags = HASHTAGS.join(' ');
   protected readonly shots = SHOTS;
+  protected readonly sources = SOURCES;
+  protected readonly tracked = trackedUrl;
+  protected readonly kinds = KIT_KINDS;
+  protected readonly kind = signal<KitItem['kind']>('facebook');
+  protected readonly items = computed(() => KIT.filter(i => i.kind === this.kind()));
   protected readonly url = shotUrl;
   protected readonly facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(APP_URL);
 
@@ -56,6 +63,10 @@ export default class MarketingPage {
 
   protected reset(): void {
     this.edits.update(e => ({ ...e, [this.postLang()]: null }));
+  }
+
+  protected itemTitle(item: KitItem): string {
+    return this.i18n.pick(item.en, item.ar);
   }
 
   protected caption(shot: MarketingShot): string {

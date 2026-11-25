@@ -10,7 +10,8 @@ namespace DevPath.Api.DTOs;
 public record RegisterRequest(
     [Required, MaxLength(100)] string? FullName,
     [Required, EmailAddress, MaxLength(254)] string? Email,
-    [Required, MinLength(8), MaxLength(128)] string? Password);
+    [Required, MinLength(8), MaxLength(128)] string? Password,
+    [MaxLength(40)] string? Source = null);
 
 public record LoginRequest(
     [Required, EmailAddress, MaxLength(254)] string? Email,

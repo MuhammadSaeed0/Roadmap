@@ -28,7 +28,7 @@ export default class LandingPage {
   protected readonly facts = [
     { n: '14', key: 'landing.facts.phases', icon: 'map' },
     { n: '166', key: 'landing.facts.topics', icon: 'book' },
-    { n: '178', key: 'landing.facts.exercises', icon: 'code' },
+    { n: '250+', key: 'landing.facts.exercises', icon: 'code' },
     { n: '97', key: 'landing.facts.challenges', icon: 'target' },
     { n: '66', key: 'landing.facts.projects', icon: 'layers' },
     { n: '900+', key: 'landing.facts.interviews', icon: 'chat' },

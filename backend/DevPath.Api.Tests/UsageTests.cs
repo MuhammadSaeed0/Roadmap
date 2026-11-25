@@ -79,4 +79,39 @@ public class UsageTests(ApiFactory factory) : IClassFixture<ApiFactory>
         Assert.Equal(before["learnersFinished"]!.GetValue<int>() + 1, after["learnersFinished"]!.GetValue<int>());
         Assert.Equal(before["projectsFinished"]!.GetValue<int>() + 1, after["projectsFinished"]!.GetValue<int>());
     }
+
+    [Theory]
+    [InlineData(null, "direct")]
+    [InlineData("", "direct")]
+    [InlineData(" Facebook ", "facebook")]
+    [InlineData("reddit", "reddit")]
+    [InlineData("someone@example.com", "other")]
+    [InlineData("<script>", "other")]
+    public void Sources_come_from_a_fixed_list(string? source, string expected) => Assert.Equal(expected, UsageService.NormalizeSource(source));
+
+    [Fact]
+    public async Task Guest_visits_and_sign_ups_are_counted_per_source_without_an_account()
+    {
+        var (admin, _) = await factory.CreateAdminClientAsync();
+        async Task<(int Visits, int SignUps)> Linkedin()
+        {
+            var row = (await Json(await admin.GetAsync("/api/admin/usage")))["sources"]!.AsArray()
+                .SingleOrDefault(s => s!["source"]!.GetValue<string>() == "linkedin");
+            return row is null ? (0, 0) : (row["visits"]!.GetValue<int>(), row["signUps"]!.GetValue<int>());
+        }
+        var before = await Linkedin();
+
+        var guest = factory.CreateClient();
+        for (var i = 0; i < 2; i++)
+            Assert.Equal(HttpStatusCode.NoContent, (await guest.PostAsJsonAsync("/api/usage/visits", new { source = "linkedin" })).StatusCode);
+        Assert.Equal(HttpStatusCode.Created, (await factory.CreateClient().PostAsJsonAsync("/api/auth/register",
+            new { fullName = "Source Test", email = $"src-{Guid.NewGuid():N}@example.com", password = "Passw0rd!x", source = "linkedin" })).StatusCode);
+
+        var after = await Linkedin();
+        Assert.Equal(before.Visits + 2, after.Visits);
+        Assert.Equal(before.SignUps + 1, after.SignUps);
+        // An unknown source is stored as "other", never as the text that was sent.
+        (await guest.PostAsJsonAsync("/api/usage/visits", new { source = "my-secret-campaign" })).EnsureSuccessStatusCode();
+        Assert.DoesNotContain("my-secret-campaign", (await Json(await admin.GetAsync("/api/admin/usage"))).ToJsonString());
+    }
 }

@@ -2208,6 +2208,26 @@ namespace DevPath.Api.Migrations
                     b.ToTable("ReviewSchedules");
                 });
 
+            modelBuilder.Entity("DevPath.Api.Models.SourceVisitDaily", b =>
+                {
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Source")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("SignUps")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Visits")
+                        .HasColumnType("int");
+
+                    b.HasKey("Date", "Source");
+
+                    b.ToTable("SourceVisitsDaily", (string)null);
+                });
+
             modelBuilder.Entity("DevPath.Api.Models.StudySession", b =>
                 {
                     b.Property<int>("Id")

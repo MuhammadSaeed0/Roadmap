@@ -133,6 +133,9 @@ builder.Services.AddRateLimiter(o =>
             PermitLimit = builder.Configuration.GetValue("Auth:AttemptsPerMinute", 10),
             Window = TimeSpan.FromMinutes(1),
         }));
+    o.AddPolicy(DevPath.Api.Controllers.UsageController.VisitPolicy, http => RateLimitPartition.GetFixedWindowLimiter(
+        http.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 30, Window = TimeSpan.FromMinutes(1) }));
     // Per account: rendering a CV costs CPU.
     static string Account(HttpContext http) =>
         http.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? http.Connection.RemoteIpAddress?.ToString() ?? "unknown";

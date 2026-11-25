@@ -10,6 +10,7 @@ const usage: AdminUsage = {
   topPages: [{ route: 'topics/:id', views: 40, days: 9 }, { route: '', views: 17, days: 6 }, { route: 'old-page', views: 2, days: 1 }],
   daily: Array.from({ length: 60 }, (_, i) => ({ date: `2026-${i < 30 ? 10 : 11}-${String((i % 28) + 1).padStart(2, '0')}`, views: i === 59 ? 12 : 1 })),
   library: { learnersStarted: 5, learnersFinished: 2, projectsFinished: 3 },
+  sources: [],
 };
 
 let requestedDays = 0;
@@ -31,7 +32,7 @@ describe('AdminUsageComponent', () => {
     expect(USAGE_DAYS).toBe(60);
     expect([...el.querySelectorAll('.stat-value')].map(v => v.textContent?.trim())).toEqual(['59', '5', '2', '3']);
     expect(el.querySelectorAll('.day').length).toBe(60);
-    const rows = [...el.querySelectorAll('tbody tr')].map(r => [
+    const rows = [...el.querySelectorAll('section[aria-labelledby="usage-top-h"] tbody tr')].map(r => [
       r.querySelector('.page-name')?.textContent?.trim() ?? null, r.querySelector('.route')?.textContent?.trim(),
       ...[...r.querySelectorAll('td.num')].map(td => td.textContent?.trim()),
     ]);
@@ -43,6 +44,19 @@ describe('AdminUsageComponent', () => {
     ]);
     expect(el.textContent).toContain('Last 60 days');
     expect(el.textContent).toContain('never who opened them');
+  });
+
+  it('shows visits, new accounts and the sign-up rate per link source', async () => {
+    usage.sources = [{ source: 'facebook', visits: 40, signUps: 6 }, { source: 'direct', visits: 0, signUps: 1 }];
+    try {
+      const el = await render('ar');
+      const rows = [...el.querySelectorAll('section[aria-labelledby="usage-src-h"] tbody tr')]
+        .map(r => [...r.querySelectorAll('td')].map(td => td.textContent?.trim()));
+      expect(rows).toEqual([['facebook', '40', '6', '15%'], ['direct', '0', '1', '–']]);
+      expect(el.textContent).toContain('من أين يأتي الزوار');
+    } finally {
+      usage.sources = [];
+    }
   });
 
   it('names every page a signed-in learner can open', () => {
