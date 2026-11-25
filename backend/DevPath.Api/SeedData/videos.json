@@ -6289,5 +6289,185 @@
       "channel": "Code with Akshayz",
       "language": "en"
     }
+  ],
+  "ai-prompt-anatomy": [
+    {
+      "videoId": "_ZvnD73m40o",
+      "title": "Prompt Engineering Tutorial – Master ChatGPT and LLM Responses",
+      "channel": "freeCodeCamp.org",
+      "language": "en"
+    },
+    {
+      "videoId": "ysPbXH0LpIE",
+      "title": "Prompting 101 | Code w/ Claude",
+      "channel": "Anthropic",
+      "language": "en"
+    },
+    {
+      "videoId": "H3M95i4iS5c",
+      "title": "Essential AI prompts for developers",
+      "channel": "Visual Studio Code",
+      "language": "en"
+    },
+    {
+      "videoId": "2_3WuekEg4s",
+      "title": "أساسيات هندسة أوامر الذكاء الاصطناعي - PROMPT ENGINEERING BASICS | وليد طه",
+      "channel": "Walid Taha",
+      "language": "ar"
+    },
+    {
+      "videoId": "gZv5hFW3OF8",
+      "title": "كورس هندسة التلقين | Prompt Engineering MasterClass",
+      "channel": "Python Arabic Community",
+      "language": "ar"
+    }
+  ],
+  "ai-prompt-few-shot": [
+    {
+      "videoId": "ojtbHUqw1LA",
+      "title": "Few-Shot Prompting Explained",
+      "channel": "Elvis Saravia",
+      "language": "en"
+    },
+    {
+      "videoId": "QZyYFyx_4RY",
+      "title": "How to Implement Few-Shot Prompting (Beginner-Friendly Tutorial)",
+      "channel": "Dan Vega",
+      "language": "en"
+    },
+    {
+      "videoId": "9qdgEBVkWR4",
+      "title": "Discover Few-Shot Prompting | Google AI Essentials",
+      "channel": "Grow with Google",
+      "language": "en"
+    },
+    {
+      "videoId": "COyeu9okzsE",
+      "title": "إزاي تخلي الـذكاء الاصطناعى يفهمك؟ | prompt/context engineering crash course",
+      "channel": "Fahem AI",
+      "language": "ar"
+    }
+  ],
+  "ai-prompt-reasoning": [
+    {
+      "videoId": "AFE6x81AP4k",
+      "title": "Chain-of-thought prompting - Explained!",
+      "channel": "CodeEmporium",
+      "language": "en"
+    },
+    {
+      "videoId": "C_gf9KNScIo",
+      "title": "Everything you need to know about Chain of Thought prompting",
+      "channel": "Dan Cleary ",
+      "language": "en"
+    },
+    {
+      "videoId": "iDu0FB3nwig",
+      "title": "What is Prompt Chaining in AI Agents? - Theory and Code",
+      "channel": "Deep Learning with Yacine",
+      "language": "en"
+    },
+    {
+      "videoId": "BTaJPd7RxU4",
+      "title": "هندسة السياق - الجزء الثالث: تقنية سلاسل الأفكار (Chain-of-Thought/COT).",
+      "channel": "Python Arabic Community",
+      "language": "ar"
+    },
+    {
+      "videoId": "KQZI6SNRsjk",
+      "title": "03 ــــ جزء 1ــــ شرح Prompt Chaining: أول Workflow في أنظمة Anthropic الذكية",
+      "channel": "AI Plus - محمد الشامي",
+      "language": "ar"
+    }
+  ],
+  "ai-prompt-templates": [
+    {
+      "videoId": "Q7HgIsmobc8",
+      "title": "04. Using Prompt Templates With Semantic Kernel - OpenAI and Azure OpenAI",
+      "channel": "Shweta Lodha",
+      "language": "en"
+    },
+    {
+      "videoId": "dYFT0Ux4oDU",
+      "title": "Semantic Kernel Intro: 3: YAML Prompts",
+      "channel": "CodeWrecks",
+      "language": "en"
+    },
+    {
+      "videoId": "iw4jlKdq4qA",
+      "title": "20 - Unveiling HandlebarsPromptTemplateFactory in Microsoft Semantic Kernel",
+      "channel": "Learn Microsoft AI",
+      "language": "en"
+    },
+    {
+      "videoId": "5V64btczj9o",
+      "title": "E2- Prompt Templates | Hands-On LangChain | In Arabic - بالعربي",
+      "channel": "Youssef Hosni | يوسف حسني",
+      "language": "ar"
+    },
+    {
+      "videoId": "3mcyWnMfZwY",
+      "title": "الدليل الكامل لكتابة برومبت مثالي (8 مكونات تخلي الـ AI ميغلطش معاك أبداً!)",
+      "channel": "Ahmed Eltalkhawy",
+      "language": "ar"
+    }
+  ],
+  "ai-prompt-injection": [
+    {
+      "videoId": "jrHRe9lSqqA",
+      "title": "What Is a Prompt Injection Attack?",
+      "channel": "IBM Technology",
+      "language": "en"
+    },
+    {
+      "videoId": "KDcayRssGbw",
+      "title": "Prompt Injection, Clearly Explained",
+      "channel": "ByteByteAI",
+      "language": "en"
+    },
+    {
+      "videoId": "Sv5OLj2nVAQ",
+      "title": "Attacking LLM - Prompt Injection",
+      "channel": "LiveOverflow",
+      "language": "en"
+    },
+    {
+      "videoId": "Vre621O-UgE",
+      "title": "كيف يتم اختراق الذكاء الإصطناعي؟ | شرح الـ Prompt Injection",
+      "channel": "تيك سيكيورد",
+      "language": "ar"
+    },
+    {
+      "videoId": "NrAJZ2Hj7d0",
+      "title": "البرومبت المظلم: إزاي الـAI بيتخدع؟ | شرح Prompt Injection بالعربي",
+      "channel": "Ahmed Morgan",
+      "language": "ar"
+    }
+  ],
+  "ai-prompt-evaluation": [
+    {
+      "videoId": "a3SMraZWNNs",
+      "title": "How to Systematically Setup LLM Evals (Metrics, Unit Tests, LLM-as-a-Judge)",
+      "channel": "Dave Ebbelaar",
+      "language": "en"
+    },
+    {
+      "videoId": "trfUBIDeI1Y",
+      "title": "LLM as a Judge: Scaling AI Evaluation Strategies",
+      "channel": "IBM Technology",
+      "language": "en"
+    },
+    {
+      "videoId": "AyzLIRBuUN8",
+      "title": "What Exactly are AI Evals? And How to Build Your First One... Correctly!",
+      "channel": "Prompt Engineering",
+      "language": "en"
+    },
+    {
+      "videoId": "FNgu8jTYX4g",
+      "title": "23. كيفية تقييم نماذج اللغة الكبيرة(How to Evaluate LLMs)",
+      "channel": "Learn AI Fast",
+      "language": "ar"
+    }
   ]
 }

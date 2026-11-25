@@ -74,7 +74,8 @@
       "professional-skills": "architecture", "cloud-devops": "devops",
       "ai-llm-foundations": "dotnet",
       "ai-python-for-devs": "fundamentals",
-      "ai-dotnet-models": "dotnet"
+      "ai-dotnet-models": "dotnet",
+      "ai-prompt-engineering": "dotnet"
     }
   },
 
@@ -85,7 +86,8 @@
     "professional-skills": "Advanced", "cloud-devops": "Advanced",
     "ai-llm-foundations": "Beginner",
     "ai-python-for-devs": "Beginner",
-    "ai-dotnet-models": "Intermediate"
+    "ai-dotnet-models": "Intermediate",
+    "ai-prompt-engineering": "Intermediate"
   },
 
   "exerciseExtraCategories": {

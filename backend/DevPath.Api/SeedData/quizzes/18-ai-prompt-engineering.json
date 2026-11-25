@@ -1,0 +1,1010 @@
+[
+  {
+    "key": "qz-ai-prompt-anatomy-1",
+    "topic": "ai-prompt-anatomy",
+    "questionEn": "Which part tells the model what shape the answer takes?",
+    "questionAr": "أي جزء يخبر النموذج بشكل الإجابة؟",
+    "optionsEn": [
+      "The role",
+      "The format",
+      "The context",
+      "The examples"
+    ],
+    "optionsAr": [
+      "الدور",
+      "الصيغة",
+      "السياق",
+      "الأمثلة"
+    ],
+    "answer": 1,
+    "explanationEn": "Format sets length, structure and language.",
+    "explanationAr": "الصيغة تحدد الطول والبنية واللغة."
+  },
+  {
+    "key": "qz-ai-prompt-anatomy-2",
+    "topic": "ai-prompt-anatomy",
+    "questionEn": "What belongs in the system message?",
+    "questionAr": "ما الذي يوضع في رسالة النظام؟",
+    "optionsEn": [
+      "The customer's question",
+      "Rules that stay the same",
+      "The model's last answer",
+      "The API key"
+    ],
+    "optionsAr": [
+      "سؤال العميل",
+      "القواعد التي لا تتغير",
+      "آخر إجابة للنموذج",
+      "مفتاح الـ API"
+    ],
+    "answer": 1,
+    "explanationEn": "Stable instructions go in the system message; requests in user messages.",
+    "explanationAr": "التعليمات الثابتة في رسالة النظام والطلبات في رسائل المستخدم."
+  },
+  {
+    "key": "qz-ai-prompt-anatomy-3",
+    "topic": "ai-prompt-anatomy",
+    "questionEn": "Which instruction is clearest?",
+    "questionAr": "أي تعليمة أوضح؟",
+    "optionsEn": [
+      "Be brief",
+      "Answer in two sentences",
+      "Don't ramble",
+      "Keep it short-ish"
+    ],
+    "optionsAr": [
+      "كن مختصرًا",
+      "أجب في جملتين",
+      "لا تُطِل الكلام",
+      "اجعلها قصيرة نوعًا ما"
+    ],
+    "answer": 1,
+    "explanationEn": "Specific, measurable instructions are followed more reliably.",
+    "explanationAr": "التعليمات المحددة القابلة للقياس تُتبع بثبات أكبر."
+  },
+  {
+    "key": "qz-ai-prompt-anatomy-4",
+    "topic": "ai-prompt-anatomy",
+    "questionEn": "Why say what to do when the answer is unknown?",
+    "questionAr": "لماذا تحدد ما يفعله النموذج عندما لا يعرف الإجابة؟",
+    "optionsEn": [
+      "To save tokens on each call",
+      "To reduce made-up answers",
+      "To speed up every reply",
+      "To hide the prompt from users"
+    ],
+    "optionsAr": [
+      "لتوفير التوكنات في كل استدعاء",
+      "لتقليل الإجابات المختلقة",
+      "لتسريع كل رد يصل",
+      "لإخفاء الطلب عن المستخدمين"
+    ],
+    "answer": 1,
+    "explanationEn": "Without a fallback, models tend to guess.",
+    "explanationAr": "دون بديل يميل النموذج إلى التخمين."
+  },
+  {
+    "key": "qz-ai-prompt-anatomy-5",
+    "topic": "ai-prompt-anatomy",
+    "questionEn": "Why wrap context in tags like <order>?",
+    "questionAr": "لماذا تغلّف السياق بوسوم مثل <order>؟",
+    "optionsEn": [
+      "Tags are required",
+      "To separate facts from rules",
+      "To make it run faster",
+      "To translate the text"
+    ],
+    "optionsAr": [
+      "لأن الوسوم إلزامية",
+      "لفصل الحقائق عن القواعد",
+      "لتعمل أسرع",
+      "لترجمة النص"
+    ],
+    "answer": 1,
+    "explanationEn": "Clear boundaries help the model tell data from instructions.",
+    "explanationAr": "الحدود الواضحة تساعد النموذج على تمييز البيانات من التعليمات."
+  },
+  {
+    "key": "qz-ai-prompt-anatomy-6",
+    "topic": "ai-prompt-anatomy",
+    "questionEn": "Most bad answers come from...",
+    "questionAr": "أغلب الإجابات السيئة تأتي من...",
+    "optionsEn": [
+      "Slow networks",
+      "Unclear prompts",
+      "Old hardware",
+      "Short API keys"
+    ],
+    "optionsAr": [
+      "شبكات بطيئة",
+      "طلبات غير واضحة",
+      "عتاد قديم",
+      "مفاتيح API قصيرة"
+    ],
+    "answer": 1,
+    "explanationEn": "The model only knows what the prompt gives it.",
+    "explanationAr": "النموذج لا يعرف إلا ما يعطيه الطلب."
+  },
+  {
+    "key": "qz-ai-prompt-anatomy-7",
+    "topic": "ai-prompt-anatomy",
+    "questionEn": "A long list of \"don't\" rules usually...",
+    "questionAr": "قائمة طويلة من قواعد «لا تفعل» عادةً...",
+    "optionsEn": [
+      "Works better than anything",
+      "Works worse than positive rules",
+      "Is required by most APIs",
+      "Lowers the cost of each call"
+    ],
+    "optionsAr": [
+      "تعمل أفضل من أي شيء آخر",
+      "تعمل أسوأ من القواعد الإيجابية",
+      "تطلبها أغلب واجهات API",
+      "تقلل تكلفة كل استدعاء"
+    ],
+    "answer": 1,
+    "explanationEn": "Say what to do instead of listing what not to do.",
+    "explanationAr": "قل ما يجب فعله بدل سرد ما يجب تجنبه."
+  },
+  {
+    "key": "qz-ai-prompt-anatomy-8",
+    "topic": "ai-prompt-anatomy",
+    "questionEn": "How much context should a prompt include?",
+    "questionAr": "كم من السياق يجب أن يتضمن الطلب؟",
+    "optionsEn": [
+      "Everything you have",
+      "Only what the task needs",
+      "None at all",
+      "Exactly 1,000 tokens"
+    ],
+    "optionsAr": [
+      "كل ما لديك",
+      "ما تحتاجه المهمة فقط",
+      "لا شيء أبدًا",
+      "1,000 توكن بالضبط"
+    ],
+    "answer": 1,
+    "explanationEn": "Extra context costs tokens and can distract the model.",
+    "explanationAr": "السياق الزائد يكلّف توكنات وقد يشتت النموذج."
+  },
+  {
+    "key": "qz-ai-prompt-few-shot-1",
+    "topic": "ai-prompt-few-shot",
+    "questionEn": "What is a few-shot prompt?",
+    "questionAr": "ما هو الطلب بعدة أمثلة؟",
+    "optionsEn": [
+      "A prompt sent a few times",
+      "A prompt with sample answers",
+      "A prompt with few words",
+      "A prompt for small models"
+    ],
+    "optionsAr": [
+      "طلب يُرسل عدة مرات",
+      "طلب فيه إجابات نموذجية",
+      "طلب قليل الكلمات",
+      "طلب للنماذج الصغيرة"
+    ],
+    "answer": 1,
+    "explanationEn": "It shows input and output pairs before the real input.",
+    "explanationAr": "يعرض أزواج مدخلات ومخرجات قبل المدخل الحقيقي."
+  },
+  {
+    "key": "qz-ai-prompt-few-shot-2",
+    "topic": "ai-prompt-few-shot",
+    "questionEn": "How are examples usually sent?",
+    "questionAr": "كيف تُرسل الأمثلة عادةً؟",
+    "optionsEn": [
+      "As user/assistant pairs",
+      "As one long system line",
+      "As a separate API call",
+      "As HTTP headers"
+    ],
+    "optionsAr": [
+      "كأزواج مستخدم ومساعد",
+      "كسطر نظام طويل واحد",
+      "كاستدعاء API منفصل",
+      "كترويسات HTTP"
+    ],
+    "answer": 0,
+    "explanationEn": "Earlier turns show the model what an answer looks like.",
+    "explanationAr": "الأدوار السابقة تُري النموذج شكل الإجابة."
+  },
+  {
+    "key": "qz-ai-prompt-few-shot-3",
+    "topic": "ai-prompt-few-shot",
+    "questionEn": "What do examples teach fastest?",
+    "questionAr": "ما الذي تعلّمه الأمثلة أسرع؟",
+    "optionsEn": [
+      "New facts",
+      "The output format",
+      "The model's size",
+      "The API price"
+    ],
+    "optionsAr": [
+      "حقائق جديدة",
+      "صيغة المخرجات",
+      "حجم النموذج",
+      "سعر الـ API"
+    ],
+    "answer": 1,
+    "explanationEn": "Format and tone are easier to show than describe.",
+    "explanationAr": "الصيغة والأسلوب أسهل في العرض من الوصف."
+  },
+  {
+    "key": "qz-ai-prompt-few-shot-4",
+    "topic": "ai-prompt-few-shot",
+    "questionEn": "Why vary the order of example labels?",
+    "questionAr": "لماذا تنوّع ترتيب تصنيفات الأمثلة؟",
+    "optionsEn": [
+      "To save tokens on each call",
+      "So the last label doesn't win",
+      "To confuse possible attackers",
+      "Because the API requires it"
+    ],
+    "optionsAr": [
+      "لتوفير التوكنات",
+      "حتى لا يفوز آخر تصنيف",
+      "لإرباك المهاجمين المحتملين",
+      "لأن الـ API يشترطه"
+    ],
+    "answer": 1,
+    "explanationEn": "Models can lean towards recent or repeated patterns.",
+    "explanationAr": "النماذج قد تميل إلى الأنماط الأخيرة أو المتكررة."
+  },
+  {
+    "key": "qz-ai-prompt-few-shot-5",
+    "topic": "ai-prompt-few-shot",
+    "questionEn": "What happens if an example is wrong?",
+    "questionAr": "ماذا يحدث إذا كان مثال خاطئًا؟",
+    "optionsEn": [
+      "The model quietly ignores it",
+      "The model copies the mistake",
+      "The API rejects the request",
+      "Nothing changes in the answers"
+    ],
+    "optionsAr": [
+      "النموذج يتجاهله بهدوء",
+      "النموذج ينسخ الخطأ",
+      "الـ API يرفض الطلب",
+      "لا يتغير شيء في الإجابات"
+    ],
+    "answer": 1,
+    "explanationEn": "Models follow examples closely, errors included.",
+    "explanationAr": "النماذج تتبع الأمثلة بدقة بما فيها الأخطاء."
+  },
+  {
+    "key": "qz-ai-prompt-few-shot-6",
+    "topic": "ai-prompt-few-shot",
+    "questionEn": "What is the cost of examples?",
+    "questionAr": "ما تكلفة الأمثلة؟",
+    "optionsEn": [
+      "Nothing",
+      "Tokens on every call",
+      "A one-time fee",
+      "Slower training"
+    ],
+    "optionsAr": [
+      "لا شيء",
+      "توكنات في كل استدعاء",
+      "رسوم لمرة واحدة",
+      "تدريب أبطأ"
+    ],
+    "answer": 1,
+    "explanationEn": "Examples are input tokens sent with each request.",
+    "explanationAr": "الأمثلة توكنات مدخلات تُرسل مع كل طلب."
+  },
+  {
+    "key": "qz-ai-prompt-few-shot-7",
+    "topic": "ai-prompt-few-shot",
+    "questionEn": "How many examples usually help most?",
+    "questionAr": "كم مثالًا يساعد غالبًا أكثر؟",
+    "optionsEn": [
+      "Two to five",
+      "Exactly one",
+      "Hundreds",
+      "None"
+    ],
+    "optionsAr": [
+      "من اثنين إلى خمسة",
+      "مثال واحد بالضبط",
+      "المئات",
+      "لا شيء"
+    ],
+    "answer": 0,
+    "explanationEn": "A small, varied set is often enough.",
+    "explanationAr": "مجموعة صغيرة متنوعة تكفي غالبًا."
+  },
+  {
+    "key": "qz-ai-prompt-few-shot-8",
+    "topic": "ai-prompt-few-shot",
+    "questionEn": "Which example set is best for 3 labels?",
+    "questionAr": "أي مجموعة أمثلة أفضل لثلاثة تصنيفات؟",
+    "optionsEn": [
+      "Three of one label",
+      "One per label plus a hard case",
+      "Only the hardest case",
+      "Ten of the commonest label"
+    ],
+    "optionsAr": [
+      "ثلاثة لتصنيف واحد",
+      "واحد لكل تصنيف وحالة صعبة",
+      "أصعب حالة فقط",
+      "عشرة للتصنيف الأشيع"
+    ],
+    "answer": 1,
+    "explanationEn": "Cover each case and the tricky boundary.",
+    "explanationAr": "غطِّ كل حالة والحدّ الصعب."
+  },
+  {
+    "key": "qz-ai-prompt-reasoning-1",
+    "topic": "ai-prompt-reasoning",
+    "questionEn": "What is prompt chaining?",
+    "questionAr": "ما هي سلسلة الطلبات؟",
+    "optionsEn": [
+      "Sending one prompt twice",
+      "Small prompts in steps",
+      "Joining prompts with commas",
+      "Calling two providers"
+    ],
+    "optionsAr": [
+      "إرسال طلب واحد مرتين",
+      "طلبات صغيرة على خطوات",
+      "ربط الطلبات بفواصل",
+      "استدعاء مزوّدين اثنين"
+    ],
+    "answer": 1,
+    "explanationEn": "Each step's output feeds the next step.",
+    "explanationAr": "مخرجات كل خطوة تغذي الخطوة التالية."
+  },
+  {
+    "key": "qz-ai-prompt-reasoning-2",
+    "topic": "ai-prompt-reasoning",
+    "questionEn": "Where should a refund rule live?",
+    "questionAr": "أين يجب أن توجد قاعدة الاسترداد؟",
+    "optionsEn": [
+      "In the prompt",
+      "In C# code",
+      "In the examples",
+      "In the model"
+    ],
+    "optionsAr": [
+      "في الطلب",
+      "في كود C#",
+      "في الأمثلة",
+      "في النموذج"
+    ],
+    "answer": 1,
+    "explanationEn": "Business rules belong in code you can test.",
+    "explanationAr": "قواعد العمل مكانها كود تستطيع اختباره."
+  },
+  {
+    "key": "qz-ai-prompt-reasoning-3",
+    "topic": "ai-prompt-reasoning",
+    "questionEn": "Why put the final answer in its own field?",
+    "questionAr": "لماذا تضع الإجابة النهائية في حقل خاص؟",
+    "optionsEn": [
+      "It looks nicer to users",
+      "Code can read and check it",
+      "It makes the call cheaper",
+      "The provider's API needs it"
+    ],
+    "optionsAr": [
+      "لأنها تبدو أجمل للمستخدمين",
+      "ليقرأها الكود ويفحصها",
+      "لأنها تجعل الاستدعاء أرخص",
+      "لأن واجهة المزوّد تحتاجها"
+    ],
+    "answer": 1,
+    "explanationEn": "Reasoning helps the model; the field helps your code.",
+    "explanationAr": "التفكير يساعد النموذج والحقل يساعد كودك."
+  },
+  {
+    "key": "qz-ai-prompt-reasoning-4",
+    "topic": "ai-prompt-reasoning",
+    "questionEn": "One benefit of chains is...",
+    "questionAr": "من فوائد السلاسل...",
+    "optionsEn": [
+      "Needing fewer tests overall",
+      "Seeing which step failed",
+      "No longer needing JSON",
+      "One huge prompt to maintain"
+    ],
+    "optionsAr": [
+      "الحاجة إلى اختبارات أقل",
+      "معرفة أي خطوة فشلت",
+      "عدم الحاجة إلى JSON بعد الآن",
+      "طلب ضخم واحد للصيانة"
+    ],
+    "answer": 1,
+    "explanationEn": "Logged steps show where errors start.",
+    "explanationAr": "الخطوات المسجلة تُظهر أين تبدأ الأخطاء."
+  },
+  {
+    "key": "qz-ai-prompt-reasoning-5",
+    "topic": "ai-prompt-reasoning",
+    "questionEn": "Which step suits plain code best?",
+    "questionAr": "أي خطوة يناسبها الكود العادي أكثر؟",
+    "optionsEn": [
+      "Writing a polite reply",
+      "Looking up the order",
+      "Summarising an email",
+      "Choosing a tone"
+    ],
+    "optionsAr": [
+      "كتابة رد مهذب",
+      "البحث عن الطلب",
+      "تلخيص بريد",
+      "اختيار أسلوب"
+    ],
+    "answer": 1,
+    "explanationEn": "Deterministic work belongs in code.",
+    "explanationAr": "العمل محدد النتيجة مكانه الكود."
+  },
+  {
+    "key": "qz-ai-prompt-reasoning-6",
+    "topic": "ai-prompt-reasoning",
+    "questionEn": "A chain can use a small model for...",
+    "questionAr": "يمكن للسلسلة استخدام نموذج صغير في...",
+    "optionsEn": [
+      "Every step",
+      "The easy steps",
+      "No step",
+      "Only the last step"
+    ],
+    "optionsAr": [
+      "كل خطوة",
+      "الخطوات السهلة",
+      "أي خطوة لا",
+      "الخطوة الأخيرة فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Match the model to each step's difficulty.",
+    "explanationAr": "اختر النموذج حسب صعوبة كل خطوة."
+  },
+  {
+    "key": "qz-ai-prompt-reasoning-7",
+    "topic": "ai-prompt-reasoning",
+    "questionEn": "What feeds step 2 in an extract-then-decide chain?",
+    "questionAr": "ما الذي يغذي الخطوة 2 في سلسلة «استخرج ثم قرر»؟",
+    "optionsEn": [
+      "The raw email",
+      "The extracted facts",
+      "The final reply",
+      "The system prompt"
+    ],
+    "optionsAr": [
+      "البريد الخام",
+      "الحقائق المستخرجة",
+      "الرد النهائي",
+      "رسالة النظام"
+    ],
+    "answer": 1,
+    "explanationEn": "Structured output from step 1 becomes input.",
+    "explanationAr": "المخرجات المنظمة من الخطوة 1 تصبح مدخلات."
+  },
+  {
+    "key": "qz-ai-prompt-reasoning-8",
+    "topic": "ai-prompt-reasoning",
+    "questionEn": "Asking for steps before the answer helps you...",
+    "questionAr": "طلب الخطوات قبل الإجابة يساعدك على...",
+    "optionsEn": [
+      "Hide the prompt from users",
+      "See why an answer is wrong",
+      "Skip validating the output",
+      "Lower the price of each call"
+    ],
+    "optionsAr": [
+      "إخفاء الطلب عن المستخدمين",
+      "رؤية سبب خطأ الإجابة",
+      "تخطي التحقق من المخرجات",
+      "خفض سعر كل استدعاء"
+    ],
+    "answer": 1,
+    "explanationEn": "Visible steps make mistakes easier to find.",
+    "explanationAr": "الخطوات الظاهرة تسهّل إيجاد الأخطاء."
+  },
+  {
+    "key": "qz-ai-prompt-templates-1",
+    "topic": "ai-prompt-templates",
+    "questionEn": "What is a prompt template?",
+    "questionAr": "ما هو قالب الطلب؟",
+    "optionsEn": [
+      "A setting of the model itself",
+      "A prompt with placeholders",
+      "A chat saved for later",
+      "An HTML page with a form"
+    ],
+    "optionsAr": [
+      "إعداد في النموذج نفسه",
+      "طلب فيه عناصر نائبة",
+      "محادثة محفوظة لوقت لاحق",
+      "صفحة HTML فيها نموذج إدخال"
+    ],
+    "answer": 1,
+    "explanationEn": "Placeholders are filled from data at run time.",
+    "explanationAr": "العناصر النائبة تُملأ من البيانات وقت التشغيل."
+  },
+  {
+    "key": "qz-ai-prompt-templates-2",
+    "topic": "ai-prompt-templates",
+    "questionEn": "A value is missing at render time. Best behaviour?",
+    "questionAr": "قيمة ناقصة وقت العرض. ما أفضل سلوك؟",
+    "optionsEn": [
+      "Leave {{name}} there",
+      "Throw an exception",
+      "Send an empty string",
+      "Ask the model"
+    ],
+    "optionsAr": [
+      "اترك {{name}} كما هو",
+      "ارمِ استثناء",
+      "أرسل نصًا فارغًا",
+      "اسأل النموذج"
+    ],
+    "answer": 1,
+    "explanationEn": "Fail loudly instead of sending a broken prompt.",
+    "explanationAr": "افشل بوضوح بدل إرسال طلب مكسور."
+  },
+  {
+    "key": "qz-ai-prompt-templates-3",
+    "topic": "ai-prompt-templates",
+    "questionEn": "Why log the template version?",
+    "questionAr": "لماذا تسجّل إصدار القالب؟",
+    "optionsEn": [
+      "To raise the cost of calls",
+      "To trace answers to a prompt",
+      "The provider's API needs it",
+      "To hide changes from the team"
+    ],
+    "optionsAr": [
+      "لرفع تكلفة الاستدعاءات",
+      "لربط الإجابات بطلب معيّن",
+      "لأن واجهة المزوّد تحتاجه",
+      "لإخفاء التغييرات عن الفريق"
+    ],
+    "answer": 1,
+    "explanationEn": "You can see which prompt produced which answer.",
+    "explanationAr": "تستطيع رؤية أي طلب أنتج أي إجابة."
+  },
+  {
+    "key": "qz-ai-prompt-templates-4",
+    "topic": "ai-prompt-templates",
+    "questionEn": "Where should templates live?",
+    "questionAr": "أين يجب أن تعيش القوالب؟",
+    "optionsEn": [
+      "Spread over controllers",
+      "In one class or folder",
+      "In the browser",
+      "In the database only"
+    ],
+    "optionsAr": [
+      "موزعة على الـ Controllers",
+      "في صنف أو مجلد واحد",
+      "في المتصفح",
+      "في قاعدة البيانات فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "One place makes review and change easy.",
+    "explanationAr": "مكان واحد يسهّل المراجعة والتغيير."
+  },
+  {
+    "key": "qz-ai-prompt-templates-5",
+    "topic": "ai-prompt-templates",
+    "questionEn": "Why put user text inside <question> tags?",
+    "questionAr": "لماذا تضع نص المستخدم داخل وسوم <question>؟",
+    "optionsEn": [
+      "For HTML display",
+      "So it reads as data",
+      "To compress it",
+      "To translate it"
+    ],
+    "optionsAr": [
+      "لعرضه كـ HTML",
+      "ليُقرأ كبيانات",
+      "لضغطه",
+      "لترجمته"
+    ],
+    "answer": 1,
+    "explanationEn": "Clear boundaries reduce confusion with instructions.",
+    "explanationAr": "الحدود الواضحة تقلل الخلط مع التعليمات."
+  },
+  {
+    "key": "qz-ai-prompt-templates-6",
+    "topic": "ai-prompt-templates",
+    "questionEn": "Which C# feature suits long templates?",
+    "questionAr": "أي ميزة في C# تناسب القوالب الطويلة؟",
+    "optionsEn": [
+      "Raw string literals",
+      "Goto statements",
+      "Unsafe code blocks",
+      "Dynamic typed values"
+    ],
+    "optionsAr": [
+      "النصوص الخام (Raw strings)",
+      "جمل goto للانتقال",
+      "كتل الكود غير الآمن",
+      "القيم ذات النوع الديناميكي"
+    ],
+    "answer": 0,
+    "explanationEn": "Triple-quoted strings keep lines and quotes readable.",
+    "explanationAr": "النصوص بثلاث علامات اقتباس تبقي الأسطر والاقتباسات مقروءة."
+  },
+  {
+    "key": "qz-ai-prompt-templates-7",
+    "topic": "ai-prompt-templates",
+    "questionEn": "How do you test a template?",
+    "questionAr": "كيف تختبر قالبًا؟",
+    "optionsEn": [
+      "You can't",
+      "Unit-test its rendering",
+      "Only in production",
+      "Ask users"
+    ],
+    "optionsAr": [
+      "لا يمكنك",
+      "باختبار وحدات لعرضه",
+      "في الإنتاج فقط",
+      "اسأل المستخدمين"
+    ],
+    "answer": 1,
+    "explanationEn": "Check output and missing values in unit tests.",
+    "explanationAr": "افحص المخرجات والقيم الناقصة في اختبارات الوحدات."
+  },
+  {
+    "key": "qz-ai-prompt-templates-8",
+    "topic": "ai-prompt-templates",
+    "questionEn": "Prompts built by string concatenation in controllers are...",
+    "questionAr": "الطلبات المبنية بدمج النصوص في الـ Controllers...",
+    "optionsEn": [
+      "Easy for anyone to review",
+      "Hard to test and change",
+      "Faster to run on the server",
+      "Required by ASP.NET MVC"
+    ],
+    "optionsAr": [
+      "سهلة المراجعة لأي أحد",
+      "صعبة الاختبار والتغيير",
+      "أسرع في التشغيل على الخادم",
+      "يتطلبها ASP.NET MVC"
+    ],
+    "answer": 1,
+    "explanationEn": "Scattered strings hide what the model receives.",
+    "explanationAr": "النصوص المتفرقة تخفي ما يستقبله النموذج."
+  },
+  {
+    "key": "qz-ai-prompt-injection-1",
+    "topic": "ai-prompt-injection",
+    "questionEn": "What is prompt injection?",
+    "questionAr": "ما هو حقن الطلبات؟",
+    "optionsEn": [
+      "A faster way to call the API",
+      "Text that overrides the rules",
+      "A kind of SQL Server index",
+      "An upgrade to a newer model"
+    ],
+    "optionsAr": [
+      "طريقة أسرع لاستدعاء الـ API",
+      "نص يتجاوز القواعد",
+      "نوع من فهارس SQL Server",
+      "ترقية إلى نموذج أحدث"
+    ],
+    "answer": 1,
+    "explanationEn": "Input that tries to replace your instructions.",
+    "explanationAr": "مدخلات تحاول استبدال تعليماتك."
+  },
+  {
+    "key": "qz-ai-prompt-injection-2",
+    "topic": "ai-prompt-injection",
+    "questionEn": "What is indirect injection?",
+    "questionAr": "ما هو الحقن غير المباشر؟",
+    "optionsEn": [
+      "Text typed by the user directly",
+      "Hidden in content the model reads",
+      "An attack that slows the network",
+      "Using a wrong or expired API key"
+    ],
+    "optionsAr": [
+      "نص يكتبه المستخدم مباشرة",
+      "مخفي في محتوى يقرؤه النموذج",
+      "هجوم يبطئ الشبكة كلها",
+      "استخدام مفتاح API خاطئ أو منتهٍ"
+    ],
+    "answer": 1,
+    "explanationEn": "Pages, emails and files can carry instructions.",
+    "explanationAr": "الصفحات والرسائل والملفات قد تحمل تعليمات."
+  },
+  {
+    "key": "qz-ai-prompt-injection-3",
+    "topic": "ai-prompt-injection",
+    "questionEn": "Can a strong system prompt fully stop injection?",
+    "questionAr": "هل تستطيع رسالة نظام قوية إيقاف الحقن تمامًا؟",
+    "optionsEn": [
+      "Yes, always",
+      "No, design limits harm",
+      "Only in English",
+      "Only with GPT models"
+    ],
+    "optionsAr": [
+      "نعم دائمًا",
+      "لا، التصميم يحدّ الضرر",
+      "بالإنجليزية فقط",
+      "مع نماذج GPT فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Assume the model can be fooled and limit its power.",
+    "explanationAr": "افترض أن النموذج قد يُخدع وقيّد قدرته."
+  },
+  {
+    "key": "qz-ai-prompt-injection-4",
+    "topic": "ai-prompt-injection",
+    "questionEn": "Where should permission checks happen?",
+    "questionAr": "أين يجب أن تتم فحوص الصلاحيات؟",
+    "optionsEn": [
+      "In the prompt",
+      "In code for each action",
+      "In the examples",
+      "In the model's reply"
+    ],
+    "optionsAr": [
+      "في الطلب",
+      "في الكود لكل فعل",
+      "في الأمثلة",
+      "في رد النموذج"
+    ],
+    "answer": 1,
+    "explanationEn": "Code enforces what the user may do.",
+    "explanationAr": "الكود يفرض ما يُسمح للمستخدم بفعله."
+  },
+  {
+    "key": "qz-ai-prompt-injection-5",
+    "topic": "ai-prompt-injection",
+    "questionEn": "What should never be in a prompt?",
+    "questionAr": "ما الذي يجب ألا يكون في الطلب أبدًا؟",
+    "optionsEn": [
+      "The task",
+      "Secrets and API keys",
+      "The output format",
+      "The user's question"
+    ],
+    "optionsAr": [
+      "المهمة",
+      "الأسرار ومفاتيح API",
+      "صيغة المخرجات",
+      "سؤال المستخدم"
+    ],
+    "answer": 1,
+    "explanationEn": "A fooled model can reveal anything it was given.",
+    "explanationAr": "النموذج المخدوع قد يكشف أي شيء أُعطي له."
+  },
+  {
+    "key": "qz-ai-prompt-injection-6",
+    "topic": "ai-prompt-injection",
+    "questionEn": "Why remove </review> from a review before wrapping it?",
+    "questionAr": "لماذا تحذف </review> من المراجعة قبل تغليفها؟",
+    "optionsEn": [
+      "To make it shorter",
+      "So it can't end the wrapper",
+      "To fix its grammar",
+      "To hide who wrote it"
+    ],
+    "optionsAr": [
+      "لجعلها أقصر حجمًا",
+      "حتى لا تُنهي الغلاف",
+      "لتصحيح قواعدها اللغوية",
+      "لإخفاء من كتبها"
+    ],
+    "answer": 1,
+    "explanationEn": "A closing tag inside the text would break the boundary.",
+    "explanationAr": "وسم الإغلاق داخل النص يكسر الحدود."
+  },
+  {
+    "key": "qz-ai-prompt-injection-7",
+    "topic": "ai-prompt-injection",
+    "questionEn": "Phrase flags such as \"ignore previous\" are...",
+    "questionAr": "تعليم عبارات مثل «تجاهل السابق»...",
+    "optionsEn": [
+      "A full defence",
+      "A signal for review",
+      "Required by OWASP",
+      "A way to block all attacks"
+    ],
+    "optionsAr": [
+      "دفاع كامل",
+      "إشارة للمراجعة",
+      "شرط من OWASP",
+      "طريقة لصد كل الهجمات"
+    ],
+    "answer": 1,
+    "explanationEn": "Attackers can rephrase, so flags only help detection.",
+    "explanationAr": "المهاجمون يعيدون الصياغة، فالتعليم يساعد على الاكتشاف فقط."
+  },
+  {
+    "key": "qz-ai-prompt-injection-8",
+    "topic": "ai-prompt-injection",
+    "questionEn": "Before showing model output as HTML you should...",
+    "questionAr": "قبل عرض مخرجات النموذج كـ HTML يجب أن...",
+    "optionsEn": [
+      "Trust it",
+      "Encode it",
+      "Translate it",
+      "Shorten it"
+    ],
+    "optionsAr": [
+      "تثق بها",
+      "ترمّزها",
+      "تترجمها",
+      "تقصّرها"
+    ],
+    "answer": 1,
+    "explanationEn": "Output can contain scripts, like any user input.",
+    "explanationAr": "المخرجات قد تحتوي سكربتات مثل أي مدخلات مستخدم."
+  },
+  {
+    "key": "qz-ai-prompt-evaluation-1",
+    "topic": "ai-prompt-evaluation",
+    "questionEn": "Why test prompt changes?",
+    "questionAr": "لماذا تختبر تغييرات الطلب؟",
+    "optionsEn": [
+      "They never break",
+      "One fix can break others",
+      "Tests make models faster",
+      "The API requires it"
+    ],
+    "optionsAr": [
+      "لأنها لا تنكسر",
+      "إصلاح واحد قد يكسر غيره",
+      "الاختبارات تسرّع النماذج",
+      "لأن الـ API يطلبه"
+    ],
+    "answer": 1,
+    "explanationEn": "Improvements on one input can hurt others.",
+    "explanationAr": "التحسين في مدخل قد يضر بغيره."
+  },
+  {
+    "key": "qz-ai-prompt-evaluation-2",
+    "topic": "ai-prompt-evaluation",
+    "questionEn": "What is an evaluation set?",
+    "questionAr": "ما هي مجموعة التقييم؟",
+    "optionsEn": [
+      "The model's training data",
+      "Real inputs with checks",
+      "A list of API keys",
+      "A set of servers"
+    ],
+    "optionsAr": [
+      "بيانات تدريب النموذج",
+      "مدخلات حقيقية مع فحوص",
+      "قائمة مفاتيح API",
+      "مجموعة خوادم"
+    ],
+    "answer": 1,
+    "explanationEn": "Each case has an input and checks for the answer.",
+    "explanationAr": "كل حالة لها مدخل وفحوص للإجابة."
+  },
+  {
+    "key": "qz-ai-prompt-evaluation-3",
+    "topic": "ai-prompt-evaluation",
+    "questionEn": "Which check can run automatically?",
+    "questionAr": "أي فحص يمكن تشغيله تلقائيًا؟",
+    "optionsEn": [
+      "Is the tone friendly enough?",
+      "Does it contain \"30 days\"?",
+      "Will users really like it?",
+      "Is the answer creative?"
+    ],
+    "optionsAr": [
+      "هل الأسلوب ودود بما يكفي؟",
+      "هل تحتوي «30 days»؟",
+      "هل سيحبها المستخدمون فعلًا؟",
+      "هل الإجابة مبدعة؟"
+    ],
+    "answer": 1,
+    "explanationEn": "Contains, length and valid JSON are easy to automate.",
+    "explanationAr": "الاحتواء والطول وصحة JSON سهلة الأتمتة."
+  },
+  {
+    "key": "qz-ai-prompt-evaluation-4",
+    "topic": "ai-prompt-evaluation",
+    "questionEn": "A new prompt scores 41/50; the old one 46/50. You...",
+    "questionAr": "الطلب الجديد حصل على 41/50 والقديم 46/50. فإنك...",
+    "optionsEn": [
+      "Ship the new one today",
+      "Study the regressions",
+      "Delete the failing tests",
+      "Raise the temperature a bit"
+    ],
+    "optionsAr": [
+      "تُصدر الجديد اليوم",
+      "تدرس الحالات التي تراجعت",
+      "تحذف الاختبارات الفاشلة",
+      "ترفع درجة الحرارة قليلًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Find out what got worse before shipping.",
+    "explanationAr": "اعرف ما الذي ساء قبل الإصدار."
+  },
+  {
+    "key": "qz-ai-prompt-evaluation-5",
+    "topic": "ai-prompt-evaluation",
+    "questionEn": "What temperature suits evaluation runs?",
+    "questionAr": "ما درجة الحرارة المناسبة لتشغيل التقييم؟",
+    "optionsEn": [
+      "Low",
+      "Very high",
+      "Random each run",
+      "It doesn't matter"
+    ],
+    "optionsAr": [
+      "منخفضة",
+      "مرتفعة جدًا",
+      "عشوائية في كل مرة",
+      "لا يهم"
+    ],
+    "answer": 0,
+    "explanationEn": "Low temperature makes results easier to compare.",
+    "explanationAr": "درجة الحرارة المنخفضة تسهّل مقارنة النتائج."
+  },
+  {
+    "key": "qz-ai-prompt-evaluation-6",
+    "topic": "ai-prompt-evaluation",
+    "questionEn": "Where should the evaluation set live?",
+    "questionAr": "أين يجب أن تُحفظ مجموعة التقييم؟",
+    "optionsEn": [
+      "On one laptop",
+      "In the repository",
+      "In the model",
+      "In an email"
+    ],
+    "optionsAr": [
+      "على حاسوب واحد",
+      "في المستودع",
+      "في النموذج",
+      "في بريد"
+    ],
+    "answer": 1,
+    "explanationEn": "It is versioned and grows with the code.",
+    "explanationAr": "لها إصدارات وتكبر مع الكود."
+  },
+  {
+    "key": "qz-ai-prompt-evaluation-7",
+    "topic": "ai-prompt-evaluation",
+    "questionEn": "When a user reports a bad answer, you...",
+    "questionAr": "عندما يبلّغ مستخدم عن إجابة سيئة، فإنك...",
+    "optionsEn": [
+      "Ignore it",
+      "Add it as a test case",
+      "Change the model",
+      "Delete the feature"
+    ],
+    "optionsAr": [
+      "تتجاهلها",
+      "تضيفها كحالة اختبار",
+      "تغيّر النموذج",
+      "تحذف الميزة"
+    ],
+    "answer": 1,
+    "explanationEn": "Every fixed bug becomes a regression test.",
+    "explanationAr": "كل خطأ يُصلح يصبح اختبار تراجع."
+  },
+  {
+    "key": "qz-ai-prompt-evaluation-8",
+    "topic": "ai-prompt-evaluation",
+    "questionEn": "Besides pass rate, what is worth recording?",
+    "questionAr": "إلى جانب نسبة النجاح، ما الذي يستحق التسجيل؟",
+    "optionsEn": [
+      "The office temperature",
+      "Cost and latency",
+      "The prompt's font size",
+      "The day of the week"
+    ],
+    "optionsAr": [
+      "درجة حرارة المكتب",
+      "التكلفة وزمن الاستجابة",
+      "حجم خط الطلب",
+      "يوم الأسبوع الحالي"
+    ],
+    "answer": 1,
+    "explanationEn": "A better prompt that doubles cost may not be better.",
+    "explanationAr": "الطلب الأفضل الذي يضاعف التكلفة قد لا يكون أفضل."
+  }
+]
