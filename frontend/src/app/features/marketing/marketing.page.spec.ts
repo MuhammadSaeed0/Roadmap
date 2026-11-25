@@ -1,13 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { AuthService } from '../../core/auth.service';
 import { adminGuard } from '../../core/auth.guard';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { routes } from '../../app.routes';
-import { APP_URL, KIT, KIT_KINDS, POST_AR, POST_EN, SHOTS, SOURCES } from './marketing.content';
+import { APP_URL, KIT, KIT_KINDS, LEARNER_POST_AR, LEARNER_POST_EN, LEARNER_SOURCES, POST_AR, POST_EN, SHOTS, SOURCES } from './marketing.content';
 import MarketingPage from './marketing.page';
 
-async function render(lang: 'en' | 'ar' = 'en'): Promise<{ el: HTMLElement; fixture: ComponentFixture<MarketingPage> }> {
+async function render(lang: 'en' | 'ar' = 'en', admin = true): Promise<{ el: HTMLElement; fixture: ComponentFixture<MarketingPage> }> {
   TestBed.configureTestingModule({ providers: [provideRouter([])] });
+  TestBed.inject(AuthService).account.set({
+    id: 'u', email: 'u@example.com', fullName: 'U', createdAt: '2026-01-01', status: 'Approved', emailVerified: true,
+    isAdmin: admin, isOwner: false, statusReason: null,
+  });
   TestBed.inject(I18nService).lang.set(lang);
   const fixture = TestBed.createComponent(MarketingPage);
   fixture.detectChanges();
@@ -53,9 +58,30 @@ describe('Marketing Studio', () => {
     expect(el.querySelector('.mk-item-text')?.getAttribute('dir')).toBe('ltr');
   });
 
-  it('is an administrator-only page', () => {
+  it('is open to every signed-in learner, not only administrators', () => {
     const route = routes.find(r => r.path === 'marketing');
-    expect(route?.canActivate).toContain(adminGuard);
+    expect(route?.canActivate ?? []).not.toContain(adminGuard);
+  });
+
+  it('gives a learner posts in their own voice and hides the owner\'s posts and campaigns', async () => {
+    const { el, fixture } = await render('ar', false);
+    expect(el.querySelector('h1')?.textContent).toContain('ادعُ أصدقاءك');
+    expect(textarea(el).value).toBe(LEARNER_POST_AR);
+    for (const post of [LEARNER_POST_AR, LEARNER_POST_EN]) {
+      expect(post).toContain('utm_source=friend');
+      expect(post).not.toMatch(/عملت|بنيت|I built/);
+    }
+    expect(el.querySelectorAll('.mk-links li').length).toBe(LEARNER_SOURCES.length);
+    // Only learner-voice pieces, and no tabs for the owner's channels.
+    const labels = [...el.querySelectorAll('.mk-kinds button')].map(b => b.textContent?.trim());
+    expect(labels).toEqual(['لينكدإن', 'الأصدقاء']);
+    expect(el.textContent).not.toContain('ريديت');
+    for (const k of ['لينكدإن', 'الأصدقاء']) {
+      button(el, k).click();
+      fixture.detectChanges();
+      for (const item of el.querySelectorAll('.mk-item-text')) expect(item.textContent).not.toMatch(/عملت موقع|I built|I'm a \.NET/);
+    }
+    expect(KIT.filter(i => i.audience === 'all').every(i => !/عملت|بنيت|I built|I maintain|I run/.test(i.text))).toBe(true);
   });
 
   it('keeps the post honest: the real link, both languages, and the numbers the app has', () => {

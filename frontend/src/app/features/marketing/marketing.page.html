@@ -1,4 +1,5 @@
-<app-page-header [title]="'marketing.title' | t" [subtitle]="'marketing.subtitle' | t" />
+<app-page-header [title]="(isAdmin() ? 'marketing.title' : 'marketing.learner.title') | t"
+                 [subtitle]="(isAdmin() ? 'marketing.subtitle' : 'marketing.learner.subtitle') | t" />
 
 <div class="mk-layout">
   <section class="card mk-post" data-tour="marketing-post" aria-labelledby="mk-post-title">
@@ -78,11 +79,11 @@
 </div>
 
 <section class="card mk-growth" aria-labelledby="mk-growth-title">
-  <h2 id="mk-growth-title"><app-icon name="target" [size]="18" /> {{ 'marketing.growth.title' | t }}</h2>
-  <p class="muted small">{{ 'marketing.growth.intro' | t }}</p>
+  <h2 id="mk-growth-title"><app-icon name="target" [size]="18" /> {{ (isAdmin() ? 'marketing.growth.title' : 'marketing.learner.kitTitle') | t }}</h2>
+  <p class="muted small">{{ (isAdmin() ? 'marketing.growth.intro' : 'marketing.learner.kitIntro') | t }}</p>
 
   <h3>{{ 'marketing.growth.links' | t }}</h3>
-  <p class="muted small">{{ 'marketing.growth.linksHint' | t }}</p>
+  <p class="muted small">{{ (isAdmin() ? 'marketing.growth.linksHint' : 'marketing.learner.linksHint') | t }}</p>
   <ul class="mk-links" role="list">
     @for (s of sources; track s) {
       <li>
