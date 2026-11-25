@@ -77,6 +77,49 @@
   </section>
 </div>
 
+<section class="card mk-growth" aria-labelledby="mk-growth-title">
+  <h2 id="mk-growth-title"><app-icon name="target" [size]="18" /> {{ 'marketing.growth.title' | t }}</h2>
+  <p class="muted small">{{ 'marketing.growth.intro' | t }}</p>
+
+  <h3>{{ 'marketing.growth.links' | t }}</h3>
+  <p class="muted small">{{ 'marketing.growth.linksHint' | t }}</p>
+  <ul class="mk-links" role="list">
+    @for (s of sources; track s) {
+      <li>
+        <bdi dir="ltr" class="mk-source">{{ s }}</bdi>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="copy(tracked(s), 'src-' + s)"
+                [attr.aria-label]="('marketing.copy' | t) + ': ' + tracked(s)">
+          <app-icon [name]="justCopied() === 'src-' + s ? 'check' : 'copy'" [size]="14" /> {{ 'marketing.copy' | t }}
+        </button>
+      </li>
+    }
+  </ul>
+
+  <h3>{{ 'marketing.growth.content' | t }}</h3>
+  <div class="segmented mk-kinds" role="radiogroup" [attr.aria-label]="'marketing.growth.content' | t">
+    @for (k of kinds; track k) {
+      <button type="button" role="radio" [class.active]="kind() === k" [attr.aria-checked]="kind() === k" (click)="kind.set(k)">
+        {{ 'marketing.growth.kinds.' + k | t }}
+      </button>
+    }
+  </div>
+  @if (kind() === 'reddit') { <p class="callout small"><app-icon name="info" [size]="15" /> {{ 'marketing.growth.redditNote' | t }}</p> }
+  <ul class="mk-items" role="list">
+    @for (item of items(); track item.id) {
+      <li class="mk-item">
+        <div class="mk-item-head">
+          <h4>{{ itemTitle(item) }}</h4>
+          <button type="button" class="btn btn-secondary btn-sm" (click)="copy(item.text, item.id)">
+            <app-icon [name]="justCopied() === item.id ? 'check' : 'copy'" [size]="14" />
+            {{ (justCopied() === item.id ? 'marketing.copied' : 'marketing.copy') | t }}
+          </button>
+        </div>
+        <p class="mk-pre mk-item-text" [dir]="item.lang === 'ar' ? 'rtl' : 'ltr'" [lang]="item.lang">{{ item.text }}</p>
+      </li>
+    }
+  </ul>
+</section>
+
 <section class="mk-gallery" data-tour="marketing-gallery" aria-labelledby="mk-gallery-title">
   <div class="mk-head">
     <div>

@@ -3,6 +3,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { catchError, firstValueFrom, throwError } from 'rxjs';
 import { ApiError } from './api-error';
 import { API_BASE_URL } from './api.service';
+import { rememberedSource } from './source';
 
 export type AccountStatus = 'PendingEmailVerification' | 'PendingApproval' | 'Approved' | 'Rejected' | 'Suspended';
 
@@ -59,7 +60,7 @@ export class AuthService {
   }
 
   async signUp(fullName: string, email: string, password: string): Promise<void> {
-    this.account.set(await this.call<Account>('POST', '/auth/register', { fullName, email, password }));
+    this.account.set(await this.call<Account>('POST', '/auth/register', { fullName, email, password, source: rememberedSource() }));
   }
 
   async signIn(email: string, password: string): Promise<void> {

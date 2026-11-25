@@ -43,6 +43,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
     public DbSet<GuidedProjectRepository> GuidedProjectRepositories => Set<GuidedProjectRepository>();
     public DbSet<Certificate> Certificates => Set<Certificate>();
     public DbSet<PageViewDaily> PageViews => Set<PageViewDaily>();
+    public DbSet<SourceVisitDaily> SourceVisits => Set<SourceVisitDaily>();
 
     // User data
     public DbSet<TopicProgress> TopicProgress => Set<TopicProgress>();
@@ -497,6 +498,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
             e.ToTable("PageViewsDaily");
             e.HasKey(x => new { x.Date, x.Route });
             e.Property(x => x.Route).HasMaxLength(UsageService.MaxRouteLength);
+        });
+
+        b.Entity<SourceVisitDaily>(e =>
+        {
+            e.ToTable("SourceVisitsDaily");
+            e.HasKey(x => new { x.Date, x.Source });
+            e.Property(x => x.Source).HasMaxLength(20);
         });
 
         b.Entity<GuidedProjectTopic>(e =>

@@ -20,7 +20,7 @@ namespace DevPath.Api.Controllers;
 [Route("api/auth")]
 public class AuthController(
     UserManager<AppUser> users, SignInManager<AppUser> signIn, AccountWorkflow workflow, AccountTokenService tokens,
-    AccountEmails emails, TimeProvider clock) : ControllerBase
+    AccountEmails emails, UsageService usage, TimeProvider clock) : ControllerBase
 {
     [HttpPost("register")]
     [AllowAnonymous, EnableRateLimiting(AuthRateLimit.Policy)]
@@ -42,6 +42,8 @@ public class AuthController(
         var result = await users.CreateAsync(user, request.Password!);
         if (!result.Succeeded) throw IdentityProblem(result, "password");
 
+        // Which link brought the account, as a daily count for the admin report; the account itself keeps no source.
+        await usage.RecordSourceAsync(request.Source, signUp: true, ct);
         // A failed delivery doesn't undo the sign-up: the status page lets the user resend.
         await workflow.SendVerificationAsync(user, ct);
         // Signed in so the app can show what to do next; everything else stays closed until the account is approved.

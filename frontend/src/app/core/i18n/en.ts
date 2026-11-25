@@ -187,6 +187,9 @@ export const en = {
       views: 'Page views', started: 'Learners who started a library project', finished: 'Learners who finished one',
       projectsFinished: 'Library projects finished', perDay: 'Page views per day', topPages: 'Most opened pages',
       page: 'Page', days: 'Days opened', empty: 'No page views counted yet.',
+      sources: 'Where visitors come from', source: 'Source', visits: 'Guest visits', signUps: 'New accounts', rate: 'Sign-up rate',
+      sourcesHint: 'From the utm_source in your links (for example ?utm_source=facebook); “direct” means no source. A guest visit is counted once per browser session. Counted from this release.',
+      sourcesEmpty: 'No visits counted yet.',
       pages: {
         topic: 'A roadmap topic', project: 'A main project', guide: 'A Project library project', exercise: 'A practice exercise',
         workspaceNew: 'A new playground workspace', workspace: 'A playground workspace', cvEditor: 'A CV in the editor',
@@ -362,7 +365,7 @@ export const en = {
   },
   landing: {
     newToCoding: 'Never coded before?', startPreRoadmap: 'Start with “Before the roadmap”, free and no account needed.', readFree: 'Read it now, no account needed',
-    metaDescription: 'Learn to code from zero to your first developer job with a free .NET and Angular roadmap in English and Arabic: 166 topics, 178 exercises, 66 projects.',
+    metaDescription: 'Learn to code from zero to your first developer job with a free .NET and Angular roadmap in English and Arabic: 166 topics, 250+ exercises, 66 projects.',
     tabTitle: 'DevPath: learn .NET and Angular step by step',
     kicker: 'Free · in English and Arabic',
     headline: 'From your first line of code to your first developer job',
@@ -399,6 +402,12 @@ export const en = {
     reset: 'Reset', characters: '{count} characters',
     share: 'Share post and images', shareHint: 'Opens your phone’s share menu with the images. The post is copied first, so paste it into Facebook.',
     shareToast: 'Post copied. Choose Facebook, then paste the text.', shareUnsupported: 'This browser cannot share files. Download the images instead.',
+    growth: {
+      title: 'Growth kit', intro: 'Ready-to-post pieces for each channel, with links that the Usage tab can count. Nothing is posted for you: copy, check, post.',
+      links: 'Tracked links', linksHint: 'Use the link of the channel you post on. Admin, Usage, “Where visitors come from” then shows its visits and new accounts.',
+      content: 'Posts and scripts', redditNote: 'Read each subreddit’s rules before posting. Many allow self-promotion only in a weekly thread or as a reply.',
+      kinds: { facebook: 'Facebook', reddit: 'Reddit', video: 'Short videos', linkedin: 'LinkedIn', intro: 'Groups', referral: 'Friends' },
+    },
     kit: 'Publishing kit', appUrl: 'App link', hashtags: 'Hashtags', shortCaption: 'Short caption', copy: 'Copy',
     facebook: 'Share link on Facebook',
     facebookHint: 'Facebook only takes the link here, not the text or images. For the full post, use Share or the steps below.',

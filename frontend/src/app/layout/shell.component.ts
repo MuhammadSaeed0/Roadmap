@@ -18,6 +18,7 @@ import { HelpMenuComponent } from './tour/help-menu.component';
 import { NotificationBellComponent } from '../shared/notification-bell.component';
 import { TourOverlayComponent } from './tour/tour-overlay.component';
 import { TourWelcomeComponent } from './tour/tour-welcome.component';
+import { SourceTracker } from '../core/source-tracker.service';
 import { UsageTracker } from '../core/usage-tracker.service';
 
 interface NavItem { path: string; key: string; icon: string; }
@@ -255,6 +256,7 @@ export class ShellComponent {
 
   constructor() {
     inject(UsageTracker).start();
+    inject(SourceTracker).start();
     const onWidth = (e: MediaQueryListEvent) => { this.narrow.set(e.matches); if (!e.matches) this.navOpen.set(false); };
     this.narrowQuery?.addEventListener('change', onWidth);
     inject(DestroyRef).onDestroy(() => this.narrowQuery?.removeEventListener('change', onWidth));

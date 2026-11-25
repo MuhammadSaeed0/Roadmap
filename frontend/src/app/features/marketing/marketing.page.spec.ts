@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { adminGuard } from '../../core/auth.guard';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { routes } from '../../app.routes';
-import { APP_URL, POST_AR, POST_EN, SHOTS } from './marketing.content';
+import { APP_URL, KIT, KIT_KINDS, POST_AR, POST_EN, SHOTS, SOURCES } from './marketing.content';
 import MarketingPage from './marketing.page';
 
 async function render(lang: 'en' | 'ar' = 'en'): Promise<{ el: HTMLElement; fixture: ComponentFixture<MarketingPage> }> {
@@ -25,6 +25,34 @@ describe('Marketing Studio', () => {
     for (const key of Object.keys(localStorage)) if (key.startsWith('devpath.')) localStorage.removeItem(key);
   });
 
+  it('gives every growth-kit piece a tracked link and keeps its claims honest', () => {
+    // The API keeps only these sources (UsageService.Sources); anything else would be counted as "other".
+    const apiSources = ['direct', 'facebook', 'whatsapp', 'telegram', 'linkedin', 'reddit', 'tiktok', 'instagram', 'youtube',
+      'discord', 'github', 'google', 'devto', 'friend', 'other'];
+    for (const s of SOURCES) expect(apiSources, s).toContain(s);
+    for (const kind of KIT_KINDS) expect(KIT.some(i => i.kind === kind), kind).toBe(true);
+    expect(KIT.filter(i => i.kind === 'facebook').length).toBe(5);
+    expect(KIT.filter(i => i.kind === 'video').length).toBe(5);
+    expect(new Set(KIT.map(i => i.id)).size).toBe(KIT.length);
+    for (const item of KIT) {
+      expect(item.text, item.id).toMatch(/\?utm_source=[a-z]+/);
+      // No leaderboard (the app has none), no stale counts, no invented praise.
+      expect(item.text, item.id).not.toMatch(/leaderboard|لوحة ترتيب|178|testimonial/i);
+      if (item.lang === 'ar') expect(item.text.replace(/‎\.NET|ASP\.NET/g, ''), item.id).not.toContain('.NET');
+    }
+  });
+
+  it('lists the growth kit by channel with copy buttons and the Reddit rules note', async () => {
+    const { el, fixture } = await render('ar');
+    expect(el.querySelectorAll('.mk-links li').length).toBe(SOURCES.length);
+    expect(el.querySelectorAll('.mk-item').length).toBe(5);
+    button(el, 'ريديت').click();
+    fixture.detectChanges();
+    expect(el.querySelectorAll('.mk-item').length).toBe(KIT.filter(i => i.kind === 'reddit').length);
+    expect(el.querySelector('.mk-growth .callout')?.textContent).toContain('قواعد');
+    expect(el.querySelector('.mk-item-text')?.getAttribute('dir')).toBe('ltr');
+  });
+
   it('is an administrator-only page', () => {
     const route = routes.find(r => r.path === 'marketing');
     expect(route?.canActivate).toContain(adminGuard);
@@ -33,7 +61,7 @@ describe('Marketing Studio', () => {
   it('keeps the post honest: the real link, both languages, and the numbers the app has', () => {
     for (const post of [POST_AR, POST_EN]) {
       expect(post).toContain(APP_URL);
-      for (const fact of ['14', '166', '178', '97', '66']) expect(post, fact).toContain(fact);
+      for (const fact of ['14', '166', '250', '97', '66']) expect(post, fact).toContain(fact);
     }
     expect(/[؀-ۿ]/.test(POST_AR)).toBe(true);
     // Arabic lines carry a left-to-right mark next to .NET and C# so Facebook keeps them readable.

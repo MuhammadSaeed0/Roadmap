@@ -77,6 +77,35 @@ export function pageNameKey(route: string): string | null {
         <div class="day-axis tiny muted"><span>{{ r.from | fmtDate: 'short' }}</span><span>{{ r.to | fmtDate: 'short' }}</span></div>
       </section>
 
+      <section class="card" aria-labelledby="usage-src-h">
+        <h2 id="usage-src-h" class="card-title"><app-icon name="external" /> {{ 'admin.usage.sources' | t }}</h2>
+        <p class="muted small">{{ 'admin.usage.sourcesHint' | t }}</p>
+        @if ((r.sources ?? []).length === 0) {
+          <app-empty-state icon="chart" [title]="'admin.usage.sourcesEmpty' | t" />
+        } @else {
+          <div class="table-scroll">
+            <table class="table">
+              <thead><tr>
+                <th scope="col">{{ 'admin.usage.source' | t }}</th>
+                <th scope="col" class="num">{{ 'admin.usage.visits' | t }}</th>
+                <th scope="col" class="num">{{ 'admin.usage.signUps' | t }}</th>
+                <th scope="col" class="num">{{ 'admin.usage.rate' | t }}</th>
+              </tr></thead>
+              <tbody>
+                @for (s of r.sources; track s.source) {
+                  <tr>
+                    <td><bdi dir="ltr">{{ s.source }}</bdi></td>
+                    <td class="num">{{ s.visits | fmtNum }}</td>
+                    <td class="num">{{ s.signUps | fmtNum }}</td>
+                    <td class="num"><bdi dir="ltr">{{ rate(s) }}</bdi></td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </section>
+
       <section class="card" aria-labelledby="usage-top-h" data-tour="admin-usage">
         <h2 id="usage-top-h" class="card-title"><app-icon name="layers" /> {{ 'admin.usage.topPages' | t }}</h2>
         @if (r.topPages.length === 0) {
@@ -112,6 +141,11 @@ export class AdminUsageComponent {
   private readonly api = inject(AdminApiService);
   protected readonly report = createLoader(() => this.api.usage(USAGE_DAYS));
   protected readonly pageName = pageNameKey;
+
+  /** New accounts per 100 guest visits from a source; a dash when there were no visits. */
+  protected rate(s: { visits: number; signUps: number }): string {
+    return s.visits ? `${Math.round((s.signUps / s.visits) * 100)}%` : '–';
+  }
 
   protected readonly days = computed(() => {
     const daily = this.report.value()?.daily ?? [];

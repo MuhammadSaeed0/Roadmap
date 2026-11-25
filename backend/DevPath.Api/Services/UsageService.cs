@@ -52,6 +52,47 @@ public partial class UsageService(AppDbContext db, TimeProvider clock)
         }
     }
 
+    /// <summary>
+    /// The sources the report knows, matching the utm_source values in the owner's marketing links. Anything else
+    /// is counted as "other", and no source at all as "direct", so free text never reaches the database.
+    /// </summary>
+    public static readonly string[] Sources =
+        ["direct", "facebook", "whatsapp", "telegram", "linkedin", "reddit", "tiktok", "instagram", "youtube",
+         "discord", "github", "google", "devto", "friend", "other"];
+
+    public static string NormalizeSource(string? source)
+    {
+        var s = source?.Trim().ToLowerInvariant();
+        if (string.IsNullOrEmpty(s)) return "direct";
+        return Array.IndexOf(Sources, s) >= 0 ? s : "other";
+    }
+
+    /// <summary>Counts a guest visit, or a new account, for a source today (UTC).</summary>
+    public async Task RecordSourceAsync(string? source, bool signUp, CancellationToken ct)
+    {
+        var key = NormalizeSource(source);
+        var today = DateOnly.FromDateTime(clock.GetUtcNow().UtcDateTime);
+        for (var attempt = 1; ; attempt++)
+        {
+            try
+            {
+                var rows = db.SourceVisits.Where(v => v.Date == today && v.Source == key);
+                var updated = signUp
+                    ? await rows.ExecuteUpdateAsync(s => s.SetProperty(v => v.SignUps, v => v.SignUps + 1), ct)
+                    : await rows.ExecuteUpdateAsync(s => s.SetProperty(v => v.Visits, v => v.Visits + 1), ct);
+                if (updated > 0) return;
+                db.SourceVisits.Add(new SourceVisitDaily { Date = today, Source = key, Visits = signUp ? 0 : 1, SignUps = signUp ? 1 : 0 });
+                await db.SaveChangesAsync(ct);
+                return;
+            }
+            catch (Exception e) when (attempt < 5 && e is DbUpdateException or System.Data.Common.DbException)
+            {
+                db.ChangeTracker.Clear();
+                await Task.Delay(20 * attempt, ct);
+            }
+        }
+    }
+
     /// <summary>The last <paramref name="days"/> days (today included), counts only.</summary>
     public async Task<UsageReportDto> ReportAsync(int days, CancellationToken ct)
     {
@@ -75,10 +116,17 @@ public partial class UsageService(AppDbContext db, TimeProvider clock)
             .Select(g => new { g.Key.UserId, g.Key.ProjectId, Done = g.Count() }).ToListAsync(ct);
         var finished = progress.Where(p => p.Done >= stepsPerProject.GetValueOrDefault(p.ProjectId, int.MaxValue)).ToList();
 
+        var sources = (await db.SourceVisits.AsNoTracking().Where(v => v.Date >= from && v.Date <= to)
+                .Select(v => new { v.Source, v.Visits, v.SignUps }).ToListAsync(ct))
+            .GroupBy(v => v.Source)
+            .Select(g => new UsageSourceDto(g.Key, g.Sum(v => v.Visits), g.Sum(v => v.SignUps)))
+            .OrderByDescending(v => v.SignUps).ThenByDescending(v => v.Visits).ThenBy(v => v.Source).ToList();
+
         return new UsageReportDto(from, to, rows.Sum(r => r.Views), top, daily,
             new UsageLibraryDto(
                 progress.Select(p => p.UserId).Distinct().Count(),
                 finished.Select(p => p.UserId).Distinct().Count(),
-                finished.Count));
+                finished.Count),
+            sources);
     }
 }
