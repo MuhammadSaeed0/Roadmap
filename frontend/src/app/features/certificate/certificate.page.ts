@@ -77,7 +77,10 @@ import { linkedInAddUrl, linkedInTitle } from './certificate-links';
         <p class="cert-kicker">{{ 'certificate.kicker' | t }}</p>
         <p class="cert-presented">{{ 'certificate.presentedTo' | t }}</p>
         <h1 class="cert-name" dir="auto">{{ c.name }}</h1>
-        <p class="cert-body">{{ 'certificate.body' | t: { n: c.phaseOrder } }}</p>
+        <p class="cert-body">
+          @if (c.trackTitleEn) { {{ 'certificate.bodyTrack' | t: { n: c.phaseOrder, track: i18n.pick(c.trackTitleEn, c.trackTitleAr) } }} }
+          @else { {{ 'certificate.body' | t: { n: c.phaseOrder } }} }
+        </p>
         <p class="cert-phase">{{ phaseTitle() }}</p>
         <span class="cert-seal" aria-hidden="true"><app-icon name="award" [size]="28" /></span>
         <div class="cert-meta">
@@ -116,7 +119,7 @@ export default class CertificatePage {
   protected readonly verifyUrl = computed(() => `${this.document.location.origin}/c/${this.data.value()?.code ?? this.code}`);
   protected readonly linkedIn = computed(() => {
     const c = this.data.value();
-    return c ? linkedInAddUrl(c, linkedInTitle(c.phaseOrder, c.phaseTitleEn), this.verifyUrl()) : '';
+    return c ? linkedInAddUrl(c, linkedInTitle(c.phaseOrder, c.phaseTitleEn, c.trackTitleEn), this.verifyUrl()) : '';
   });
 
   protected print(): void {

@@ -95,7 +95,7 @@ export class MyCertificatesComponent {
 
   protected linkedIn(c: MyCertificate): string {
     return c.code && c.issuedAt
-      ? linkedInAddUrl({ code: c.code, issuedAt: c.issuedAt }, linkedInTitle(c.phaseOrder, c.phaseTitleEn), verifyUrl(this.origin, c.code))
+      ? linkedInAddUrl({ code: c.code, issuedAt: c.issuedAt }, linkedInTitle(c.phaseOrder, c.phaseTitleEn, c.trackTitleEn), verifyUrl(this.origin, c.code))
       : '';
   }
 

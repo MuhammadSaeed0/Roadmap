@@ -417,11 +417,14 @@ export interface Certificate { code: string; phaseId: number; issuedAt: string; 
 export interface MyCertificate {
   phaseId: number; phaseOrder: number; phaseTitleEn: string; phaseTitleAr: string; topicCount: number;
   code: string | null; issuedAt: string | null;
+  /** The roadmap named on the certificate (null for certificates issued before roadmaps). */
+  trackTitleEn?: string | null; trackTitleAr?: string | null;
 }
 
 /** GET /certificates/{code}: what anyone with the code sees (no email). */
 export interface PublicCertificate {
   code: string; name: string; phaseOrder: number; phaseTitleEn: string; phaseTitleAr: string; topicCount: number; issuedAt: string;
+  trackTitleEn?: string | null; trackTitleAr?: string | null;
 }
 
 export interface PublicProfile {

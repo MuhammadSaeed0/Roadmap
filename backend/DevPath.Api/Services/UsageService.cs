@@ -122,11 +122,20 @@ public partial class UsageService(AppDbContext db, TimeProvider clock)
             .Select(g => new UsageSourceDto(g.Key, g.Sum(v => v.Visits), g.Sum(v => v.SignUps)))
             .OrderByDescending(v => v.SignUps).ThenByDescending(v => v.Visits).ThenBy(v => v.Source).ToList();
 
+        // Roadmaps: accounts per chosen roadmap (all accounts, so the per-user filter is lifted), and those not chosen yet.
+        var chosen = await db.UserTracks.IgnoreQueryFilters().AsNoTracking()
+            .GroupBy(u => u.TrackSlug).Select(g => new { g.Key, Count = g.Count() }).ToDictionaryAsync(g => g.Key, g => g.Count, ct);
+        var accounts = await db.Users.CountAsync(ct);
+        var roadmaps = (await db.Tracks.AsNoTracking().OrderBy(t => t.Order).Select(t => new { t.Slug, t.TitleEn, t.TitleAr }).ToListAsync(ct))
+            .Select(t => new UsageRoadmapDto(t.Slug, t.TitleEn, t.TitleAr, chosen.GetValueOrDefault(t.Slug)))
+            .Append(new UsageRoadmapDto("", "", "", Math.Max(0, accounts - chosen.Values.Sum())))
+            .ToList();
+
         return new UsageReportDto(from, to, rows.Sum(r => r.Views), top, daily,
             new UsageLibraryDto(
                 progress.Select(p => p.UserId).Distinct().Count(),
                 finished.Select(p => p.UserId).Distinct().Count(),
                 finished.Count),
-            sources);
+            sources, roadmaps);
     }
 }

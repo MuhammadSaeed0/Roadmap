@@ -1,3 +1,4 @@
+import { TrackRecommenderComponent } from '../tracks/track-recommender.component';
 import { afterNextRender, ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -18,7 +19,7 @@ export const loadPreRoadmap = () => import('../pre-roadmap/pre-roadmap.page');
 @Component({
   selector: 'app-landing-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, TranslatePipe],
+  imports: [TrackRecommenderComponent, RouterLink, IconComponent, TranslatePipe],
   templateUrl: './landing.page.html',
   styleUrl: './landing.page.css',
 })

@@ -72,6 +72,13 @@ describe('CertificatePage', () => {
     expect(el.querySelector('.cert-note bdi')?.getAttribute('dir')).toBe('ltr');
   });
 
+  it('names the roadmap the phase was finished in, on the page and on LinkedIn', async () => {
+    const el = await render('en', Promise.resolve({ ...certificate, trackTitleEn: 'AI application developer', trackTitleAr: 'مطوّر تطبيقات الذكاء الاصطناعي' }));
+    expect(el.querySelector('.cert-body')?.textContent).toContain('completed phase 3 of the DevPath self-paced roadmap “AI application developer”');
+    const url = new URL(el.querySelector<HTMLAnchorElement>('.cert-actions a')!.href);
+    expect(url.searchParams.get('name')).toBe('DevPath AI application developer roadmap — Phase 3: Modern C#');
+  });
+
   it('says so when the code is unknown or revoked', async () => {
     const el = await render('en', Promise.reject(new ApiError(404, 'not_found', 'Not found')));
     expect(el.querySelector('.certificate')).toBeNull();

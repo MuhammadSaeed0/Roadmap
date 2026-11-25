@@ -135,4 +135,34 @@ public class TrackTests(TrackTests.Factory factory) : IClassFixture<TrackTests.F
         var (admin, _) = await factory.CreateAdminClientAsync();
         Assert.Contains(marker, await admin.GetStringAsync($"/api/topics/{topicId}"));
     }
+
+    [Fact]
+    public async Task A_certificate_names_the_roadmap_and_placement_and_admin_counts_follow_roadmaps()
+    {
+        // A learner on the .NET roadmap finishes the shared C# phase: the certificate names that roadmap.
+        var learner = await factory.CreateUserClientAsync();
+        await Json(await learner.PutAsJsonAsync("/api/tracks/active", new { slug = DotNet }));
+        var phase = (await Json(await learner.GetAsync("/api/roadmap")))["phases"]![0]!;
+        foreach (var t in phase["topics"]!.AsArray())
+            (await learner.PutAsJsonAsync($"/api/topics/{t!["id"]}/progress", new { status = "Completed", knowledge = "AlreadyKnow", confidence = 4 })).EnsureSuccessStatusCode();
+        var code = (await Json(await learner.PostAsJsonAsync("/api/certificates", new { phaseId = phase["id"]!.GetValue<int>() })))["code"]!.GetValue<string>();
+        var verified = await Json(await factory.CreateClient().GetAsync($"/api/certificates/{code}"));
+        Assert.Equal(".NET full-stack developer", verified["trackTitleEn"]!.GetValue<string>());
+        Assert.Equal(1, verified["phaseOrder"]!.GetValue<int>());
+        Assert.Equal(".NET full-stack developer", (await Json(await learner.GetAsync("/api/certificates"))).AsArray()[0]!["trackTitleEn"]!.GetValue<string>());
+
+        // The placement check covers the first phases of the learner's roadmap: the AI draft holds four.
+        var (admin, _) = await factory.CreateAdminClientAsync();
+        await Json(await admin.PutAsJsonAsync("/api/tracks/active", new { slug = Ai }));
+        var aiPhases = (await Json(await admin.GetAsync("/api/roadmap")))["phases"]!.AsArray().Take(4).Select(p => p!["id"]!.GetValue<int>()).ToHashSet();
+        var placement = (await Json(await admin.GetAsync("/api/placement")))["questions"]!.AsArray();
+        Assert.NotEmpty(placement);
+        Assert.All(placement, q => Assert.Contains(q!["phaseId"]!.GetValue<int>(), aiPhases));
+
+        // Admins see how many accounts follow each roadmap, and how many haven't chosen.
+        var roadmaps = (await Json(await admin.GetAsync("/api/admin/usage")))["roadmaps"]!.AsArray();
+        Assert.True(roadmaps.Single(r => r!["slug"]!.GetValue<string>() == DotNet)!["learners"]!.GetValue<int>() >= 1);
+        Assert.True(roadmaps.Single(r => r!["slug"]!.GetValue<string>() == Ai)!["learners"]!.GetValue<int>() >= 1);
+        Assert.Contains(roadmaps, r => r!["slug"]!.GetValue<string>() == "");
+    }
 }

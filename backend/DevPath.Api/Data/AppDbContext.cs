@@ -525,6 +525,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
         {
             OwnedByUser(e);
             e.Property(x => x.Code).HasMaxLength(Certificate.CodeLength).IsUnicode(false);
+            e.Property(x => x.TrackSlug).HasMaxLength(60);
             e.HasIndex(x => x.Code).IsUnique();
             e.HasIndex(x => new { x.UserId, x.PhaseId }).IsUnique();   // one certificate per learner and phase
             e.HasOne(x => x.Phase).WithMany().HasForeignKey(x => x.PhaseId).OnDelete(DeleteBehavior.Cascade);

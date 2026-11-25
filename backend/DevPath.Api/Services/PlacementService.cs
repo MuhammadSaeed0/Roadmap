@@ -10,7 +10,7 @@ namespace DevPath.Api.Services;
 /// each of the first phases, served without their answers and graded here. Grading changes nothing;
 /// only <see cref="ApplyAsync"/>, which the learner calls after ticking phases, marks topics.
 /// </summary>
-public class PlacementService(AppDbContext db, TimeProvider clock)
+public class PlacementService(AppDbContext db, TrackContext tracks, TimeProvider clock)
 {
     public const int PerPhase = 2;
     /// <summary>The check covers phases 1 to this one (by roadmap order).</summary>
@@ -116,9 +116,13 @@ public class PlacementService(AppDbContext db, TimeProvider clock)
 
     private async Task<List<PhaseInfo>> PhasesAsync(CancellationToken ct)
     {
-        var phases = await db.Phases.AsNoTracking().Where(p => p.Order >= 1 && p.Order <= LastPhaseOrder).OrderBy(p => p.Order)
-            .Select(p => new { p.Id, p.Order, p.TitleEn, p.TitleAr, Topics = p.Topics.Count })
-            .ToListAsync(ct);
+        // The learner's roadmap decides which phases are checked and their numbers; without roadmaps, catalog order.
+        var positions = (await tracks.GetAsync(ct))?.Positions;
+        var phases = (await db.Phases.AsNoTracking()
+                .Select(p => new { p.Id, p.Order, p.TitleEn, p.TitleAr, Topics = p.Topics.Count })
+                .ToListAsync(ct))
+            .Select(p => p with { Order = positions is null ? p.Order : positions.GetValueOrDefault(p.Id) })
+            .Where(p => p.Order >= 1 && p.Order <= LastPhaseOrder).OrderBy(p => p.Order).ToList();
         var ids = phases.Select(p => p.Id).ToList();
         var counts = await db.QuizQuestions.AsNoTracking().Where(q => ids.Contains(q.Topic.PhaseId))
             .GroupBy(q => q.Topic.PhaseId).Select(g => new { g.Key, Count = g.Count() }).ToDictionaryAsync(g => g.Key, g => g.Count, ct);
@@ -126,10 +130,14 @@ public class PlacementService(AppDbContext db, TimeProvider clock)
             .Select(p => new PhaseInfo(p.Id, p.Order, p.TitleEn, p.TitleAr, p.Topics, counts[p.Id])).ToList();
     }
 
-    private Task<List<QuizQuestion>> QuestionsAsync(CancellationToken ct) =>
-        db.QuizQuestions.AsNoTracking().Include(q => q.Topic)
-            .Where(q => q.Topic.Phase.Order >= 1 && q.Topic.Phase.Order <= LastPhaseOrder)
+    /// <summary>The quiz questions of the phases the check covers (the first phases of the learner's roadmap).</summary>
+    private async Task<List<QuizQuestion>> QuestionsAsync(CancellationToken ct)
+    {
+        var phaseIds = (await PhasesAsync(ct)).Select(p => p.Id).ToList();
+        return await db.QuizQuestions.AsNoTracking().Include(q => q.Topic)
+            .Where(q => phaseIds.Contains(q.Topic.PhaseId))
             .ToListAsync(ct);
+    }
 
     private static List<T> Shuffle<T>(List<T> list)
     {

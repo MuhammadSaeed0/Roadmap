@@ -258,6 +258,10 @@ namespace DevPath.Api.Migrations
                     b.Property<DateTime?>("RevokedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("TrackSlug")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasMaxLength(450)
