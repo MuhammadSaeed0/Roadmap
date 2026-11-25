@@ -1,3 +1,4 @@
+import { RoadmapScopeComponent } from '../../shared/roadmap-scope.component';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
@@ -13,7 +14,7 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
 @Component({
   selector: 'app-resources-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, FormatDatePipe, PageHeaderComponent,
+  imports: [RoadmapScopeComponent, RouterLink, IconComponent, TranslatePipe, LocalizePipe, FormatDatePipe, PageHeaderComponent,
     SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
   template: `
     <app-page-header [title]="'resources.title' | t" [subtitle]="'resources.subtitle' | t">
@@ -23,6 +24,7 @@ import { EmptyStateComponent, ErrorStateComponent, PageHeaderComponent, Skeleton
         <app-icon name="refresh" [size]="15" [class.spin]="verifying()" /> {{ (verifying() ? 'resources.verifying' : 'resources.verify') | t }}
       </button>
     </app-page-header>
+    <app-roadmap-scope [(all)]="everyRoadmap" (changed)="data.reload()" />
 
     <section class="card filter-bar" [attr.aria-label]="'common.filters' | t" data-tour="resources-filters">
       <div class="field grow">
@@ -116,7 +118,9 @@ export default class ResourcesPage {
   protected readonly verifying = signal(false);
   private timer: ReturnType<typeof setTimeout> | undefined;
 
-  protected readonly data = createLoader(() => this.api.resources({ type: this.type(), skill: this.skill(), q: this.q() }));
+  /** Show every roadmap's content instead of the learner's roadmap only. */
+  protected readonly everyRoadmap = signal(false);
+  protected readonly data = createLoader(() => this.api.resources({ type: this.type(), skill: this.skill(), q: this.q(), all: this.everyRoadmap() || null }));
 
   /** Resources by roadmap phase (the phase of their earliest topic), in roadmap order; unlinked ones last. */
   protected readonly groups = computed(() => {

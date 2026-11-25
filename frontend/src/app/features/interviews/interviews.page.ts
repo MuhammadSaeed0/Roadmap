@@ -1,3 +1,4 @@
+import { RoadmapScopeComponent } from '../../shared/roadmap-scope.component';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
@@ -20,7 +21,7 @@ const PAGE_SIZE = 40;
 @Component({
   selector: 'app-interviews-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, TranslatePipe, LocalizePipe, CodeBlockComponent, PageHeaderComponent,
+  imports: [RoadmapScopeComponent, RouterLink, IconComponent, TranslatePipe, LocalizePipe, CodeBlockComponent, PageHeaderComponent,
     ProgressBarComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent, MockInterviewComponent],
   templateUrl: './interviews.page.html',
 })
@@ -49,9 +50,11 @@ export default class InterviewsPage {
   protected readonly index = signal(0);
   protected readonly busy = signal(false);
 
-  protected readonly data = createLoader(() => this.api.interviews({ category: this.category(), rating: this.rating() }));
+  /** Show every roadmap's content instead of the learner's roadmap only. */
+  protected readonly everyRoadmap = signal(false);
+  protected readonly data = createLoader(() => this.api.interviews({ category: this.category(), rating: this.rating(), all: this.everyRoadmap() || null }));
   /** Every question, for the mock interview (loaded the first time that mode opens). */
-  protected readonly pool = createLoader(() => this.api.interviews(), { immediate: false });
+  protected readonly pool = createLoader(() => this.api.interviews({ all: this.everyRoadmap() || null }), { immediate: false });
   /** The topics the loaded questions belong to, for the topic filter, in alphabetical order. */
   protected readonly topics = computed(() => {
     const seen = new Map<number, { id: number; titleEn: string; titleAr: string; count: number }>();

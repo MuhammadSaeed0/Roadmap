@@ -1,3 +1,4 @@
+import { RoadmapScopeComponent } from '../../shared/roadmap-scope.component';
 import { ChangeDetectionStrategy, Component, computed, inject, signal, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -21,12 +22,13 @@ import { ProjectPlacesComponent } from '../../shared/project-places.component';
 @Component({
   selector: 'app-practice-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ProjectPlacesComponent, FormsModule, RouterLink, IconComponent, ChallengesPage, TranslatePipe, LocalizePipe, DurationPipe, PageHeaderComponent,
+  imports: [RoadmapScopeComponent, ProjectPlacesComponent, FormsModule, RouterLink, IconComponent, ChallengesPage, TranslatePipe, LocalizePipe, DurationPipe, PageHeaderComponent,
     ProgressBarComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
   template: `
     <app-page-header [title]="'practice.title' | t" [subtitle]="'practice.subtitle' | t">
       <a routerLink="/playground" class="btn btn-secondary btn-sm"><app-icon name="terminal" [size]="15" /> {{ 'nav.playground' | t }}</a>
     </app-page-header>
+    <app-roadmap-scope [(all)]="everyRoadmap" (changed)="data.reload()" />
     <app-project-places current="practice" />
 
     <div class="tabs" role="tablist" [attr.aria-label]="'practice.title' | t">
@@ -164,7 +166,9 @@ export default class PracticePage {
   protected readonly filters = signal<Filters>(this.fromQuery());
 
   /** Every exercise is loaded once; filtering is instant in the browser and the stats always cover everything. */
-  protected readonly data = createLoader(() => this.api.practice());
+  /** Show every roadmap's content instead of the learner's roadmap only. */
+  protected readonly everyRoadmap = signal(false);
+  protected readonly data = createLoader(() => this.api.practice({ all: this.everyRoadmap() || null }));
   /** Only the types that have exercises. */
   protected readonly types = computed(() => EXERCISE_TYPES.filter(t => this.data.value()?.stats.some(s => s.type === t)));
   protected readonly filtered = computed(() => {

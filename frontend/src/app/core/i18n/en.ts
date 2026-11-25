@@ -403,6 +403,7 @@ export const en = {
     open: 'Open the roadmap', choose: 'Follow this roadmap', chosen: 'You now follow “{name}”.',
     switchNote: 'Switching only changes which roadmap you see. Your progress, notes, certificates and projects stay.',
     yours: 'Your roadmap:', change: 'Change', settingsHint: 'Choose which roadmap your dashboard and recommendations follow.',
+    scopeLabel: 'Which roadmap to show', scopeMine: 'My roadmap', scopeAll: 'All roadmaps',
     sharedPhase: 'Shared', sharedHint: 'This phase is also part of another roadmap; your progress counts in both.',
   },
   marketing: {

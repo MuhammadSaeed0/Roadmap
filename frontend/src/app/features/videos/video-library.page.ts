@@ -1,3 +1,4 @@
+import { RoadmapScopeComponent } from '../../shared/roadmap-scope.component';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -24,7 +25,7 @@ type Flags = { isWatched: boolean; isBookmarked: boolean };
   selector: 'app-video-library-page',
   providers: [provideVideoLanguage('library')],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, RouterLink, IconComponent, TranslatePipe, LocalizePipe, PageHeaderComponent, SkeletonComponent,
+  imports: [RoadmapScopeComponent, FormsModule, RouterLink, IconComponent, TranslatePipe, LocalizePipe, PageHeaderComponent, SkeletonComponent,
     ErrorStateComponent, EmptyStateComponent, VideoCardComponent],
   template: `
     <app-page-header [title]="'videoLibrary.title' | t" [subtitle]="'videoLibrary.subtitle' | t">
@@ -35,6 +36,7 @@ type Flags = { isWatched: boolean; isBookmarked: boolean };
         </div>
       }
     </app-page-header>
+    <app-roadmap-scope [(all)]="everyRoadmap" (changed)="data.reload()" />
 
     @if (data.initialLoading()) {
       <div class="card"><app-skeleton [rows]="6" /></div>
@@ -168,7 +170,9 @@ export default class VideoLibraryPage {
 
   protected readonly languageOptions: VideoLanguageFilter[] = ['all', 'Arabic', 'English'];
   protected readonly skills = SKILLS;
-  protected readonly data = createLoader(() => this.api.videoLibrary());
+  /** Show every roadmap's content instead of the learner's roadmap only. */
+  protected readonly everyRoadmap = signal(false);
+  protected readonly data = createLoader(() => this.api.videoLibrary(null, this.everyRoadmap()));
   protected readonly saved = createLoader(() => this.api.savedVideos());
   /** The open list is in the URL (?tab=saved), so it survives a refresh and can be linked to. */
   protected readonly tab = signal<Tab>(this.route.snapshot.queryParamMap.get('tab') === 'saved' ? 'saved' : 'all');

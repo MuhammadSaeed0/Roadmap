@@ -79,9 +79,10 @@ public class TopicVideoService(
     }
 
     /// <summary>The curated videos of the whole roadmap, by phase and topic, optionally in one language.</summary>
-    public async Task<VideoLibraryDto> LibraryAsync(VideoLanguage? language, CancellationToken ct)
+    public async Task<VideoLibraryDto> LibraryAsync(VideoLanguage? language, CancellationToken ct, IReadOnlySet<int>? roadmapTopics = null)
     {
         var all = await db.CuratedVideos.AsNoTracking()
+            .Where(v => roadmapTopics == null || roadmapTopics.Contains(v.TopicId))
             .Select(v => new
             {
                 v.TopicId, v.VideoId, v.Title, v.ChannelTitle, v.DurationSeconds, v.Language, v.Description, v.Order,

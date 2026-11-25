@@ -16,6 +16,18 @@ public class TrackContext(AppDbContext db, ICurrentUser user)
 
     public Task<ActiveTrack?> GetAsync(CancellationToken ct) => _track ??= LoadAsync(ct);
 
+    /// <summary>
+    /// The topics of the learner's roadmap, for lists that show "this roadmap" by default (practice, interviews,
+    /// projects, videos, resources, glossary). Null means no filter: <paramref name="everyRoadmap"/> was asked, or
+    /// there are no roadmaps.
+    /// </summary>
+    public async Task<IReadOnlySet<int>?> TopicIdsAsync(bool everyRoadmap, CancellationToken ct)
+    {
+        if (everyRoadmap || await GetAsync(ct) is not { } track) return null;
+        var phases = track.Positions.Keys.ToList();
+        return (await db.Topics.AsNoTracking().Where(t => phases.Contains(t.PhaseId)).Select(t => t.Id).ToListAsync(ct)).ToHashSet();
+    }
+
     private async Task<ActiveTrack?> LoadAsync(CancellationToken ct)
     {
         var tracks = (await db.Tracks.AsNoTracking().OrderBy(t => t.Order)

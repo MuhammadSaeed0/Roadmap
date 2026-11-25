@@ -1,3 +1,4 @@
+import { RoadmapScopeComponent } from '../../shared/roadmap-scope.component';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
@@ -29,9 +30,10 @@ export function matches(term: GlossaryTerm, query: string): boolean {
 @Component({
   selector: 'app-glossary-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponent, TranslatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
+  imports: [RoadmapScopeComponent, RouterLink, IconComponent, TranslatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent],
   template: `
     <app-page-header [title]="'glossary.title' | t" [subtitle]="'glossary.subtitle' | t" />
+    <app-roadmap-scope [(all)]="everyRoadmap" (changed)="data.reload()" />
 
     <div class="toolbar gl-toolbar" data-tour="glossary-search">
       <div class="field grow">
@@ -116,7 +118,9 @@ export default class GlossaryPage {
   protected readonly i18n = inject(I18nService);
   private readonly params = inject(ActivatedRoute).snapshot.queryParamMap;
 
-  protected readonly data = createLoader(() => this.api.glossary());
+  /** Show every roadmap's content instead of the learner's roadmap only. */
+  protected readonly everyRoadmap = signal(false);
+  protected readonly data = createLoader(() => this.api.glossary(this.everyRoadmap()));
   protected readonly query = signal(this.params.get('q') ?? '');
   /** Arabic order by default for Arabic readers; the choice is kept in ?order=. */
   protected readonly order = signal<Order>((this.params.get('order') as Order | null) ?? (this.i18n.lang() === 'ar' ? 'ar' : 'en'));

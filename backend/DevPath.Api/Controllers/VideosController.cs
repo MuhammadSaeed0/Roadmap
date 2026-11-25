@@ -7,15 +7,15 @@ namespace DevPath.Api.Controllers;
 /// <summary>YouTube videos for topics. Suggestions are shared; added videos and watched/saved flags are per account.</summary>
 [ApiController]
 [Route("api")]
-public class VideosController(TopicVideoService videos) : ControllerBase
+public class VideosController(TopicVideoService videos, TrackContext tracks) : ControllerBase
 {
     [HttpGet("topics/{topicId:int}/videos")]
     public Task<TopicVideosDto> List(int topicId, CancellationToken ct) => videos.GetAsync(topicId, ct);
 
     /// <summary>Every curated video, organised by roadmap phase and topic. Language: English or Arabic (omit for both).</summary>
     [HttpGet("videos/library")]
-    public Task<VideoLibraryDto> Library([FromQuery] Models.VideoLanguage? language, CancellationToken ct) =>
-        videos.LibraryAsync(language, ct);
+    public async Task<VideoLibraryDto> Library([FromQuery] Models.VideoLanguage? language, CancellationToken ct, [FromQuery] bool all = false) =>
+        await videos.LibraryAsync(language, ct, await tracks.TopicIdsAsync(all, ct));
 
     [HttpGet("project-tasks/{taskId:int}/videos")]
     public Task<TaskVideosDto> ListForTask(int taskId, CancellationToken ct) => videos.GetForTaskAsync(taskId, ct);
