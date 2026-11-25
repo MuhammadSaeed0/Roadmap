@@ -28,12 +28,12 @@ export interface ConsoleLine { level: 'log' | 'info' | 'warn' | 'error' | 'debug
 export interface Problem { file: string; line: number; column: number; severity: 'error' | 'warning'; message: string; }
 export interface TestSummary { passed: number; total: number; }
 
-const ENGINE: Partial<Record<WorkspaceKind, RunnerEngine>> = { CSharp: 'csharp', Sql: 'sql', JavaScript: 'javascript', TypeScript: 'javascript' };
+const ENGINE: Partial<Record<WorkspaceKind, RunnerEngine>> = { CSharp: 'csharp', Sql: 'sql', JavaScript: 'javascript', TypeScript: 'javascript', Python: 'python' };
 const PREVIEW: Partial<Record<WorkspaceKind, string>> = { Web: 'runners/preview/web.html', Angular: 'runners/preview/angular.html' };
 let instances = 0;
 
 const SIDEBAR_KEY = 'devpath.ide.sidebarCollapsed';
-const KIND_ICONS: Record<string, string> = { CSharp: 'code', Sql: 'database', JavaScript: 'terminal', TypeScript: 'terminal', Web: 'globe', Angular: 'layers' };
+const KIND_ICONS: Record<string, string> = { Python: 'code', CSharp: 'code', Sql: 'database', JavaScript: 'terminal', TypeScript: 'terminal', Web: 'globe', Angular: 'layers' };
 /** Up to this width the workspace shows one pane at a time (keep in step with the 900px rules in styles.css). */
 const isNarrow = () => typeof matchMedia === 'function' && matchMedia('(max-width: 900px)').matches;
 function readFlag(key: string): boolean {
@@ -221,7 +221,8 @@ export class IdeComponent implements OnDestroy {
     this.syncModels();
     if (this.active()) this.showFile(this.active()!);
     this.editorState.set('ready');
-    if (this.engine() === 'csharp' && this.runnable()) this.runner.warmup('csharp');
+    // The C# compiler and Python are large downloads: start them while the learner reads the code.
+    if ((this.engine() === 'csharp' || this.engine() === 'python') && this.runnable()) this.runner.warmup(this.engine()!);
     if (this.kind() === 'Sql') void this.refreshSchema(true);
     if (this.autoRun() && this.runnable()) void this.run();
   }
@@ -361,6 +362,7 @@ export class IdeComponent implements OnDestroy {
     try {
       switch (this.kind()) {
         case 'CSharp': ok = await this.runCSharp(); break;
+        case 'Python': ok = await this.runPython(); break;
         case 'Sql': ok = await this.runSql(); break;
         case 'JavaScript': case 'TypeScript': ok = await this.runScript(); break;
         case 'Web': case 'Angular': ok = await this.renderPreview(); break;
@@ -407,6 +409,11 @@ export class IdeComponent implements OnDestroy {
         results = r.tests ?? [];
       } else if (this.kind() === 'Sql') {
         results = await this.runSqlChecks(tests);
+      } else if (this.kind() === 'Python') {
+        const r = await this.runner.runPython({ files: this.codeFiles('.py'), entry: this.pythonEntry(), tests }, 30000);
+        if (r.output) this.print('log', r.output.replace(/\n$/, ''));
+        if (r.error) this.print('error', r.error);
+        results = r.tests ?? [];
       } else {
         const code = await this.scriptCode();
         const r = await this.runner.runJavaScript({ code, tests });
@@ -453,6 +460,27 @@ export class IdeComponent implements OnDestroy {
     this.print('system', this.i18n.t('ide.finishedIn', { ms: r.compileMs + r.runMs }));
     this.panel.set('output');
     return !r.exception;
+  }
+
+  /** The file a Python run starts from: the workspace's entry, else main.py, else the first .py file. */
+  private pythonEntry(): string {
+    const files = this.codeFiles('.py').map(f => f.path);
+    const entry = this.entry();
+    return entry && files.includes(entry) ? entry : files.includes('main.py') ? 'main.py' : files[0] ?? 'main.py';
+  }
+
+  private async runPython(): Promise<boolean> {
+    const files = this.codeFiles('.py');
+    if (!files.length) { this.print('system', this.i18n.t('ide.noCode')); return false; }
+    if (this.runner.status().python !== 'ready') this.print('system', this.i18n.t('ide.loadingPython'));
+    const r = await this.runner.runPython({ files, entry: this.pythonEntry(), stdin: this.stdin() });
+    this.consoleLines.set([]);
+    if (r.output) this.print('log', r.output.replace(/\n$/, ''));
+    if (r.truncated) this.print('warn', this.i18n.t('ide.outputTruncated'));
+    if (r.error) this.print('error', r.error);
+    this.print('system', this.i18n.t('ide.finishedIn', { ms: r.durationMs }));
+    this.panel.set('output');
+    return !r.error;
   }
 
   private showCSharpDiagnostics(diagnostics: { file: string; line: number; column: number; endLine: number; endColumn: number; severity: 'error' | 'warning'; message: string; id: string }[]): void {

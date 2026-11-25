@@ -110,7 +110,9 @@ public enum ExerciseRunner
     /// <summary>HTML, CSS and JavaScript with a live preview.</summary>
     Web,
     /// <summary>A multi-file Angular app with a live preview.</summary>
-    Angular
+    Angular,
+    /// <summary>Python 3 in the browser (Pyodide); checks are test functions in tests.py.</summary>
+    Python
 }
 
 /// <summary>The kinds of Code Playground workspace.</summary>
@@ -121,7 +123,9 @@ public enum WorkspaceKind
     JavaScript,
     TypeScript,
     Web,
-    Angular
+    Angular,
+    /// <summary>Python 3 in the browser (Pyodide).</summary>
+    Python
 }
 
 public enum VideoLanguage

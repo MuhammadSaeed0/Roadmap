@@ -14,8 +14,9 @@ export const workspaceEn = {
     notFound: 'This project doesn’t exist or the template is unknown.', saved: 'Project saved to your account', saveFailed: 'The project couldn’t be saved. Try again.',
     draftNote: 'This is a draft kept in this browser. Save it as a project to keep it in your account and open it anywhere.',
     saveState: { draft: 'Draft (this browser only)', saving: 'Saving…', saved: 'All changes saved', error: 'Not saved: check your connection' },
-    kind: { CSharp: 'C#', Sql: 'SQL', JavaScript: 'JavaScript', TypeScript: 'TypeScript', Web: 'HTML, CSS & JavaScript', Angular: 'Angular' },
+    kind: { CSharp: 'C#', Sql: 'SQL', JavaScript: 'JavaScript', TypeScript: 'TypeScript', Web: 'HTML, CSS & JavaScript', Angular: 'Angular', Python: 'Python' },
     kindInfo: {
+      Python: 'Python 3 running in your browser (Pyodide): several files and modules, input() from the Input box, tracebacks and test_ functions.',
       CSharp: 'Multi-file C# with the real compiler (Roslyn) and .NET, running in your browser. Console input, exceptions and [Test] methods.',
       Sql: 'A SQL editor with sample databases, a schema explorer and result tables. Runs on SQLite in your browser; common SQL Server syntax is converted for you.',
       JavaScript: 'Plain JavaScript with a console.',
@@ -29,7 +30,7 @@ export const workspaceEn = {
     toolbar: 'Editor actions', explorer: 'Files', run: 'Run', preview: 'Run preview', stop: 'Stop', runTests: 'Run checks',
     runShortcut: 'Run (Ctrl+Enter)', testsShortcut: 'Run the automatic checks (Ctrl+Shift+Enter)', running: 'Running…',
     engineLoading: {
-      CSharp: 'Loading the C# compiler (first time only)…', Sql: 'Loading the SQL engine…', JavaScript: 'Starting JavaScript…',
+      Python: 'Loading Python (first time only)…', CSharp: 'Loading the C# compiler (first time only)…', Sql: 'Loading the SQL engine…', JavaScript: 'Starting JavaScript…',
       TypeScript: 'Starting JavaScript…', Web: 'Loading…', Angular: 'Loading…',
     },
     engineFailed: 'The runner couldn’t start. Reload the page and try again.', lastRunOk: 'Finished in {ms} ms', lastRunFailed: 'Finished with errors ({ms} ms)',
@@ -71,7 +72,7 @@ export const workspaceEn = {
       error: 'Your SQL stopped with an error.', noResult: 'No result set: end with a SELECT.', columnCount: 'Wrong number of columns.',
       rowCount: 'Wrong number of rows.', values: 'Some values are different.', order: 'Right rows, wrong order: check ORDER BY.',
     },
-    stopped: 'Stopped.', noCode: 'There is no code to run yet.', loadingCompiler: 'Loading the C# compiler (about 9 MB, only the first time)…',
+    loadingPython: 'Loading Python (about 13 MB, only the first time)…', stopped: 'Stopped.', noCode: 'There is no code to run yet.', loadingCompiler: 'Loading the C# compiler (about 9 MB, only the first time)…',
     compileFailed: 'Build failed with {n} error(s). See Problems.', outputTruncated: 'The output was cut off at 100,000 characters.',
     finishedIn: 'Finished in {ms} ms.', typeErrors: '{n} type error(s): see Problems. The preview runs anyway.', previewUpdated: 'Preview updated.',
     timeout: 'Stopped: it ran too long (is there an endless loop?). The runner was restarted.',

@@ -548,7 +548,7 @@ export const ar: Translations = {
     skillLine: 'أكملت {done} · بقي {left}', groupLine: 'أكملت {done} من {total}', submissionsTitle: 'محاولاتك', loadSubmission: 'حمّل هذا الكود',
     loadSubmissionConfirm: 'هل تريد استبدال الكود في المحرر بكود هذه المحاولة؟', search: 'ابحث في التمارين…', allTypes: 'كل الأنواع', allDifficulties: 'كل المستويات', anyStatus: 'أي حالة',
     runnableOnly: 'تعمل في المتصفح', showing: 'يُعرض {n} من {total} تمرين', bestScore: 'أفضل نتيجة {score}%', technologies: 'التقنيات',
-    runner: { CSharp: 'تشغيل C#', Sql: 'تشغيل SQL', JavaScript: 'تشغيل JS', TypeScript: 'تشغيل TS', Web: 'معاينة مباشرة', Angular: 'معاينة Angular' },
+    runner: { Python: 'تشغيل Python', CSharp: 'تشغيل C#', Sql: 'تشغيل SQL', JavaScript: 'تشغيل JS', TypeScript: 'تشغيل TS', Web: 'معاينة مباشرة', Angular: 'معاينة Angular' },
     scenario: 'السيناريو', requirements: 'المتطلبات', acceptance: 'معايير القبول', acceptanceHint: 'علّم كل معيار عندما يحققه حلّك.',
     bonus: 'متطلبات إضافية (اختيارية)', yourNotes: 'ملاحظات وشرح', notesHint: 'اختياري: اشرح طريقتك بأسلوبك. الكود المحفوظ يُحسب محاولةً أيضًا.',
     buildLocally: 'يحتاج هذا التحدي إلى خادم حقيقي أو قاعدة بيانات أو عدة تطبيقات تعمل معًا. نفّذه في بيئتك (VS Code وSQL Server)، واستخدم المحرر هنا لملفات البداية ولحفظ عملك.',

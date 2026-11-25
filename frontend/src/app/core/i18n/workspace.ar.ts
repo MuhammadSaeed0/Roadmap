@@ -16,8 +16,9 @@ export const workspaceAr: Widen<typeof workspaceEn> = {
     notFound: 'هذا المشروع غير موجود أو القالب غير معروف.', saved: 'تم حفظ المشروع في حسابك', saveFailed: 'تعذّر حفظ المشروع. حاول مرة أخرى.',
     draftNote: 'هذه مسودة محفوظة في هذا المتصفح فقط. احفظها كمشروع لتبقى في حسابك وتفتحها من أي مكان.',
     saveState: { draft: 'مسودة (في هذا المتصفح فقط)', saving: 'جارٍ الحفظ…', saved: 'تم حفظ كل التغييرات', error: 'لم يُحفظ: تحقّق من اتصالك' },
-    kind: { CSharp: 'C#', Sql: 'SQL', JavaScript: 'JavaScript', TypeScript: 'TypeScript', Web: 'HTML وCSS وJavaScript', Angular: 'Angular' },
+    kind: { CSharp: 'C#', Sql: 'SQL', JavaScript: 'JavaScript', TypeScript: 'TypeScript', Web: 'HTML وCSS وJavaScript', Angular: 'Angular', Python: 'Python' },
     kindInfo: {
+      Python: 'لغة Python 3 تعمل في متصفحك (Pyodide): عدة ملفات ووحدات، والإدخال بـ input() من مربع الإدخال، ورسائل الخطأ الكاملة، ودوال test_.',
       CSharp: 'كود C# متعدد الملفات مع المترجم الحقيقي (Roslyn) و.NET، يعمل في متصفحك. يدعم الإدخال من الـ Console والاستثناءات ودوال [Test].',
       Sql: 'محرر SQL مع قواعد بيانات نموذجية ومستعرض للجداول وجداول للنتائج. يعمل على SQLite في متصفحك، وتُحوَّل صيغ SQL Server الشائعة تلقائيًا.',
       JavaScript: 'JavaScript عادي مع Console.',
@@ -31,7 +32,7 @@ export const workspaceAr: Widen<typeof workspaceEn> = {
     toolbar: 'أدوات المحرر', explorer: 'الملفات', run: 'تشغيل', preview: 'تشغيل المعاينة', stop: 'إيقاف', runTests: 'تشغيل الفحوص',
     runShortcut: 'تشغيل (Ctrl+Enter)', testsShortcut: 'تشغيل الفحوص التلقائية (Ctrl+Shift+Enter)', running: 'جارٍ التشغيل…',
     engineLoading: {
-      CSharp: 'جارٍ تحميل مترجم C# (في المرة الأولى فقط)…', Sql: 'جارٍ تحميل محرك SQL…', JavaScript: 'جارٍ تشغيل JavaScript…',
+      Python: 'جارٍ تحميل Python (أول مرة فقط)…', CSharp: 'جارٍ تحميل مترجم C# (في المرة الأولى فقط)…', Sql: 'جارٍ تحميل محرك SQL…', JavaScript: 'جارٍ تشغيل JavaScript…',
       TypeScript: 'جارٍ تشغيل JavaScript…', Web: 'جارٍ التحميل…', Angular: 'جارٍ التحميل…',
     },
     engineFailed: 'تعذّر تشغيل المنفِّذ. أعد تحميل الصفحة وحاول مرة أخرى.', lastRunOk: 'انتهى في {ms} مللي ثانية', lastRunFailed: 'انتهى مع أخطاء ({ms} مللي ثانية)',
@@ -73,7 +74,7 @@ export const workspaceAr: Widen<typeof workspaceEn> = {
       error: 'توقّف كود SQL بخطأ.', noResult: 'لا توجد نتيجة: اختم بأمر SELECT.', columnCount: 'عدد الأعمدة غير صحيح.',
       rowCount: 'عدد الصفوف غير صحيح.', values: 'بعض القيم مختلفة.', order: 'الصفوف صحيحة لكن ترتيبها خاطئ: راجع ORDER BY.',
     },
-    stopped: 'تم الإيقاف.', noCode: 'لا يوجد كود لتشغيله بعد.', loadingCompiler: 'جارٍ تحميل مترجم C# (نحو 9 ميجابايت، في المرة الأولى فقط)…',
+    loadingPython: 'جارٍ تحميل Python (حوالي 13 ميجابايت، أول مرة فقط)…', stopped: 'تم الإيقاف.', noCode: 'لا يوجد كود لتشغيله بعد.', loadingCompiler: 'جارٍ تحميل مترجم C# (نحو 9 ميجابايت، في المرة الأولى فقط)…',
     compileFailed: 'فشل البناء مع {n} من الأخطاء. راجع «المشكلات».', outputTruncated: 'قُطعت المخرجات عند 100,000 حرف.',
     finishedIn: 'انتهى في {ms} مللي ثانية.', typeErrors: 'يوجد {n} من أخطاء الأنواع: راجع «المشكلات». تعمل المعاينة رغم ذلك.', previewUpdated: 'تم تحديث المعاينة.',
     timeout: 'تم الإيقاف: استغرق التشغيل وقتًا طويلًا (هل توجد حلقة لا تنتهي؟). أُعيد تشغيل المنفِّذ.',

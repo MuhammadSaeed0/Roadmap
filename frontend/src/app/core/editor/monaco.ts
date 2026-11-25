@@ -47,7 +47,7 @@ export function typescriptApi(monaco: MonacoApi): typeof Monaco.typescript {
 export function languageOf(path: string): string {
   const ext = path.slice(path.lastIndexOf('.') + 1).toLowerCase();
   return ({
-    cs: 'csharp', ts: 'typescript', js: 'javascript', mjs: 'javascript', html: 'html', htm: 'html', css: 'css', scss: 'scss',
+    cs: 'csharp', py: 'python', ts: 'typescript', js: 'javascript', mjs: 'javascript', html: 'html', htm: 'html', css: 'css', scss: 'scss',
     json: 'json', sql: 'sql', md: 'markdown', xml: 'xml', csproj: 'xml', yml: 'yaml', yaml: 'yaml', sh: 'shell', http: 'plaintext',
   } as Record<string, string>)[ext] ?? 'plaintext';
 }

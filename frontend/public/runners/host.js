@@ -1,4 +1,4 @@
-// Runner host. Lives in a sandboxed iframe and runs each engine (C#, SQL, JavaScript) in its own Web Worker,
+// Runner host. Lives in a sandboxed iframe and runs each engine (C#, SQL, JavaScript, Python) in its own Web Worker,
 // so a long or endless program can always be stopped by terminating the worker.
 //
 // Messages from the app:   { channel: 'devpath-runner', id, engine, action: 'run' | 'schema' | 'stop' | 'warmup', payload, timeoutMs }
@@ -53,6 +53,7 @@ const engines = {
   csharp: () => `${bridge} import(${JSON.stringify(base + 'csharp/worker.js')}).catch(e => postMessage({ type: 'fatal', message: String(e && e.message || e) }));`,
   sql: () => `${bridge} importScripts(${JSON.stringify(base + 'sql/sql-engine.js')});`,
   javascript: () => `self.RUNNER_BASE = ${JSON.stringify(base)}; importScripts(${JSON.stringify(base + 'js/js-engine.js')});`,
+  python: () => `${bridge} importScripts(${JSON.stringify(base + 'python/python-engine.js')});`,
 };
 
 const state = {};   // engine -> { worker, ready: Promise, pending: Map<id, {resolve, reject, timer}> }

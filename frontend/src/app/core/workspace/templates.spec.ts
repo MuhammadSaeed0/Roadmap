@@ -7,7 +7,7 @@ describe('Playground templates', () => {
     expect(templateForLanguage('typescript')).toBe('typescript');
     expect(templateForLanguage('dockerfile')).toBeNull();
     expect(templateForLanguage(null)).toBeNull();
-    for (const lang of ['csharp', 'sql', 'typescript', 'javascript']) expect(templateByKey(templateForLanguage(lang))).toBeDefined();
+    for (const lang of ['csharp', 'sql', 'typescript', 'javascript', 'python']) expect(templateByKey(templateForLanguage(lang))).toBeDefined();
   });
 });
 
@@ -24,6 +24,8 @@ describe('Running a topic lesson example', () => {
   it('opens each language in the editor that runs it', async () => {
     const { lessonTemplate } = await import('./templates');
     expect(lessonTemplate('csharp', 'Console.WriteLine("Hi");')).toBe('csharp-console');
+    expect(lessonTemplate('python', 'print("Hi")')).toBe('python');
+    expect(templateByKey('python')?.kind).toBe('Python');
     expect(lessonTemplate('typescript', 'console.log(1 + 1);', '2')).toBe('typescript');
     // A TypeScript fragment with no printed output (an Angular class, part of a file) doesn't run on its own.
     expect(lessonTemplate('typescript', '@Component({}) export class A {}', null)).toBeNull();

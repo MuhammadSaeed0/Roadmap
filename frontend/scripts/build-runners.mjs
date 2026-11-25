@@ -2,10 +2,11 @@
 // where the Angular build picks them up. Run before `ng build` / `ng serve`:  npm run build:runners
 //
 //   csharp   backend/DevPath.CodeRunner (Roslyn + .NET WebAssembly)      → public/runners/csharp
+//   python   Pyodide (CPython compiled to WebAssembly), from npm           → public/runners/python
 //   angular  Angular + RxJS bundled as browser modules for the preview    → public/runners/angular/vendor
 //            and their type definitions for the editor's IntelliSense     → public/runners/angular/types
 //
-// Pass "csharp" or "angular" to build only one part.
+// Pass "csharp", "python" or "angular" to build only some parts.
 import { execFileSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -18,6 +19,7 @@ const parts = process.argv.slice(2);
 const wanted = part => parts.length === 0 || parts.includes(part);
 
 if (wanted('csharp')) buildCSharp();
+if (wanted('python')) copyPython();
 if (wanted('angular')) { await buildAngularVendor(); copyAngularTypes(); }
 
 function buildCSharp() {
@@ -34,6 +36,21 @@ function buildCSharp() {
   } finally {
     rmSync(out, { recursive: true, force: true });
   }
+}
+
+/**
+ * The Pyodide files a Python run needs: the loader, the WebAssembly module and its JavaScript glue, the standard
+ * library and the package list. Its demos, source maps and type definitions are left out.
+ */
+function copyPython() {
+  const require = createRequire(import.meta.url);
+  const source = dirname(require.resolve('pyodide/package.json'));
+  const target = join(runners, 'python');
+  const files = ['pyodide.js', 'pyodide.asm.mjs', 'pyodide.asm.wasm', 'python_stdlib.zip', 'pyodide-lock.json'];
+  mkdirSync(target, { recursive: true });
+  for (const name of readdirSync(target)) if (!files.includes(name) && name !== 'python-engine.js') rmSync(join(target, name), { force: true });
+  for (const name of files) cpSync(join(source, name), join(target, name));
+  console.log(`Python runner (Pyodide) → ${relative(root, target)}`);
 }
 
 /** Angular and RxJS as ES modules for the Angular preview (JIT compilation in the browser). */

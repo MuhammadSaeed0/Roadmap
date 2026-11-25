@@ -4,7 +4,7 @@ import { WorkspaceFile } from '../models';
 import { loadRunnerAsset, runnerAssetUrl } from './runner-assets';
 
 /** Engines that run in the runner host (runners/host.html). HTML and Angular previews use their own pages. */
-export type RunnerEngine = 'csharp' | 'sql' | 'javascript';
+export type RunnerEngine = 'csharp' | 'sql' | 'javascript' | 'python';
 export type EngineStatus = 'idle' | 'loading' | 'ready' | 'running' | 'failed';
 
 export interface CSharpDiagnostic {
@@ -29,6 +29,11 @@ export interface SqlRunResult {
   checkResults: SqlResultSet[] | null; durationMs: number; schema: SqlTable[];
 }
 
+/** A Python run: printed output, the traceback of an uncaught exception, and the checks' results when tests ran. */
+export interface PythonRunResult {
+  output: string; truncated: boolean; error: string | null; tests: TestResult[] | null; durationMs: number;
+}
+
 export interface JsRunResult {
   logs: { level: 'log' | 'info' | 'warn' | 'error' | 'debug'; text: string }[];
   error: string | null; tests: TestResult[] | null; durationMs: number;
@@ -50,7 +55,7 @@ export class RunnerHostService {
   private readonly pending = new Map<string, { resolve: (v: unknown) => void; reject: (e: Error) => void }>();
 
   /** Per-engine state, for "Loading the C# compiler…" and similar messages. */
-  readonly status = signal<Record<RunnerEngine, EngineStatus>>({ csharp: 'idle', sql: 'idle', javascript: 'idle' });
+  readonly status = signal<Record<RunnerEngine, EngineStatus>>({ csharp: 'idle', sql: 'idle', javascript: 'idle', python: 'idle' });
   readonly failure = signal<Partial<Record<RunnerEngine, string>>>({});
 
   runCSharp(request: { files: WorkspaceFile[]; tests?: string | null; stdin?: string | null }, timeoutMs = 15000) {
@@ -67,6 +72,11 @@ export class RunnerHostService {
 
   runJavaScript(request: { code: string; tests?: string | null }, timeoutMs = 8000) {
     return this.request<JsRunResult>('javascript', 'run', request, timeoutMs);
+  }
+
+  /** Runs a Python program (its files and the one to start), with optional input and checks (tests.py). */
+  runPython(request: { files: WorkspaceFile[]; entry?: string; stdin?: string; tests?: string | null }, timeoutMs = 15000) {
+    return this.request<PythonRunResult>('python', 'run', request, timeoutMs);
   }
 
   /** Starts an engine in the background (the C# compiler is a large download). */
