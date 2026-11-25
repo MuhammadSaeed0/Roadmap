@@ -11,6 +11,7 @@
     </button>
   </div>
 </app-page-header>
+<app-roadmap-scope [(all)]="everyRoadmap" (changed)="data.reload(); pool.value() && pool.reload()" />
 
 @if (mode() === 'mock') {
   @if (pool.value(); as all) {

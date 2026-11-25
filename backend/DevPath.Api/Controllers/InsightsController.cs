@@ -10,7 +10,7 @@ namespace DevPath.Api.Controllers;
 [Route("api")]
 public class InsightsController(
     DashboardService dashboard, AnalyticsService analytics, CareerReadinessService readiness,
-    SearchService search, ResourceService resources, PreferenceService preferences) : ControllerBase
+    SearchService search, ResourceService resources, PreferenceService preferences, TrackContext tracks) : ControllerBase
 {
     [HttpGet("dashboard")]
     public Task<DashboardDto> GetDashboard(CancellationToken ct) => dashboard.GetAsync(ct);
@@ -37,9 +37,9 @@ public class InsightsController(
     }
 
     [HttpGet("resources")]
-    public Task<IReadOnlyList<ResourceDto>> GetResources([FromQuery] int? topicId, [FromQuery] ResourceType? type,
-        [FromQuery] SkillArea? skill, [FromQuery] string? q, CancellationToken ct) =>
-        resources.ListAsync(topicId, type, skill, q, ct);
+    public async Task<IReadOnlyList<ResourceDto>> GetResources([FromQuery] int? topicId, [FromQuery] ResourceType? type,
+        [FromQuery] SkillArea? skill, [FromQuery] string? q, CancellationToken ct, [FromQuery] bool all = false) =>
+        await resources.ListAsync(topicId, type, skill, q, ct, await tracks.TopicIdsAsync(all || topicId != null, ct));
 
     /// <summary>Checks every resource link over the internet and records the result.</summary>
     [HttpPost("resources/verify")]

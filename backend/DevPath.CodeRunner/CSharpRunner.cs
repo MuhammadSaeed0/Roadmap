@@ -170,10 +170,12 @@ public sealed class CSharpRunner(IReadOnlyList<MetadataReference> references)
 
         var assembly = Assembly.Load(image.ToArray());
         var output = new LimitedWriter(MaxOutputChars);
-        var originalOut = Console.Out;
-        var originalError = Console.Error;
-        Console.SetOut(output);
-        Console.SetError(output);
+        // Console.Out is shared by the whole process. Installing a router once and pointing it at this run's writer
+        // through an AsyncLocal keeps runs apart: output written after an await still reaches this run, even while
+        // another run (or a logger) writes to the console at the same time.
+        ConsoleRouter.Install();
+        var previous = ConsoleRouter.Current.Value;
+        ConsoleRouter.Current.Value = output;
         assembly.GetType("DevPath.Runtime.LearnerInput")!.GetField("Reader")!.SetValue(null, new StringReader(request.Stdin ?? ""));
         var runWatch = Stopwatch.StartNew();
         string? exception = null;
@@ -185,8 +187,7 @@ public sealed class CSharpRunner(IReadOnlyList<MetadataReference> references)
         }
         finally
         {
-            Console.SetOut(originalOut);
-            Console.SetError(originalError);
+            ConsoleRouter.Current.Value = previous;
         }
         return new RunResult(true, diagnostics, output.ToString(), output.Truncated, exception, tests, compileMs, runWatch.ElapsedMilliseconds);
     }
@@ -270,6 +271,37 @@ public sealed class CSharpRunner(IReadOnlyList<MetadataReference> references)
             .TakeWhile(l => !l.Contains("System.Reflection.", StringComparison.Ordinal) && !l.Contains("DevPath.CodeRunner", StringComparison.Ordinal))
             .Where(l => l.Length > 0);
         return inner.GetType().FullName + ": " + inner.Message + "\n" + string.Join("\n", frames);
+    }
+
+    /// <summary>
+    /// Console.Out and Console.Error for the whole process: each write goes to the writer of the run on the current
+    /// async flow, or to the original console when no run is active (loggers, the host).
+    /// </summary>
+    private sealed class ConsoleRouter(TextWriter fallback) : TextWriter
+    {
+        public static readonly AsyncLocal<TextWriter?> Current = new();
+        private static readonly object Gate = new();
+        private static bool _installed;
+
+        public static void Install()
+        {
+            lock (Gate)
+            {
+                if (_installed) return;
+                Console.SetOut(new ConsoleRouter(Console.Out));
+                Console.SetError(new ConsoleRouter(Console.Error));
+                _installed = true;
+            }
+        }
+
+        private TextWriter Target => Current.Value ?? fallback;
+        public override Encoding Encoding => fallback.Encoding;
+        public override void Write(char value) => Target.Write(value);
+        public override void Write(string? value) => Target.Write(value);
+        public override void Write(char[] buffer, int index, int count) => Target.Write(buffer, index, count);
+        public override void WriteLine(string? value) => Target.WriteLine(value);
+        public override void WriteLine() => Target.WriteLine();
+        public override void Flush() => Target.Flush();
     }
 
     /// <summary>Captures console output and stops a runaway program before it fills the browser's memory.</summary>

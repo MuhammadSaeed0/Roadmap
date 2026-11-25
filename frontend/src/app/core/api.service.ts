@@ -29,7 +29,7 @@ export class ApiService {
   chooseTrack(slug: string) { return this.put<M.Tracks>('/tracks/active', { slug }); }
   /** Public: phase, topic and built-in path names and ids, no progress (works without an account). */
   catalog() { return this.get<M.Catalog>('/catalog'); }
-  glossary() { return this.get<M.GlossaryTerm[]>('/glossary'); }
+  glossary(all = false) { return this.get<M.GlossaryTerm[]>('/glossary', { all: all || null }); }
   topics(query: Query) { return this.get<M.PagedResult<M.TopicSummary>>('/topics', query); }
   topic(id: number) { return this.get<M.TopicDetail>(`/topics/${id}`); }
   updateTopicProgress(id: number, body: M.TopicProgressUpdate) { return this.put<unknown>(`/topics/${id}/progress`, body); }
@@ -123,7 +123,7 @@ export class ApiService {
 
   // ----- Topic videos -----
   topicVideos(topicId: number) { return this.get<M.TopicVideos>(`/topics/${topicId}/videos`); }
-  videoLibrary(language: M.VideoLanguage | null = null) { return this.get<M.VideoLibrary>(`/videos/library`, { language }); }
+  videoLibrary(language: M.VideoLanguage | null = null, all = false) { return this.get<M.VideoLibrary>(`/videos/library`, { language, all: all || null }); }
   savedVideos() { return this.get<M.SavedVideo[]>(`/videos/saved`); }
   /** The API checks the link with YouTube before saving it. */
   addTopicVideo(topicId: number, url: string) { return this.post<M.TopicVideo>(`/topics/${topicId}/videos`, { url }); }
@@ -192,7 +192,7 @@ export class ApiService {
   activePaths() { return this.get<M.PathSummary[]>('/paths/active'); }
 
   // ----- Project library -----
-  guidedProjects() { return this.get<M.GuidedProjectSummary[]>('/guided-projects'); }
+  guidedProjects(all = false) { return this.get<M.GuidedProjectSummary[]>('/guided-projects', { all: all || null }); }
   guidedProject(id: number) { return this.get<M.GuidedProjectDetail>(`/guided-projects/${id}`); }
   /** Null (204) when the learner has no library project in progress. */
   currentGuidedProject() { return this.get<M.CurrentGuidedProject | null>('/guided-projects/current'); }

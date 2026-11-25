@@ -22,9 +22,10 @@ public class PracticeService(AppDbContext db, TimeProvider clock)
     /// <summary>Submissions kept per exercise and learner.</summary>
     public const int MaxSubmissionsKept = 20;
 
-    public async Task<PracticeOverviewDto> ListAsync(PracticeFilter filter, CancellationToken ct)
+    public async Task<PracticeOverviewDto> ListAsync(PracticeFilter filter, CancellationToken ct, IReadOnlySet<int>? roadmapTopics = null)
     {
         var all = await db.PracticeExercises.AsNoTracking()
+            .Where(e => roadmapTopics == null || roadmapTopics.Contains(e.TopicId))
             .OrderBy(e => e.Topic.Phase.Order).ThenBy(e => e.Topic.Order).ThenBy(e => e.Difficulty).ThenBy(e => e.Id)
             .Select(e => new
             {

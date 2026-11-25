@@ -7,10 +7,11 @@ namespace DevPath.Api.Controllers;
 /// <summary>The Project library: optional step-by-step projects for every skill at three levels.</summary>
 [ApiController]
 [Route("api/guided-projects")]
-public class GuidedProjectsController(GuidedProjectService projects) : ControllerBase
+public class GuidedProjectsController(GuidedProjectService projects, TrackContext tracks) : ControllerBase
 {
     [HttpGet]
-    public Task<IReadOnlyList<GuidedProjectSummaryDto>> List(CancellationToken ct) => projects.ListAsync(ct);
+    public async Task<IReadOnlyList<GuidedProjectSummaryDto>> List(CancellationToken ct, [FromQuery] bool all = false) =>
+        await projects.ListAsync(ct, await tracks.TopicIdsAsync(all, ct));
 
     /// <summary>The unfinished project the learner touched last (204 when none).</summary>
     [HttpGet("current")]

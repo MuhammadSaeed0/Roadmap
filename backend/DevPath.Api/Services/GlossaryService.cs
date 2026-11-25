@@ -37,7 +37,8 @@ public class GlossaryService(IServiceScopeFactory scopes)
             if (_terms is { } again) return again;
             using var scope = scopes.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            var topics = await db.Topics.AsNoTracking()
+            // Built outside a request (it would see drafts): leave draft topics out explicitly.
+            var topics = await db.Topics.AsNoTracking().Where(t => !t.IsDraft)
                 .Select(t => new { t.Id, t.Slug, t.TitleEn, t.TitleAr }).ToDictionaryAsync(t => t.Slug, ct);
             // A term whose topic is missing is left out rather than linking nowhere (the seed test keeps this from happening).
             _terms = LoadSeed()

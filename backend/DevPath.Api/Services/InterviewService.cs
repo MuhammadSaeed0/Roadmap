@@ -16,7 +16,7 @@ public class InterviewService(AppDbContext db, TimeProvider clock)
         q.ProgressRows.Select(p => p.TimesPracticed).FirstOrDefault(),
         q.ProgressRows.Select(p => (DateTime?)p.LastPracticedAt).FirstOrDefault());
 
-    public async Task<InterviewListDto> ListAsync(InterviewCategory? category, int? topicId, string? rating, CancellationToken ct)
+    public async Task<InterviewListDto> ListAsync(InterviewCategory? category, int? topicId, string? rating, CancellationToken ct, IReadOnlySet<int>? roadmapTopics = null)
     {
         // Enums are stored as strings, so ORDER BY in SQL would sort them alphabetically
         // ("Advanced" before "Beginner"). Sorting in memory uses the enum's declared order.
@@ -30,6 +30,7 @@ public class InterviewService(AppDbContext db, TimeProvider clock)
             .Select(p => new { p.QuestionId, p.Rating, p.TimesPracticed, p.LastPracticedAt })
             .ToDictionaryAsync(p => p.QuestionId, ct);
         var questions = await db.InterviewQuestions.AsNoTracking()
+            .Where(q => roadmapTopics == null || roadmapTopics.Contains(q.TopicId))
             .Select(q => new
             {
                 q.Id, q.Key, q.Category, q.TopicId, q.Difficulty, q.QuestionEn, q.QuestionAr, q.AnswerEn, q.AnswerAr,

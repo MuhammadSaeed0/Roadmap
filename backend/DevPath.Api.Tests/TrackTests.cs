@@ -77,6 +77,20 @@ public class TrackTests(TrackTests.Factory factory) : IClassFixture<TrackTests.F
         foreach (var page in new[] { "/api/dashboard", "/api/recommendations", "/api/study-plan?minutes=60" })
             Assert.True((await admin.GetAsync(page)).IsSuccessStatusCode, page);
 
+        // Lists follow the roadmap by default (the AI draft holds only the C# and ASP.NET Core phases for now);
+        // ?all=true shows every roadmap's content.
+        var roadmapTopics = phases.SelectMany(p => p!["topics"]!.AsArray()).Select(t => t!["id"]!.GetValue<int>()).ToHashSet();
+        var mine = (await Json(await admin.GetAsync("/api/practice")))["exercises"]!.AsArray();
+        var every = (await Json(await admin.GetAsync("/api/practice?all=true")))["exercises"]!.AsArray();
+        Assert.All(mine, e => Assert.Contains(e!["topicId"]!.GetValue<int>(), roadmapTopics));
+        Assert.True(every.Count > mine.Count);
+        Assert.Contains(every, e => e!["topicId"]!.GetValue<int>() == efTopic);
+        foreach (var (url, path) in new[] { ("/api/interviews", "questions"), ("/api/glossary", ""), ("/api/guided-projects", ""), ("/api/resources", "") })
+        {
+            int Count(JsonNode n) => (path == "" ? n : n[path]!).AsArray().Count;
+            Assert.True(Count(await Json(await admin.GetAsync(url))) < Count(await Json(await admin.GetAsync(url + (url.Contains('?') ? "&" : "?") + "all=true"))), url);
+        }
+
         // Progress is per topic, so switching back keeps it.
         await Json(await admin.PutAsJsonAsync("/api/tracks/active", new { slug = DotNet }));
         Assert.Equal(14, (await Json(await admin.GetAsync("/api/roadmap")))["phases"]!.AsArray().Count);

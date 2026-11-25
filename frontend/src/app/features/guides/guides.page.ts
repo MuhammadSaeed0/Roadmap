@@ -1,3 +1,4 @@
+import { RoadmapScopeComponent } from '../../shared/roadmap-scope.component';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
@@ -26,9 +27,10 @@ import { ProjectPlacesComponent } from '../../shared/project-places.component';
   selector: 'app-guides-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './guides.css',
-  imports: [ProjectPlacesComponent, RouterLink, IconComponent, TranslatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent, ProgressBarComponent],
+  imports: [RoadmapScopeComponent, ProjectPlacesComponent, RouterLink, IconComponent, TranslatePipe, PageHeaderComponent, SkeletonComponent, ErrorStateComponent, EmptyStateComponent, ProgressBarComponent],
   template: `
     <app-page-header [title]="'guides.title' | t" [subtitle]="'guides.subtitle' | t" />
+    <app-roadmap-scope [(all)]="everyRoadmap" (changed)="data.reload()" />
     <app-project-places current="library" />
 
     <div class="card guide-filters" data-tour="guides-filters">
@@ -114,7 +116,9 @@ export default class GuidesPage {
 
   protected readonly skills = SKILLS;
   protected readonly levels = LEVELS;
-  protected readonly data = createLoader(() => this.api.guidedProjects());
+  /** Show every roadmap's content instead of the learner's roadmap only. */
+  protected readonly everyRoadmap = signal(false);
+  protected readonly data = createLoader(() => this.api.guidedProjects(this.everyRoadmap()));
 
   private readonly query = this.route.snapshot.queryParamMap;
   protected readonly skill = signal<SkillArea | ''>((SKILLS as string[]).includes(this.query.get('skill') ?? '') ? this.query.get('skill') as SkillArea : '');

@@ -723,6 +723,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser? 
         b.Entity<QuizQuestion>().HasQueryFilter(x => !x.Topic.IsDraft || ShowDrafts);
         b.Entity<TopicLesson>().HasQueryFilter(x => !x.Topic.IsDraft || ShowDrafts);
         b.Entity<CuratedVideo>().HasQueryFilter(x => !x.Topic.IsDraft || ShowDrafts);
+        // Library projects and resources link to several topics: hidden when every linked topic is a draft.
+        b.Entity<GuidedProject>().HasQueryFilter(x => !x.TopicLinks.Any() || x.TopicLinks.Any(l => !l.Topic.IsDraft) || ShowDrafts);
+        b.Entity<Resource>().HasQueryFilter(x => !x.TopicLinks.Any() || x.TopicLinks.Any(l => !l.Topic.IsDraft) || ShowDrafts);
 
         b.Entity<TopicVideoCache>(e =>
         {

@@ -11,9 +11,10 @@ namespace DevPath.Api.Services;
 /// </summary>
 public class GuidedProjectService(AppDbContext db, TimeProvider clock)
 {
-    public async Task<IReadOnlyList<GuidedProjectSummaryDto>> ListAsync(CancellationToken ct)
+    public async Task<IReadOnlyList<GuidedProjectSummaryDto>> ListAsync(CancellationToken ct, IReadOnlySet<int>? roadmapTopics = null)
     {
-        var rows = await Summaries(db.GuidedProjects.AsNoTracking()).ToListAsync(ct);
+        var rows = await Summaries(db.GuidedProjects.AsNoTracking()
+            .Where(g => roadmapTopics == null || !g.TopicLinks.Any() || g.TopicLinks.Any(t => roadmapTopics.Contains(t.TopicId)))).ToListAsync(ct);
         // The enums are stored as text, so the database would sort them alphabetically.
         return rows.OrderBy(p => p.Skill).ThenBy(p => p.Level).ThenBy(p => p.Id).ToList();
     }

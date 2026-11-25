@@ -7,13 +7,13 @@ namespace DevPath.Api.Controllers;
 
 [ApiController]
 [Route("api/practice")]
-public class PracticeController(PracticeService practice) : ControllerBase
+public class PracticeController(PracticeService practice, TrackContext tracks) : ControllerBase
 {
     [HttpGet]
-    public Task<PracticeOverviewDto> List([FromQuery] ExerciseType? type, [FromQuery] int? topicId,
+    public async Task<PracticeOverviewDto> List([FromQuery] ExerciseType? type, [FromQuery] int? topicId,
         [FromQuery] SkillArea? skill, [FromQuery] Difficulty? difficulty, [FromQuery] PracticeStatus? status,
-        [FromQuery] ExerciseRunner? runner, [FromQuery] string? q, CancellationToken ct) =>
-        practice.ListAsync(new PracticeFilter(type, topicId, skill, difficulty, status, runner, q), ct);
+        [FromQuery] ExerciseRunner? runner, [FromQuery] string? q, CancellationToken ct, [FromQuery] bool all = false) =>
+        await practice.ListAsync(new PracticeFilter(type, topicId, skill, difficulty, status, runner, q), ct, await tracks.TopicIdsAsync(all || topicId != null, ct));
 
     [HttpGet("{id:int}")]
     public Task<ExerciseDetailDto> Get(int id, CancellationToken ct) => practice.GetAsync(id, ct);

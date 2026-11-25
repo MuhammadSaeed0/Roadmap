@@ -10,9 +10,10 @@ public class ResourceService(AppDbContext db, IHttpClientFactory httpFactory, Ti
 {
     public const string HttpClientName = "link-checker";
 
-    public async Task<IReadOnlyList<ResourceDto>> ListAsync(int? topicId, ResourceType? type, SkillArea? skill, string? q, CancellationToken ct)
+    public async Task<IReadOnlyList<ResourceDto>> ListAsync(int? topicId, ResourceType? type, SkillArea? skill, string? q, CancellationToken ct, IReadOnlySet<int>? roadmapTopics = null)
     {
         var query = db.Resources.AsNoTracking().AsQueryable();
+        if (roadmapTopics != null) query = query.Where(r => !r.TopicLinks.Any() || r.TopicLinks.Any(l => roadmapTopics.Contains(l.TopicId)));
 
         if (topicId is { } id) query = query.Where(r => r.TopicLinks.Any(l => l.TopicId == id));
         if (skill is { } s) query = query.Where(r => r.TopicLinks.Any(l => l.Topic.Skill == s));
