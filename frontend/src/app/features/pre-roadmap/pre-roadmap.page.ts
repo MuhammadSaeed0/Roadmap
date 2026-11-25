@@ -1,3 +1,4 @@
+import { TrackRecommenderComponent } from '../tracks/track-recommender.component';
 import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, afterNextRender, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
@@ -37,7 +38,7 @@ function readUnderstood(): ReadonlySet<string> {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./pre-shared.css', './pre-roadmap.css'],
   providers: [provideVideoLanguage('preRoadmap')],
-  imports: [RouterLink, IconComponent, TranslatePipe, PageHeaderComponent, ProgressBarComponent, PreVideosComponent, PreFieldDetailComponent],
+  imports: [TrackRecommenderComponent, RouterLink, IconComponent, TranslatePipe, PageHeaderComponent, ProgressBarComponent, PreVideosComponent, PreFieldDetailComponent],
   templateUrl: './pre-roadmap.page.html',
 })
 export default class PreRoadmapPage {

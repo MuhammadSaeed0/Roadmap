@@ -190,6 +190,7 @@ export const en = {
       sources: 'Where visitors come from', source: 'Source', visits: 'Guest visits', signUps: 'New accounts', rate: 'Sign-up rate',
       sourcesHint: 'From the utm_source in your links (for example ?utm_source=facebook); “direct” means no source. A guest visit is counted once per browser session. Counted from this release.',
       sourcesEmpty: 'No visits counted yet.',
+      roadmaps: 'Learners per roadmap', roadmap: 'Roadmap', learners: 'Accounts', notChosen: 'Not chosen yet',
       pages: {
         topic: 'A roadmap topic', project: 'A main project', guide: 'A Project library project', exercise: 'A practice exercise',
         workspaceNew: 'A new playground workspace', workspace: 'A playground workspace', cvEditor: 'A CV in the editor',
@@ -403,6 +404,13 @@ export const en = {
     open: 'Open the roadmap', choose: 'Follow this roadmap', chosen: 'You now follow “{name}”.',
     switchNote: 'Switching only changes which roadmap you see. Your progress, notes, certificates and projects stay.',
     yours: 'Your roadmap:', change: 'Change', settingsHint: 'Choose which roadmap your dashboard and recommendations follow.',
+    landingTitle: 'Pick your roadmap', quizTitle: 'Which roadmap fits you?',
+    q: {
+      build: 'What would you like to build?', build_apps: 'Websites and business apps', build_ai: 'Apps that use AI, like chat assistants',
+      enjoy: 'Which sounds more fun?', enjoy_systems: 'Making all the parts of an app work together', enjoy_language: 'Making software understand text and answer questions',
+    },
+    recommended: 'We suggest “{name}”. You can switch later without losing progress.',
+    cardMeta: '{phases} phases · {topics} topics', startThis: 'Start for free',
     scopeLabel: 'Which roadmap to show', scopeMine: 'My roadmap', scopeAll: 'All roadmaps',
     sharedPhase: 'Shared', sharedHint: 'This phase is also part of another roadmap; your progress counts in both.',
   },
@@ -775,6 +783,7 @@ export const en = {
   certificate: {
     title: 'Certificate', kicker: 'Certificate of completion', presentedTo: 'This certifies that',
     body: 'completed phase {n} of the DevPath self-paced roadmap:',
+    bodyTrack: 'completed phase {n} of the DevPath self-paced roadmap “{track}”:',
     issued: 'Issued', topics: 'Topics', code: 'Certificate ID', verifyAt: 'Verify at',
     disclaimer: 'DevPath is a self-paced learning roadmap. This certificate records progress the learner marked in DevPath; it is not an accredited qualification.',
     verified: 'Verified: this certificate was issued by DevPath.',

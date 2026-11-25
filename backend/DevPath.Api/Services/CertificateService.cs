@@ -11,7 +11,7 @@ namespace DevPath.Api.Services;
 /// certificate for it, created on the first request and returned again afterwards. Verification is public and
 /// shows only the name, the phase and the date: no email or other account data.
 /// </summary>
-public class CertificateService(AppDbContext db, ICurrentUser currentUser, TimeProvider clock)
+public class CertificateService(AppDbContext db, ICurrentUser currentUser, TrackContext tracks, TimeProvider clock)
 {
     /// <summary>Upper-case letters and digits without the look-alikes 0, O, 1, I and L.</summary>
     private const string Alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -32,7 +32,13 @@ public class CertificateService(AppDbContext db, ICurrentUser currentUser, TimeP
         if (!(await PhaseCompletion.FinishedPhaseIdsAsync(db, currentUser.Id!, ct)).Contains(phaseId))
             throw new BusinessRuleException("phase_not_finished", "Complete or skip every topic of this phase first.");
 
-        var certificate = new Certificate { Code = NewCode(), PhaseId = phaseId, IssuedAt = clock.GetUtcNow().UtcDateTime };
+        // Named after the learner's roadmap when it holds the phase, otherwise the first roadmap that does.
+        var active = await tracks.GetAsync(ct);
+        var trackSlug = active?.Positions.ContainsKey(phaseId) == true
+            ? active.Slug
+            : await db.TrackPhases.AsNoTracking().Where(tp => tp.PhaseId == phaseId).OrderBy(tp => tp.Track.Order)
+                .Select(tp => tp.Track.Slug).FirstOrDefaultAsync(ct);
+        var certificate = new Certificate { Code = NewCode(), PhaseId = phaseId, IssuedAt = clock.GetUtcNow().UtcDateTime, TrackSlug = trackSlug };
         db.Certificates.Add(certificate);
         try
         {
@@ -57,16 +63,29 @@ public class CertificateService(AppDbContext db, ICurrentUser currentUser, TimeP
     {
         var finished = await PhaseCompletion.FinishedPhaseIdsAsync(db, currentUser.Id!, ct);
         var issued = await db.Certificates.AsNoTracking().Where(c => c.RevokedAt == null)
-            .ToDictionaryAsync(c => c.PhaseId, c => new { c.Code, c.IssuedAt }, ct);
+            .ToDictionaryAsync(c => c.PhaseId, c => new { c.Code, c.IssuedAt, c.TrackSlug }, ct);
         var phaseIds = finished.Union(issued.Keys).ToList();
         var phases = await db.Phases.AsNoTracking().Where(p => phaseIds.Contains(p.Id)).OrderBy(p => p.Order)
             .Select(p => new { p.Id, p.Order, p.TitleEn, p.TitleAr, Topics = p.Topics.Count }).ToListAsync(ct);
+        var positions = await PositionsAsync(phaseIds, ct);
+        var trackTitles = await db.Tracks.AsNoTracking().ToDictionaryAsync(t => t.Slug, t => new { t.TitleEn, t.TitleAr }, ct);
         return phases.Select(p =>
         {
             var certificate = issued.GetValueOrDefault(p.Id);
-            return new MyCertificateDto(p.Id, p.Order, p.TitleEn, p.TitleAr, p.Topics, certificate?.Code, certificate?.IssuedAt);
-        }).ToList();
+            var track = certificate?.TrackSlug is { } slug ? trackTitles.GetValueOrDefault(slug) : null;
+            return new MyCertificateDto(p.Id, positions.GetValueOrDefault(p.Id, p.Order), p.TitleEn, p.TitleAr, p.Topics,
+                certificate?.Code, certificate?.IssuedAt, track?.TitleEn, track?.TitleAr);
+        }).OrderBy(c => c.PhaseOrder).ToList();
     }
+
+    /// <summary>
+    /// A phase's number in its roadmaps ("Phase 3"). Seed validation keeps a shared phase at the same number in every
+    /// roadmap; a phase in no roadmap keeps its catalog order.
+    /// </summary>
+    private async Task<Dictionary<int, int>> PositionsAsync(IReadOnlyCollection<int> phaseIds, CancellationToken ct) =>
+        (await db.TrackPhases.AsNoTracking().Where(tp => phaseIds.Contains(tp.PhaseId))
+            .Select(tp => new { tp.PhaseId, tp.Position }).ToListAsync(ct))
+        .GroupBy(x => x.PhaseId).ToDictionary(g => g.Key, g => g.Min(x => x.Position));
 
     /// <summary>Public verification. Unknown, malformed and revoked codes all return null (404), so they can't be told apart.</summary>
     public async Task<PublicCertificateDto?> VerifyAsync(string code, CancellationToken ct)
@@ -78,13 +97,15 @@ public class CertificateService(AppDbContext db, ICurrentUser currentUser, TimeP
             .Where(c => c.Code == code && c.RevokedAt == null)
             .Select(c => new
             {
-                c.Code, c.IssuedAt, c.Phase.Order, c.Phase.TitleEn, c.Phase.TitleAr,
+                c.Code, c.IssuedAt, c.PhaseId, c.Phase.Order, c.Phase.TitleEn, c.Phase.TitleAr,
                 TopicCount = c.Phase.Topics.Count,
+                Track = db.Tracks.Where(t => t.Slug == c.TrackSlug).Select(t => new { t.TitleEn, t.TitleAr }).FirstOrDefault(),
                 Name = db.Users.Where(u => u.Id == c.UserId).Select(u => u.FullName).FirstOrDefault(),
             })
             .FirstOrDefaultAsync(ct);
-        return found is null || found.Name is null
-            ? null
-            : new PublicCertificateDto(found.Code, found.Name, found.Order, found.TitleEn, found.TitleAr, found.TopicCount, found.IssuedAt);
+        if (found is null || found.Name is null) return null;
+        var position = (await PositionsAsync([found.PhaseId], ct)).GetValueOrDefault(found.PhaseId, found.Order);
+        return new PublicCertificateDto(found.Code, found.Name, position, found.TitleEn, found.TitleAr, found.TopicCount, found.IssuedAt,
+            found.Track?.TitleEn, found.Track?.TitleAr);
     }
 }

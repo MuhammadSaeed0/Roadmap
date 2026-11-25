@@ -32,6 +32,8 @@ export interface AdminUsage {
   library: { learnersStarted: number; learnersFinished: number; projectsFinished: number };
   /** Guest visits and new accounts per link source (utm_source), busiest first. */
   sources: { source: string; visits: number; signUps: number }[];
+  /** Accounts per roadmap; slug "" counts accounts that haven't chosen yet. */
+  roadmaps?: { slug: string; titleEn: string; titleAr: string; learners: number }[];
 }
 
 export type StatusAction = 'approve' | 'reject' | 'suspend' | 'reactivate' | 'resend-verification';

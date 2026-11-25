@@ -6,7 +6,10 @@ public record PageViewRequest(string? Route);
 /// <summary>Usage counts for the admin page. Counts only, nothing per person.</summary>
 public record UsageReportDto(
     DateOnly From, DateOnly To, int TotalViews, IReadOnlyList<UsageRouteDto> TopPages, IReadOnlyList<UsageDayDto> Daily,
-    UsageLibraryDto Library, IReadOnlyList<UsageSourceDto> Sources);
+    UsageLibraryDto Library, IReadOnlyList<UsageSourceDto> Sources, IReadOnlyList<UsageRoadmapDto> Roadmaps);
+
+/// <summary>How many accounts follow a roadmap; Slug is empty for accounts that haven't chosen yet.</summary>
+public record UsageRoadmapDto(string Slug, string TitleEn, string TitleAr, int Learners);
 
 /// <summary>Sent once per visit by a guest: the link's utm_source, or nothing for a direct visit.</summary>
 public record SourceVisitRequest(string? Source);

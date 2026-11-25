@@ -59,6 +59,22 @@ describe('AdminUsageComponent', () => {
     }
   });
 
+  it('lists accounts per roadmap, with those who have not chosen yet', async () => {
+    usage.roadmaps = [
+      { slug: 'dotnet-fullstack', titleEn: '.NET full-stack developer', titleAr: 'مطوّر Full-Stack بـ .NET', learners: 30 },
+      { slug: 'ai-app-developer', titleEn: 'AI application developer', titleAr: 'مطوّر تطبيقات الذكاء الاصطناعي', learners: 4 },
+      { slug: '', titleEn: '', titleAr: '', learners: 2 },
+    ];
+    try {
+      const el = await render('en');
+      const rows = [...el.querySelectorAll('section[aria-labelledby="usage-roadmaps-h"] tbody tr')]
+        .map(r => [...r.querySelectorAll('td')].map(td => td.textContent?.trim()));
+      expect(rows).toEqual([['.NET full-stack developer', '30'], ['AI application developer', '4'], ['Not chosen yet', '2']]);
+    } finally {
+      usage.roadmaps = undefined;
+    }
+  });
+
   it('names every page a signed-in learner can open', () => {
     const patterns = (routes: Route[], prefix = ''): string[] => routes.flatMap(r => {
       if (r.redirectTo || r.path === undefined || r.path === '**') return [];

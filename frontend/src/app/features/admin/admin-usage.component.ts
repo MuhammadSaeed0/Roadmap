@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { I18nService } from '../../core/i18n/i18n.service';
 import { FormatDatePipe, FormatNumberPipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
 import { IconComponent } from '../../shared/icon.component';
@@ -106,6 +107,28 @@ export function pageNameKey(route: string): string | null {
         }
       </section>
 
+      @if ((r.roadmaps ?? []).length > 1) {
+        <section class="card" aria-labelledby="usage-roadmaps-h">
+          <h2 id="usage-roadmaps-h" class="card-title"><app-icon name="map" /> {{ 'admin.usage.roadmaps' | t }}</h2>
+          <div class="table-scroll">
+            <table class="table">
+              <thead><tr>
+                <th scope="col">{{ 'admin.usage.roadmap' | t }}</th>
+                <th scope="col" class="num">{{ 'admin.usage.learners' | t }}</th>
+              </tr></thead>
+              <tbody>
+                @for (m of r.roadmaps; track m.slug) {
+                  <tr>
+                    <td>{{ m.slug ? i18n.pick(m.titleEn, m.titleAr) : ('admin.usage.notChosen' | t) }}</td>
+                    <td class="num">{{ m.learners | fmtNum }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+      }
+
       <section class="card" aria-labelledby="usage-top-h" data-tour="admin-usage">
         <h2 id="usage-top-h" class="card-title"><app-icon name="layers" /> {{ 'admin.usage.topPages' | t }}</h2>
         @if (r.topPages.length === 0) {
@@ -139,6 +162,7 @@ export function pageNameKey(route: string): string | null {
 })
 export class AdminUsageComponent {
   private readonly api = inject(AdminApiService);
+  protected readonly i18n = inject(I18nService);
   protected readonly report = createLoader(() => this.api.usage(USAGE_DAYS));
   protected readonly pageName = pageNameKey;
 

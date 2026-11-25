@@ -1,8 +1,8 @@
 import { PublicCertificate } from '../../core/models';
 
 /** The title LinkedIn shows; English, since the profile entry is read by recruiters in any language. */
-export function linkedInTitle(phaseOrder: number, phaseTitleEn: string): string {
-  return `DevPath roadmap — Phase ${phaseOrder}: ${phaseTitleEn}`;
+export function linkedInTitle(phaseOrder: number, phaseTitleEn: string, trackTitleEn?: string | null): string {
+  return `DevPath ${trackTitleEn ? trackTitleEn + ' roadmap' : 'roadmap'} — Phase ${phaseOrder}: ${phaseTitleEn}`;
 }
 
 /** LinkedIn's "Add licence or certification" form, filled in; the verify link goes in certUrl. */

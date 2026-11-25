@@ -16,5 +16,10 @@ public class Certificate : IUserOwned
     public int PhaseId { get; set; }
     public Phase Phase { get; set; } = null!;
     public DateTime IssuedAt { get; set; }
+    /// <summary>
+    /// The roadmap the learner followed when it was issued (a phase can belong to several), named on the certificate.
+    /// Null for certificates issued before roadmaps existed: they read as the .NET roadmap's phases did.
+    /// </summary>
+    public string? TrackSlug { get; set; }
     public DateTime? RevokedAt { get; set; }
 }
