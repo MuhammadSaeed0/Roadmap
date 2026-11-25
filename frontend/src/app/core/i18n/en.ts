@@ -364,7 +364,8 @@ export const en = {
     practice: { name: 'Practice Lab', what: 'short exercises and challenges that check your code in the browser.', link: 'Practice Lab: quick exercises' },
   },
   landing: {
-    newToCoding: 'Never coded before?', startPreRoadmap: 'Start with “Before the roadmap”, free and no account needed.', readFree: 'Read it now, no account needed',
+    newToCoding: 'Never coded before?', startPreRoadmap: 'Start with “Before the roadmap”, free and no account needed.', preRoadmapCta: 'Never coded? Start here',
+    preRoadmapHint: '“Start here” opens the Before the roadmap guide: free, no account needed.', readFree: 'Read it now, no account needed',
     metaDescription: 'Learn to code from zero to your first developer job with a free .NET and Angular roadmap in English and Arabic: 166 topics, 250+ exercises, 66 projects.',
     tabTitle: 'DevPath: learn .NET and Angular step by step',
     kicker: 'Free · in English and Arabic',

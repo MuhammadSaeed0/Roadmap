@@ -66,6 +66,10 @@ describe('Landing page', () => {
     // Beginners can open the public Pre-Roadmap guide without an account, from the top and from its feature card.
     expect(el.querySelectorAll('a[href="/pre-roadmap"]').length).toBe(2);
     expect(el.querySelector('.ld-pre')?.textContent).toContain('Never coded before?');
+    // Create account, Start here and Sign in stand out the same way at the top.
+    const hero = [...el.querySelectorAll<HTMLAnchorElement>('.ld-actions a')];
+    expect(hero.map(a => a.getAttribute('href'))).toEqual(['/sign-up', '/pre-roadmap', '/sign-in']);
+    expect(hero.every(a => a.classList.contains('btn-primary') && a.classList.contains('ld-cta'))).toBe(true);
   });
 
   it('opens in Arabic for a first visit from an Arabic browser', () => {

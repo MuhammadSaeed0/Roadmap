@@ -3,12 +3,13 @@
   <h1 id="ld-title" tabindex="-1">{{ 'landing.headline' | t }}</h1>
   <p class="ld-lead">{{ 'landing.lead' | t }}</p>
   <div class="ld-actions">
-    <a class="btn btn-primary ld-cta" routerLink="/sign-up">{{ 'landing.cta' | t }}</a>
-    <a class="btn btn-ghost" routerLink="/sign-in">{{ 'landing.signIn' | t }}</a>
+    <a class="btn btn-primary ld-cta" routerLink="/sign-up"><app-icon name="plus" [size]="18" /> {{ 'landing.cta' | t }}</a>
+    <a class="btn btn-primary ld-cta" routerLink="/pre-roadmap" (pointerenter)="warmPreRoadmap()" (focus)="warmPreRoadmap()">
+      <app-icon name="compass" [size]="18" /> {{ 'landing.preRoadmapCta' | t }}</a>
+    <a class="btn btn-primary ld-cta" routerLink="/sign-in"><app-icon name="user" [size]="18" /> {{ 'landing.signIn' | t }}</a>
   </div>
   <p class="ld-note muted small">{{ 'landing.free' | t }}</p>
-  <p class="ld-pre"><app-icon name="compass" [size]="16" /> {{ 'landing.newToCoding' | t }}
-    <a routerLink="/pre-roadmap" (pointerenter)="warmPreRoadmap()" (focus)="warmPreRoadmap()">{{ 'landing.startPreRoadmap' | t }}</a></p>
+  <p class="ld-pre muted small">{{ 'landing.newToCoding' | t }} {{ 'landing.preRoadmapHint' | t }}</p>
 </section>
 
 <section class="ld-facts" [attr.aria-label]="'landing.factsLabel' | t">
