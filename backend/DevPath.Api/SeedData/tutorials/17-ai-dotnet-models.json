@@ -1,0 +1,171 @@
+[
+  {
+    "topic": "ai-dotnet-ichatclient",
+    "lessons": [
+      {
+        "key": "tut-ai-dotnet-ichatclient-1",
+        "titleEn": "One interface for every provider",
+        "titleAr": "واجهة واحدة لكل المزوّدين",
+        "bodyEn": "Microsoft.Extensions.AI defines `IChatClient`. Each provider package supplies an implementation, and you register it once in `Program.cs` with `AddChatClient`. Your services ask for `IChatClient` in their constructor and never mention the provider.\n\nA call takes a list of `ChatMessage` objects and optional `ChatOptions`, and returns a `ChatResponse` with `Text` and `Usage`. Middleware such as `UseLogging` wraps the client, the same way ASP.NET Core middleware wraps requests.",
+        "bodyAr": "مكتبة Microsoft.Extensions.AI تعرّف الواجهة `IChatClient`. وكل حزمة مزوّد تقدّم تطبيقًا لها، فتسجّله مرة واحدة في `Program.cs` بـ `AddChatClient`. وخدماتك تطلب `IChatClient` في المُنشئ ولا تذكر المزوّد أبدًا.\n\nوالاستدعاء يأخذ قائمة كائنات `ChatMessage` وإعدادات `ChatOptions` اختيارية، ويُرجع `ChatResponse` فيها `Text` و`Usage`. والـ Middleware مثل `UseLogging` يغلّف العميل، بالطريقة نفسها التي يغلّف بها Middleware في ASP.NET Core الطلبات.",
+        "code": "using Microsoft.Extensions.AI;\n\n// Program.cs\nIChatClient client = new OllamaApiClient(new Uri(\"http://localhost:11434\"), \"llama3.2\");\nbuilder.Services.AddChatClient(client).UseLogging();\n\n// Any service\npublic sealed class TopicExplainer(IChatClient chat)\n{\n    public async Task<string> ExplainAsync(string topic, CancellationToken ct)\n    {\n        List<ChatMessage> messages =\n        [\n            new(ChatRole.System, \"Explain programming topics in three short sentences.\"),\n            new(ChatRole.User, $\"Explain: {topic}\"),\n        ];\n        var response = await chat.GetResponseAsync(messages, new ChatOptions { MaxOutputTokens = 300 }, ct);\n        return response.Text;\n    }\n}",
+        "language": "aspnet"
+      },
+      {
+        "key": "tut-ai-dotnet-ichatclient-2",
+        "titleEn": "Depend on an interface, test with a fake",
+        "titleAr": "اعتمد على واجهة واختبر بنسخة وهمية",
+        "bodyEn": "Because services depend on an interface, a test can pass a fake that returns a fixed answer and records what it was sent. That makes the prompt testable without a network, a key or any cost.\n\nThe program below shows the idea with a tiny interface of its own: the service builds the messages, and the fake captures them so the test can check the system message and the user's text.",
+        "bodyAr": "لأن الخدمات تعتمد على واجهة، يستطيع الاختبار أن يمرّر نسخة وهمية تُرجع إجابة ثابتة وتسجّل ما أُرسل إليها. وهذا يجعل الطلب قابلًا للاختبار دون شبكة ولا مفتاح ولا تكلفة.\n\nالبرنامج بالأسفل يوضح الفكرة بواجهة صغيرة خاصة به: الخدمة تبني الرسائل، والنسخة الوهمية تلتقطها فيفحص الاختبار رسالة النظام ونص المستخدم.",
+        "code": "var fake = new FakeModel(\"A foreign key links two tables.\");\nvar explainer = new Explainer(fake);\n\nConsole.WriteLine(await explainer.ExplainAsync(\"foreign keys\"));\nforeach (var (role, text) in fake.LastMessages)\n    Console.WriteLine($\"{role}: {text}\");\n\ninterface IChatModel { Task<string> CompleteAsync(List<(string Role, string Text)> messages); }\n\nclass Explainer(IChatModel model)\n{\n    public Task<string> ExplainAsync(string topic) =>\n        model.CompleteAsync([(\"system\", \"Explain in one sentence.\"), (\"user\", $\"Explain: {topic}\")]);\n}\n\nclass FakeModel(string answer) : IChatModel\n{\n    public List<(string Role, string Text)> LastMessages { get; private set; } = [];\n    public Task<string> CompleteAsync(List<(string Role, string Text)> messages)\n    {\n        LastMessages = messages;\n        return Task.FromResult(answer);\n    }\n}",
+        "language": "csharp",
+        "output": "A foreign key links two tables.\nsystem: Explain in one sentence.\nuser: Explain: foreign keys"
+      }
+    ]
+  },
+  {
+    "topic": "ai-dotnet-secrets",
+    "lessons": [
+      {
+        "key": "tut-ai-dotnet-secrets-1",
+        "titleEn": "Where the key lives",
+        "titleAr": "أين يُحفظ المفتاح",
+        "bodyEn": "The key never goes into source code, `appsettings.json` in the repository, or the browser. On your machine use user secrets; in production use environment variables, Azure Key Vault, or best of all a managed identity, which needs no key.\n\nASP.NET Core merges all these sources into one configuration, so the code reads `Ai:ApiKey` the same way everywhere. In environment variables the colon becomes a double underscore: `Ai__ApiKey`.\n\n- Development: `dotnet user-secrets set \"Ai:ApiKey\" \"...\"`.\n- Production: an app setting, Key Vault, or managed identity.\n- Never: a commit, a log line, or front-end code.",
+        "bodyAr": "المفتاح لا يدخل الكود أبدًا، ولا ملف `appsettings.json` في المستودع، ولا المتصفح. على جهازك استخدم User secrets، وفي الإنتاج متغيرات البيئة أو Azure Key Vault، والأفضل الهوية المُدارة التي لا تحتاج مفتاحًا أصلًا.\n\nوASP.NET Core يدمج كل هذه المصادر في إعدادات واحدة، فيقرأ الكود `Ai:ApiKey` بالطريقة نفسها في كل مكان. وفي متغيرات البيئة تصبح النقطتان شرطتين سفليتين: `Ai__ApiKey`.\n\n- التطوير: `dotnet user-secrets set \"Ai:ApiKey\" \"...\"`.\n- الإنتاج: إعداد في التطبيق أو Key Vault أو الهوية المُدارة.\n- أبدًا: في Commit أو سطر سجل أو كود الواجهة.",
+        "code": "dotnet user-secrets init\ndotnet user-secrets set \"Ai:ApiKey\" \"sk-your-development-key\"\ndotnet user-secrets list\n\n# Production (Linux / container): double underscore for nested keys\nexport Ai__ApiKey=\"...\"",
+        "language": "bash"
+      },
+      {
+        "key": "tut-ai-dotnet-secrets-2",
+        "titleEn": "Validate settings at start",
+        "titleAr": "تحقّق من الإعدادات عند البدء",
+        "bodyEn": "Bind the AI settings to an options class and validate them when the app starts. A missing model name or endpoint then stops the deployment immediately, instead of failing later on the first user's request.\n\nThe program shows the same checks by hand: it lists every problem in the settings so the message tells you exactly what to fix. It also shows the key only as its last four characters, the safe way to confirm which key is loaded.",
+        "bodyAr": "اربط إعدادات الذكاء الاصطناعي بصنف Options وتحقّق منها عند بدء التطبيق. فاسم النموذج أو نقطة الاتصال الغائبة توقف النشر فورًا، بدل أن تفشل لاحقًا عند طلب أول مستخدم.\n\nالبرنامج يعرض الفحوص نفسها يدويًا: يذكر كل مشكلة في الإعدادات حتى تخبرك الرسالة بالضبط ما يجب إصلاحه. ويعرض المفتاح بآخر أربعة حروف فقط، وهي الطريقة الآمنة للتأكد من المفتاح المحمّل.",
+        "code": "var settings = new Dictionary<string, string?>\n{\n    [\"Ai:Endpoint\"] = \"https://my-ai.example.com\",\n    [\"Ai:Model\"] = \"\",\n    [\"Ai:ApiKey\"] = \"sk-test-1234567890abcd\",\n};\n\nvar problems = new List<string>();\nif (!settings[\"Ai:Endpoint\"].StartsWith(\"https://\")) problems.Add(\"Ai:Endpoint must be a URL\");\nif (string.IsNullOrWhiteSpace(settings[\"Ai:Model\"])) problems.Add(\"Ai:Model is required\");\n\nvar key = settings[\"Ai:ApiKey\"] ?? \"\";\nConsole.WriteLine($\"Key loaded: ...{key[^4..]}\");\nConsole.WriteLine(problems.Count == 0 ? \"Settings OK\" : \"Cannot start: \" + string.Join(\"; \", problems));",
+        "language": "csharp",
+        "output": "Key loaded: ...abcd\nCannot start: Ai:Model is required"
+      }
+    ]
+  },
+  {
+    "topic": "ai-dotnet-streaming",
+    "lessons": [
+      {
+        "key": "tut-ai-dotnet-streaming-1",
+        "titleEn": "Reading a stream with await foreach",
+        "titleAr": "قراءة التدفق بـ await foreach",
+        "bodyEn": "`GetStreamingResponseAsync` returns an `IAsyncEnumerable` of updates. Each update carries a small piece of text, and `await foreach` reads them as they arrive.\n\nThe program simulates a model with an async iterator that yields words with a short delay. The consumer prints each piece immediately and builds the full answer at the same time, which you need later to save it.",
+        "bodyAr": "الدالة `GetStreamingResponseAsync` تُرجع `IAsyncEnumerable` من التحديثات، وكل تحديث يحمل جزءًا صغيرًا من النص، و`await foreach` يقرأها أثناء وصولها.\n\nالبرنامج يحاكي نموذجًا بدالة تكرار غير متزامنة تُخرج الكلمات بتأخير قصير. والمستهلك يطبع كل جزء فورًا ويبني الإجابة كاملة في الوقت نفسه، وهي ما تحتاجه لاحقًا لحفظها.",
+        "code": "using System.Text;\n\nvar full = new StringBuilder();\nvar pieces = 0;\nawait foreach (var piece in FakeStream(\"A token is a piece of a word.\"))\n{\n    Console.Write(piece);\n    full.Append(piece);\n    pieces++;\n}\nConsole.WriteLine();\nConsole.WriteLine($\"{pieces} pieces, {full.Length} characters\");\n\nstatic async IAsyncEnumerable<string> FakeStream(string text)\n{\n    foreach (var word in text.Split(' '))\n    {\n        await Task.Delay(10);\n        yield return word + \" \";\n    }\n}",
+        "language": "csharp",
+        "output": "A token is a piece of a word. \n8 pieces, 30 characters"
+      },
+      {
+        "key": "tut-ai-dotnet-streaming-2",
+        "titleEn": "Streaming to the browser, with Stop",
+        "titleAr": "التدفق إلى المتصفح مع زر الإيقاف",
+        "bodyEn": "A minimal API can return an `IAsyncEnumerable<string>`; ASP.NET Core writes each item as soon as it is produced. For chat UIs, Server-Sent Events (`text/event-stream`) are a common format, read in the browser with `EventSource` or `fetch`.\n\nPass the request's `CancellationToken` all the way to the model call. When the user presses Stop or closes the tab, the token fires, the loop ends and the provider stops generating, so you pay only for what was produced.",
+        "bodyAr": "تستطيع Minimal API أن تُرجع `IAsyncEnumerable<string>`، وASP.NET Core يكتب كل عنصر فور إنتاجه. ولواجهات المحادثة صيغة Server-Sent Events (`text/event-stream`) شائعة، ويقرؤها المتصفح بـ `EventSource` أو `fetch`.\n\nومرّر `CancellationToken` الخاص بالطلب حتى استدعاء النموذج. فعندما يضغط المستخدم «إيقاف» أو يغلق التبويب ينطلق الـ Token، فتنتهي الحلقة ويتوقف المزوّد عن التوليد، فلا تدفع إلا ثمن ما أُنتج.",
+        "code": "app.MapPost(\"/api/tutor/stream\", (TutorRequest body, IChatClient chat, CancellationToken ct) =>\n    Stream(chat, body.Question, ct));\n\nstatic async IAsyncEnumerable<string> Stream(IChatClient chat, string question,\n    [EnumeratorCancellation] CancellationToken ct)\n{\n    List<ChatMessage> messages = [new(ChatRole.System, \"You are a patient tutor.\"), new(ChatRole.User, question)];\n    await foreach (var update in chat.GetStreamingResponseAsync(messages, cancellationToken: ct))\n        if (!string.IsNullOrEmpty(update.Text))\n            yield return update.Text;\n}",
+        "language": "aspnet"
+      }
+    ]
+  },
+  {
+    "topic": "ai-dotnet-structured-output",
+    "lessons": [
+      {
+        "key": "tut-ai-dotnet-structured-output-1",
+        "titleEn": "Ask for a type, not for prose",
+        "titleAr": "اطلب نوعًا لا نصًا حرًا",
+        "bodyEn": "`GetResponseAsync<T>` describes your record to the model as a JSON schema and turns the reply into an instance of it. Your code then works with properties, not with string searches.\n\nKeep the temperature low for this kind of call, name properties clearly, and list the allowed values in the system message.",
+        "bodyAr": "الدالة `GetResponseAsync<T>` تصف الـ record الخاص بك للنموذج على شكل JSON Schema وتحوّل الرد إلى كائن منه. فيتعامل الكود بعدها مع خصائص لا مع البحث داخل النصوص.\n\nواجعل درجة الحرارة منخفضة في هذا النوع من الاستدعاءات، وسمِّ الخصائص بوضوح، واذكر القيم المسموحة في رسالة النظام.",
+        "code": "public record TicketTriage(string Category, int Priority, string Summary);\n\nvar result = await chat.GetResponseAsync<TicketTriage>(\n    [\n        new(ChatRole.System, \"Category is billing, bug, account, feature or other. Priority is 1 to 5.\"),\n        new(ChatRole.User, ticketText),\n    ],\n    new ChatOptions { Temperature = 0f });\n\nif (result.TryGetResult(out var triage))\n    Console.WriteLine($\"{triage.Category} / P{triage.Priority}: {triage.Summary}\");",
+        "language": "aspnet"
+      },
+      {
+        "key": "tut-ai-dotnet-structured-output-2",
+        "titleEn": "Validate before you trust",
+        "titleAr": "تحقّق قبل أن تثق",
+        "bodyEn": "Even a well-formed answer can be wrong: an unknown category, a priority of 9, an empty summary. Check every value against your rules before routing a ticket or saving anything.\n\nThe program deserializes two JSON answers with `System.Text.Json` and validates them. The first is accepted; the second is rejected with the reasons, which you would send to a review queue or use in one retry.",
+        "bodyAr": "حتى الإجابة سليمة الشكل قد تكون خاطئة: تصنيف غير معروف، أو أولوية 9، أو ملخص فارغ. افحص كل قيمة مقابل قواعدك قبل توجيه تذكرة أو حفظ أي شيء.\n\nالبرنامج يحوّل إجابتي JSON بـ `System.Text.Json` ويتحقق منهما. الأولى مقبولة، والثانية مرفوضة مع الأسباب التي ترسلها إلى قائمة مراجعة أو تستخدمها في إعادة محاولة واحدة.",
+        "code": "using System.Text.Json;\n\nstring[] categories = [\"billing\", \"bug\", \"account\", \"feature\", \"other\"];\nstring[] answers =\n[\n    \"\"\"{\"category\":\"billing\",\"priority\":3,\"summary\":\"Charged twice for May\"}\"\"\",\n    \"\"\"{\"category\":\"refund\",\"priority\":9,\"summary\":\"\"}\"\"\",\n];\n\nforeach (var json in answers)\n{\n    var t = JsonSerializer.Deserialize<Triage>(json, JsonSerializerOptions.Web)!;\n    var errors = new List<string>();\n    if (!categories.Contains(t.Category)) errors.Add($\"unknown category '{t.Category}'\");\n    if (t.Priority is < 1 or > 5) errors.Add($\"priority {t.Priority} out of range\");\n    if (string.IsNullOrWhiteSpace(t.Summary)) errors.Add(\"empty summary\");\n    Console.WriteLine(errors.Count == 0 ? $\"OK: {t.Category} P{t.Priority}\" : \"Rejected: \" + string.Join(\", \", errors));\n}\n\nrecord Triage(string Category, int Priority, string Summary);",
+        "language": "csharp",
+        "output": "OK: billing P3\nRejected: unknown category 'refund', priority 9 out of range, empty summary"
+      }
+    ]
+  },
+  {
+    "topic": "ai-dotnet-resilience",
+    "lessons": [
+      {
+        "key": "tut-ai-dotnet-resilience-1",
+        "titleEn": "A timeout on every call",
+        "titleAr": "مهلة لكل استدعاء",
+        "bodyEn": "A model call without a timeout can hold a request, a thread and a user for minutes. Create a `CancellationTokenSource` linked to the request's token and call `CancelAfter`: the call stops when either the user leaves or the time runs out.\n\nThe program uses a slow fake call and a short timeout to show what happens: the operation is cancelled, and the code turns that into a friendly message instead of an error.",
+        "bodyAr": "استدعاء النموذج بلا مهلة قد يحجز طلبًا وخيطًا ومستخدمًا لدقائق. أنشئ `CancellationTokenSource` مرتبطًا بـ Token الطلب واستدعِ `CancelAfter`: فيتوقف الاستدعاء عندما يغادر المستخدم أو ينتهي الوقت، أيهما أسبق.\n\nالبرنامج يستخدم استدعاءً وهميًا بطيئًا ومهلة قصيرة ليوضح ما يحدث: تُلغى العملية، ويحوّل الكود ذلك إلى رسالة ودودة بدل الخطأ.",
+        "code": "using var requestAborted = new CancellationTokenSource();          // the user's request\nusing var timeout = CancellationTokenSource.CreateLinkedTokenSource(requestAborted.Token);\ntimeout.CancelAfter(TimeSpan.FromMilliseconds(100));\n\ntry\n{\n    var answer = await SlowModelAsync(timeout.Token);\n    Console.WriteLine(answer);\n}\ncatch (OperationCanceledException) when (!requestAborted.IsCancellationRequested)\n{\n    Console.WriteLine(\"The assistant is busy right now. Try again in a minute.\");\n}\n\nstatic async Task<string> SlowModelAsync(CancellationToken ct)\n{\n    await Task.Delay(TimeSpan.FromSeconds(5), ct);\n    return \"A very late answer\";\n}",
+        "language": "csharp",
+        "output": "The assistant is busy right now. Try again in a minute."
+      },
+      {
+        "key": "tut-ai-dotnet-resilience-2",
+        "titleEn": "Retry the right failures",
+        "titleAr": "أعد المحاولة في الأعطال الصحيحة",
+        "bodyEn": "Retry only failures that can succeed next time: 429 (too many requests), 5xx server errors and timeouts. A 400 or 401 will fail again, so retrying only wastes time and money.\n\nWait longer between attempts (exponential backoff) and add a little randomness (jitter) so many clients do not retry at the same moment. When the provider sends `Retry-After`, wait that long instead.\n\nThe program prints the decision and the delay for a series of failures.",
+        "bodyAr": "أعد المحاولة فقط في الأعطال التي قد تنجح في المرة التالية: 429 (طلبات كثيرة جدًا)، وأخطاء الخادم 5xx، وانتهاء المهلة. أما 400 أو 401 فستفشل مرة أخرى، فإعادة المحاولة تضيّع الوقت والمال.\n\nوانتظر أطول بين المحاولات (Exponential backoff)، وأضف قليلًا من العشوائية (Jitter) حتى لا يعيد عملاء كثيرون المحاولة في اللحظة نفسها. وعندما يرسل المزوّد `Retry-After` انتظر المدة التي يحددها.\n\nالبرنامج يطبع القرار ومدة الانتظار لسلسلة من الأعطال.",
+        "code": "static bool IsTransient(int status) => status is 429 or 408 || status >= 500;\nstatic TimeSpan Backoff(int attempt) => TimeSpan.FromSeconds(Math.Pow(2, attempt - 1));   // 1s, 2s, 4s\n\nint[] responses = [503, 429, 200];\nfor (var attempt = 1; attempt <= responses.Length; attempt++)\n{\n    var status = responses[attempt - 1];\n    if (status == 200) { Console.WriteLine($\"Attempt {attempt}: success\"); break; }\n    Console.WriteLine(IsTransient(status)\n        ? $\"Attempt {attempt}: {status}, retry in {Backoff(attempt).TotalSeconds}s\"\n        : $\"Attempt {attempt}: {status}, give up\");\n}\nConsole.WriteLine($\"401 transient? {IsTransient(401)}\");",
+        "language": "csharp",
+        "output": "Attempt 1: 503, retry in 1s\nAttempt 2: 429, retry in 2s\nAttempt 3: success\n401 transient? False"
+      }
+    ]
+  },
+  {
+    "topic": "ai-dotnet-usage-cost",
+    "lessons": [
+      {
+        "key": "tut-ai-dotnet-usage-cost-1",
+        "titleEn": "Record what every call uses",
+        "titleAr": "سجّل ما يستهلكه كل استدعاء",
+        "bodyEn": "Each `ChatResponse` has `Usage` with the input and output token counts. Record them with the feature name, the user, the model and the time, and convert them to money with prices from configuration.\n\nThe program records four calls and prints the cost per feature, the kind of summary an admin page or a daily report would show.",
+        "bodyAr": "كل `ChatResponse` فيها `Usage` بأعداد توكنات المدخلات والمخرجات. سجّلها مع اسم الميزة والمستخدم والنموذج والوقت، وحوّلها إلى مال بأسعار من الإعدادات.\n\nالبرنامج يسجّل أربعة استدعاءات ويطبع التكلفة لكل ميزة، وهو نوع الملخص الذي تعرضه صفحة إدارة أو تقرير يومي.",
+        "code": "decimal inPrice = 0.50m, outPrice = 1.50m;   // dollars per million tokens\nvar calls = new[]\n{\n    (Feature: \"tutor\", User: \"sara\", In: 1_200, Out: 300),\n    (Feature: \"tutor\", User: \"omar\", In: 900, Out: 250),\n    (Feature: \"summary\", User: \"sara\", In: 6_000, Out: 400),\n    (Feature: \"tutor\", User: \"sara\", In: 1_500, Out: 350),\n};\n\nforeach (var g in calls.GroupBy(c => c.Feature))\n{\n    var cost = g.Sum(c => c.In * inPrice / 1_000_000m + c.Out * outPrice / 1_000_000m);\n    Console.WriteLine($\"{g.Key}: {g.Count()} calls, {g.Sum(c => c.In + c.Out)} tokens, ${cost:0.00000}\");\n}",
+        "language": "csharp",
+        "output": "tutor: 3 calls, 4500 tokens, $0.00315\nsummary: 1 calls, 6400 tokens, $0.00360"
+      },
+      {
+        "key": "tut-ai-dotnet-usage-cost-2",
+        "titleEn": "Limits that protect the bill",
+        "titleAr": "حدود تحمي الفاتورة",
+        "bodyEn": "Put limits at three levels: `MaxOutputTokens` on every request, a daily allowance per user, and a monthly budget with an alert. Check the user's allowance before the call and answer 429 with a clear message when it is used up.\n\n- Per request: cap the answer length.\n- Per user per day: stop one account from using everything.\n- Per month: alert the team before the invoice does.",
+        "bodyAr": "ضع الحدود في ثلاثة مستويات: `MaxOutputTokens` في كل طلب، وحصة يومية لكل مستخدم، وميزانية شهرية مع تنبيه. وافحص حصة المستخدم قبل الاستدعاء وأجب بـ 429 ورسالة واضحة عندما تنتهي.\n\n- لكل طلب: حدّد طول الإجابة.\n- لكل مستخدم يوميًا: امنع حسابًا واحدًا من استهلاك كل شيء.\n- لكل شهر: نبّه الفريق قبل أن تنبهه الفاتورة.",
+        "code": "public async Task<IResult> AskAsync(string userId, string question, CancellationToken ct)\n{\n    if (await usage.TokensTodayAsync(userId, ct) >= options.Value.DailyTokensPerUser)\n        return Results.Problem(statusCode: 429, title: \"You've used today's AI allowance. It resets at midnight.\");\n\n    var response = await chat.GetResponseAsync(Messages(question), new ChatOptions { MaxOutputTokens = 400 }, ct);\n    await usage.RecordAsync(userId, \"tutor\", response.Usage, ct);\n    return Results.Ok(response.Text);\n}",
+        "language": "aspnet"
+      }
+    ]
+  },
+  {
+    "topic": "ai-dotnet-api-feature",
+    "lessons": [
+      {
+        "key": "tut-ai-dotnet-api-feature-1",
+        "titleEn": "Shaping the endpoint",
+        "titleAr": "تشكيل الـ Endpoint",
+        "bodyEn": "The controller stays thin: validate the request, call a service, and map the result to HTTP. The service owns the prompt, the model call, the timeout, the structured output and the usage record.\n\nMap each failure to a status the client can act on.\n\n- Bad input: 400, before any tokens are spent.\n- Over the user's limit: 429.\n- Unusable model output: 502, with a safe message.\n- Timeout or provider down: 503.",
+        "bodyAr": "الـ Controller يبقى خفيفًا: يتحقق من الطلب، ويستدعي خدمة، ويحوّل النتيجة إلى HTTP. والخدمة تملك الطلب واستدعاء النموذج والمهلة والمخرجات المنظمة وتسجيل الاستهلاك.\n\nوحوّل كل فشل إلى رمز حالة يستطيع العميل التصرف بناءً عليه.\n\n- المدخلات الخاطئة: 400، قبل إنفاق أي توكن.\n- تجاوز حد المستخدم: 429.\n- مخرجات نموذج لا يمكن استخدامها: 502 مع رسالة آمنة.\n- انتهاء المهلة أو تعطّل المزوّد: 503.",
+        "code": "[HttpPost]\npublic async Task<ActionResult<ExplainResult>> Post(int id, ExplainRequest body, CancellationToken ct)\n{\n    try\n    {\n        return await tutor.ExplainAsync(id, body.Question, ct) is { } result\n            ? result\n            : Problem(statusCode: 502, title: \"The assistant gave an answer we couldn't use. Try again.\");\n    }\n    catch (OperationCanceledException) when (!ct.IsCancellationRequested)\n    {\n        return Problem(statusCode: 503, title: \"The assistant is busy right now. Try again in a minute.\");\n    }\n}",
+        "language": "aspnet"
+      },
+      {
+        "key": "tut-ai-dotnet-api-feature-2",
+        "titleEn": "Testing without a model",
+        "titleAr": "الاختبار دون نموذج",
+        "bodyEn": "Unit tests give the service a fake client and check each path: a good answer, invalid JSON, a timeout. Integration tests start the API with `WebApplicationFactory` and replace `IChatClient` in dependency injection, so the whole HTTP pipeline is tested without a key or a network.\n\nThe program runs the service against three fakes and prints the outcome of each, the same cases your tests should cover.",
+        "bodyAr": "اختبارات الوحدات تعطي الخدمة عميلًا وهميًا وتفحص كل مسار: إجابة جيدة، وJSON غير صالح، وانتهاء المهلة. واختبارات التكامل تشغّل الـ API بـ `WebApplicationFactory` وتستبدل `IChatClient` في حقن الاعتماديات، فيُختبر مسار HTTP كاملًا دون مفتاح ولا شبكة.\n\nالبرنامج يشغّل الخدمة مع ثلاث نسخ وهمية ويطبع نتيجة كل واحدة، وهي الحالات نفسها التي يجب أن تغطيها اختباراتك.",
+        "code": "using System.Text.Json;\n\nvar fakes = new (string Name, Func<Task<string>> Reply)[]\n{\n    (\"good\", () => Task.FromResult(\"\"\"{\"explanation\":\"A key that points to another table.\"}\"\"\")),\n    (\"invalid\", () => Task.FromResult(\"Sure! Here is your answer...\")),\n    (\"timeout\", () => Task.FromException<string>(new TaskCanceledException())),\n};\n\nforeach (var (name, reply) in fakes)\n    Console.WriteLine($\"{name}: {await Handle(reply)}\");\n\nstatic async Task<string> Handle(Func<Task<string>> callModel)\n{\n    try\n    {\n        var json = await callModel();\n        var doc = JsonDocument.Parse(json);\n        return \"200 \" + doc.RootElement.GetProperty(\"explanation\").GetString();\n    }\n    catch (JsonException) { return \"502 unusable answer\"; }\n    catch (OperationCanceledException) { return \"503 try again later\"; }\n}",
+        "language": "csharp",
+        "output": "good: 200 A key that points to another table.\ninvalid: 502 unusable answer\ntimeout: 503 try again later"
+      }
+    ]
+  }
+]

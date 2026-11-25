@@ -6131,5 +6131,163 @@
       "channel": "Sarah Ghanem – AI & Automation (بالعربي)",
       "language": "ar"
     }
+  ],
+  "ai-dotnet-ichatclient": [
+    {
+      "videoId": "4B3ppx2U8bE",
+      "title": "Building AI Apps in .NET Just Got 10x Easier - Microsoft.Extensions.AI",
+      "channel": "Milan Jovanović",
+      "language": "en"
+    },
+    {
+      "videoId": "3URifZTVrRw",
+      "title": "One Interface for Every LLM — Microsoft.Extensions.AI",
+      "channel": "Mohamad Lawand",
+      "language": "en"
+    },
+    {
+      "videoId": "FGR1qAYD3aA",
+      "title": "Microsoft.Extensions.AI -  Build AI Apps in .NET | Deploy Model on Microsoft Foundry",
+      "channel": "WebGentle",
+      "language": "en"
+    }
+  ],
+  "ai-dotnet-secrets": [
+    {
+      "videoId": "zZFw6RWrmBA",
+      "title": "Safely Storing Keys in ASP.NET Core | AppSettings vs Secrets vs Environment Variables",
+      "channel": "Programming with Felipe Gavilan",
+      "language": "en"
+    },
+    {
+      "videoId": "PkLLP2tcd28",
+      "title": "SECRET MANAGER In ASP NET Core | Getting Started With ASP.NET Core Series",
+      "channel": "Rahul Nath",
+      "language": "en"
+    },
+    {
+      "videoId": "Q9P4wdyBSxo",
+      "title": "How to Use User Secrets in ASP.NET Core (Stop Hardcoding Passwords!)",
+      "channel": "WebGentle",
+      "language": "en"
+    },
+    {
+      "videoId": "xuPCC52oFQw",
+      "title": "6.appsettings in Asp net core شرح بالعربي",
+      "channel": "Coding-Future",
+      "language": "ar"
+    },
+    {
+      "videoId": "S3ygXq94dLo",
+      "title": "#11 [Arabic] Options Pattern في ASP.NET Core 9 | إدارة الإعدادات والـ Configuration باحترافية",
+      "channel": "CodingClass",
+      "language": "ar"
+    }
+  ],
+  "ai-dotnet-streaming": [
+    {
+      "videoId": "JKCyvlh0_mE",
+      "title": "Goodbye SignalR? Native Server-Sent Events are Here!",
+      "channel": "Milan Jovanović",
+      "language": "en"
+    },
+    {
+      "videoId": "qTetsXmZLk0",
+      "title": "IAsyncEnumerable, My Favorite C# 8 Feature That No One Is Using",
+      "channel": "Amichai Mantinband",
+      "language": "en"
+    },
+    {
+      "videoId": "Kw7JrsYaqtc",
+      "title": "Build a Full-Stack AI Chat App from Scratch | React + .NET + Azure OpenAI (2026)",
+      "channel": "Sandeep | AI Solutions",
+      "language": "en"
+    }
+  ],
+  "ai-dotnet-structured-output": [
+    {
+      "videoId": "fuMKrKlaku4",
+      "title": "OpenAI Structured Output - All You Need to Know",
+      "channel": "Dave Ebbelaar",
+      "language": "en"
+    },
+    {
+      "videoId": "mIZHRqMoJec",
+      "title": "Structured Outputs - How to Specify a JSON schema for your LLM Outputs",
+      "channel": "VectorLab",
+      "language": "en"
+    },
+    {
+      "videoId": "-IxuY2JBztg",
+      "title": "Structured Outputs Explained Simply | Get Reliable JSON from LLMs | Agentic AI Series",
+      "channel": "Coding with Neeraj",
+      "language": "en"
+    }
+  ],
+  "ai-dotnet-resilience": [
+    {
+      "videoId": "aVyCa1RhZIc",
+      "title": "Make Your HttpClient Resilient - Circuit Breaker, Retry, Timeout",
+      "channel": "Milan Jovanović",
+      "language": "en"
+    },
+    {
+      "videoId": "z6YcU0PW_9E",
+      "title": "POLLY - RESILIENCY and FAULT HANDLING With HTTP Client | Getting Started With ASP.NET Core Series",
+      "channel": "Rahul Nath",
+      "language": "en"
+    },
+    {
+      "videoId": "L9_fGJOqzbM",
+      "title": "Robust Connected Applications with Polly, the .NET Resilience Framework",
+      "channel": "dotnet",
+      "language": "en"
+    }
+  ],
+  "ai-dotnet-usage-cost": [
+    {
+      "videoId": "7zbuEULTHIs",
+      "title": "What are LLM Tokens and API Prices? (Beginner Friendly)",
+      "channel": "Eamonn Cottrell",
+      "language": "en"
+    },
+    {
+      "videoId": "ooNRL9FJSuk",
+      "title": "LLM Pricing Explained (OpenAI API Pricing)",
+      "channel": "Tommy Eberle",
+      "language": "en"
+    },
+    {
+      "videoId": "lHxl5SchjPA",
+      "title": "The REAL cost of LLM (And How to reduce 78%+ of Cost)",
+      "channel": "AI Jason",
+      "language": "en"
+    },
+    {
+      "videoId": "u9Mkw3LdaQA",
+      "title": "S07 E03 يعني إيه AI Token  للذكاء الاصطناعي",
+      "channel": "أجياد العرب",
+      "language": "ar"
+    }
+  ],
+  "ai-dotnet-api-feature": [
+    {
+      "videoId": "u632GWFbo0o",
+      "title": "Build Your First .NET AI Web API (2026) | Azure OpenAI + ASP.NET Core | EP02",
+      "channel": "Sandeep | AI Solutions",
+      "language": "en"
+    },
+    {
+      "videoId": "fYJuokUnucE",
+      "title": "Build an Azure OpenAI powered .NET 8 Chat Bot on your data from scratch  | .NET Conf 2023",
+      "channel": "dotnet",
+      "language": "en"
+    },
+    {
+      "videoId": "l5KDPqkZvUQ",
+      "title": "Generative AI for .NET Developers | Build AI Apps with LLM, RAG & ASP.NET Core",
+      "channel": "Code with Akshayz",
+      "language": "en"
+    }
   ]
 }

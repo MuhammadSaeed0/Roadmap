@@ -73,7 +73,8 @@
       "angular": "frontend", "full-stack-integration": "apis", "testing": "testing", "git-github": "git",
       "professional-skills": "architecture", "cloud-devops": "devops",
       "ai-llm-foundations": "dotnet",
-      "ai-python-for-devs": "fundamentals"
+      "ai-python-for-devs": "fundamentals",
+      "ai-dotnet-models": "dotnet"
     }
   },
 
@@ -83,7 +84,8 @@
     "angular": "Intermediate", "full-stack-integration": "Intermediate", "testing": "Intermediate", "git-github": "Beginner",
     "professional-skills": "Advanced", "cloud-devops": "Advanced",
     "ai-llm-foundations": "Beginner",
-    "ai-python-for-devs": "Beginner"
+    "ai-python-for-devs": "Beginner",
+    "ai-dotnet-models": "Intermediate"
   },
 
   "exerciseExtraCategories": {

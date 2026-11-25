@@ -1,0 +1,1178 @@
+[
+  {
+    "key": "qz-ai-dotnet-ichatclient-1",
+    "topic": "ai-dotnet-ichatclient",
+    "questionEn": "What does IChatClient give your app?",
+    "questionAr": "ماذا تعطي IChatClient تطبيقك؟",
+    "optionsEn": [
+      "One interface for any provider",
+      "A free hosted language model",
+      "A faster network stack for calls",
+      "A database for saved chats"
+    ],
+    "optionsAr": [
+      "واجهة واحدة لأي مزوّد",
+      "نموذجًا لغويًا مستضافًا مجانيًا",
+      "شبكة أسرع للاستدعاءات",
+      "قاعدة بيانات للمحادثات المحفوظة"
+    ],
+    "answer": 0,
+    "explanationEn": "Features depend on the interface; the provider is a registration detail.",
+    "explanationAr": "الميزات تعتمد على الواجهة والمزوّد مجرد تفصيلة تسجيل."
+  },
+  {
+    "key": "qz-ai-dotnet-ichatclient-2",
+    "topic": "ai-dotnet-ichatclient",
+    "questionEn": "Where is the provider registered?",
+    "questionAr": "أين يُسجَّل المزوّد؟",
+    "optionsEn": [
+      "In every controller",
+      "Once in Program.cs",
+      "In appsettings only",
+      "In the Angular app"
+    ],
+    "optionsAr": [
+      "في كل Controller",
+      "مرة واحدة في Program.cs",
+      "في appsettings فقط",
+      "في تطبيق Angular"
+    ],
+    "answer": 1,
+    "explanationEn": "AddChatClient registers it for dependency injection.",
+    "explanationAr": "الدالة AddChatClient تسجّله لحقن الاعتماديات."
+  },
+  {
+    "key": "qz-ai-dotnet-ichatclient-3",
+    "topic": "ai-dotnet-ichatclient",
+    "questionEn": "What does a call return?",
+    "questionAr": "ماذا يُرجع الاستدعاء؟",
+    "optionsEn": [
+      "The raw HTTP response text",
+      "A ChatResponse with text and usage",
+      "Only a plain string answer",
+      "A row from the chat database"
+    ],
+    "optionsAr": [
+      "نص استجابة HTTP الخام",
+      "ChatResponse فيها النص والاستهلاك",
+      "نصًا عاديًا للإجابة فقط",
+      "صفًا من قاعدة بيانات المحادثات"
+    ],
+    "answer": 1,
+    "explanationEn": "ChatResponse carries Text and Usage among other data.",
+    "explanationAr": "الكائن ChatResponse يحمل Text وUsage وغيرهما."
+  },
+  {
+    "key": "qz-ai-dotnet-ichatclient-4",
+    "topic": "ai-dotnet-ichatclient",
+    "questionEn": "Which type holds temperature and max tokens?",
+    "questionAr": "أي نوع يحمل درجة الحرارة والحد الأقصى للتوكنات؟",
+    "optionsEn": [
+      "ChatMessage",
+      "ChatOptions",
+      "ChatRole",
+      "HttpClient"
+    ],
+    "optionsAr": [
+      "ChatMessage",
+      "ChatOptions",
+      "ChatRole",
+      "HttpClient"
+    ],
+    "answer": 1,
+    "explanationEn": "ChatOptions carries settings for one call.",
+    "explanationAr": "الكائن ChatOptions يحمل إعدادات الاستدعاء الواحد."
+  },
+  {
+    "key": "qz-ai-dotnet-ichatclient-5",
+    "topic": "ai-dotnet-ichatclient",
+    "questionEn": "Why does testing get easier?",
+    "questionAr": "لماذا يصبح الاختبار أسهل؟",
+    "optionsEn": [
+      "The model gets cheaper in tests",
+      "A fake client can replace it",
+      "Tests can run on the GPU",
+      "Prompts become shorter"
+    ],
+    "optionsAr": [
+      "لأن النموذج يصبح أرخص في الاختبارات",
+      "لأن عميلًا وهميًا يستطيع أن يحل محله",
+      "لأن الاختبارات تعمل على GPU",
+      "لأن الطلبات تصبح أقصر"
+    ],
+    "answer": 1,
+    "explanationEn": "Inject a fake IChatClient that returns fixed answers.",
+    "explanationAr": "احقن IChatClient وهميًا يُرجع إجابات ثابتة."
+  },
+  {
+    "key": "qz-ai-dotnet-ichatclient-6",
+    "topic": "ai-dotnet-ichatclient",
+    "questionEn": "What does UseLogging do?",
+    "questionAr": "ماذا تفعل UseLogging؟",
+    "optionsEn": [
+      "Saves every chat to a file",
+      "Adds logging middleware to the client",
+      "Signs the user in before calls",
+      "Writes the API key to the log"
+    ],
+    "optionsAr": [
+      "تحفظ كل محادثة في ملف",
+      "تضيف Middleware للتسجيل حول العميل",
+      "تسجّل دخول المستخدم قبل الاستدعاء",
+      "تكتب مفتاح الـ API في السجل"
+    ],
+    "answer": 1,
+    "explanationEn": "Middleware wraps the client like request middleware wraps a request.",
+    "explanationAr": "الـ Middleware يغلّف العميل كما يغلّف Middleware الطلبات الطلب."
+  },
+  {
+    "key": "qz-ai-dotnet-ichatclient-7",
+    "topic": "ai-dotnet-ichatclient",
+    "questionEn": "Which role carries the rules for the model?",
+    "questionAr": "أي دور يحمل القواعد للنموذج؟",
+    "optionsEn": [
+      "ChatRole.User",
+      "ChatRole.System",
+      "ChatRole.Assistant",
+      "ChatRole.Tool"
+    ],
+    "optionsAr": [
+      "ChatRole.User",
+      "ChatRole.System",
+      "ChatRole.Assistant",
+      "ChatRole.Tool"
+    ],
+    "answer": 1,
+    "explanationEn": "The system message sets behaviour and limits.",
+    "explanationAr": "رسالة النظام تحدد السلوك والحدود."
+  },
+  {
+    "key": "qz-ai-dotnet-ichatclient-8",
+    "topic": "ai-dotnet-ichatclient",
+    "questionEn": "What should be passed to every call?",
+    "questionAr": "ما الذي يجب تمريره إلى كل استدعاء؟",
+    "optionsEn": [
+      "The API key as plain text",
+      "The request's CancellationToken",
+      "The signed-in user's password",
+      "A brand new HttpClient"
+    ],
+    "optionsAr": [
+      "مفتاح الـ API كنص عادي",
+      "الـ CancellationToken الخاص بالطلب",
+      "كلمة مرور المستخدم المسجّل",
+      "عميل HttpClient جديد تمامًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Cancelling the request then stops the model call.",
+    "explanationAr": "فإلغاء الطلب يوقف استدعاء النموذج."
+  },
+  {
+    "key": "qz-ai-dotnet-secrets-1",
+    "topic": "ai-dotnet-secrets",
+    "questionEn": "Where does the key live on your machine?",
+    "questionAr": "أين يُحفظ المفتاح على جهازك؟",
+    "optionsEn": [
+      "In appsettings.json",
+      "In user secrets",
+      "In a code constant",
+      "In the Angular app"
+    ],
+    "optionsAr": [
+      "في appsettings.json",
+      "في User secrets",
+      "في ثابت داخل الكود",
+      "في تطبيق Angular"
+    ],
+    "answer": 1,
+    "explanationEn": "User secrets stay outside the repository.",
+    "explanationAr": "الـ User secrets تبقى خارج المستودع."
+  },
+  {
+    "key": "qz-ai-dotnet-secrets-2",
+    "topic": "ai-dotnet-secrets",
+    "questionEn": "Why never call the model from Angular?",
+    "questionAr": "لماذا لا تستدعي النموذج من Angular أبدًا؟",
+    "optionsEn": [
+      "It is slower",
+      "Every user would see the key",
+      "Angular cannot do HTTP",
+      "Models block browsers"
+    ],
+    "optionsAr": [
+      "لأنه أبطأ",
+      "لأن كل مستخدم سيرى المفتاح",
+      "لأن Angular لا تستطيع HTTP",
+      "لأن النماذج تحجب المتصفحات"
+    ],
+    "answer": 1,
+    "explanationEn": "Anything in front-end code is public.",
+    "explanationAr": "أي شيء في كود الواجهة يصبح علنيًا."
+  },
+  {
+    "key": "qz-ai-dotnet-secrets-3",
+    "topic": "ai-dotnet-secrets",
+    "questionEn": "How is Ai:ApiKey written as an env variable?",
+    "questionAr": "كيف يُكتب Ai:ApiKey كمتغير بيئة؟",
+    "optionsEn": [
+      "Ai.ApiKey",
+      "Ai__ApiKey",
+      "AI-APIKEY",
+      "Ai/ApiKey"
+    ],
+    "optionsAr": [
+      "Ai.ApiKey",
+      "Ai__ApiKey",
+      "AI-APIKEY",
+      "Ai/ApiKey"
+    ],
+    "answer": 1,
+    "explanationEn": "A double underscore stands for the colon.",
+    "explanationAr": "الشرطتان السفليتان تحلان محل النقطتين."
+  },
+  {
+    "key": "qz-ai-dotnet-secrets-4",
+    "topic": "ai-dotnet-secrets",
+    "questionEn": "What is best of all in Azure?",
+    "questionAr": "ما الأفضل على الإطلاق في Azure؟",
+    "optionsEn": [
+      "A key in a source constant",
+      "Managed identity, no key at all",
+      "A key kept in a code comment",
+      "A shared admin password"
+    ],
+    "optionsAr": [
+      "مفتاح في ثابت داخل الكود",
+      "الهوية المُدارة دون أي مفتاح",
+      "مفتاح محفوظ في تعليق",
+      "كلمة مرور مسؤول مشتركة"
+    ],
+    "answer": 1,
+    "explanationEn": "With managed identity there is no secret to leak.",
+    "explanationAr": "مع الهوية المُدارة لا يوجد سر يتسرّب."
+  },
+  {
+    "key": "qz-ai-dotnet-secrets-5",
+    "topic": "ai-dotnet-secrets",
+    "questionEn": "Why use ValidateOnStart?",
+    "questionAr": "لماذا تستخدم ValidateOnStart؟",
+    "optionsEn": [
+      "To speed up every request",
+      "To fail at start on bad settings",
+      "To hide the key from logs",
+      "To rotate keys every night"
+    ],
+    "optionsAr": [
+      "لتسريع كل طلب يصل للتطبيق",
+      "للفشل عند البدء إذا كانت الإعدادات خاطئة",
+      "لإخفاء المفتاح من السجلات",
+      "لتبديل المفاتيح كل ليلة تلقائيًا"
+    ],
+    "answer": 1,
+    "explanationEn": "A broken deployment fails loudly, not at the first request.",
+    "explanationAr": "فيفشل النشر الخاطئ بوضوح لا عند أول طلب."
+  },
+  {
+    "key": "qz-ai-dotnet-secrets-6",
+    "topic": "ai-dotnet-secrets",
+    "questionEn": "A key was pushed to GitHub. First step?",
+    "questionAr": "رُفع مفتاح إلى GitHub. ما الخطوة الأولى؟",
+    "optionsEn": [
+      "Delete the commit",
+      "Revoke or rotate the key",
+      "Make the repo private",
+      "Wait and see"
+    ],
+    "optionsAr": [
+      "احذف الـ Commit",
+      "ألغِ المفتاح أو بدّله",
+      "اجعل المستودع خاصًا",
+      "انتظر وراقب"
+    ],
+    "answer": 1,
+    "explanationEn": "Assume it was copied; deleting history is not enough.",
+    "explanationAr": "افترض أنه نُسخ، فحذف التاريخ لا يكفي."
+  },
+  {
+    "key": "qz-ai-dotnet-secrets-7",
+    "topic": "ai-dotnet-secrets",
+    "questionEn": "How should a key appear in logs?",
+    "questionAr": "كيف يظهر المفتاح في السجلات؟",
+    "optionsEn": [
+      "In full, for easier debugging",
+      "Never, at most the last 4 characters",
+      "Base64-encoded, so it looks safe",
+      "Only inside error messages"
+    ],
+    "optionsAr": [
+      "كاملًا لتسهيل تتبّع الأخطاء",
+      "أبدًا، وعلى الأكثر آخر 4 حروف",
+      "مرمّزًا بـ Base64 ليبدو آمنًا",
+      "داخل رسائل الأخطاء فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Logs are read by many people and tools.",
+    "explanationAr": "السجلات يقرؤها أناس وأدوات كثيرة."
+  },
+  {
+    "key": "qz-ai-dotnet-secrets-8",
+    "topic": "ai-dotnet-secrets",
+    "questionEn": "Where do the model name and endpoint go?",
+    "questionAr": "أين يُحفظ اسم النموذج ونقطة الاتصال؟",
+    "optionsEn": [
+      "Hard-coded inside each service",
+      "In configuration via options",
+      "In a table in the database",
+      "Inside the prompt text"
+    ],
+    "optionsAr": [
+      "مكتوبة داخل كل خدمة",
+      "في الإعدادات عبر نمط Options",
+      "في جدول بقاعدة البيانات",
+      "داخل نص الطلب نفسه"
+    ],
+    "answer": 1,
+    "explanationEn": "Configuration lets you change them per environment.",
+    "explanationAr": "الإعدادات تتيح تغييرها حسب البيئة."
+  },
+  {
+    "key": "qz-ai-dotnet-streaming-1",
+    "topic": "ai-dotnet-streaming",
+    "questionEn": "What does streaming improve most?",
+    "questionAr": "ما الذي يحسّنه التدفق أكثر؟",
+    "optionsEn": [
+      "Answer quality",
+      "Perceived speed",
+      "Token prices",
+      "Model accuracy"
+    ],
+    "optionsAr": [
+      "جودة الإجابة",
+      "السرعة المُحسوسة",
+      "أسعار التوكنات",
+      "دقة النموذج"
+    ],
+    "answer": 1,
+    "explanationEn": "Users start reading almost at once.",
+    "explanationAr": "يبدأ المستخدم القراءة فورًا تقريبًا."
+  },
+  {
+    "key": "qz-ai-dotnet-streaming-2",
+    "topic": "ai-dotnet-streaming",
+    "questionEn": "What does GetStreamingResponseAsync return?",
+    "questionAr": "ماذا تُرجع GetStreamingResponseAsync؟",
+    "optionsEn": [
+      "A Task<string> with the full text",
+      "An IAsyncEnumerable of updates",
+      "A List<string> of all pieces",
+      "A byte[] with the raw body"
+    ],
+    "optionsAr": [
+      "Task<string> فيها النص كاملًا",
+      "IAsyncEnumerable من التحديثات",
+      "List<string> بكل الأجزاء",
+      "byte[] فيها المحتوى الخام"
+    ],
+    "answer": 1,
+    "explanationEn": "Read it with await foreach.",
+    "explanationAr": "اقرأها بـ await foreach."
+  },
+  {
+    "key": "qz-ai-dotnet-streaming-3",
+    "topic": "ai-dotnet-streaming",
+    "questionEn": "How do you read the updates?",
+    "questionAr": "كيف تقرأ التحديثات؟",
+    "optionsEn": [
+      "foreach",
+      "await foreach",
+      "Parallel.ForEach",
+      "while (true)"
+    ],
+    "optionsAr": [
+      "foreach",
+      "await foreach",
+      "Parallel.ForEach",
+      "while (true)"
+    ],
+    "answer": 1,
+    "explanationEn": "await foreach consumes async streams.",
+    "explanationAr": "الحلقة await foreach تستهلك التدفقات غير المتزامنة."
+  },
+  {
+    "key": "qz-ai-dotnet-streaming-4",
+    "topic": "ai-dotnet-streaming",
+    "questionEn": "A common format for streaming to a browser?",
+    "questionAr": "صيغة شائعة للتدفق إلى المتصفح؟",
+    "optionsEn": [
+      "Server-Sent Events",
+      "SOAP envelopes",
+      "CSV files",
+      "SMTP"
+    ],
+    "optionsAr": [
+      "Server-Sent Events",
+      "رسائل SOAP",
+      "ملفات CSV",
+      "SMTP"
+    ],
+    "answer": 0,
+    "explanationEn": "text/event-stream is read with EventSource or fetch.",
+    "explanationAr": "الصيغة text/event-stream تُقرأ بـ EventSource أو fetch."
+  },
+  {
+    "key": "qz-ai-dotnet-streaming-5",
+    "topic": "ai-dotnet-streaming",
+    "questionEn": "What stops generation when the user leaves?",
+    "questionAr": "ما الذي يوقف التوليد عندما يغادر المستخدم؟",
+    "optionsEn": [
+      "The garbage collector",
+      "The request's token",
+      "A much longer timeout",
+      "A bigger output buffer"
+    ],
+    "optionsAr": [
+      "جامع المهملات في .NET",
+      "Token الطلب",
+      "مهلة أطول بكثير",
+      "مخزن مؤقت أكبر للمخرجات"
+    ],
+    "answer": 1,
+    "explanationEn": "Pass it to the streaming call.",
+    "explanationAr": "مرّره إلى استدعاء التدفق."
+  },
+  {
+    "key": "qz-ai-dotnet-streaming-6",
+    "topic": "ai-dotnet-streaming",
+    "questionEn": "Why also build the full text?",
+    "questionAr": "لماذا تبني النص الكامل أيضًا؟",
+    "optionsEn": [
+      "To stream it a second time",
+      "To save it when the stream ends",
+      "To count connected users",
+      "To compress the response"
+    ],
+    "optionsAr": [
+      "لتدفقه مرة ثانية",
+      "لتحفظه عند انتهاء التدفق",
+      "لعدّ المستخدمين المتصلين",
+      "لضغط الاستجابة"
+    ],
+    "answer": 1,
+    "explanationEn": "Save the answer and its usage at the end.",
+    "explanationAr": "احفظ الإجابة واستهلاكها في النهاية."
+  },
+  {
+    "key": "qz-ai-dotnet-streaming-7",
+    "topic": "ai-dotnet-streaming",
+    "questionEn": "When can streamed JSON be validated?",
+    "questionAr": "متى يمكن التحقق من JSON متدفق؟",
+    "optionsEn": [
+      "After the first piece",
+      "Only when it is complete",
+      "Never",
+      "Before it starts"
+    ],
+    "optionsAr": [
+      "بعد أول جزء",
+      "فقط عندما يكتمل",
+      "أبدًا",
+      "قبل أن يبدأ"
+    ],
+    "answer": 1,
+    "explanationEn": "Partial JSON is not valid JSON yet.",
+    "explanationAr": "الـ JSON الناقص ليس صالحًا بعد."
+  },
+  {
+    "key": "qz-ai-dotnet-streaming-8",
+    "topic": "ai-dotnet-streaming",
+    "questionEn": "What does a Stop button save?",
+    "questionAr": "ماذا يوفّر زر الإيقاف؟",
+    "optionsEn": [
+      "Nothing at all",
+      "Tokens not generated yet",
+      "The whole answer's cost",
+      "The API key itself"
+    ],
+    "optionsAr": [
+      "لا شيء على الإطلاق",
+      "توكنات لم تُولَّد بعد",
+      "تكلفة الإجابة كاملة",
+      "مفتاح الـ API نفسه"
+    ],
+    "answer": 1,
+    "explanationEn": "You pay only for what was produced.",
+    "explanationAr": "تدفع فقط ثمن ما أُنتج."
+  },
+  {
+    "key": "qz-ai-dotnet-structured-output-1",
+    "topic": "ai-dotnet-structured-output",
+    "questionEn": "Why ask for JSON instead of prose?",
+    "questionAr": "لماذا تطلب JSON بدل النص الحر؟",
+    "optionsEn": [
+      "JSON is always shorter",
+      "Code gets typed fields",
+      "JSON answers are always correct",
+      "JSON calls cost nothing"
+    ],
+    "optionsAr": [
+      "لأن JSON أقصر دائمًا",
+      "يحصل الكود على حقول بأنواع",
+      "لأن إجابات JSON صحيحة دائمًا",
+      "لأن استدعاءات JSON بلا تكلفة"
+    ],
+    "answer": 1,
+    "explanationEn": "Typed results replace fragile string parsing.",
+    "explanationAr": "النتائج ذات الأنواع تحل محل تحليل النصوص الهش."
+  },
+  {
+    "key": "qz-ai-dotnet-structured-output-2",
+    "topic": "ai-dotnet-structured-output",
+    "questionEn": "What does GetResponseAsync<T> send?",
+    "questionAr": "ماذا ترسل GetResponseAsync<T>؟",
+    "optionsEn": [
+      "Your C# source",
+      "A JSON schema for T",
+      "A SQL table",
+      "A test file"
+    ],
+    "optionsAr": [
+      "كود C# الخاص بك",
+      "JSON Schema للنوع T",
+      "جدول SQL",
+      "ملف اختبار"
+    ],
+    "answer": 1,
+    "explanationEn": "The schema describes the shape the model must return.",
+    "explanationAr": "الـ Schema يصف الشكل الذي يجب أن يُرجعه النموذج."
+  },
+  {
+    "key": "qz-ai-dotnet-structured-output-3",
+    "topic": "ai-dotnet-structured-output",
+    "questionEn": "How should you treat the result?",
+    "questionAr": "كيف تتعامل مع النتيجة؟",
+    "optionsEn": [
+      "As trusted data",
+      "As untrusted input",
+      "As a final decision",
+      "As a log line"
+    ],
+    "optionsAr": [
+      "كبيانات موثوقة",
+      "كمدخلات غير موثوقة",
+      "كقرار نهائي",
+      "كسطر سجل"
+    ],
+    "answer": 1,
+    "explanationEn": "Validate values before acting on them.",
+    "explanationAr": "تحقّق من القيم قبل التصرف بناءً عليها."
+  },
+  {
+    "key": "qz-ai-dotnet-structured-output-4",
+    "topic": "ai-dotnet-structured-output",
+    "questionEn": "The model returns priority 9 on a 1-5 scale. Now?",
+    "questionAr": "النموذج أرجع أولوية 9 على مقياس من 1 إلى 5. ماذا الآن؟",
+    "optionsEn": [
+      "Use it anyway",
+      "Reject or retry",
+      "Round it down to 5",
+      "Ignore the priority field"
+    ],
+    "optionsAr": [
+      "استخدمها كما هي",
+      "ارفضها أو أعد المحاولة",
+      "قرّبها إلى 5 تلقائيًا",
+      "تجاهل حقل الأولوية"
+    ],
+    "answer": 1,
+    "explanationEn": "Out-of-range values go to retry, a default or a human.",
+    "explanationAr": "القيم خارج النطاق تذهب لإعادة المحاولة أو قيمة افتراضية أو إنسان."
+  },
+  {
+    "key": "qz-ai-dotnet-structured-output-5",
+    "topic": "ai-dotnet-structured-output",
+    "questionEn": "Which temperature suits extraction?",
+    "questionAr": "أي درجة حرارة تناسب الاستخراج؟",
+    "optionsEn": [
+      "Close to 0",
+      "Around 1",
+      "Above 1.5",
+      "Any value"
+    ],
+    "optionsAr": [
+      "قريبة من 0",
+      "حوالي 1",
+      "أعلى من 1.5",
+      "أي قيمة"
+    ],
+    "answer": 0,
+    "explanationEn": "Steady output for fields with fixed rules.",
+    "explanationAr": "مخرجات ثابتة للحقول ذات القواعد الثابتة."
+  },
+  {
+    "key": "qz-ai-dotnet-structured-output-6",
+    "topic": "ai-dotnet-structured-output",
+    "questionEn": "Which method checks success safely?",
+    "questionAr": "أي دالة تفحص النجاح بأمان؟",
+    "optionsEn": [
+      "result.TryGetResult(out var x)",
+      "result.ToString() == \"ok\"",
+      "result.Text.Length > 0",
+      "result.GetHashCode() != 0"
+    ],
+    "optionsAr": [
+      "result.TryGetResult(out var x)",
+      "result.ToString() == \"ok\"",
+      "result.Text.Length > 0",
+      "result.GetHashCode() != 0"
+    ],
+    "answer": 0,
+    "explanationEn": "It returns false instead of throwing.",
+    "explanationAr": "تُرجع false بدل رمي استثناء."
+  },
+  {
+    "key": "qz-ai-dotnet-structured-output-7",
+    "topic": "ai-dotnet-structured-output",
+    "questionEn": "Without the helper, how do you parse JSON?",
+    "questionAr": "دون الدالة المساعدة، كيف تحلّل JSON؟",
+    "optionsEn": [
+      "Regex on the text",
+      "System.Text.Json",
+      "string.Split",
+      "Convert.ToInt32"
+    ],
+    "optionsAr": [
+      "تعبير نمطي على النص",
+      "System.Text.Json",
+      "string.Split",
+      "Convert.ToInt32"
+    ],
+    "answer": 1,
+    "explanationEn": "JsonSerializer.Deserialize with JsonSerializerOptions.Web.",
+    "explanationAr": "الدالة JsonSerializer.Deserialize مع JsonSerializerOptions.Web."
+  },
+  {
+    "key": "qz-ai-dotnet-structured-output-8",
+    "topic": "ai-dotnet-structured-output",
+    "questionEn": "Where do allowed values belong?",
+    "questionAr": "أين توضع القيم المسموحة؟",
+    "optionsEn": [
+      "Only in the database schema",
+      "In the prompt and the checks",
+      "In the user's question text",
+      "Nowhere: the model knows them"
+    ],
+    "optionsAr": [
+      "في مخطط قاعدة البيانات فقط",
+      "في الطلب وفي الفحص",
+      "في نص سؤال المستخدم",
+      "لا مكان: النموذج يعرفها"
+    ],
+    "answer": 1,
+    "explanationEn": "Tell the model and check the answer.",
+    "explanationAr": "أخبر النموذج وافحص الإجابة."
+  },
+  {
+    "key": "qz-ai-dotnet-resilience-1",
+    "topic": "ai-dotnet-resilience",
+    "questionEn": "Which failure is worth retrying?",
+    "questionAr": "أي فشل يستحق إعادة المحاولة؟",
+    "optionsEn": [
+      "401 Unauthorized",
+      "429 Too Many Requests",
+      "400 Bad Request",
+      "A content-filter refusal"
+    ],
+    "optionsAr": [
+      "401 Unauthorized",
+      "429 Too Many Requests",
+      "400 Bad Request",
+      "رفض من فلتر المحتوى"
+    ],
+    "answer": 1,
+    "explanationEn": "Rate limits pass; bad keys and bad requests do not.",
+    "explanationAr": "حدود الطلبات تزول، أما المفاتيح والطلبات الخاطئة فلا."
+  },
+  {
+    "key": "qz-ai-dotnet-resilience-2",
+    "topic": "ai-dotnet-resilience",
+    "questionEn": "What is exponential backoff?",
+    "questionAr": "ما هو الانتظار المتزايد أُسّيًا؟",
+    "optionsEn": [
+      "Retrying at once",
+      "Waiting longer each time",
+      "Waiting one fixed second",
+      "Never retrying"
+    ],
+    "optionsAr": [
+      "إعادة المحاولة فورًا",
+      "الانتظار أطول في كل مرة",
+      "الانتظار ثانية ثابتة",
+      "عدم إعادة المحاولة أبدًا"
+    ],
+    "answer": 1,
+    "explanationEn": "For example 1, 2, then 4 seconds.",
+    "explanationAr": "مثلًا 1 ثم 2 ثم 4 ثوانٍ."
+  },
+  {
+    "key": "qz-ai-dotnet-resilience-3",
+    "topic": "ai-dotnet-resilience",
+    "questionEn": "Why add jitter?",
+    "questionAr": "لماذا تضيف العشوائية (Jitter)؟",
+    "optionsEn": [
+      "To lower the cost of each call",
+      "To spread out retries",
+      "To skip the timeout entirely",
+      "To switch to another model"
+    ],
+    "optionsAr": [
+      "لتقليل تكلفة كل استدعاء",
+      "لتوزيع إعادة المحاولات",
+      "لتخطّي المهلة تمامًا",
+      "للانتقال إلى نموذج آخر"
+    ],
+    "answer": 1,
+    "explanationEn": "Spreading retries avoids a new spike.",
+    "explanationAr": "توزيع المحاولات يمنع ذروة جديدة."
+  },
+  {
+    "key": "qz-ai-dotnet-resilience-4",
+    "topic": "ai-dotnet-resilience",
+    "questionEn": "What does Retry-After tell you?",
+    "questionAr": "ماذا تخبرك Retry-After؟",
+    "optionsEn": [
+      "The model name",
+      "How long to wait",
+      "The user's limit",
+      "The answer length"
+    ],
+    "optionsAr": [
+      "اسم النموذج",
+      "كم تنتظر",
+      "حد المستخدم",
+      "طول الإجابة"
+    ],
+    "answer": 1,
+    "explanationEn": "Honour it instead of your own delay.",
+    "explanationAr": "احترمها بدل مدة الانتظار الخاصة بك."
+  },
+  {
+    "key": "qz-ai-dotnet-resilience-5",
+    "topic": "ai-dotnet-resilience",
+    "questionEn": "How do you add a timeout to a call?",
+    "questionAr": "كيف تضيف مهلة إلى استدعاء؟",
+    "optionsEn": [
+      "Thread.Sleep before the call",
+      "A linked token with CancelAfter",
+      "A bigger response buffer",
+      "A second HttpClient instance"
+    ],
+    "optionsAr": [
+      "Thread.Sleep قبل الاستدعاء",
+      "Token مرتبط مع CancelAfter",
+      "مخزن مؤقت أكبر للاستجابة",
+      "نسخة ثانية من HttpClient"
+    ],
+    "answer": 1,
+    "explanationEn": "It stops when the user leaves or time runs out.",
+    "explanationAr": "يتوقف عندما يغادر المستخدم أو ينتهي الوقت."
+  },
+  {
+    "key": "qz-ai-dotnet-resilience-6",
+    "topic": "ai-dotnet-resilience",
+    "questionEn": "Which status fits 'provider down'?",
+    "questionAr": "أي رمز يناسب «المزوّد متعطّل»؟",
+    "optionsEn": [
+      "200",
+      "400",
+      "404",
+      "503"
+    ],
+    "optionsAr": [
+      "200",
+      "400",
+      "404",
+      "503"
+    ],
+    "answer": 3,
+    "explanationEn": "503 Service Unavailable, with a friendly message.",
+    "explanationAr": "الرمز 503 Service Unavailable مع رسالة ودودة."
+  },
+  {
+    "key": "qz-ai-dotnet-resilience-7",
+    "topic": "ai-dotnet-resilience",
+    "questionEn": "What does a circuit breaker do?",
+    "questionAr": "ماذا يفعل الـ Circuit breaker؟",
+    "optionsEn": [
+      "Encrypts every call to the provider",
+      "Pauses calls to a failing service",
+      "Retries the same call forever",
+      "Doubles the timeout on each failure"
+    ],
+    "optionsAr": [
+      "يشفّر كل استدعاء للمزوّد",
+      "يوقف مؤقتًا استدعاء خدمة متعطلة",
+      "يعيد الاستدعاء نفسه للأبد",
+      "يضاعف المهلة مع كل فشل"
+    ],
+    "answer": 1,
+    "explanationEn": "It gives the provider time to recover.",
+    "explanationAr": "يعطي المزوّد وقتًا ليتعافى."
+  },
+  {
+    "key": "qz-ai-dotnet-resilience-8",
+    "topic": "ai-dotnet-resilience",
+    "questionEn": "Which package adds standard resilience?",
+    "questionAr": "أي حزمة تضيف المرونة القياسية؟",
+    "optionsEn": [
+      "Microsoft.Extensions.Http.Resilience",
+      "System.Text.Json.Serialization",
+      "Microsoft.EntityFrameworkCore",
+      "Microsoft.AspNetCore.Identity"
+    ],
+    "optionsAr": [
+      "Microsoft.Extensions.Http.Resilience",
+      "System.Text.Json.Serialization",
+      "Microsoft.EntityFrameworkCore",
+      "Microsoft.AspNetCore.Identity"
+    ],
+    "answer": 0,
+    "explanationEn": "AddStandardResilienceHandler on the HttpClient.",
+    "explanationAr": "الدالة AddStandardResilienceHandler على الـ HttpClient."
+  },
+  {
+    "key": "qz-ai-dotnet-usage-cost-1",
+    "topic": "ai-dotnet-usage-cost",
+    "questionEn": "Where are token counts on a response?",
+    "questionAr": "أين أعداد التوكنات في الاستجابة؟",
+    "optionsEn": [
+      "In response.Usage",
+      "In the headers only",
+      "In the prompt",
+      "Nowhere"
+    ],
+    "optionsAr": [
+      "في response.Usage",
+      "في الترويسات فقط",
+      "داخل الطلب",
+      "لا توجد"
+    ],
+    "answer": 0,
+    "explanationEn": "InputTokenCount and OutputTokenCount.",
+    "explanationAr": "القيمتان InputTokenCount وOutputTokenCount."
+  },
+  {
+    "key": "qz-ai-dotnet-usage-cost-2",
+    "topic": "ai-dotnet-usage-cost",
+    "questionEn": "What should be recorded with usage?",
+    "questionAr": "ماذا يُسجَّل مع الاستهلاك؟",
+    "optionsEn": [
+      "Only the date of the call",
+      "Feature, user and model",
+      "The user's password hash",
+      "The full prompt, always"
+    ],
+    "optionsAr": [
+      "تاريخ الاستدعاء فقط",
+      "الميزة والمستخدم والنموذج",
+      "بصمة كلمة مرور المستخدم",
+      "الطلب كاملًا في كل مرة"
+    ],
+    "answer": 1,
+    "explanationEn": "So you can sum cost per feature and user.",
+    "explanationAr": "لتجمع التكلفة لكل ميزة ومستخدم."
+  },
+  {
+    "key": "qz-ai-dotnet-usage-cost-3",
+    "topic": "ai-dotnet-usage-cost",
+    "questionEn": "Where do prices per model belong?",
+    "questionAr": "أين تُحفظ الأسعار لكل نموذج؟",
+    "optionsEn": [
+      "Hard-coded",
+      "In configuration",
+      "In the prompt",
+      "In the browser"
+    ],
+    "optionsAr": [
+      "مكتوبة في الكود",
+      "في الإعدادات",
+      "داخل الطلب",
+      "في المتصفح"
+    ],
+    "answer": 1,
+    "explanationEn": "Prices change; configuration changes without a release.",
+    "explanationAr": "الأسعار تتغير، والإعدادات تتغير دون إصدار جديد."
+  },
+  {
+    "key": "qz-ai-dotnet-usage-cost-4",
+    "topic": "ai-dotnet-usage-cost",
+    "questionEn": "A user used today's allowance. Answer with…",
+    "questionAr": "استهلك المستخدم حصته اليومية. أجب بـ…",
+    "optionsEn": [
+      "200",
+      "401",
+      "429",
+      "500"
+    ],
+    "optionsAr": [
+      "200",
+      "401",
+      "429",
+      "500"
+    ],
+    "answer": 2,
+    "explanationEn": "429 with a clear message about when it resets.",
+    "explanationAr": "الرمز 429 مع رسالة واضحة عن موعد التجديد."
+  },
+  {
+    "key": "qz-ai-dotnet-usage-cost-5",
+    "topic": "ai-dotnet-usage-cost",
+    "questionEn": "Which limit applies to every request?",
+    "questionAr": "أي حد ينطبق على كل طلب؟",
+    "optionsEn": [
+      "A monthly budget",
+      "MaxOutputTokens",
+      "A daily allowance",
+      "A user quota file"
+    ],
+    "optionsAr": [
+      "ميزانية شهرية",
+      "MaxOutputTokens",
+      "حصة يومية",
+      "ملف حصص للمستخدمين"
+    ],
+    "answer": 1,
+    "explanationEn": "Cap each answer's length.",
+    "explanationAr": "حدّد طول كل إجابة."
+  },
+  {
+    "key": "qz-ai-dotnet-usage-cost-6",
+    "topic": "ai-dotnet-usage-cost",
+    "questionEn": "Why alert on daily cost?",
+    "questionAr": "لماذا تنبّه على التكلفة اليومية؟",
+    "optionsEn": [
+      "To slow the app",
+      "To act before the invoice",
+      "To change models daily",
+      "To delete logs"
+    ],
+    "optionsAr": [
+      "لإبطاء التطبيق",
+      "لتتصرف قبل الفاتورة",
+      "لتغيير النموذج يوميًا",
+      "لحذف السجلات"
+    ],
+    "answer": 1,
+    "explanationEn": "Spikes show up in hours, not at month end.",
+    "explanationAr": "الارتفاعات تظهر خلال ساعات لا في نهاية الشهر."
+  },
+  {
+    "key": "qz-ai-dotnet-usage-cost-7",
+    "topic": "ai-dotnet-usage-cost",
+    "questionEn": "Why does cost grow with success?",
+    "questionAr": "لماذا تزيد التكلفة مع النجاح؟",
+    "optionsEn": [
+      "Prices rise for each new user",
+      "More users make more calls",
+      "Models get bigger over time",
+      "Tokens expire after a month"
+    ],
+    "optionsAr": [
+      "لأن الأسعار ترتفع مع كل مستخدم جديد",
+      "لأن مستخدمين أكثر يعني استدعاءات أكثر",
+      "لأن النماذج تكبر مع الوقت",
+      "لأن التوكنات تنتهي صلاحيتها بعد شهر"
+    ],
+    "answer": 1,
+    "explanationEn": "Plan limits before launch, not after.",
+    "explanationAr": "خطّط للحدود قبل الإطلاق لا بعده."
+  },
+  {
+    "key": "qz-ai-dotnet-usage-cost-8",
+    "topic": "ai-dotnet-usage-cost",
+    "questionEn": "Which tool can collect usage metrics?",
+    "questionAr": "أي أداة تجمع مقاييس الاستهلاك؟",
+    "optionsEn": [
+      "OpenTelemetry",
+      "Postman",
+      "Figma",
+      "Git"
+    ],
+    "optionsAr": [
+      "OpenTelemetry",
+      "Postman",
+      "Figma",
+      "Git"
+    ],
+    "answer": 0,
+    "explanationEn": "Send counts as metrics to a dashboard.",
+    "explanationAr": "أرسل الأعداد كمقاييس إلى لوحة متابعة."
+  },
+  {
+    "key": "qz-ai-dotnet-api-feature-1",
+    "topic": "ai-dotnet-api-feature",
+    "questionEn": "What should happen to bad input?",
+    "questionAr": "ماذا يحدث للمدخلات الخاطئة؟",
+    "optionsEn": [
+      "Send it to the model",
+      "Reject with 400 first",
+      "Log and ignore it",
+      "Retry three times"
+    ],
+    "optionsAr": [
+      "أرسلها إلى النموذج",
+      "ارفضها بـ 400 أولًا",
+      "سجّلها وتجاهلها",
+      "أعد المحاولة ثلاث مرات"
+    ],
+    "answer": 1,
+    "explanationEn": "No tokens are spent on invalid requests.",
+    "explanationAr": "لا تُنفق التوكنات على طلبات غير صالحة."
+  },
+  {
+    "key": "qz-ai-dotnet-api-feature-2",
+    "topic": "ai-dotnet-api-feature",
+    "questionEn": "Where does the prompt belong?",
+    "questionAr": "أين يوضع الطلب (Prompt)؟",
+    "optionsEn": [
+      "Inside the controller action",
+      "In a service behind IChatClient",
+      "In a table in the database",
+      "In the Angular component"
+    ],
+    "optionsAr": [
+      "داخل دالة الـ Controller",
+      "في خدمة خلف IChatClient",
+      "في جدول بقاعدة البيانات",
+      "داخل مكوّن Angular"
+    ],
+    "answer": 1,
+    "explanationEn": "Keep controllers thin and services testable.",
+    "explanationAr": "اجعل الـ Controllers خفيفة والخدمات قابلة للاختبار."
+  },
+  {
+    "key": "qz-ai-dotnet-api-feature-3",
+    "topic": "ai-dotnet-api-feature",
+    "questionEn": "The model returns unusable JSON. Status?",
+    "questionAr": "النموذج أرجع JSON لا يمكن استخدامه. أي رمز؟",
+    "optionsEn": [
+      "200",
+      "400",
+      "502",
+      "404"
+    ],
+    "optionsAr": [
+      "200",
+      "400",
+      "502",
+      "404"
+    ],
+    "answer": 2,
+    "explanationEn": "502 says an upstream service gave a bad answer.",
+    "explanationAr": "الرمز 502 يعني أن خدمة خلفية أعطت إجابة سيئة."
+  },
+  {
+    "key": "qz-ai-dotnet-api-feature-4",
+    "topic": "ai-dotnet-api-feature",
+    "questionEn": "How do integration tests avoid a real model?",
+    "questionAr": "كيف تتجنب اختبارات التكامل نموذجًا حقيقيًا؟",
+    "optionsEn": [
+      "They skip calling the API",
+      "They swap IChatClient in DI",
+      "They use a slower, cheaper model",
+      "They mock HTTP inside Angular"
+    ],
+    "optionsAr": [
+      "تتخطى استدعاء الـ API",
+      "تستبدل IChatClient في الحقن",
+      "تستخدم نموذجًا أبطأ وأرخص",
+      "تحاكي HTTP داخل Angular"
+    ],
+    "answer": 1,
+    "explanationEn": "WebApplicationFactory lets you swap services.",
+    "explanationAr": "الأداة WebApplicationFactory تتيح استبدال الخدمات."
+  },
+  {
+    "key": "qz-ai-dotnet-api-feature-5",
+    "topic": "ai-dotnet-api-feature",
+    "questionEn": "Who may call the AI endpoint?",
+    "questionAr": "من يستطيع استدعاء Endpoint الذكاء الاصطناعي؟",
+    "optionsEn": [
+      "Anyone who knows the URL",
+      "Signed-in users, rate-limited",
+      "Only automated scripts",
+      "Only requests from localhost"
+    ],
+    "optionsAr": [
+      "أي أحد يعرف الرابط",
+      "المستخدمون المسجلون مع تحديد المعدل",
+      "البرامج الآلية فقط",
+      "الطلبات القادمة من localhost فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Authentication and rate limits protect cost.",
+    "explanationAr": "التوثيق وتحديد المعدل يحميان التكلفة."
+  },
+  {
+    "key": "qz-ai-dotnet-api-feature-6",
+    "topic": "ai-dotnet-api-feature",
+    "questionEn": "Which fake case is most often forgotten?",
+    "questionAr": "أي حالة وهمية تُنسى أكثر؟",
+    "optionsEn": [
+      "The happy path",
+      "Broken model output",
+      "A valid request",
+      "A short question"
+    ],
+    "optionsAr": [
+      "المسار الناجح",
+      "مخرجات نموذج معطوبة",
+      "طلب صالح تمامًا",
+      "سؤال قصير"
+    ],
+    "answer": 1,
+    "explanationEn": "Test what happens when the model misbehaves.",
+    "explanationAr": "اختبر ما يحدث عندما يسيء النموذج التصرف."
+  },
+  {
+    "key": "qz-ai-dotnet-api-feature-7",
+    "topic": "ai-dotnet-api-feature",
+    "questionEn": "What makes an AI demo a real feature?",
+    "questionAr": "ما الذي يجعل العرض التجريبي ميزة حقيقية؟",
+    "optionsEn": [
+      "A bigger, newer model",
+      "Checks, limits and tests",
+      "A longer, nicer prompt",
+      "Sending many more tokens"
+    ],
+    "optionsAr": [
+      "نموذج أكبر وأحدث إصدارًا",
+      "الفحص والحدود والاختبارات",
+      "طلب أطول وأجمل صياغة",
+      "إرسال توكنات أكثر بكثير"
+    ],
+    "answer": 1,
+    "explanationEn": "Most of the work is ordinary backend engineering.",
+    "explanationAr": "أغلب العمل هندسة Backend عادية."
+  },
+  {
+    "key": "qz-ai-dotnet-api-feature-8",
+    "topic": "ai-dotnet-api-feature",
+    "questionEn": "Which status fits a timeout?",
+    "questionAr": "أي رمز يناسب انتهاء المهلة؟",
+    "optionsEn": [
+      "201",
+      "302",
+      "503",
+      "422"
+    ],
+    "optionsAr": [
+      "201",
+      "302",
+      "503",
+      "422"
+    ],
+    "answer": 2,
+    "explanationEn": "Tell the user to try again shortly.",
+    "explanationAr": "أخبر المستخدم أن يحاول بعد قليل."
+  }
+]
