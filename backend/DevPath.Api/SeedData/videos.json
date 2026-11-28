@@ -8111,5 +8111,169 @@
       "channel": "TheNewBaghdad (‫بغداد الجديدة‬‎)",
       "language": "ar"
     }
+  ],
+  "and-qa-strategy": [
+    {
+      "videoId": "aId-WLZnvkw",
+      "title": "How To Write Unit Tests (The Right Way)",
+      "channel": "Cody Engel",
+      "language": "en"
+    },
+    {
+      "videoId": "rUGB8cDwwwM",
+      "title": "The Testing Pyramid Explained: Unit vs Integration vs E2E Tests",
+      "channel": "Kuls Tech",
+      "language": "en"
+    },
+    {
+      "videoId": "B9rLLcVQfpI",
+      "title": "يعني ايه Unit testing وليه كل الدفيلوبرز لازم يتعلموا يكتبوه - سيمي كولون | SemiColon",
+      "channel": "Yallacode",
+      "language": "ar"
+    }
+  ],
+  "and-qa-unit": [
+    {
+      "videoId": "FkdDZRbdfPs",
+      "title": "Easy ViewModel UI State Testing in Android with KotlinX Coroutine Test and Turbine Library",
+      "channel": "Yanneck Reiß",
+      "language": "en"
+    },
+    {
+      "videoId": "rk6aKkWqqcI",
+      "title": "Unit Testing Flows - The Ultimate Guide to Kotlin Flows (Part 4)",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "uEnpIFVspMo",
+      "title": "Unit Testing Kotlin Channels & Flows - Mohit Sarveiya",
+      "channel": "Android Summit",
+      "language": "en"
+    },
+    {
+      "videoId": "Xy0Ik7TR70Y",
+      "title": "Unit Testing: 5. Mocking",
+      "channel": "coding with nerds",
+      "language": "ar"
+    },
+    {
+      "videoId": "3AcDH3ZZDEo",
+      "title": "الجزء الاخير من دورة ال  JUnit testing -  مع الاندرويد||  JUnit  testing with android",
+      "channel": "Ahmad shubair",
+      "language": "ar"
+    }
+  ],
+  "and-qa-integration": [
+    {
+      "videoId": "WfP_a1rygRY",
+      "title": "Dagger Hilt - Testing Using Hilt in Android!",
+      "channel": "Charfaoui Younes",
+      "language": "en"
+    },
+    {
+      "videoId": "k4zG93ogWFY",
+      "title": "Testing Fragments with Dagger-Hilt - Testing on Android - Part 12",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "JyUJZvJ-OV8",
+      "title": "Write your first Compose UI test",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "FgrYdYpdN5s",
+      "title": "138-  Android Automated UI Testing فحص الواجهات",
+      "channel": "TheNewBaghdad (‫بغداد الجديدة‬‎)",
+      "language": "ar"
+    }
+  ],
+  "and-qa-screenshot": [
+    {
+      "videoId": "2L78_eCNDs8",
+      "title": "How to Use the Google's New Screenshot Testing Framework for Compose",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "y8uhCQjHkWk",
+      "title": "Step-by-Step Guide to Screenshot Testing in Android!",
+      "channel": "Charfaoui Younes",
+      "language": "en"
+    },
+    {
+      "videoId": "5i4RAciOi2s",
+      "title": "DroidKaigi 2024 - [EN] Mastering Screenshot Testing for Android Apps | bing-zhu",
+      "channel": "DroidKaigi",
+      "language": "en"
+    }
+  ],
+  "and-qa-performance": [
+    {
+      "videoId": "hqYnZ5qCw8Y",
+      "title": "How to Boost Your App's Performance With Baseline Profiles",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "WWdDzXgrkmg",
+      "title": "Improving Performance with Baseline Profiles - MAD Skills",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "0adLO2VRJtc",
+      "title": "Measuring Jank and Startup with Macrobenchmark | Session",
+      "channel": "Android Developers",
+      "language": "en"
+    }
+  ],
+  "and-qa-static": [
+    {
+      "videoId": "CMXrlcZVWbw",
+      "title": "Boost Android Code Quality with Detekt | Kotlin Static Code Analysis Guide",
+      "channel": "Codetutor",
+      "language": "en"
+    },
+    {
+      "videoId": "hSgPNbEcX98",
+      "title": "How to Automatically Fix Your Code Style With Ktlint - Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "nMsk3LgdfUE",
+      "title": "Hotwire Native Android - Static Analysis with Lint and Detekt",
+      "channel": "Donn Felker",
+      "language": "en"
+    },
+    {
+      "videoId": "A7XtDkmoBJk",
+      "title": "Android developer bag: detekt (In Arabic)",
+      "channel": "Mo3talogy",
+      "language": "ar"
+    }
+  ],
+  "and-qa-crashes": [
+    {
+      "videoId": "JxVYfZprK0g",
+      "title": "2021 Android Guide: Firebase Crashlytics - custom crash reporting",
+      "channel": "The Android Factory",
+      "language": "en"
+    },
+    {
+      "videoId": "infKu-sxCFQ",
+      "title": "Monitoring Android Apps with Firebase Crashlytics and Performance",
+      "channel": "Charfaoui Younes",
+      "language": "en"
+    },
+    {
+      "videoId": "QWPl-yk5_s0",
+      "title": "How to Set Up Firebase Crashlytics in Android - Step by Step Guide",
+      "channel": "Codes Easy",
+      "language": "en"
+    }
   ]
 }

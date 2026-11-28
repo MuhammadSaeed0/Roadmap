@@ -1,0 +1,170 @@
+[
+  {
+    "key": "and-ex-qa-testability",
+    "type": "CodeReview",
+    "topic": "and-qa-strategy",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Make this class testable",
+    "titleAr": "اجعل هذا الصنف قابلًا للاختبار",
+    "problemEn": "The class below decides whether to show a \"rate the app\" prompt. It can't be unit-tested. Explain why, refactor it so every decision can be tested on the JVM, and write tests for: first launch (no prompt), after 5 sessions over 3 days (prompt), and after the user declined (never again).",
+    "problemAr": "الصنف أدناه يقرر هل يعرض طلب «قيّم التطبيق». ولا يمكن اختباره كوحدة. اشرح السبب، وأعد هيكلته حتى يمكن اختبار كل قرار على JVM، واكتب اختبارات لـ: أول فتح (لا طلب)، وبعد 5 جلسات خلال 3 أيام (طلب)، وبعد أن رفض المستخدم (أبدًا مرة أخرى).",
+    "expectedEn": "Dependencies injected (a settings store interface and a Clock), the decision as a pure function, and three JVM tests with a fake store and fixed clock.",
+    "expectedAr": "اعتماديات محقونة (واجهة مخزن إعدادات وClock)، والقرار كدالة نقية، وثلاثة اختبارات على JVM مع مخزن وهمي وساعة ثابتة.",
+    "hintsEn": [
+      "Which lines touch Android or the real time?",
+      "Can you separate reading state from deciding?"
+    ],
+    "hintsAr": [
+      "أي الأسطر تلمس Android أو الوقت الحقيقي؟",
+      "هل تستطيع فصل قراءة الحالة عن القرار؟"
+    ],
+    "solutionEn": "Problems: it creates SharedPreferences from a static context, reads System.currentTimeMillis and mixes reading, deciding and writing. Refactor to class RatePrompter(store: PromptStore, clock: Clock) with fun shouldPrompt(): Boolean that loads PromptState and calls a pure decide(state, now). Tests use FakePromptStore and Clock.fixed: first launch false; sessions = 5 and firstSeen 3 days ago true; declined = true false.",
+    "solutionAr": "المشكلات: ينشئ SharedPreferences من سياق ثابت، ويقرأ System.currentTimeMillis، ويخلط القراءة والقرار والكتابة. فأعد هيكلته إلى class RatePrompter(store: PromptStore, clock: Clock) مع fun shouldPrompt(): Boolean تحمّل PromptState وتستدعي دالة نقية decide(state, now). وتستخدم الاختبارات FakePromptStore وClock.fixed: أول فتح خطأ، وsessions = 5 مع firstSeen قبل 3 أيام صحيح، وdeclined = true خطأ.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-qa-viewmodel",
+    "type": "Practical",
+    "topic": "and-qa-unit",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "A behaviour suite for a sign-up screen",
+    "titleAr": "مجموعة سلوكية لشاشة التسجيل",
+    "problemEn": "Write unit tests for a SignUpViewModel that validates email and password as the user types, enables Submit only when both are valid, shows a loading state, maps a 409 \"email taken\" to a field error, maps a network failure to a retry message, and emits a NavigateHome event once on success. Use a fake repository, a MainDispatcherRule and Turbine.",
+    "problemAr": "اكتب اختبارات وحدة لـ SignUpViewModel تتحقق من البريد وكلمة المرور أثناء الكتابة، وتفعّل Submit فقط عندما يكون الاثنان صالحين، وتعرض حالة تحميل، وتحوّل 409 «البريد مستخدم» إلى خطأ في الحقل، وتحوّل عطل الشبكة إلى رسالة إعادة محاولة، وتُصدر حدث NavigateHome مرة واحدة عند النجاح. واستخدم مستودعًا وهميًا وMainDispatcherRule وTurbine.",
+    "expectedEn": "At least seven focused tests named after behaviours, a reusable FakeAuthRepository, whole-state assertions and an events test with expectNoEvents.",
+    "expectedAr": "سبعة اختبارات مركّزة على الأقل مسماة بالسلوكيات، ومستودع FakeAuthRepository قابل لإعادة الاستخدام، وتحققات من الحالة كاملة، واختبار للأحداث مع expectNoEvents.",
+    "hintsEn": [
+      "Make the fake return a sealed result so each test sets one outcome.",
+      "Test the boundary: a 7-character password versus 8."
+    ],
+    "hintsAr": [
+      "اجعل البديل الوهمي يُرجع نتيجة من نوع sealed حتى يضبط كل اختبار نتيجة واحدة.",
+      "اختبر الحد: كلمة مرور من 7 أحرف مقابل 8."
+    ],
+    "solutionEn": "Tests: submitDisabledInitially; invalidEmailShowsError; shortPasswordShowsError (7 chars) and eightCharsIsValid; submitShowsLoadingThenSuccess with Turbine; emailTakenShowsFieldError (fake returns Conflict); networkFailureShowsRetry; successEmitsNavigateHomeOnce using vm.events.test { awaitItem(); expectNoEvents() }. The fake records calls so another test proves no request is sent while the form is invalid.",
+    "solutionAr": "الاختبارات: ‏submitDisabledInitially، وinvalidEmailShowsError، وshortPasswordShowsError (‏7 أحرف) وeightCharsIsValid، وsubmitShowsLoadingThenSuccess مع Turbine، وemailTakenShowsFieldError (يُرجع البديل Conflict)، وnetworkFailureShowsRetry، وsuccessEmitsNavigateHomeOnce باستخدام vm.events.test { awaitItem(); expectNoEvents() }. ويسجّل البديل الوهمي الاستدعاءات حتى يثبت اختبار آخر أنه لا يُرسل طلب ما دام النموذج غير صالح.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-qa-hilt",
+    "type": "Practical",
+    "topic": "and-qa-integration",
+    "difficulty": "Advanced",
+    "minutes": 60,
+    "titleEn": "An end-to-end journey with Hilt",
+    "titleAr": "مسار شامل مع Hilt",
+    "problemEn": "Write an instrumented end-to-end test for a notes app: launch MainActivity with Hilt, replace the network module with a fake API through @TestInstallIn and the database with an in-memory one, create a note, edit it, go back, and assert the list shows the edited title. Run it on a Gradle Managed Device with the Test Orchestrator, and make it pass 20 times in a row.",
+    "problemAr": "اكتب اختبارًا شاملًا على الجهاز لتطبيق ملاحظات: شغّل MainActivity مع Hilt، واستبدل وحدة الشبكة بواجهة وهمية عبر @TestInstallIn وقاعدة البيانات بأخرى في الذاكرة، وأنشئ ملاحظة، وعدّلها، وارجع، وتحقق أن القائمة تعرض العنوان المعدّل. وشغّله على Gradle Managed Device مع Test Orchestrator، واجعله ينجح 20 مرة متتالية.",
+    "expectedEn": "A HiltTestRunner, two @TestInstallIn modules, a test using test tags and waitUntil, Gradle managed device and orchestrator configuration, and a log of 20 green runs.",
+    "expectedAr": "مشغّل HiltTestRunner، ووحدتا @TestInstallIn، واختبار يستخدم وسوم الاختبار وwaitUntil، وإعدادات الجهاز المُدار والمنسق في Gradle، وسجل لعشرين تشغيلًا ناجحًا.",
+    "hintsEn": [
+      "Room.inMemoryDatabaseBuilder in the test module gives a fresh database per run.",
+      "Use --rerun-tasks or a loop script to repeat the test."
+    ],
+    "hintsAr": [
+      "الدالة Room.inMemoryDatabaseBuilder في وحدة الاختبار تعطي قاعدة بيانات جديدة لكل تشغيل.",
+      "استخدم --rerun-tasks أو نصًا برمجيًا بحلقة لتكرار الاختبار."
+    ],
+    "solutionEn": "HiltTestRunner returns HiltTestApplication. FakeNetworkModule replaces NetworkModule with a FakeNotesApi; TestDatabaseModule replaces DatabaseModule with an in-memory AppDatabase. The test: click tag new_note, type title, save, click the note, replace text, save, pressBack, waitUntil { onAllNodesWithText(\"Edited\").fetchSemanticsNodes().isNotEmpty() }, assertIsDisplayed. Gradle: a pixel6api34 ATD managed device, execution = ANDROIDX_TEST_ORCHESTRATOR, clearPackageData, animationsDisabled.",
+    "solutionAr": "يُرجع HiltTestRunner الصنف HiltTestApplication. وتستبدل FakeNetworkModule الوحدة NetworkModule بـ FakeNotesApi، وتستبدل TestDatabaseModule الوحدة DatabaseModule بقاعدة AppDatabase في الذاكرة. والاختبار: اضغط الوسم new_note، واكتب العنوان، واحفظ، واضغط الملاحظة، واستبدل النص، واحفظ، ثم pressBack، ثم waitUntil { onAllNodesWithText(\"Edited\").fetchSemanticsNodes().isNotEmpty() }، ثم assertIsDisplayed. وفي Gradle: جهاز مُدار pixel6api34 بصورة ATD، وexecution = ANDROIDX_TEST_ORCHESTRATOR، وclearPackageData، وanimationsDisabled.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-qa-screenshot",
+    "type": "Practical",
+    "topic": "and-qa-screenshot",
+    "difficulty": "Intermediate",
+    "minutes": 35,
+    "titleEn": "Screenshot tests for a product card",
+    "titleAr": "اختبارات لقطات لبطاقة منتج",
+    "problemEn": "Add screenshot tests for a ProductCard composable in five variants: light, dark, Arabic RTL, 200% font size and the sold-out state. Record references, then deliberately break it by hard-coding a left padding and show which variants fail, and fix it with start padding.",
+    "problemAr": "أضف اختبارات لقطات لدالة composable باسم ProductCard في خمسة تنويعات: الفاتح والداكن والعربية من اليمين إلى اليسار وحجم خط 200% وحالة نفاد المخزون. وسجّل المراجع، ثم اكسرها عمدًا بحشو يسار ثابت وأظهر أي التنويعات تفشل، وأصلحها بحشو البداية.",
+    "expectedEn": "A multi-preview annotation, deterministic sample data, recorded reference images, a failing validation report for the RTL variant and a passing one after the fix.",
+    "expectedAr": "تعليق معاينات متعددة، وبيانات عينة حتمية، وصور مرجعية مسجلة، وتقرير تحقق فاشل لتنويع اليمين إلى اليسار، وآخر ناجح بعد الإصلاح.",
+    "hintsEn": [
+      "Modifier.padding(start = ...) respects layout direction; absolutePadding(left = ...) doesn't.",
+      "Use a placeholder painter instead of a network image."
+    ],
+    "hintsAr": [
+      "الدالة Modifier.padding(start = ...) تحترم اتجاه التخطيط، أما absolutePadding(left = ...) فلا.",
+      "استخدم صورة مؤقتة بدل صورة من الشبكة."
+    ],
+    "solutionEn": "Create @ProductVariants combining five @Preview annotations (uiMode night, locale ar, fontScale 2f, and a separate preview passing soldOut = true). Record with updateDebugScreenshotTest. Change the price row to Modifier.absolutePadding(left = 16.dp): validateDebugScreenshotTest fails for the Arabic preview only, because the gap moves to the wrong side. Revert to padding(start = 16.dp) and validation passes.",
+    "solutionAr": "أنشئ @ProductVariants يجمع خمسة تعليقات @Preview (‏uiMode ليلي، وlocale ar، وfontScale 2f، ومعاينة منفصلة تمرر soldOut = true). وسجّل بـ updateDebugScreenshotTest. وغيّر صف السعر إلى Modifier.absolutePadding(left = 16.dp): فتفشل validateDebugScreenshotTest في المعاينة العربية فقط، لأن الفراغ ينتقل إلى الجهة الخطأ. وأعده إلى padding(start = 16.dp) فينجح التحقق.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-qa-startup",
+    "type": "Debugging",
+    "topic": "and-qa-performance",
+    "difficulty": "Advanced",
+    "minutes": 50,
+    "titleEn": "Fix a slow cold start",
+    "titleAr": "أصلح بدءًا باردًا بطيئًا",
+    "problemEn": "A Macrobenchmark shows a median cold start of 1,850 ms. The Application and first screen below are the cause. Find at least four problems, fix them, add a Baseline Profile, and report the new median from the benchmark.",
+    "problemAr": "يُظهر Macrobenchmark وسيطًا للبدء البارد قدره 1,850 ملّي ثانية. وصنف Application والشاشة الأولى أدناه هما السبب. أوجد أربع مشكلات على الأقل، وأصلحها، وأضف Baseline Profile، وأبلغ عن الوسيط الجديد من القياس.",
+    "expectedEn": "Before and after benchmark numbers, each fix explained, the Baseline Profile generated and committed, and reportFullyDrawn called when the feed is visible.",
+    "expectedAr": "أرقام القياس قبل وبعد، وشرح كل إصلاح، وBaseline Profile مولّد ومضاف إلى المستودع، واستدعاء reportFullyDrawn عندما يظهر التدفق.",
+    "hintsEn": [
+      "Which calls in onCreate block the main thread?",
+      "Does the first frame need the network?"
+    ],
+    "hintsAr": [
+      "أي الاستدعاءات في onCreate تحجب الخيط الرئيسي؟",
+      "هل يحتاج الإطار الأول إلى الشبكة؟"
+    ],
+    "solutionEn": "Problems: runBlocking { remoteConfig.fetch() } blocks startup on the network; reading a 2 MB JSON asset on the main thread; initialising three SDKs eagerly; the first screen waits for the API before drawing anything. Fixes: fetch config in the background and use defaults; parse the asset lazily on Dispatchers.Default; initialise SDKs lazily or with App Startup after the first frame; show cached feed from Room immediately and refresh. Add a Baseline Profile for startup and the first scroll, call reportFullyDrawn when cached items render. Typical result: about 900 to 1,100 ms.",
+    "solutionAr": "المشكلات: ‏runBlocking { remoteConfig.fetch() } يحجب البدء على الشبكة، وقراءة ملف JSON من الأصول بحجم 2 ميجابايت على الخيط الرئيسي، وتهيئة ثلاث مكتبات SDK مبكرًا، والشاشة الأولى تنتظر الواجهة البرمجية قبل رسم أي شيء. والإصلاحات: جلب الإعدادات في الخلفية واستخدام القيم الافتراضية، وتحليل الملف بكسل على Dispatchers.Default، وتهيئة المكتبات بكسل أو بـ App Startup بعد الإطار الأول، وعرض التدفق المخزن من Room فورًا ثم التحديث. وأضف Baseline Profile للبدء وأول تمرير، واستدعِ reportFullyDrawn عندما تُعرض العناصر المخزنة. والنتيجة المعتادة: نحو 900 إلى 1,100 ملّي ثانية.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-qa-lint",
+    "type": "Practical",
+    "topic": "and-qa-static",
+    "difficulty": "Intermediate",
+    "minutes": 35,
+    "titleEn": "Static analysis in CI",
+    "titleAr": "التحليل الثابت في CI",
+    "problemEn": "Add quality gates to an existing project with 300 lint warnings: configure lint with errors for NewApi, HardcodedText, RtlHardcoded and UnspecifiedImmutableFlag and a baseline for the rest; add detekt with InjectDispatcher and GlobalCoroutineUsage enabled and its own baseline; add Spotless with ktlint; and create a CI job that fails on new issues. Then fix ten baseline issues and regenerate the baselines.",
+    "problemAr": "أضف بوابات جودة إلى مشروع قائم فيه 300 تحذير lint: اضبط lint بأخطاء لـ NewApi وHardcodedText وRtlHardcoded وUnspecifiedImmutableFlag وخط أساس للباقي، وأضف detekt مع تفعيل InjectDispatcher وGlobalCoroutineUsage وخط أساس خاص به، وأضف Spotless مع ktlint، وأنشئ مهمة CI تفشل عند المشكلات الجديدة. ثم أصلح عشر مشكلات من خط الأساس وأعد توليد خطوط الأساس.",
+    "expectedEn": "lint.xml and the lint block, detekt.yml and baseline, Spotless configuration, a CI workflow step, and a pull request that shows both baselines shrinking.",
+    "expectedAr": "ملف lint.xml وكتلة lint، وملف detekt.yml وخط الأساس، وإعدادات Spotless، وخطوة في سير عمل CI، وطلب دمج يُظهر تقلص خطي الأساس.",
+    "hintsEn": [
+      "Run updateLintBaseline after configuring severities, not before.",
+      "Format the codebase in its own commit to keep reviews readable."
+    ],
+    "hintsAr": [
+      "شغّل updateLintBaseline بعد ضبط مستويات الخطورة، لا قبله.",
+      "نسّق قاعدة الكود في commit مستقل حتى تبقى المراجعات مقروءة."
+    ],
+    "solutionEn": "In android.lint set abortOnError = true and baseline = file(\"lint-baseline.xml\"), with lint.xml raising the four ids to error; run ./gradlew updateLintBaseline. In detekt set buildUponDefaultConfig, enable the two coroutine rules and run detektBaseline. Spotless kotlin { ktlint() } with a separate formatting commit. The CI step runs ./gradlew spotlessCheck detekt lintRelease. Fixing ten items and regenerating shows the removed entries in the diff.",
+    "solutionAr": "في android.lint اضبط abortOnError = true وbaseline = file(\"lint-baseline.xml\")، مع lint.xml يرفع المعرّفات الأربعة إلى error، وشغّل ./gradlew updateLintBaseline. وفي detekt اضبط buildUponDefaultConfig، وفعّل قاعدتي الـ Coroutines، وشغّل detektBaseline. وSpotless مع kotlin { ktlint() } في commit تنسيق منفصل. وخطوة CI تشغّل ./gradlew spotlessCheck detekt lintRelease. وإصلاح عشرة بنود ثم إعادة التوليد يُظهر المدخلات المحذوفة في الفرق.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-qa-crash",
+    "type": "Debugging",
+    "topic": "and-qa-crashes",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "Reproduce and fix a production crash",
+    "titleAr": "أعد إنتاج انهيار في الإنتاج وأصلحه",
+    "problemEn": "Crashlytics reports: \"kotlin.UninitializedPropertyAccessException: lateinit property order has not been initialized at OrderDetailViewModel.getTotal\" on 1.8% of sessions, mostly after users return from the payment app. Explain the cause, reproduce it with developer options, fix it so the screen survives process death, and add a regression test.",
+    "problemAr": "تبلّغ Crashlytics عن: «kotlin.UninitializedPropertyAccessException: lateinit property order has not been initialized at OrderDetailViewModel.getTotal» في 1.8% من الجلسات، غالبًا بعد عودة المستخدمين من تطبيق الدفع. اشرح السبب، وأعد إنتاجه بخيارات المطور، وأصلحه حتى تنجو الشاشة من موت العملية، وأضف اختبار تراجع.",
+    "expectedEn": "Reproduction steps with \"Don't keep activities\" or adb shell am kill, a ViewModel that reads the order id from SavedStateHandle and loads from the repository, and a test that creates the ViewModel from a SavedStateHandle only.",
+    "expectedAr": "خطوات إعادة الإنتاج بخيار «Don't keep activities» أو adb shell am kill، وViewModel تقرأ معرّف الطلب من SavedStateHandle وتحمّل من المستودع، واختبار ينشئ ViewModel من SavedStateHandle فقط.",
+    "hintsEn": [
+      "What happens to a ViewModel's fields when the system kills the process?",
+      "Where does the navigation argument live after restore?"
+    ],
+    "hintsAr": [
+      "ماذا يحدث لحقول ViewModel عندما يقتل النظام العملية؟",
+      "أين يعيش معامل التنقل بعد الاستعادة؟"
+    ],
+    "solutionEn": "The previous screen set vm.order = selected before navigating. While the payment app is open, Android kills the process; on return the ViewModel is recreated, but nothing sets order. Reproduce by enabling \"Don't keep activities\", opening an order and switching apps. Fix: navigate with the order id as an argument, read it from SavedStateHandle and expose state from repository.observe(id).stateIn(...). Test: OrderDetailViewModel(SavedStateHandle(mapOf(\"orderId\" to \"A1\")), FakeOrderRepository(order(\"A1\"))) shows the total without any setter.",
+    "solutionAr": "كانت الشاشة السابقة تضبط vm.order = selected قبل التنقل. وأثناء فتح تطبيق الدفع يقتل Android العملية، وعند العودة تُعاد إنشاء ViewModel دون أن يضبط شيء القيمة order. وأعد الإنتاج بتفعيل «Don't keep activities» وفتح طلب والتبديل بين التطبيقات. والإصلاح: تنقل مع معرّف الطلب كمعامل، واقرأه من SavedStateHandle، واعرض الحالة من repository.observe(id).stateIn(...). والاختبار: ‏OrderDetailViewModel(SavedStateHandle(mapOf(\"orderId\" to \"A1\")), FakeOrderRepository(order(\"A1\"))) يعرض الإجمالي دون أي ضبط.",
+    "runner": "None"
+  }
+]

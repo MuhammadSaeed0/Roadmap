@@ -1,0 +1,200 @@
+[
+  {
+    "key": "and-quality-gate",
+    "skill": "Android",
+    "level": "Advanced",
+    "hours": 12,
+    "titleEn": "Quality gate for an existing app",
+    "titleAr": "بوابة جودة لتطبيق قائم",
+    "summaryEn": "Take one of your earlier projects (the offline task manager or the movie explorer) and give it a professional quality pipeline: a test strategy, unit and integration suites, screenshot tests, performance benchmarks with a Baseline Profile, static analysis and crash reporting, all running in CI with clear budgets.",
+    "summaryAr": "خذ أحد مشاريعك السابقة (مدير المهام دون اتصال أو مستكشف الأفلام) وأعطه خط جودة احترافيًا: استراتيجية اختبار، ومجموعات اختبارات وحدة وتكامل، واختبارات لقطات، وقياسات أداء مع Baseline Profile، وتحليلًا ثابتًا، وتقارير انهيار، وكلها تعمل في CI بميزانيات واضحة.",
+    "techStack": "JUnit · kotlinx-coroutines-test · Turbine · MockWebServer · Hilt testing · Gradle Managed Devices · Compose screenshot testing · Macrobenchmark · Baseline Profiles · Lint · detekt · Crashlytics · GitHub Actions",
+    "goalsEn": [
+      "Write a test strategy for a real app",
+      "Cover logic with fast JVM tests",
+      "Protect journeys and visuals",
+      "Measure and improve performance",
+      "Automate quality checks in CI"
+    ],
+    "goalsAr": [
+      "كتابة استراتيجية اختبار لتطبيق حقيقي",
+      "تغطية المنطق باختبارات JVM سريعة",
+      "حماية المسارات والمظهر",
+      "قياس الأداء وتحسينه",
+      "أتمتة فحوصات الجودة في CI"
+    ],
+    "requirementsEn": [
+      "A one-page TESTING.md with the pyramid, doubles and CI stages",
+      "Unit tests for every ViewModel and repository, using shared fakes",
+      "Two end-to-end journeys with Hilt on a Gradle Managed Device",
+      "Screenshot tests for key screens in light, dark, RTL and large font",
+      "A Macrobenchmark for cold start and scrolling, and a Baseline Profile",
+      "Lint, detekt and Spotless with baselines; Crashlytics with mapping upload",
+      "A CI workflow that runs fast checks on pull requests and device tests on main"
+    ],
+    "requirementsAr": [
+      "ملف TESTING.md من صفحة واحدة فيه الهرم والبدائل ومراحل CI",
+      "اختبارات وحدة لكل ViewModel ومستودع باستخدام بدائل وهمية مشتركة",
+      "مساران شاملان مع Hilt على Gradle Managed Device",
+      "اختبارات لقطات للشاشات الأساسية في الفاتح والداكن ومن اليمين لليسار والخط الكبير",
+      "‏Macrobenchmark للبدء البارد والتمرير، وBaseline Profile",
+      "‏Lint وdetekt وSpotless مع خطوط أساس، وCrashlytics مع رفع ملف التحويل",
+      "سير عمل CI يشغّل الفحوصات السريعة في طلبات الدمج واختبارات الجهاز على main"
+    ],
+    "acceptanceEn": [
+      "Pull request checks finish in under 10 minutes",
+      "Device tests pass 20 runs in a row",
+      "Startup improves by at least 15% with the Baseline Profile, documented with numbers",
+      "A deliberately introduced bug, visual regression and performance regression are each caught by CI"
+    ],
+    "acceptanceAr": [
+      "تنتهي فحوصات طلب الدمج في أقل من 10 دقائق",
+      "تنجح اختبارات الجهاز 20 مرة متتالية",
+      "يتحسن البدء بنسبة 15% على الأقل مع Baseline Profile، موثقًا بالأرقام",
+      "يكشف CI خطأً مدسوسًا عمدًا، وتراجعًا مرئيًا، وتراجعًا في الأداء، كلًا على حدة"
+    ],
+    "stretchEn": [
+      "Add a custom lint rule for a team convention",
+      "Add Kover coverage with a diff-coverage check on pull requests",
+      "Post benchmark results as a pull request comment"
+    ],
+    "stretchAr": [
+      "أضف قاعدة lint مخصصة لعُرف في الفريق",
+      "أضف تغطية Kover مع فحص تغطية الفرق في طلبات الدمج",
+      "انشر نتائج القياس كتعليق على طلب الدمج"
+    ],
+    "steps": [
+      {
+        "key": "and-qg-strategy",
+        "titleEn": "Write the strategy",
+        "titleAr": "اكتب الاستراتيجية",
+        "bodyEn": "Write TESTING.md: what each layer of the pyramid covers in this app, which fakes exist, how to run each suite, and what runs on pull requests versus main. List the three riskiest areas you'll cover first.",
+        "bodyAr": "اكتب TESTING.md: ما تغطيه كل طبقة من الهرم في هذا التطبيق، وأي البدائل الوهمية موجودة، وكيف تشغّل كل مجموعة، وما يعمل في طلبات الدمج مقابل main. واسرد أخطر ثلاث مناطق ستغطيها أولًا.",
+        "hintsEn": [
+          "Risky areas are usually sync, payments or auth.",
+          "Keep it short enough that people read it."
+        ],
+        "hintsAr": [
+          "المناطق الخطرة عادة المزامنة أو المدفوعات أو المصادقة.",
+          "اجعله قصيرًا بما يكفي ليقرأه الناس."
+        ]
+      },
+      {
+        "key": "and-qg-unit",
+        "titleEn": "Fakes and unit tests",
+        "titleAr": "البدائل الوهمية واختبارات الوحدة",
+        "bodyEn": "Create a :core:testing module with fakes for repositories, APIs, clocks and dispatchers. Write behaviour tests for every ViewModel and repository with runTest and Turbine, starting with the risky areas.",
+        "bodyAr": "أنشئ وحدة :core:testing فيها بدائل وهمية للمستودعات والواجهات البرمجية والساعات والـ Dispatchers. واكتب اختبارات سلوكية لكل ViewModel ومستودع بـ runTest وTurbine، بدءًا بالمناطق الخطرة.",
+        "hintsEn": [
+          "Share MainDispatcherRule from the testing module.",
+          "Aim for meaningful behaviours, not a coverage number."
+        ],
+        "hintsAr": [
+          "شارك MainDispatcherRule من وحدة الاختبار.",
+          "استهدف سلوكيات ذات معنى، لا رقم تغطية."
+        ]
+      },
+      {
+        "key": "and-qg-integration",
+        "titleEn": "Device tests",
+        "titleAr": "اختبارات الجهاز",
+        "bodyEn": "Add a HiltTestRunner, @TestInstallIn modules for network and database, and two end-to-end journeys. Configure an ATD Gradle Managed Device and the Test Orchestrator, and repeat the tests until they pass 20 times in a row.",
+        "bodyAr": "أضف HiltTestRunner، ووحدات @TestInstallIn للشبكة وقاعدة البيانات، ومسارين شاملين. واضبط Gradle Managed Device بصورة ATD وTest Orchestrator، وكرر الاختبارات حتى تنجح 20 مرة متتالية.",
+        "hintsEn": [
+          "Add test tags to the composables the journeys use.",
+          "Never call the real backend in these tests."
+        ],
+        "hintsAr": [
+          "أضف وسوم اختبار إلى دوال composable التي تستخدمها المسارات.",
+          "لا تستدعِ الخادم الحقيقي في هذه الاختبارات أبدًا."
+        ]
+      },
+      {
+        "key": "and-qg-screenshots",
+        "titleEn": "Screenshot tests",
+        "titleAr": "اختبارات اللقطات",
+        "bodyEn": "Add screenshot tests for the three main screens in content, empty and error states, each in light, dark, Arabic RTL and 200% font. Record references and fix any layout problems they reveal.",
+        "bodyAr": "أضف اختبارات لقطات للشاشات الرئيسية الثلاث في حالات المحتوى والفراغ والخطأ، كلٌ في الفاتح والداكن والعربية من اليمين لليسار والخط 200%. وسجّل المراجع وأصلح أي مشكلات تخطيط تكشفها.",
+        "hintsEn": [
+          "Arabic and large-font variants usually find real bugs.",
+          "Use fixed sample data and placeholder images."
+        ],
+        "hintsAr": [
+          "تنويعات العربية والخط الكبير تجد عادة أخطاء حقيقية.",
+          "استخدم بيانات عينة ثابتة وصورًا مؤقتة."
+        ]
+      },
+      {
+        "key": "and-qg-performance",
+        "titleEn": "Benchmarks and Baseline Profile",
+        "titleAr": "القياسات وBaseline Profile",
+        "bodyEn": "Add a :benchmark module measuring cold startup and a scroll, record the baseline numbers, then generate a Baseline Profile and fix at least one startup issue. Record the new numbers in TESTING.md.",
+        "bodyAr": "أضف وحدة :benchmark تقيس البدء البارد وتمريرًا، وسجّل أرقام الأساس، ثم ولّد Baseline Profile وأصلح مشكلة بدء واحدة على الأقل. وسجّل الأرقام الجديدة في TESTING.md.",
+        "code": "@Test fun coldStartup() = rule.measureRepeated(\n    packageName = \"com.example.tasks\",\n    metrics = listOf(StartupTimingMetric()),\n    compilationMode = CompilationMode.Partial(BaselineProfileMode.Require),\n    iterations = 10,\n    startupMode = StartupMode.COLD,\n) { pressHome(); startActivityAndWait() }",
+        "language": "kotlin",
+        "hintsEn": [
+          "Compare CompilationMode.None with Partial to see the profile's effect.",
+          "Use the median of at least 10 iterations."
+        ],
+        "hintsAr": [
+          "قارن CompilationMode.None بـ Partial لترى أثر الملف.",
+          "استخدم وسيط 10 تكرارات على الأقل."
+        ]
+      },
+      {
+        "key": "and-qg-static",
+        "titleEn": "Static analysis and crash reporting",
+        "titleAr": "التحليل الثابت وتقارير الانهيار",
+        "bodyEn": "Configure lint, detekt and Spotless with baselines, and add Crashlytics with mapping upload, custom keys for screen and sync state, and breadcrumbs, with personal data excluded.",
+        "bodyAr": "اضبط lint وdetekt وSpotless مع خطوط الأساس، وأضف Crashlytics مع رفع ملف التحويل، ومفاتيح مخصصة للشاشة وحالة المزامنة، ومسارات، مع استبعاد البيانات الشخصية.",
+        "hintsEn": [
+          "Disable crash collection in debug builds.",
+          "Send a test crash from a release build to verify deobfuscation."
+        ],
+        "hintsAr": [
+          "عطّل جمع الانهيارات في بناءات debug.",
+          "أرسل انهيارًا تجريبيًا من بناء إصدار للتحقق من فك التمويه."
+        ]
+      },
+      {
+        "key": "and-qg-ci",
+        "titleEn": "The CI pipeline",
+        "titleAr": "خط CI",
+        "bodyEn": "Write a GitHub Actions workflow: on pull requests run formatting, detekt, lint, unit tests and screenshot validation; on main also run device tests on the managed device and the startup benchmark with a budget. Cache Gradle and keep pull request checks under ten minutes.",
+        "bodyAr": "اكتب سير عمل GitHub Actions: في طلبات الدمج شغّل التنسيق وdetekt وlint واختبارات الوحدة والتحقق من اللقطات، وعلى main شغّل أيضًا اختبارات الجهاز على الجهاز المُدار وقياس البدء مع ميزانية. وخزّن Gradle مؤقتًا، وأبقِ فحوصات طلبات الدمج تحت عشر دقائق.",
+        "hintsEn": [
+          "KVM acceleration is needed for emulators on Linux runners.",
+          "Upload reports as workflow artifacts."
+        ],
+        "hintsAr": [
+          "يلزم تسريع KVM للمحاكيات على مشغّلات Linux.",
+          "ارفع التقارير كملفات ناتجة عن سير العمل."
+        ]
+      },
+      {
+        "key": "and-qg-prove",
+        "titleEn": "Prove the gate works",
+        "titleAr": "أثبت أن البوابة تعمل",
+        "bodyEn": "Open three pull requests that each introduce a problem: a logic bug, a padding change that breaks RTL, and blocking work in Application.onCreate. Show that CI fails each one for the right reason, then close them.",
+        "bodyAr": "افتح ثلاثة طلبات دمج يُدخل كل منها مشكلة: خطأ منطقي، وتغيير حشو يكسر الاتجاه من اليمين لليسار، وعمل معطِّل في Application.onCreate. وأظهر أن CI يُفشل كلًا منها للسبب الصحيح، ثم أغلقها.",
+        "hintsEn": [
+          "Link the failing runs from your README.",
+          "This demo is a strong story for interviews."
+        ],
+        "hintsAr": [
+          "اربط التشغيلات الفاشلة من README.",
+          "هذا العرض قصة قوية للمقابلات."
+        ]
+      }
+    ],
+    "topics": [
+      "and-qa-strategy",
+      "and-qa-unit",
+      "and-qa-integration",
+      "and-qa-screenshot",
+      "and-qa-performance",
+      "and-qa-static",
+      "and-qa-crashes"
+    ]
+  }
+]

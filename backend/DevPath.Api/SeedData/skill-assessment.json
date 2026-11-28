@@ -84,7 +84,8 @@
       "android-data": "database",
       "android-networking": "apis",
       "android-security": "security",
-      "android-device": "fundamentals"
+      "android-device": "fundamentals",
+      "android-quality": "testing"
     }
   },
 
@@ -105,7 +106,8 @@
     "android-data": "Intermediate",
     "android-networking": "Intermediate",
     "android-security": "Advanced",
-    "android-device": "Intermediate"
+    "android-device": "Intermediate",
+    "android-quality": "Intermediate"
   },
 
   "exerciseExtraCategories": {
