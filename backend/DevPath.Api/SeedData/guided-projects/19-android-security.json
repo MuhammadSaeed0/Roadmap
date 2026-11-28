@@ -1,0 +1,199 @@
+[
+  {
+    "key": "and-secure-wallet",
+    "skill": "Android",
+    "level": "Advanced",
+    "hours": 12,
+    "titleEn": "Security hardening of a wallet app",
+    "titleAr": "تقوية أمان تطبيق محفظة",
+    "summaryEn": "Take a deliberately insecure sample wallet app and harden it step by step: threat model, Keystore-encrypted tokens, biometric step-up for transfers, a strict network security configuration with pinning, locked-down components and WebView, R8 and Play Integrity, and a privacy pass, finishing with a short security report.",
+    "summaryAr": "خذ تطبيق محفظة نموذجيًا غير آمن عن قصد وقوِّ أمانه خطوة بخطوة: نموذج التهديد، والرموز المشفرة بـ Keystore، والتصعيد بالقياسات الحيوية للتحويلات، وإعدادات أمان شبكة صارمة مع التثبيت، وإحكام المكونات وWebView، وR8 وPlay Integrity، ومراجعة الخصوصية، ثم تقرير أمان قصير في النهاية.",
+    "techStack": "Kotlin · Jetpack Compose · Android Keystore · Tink · BiometricPrompt · OkHttp · R8 · Play Integrity API · jadx",
+    "goalsEn": [
+      "Write and use a threat model",
+      "Encrypt data with hardware-backed keys",
+      "Bind sensitive actions to biometrics",
+      "Secure network traffic and components",
+      "Document findings like a security reviewer"
+    ],
+    "goalsAr": [
+      "كتابة نموذج تهديد واستخدامه",
+      "تشفير البيانات بمفاتيح مدعومة بالعتاد",
+      "ربط الإجراءات الحساسة بالقياسات الحيوية",
+      "تأمين حركة الشبكة والمكونات",
+      "توثيق النتائج كمراجع أمان"
+    ],
+    "requirementsEn": [
+      "Start from a sample app with tokens in plain SharedPreferences, cleartext HTTP, an exported transfer activity, a WebView bridge and a hard-coded API secret",
+      "Write a threat model before changing code",
+      "Tokens are encrypted with a Tink keyset wrapped by a Keystore key and excluded from backup",
+      "Transfers above a limit require a biometric with a CryptoObject",
+      "Release builds block cleartext and pin the API; debug builds can be inspected with a proxy",
+      "No component is exported except the launcher and a verified App Link",
+      "R8 is on and the secret is gone from the APK"
+    ],
+    "requirementsAr": [
+      "ابدأ من تطبيق نموذجي فيه رموز في SharedPreferences عادية، وHTTP غير مشفر، ونشاط تحويل مكشوف، وجسر WebView، وسر API مكتوب في الكود",
+      "اكتب نموذج تهديد قبل تغيير الكود",
+      "الرموز مشفرة بمجموعة مفاتيح Tink مغلفة بمفتاح Keystore ومستثناة من النسخ الاحتياطي",
+      "التحويلات فوق حد معيّن تشترط قياسًا حيويًا مع CryptoObject",
+      "بناءات الإصدار تمنع غير المشفر وتثبّت الواجهة البرمجية، وبناءات debug يمكن فحصها بوكيل",
+      "لا مكوّن مكشوف إلا نشاط الإطلاق ورابط تطبيق متحقق منه",
+      "‏R8 مفعّلة والسر اختفى من ملف APK"
+    ],
+    "acceptanceEn": [
+      "jadx on the release APK finds no secrets and no plain tokens",
+      "adb attacks on deep links and exported components fail",
+      "A proxy can't read release traffic, but can read debug traffic",
+      "A short report lists each finding, its MASVS category, the fix and how it was verified"
+    ],
+    "acceptanceAr": [
+      "لا تجد jadx على ملف APK الإصداري أي أسرار ولا رموز عادية",
+      "تفشل هجمات adb على الروابط العميقة والمكونات المكشوفة",
+      "لا يستطيع الوكيل قراءة حركة الإصدار، لكنه يقرأ حركة debug",
+      "تقرير قصير يسرد كل نتيجة وفئتها في MASVS والإصلاح وطريقة التحقق"
+    ],
+    "stretchEn": [
+      "Add Play Integrity verification on a small backend",
+      "Use key attestation to bind the account to the device",
+      "Run selected MASTG tests and add them to the report"
+    ],
+    "stretchAr": [
+      "أضف التحقق من Play Integrity في خادم صغير",
+      "استخدم شهادة المفتاح لربط الحساب بالجهاز",
+      "نفّذ اختبارات مختارة من MASTG وأضفها إلى التقرير"
+    ],
+    "steps": [
+      {
+        "key": "and-sw-baseline",
+        "titleEn": "Break it first",
+        "titleAr": "اكسره أولًا",
+        "bodyEn": "Build the insecure baseline exactly as described, install it, then attack it: decompile the APK with jadx, read the token from SharedPreferences with adb run-as on a debug build, trigger a transfer with adb shell am start, and capture traffic with a proxy. Record each attack in your notes.",
+        "bodyAr": "ابنِ النسخة غير الآمنة كما وُصفت تمامًا، وثبّتها، ثم هاجمها: فكك ملف APK بـ jadx، واقرأ الرمز من SharedPreferences بـ adb run-as على بناء debug، وحفّز تحويلًا بـ adb shell am start، والتقط الحركة بوكيل. وسجّل كل هجوم في ملاحظاتك.",
+        "hintsEn": [
+          "Seeing the attacks work makes the fixes meaningful.",
+          "Keep the commands: you'll rerun them to verify."
+        ],
+        "hintsAr": [
+          "رؤية الهجمات تنجح تجعل الإصلاحات ذات معنى.",
+          "احتفظ بالأوامر، فستعيد تشغيلها للتحقق."
+        ]
+      },
+      {
+        "key": "and-sw-model",
+        "titleEn": "Threat model",
+        "titleAr": "نموذج التهديد",
+        "bodyEn": "Write docs/threat-model.md with the data flow, assets (tokens, balance, transfer authority), attackers and a table of risks with MASVS categories and planned controls. This becomes the checklist for the remaining steps.",
+        "bodyAr": "اكتب docs/threat-model.md بتدفق البيانات، والأصول (الرموز والرصيد وصلاحية التحويل)، والمهاجمين، وجدول المخاطر مع فئات MASVS والضوابط المخططة. ويصبح هذا قائمة الفحص للخطوات الباقية.",
+        "hintsEn": [
+          "Include server-side controls, not only app changes.",
+          "Keep it to one page."
+        ],
+        "hintsAr": [
+          "ضمّن ضوابط الخادم، لا تغييرات التطبيق فقط.",
+          "أبقه في صفحة واحدة."
+        ]
+      },
+      {
+        "key": "and-sw-storage",
+        "titleEn": "Encrypted token storage",
+        "titleAr": "تخزين الرموز المشفر",
+        "bodyEn": "Replace SharedPreferences with DataStore whose values are encrypted by a Tink AEAD keyset wrapped by a Keystore master key. Migrate existing tokens once, then delete the old file. Exclude the new store from backup and device transfer.",
+        "bodyAr": "استبدل SharedPreferences بـ DataStore تُشفر قيمه بمجموعة مفاتيح AEAD من Tink مغلفة بمفتاح رئيسي من Keystore. ورحّل الرموز الموجودة مرة واحدة، ثم احذف الملف القديم. واستثنِ المخزن الجديد من النسخ الاحتياطي ونقل الجهاز.",
+        "code": "val aead = AndroidKeysetManager.Builder()\n    .withSharedPref(context, \"wallet_keyset\", \"keysets\")\n    .withKeyTemplate(KeyTemplates.get(\"AES256_GCM\"))\n    .withMasterKeyUri(\"android-keystore://wallet_master\")\n    .build().keysetHandle.getPrimitive(RegistryConfiguration.get(), Aead::class.java)",
+        "language": "kotlin",
+        "hintsEn": [
+          "Use associated data (the key name) in encrypt to bind ciphertext to its field.",
+          "Verify with adb that the stored value is no longer readable."
+        ],
+        "hintsAr": [
+          "استخدم البيانات المرتبطة (اسم المفتاح) في encrypt لربط النص المشفر بحقله.",
+          "تحقق بـ adb أن القيمة المحفوظة لم تعد مقروءة."
+        ]
+      },
+      {
+        "key": "and-sw-stepup",
+        "titleEn": "Biometric step-up for transfers",
+        "titleAr": "التصعيد بالقياسات الحيوية للتحويلات",
+        "bodyEn": "Generate a Keystore EC key pair that requires a strong biometric, register its public key with the fake server, and for transfers above 100 sign the transfer details (recipient, amount, timestamp) with a Signature passed in a CryptoObject. The server verifies the signature before moving money.",
+        "bodyAr": "ولّد زوج مفاتيح EC في Keystore يشترط قياسًا حيويًا قويًا، وسجّل مفتاحه العام لدى الخادم الوهمي، وللتحويلات فوق 100 وقّع تفاصيل التحويل (المستلم والمبلغ والوقت) بـ Signature تمرره داخل CryptoObject. ويتحقق الخادم من التوقيع قبل نقل المال.",
+        "hintsEn": [
+          "Show the exact amount and recipient in the prompt's description.",
+          "Reject signatures older than a minute on the server."
+        ],
+        "hintsAr": [
+          "اعرض المبلغ والمستلم بالضبط في وصف النافذة.",
+          "ارفض في الخادم التوقيعات الأقدم من دقيقة."
+        ]
+      },
+      {
+        "key": "and-sw-network",
+        "titleEn": "Network hardening",
+        "titleAr": "تقوية الشبكة",
+        "bodyEn": "Switch the fake server to HTTPS, add a release network security config with no cleartext and pins with a backup and expiry, and a debug config that trusts your proxy. Rerun the proxy capture on both builds.",
+        "bodyAr": "حوّل الخادم الوهمي إلى HTTPS، وأضف إعدادات أمان شبكة للإصدار دون غير مشفر ومع بصمات واحتياطي وتاريخ انتهاء، وإعدادات debug تثق بوكيلك. وأعد التقاط الحركة بالوكيل على البناءين.",
+        "hintsEn": [
+          "mkcert or a self-signed CA works for a local HTTPS server.",
+          "Pin your own test CA's key for the local setup."
+        ],
+        "hintsAr": [
+          "تصلح mkcert أو جهة إصدار ذاتية التوقيع لخادم HTTPS محلي.",
+          "ثبّت مفتاح جهة إصدار الاختبار الخاصة بك للإعداد المحلي."
+        ]
+      },
+      {
+        "key": "and-sw-components",
+        "titleEn": "Components and WebView",
+        "titleAr": "المكونات وWebView",
+        "bodyEn": "Unexport the transfer activity, replace the custom scheme with a verified https App Link that only opens a pre-filled confirmation screen, remove the JavaScript bridge, restrict the WebView to the help host and open other links in Custom Tabs. Rerun the adb attacks.",
+        "bodyAr": "ألغِ كشف نشاط التحويل، واستبدل المخطط المخصص برابط تطبيق https متحقق منه لا يفتح إلا شاشة تأكيد مملوءة مسبقًا، وأزل جسر JavaScript، وقيّد WebView بنطاق المساعدة، وافتح الروابط الأخرى في Custom Tabs. وأعد تشغيل هجمات adb.",
+        "hintsEn": [
+          "Check the merged manifest for components added by libraries.",
+          "All your adb attacks should now fail or do nothing harmful."
+        ],
+        "hintsAr": [
+          "افحص الـ manifest المدمج بحثًا عن مكونات أضافتها المكتبات.",
+          "يجب أن تفشل كل هجمات adb الآن أو ألا تفعل شيئًا ضارًا."
+        ]
+      },
+      {
+        "key": "and-sw-code",
+        "titleEn": "Secrets, R8 and privacy",
+        "titleAr": "الأسرار وR8 والخصوصية",
+        "bodyEn": "Move the API secret behind a backend endpoint, enable R8 with the needed keep rules, make logging debug-only, and redact analytics. Decompile the new release APK with jadx and search again for secrets and tokens.",
+        "bodyAr": "انقل سر الواجهة البرمجية خلف نقطة في الخادم، وفعّل R8 مع قواعد الإبقاء اللازمة، واجعل التسجيل في debug فقط، وأخفِ بيانات التحليلات. وفكك ملف APK الإصداري الجديد بـ jadx وابحث مجددًا عن الأسرار والرموز.",
+        "hintsEn": [
+          "Rotate the old secret: it leaked the moment it shipped.",
+          "Upload mapping.txt so crashes stay readable."
+        ],
+        "hintsAr": [
+          "دوّر السر القديم، فقد تسرب لحظة شحنه.",
+          "ارفع mapping.txt حتى تبقى الانهيارات مقروءة."
+        ]
+      },
+      {
+        "key": "and-sw-report",
+        "titleEn": "The security report",
+        "titleAr": "تقرير الأمان",
+        "bodyEn": "Write a two-page report: for each finding, the attack you ran, the MASVS category, severity, the fix and how you verified it, plus remaining risks and what the server must enforce. This report is a strong portfolio piece for security-minded teams.",
+        "bodyAr": "اكتب تقريرًا من صفحتين: لكل نتيجة، الهجوم الذي نفذته، وفئة MASVS، والخطورة، والإصلاح، وطريقة التحقق منه، مع المخاطر المتبقية وما يجب أن يفرضه الخادم. وهذا التقرير قطعة قوية في ملف أعمالك للفرق المهتمة بالأمان.",
+        "hintsEn": [
+          "Before and after screenshots make findings convincing.",
+          "Be honest about what the app alone can't protect."
+        ],
+        "hintsAr": [
+          "لقطات قبل وبعد تجعل النتائج مقنعة.",
+          "كن صادقًا بشأن ما لا يستطيع التطبيق وحده حمايته."
+        ]
+      }
+    ],
+    "topics": [
+      "and-sec-threats",
+      "and-sec-keystore",
+      "and-sec-network",
+      "and-sec-components",
+      "and-sec-code",
+      "and-sec-privacy"
+    ]
+  }
+]

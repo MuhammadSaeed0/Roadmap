@@ -1,0 +1,13 @@
+# Threat model: Telehealth app (one page)
+
+Assets:      session tokens, appointment notes, photos, payment status
+Attackers:   thief with the phone | malware on the device | network attacker | APK reverse engineer
+Data flow:   Compose UI -> ViewModel -> Repository -> Room (encrypted) / Retrofit (TLS) -> API
+
+| Asset              | Threat                          | MASVS     | Control                                  |
+|--------------------|---------------------------------|-----------|------------------------------------------|
+| Session tokens     | Copied from a backup            | STORAGE   | Keystore-encrypted store, excluded from backup |
+| Appointment notes  | Read by another app             | PLATFORM  | Private storage only, no exported provider |
+| API traffic        | Public Wi-Fi interception       | NETWORK   | HTTPS only, network security config       |
+| Premium features   | Modified APK                    | RESILIENCE| Server checks + Play Integrity            |
+| Any record         | Another user's id in a request  | AUTH      | Server-side authorization on every call   |

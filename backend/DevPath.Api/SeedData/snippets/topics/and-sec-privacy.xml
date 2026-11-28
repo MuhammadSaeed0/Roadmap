@@ -1,0 +1,19 @@
+<!-- res/xml/data_extraction_rules.xml (Android 12+), set with android:dataExtractionRules -->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="file" path="datastore/tokens.preferences_pb" />
+        <exclude domain="database" path="cache.db" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="file" path="datastore/tokens.preferences_pb" />
+    </device-transfer>
+</data-extraction-rules>
+
+<!-- Logging that disappears in release (Kotlin) -->
+<!--
+object Log {
+    inline fun d(tag: String, message: () -> String) {
+        if (BuildConfig.DEBUG) android.util.Log.d(tag, message())   // message never built in release
+    }
+}
+-->
