@@ -1,0 +1,263 @@
+{
+  "slug": "android-fundamentals",
+  "order": 20,
+  "titleEn": "Android fundamentals and tools",
+  "titleAr": "أساسيات Android والأدوات",
+  "descriptionEn": "Set up Android Studio and Gradle, understand how an Android app is put together (manifest, resources, components, Context), the Activity lifecycle and configuration changes, Intents, runtime permissions, debugging with Logcat and the debugger, and the difference between an APK and an App Bundle.",
+  "descriptionAr": "جهّز Android Studio وGradle، وافهم كيف يُبنى تطبيق Android (ملف Manifest والموارد والمكونات وContext)، ودورة حياة Activity وتغييرات الإعدادات، وIntent، وأذونات وقت التشغيل، وتتبع الأخطاء بـ Logcat والمصحح، والفرق بين APK وApp Bundle.",
+  "topics": [
+    {
+      "slug": "and-studio-gradle",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Beginner",
+      "titleEn": "Android Studio, Gradle and project structure",
+      "titleAr": "Android Studio وGradle وبنية المشروع",
+      "summaryEn": "Android Studio is the official IDE: it creates projects, edits code and layouts, runs emulators and shows Logcat. Gradle builds the app. A project has settings.gradle.kts (which modules exist), a top-level build.gradle.kts, and a module app/build.gradle.kts with the namespace, minSdk, targetSdk, compileSdk and dependencies. A version catalog (gradle/libs.versions.toml) keeps library versions in one place. Source code lives in app/src/main/java (or kotlin), resources in res, and the manifest in AndroidManifest.xml.",
+      "summaryAr": "بيئة Android Studio هي بيئة التطوير الرسمية: تنشئ المشاريع، وتحرّر الكود والتصميمات، وتشغّل المحاكيات، وتعرض Logcat. وGradle يبني التطبيق. والمشروع فيه settings.gradle.kts (الوحدات الموجودة)، وbuild.gradle.kts في المستوى الأعلى، وapp/build.gradle.kts للوحدة وفيه namespace وminSdk وtargetSdk وcompileSdk والاعتماديات. وكتالوج الإصدارات (gradle/libs.versions.toml) يحفظ إصدارات المكتبات في مكان واحد. والكود يعيش في app/src/main/java (أو kotlin)، والموارد في res، وملف Manifest في AndroidManifest.xml.",
+      "whyEn": "Every Android task starts here: adding a library, fixing a build error, changing the minimum Android version or creating a release. Developers who understand Gradle files and the project layout fix build problems in minutes instead of hours.",
+      "whyAr": "كل مهمة Android تبدأ من هنا: إضافة مكتبة، أو إصلاح خطأ بناء، أو تغيير أقل إصدار Android مدعوم، أو إنشاء إصدار للنشر. والمطورون الذين يفهمون ملفات Gradle وبنية المشروع يصلحون مشكلات البناء في دقائق بدل ساعات.",
+      "howEn": "Install the latest stable Android Studio and create an Empty Activity (Compose) project. Read each Gradle file and the manifest once. Add dependencies through the version catalog, sync the project after every Gradle change, and learn the Build, Sync and Run buttons and the Gradle tool window.",
+      "howAr": "ثبّت أحدث إصدار مستقر من Android Studio وأنشئ مشروع Empty Activity (Compose). واقرأ كل ملف Gradle وملف Manifest مرة واحدة. وأضف الاعتماديات عبر كتالوج الإصدارات، وزامن المشروع (Sync) بعد كل تغيير في Gradle، وتعلّم أزرار Build وSync وRun ونافذة Gradle.",
+      "exampleEn": "Adding Coil for images means one line in libs.versions.toml (coil = \"2.7.0\" and the library entry) and implementation(libs.coil.compose) in app/build.gradle.kts. Every module that needs Coil uses the same version from the catalog.",
+      "exampleAr": "إضافة Coil لعرض الصور تعني سطرًا في libs.versions.toml (الإصدار coil = \"2.7.0\" وتعريف المكتبة)، ثم implementation(libs.coil.compose) في app/build.gradle.kts. وكل وحدة تحتاج Coil تستخدم الإصدار نفسه من الكتالوج.",
+      "practiceEn": "1) Create a new project and run it on an emulator. 2) Change minSdk and the app name and see what changes. 3) Add a library through the version catalog and use it.",
+      "practiceAr": "1) أنشئ مشروعًا جديدًا وشغّله على محاكٍ. 2) غيّر minSdk واسم التطبيق ولاحظ ما يتغير. 3) أضف مكتبة عبر كتالوج الإصدارات واستخدمها.",
+      "challengeEn": "Break the build on purpose three ways (a wrong version, a missing repository, a typo in a dependency) and fix each one using only the Build output.",
+      "challengeAr": "اكسر البناء عمدًا بثلاث طرق (إصدار خاطئ، ومستودع ناقص، وخطأ إملائي في اعتمادية)، وأصلح كلًا منها باستخدام نافذة Build فقط.",
+      "objectivesEn": [
+        "Create, build and run a project in Android Studio",
+        "Read settings.gradle.kts and the module build file",
+        "Add dependencies with a version catalog",
+        "Explain minSdk, targetSdk and compileSdk"
+      ],
+      "objectivesAr": [
+        "إنشاء مشروع وبناؤه وتشغيله في Android Studio",
+        "قراءة settings.gradle.kts وملف بناء الوحدة",
+        "إضافة الاعتماديات بكتالوج الإصدارات",
+        "شرح minSdk وtargetSdk وcompileSdk"
+      ],
+      "prerequisites": [
+        "kt-basics"
+      ]
+    },
+    {
+      "slug": "and-app-components",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Beginner",
+      "titleEn": "Manifest, resources, components and Context",
+      "titleAr": "ملف Manifest والموارد والمكونات وContext",
+      "summaryEn": "An Android app is a set of components the system can start: Activities (screens), Services (work without a screen), BroadcastReceivers (react to system events) and ContentProviders (share data). The manifest declares them, the permissions the app needs and its launcher Activity. Resources in res (strings, colors, drawables, layouts, values-ar for Arabic) are separate from code so they can change by language, screen size or theme. Context gives access to resources, files, system services and starting components; the Application context lives as long as the app.",
+      "summaryAr": "تطبيق Android مجموعة مكونات يستطيع النظام تشغيلها: Activity (شاشات)، وService (عمل دون شاشة)، وBroadcastReceiver (استجابة لأحداث النظام)، وContentProvider (مشاركة البيانات). وملف Manifest يعرّفها، ويعرّف الأذونات التي يحتاجها التطبيق، وActivity التي تُفتح من أيقونة التطبيق. والموارد في res (النصوص والألوان والصور والتصميمات وvalues-ar للعربية) منفصلة عن الكود حتى تتغير حسب اللغة أو حجم الشاشة أو المظهر. وContext يعطي الوصول إلى الموارد والملفات وخدمات النظام وتشغيل المكونات، وسياق Application يعيش طوال عمر التطبيق.",
+      "whyEn": "You can't build or debug an Android app without knowing what the system starts and why. Resources make translation and dark mode almost free, and choosing the right Context avoids memory leaks, one of the most common Android bugs.",
+      "whyAr": "لا تستطيع بناء تطبيق Android أو تتبع أخطائه دون معرفة ما يشغّله النظام ولماذا. والموارد تجعل الترجمة والوضع الداكن شبه مجانيين، واختيار Context الصحيح يتجنب تسرب الذاكرة، وهو من أشهر أخطاء Android.",
+      "howEn": "Keep every user-visible string in strings.xml and add values-ar/strings.xml for Arabic. Declare each component and permission in the manifest. Use the Activity context for UI work and the Application context for long-lived objects, and never store an Activity in a static field or singleton.",
+      "howAr": "احفظ كل نص يراه المستخدم في strings.xml وأضف values-ar/strings.xml للعربية. وعرّف كل مكون وإذن في ملف Manifest. واستخدم سياق Activity لعمل الواجهة وسياق Application للكائنات طويلة العمر، ولا تحفظ Activity أبدًا في حقل static أو كائن وحيد.",
+      "exampleEn": "A news app shows \"Read more\" in English and «اقرأ المزيد» in Arabic from two strings.xml files with the same key, and the layout flips to right-to-left automatically because android:supportsRtl=\"true\" is set in the manifest.",
+      "exampleAr": "تطبيق أخبار يعرض \"Read more\" بالإنجليزية و«اقرأ المزيد» بالعربية من ملفي strings.xml بالمفتاح نفسه، ويتحول التصميم من اليمين إلى اليسار تلقائيًا لأن android:supportsRtl=\"true\" مضبوطة في ملف Manifest.",
+      "practiceEn": "1) Move every hard-coded string in a project into strings.xml and add an Arabic translation. 2) Read the merged manifest in Android Studio. 3) List which Context you would use for a database, a Toast and a notification.",
+      "practiceAr": "1) انقل كل نص مكتوب في الكود إلى strings.xml وأضف ترجمة عربية. 2) اقرأ ملف Manifest المدموج في Android Studio. 3) اكتب أي Context تستخدمه لقاعدة بيانات وToast وإشعار.",
+      "challengeEn": "Add a dark theme and an Arabic locale to a small app using only resources (values-night and values-ar) without changing any Kotlin code.",
+      "challengeAr": "أضف مظهرًا داكنًا ولغة عربية إلى تطبيق صغير باستخدام الموارد فقط (values-night وvalues-ar) دون تغيير أي كود Kotlin.",
+      "objectivesEn": [
+        "Name the four app components and what each is for",
+        "Read and edit AndroidManifest.xml",
+        "Use resources and qualifiers such as values-ar and values-night",
+        "Choose between Activity and Application Context"
+      ],
+      "objectivesAr": [
+        "تسمية مكونات التطبيق الأربعة ووظيفة كل منها",
+        "قراءة AndroidManifest.xml وتحريره",
+        "استخدام الموارد والمؤهلات مثل values-ar وvalues-night",
+        "الاختيار بين سياق Activity وسياق Application"
+      ],
+      "prerequisites": [
+        "and-studio-gradle"
+      ]
+    },
+    {
+      "slug": "and-activity-lifecycle",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 70,
+      "difficulty": "Beginner",
+      "titleEn": "The Activity lifecycle and configuration changes",
+      "titleAr": "دورة حياة Activity وتغييرات الإعدادات",
+      "summaryEn": "An Activity moves through onCreate, onStart, onResume (visible and interactive), onPause, onStop and onDestroy. Rotating the screen, changing the language or switching to dark mode is a configuration change: by default the Activity is destroyed and recreated. The system can also kill a background app's process to free memory (process death). ViewModel survives configuration changes, and saved state (rememberSaveable, SavedStateHandle) survives process death.",
+      "summaryAr": "تمر Activity بالمراحل onCreate ثم onStart ثم onResume (مرئية وتتفاعل)، ثم onPause ثم onStop ثم onDestroy. وتدوير الشاشة أو تغيير اللغة أو التحويل إلى الوضع الداكن تغيير في الإعدادات: افتراضيًا تُدمَّر Activity وتُنشأ من جديد. ويستطيع النظام أيضًا إنهاء عملية تطبيق في الخلفية لتحرير الذاكرة (موت العملية). وViewModel تبقى بعد تغييرات الإعدادات، والحالة المحفوظة (rememberSaveable وSavedStateHandle) تبقى بعد موت العملية.",
+      "whyEn": "Lost form input after rotation, a video that keeps playing in the background, and crashes when returning to an app are all lifecycle bugs. Interviewers ask about the lifecycle in almost every Android interview because it shapes where state and work belong.",
+      "whyAr": "فقدان مدخلات النموذج بعد التدوير، وفيديو يستمر في الخلفية، والانهيار عند الرجوع إلى التطبيق، كلها أخطاء في دورة الحياة. ومن يجري المقابلات يسأل عن دورة الحياة في كل مقابلة Android تقريبًا، لأنها تحدد أين توضع الحالة والعمل.",
+      "howEn": "Log each lifecycle callback and watch Logcat while rotating, pressing Home and returning. Keep screen state in a ViewModel, save small user input with rememberSaveable or SavedStateHandle, start and stop work that needs the screen in onStart/onStop (or with lifecycle-aware APIs), and test process death with \"Don't keep activities\" in Developer options.",
+      "howAr": "سجّل كل دالة من دوال دورة الحياة وراقب Logcat أثناء التدوير والضغط على Home والرجوع. واحفظ حالة الشاشة في ViewModel، واحفظ مدخلات المستخدم الصغيرة بـ rememberSaveable أو SavedStateHandle، وابدأ العمل الذي يحتاج الشاشة وأوقفه في onStart وonStop (أو بواجهات تراعي دورة الحياة)، واختبر موت العملية بخيار «Don't keep activities» في خيارات المطور.",
+      "exampleEn": "A sign-up form kept its text after rotation once the fields moved into a ViewModel, and kept it even after the system killed the app in the background once the values were also saved in SavedStateHandle.",
+      "exampleAr": "نموذج تسجيل احتفظ بنصوصه بعد التدوير عندما نُقلت الحقول إلى ViewModel، واحتفظ بها حتى بعد أن أنهى النظام التطبيق في الخلفية عندما حُفظت القيم أيضًا في SavedStateHandle.",
+      "practiceEn": "1) Log every callback and write down the order for: launch, rotate, Home, return, Back. 2) Make a counter survive rotation, then process death. 3) Pause a timer when the app goes to the background.",
+      "practiceAr": "1) سجّل كل دالة واكتب الترتيب في: التشغيل، والتدوير، وHome، والرجوع، وBack. 2) اجعل عدّادًا يبقى بعد التدوير ثم بعد موت العملية. 3) أوقف مؤقتًا عندما يذهب التطبيق إلى الخلفية.",
+      "challengeEn": "Explain and demonstrate the difference between surviving a configuration change and surviving process death, with one value that survives only the first and one that survives both.",
+      "challengeAr": "اشرح ووضّح الفرق بين البقاء بعد تغيير الإعدادات والبقاء بعد موت العملية، بقيمة تبقى بعد الأول فقط وقيمة تبقى بعد الاثنين.",
+      "objectivesEn": [
+        "Order the Activity lifecycle callbacks",
+        "Explain configuration changes and recreation",
+        "Explain process death and how to survive it",
+        "Place state in a ViewModel or saved state"
+      ],
+      "objectivesAr": [
+        "ترتيب دوال دورة حياة Activity",
+        "شرح تغييرات الإعدادات وإعادة الإنشاء",
+        "شرح موت العملية وكيف تنجو منه",
+        "وضع الحالة في ViewModel أو في الحالة المحفوظة"
+      ],
+      "prerequisites": [
+        "and-app-components"
+      ]
+    },
+    {
+      "slug": "and-intents",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Beginner",
+      "titleEn": "Intents and navigation between apps",
+      "titleAr": "Intent والتنقل بين التطبيقات",
+      "summaryEn": "An Intent is a message that asks the system to start a component. An explicit Intent names the component, such as another Activity in your app. An implicit Intent describes an action, such as ACTION_VIEW for a web page, ACTION_SEND to share text or ACTION_DIAL for a phone number, and the system finds an app that can handle it. Extras carry small data, intent filters in the manifest declare what your app can handle, and the Activity Result API returns a result, such as a picked photo.",
+      "summaryAr": "الـ Intent رسالة تطلب من النظام تشغيل مكون. والـ Intent الصريح يسمّي المكون، مثل Activity أخرى في تطبيقك. والـ Intent الضمني يصف فعلًا، مثل ACTION_VIEW لصفحة ويب أو ACTION_SEND لمشاركة نص أو ACTION_DIAL لرقم هاتف، ويجد النظام تطبيقًا يستطيع تنفيذه. والإضافات (Extras) تحمل بيانات صغيرة، ومرشحات Intent في ملف Manifest تعلن ما يستطيع تطبيقك تنفيذه، وواجهة Activity Result تُرجع نتيجة مثل صورة مختارة.",
+      "whyEn": "Sharing, opening links, calling, emailing, picking photos and deep links all use Intents. They let your app reuse what the phone already does well instead of rebuilding it, and they are a common source of crashes when no app can handle the request.",
+      "whyAr": "المشاركة وفتح الروابط والاتصال والبريد واختيار الصور والروابط العميقة كلها تستخدم Intent. فهي تتيح لتطبيقك إعادة استخدام ما يجيده الهاتف بدل إعادة بنائه، وهي مصدر شائع للانهيار عندما لا يوجد تطبيق يستطيع تنفيذ الطلب.",
+      "howEn": "Use explicit Intents only for your own components; inside a Compose app prefer Navigation for screens. Use implicit Intents with Intent.createChooser for sharing, wrap startActivity in a check or catch ActivityNotFoundException, keep extras small (IDs, not big objects), and use rememberLauncherForActivityResult or registerForActivityResult for results.",
+      "howAr": "استخدم Intent الصريح لمكوناتك فقط، وداخل تطبيق Compose فضّل Navigation للشاشات. واستخدم Intent الضمني مع Intent.createChooser للمشاركة، وغلّف startActivity بفحص أو التقط ActivityNotFoundException، واجعل الإضافات صغيرة (أرقام تعريف لا كائنات كبيرة)، واستخدم rememberLauncherForActivityResult أو registerForActivityResult للنتائج.",
+      "exampleEn": "An order screen has three buttons: Share sends the order summary with ACTION_SEND and a chooser, Call opens the dialer with ACTION_DIAL and tel:16000, and Track opens the courier website with ACTION_VIEW. None of them needs a permission.",
+      "exampleAr": "شاشة طلب فيها ثلاثة أزرار: Share يرسل ملخص الطلب بـ ACTION_SEND مع نافذة اختيار، وCall يفتح لوحة الاتصال بـ ACTION_DIAL والرقم tel:16000، وTrack يفتح موقع شركة الشحن بـ ACTION_VIEW. ولا يحتاج أي منها إلى إذن.",
+      "practiceEn": "1) Add Share, Call and Open website buttons to an app. 2) Pick an image with the photo picker and show it. 3) Make the app appear in the share sheet for text with an intent filter.",
+      "practiceAr": "1) أضف أزرار Share وCall وOpen website إلى تطبيق. 2) اختر صورة بأداة اختيار الصور (Photo picker) واعرضها. 3) اجعل التطبيق يظهر في نافذة المشاركة للنصوص بمرشح Intent.",
+      "challengeEn": "Handle a shared link from another app: receive ACTION_SEND text, validate that it is a URL, and open it inside your app with a clear message when it isn't.",
+      "challengeAr": "تعامل مع رابط مشارك من تطبيق آخر: استقبل نص ACTION_SEND، وتحقق أنه رابط، وافتحه داخل تطبيقك مع رسالة واضحة عندما لا يكون كذلك.",
+      "objectivesEn": [
+        "Explain explicit and implicit Intents",
+        "Share, dial and open links with implicit Intents",
+        "Receive results with the Activity Result API",
+        "Declare intent filters and handle missing apps"
+      ],
+      "objectivesAr": [
+        "شرح Intent الصريح والضمني",
+        "المشاركة والاتصال وفتح الروابط بـ Intent ضمني",
+        "استقبال النتائج بواجهة Activity Result",
+        "تعريف مرشحات Intent والتعامل مع غياب التطبيقات"
+      ],
+      "prerequisites": [
+        "and-app-components"
+      ]
+    },
+    {
+      "slug": "and-permissions",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Runtime permissions",
+      "titleAr": "أذونات وقت التشغيل",
+      "summaryEn": "Permissions protect user data and device features. Normal permissions such as INTERNET are granted at install. Dangerous permissions such as CAMERA, location, contacts and POST_NOTIFICATIONS (Android 13+) must be declared in the manifest and requested at runtime; the user can deny them, allow them once, or revoke them later in settings. Many features need no permission at all if you use the right API, such as the photo picker or an ACTION_DIAL Intent.",
+      "summaryAr": "الأذونات تحمي بيانات المستخدم وخصائص الجهاز. والأذونات العادية مثل INTERNET تُمنح عند التثبيت. والأذونات الخطرة مثل CAMERA والموقع وجهات الاتصال وPOST_NOTIFICATIONS (في Android 13 فأحدث) يجب تعريفها في ملف Manifest وطلبها وقت التشغيل، ويستطيع المستخدم رفضها، أو السماح بها مرة واحدة، أو سحبها لاحقًا من الإعدادات. وكثير من الخصائص لا تحتاج أي إذن إذا استخدمت الواجهة الصحيحة، مثل أداة اختيار الصور أو Intent بـ ACTION_DIAL.",
+      "whyEn": "Asking for permissions badly gets them denied, gets apps poor reviews and can get them rejected from Google Play. Asking at the right moment with a clear reason, and working when the answer is no, is part of building an app people trust.",
+      "whyAr": "طلب الأذونات بطريقة سيئة يؤدي إلى رفضها، وإلى تقييمات ضعيفة للتطبيق، وقد يؤدي إلى رفضه من Google Play. وطلبها في اللحظة المناسبة بسبب واضح، والعمل عندما يكون الجواب لا، جزء من بناء تطبيق يثق به الناس.",
+      "howEn": "Ask only for what a feature needs, at the moment the user starts that feature. Check with ContextCompat.checkSelfPermission, show a short explanation when shouldShowRequestPermissionRationale is true, request with the RequestPermission contract, and keep the app useful when the user says no, with a link to settings for features that truly need it.",
+      "howAr": "اطلب فقط ما تحتاجه الميزة، في اللحظة التي يبدأ فيها المستخدم تلك الميزة. وافحص بـ ContextCompat.checkSelfPermission، واعرض شرحًا قصيرًا عندما تكون shouldShowRequestPermissionRationale صحيحة، واطلب بعقد RequestPermission، وأبقِ التطبيق مفيدًا عندما يقول المستخدم لا، مع رابط إلى الإعدادات للميزات التي تحتاج الإذن فعلًا.",
+      "exampleEn": "A delivery app asks for location only when the user taps \"Use my location\" on the address screen. If the user refuses, the address form still works by typing, and the button explains how to enable location later.",
+      "exampleAr": "تطبيق توصيل يطلب الموقع فقط عندما يضغط المستخدم «استخدم موقعي» في شاشة العنوان. وإذا رفض المستخدم، يبقى نموذج العنوان يعمل بالكتابة، ويوضح الزر كيف يفعّل الموقع لاحقًا.",
+      "practiceEn": "1) Request POST_NOTIFICATIONS on Android 13 and handle all three answers. 2) Replace a READ_MEDIA_IMAGES request with the photo picker. 3) List the permissions of an app you use and decide which it really needs.",
+      "practiceAr": "1) اطلب POST_NOTIFICATIONS على Android 13 وعالج الإجابات الثلاث. 2) استبدل طلب READ_MEDIA_IMAGES بأداة اختيار الصور. 3) اكتب أذونات تطبيق تستخدمه وقرر أيها يحتاجه فعلًا.",
+      "challengeEn": "Build a camera feature with a full permission flow: first request, rationale after a denial, permanent denial with a settings link, and a fallback when the device has no camera.",
+      "challengeAr": "ابنِ ميزة كاميرا بمسار أذونات كامل: الطلب الأول، والشرح بعد الرفض، والرفض الدائم مع رابط إلى الإعدادات، وبديل عندما لا يملك الجهاز كاميرا.",
+      "objectivesEn": [
+        "Tell normal and dangerous permissions apart",
+        "Request permissions at runtime with a rationale",
+        "Handle denial, one-time grants and revocation",
+        "Avoid permissions with system pickers and Intents"
+      ],
+      "objectivesAr": [
+        "التمييز بين الأذونات العادية والخطرة",
+        "طلب الأذونات وقت التشغيل مع الشرح",
+        "التعامل مع الرفض والسماح لمرة واحدة والسحب",
+        "تجنب الأذونات بأدوات الاختيار وIntent"
+      ],
+      "prerequisites": [
+        "and-intents"
+      ]
+    },
+    {
+      "slug": "and-debugging",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Beginner",
+      "titleEn": "Debugging: Logcat, debugger, emulator and devices",
+      "titleAr": "تتبع الأخطاء: Logcat والمصحح والمحاكي والأجهزة",
+      "summaryEn": "Logcat shows the system and app logs; filter it by package, tag and level and read stack traces from the bottom of your own code up. The debugger pauses at breakpoints so you can inspect variables, step through code and evaluate expressions. The emulator tests many Android versions and screen sizes; a physical device, connected with USB or Wi-Fi debugging and adb, shows real performance, camera and sensors. Layout Inspector shows the live UI tree, and App Inspection shows databases and network calls.",
+      "summaryAr": "أداة Logcat تعرض سجلات النظام والتطبيق، فصفِّه حسب الحزمة والوسم والمستوى، واقرأ تتبع المكدس (Stack trace) بدءًا من أسفل كودك صعودًا. والمصحح يتوقف عند نقاط التوقف لتفحص المتغيرات وتنفذ الكود خطوة بخطوة وتحسب التعبيرات. والمحاكي يختبر إصدارات Android وأحجام شاشات كثيرة، والجهاز الحقيقي الموصول بـ USB أو بتصحيح Wi-Fi عبر adb يُظهر الأداء الحقيقي والكاميرا والحساسات. وLayout Inspector يعرض شجرة الواجهة الحية، وApp Inspection يعرض قواعد البيانات واستدعاءات الشبكة.",
+      "whyEn": "Most of a developer's time goes into finding why something doesn't work. Reading a crash stack trace, setting a conditional breakpoint and reproducing a bug on the right device turn a day of guessing into minutes of evidence.",
+      "whyAr": "أغلب وقت المطور يذهب في معرفة سبب عدم عمل شيء. وقراءة تتبع مكدس الانهيار، ووضع نقطة توقف مشروطة، وإعادة إنتاج الخطأ على الجهاز المناسب، تحوّل يومًا من التخمين إلى دقائق من الأدلة.",
+      "howEn": "Log with Log.d(TAG, ...) during development and remove noisy logs before release. When the app crashes, find the first line from your package in the stack trace. Use breakpoints instead of print statements for logic bugs, test on at least one small phone, one large screen and the oldest Android version you support, and keep one real device for camera, sensors and performance.",
+      "howAr": "سجّل بـ Log.d(TAG, ...) أثناء التطوير واحذف السجلات المزعجة قبل الإصدار. وعندما ينهار التطبيق، ابحث عن أول سطر من حزمتك في تتبع المكدس. واستخدم نقاط التوقف بدل الطباعة لأخطاء المنطق، واختبر على هاتف صغير وشاشة كبيرة وأقدم إصدار Android تدعمه على الأقل، واحتفظ بجهاز حقيقي للكاميرا والحساسات والأداء.",
+      "exampleEn": "A crash report shows NullPointerException at OrderAdapter.bind(OrderAdapter.kt:42). A breakpoint on line 42 with the condition order.id == 1042 shows that the courier name is null for cash orders, and the fix takes five minutes.",
+      "exampleAr": "تقرير انهيار يعرض NullPointerException عند OrderAdapter.bind(OrderAdapter.kt:42). ونقطة توقف على السطر 42 بشرط order.id == 1042 تُظهر أن اسم المندوب null للطلبات النقدية، فيستغرق الإصلاح خمس دقائق.",
+      "practiceEn": "1) Cause a crash on purpose and find your line in the stack trace. 2) Use a conditional breakpoint inside a loop. 3) Install the app on a real phone with USB debugging and compare it with the emulator.",
+      "practiceAr": "1) سبّب انهيارًا عمدًا وابحث عن سطرك في تتبع المكدس. 2) استخدم نقطة توقف مشروطة داخل حلقة. 3) ثبّت التطبيق على هاتف حقيقي بتصحيح USB وقارنه بالمحاكي.",
+      "challengeEn": "Use adb to record a screen video, pull a log file and change the device language from the command line, then write a short debugging checklist for your team.",
+      "challengeAr": "استخدم adb لتسجيل فيديو للشاشة، وسحب ملف سجل، وتغيير لغة الجهاز من سطر الأوامر، ثم اكتب قائمة فحص قصيرة لتتبع الأخطاء لفريقك.",
+      "objectivesEn": [
+        "Filter Logcat and read a stack trace",
+        "Use breakpoints, stepping and evaluation",
+        "Run apps on emulators and physical devices",
+        "Use Layout Inspector, App Inspection and adb"
+      ],
+      "objectivesAr": [
+        "تصفية Logcat وقراءة تتبع المكدس",
+        "استخدام نقاط التوقف والتنفيذ خطوة بخطوة والتقييم",
+        "تشغيل التطبيقات على المحاكيات والأجهزة الحقيقية",
+        "استخدام Layout Inspector وApp Inspection وadb"
+      ],
+      "prerequisites": [
+        "and-studio-gradle"
+      ]
+    },
+    {
+      "slug": "and-build-release-basics",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Build types, APK and Android App Bundle",
+      "titleAr": "أنواع البناء وAPK وAndroid App Bundle",
+      "summaryEn": "Gradle builds variants: build types (debug for development, release for users, with code shrinking by R8) and optional product flavors (for example free and paid, or staging and production). The output is either an APK, which a device installs directly, or an Android App Bundle (AAB), which Google Play turns into optimised APKs for each device. Every release is signed with your key, and versionCode must increase with each upload.",
+      "summaryAr": "أداة Gradle تبني متغيرات: أنواع البناء (debug للتطوير، وrelease للمستخدمين مع تصغير الكود بـ R8)، ونكهات منتج اختيارية (مثل free وpaid، أو staging وproduction). والناتج إما APK يثبته الجهاز مباشرة، أو Android App Bundle (AAB) يحوّله Google Play إلى ملفات APK محسّنة لكل جهاز. وكل إصدار يُوقَّع بمفتاحك، ويجب أن يزيد versionCode مع كل رفع.",
+      "whyEn": "Google Play requires App Bundles for new apps, testers often need an APK, and many \"works on my phone\" bugs only appear in the shrunk release build. Understanding variants also lets one codebase talk to a test server and a production server safely.",
+      "whyAr": "يتطلب Google Play ملفات App Bundle للتطبيقات الجديدة، والمختبرون يحتاجون غالبًا إلى APK، وكثير من أخطاء «يعمل على هاتفي» لا تظهر إلا في بناء release بعد التصغير. وفهم المتغيرات يتيح أيضًا لكود واحد التعامل مع خادم اختبار وخادم إنتاج بأمان.",
+      "howEn": "Keep debug and release build types, turn on isMinifyEnabled for release and test the release build before publishing. Use flavors or buildConfigField for environment values such as the API URL. Build an AAB for Play with Build > Generate Signed App Bundle, keep the upload key safe and backed up, and raise versionCode every release.",
+      "howAr": "احتفظ بنوعي البناء debug وrelease، وفعّل isMinifyEnabled لـ release واختبر بناء release قبل النشر. واستخدم النكهات أو buildConfigField لقيم البيئة مثل رابط الـ API. وابنِ AAB لـ Play من Build > Generate Signed App Bundle، واحفظ مفتاح الرفع بأمان مع نسخة احتياطية، وارفع versionCode في كل إصدار.",
+      "exampleEn": "A shop app has staging and production flavors with different API URLs and app IDs, so testers can install both side by side. Only the production release build is uploaded to Play as an AAB.",
+      "exampleAr": "تطبيق متجر فيه نكهتا staging وproduction بروابط API ومعرّفات تطبيق مختلفة، فيستطيع المختبرون تثبيت الاثنتين جنبًا إلى جنب. ولا يُرفع إلى Play إلا بناء release لـ production كملف AAB.",
+      "practiceEn": "1) Build a debug APK and install it with adb. 2) Turn on R8 for release, build it and fix anything that breaks. 3) Add a staging flavor with its own API URL and app name.",
+      "practiceAr": "1) ابنِ APK من نوع debug وثبّته بـ adb. 2) فعّل R8 لـ release وابنِه وأصلح ما ينكسر. 3) أضف نكهة staging برابط API واسم تطبيق خاصين بها.",
+      "challengeEn": "Produce a signed AAB, use bundletool to generate the APKs for a specific device and compare their size with a universal APK.",
+      "challengeAr": "أنتج AAB موقّعًا، واستخدم bundletool لتوليد ملفات APK لجهاز محدد وقارن حجمها بملف APK شامل.",
+      "objectivesEn": [
+        "Explain build types and product flavors",
+        "Tell an APK from an Android App Bundle",
+        "Turn on R8 and test release builds",
+        "Understand signing, applicationId and versionCode"
+      ],
+      "objectivesAr": [
+        "شرح أنواع البناء ونكهات المنتج",
+        "التمييز بين APK وAndroid App Bundle",
+        "تفعيل R8 واختبار بناء release",
+        "فهم التوقيع وapplicationId وversionCode"
+      ],
+      "prerequisites": [
+        "and-studio-gradle",
+        "and-debugging"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1178 @@
+[
+  {
+    "key": "qz-and-studio-gradle-1",
+    "topic": "and-studio-gradle",
+    "questionEn": "Which file lists the modules of a project?",
+    "questionAr": "أي ملف يسرد وحدات المشروع؟",
+    "optionsEn": [
+      "settings.gradle.kts",
+      "AndroidManifest.xml",
+      "strings.xml",
+      "proguard-rules.pro"
+    ],
+    "optionsAr": [
+      "settings.gradle.kts",
+      "AndroidManifest.xml",
+      "strings.xml",
+      "proguard-rules.pro"
+    ],
+    "answer": 0,
+    "explanationEn": "settings.gradle.kts includes each module and the repositories.",
+    "explanationAr": "الملف settings.gradle.kts يضم كل وحدة والمستودعات."
+  },
+  {
+    "key": "qz-and-studio-gradle-2",
+    "topic": "and-studio-gradle",
+    "questionEn": "What does minSdk set?",
+    "questionAr": "ماذا يحدد minSdk؟",
+    "optionsEn": [
+      "The newest Android it supports",
+      "The oldest Android that can install",
+      "The version of the app itself",
+      "The version of Gradle used"
+    ],
+    "optionsAr": [
+      "أحدث إصدار Android مدعوم",
+      "أقدم Android يستطيع التثبيت",
+      "إصدار التطبيق نفسه للمستخدم",
+      "إصدار Gradle المستخدم"
+    ],
+    "answer": 1,
+    "explanationEn": "Devices below minSdk can't install the app.",
+    "explanationAr": "الأجهزة الأقدم من minSdk لا تستطيع تثبيت التطبيق."
+  },
+  {
+    "key": "qz-and-studio-gradle-3",
+    "topic": "and-studio-gradle",
+    "questionEn": "Where should library versions live?",
+    "questionAr": "أين يجب أن تكون إصدارات المكتبات؟",
+    "optionsEn": [
+      "In each Kotlin file",
+      "In the version catalog",
+      "In strings.xml",
+      "In the manifest"
+    ],
+    "optionsAr": [
+      "في كل ملف Kotlin",
+      "في كتالوج الإصدارات",
+      "في strings.xml",
+      "في ملف Manifest"
+    ],
+    "answer": 1,
+    "explanationEn": "gradle/libs.versions.toml keeps one version per library.",
+    "explanationAr": "الملف gradle/libs.versions.toml يحفظ إصدارًا واحدًا لكل مكتبة."
+  },
+  {
+    "key": "qz-and-studio-gradle-4",
+    "topic": "and-studio-gradle",
+    "questionEn": "What must you do after editing a Gradle file?",
+    "questionAr": "ماذا يجب أن تفعل بعد تعديل ملف Gradle؟",
+    "optionsEn": [
+      "Restart the computer",
+      "Sync the project",
+      "Clear the emulator",
+      "Reinstall Studio"
+    ],
+    "optionsAr": [
+      "إعادة تشغيل الحاسوب",
+      "مزامنة المشروع (Sync)",
+      "مسح المحاكي",
+      "إعادة تثبيت Studio"
+    ],
+    "answer": 1,
+    "explanationEn": "Sync makes the IDE read the new configuration.",
+    "explanationAr": "المزامنة تجعل بيئة التطوير تقرأ الإعدادات الجديدة."
+  },
+  {
+    "key": "qz-and-studio-gradle-5",
+    "topic": "and-studio-gradle",
+    "questionEn": "Where do unit tests that run on the JVM go?",
+    "questionAr": "أين توضع اختبارات الوحدات التي تعمل على JVM؟",
+    "optionsEn": [
+      "app/src/test",
+      "app/src/androidTest",
+      "res/raw",
+      "gradle/"
+    ],
+    "optionsAr": [
+      "app/src/test",
+      "app/src/androidTest",
+      "res/raw",
+      "gradle/"
+    ],
+    "answer": 0,
+    "explanationEn": "androidTest is for tests that need a device.",
+    "explanationAr": "مجلد androidTest للاختبارات التي تحتاج جهازًا."
+  },
+  {
+    "key": "qz-and-studio-gradle-6",
+    "topic": "and-studio-gradle",
+    "questionEn": "What is targetSdk?",
+    "questionAr": "ما هو targetSdk؟",
+    "optionsEn": [
+      "The Android version you tested against",
+      "The oldest Android you support",
+      "The download size of the app",
+      "The Kotlin compiler version"
+    ],
+    "optionsAr": [
+      "إصدار Android الذي اختبرت عليه",
+      "أقدم إصدار Android تدعمه",
+      "حجم تحميل التطبيق",
+      "إصدار مترجم Kotlin المستخدم"
+    ],
+    "answer": 0,
+    "explanationEn": "Behaviour changes apply when you raise targetSdk.",
+    "explanationAr": "تغييرات السلوك تُطبق عندما ترفع targetSdk."
+  },
+  {
+    "key": "qz-and-studio-gradle-7",
+    "topic": "and-studio-gradle",
+    "questionEn": "Which tool builds an Android app?",
+    "questionAr": "أي أداة تبني تطبيق Android؟",
+    "optionsEn": [
+      "npm",
+      "Gradle",
+      "Maven Central",
+      "adb"
+    ],
+    "optionsAr": [
+      "npm",
+      "Gradle",
+      "Maven Central",
+      "adb"
+    ],
+    "answer": 1,
+    "explanationEn": "Android Studio runs Gradle to build.",
+    "explanationAr": "بيئة Android Studio تشغّل Gradle للبناء."
+  },
+  {
+    "key": "qz-and-studio-gradle-8",
+    "topic": "and-studio-gradle",
+    "questionEn": "The build fails after adding a library. First step?",
+    "questionAr": "فشل البناء بعد إضافة مكتبة. ما أول خطوة؟",
+    "optionsEn": [
+      "Delete and recreate the project",
+      "Read the first error in Build",
+      "Lower minSdk and try again",
+      "Remove every library at once"
+    ],
+    "optionsAr": [
+      "حذف المشروع وإنشاؤه من جديد",
+      "قراءة أول خطأ في نافذة Build",
+      "خفض minSdk ثم المحاولة مجددًا",
+      "حذف كل المكتبات مرة واحدة"
+    ],
+    "answer": 1,
+    "explanationEn": "The first error usually names the real cause.",
+    "explanationAr": "أول خطأ يسمّي السبب الحقيقي غالبًا."
+  },
+  {
+    "key": "qz-and-app-components-1",
+    "topic": "and-app-components",
+    "questionEn": "Which component is a screen?",
+    "questionAr": "أي مكون يمثّل شاشة؟",
+    "optionsEn": [
+      "Service",
+      "Activity",
+      "BroadcastReceiver",
+      "ContentProvider"
+    ],
+    "optionsAr": [
+      "Service",
+      "Activity",
+      "BroadcastReceiver",
+      "ContentProvider"
+    ],
+    "answer": 1,
+    "explanationEn": "Modern apps often have one Activity hosting Compose screens.",
+    "explanationAr": "التطبيقات الحديثة غالبًا فيها Activity واحدة تستضيف شاشات Compose."
+  },
+  {
+    "key": "qz-and-app-components-2",
+    "topic": "and-app-components",
+    "questionEn": "Where are components declared?",
+    "questionAr": "أين تُعرَّف المكونات؟",
+    "optionsEn": [
+      "In AndroidManifest.xml",
+      "In strings.xml",
+      "In settings.gradle.kts",
+      "In MainActivity.kt"
+    ],
+    "optionsAr": [
+      "في AndroidManifest.xml",
+      "في strings.xml",
+      "في settings.gradle.kts",
+      "في MainActivity.kt"
+    ],
+    "answer": 0,
+    "explanationEn": "The system reads the manifest to know what it can start.",
+    "explanationAr": "النظام يقرأ ملف Manifest ليعرف ما يستطيع تشغيله."
+  },
+  {
+    "key": "qz-and-app-components-3",
+    "topic": "and-app-components",
+    "questionEn": "How do you add Arabic text?",
+    "questionAr": "كيف تضيف النصوص العربية؟",
+    "optionsEn": [
+      "values-ar/strings.xml",
+      "A second app",
+      "if statements in code",
+      "A Gradle flavor"
+    ],
+    "optionsAr": [
+      "values-ar/strings.xml",
+      "تطبيق ثانٍ",
+      "جمل if في الكود",
+      "نكهة Gradle"
+    ],
+    "answer": 0,
+    "explanationEn": "Android picks the file from the device language.",
+    "explanationAr": "نظام Android يختار الملف حسب لغة الجهاز."
+  },
+  {
+    "key": "qz-and-app-components-4",
+    "topic": "and-app-components",
+    "questionEn": "Which Context is safe for a database singleton?",
+    "questionAr": "أي Context آمن لكائن قاعدة بيانات وحيد؟",
+    "optionsEn": [
+      "The current Activity context",
+      "The application context",
+      "A Fragment's own context",
+      "The context of any View"
+    ],
+    "optionsAr": [
+      "سياق Activity الحالية",
+      "سياق التطبيق (Application)",
+      "السياق الخاص بـ Fragment",
+      "سياق أي عنصر View"
+    ],
+    "answer": 1,
+    "explanationEn": "It lives as long as the app, so nothing leaks.",
+    "explanationAr": "يعيش طوال عمر التطبيق فلا يتسرب شيء."
+  },
+  {
+    "key": "qz-and-app-components-5",
+    "topic": "and-app-components",
+    "questionEn": "What does exported=\"true\" mean?",
+    "questionAr": "ماذا تعني exported=\"true\"؟",
+    "optionsEn": [
+      "The app is published on Play",
+      "Other apps can start it",
+      "It always runs in the background",
+      "It uses less memory than others"
+    ],
+    "optionsAr": [
+      "أن التطبيق منشور على Play",
+      "أن التطبيقات الأخرى تستطيع تشغيله",
+      "أنه يعمل في الخلفية دائمًا",
+      "أنه يستخدم ذاكرة أقل من غيره"
+    ],
+    "answer": 1,
+    "explanationEn": "Keep components unexported unless needed.",
+    "explanationAr": "اترك المكونات غير مُصدَّرة ما لم تحتج ذلك."
+  },
+  {
+    "key": "qz-and-app-components-6",
+    "topic": "and-app-components",
+    "questionEn": "Which component reacts to system events?",
+    "questionAr": "أي مكون يستجيب لأحداث النظام؟",
+    "optionsEn": [
+      "Activity",
+      "BroadcastReceiver",
+      "ContentProvider",
+      "ViewModel"
+    ],
+    "optionsAr": [
+      "Activity",
+      "BroadcastReceiver",
+      "ContentProvider",
+      "ViewModel"
+    ],
+    "answer": 1,
+    "explanationEn": "For example the device finishing boot.",
+    "explanationAr": "مثل انتهاء تشغيل الجهاز."
+  },
+  {
+    "key": "qz-and-app-components-7",
+    "topic": "and-app-components",
+    "questionEn": "What causes a common memory leak?",
+    "questionAr": "ما الذي يسبب تسرب ذاكرة شائعًا؟",
+    "optionsEn": [
+      "Putting text in strings.xml",
+      "Keeping an Activity in a singleton",
+      "Using applicationContext",
+      "Calling finish() on a screen"
+    ],
+    "optionsAr": [
+      "وضع النصوص في strings.xml",
+      "حفظ Activity في كائن وحيد",
+      "استخدام applicationContext",
+      "استدعاء finish() على شاشة"
+    ],
+    "answer": 1,
+    "explanationEn": "The closed screen can't be freed.",
+    "explanationAr": "الشاشة المغلقة لا يمكن تحريرها."
+  },
+  {
+    "key": "qz-and-app-components-8",
+    "topic": "and-app-components",
+    "questionEn": "What does values-night hold?",
+    "questionAr": "ماذا يحمل مجلد values-night؟",
+    "optionsEn": [
+      "Dark theme resources",
+      "Night alarms",
+      "Background services",
+      "Log files"
+    ],
+    "optionsAr": [
+      "موارد المظهر الداكن",
+      "منبهات الليل",
+      "خدمات الخلفية",
+      "ملفات السجل"
+    ],
+    "answer": 0,
+    "explanationEn": "Android uses it when dark mode is on.",
+    "explanationAr": "نظام Android يستخدمه عندما يكون الوضع الداكن مفعّلًا."
+  },
+  {
+    "key": "qz-and-activity-lifecycle-1",
+    "topic": "and-activity-lifecycle",
+    "questionEn": "Which callback runs when the screen becomes interactive?",
+    "questionAr": "أي دالة تعمل عندما تصبح الشاشة تفاعلية؟",
+    "optionsEn": [
+      "onCreate",
+      "onResume",
+      "onStop",
+      "onDestroy"
+    ],
+    "optionsAr": [
+      "onCreate",
+      "onResume",
+      "onStop",
+      "onDestroy"
+    ],
+    "answer": 1,
+    "explanationEn": "After onResume the user can interact.",
+    "explanationAr": "بعد onResume يستطيع المستخدم التفاعل."
+  },
+  {
+    "key": "qz-and-activity-lifecycle-2",
+    "topic": "and-activity-lifecycle",
+    "questionEn": "By default, rotating the screen...",
+    "questionAr": "افتراضيًا، تدوير الشاشة...",
+    "optionsEn": [
+      "Keeps the Activity",
+      "Recreates the Activity",
+      "Kills the app",
+      "Pauses the app only"
+    ],
+    "optionsAr": [
+      "يُبقي Activity",
+      "يعيد إنشاء Activity",
+      "يُنهي التطبيق",
+      "يوقف التطبيق مؤقتًا فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "It is a configuration change.",
+    "explanationAr": "إنه تغيير في الإعدادات."
+  },
+  {
+    "key": "qz-and-activity-lifecycle-3",
+    "topic": "and-activity-lifecycle",
+    "questionEn": "What survives rotation but not process death?",
+    "questionAr": "ما الذي يبقى بعد التدوير لا بعد موت العملية؟",
+    "optionsEn": [
+      "A ViewModel",
+      "rememberSaveable",
+      "A Room database",
+      "SharedPreferences"
+    ],
+    "optionsAr": [
+      "ViewModel",
+      "rememberSaveable",
+      "قاعدة بيانات Room",
+      "SharedPreferences"
+    ],
+    "answer": 0,
+    "explanationEn": "Use SavedStateHandle for values that must come back.",
+    "explanationAr": "استخدم SavedStateHandle للقيم التي يجب أن تعود."
+  },
+  {
+    "key": "qz-and-activity-lifecycle-4",
+    "topic": "and-activity-lifecycle",
+    "questionEn": "Pressing Home calls...",
+    "questionAr": "الضغط على Home يستدعي...",
+    "optionsEn": [
+      "onPause then onStop",
+      "onDestroy",
+      "onCreate",
+      "Nothing"
+    ],
+    "optionsAr": [
+      "onPause ثم onStop",
+      "onDestroy",
+      "onCreate",
+      "لا شيء"
+    ],
+    "answer": 0,
+    "explanationEn": "The Activity stays alive in the background.",
+    "explanationAr": "تبقى Activity حية في الخلفية."
+  },
+  {
+    "key": "qz-and-activity-lifecycle-5",
+    "topic": "and-activity-lifecycle",
+    "questionEn": "What is process death?",
+    "questionAr": "ما هو موت العملية؟",
+    "optionsEn": [
+      "A crash inside your own code",
+      "The system killing a background app",
+      "The user uninstalling the app",
+      "Closing the screen with Back"
+    ],
+    "optionsAr": [
+      "انهيار داخل كودك أنت",
+      "إنهاء النظام لتطبيق في الخلفية",
+      "إلغاء المستخدم تثبيت التطبيق",
+      "إغلاق الشاشة بزر Back"
+    ],
+    "answer": 1,
+    "explanationEn": "It frees memory; no callback is guaranteed.",
+    "explanationAr": "يحرّر الذاكرة ولا توجد دالة مضمونة الاستدعاء."
+  },
+  {
+    "key": "qz-and-activity-lifecycle-6",
+    "topic": "and-activity-lifecycle",
+    "questionEn": "remember { } loses its value when...",
+    "questionAr": "تفقد remember { } قيمتها عندما...",
+    "optionsEn": [
+      "The composable recomposes",
+      "The Activity is recreated",
+      "A button is clicked",
+      "The theme loads"
+    ],
+    "optionsAr": [
+      "يُعاد تركيب الدالة",
+      "يُعاد إنشاء Activity",
+      "يُضغط زر",
+      "يُحمّل المظهر"
+    ],
+    "answer": 1,
+    "explanationEn": "Use rememberSaveable to keep it.",
+    "explanationAr": "استخدم rememberSaveable للاحتفاظ بها."
+  },
+  {
+    "key": "qz-and-activity-lifecycle-7",
+    "topic": "and-activity-lifecycle",
+    "questionEn": "How can you test process death?",
+    "questionAr": "كيف تختبر موت العملية؟",
+    "optionsEn": [
+      "Rotate the screen a few times",
+      "\"Don't keep activities\" or adb kill",
+      "Press the Back button twice",
+      "Clear the app's cache folder"
+    ],
+    "optionsAr": [
+      "بتدوير الشاشة عدة مرات",
+      "بخيار «Don't keep activities» أو adb kill",
+      "بالضغط على زر Back مرتين",
+      "بمسح مجلد الذاكرة المؤقتة للتطبيق"
+    ],
+    "answer": 1,
+    "explanationEn": "Both destroy state the way the system would.",
+    "explanationAr": "كلاهما يدمّر الحالة كما يفعل النظام."
+  },
+  {
+    "key": "qz-and-activity-lifecycle-8",
+    "topic": "and-activity-lifecycle",
+    "questionEn": "Where does a saved note belong?",
+    "questionAr": "أين مكان الملاحظة المحفوظة؟",
+    "optionsEn": [
+      "In remember",
+      "In a database",
+      "In a static field",
+      "In the Bundle"
+    ],
+    "optionsAr": [
+      "في remember",
+      "في قاعدة بيانات",
+      "في حقل static",
+      "في Bundle"
+    ],
+    "answer": 1,
+    "explanationEn": "Data users can't lose belongs in storage.",
+    "explanationAr": "البيانات التي لا يجوز فقدها مكانها التخزين."
+  },
+  {
+    "key": "qz-and-intents-1",
+    "topic": "and-intents",
+    "questionEn": "An explicit Intent...",
+    "questionAr": "الـ Intent الصريح...",
+    "optionsEn": [
+      "Names the target class",
+      "Describes an action only",
+      "Always needs a permission",
+      "Can only open web pages"
+    ],
+    "optionsAr": [
+      "يسمّي الصنف المستهدف",
+      "يصف فعلًا فقط دون هدف",
+      "يحتاج إذنًا دائمًا",
+      "يفتح صفحات الويب فقط"
+    ],
+    "answer": 0,
+    "explanationEn": "Intent(context, DetailsActivity::class.java).",
+    "explanationAr": "مثال: Intent(context, DetailsActivity::class.java)."
+  },
+  {
+    "key": "qz-and-intents-2",
+    "topic": "and-intents",
+    "questionEn": "Which action shares text?",
+    "questionAr": "أي فعل يشارك نصًا؟",
+    "optionsEn": [
+      "ACTION_VIEW",
+      "ACTION_SEND",
+      "ACTION_DIAL",
+      "ACTION_MAIN"
+    ],
+    "optionsAr": [
+      "ACTION_VIEW",
+      "ACTION_SEND",
+      "ACTION_DIAL",
+      "ACTION_MAIN"
+    ],
+    "answer": 1,
+    "explanationEn": "Wrap it in createChooser.",
+    "explanationAr": "غلّفه بـ createChooser."
+  },
+  {
+    "key": "qz-and-intents-3",
+    "topic": "and-intents",
+    "questionEn": "What if no app handles an implicit Intent?",
+    "questionAr": "ماذا لو لم يوجد تطبيق ينفّذ Intent ضمنيًا؟",
+    "optionsEn": [
+      "Nothing happens",
+      "ActivityNotFoundException",
+      "The app restarts",
+      "Android installs one"
+    ],
+    "optionsAr": [
+      "لا يحدث شيء",
+      "ActivityNotFoundException",
+      "يُعاد تشغيل التطبيق",
+      "Android يثبّت تطبيقًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Catch it and show a message.",
+    "explanationAr": "التقطه واعرض رسالة."
+  },
+  {
+    "key": "qz-and-intents-4",
+    "topic": "and-intents",
+    "questionEn": "ACTION_DIAL needs which permission?",
+    "questionAr": "أي إذن يحتاجه ACTION_DIAL؟",
+    "optionsEn": [
+      "CALL_PHONE",
+      "None",
+      "READ_CONTACTS",
+      "INTERNET"
+    ],
+    "optionsAr": [
+      "CALL_PHONE",
+      "لا شيء",
+      "READ_CONTACTS",
+      "INTERNET"
+    ],
+    "answer": 1,
+    "explanationEn": "It only opens the dialer.",
+    "explanationAr": "يفتح لوحة الاتصال فقط."
+  },
+  {
+    "key": "qz-and-intents-5",
+    "topic": "and-intents",
+    "questionEn": "What should Intent extras carry?",
+    "questionAr": "ماذا يجب أن تحمل إضافات Intent؟",
+    "optionsEn": [
+      "Small values like IDs",
+      "Large bitmaps",
+      "Database objects",
+      "Whole lists of products"
+    ],
+    "optionsAr": [
+      "قيمًا صغيرة مثل المعرّفات",
+      "صورًا كبيرة",
+      "كائنات قاعدة بيانات",
+      "قوائم منتجات كاملة"
+    ],
+    "answer": 0,
+    "explanationEn": "Large extras can crash with TransactionTooLargeException.",
+    "explanationAr": "الإضافات الكبيرة قد تسبب TransactionTooLargeException."
+  },
+  {
+    "key": "qz-and-intents-6",
+    "topic": "and-intents",
+    "questionEn": "How do you get a picked photo back?",
+    "questionAr": "كيف تستقبل صورة مختارة؟",
+    "optionsEn": [
+      "onActivityResult only",
+      "An Activity Result launcher",
+      "A BroadcastReceiver",
+      "Polling the gallery"
+    ],
+    "optionsAr": [
+      "onActivityResult فقط",
+      "مُطلِق Activity Result",
+      "BroadcastReceiver",
+      "فحص المعرض باستمرار"
+    ],
+    "answer": 1,
+    "explanationEn": "Register a contract such as PickVisualMedia.",
+    "explanationAr": "سجّل عقدًا مثل PickVisualMedia."
+  },
+  {
+    "key": "qz-and-intents-7",
+    "topic": "and-intents",
+    "questionEn": "What lets other apps share into yours?",
+    "questionAr": "ما الذي يتيح للتطبيقات الأخرى المشاركة إلى تطبيقك؟",
+    "optionsEn": [
+      "An intent filter",
+      "A Gradle plugin",
+      "A permission",
+      "A Service"
+    ],
+    "optionsAr": [
+      "مرشح Intent",
+      "إضافة Gradle",
+      "إذن",
+      "Service"
+    ],
+    "answer": 0,
+    "explanationEn": "Declare ACTION_SEND with a mimeType.",
+    "explanationAr": "عرّف ACTION_SEND مع mimeType."
+  },
+  {
+    "key": "qz-and-intents-8",
+    "topic": "and-intents",
+    "questionEn": "Inside a Compose app, moving between screens uses...",
+    "questionAr": "داخل تطبيق Compose، الانتقال بين الشاشات يستخدم...",
+    "optionsEn": [
+      "A new Activity each time",
+      "Navigation Compose",
+      "Implicit Intents",
+      "BroadcastReceivers"
+    ],
+    "optionsAr": [
+      "Activity جديدة كل مرة",
+      "Navigation Compose",
+      "Intent ضمنيًا",
+      "BroadcastReceiver"
+    ],
+    "answer": 1,
+    "explanationEn": "One Activity hosts the navigation graph.",
+    "explanationAr": "شاشة Activity واحدة تستضيف مخطط التنقل."
+  },
+  {
+    "key": "qz-and-permissions-1",
+    "topic": "and-permissions",
+    "questionEn": "INTERNET is a...",
+    "questionAr": "الإذن INTERNET هو إذن...",
+    "optionsEn": [
+      "Normal permission",
+      "Dangerous permission",
+      "Signature permission",
+      "Runtime-only permission"
+    ],
+    "optionsAr": [
+      "عادي",
+      "خطر",
+      "توقيع",
+      "وقت التشغيل فقط"
+    ],
+    "answer": 0,
+    "explanationEn": "It is granted at install.",
+    "explanationAr": "يُمنح عند التثبيت."
+  },
+  {
+    "key": "qz-and-permissions-2",
+    "topic": "and-permissions",
+    "questionEn": "When should you request CAMERA?",
+    "questionAr": "متى تطلب الإذن CAMERA؟",
+    "optionsEn": [
+      "On the very first app launch",
+      "When the user starts the camera feature",
+      "Inside onDestroy of the screen",
+      "Never, it is granted at install"
+    ],
+    "optionsAr": [
+      "عند أول تشغيل للتطبيق مباشرة",
+      "عندما يبدأ المستخدم ميزة الكاميرا",
+      "داخل onDestroy الخاصة بالشاشة",
+      "أبدًا، فهو يُمنح عند التثبيت"
+    ],
+    "answer": 1,
+    "explanationEn": "Context makes the request understandable.",
+    "explanationAr": "السياق يجعل الطلب مفهومًا."
+  },
+  {
+    "key": "qz-and-permissions-3",
+    "topic": "and-permissions",
+    "questionEn": "Since Android 13, notifications need...",
+    "questionAr": "منذ Android 13، الإشعارات تحتاج...",
+    "optionsEn": [
+      "POST_NOTIFICATIONS at runtime",
+      "No permission at all",
+      "The INTERNET permission",
+      "A running foreground service"
+    ],
+    "optionsAr": [
+      "POST_NOTIFICATIONS وقت التشغيل",
+      "لا تحتاج أي إذن إطلاقًا",
+      "الإذن INTERNET عند التثبيت",
+      "خدمة أمامية تعمل باستمرار"
+    ],
+    "answer": 0,
+    "explanationEn": "Ask before showing the first notification.",
+    "explanationAr": "اطلبه قبل عرض أول إشعار."
+  },
+  {
+    "key": "qz-and-permissions-4",
+    "topic": "and-permissions",
+    "questionEn": "What does shouldShowRequestPermissionRationale tell you?",
+    "questionAr": "ماذا تخبرك shouldShowRequestPermissionRationale؟",
+    "optionsEn": [
+      "The permission is granted",
+      "Explain before asking again",
+      "The app must close",
+      "The device has no camera"
+    ],
+    "optionsAr": [
+      "أن الإذن ممنوح",
+      "اشرح قبل أن تطلب مرة أخرى",
+      "أن التطبيق يجب أن يُغلق",
+      "أن الجهاز بلا كاميرا"
+    ],
+    "answer": 1,
+    "explanationEn": "It is true after a previous denial.",
+    "explanationAr": "تكون صحيحة بعد رفض سابق."
+  },
+  {
+    "key": "qz-and-permissions-5",
+    "topic": "and-permissions",
+    "questionEn": "Permanently denied: what now?",
+    "questionAr": "الإذن مرفوض دائمًا: ماذا الآن؟",
+    "optionsEn": [
+      "Request it again in a loop",
+      "Link to app settings",
+      "Crash with an error message",
+      "Ask the user to uninstall"
+    ],
+    "optionsAr": [
+      "اطلبه مجددًا في حلقة",
+      "ضع رابطًا إلى إعدادات التطبيق",
+      "انهَر مع رسالة خطأ",
+      "اطلب من المستخدم إلغاء التثبيت"
+    ],
+    "answer": 1,
+    "explanationEn": "The system no longer shows the dialog.",
+    "explanationAr": "النظام لم يعد يعرض النافذة."
+  },
+  {
+    "key": "qz-and-permissions-6",
+    "topic": "and-permissions",
+    "questionEn": "Which needs no storage permission?",
+    "questionAr": "أي طريقة لا تحتاج إذن تخزين؟",
+    "optionsEn": [
+      "The photo picker",
+      "READ_MEDIA_IMAGES",
+      "Reading all files",
+      "MANAGE_EXTERNAL_STORAGE"
+    ],
+    "optionsAr": [
+      "أداة اختيار الصور",
+      "READ_MEDIA_IMAGES",
+      "قراءة كل الملفات",
+      "MANAGE_EXTERNAL_STORAGE"
+    ],
+    "answer": 0,
+    "explanationEn": "PickVisualMedia returns only what the user picks.",
+    "explanationAr": "الأداة PickVisualMedia تُرجع ما يختاره المستخدم فقط."
+  },
+  {
+    "key": "qz-and-permissions-7",
+    "topic": "and-permissions",
+    "questionEn": "The user denies location. The app should...",
+    "questionAr": "المستخدم رفض الموقع. يجب أن...",
+    "optionsEn": [
+      "Close itself right away",
+      "Still work, e.g. typed address",
+      "Ask again every single second",
+      "Hide all of its other screens"
+    ],
+    "optionsAr": [
+      "يُغلق نفسه فورًا دون رسالة",
+      "يظل يعمل، مثل كتابة العنوان",
+      "يطلب الإذن مرة كل ثانية",
+      "يخفي كل شاشاته الأخرى"
+    ],
+    "answer": 1,
+    "explanationEn": "Degrade gracefully instead of blocking.",
+    "explanationAr": "تراجع بلطف بدل المنع."
+  },
+  {
+    "key": "qz-and-permissions-8",
+    "topic": "and-permissions",
+    "questionEn": "Where must a dangerous permission also be declared?",
+    "questionAr": "أين يجب أيضًا تعريف الإذن الخطر؟",
+    "optionsEn": [
+      "In the manifest",
+      "In strings.xml",
+      "In Gradle only",
+      "Nowhere else"
+    ],
+    "optionsAr": [
+      "في ملف Manifest",
+      "في strings.xml",
+      "في Gradle فقط",
+      "في أي مكان آخر لا"
+    ],
+    "answer": 0,
+    "explanationEn": "Undeclared permissions can't be requested.",
+    "explanationAr": "الأذونات غير المعرّفة لا يمكن طلبها."
+  },
+  {
+    "key": "qz-and-debugging-1",
+    "topic": "and-debugging",
+    "questionEn": "Where do you see an app's crash?",
+    "questionAr": "أين ترى انهيار التطبيق؟",
+    "optionsEn": [
+      "Logcat",
+      "The manifest",
+      "Gradle sync",
+      "strings.xml"
+    ],
+    "optionsAr": [
+      "Logcat",
+      "ملف Manifest",
+      "مزامنة Gradle",
+      "strings.xml"
+    ],
+    "answer": 0,
+    "explanationEn": "Look for FATAL EXCEPTION.",
+    "explanationAr": "ابحث عن FATAL EXCEPTION."
+  },
+  {
+    "key": "qz-and-debugging-2",
+    "topic": "and-debugging",
+    "questionEn": "In a stack trace, start reading at...",
+    "questionAr": "في تتبع المكدس، ابدأ القراءة من...",
+    "optionsEn": [
+      "The last line from a library",
+      "The first line from your package",
+      "The process ID at the top",
+      "The Android version line"
+    ],
+    "optionsAr": [
+      "آخر سطر من إحدى المكتبات",
+      "أول سطر من حزمتك",
+      "رقم العملية في الأعلى",
+      "سطر إصدار Android"
+    ],
+    "answer": 1,
+    "explanationEn": "That is where your code met the problem.",
+    "explanationAr": "هناك التقى كودك بالمشكلة."
+  },
+  {
+    "key": "qz-and-debugging-3",
+    "topic": "and-debugging",
+    "questionEn": "What does a conditional breakpoint do?",
+    "questionAr": "ماذا تفعل نقطة التوقف المشروطة؟",
+    "optionsEn": [
+      "Stops only when a condition is true",
+      "Stops on every single line",
+      "Logs and never stops at all",
+      "Restarts the app when hit"
+    ],
+    "optionsAr": [
+      "تتوقف فقط عندما يتحقق شرط",
+      "تتوقف عند كل سطر بلا استثناء",
+      "تسجّل ولا تتوقف أبدًا",
+      "تعيد تشغيل التطبيق عند الوصول"
+    ],
+    "answer": 0,
+    "explanationEn": "Useful inside loops.",
+    "explanationAr": "مفيدة داخل الحلقات."
+  },
+  {
+    "key": "qz-and-debugging-4",
+    "topic": "and-debugging",
+    "questionEn": "Why test on a physical device too?",
+    "questionAr": "لماذا تختبر على جهاز حقيقي أيضًا؟",
+    "optionsEn": [
+      "Emulators are not allowed",
+      "Real performance, camera and sensors",
+      "Logcat only works on devices",
+      "The project builds faster there"
+    ],
+    "optionsAr": [
+      "لأن المحاكيات غير مسموحة",
+      "للأداء الحقيقي والكاميرا والحساسات",
+      "لأن Logcat يعمل على الأجهزة فقط",
+      "لأن المشروع يُبنى أسرع هناك"
+    ],
+    "answer": 1,
+    "explanationEn": "Emulators approximate hardware.",
+    "explanationAr": "المحاكيات تقرّب العتاد فقط."
+  },
+  {
+    "key": "qz-and-debugging-5",
+    "topic": "and-debugging",
+    "questionEn": "Which tool shows the live UI tree?",
+    "questionAr": "أي أداة تعرض شجرة الواجهة الحية؟",
+    "optionsEn": [
+      "Layout Inspector",
+      "R8",
+      "bundletool",
+      "Lint"
+    ],
+    "optionsAr": [
+      "Layout Inspector",
+      "R8",
+      "bundletool",
+      "Lint"
+    ],
+    "answer": 0,
+    "explanationEn": "Inspect sizes, paddings and recompositions.",
+    "explanationAr": "افحص الأحجام والهوامش وإعادة التركيب."
+  },
+  {
+    "key": "qz-and-debugging-6",
+    "topic": "and-debugging",
+    "questionEn": "What does adb install -r do?",
+    "questionAr": "ماذا يفعل adb install -r؟",
+    "optionsEn": [
+      "Removes the app completely",
+      "Reinstalls keeping data",
+      "Resets the whole device",
+      "Records the device screen"
+    ],
+    "optionsAr": [
+      "يحذف التطبيق بالكامل",
+      "يعيد التثبيت مع إبقاء البيانات",
+      "يعيد ضبط الجهاز كله للمصنع",
+      "يسجّل فيديو لشاشة الجهاز"
+    ],
+    "answer": 1,
+    "explanationEn": "-r replaces the existing install.",
+    "explanationAr": "الخيار -r يستبدل التثبيت الموجود."
+  },
+  {
+    "key": "qz-and-debugging-7",
+    "topic": "and-debugging",
+    "questionEn": "Before release, debug logs should be...",
+    "questionAr": "قبل الإصدار، سجلات التصحيح يجب أن...",
+    "optionsEn": [
+      "Removed or reduced",
+      "Doubled",
+      "Sent to users",
+      "Written to SMS"
+    ],
+    "optionsAr": [
+      "تُحذف أو تُقلّل",
+      "تتضاعف",
+      "تُرسل للمستخدمين",
+      "تُكتب في رسائل SMS"
+    ],
+    "answer": 0,
+    "explanationEn": "Logs can leak data and slow the app.",
+    "explanationAr": "السجلات قد تسرّب بيانات وتبطئ التطبيق."
+  },
+  {
+    "key": "qz-and-debugging-8",
+    "topic": "and-debugging",
+    "questionEn": "How do you print without editing code?",
+    "questionAr": "كيف تطبع دون تعديل الكود؟",
+    "optionsEn": [
+      "A logpoint",
+      "A Gradle task",
+      "A new flavor",
+      "A toast"
+    ],
+    "optionsAr": [
+      "نقطة تسجيل (Logpoint)",
+      "مهمة Gradle جديدة",
+      "نكهة بناء جديدة",
+      "رسالة Toast قصيرة"
+    ],
+    "answer": 0,
+    "explanationEn": "A breakpoint that logs instead of stopping.",
+    "explanationAr": "نقطة توقف تسجّل بدل أن تتوقف."
+  },
+  {
+    "key": "qz-and-build-release-basics-1",
+    "topic": "and-build-release-basics",
+    "questionEn": "What does Google Play require for new apps?",
+    "questionAr": "ماذا يشترط Google Play للتطبيقات الجديدة؟",
+    "optionsEn": [
+      "APK files",
+      "Android App Bundles",
+      "ZIP files",
+      "Source code"
+    ],
+    "optionsAr": [
+      "ملفات APK",
+      "Android App Bundle",
+      "ملفات ZIP",
+      "الكود المصدري"
+    ],
+    "answer": 1,
+    "explanationEn": "Play builds per-device APKs from the AAB.",
+    "explanationAr": "متجر Play يبني ملفات APK لكل جهاز من AAB."
+  },
+  {
+    "key": "qz-and-build-release-basics-2",
+    "topic": "and-build-release-basics",
+    "questionEn": "What does R8 do in release builds?",
+    "questionAr": "ماذا يفعل R8 في بناء release؟",
+    "optionsEn": [
+      "Adds extra debug logs",
+      "Shrinks and obfuscates code",
+      "Signs the app with your key",
+      "Uploads the build to Play"
+    ],
+    "optionsAr": [
+      "يضيف سجلات تصحيح إضافية",
+      "يصغّر الكود ويموّهه",
+      "يوقّع التطبيق بمفتاحك",
+      "يرفع البناء إلى Play"
+    ],
+    "answer": 1,
+    "explanationEn": "Test the release build because R8 can break reflection.",
+    "explanationAr": "اختبر بناء release لأن R8 قد يكسر الانعكاس."
+  },
+  {
+    "key": "qz-and-build-release-basics-3",
+    "topic": "and-build-release-basics",
+    "questionEn": "What must increase with each Play upload?",
+    "questionAr": "ما الذي يجب أن يزيد مع كل رفع إلى Play؟",
+    "optionsEn": [
+      "versionCode",
+      "minSdk",
+      "applicationId",
+      "compileSdk"
+    ],
+    "optionsAr": [
+      "versionCode",
+      "minSdk",
+      "applicationId",
+      "compileSdk"
+    ],
+    "answer": 0,
+    "explanationEn": "versionName is only what users see.",
+    "explanationAr": "القيمة versionName هي ما يراه المستخدم فقط."
+  },
+  {
+    "key": "qz-and-build-release-basics-4",
+    "topic": "and-build-release-basics",
+    "questionEn": "Product flavors are useful for...",
+    "questionAr": "نكهات المنتج مفيدة لـ...",
+    "optionsEn": [
+      "Staging and production builds",
+      "Translating the app's strings",
+      "Making Gradle sync faster",
+      "Switching to dark mode"
+    ],
+    "optionsAr": [
+      "بناءات staging وproduction",
+      "ترجمة نصوص التطبيق",
+      "جعل مزامنة Gradle أسرع",
+      "التحويل إلى الوضع الداكن"
+    ],
+    "answer": 0,
+    "explanationEn": "Each flavor can have its own URL and app ID.",
+    "explanationAr": "لكل نكهة رابطها ومعرّف تطبيقها."
+  },
+  {
+    "key": "qz-and-build-release-basics-5",
+    "topic": "and-build-release-basics",
+    "questionEn": "Which file can a tester install directly?",
+    "questionAr": "أي ملف يستطيع المختبر تثبيته مباشرة؟",
+    "optionsEn": [
+      "An APK",
+      "An AAB",
+      "A .toml file",
+      "A .kts file"
+    ],
+    "optionsAr": [
+      "APK",
+      "AAB",
+      "ملف ‎.toml",
+      "ملف ‎.kts"
+    ],
+    "answer": 0,
+    "explanationEn": "AABs must go through Play or bundletool.",
+    "explanationAr": "ملفات AAB تمر عبر Play أو bundletool."
+  },
+  {
+    "key": "qz-and-build-release-basics-6",
+    "topic": "and-build-release-basics",
+    "questionEn": "What is applicationIdSuffix for?",
+    "questionAr": "فيمَ يُستخدم applicationIdSuffix؟",
+    "optionsEn": [
+      "Installing variants side by side",
+      "Changing the app icon",
+      "Shrinking unused resources",
+      "Adding new permissions"
+    ],
+    "optionsAr": [
+      "تثبيت المتغيرات جنبًا إلى جنب",
+      "تغيير أيقونة التطبيق",
+      "تصغير الموارد غير المستخدمة",
+      "إضافة أذونات جديدة"
+    ],
+    "answer": 0,
+    "explanationEn": "com.example.app.debug differs from the release ID.",
+    "explanationAr": "المعرّف com.example.app.debug يختلف عن معرّف release."
+  },
+  {
+    "key": "qz-and-build-release-basics-7",
+    "topic": "and-build-release-basics",
+    "questionEn": "What should you do with your upload key?",
+    "questionAr": "ماذا تفعل بمفتاح الرفع؟",
+    "optionsEn": [
+      "Commit it to the Git repo",
+      "Keep it private and backed up",
+      "Share it with all testers",
+      "Put it in strings.xml"
+    ],
+    "optionsAr": [
+      "ارفعه إلى مستودع Git",
+      "احفظه سرًا مع نسخة احتياطية",
+      "شاركه مع كل المختبرين",
+      "ضعه داخل ملف strings.xml"
+    ],
+    "answer": 1,
+    "explanationEn": "Anyone with it could sign updates as you.",
+    "explanationAr": "أي شخص يملكه يستطيع توقيع تحديثات باسمك."
+  },
+  {
+    "key": "qz-and-build-release-basics-8",
+    "topic": "and-build-release-basics",
+    "questionEn": "A bug appears only in release. Likely cause?",
+    "questionAr": "خطأ يظهر في release فقط. ما السبب المحتمل؟",
+    "optionsEn": [
+      "Logcat is switched off",
+      "R8 removed or renamed code",
+      "minSdk is set too low",
+      "The emulator is too old"
+    ],
+    "optionsAr": [
+      "أداة Logcat مطفأة",
+      "R8 حذف كودًا أو أعاد تسميته",
+      "قيمة minSdk منخفضة جدًا",
+      "المحاكي قديم جدًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Add keep rules for reflected classes.",
+    "explanationAr": "أضف قواعد keep للأصناف المستخدمة بالانعكاس."
+  }
+]

@@ -1296,7 +1296,7 @@
   },
   {
     "term": "val",
-    "arabic": "val (قيمة للقراءة فقط)",
+    "arabic": "قيمة للقراءة فقط (val)",
     "shortEn": "A read-only variable in Kotlin: it is assigned once and can't be reassigned.",
     "shortAr": "متغير للقراءة فقط في Kotlin: يُسند مرة واحدة ولا يمكن إعادة إسناده.",
     "topicSlug": "kt-basics"
@@ -1356,5 +1356,75 @@
     "shortEn": "One of let, run, with, apply and also, which run a block of code on an object.",
     "shortAr": "إحدى الدوال let وrun وwith وapply وalso التي تنفّذ كتلة كود على كائن.",
     "topicSlug": "kt-generics-extensions"
+  },
+  {
+    "term": "Gradle",
+    "arabic": "أداة البناء Gradle",
+    "shortEn": "The build tool that compiles an Android app, downloads its libraries and packages it.",
+    "shortAr": "أداة البناء التي تترجم تطبيق Android وتحمّل مكتباته وتحزمه.",
+    "topicSlug": "and-studio-gradle"
+  },
+  {
+    "term": "minSdk",
+    "arabic": "أقل إصدار مدعوم (minSdk)",
+    "shortEn": "The oldest Android API level that can install the app.",
+    "shortAr": "أقدم مستوى واجهة Android يستطيع تثبيت التطبيق.",
+    "topicSlug": "and-studio-gradle"
+  },
+  {
+    "term": "manifest",
+    "arabic": "ملف Manifest",
+    "shortEn": "AndroidManifest.xml, which declares an app's components, permissions and launcher screen.",
+    "shortAr": "الملف AndroidManifest.xml الذي يعرّف مكونات التطبيق وأذوناته وشاشة الإطلاق.",
+    "topicSlug": "and-app-components"
+  },
+  {
+    "term": "Context",
+    "arabic": "سياق التطبيق (Context)",
+    "shortEn": "An object that gives access to resources, files, system services and starting components.",
+    "shortAr": "كائن يعطي الوصول إلى الموارد والملفات وخدمات النظام وتشغيل المكونات.",
+    "topicSlug": "and-app-components"
+  },
+  {
+    "term": "configuration change",
+    "arabic": "تغيير الإعدادات",
+    "shortEn": "A change such as rotation, language or dark mode that recreates the Activity by default.",
+    "shortAr": "تغيير مثل التدوير أو اللغة أو الوضع الداكن يعيد إنشاء Activity افتراضيًا.",
+    "topicSlug": "and-activity-lifecycle"
+  },
+  {
+    "term": "process death",
+    "arabic": "موت العملية",
+    "shortEn": "When the system kills a background app's process to free memory; in-memory state is lost.",
+    "shortAr": "عندما يُنهي النظام عملية تطبيق في الخلفية لتحرير الذاكرة، فتضيع الحالة الموجودة في الذاكرة.",
+    "topicSlug": "and-activity-lifecycle"
+  },
+  {
+    "term": "implicit intent",
+    "arabic": "طلب Intent الضمني",
+    "shortEn": "An Intent that describes an action, such as sharing text, and lets the system pick the app.",
+    "shortAr": "طلب يصف فعلًا مثل مشاركة نص ويترك النظام يختار التطبيق.",
+    "topicSlug": "and-intents"
+  },
+  {
+    "term": "runtime permission",
+    "arabic": "إذن وقت التشغيل",
+    "shortEn": "A dangerous permission, such as camera or location, that the user grants while the app runs.",
+    "shortAr": "إذن خطر مثل الكاميرا أو الموقع يمنحه المستخدم أثناء تشغيل التطبيق.",
+    "topicSlug": "and-permissions"
+  },
+  {
+    "term": "Logcat",
+    "arabic": "أداة Logcat",
+    "shortEn": "The Android log viewer that shows app and system messages, including crash stack traces.",
+    "shortAr": "عارض سجلات Android الذي يعرض رسائل التطبيق والنظام ومنها تتبع مكدس الانهيارات.",
+    "topicSlug": "and-debugging"
+  },
+  {
+    "term": "Android App Bundle",
+    "arabic": "حزمة Android App Bundle",
+    "shortEn": "A publishing format from which Google Play builds optimised APKs for each device.",
+    "shortAr": "صيغة نشر يبني منها Google Play ملفات APK محسّنة لكل جهاز.",
+    "topicSlug": "and-build-release-basics"
   }
 ]

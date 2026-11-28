@@ -6469,5 +6469,449 @@
       "channel": "Learn AI Fast",
       "language": "ar"
     }
+  ],
+  "kt-basics": [
+    {
+      "videoId": "fa3pl7zJV6E",
+      "title": "Learn Kotlin in 5 Minutes",
+      "channel": "JerryHacks",
+      "language": "en"
+    },
+    {
+      "videoId": "8lZbKOfyVnk",
+      "title": "Kotlin Tutorial for Beginners - Kotlin for Loop (With Examples)",
+      "channel": "ProgrammingKnowledge",
+      "language": "en"
+    },
+    {
+      "videoId": "eq_upll-VIE",
+      "title": "Learning Kotlin: Using 'while loops', IntRanges, and the 'repeat' Function",
+      "channel": "goobar",
+      "language": "en"
+    },
+    {
+      "videoId": "AqVozqOZX7Q",
+      "title": "تعلم لغة كوتلن من الصفر في ساعة واحدة – شرح عملي للمبتدئين بدون تعقيد",
+      "channel": "كَوّدْ  مع يحيى",
+      "language": "ar"
+    },
+    {
+      "videoId": "U_tMjRpVI-o",
+      "title": "الدرس الاول - كوتلن ( تعريف لغة برمجة + المتغيرات var,val + انواع البيانات )",
+      "channel": "akwad dev- اكواد ديف",
+      "language": "ar"
+    }
+  ],
+  "kt-functions": [
+    {
+      "videoId": "wnyN8umZIRM",
+      "title": "Kotlin Newbie to Pro - LAMBDA FUNCTIONS - Part 28",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "ZZuPgOhgQHc",
+      "title": "Kotlin Higher Order Function and Lambda - #11 Kotlin Android Tutorial for Beginners",
+      "channel": "Simplified Coding",
+      "language": "en"
+    },
+    {
+      "videoId": "91UgpZW8mK4",
+      "title": "Kotlin: Lambda & Higher-Order Functions",
+      "channel": "Programming with Alex",
+      "language": "en"
+    },
+    {
+      "videoId": "oYuLbS4KS3s",
+      "title": "شرح ال lambda و anonymous functions في كوتلين",
+      "channel": "رؤوف رحيش - Raouf Rahiche",
+      "language": "ar"
+    },
+    {
+      "videoId": "dSQOI1VKsD8",
+      "title": "40- Kotlin - Lambda Expressions | كوتلن",
+      "channel": "Ahmed Tawfik",
+      "language": "ar"
+    }
+  ],
+  "kt-collections": [
+    {
+      "videoId": "vL_3r9tz1gM",
+      "title": "Kotlin Map, Filter, ForEach | Higher Order Functions | Cheezycode #35",
+      "channel": "Cheezy Code",
+      "language": "en"
+    },
+    {
+      "videoId": "ff8uuCHtiZ8",
+      "title": "Map Explained - Kotlin Collections",
+      "channel": "Cody Engel",
+      "language": "en"
+    },
+    {
+      "videoId": "9IzHqZRPB_g",
+      "title": "Kotlin Collections Masterclass: Lists, Maps, and Sets | Advanced Techniques and Practical Examples",
+      "channel": "Coding Hub",
+      "language": "en"
+    },
+    {
+      "videoId": "H2CKT8BzMes",
+      "title": "#57 kotlin المجموعات في كوتلن collections",
+      "channel": "Hassouna Academy",
+      "language": "ar"
+    },
+    {
+      "videoId": "iVDpm2A660o",
+      "title": "43- Kotlin - Collections (List, Set, Map) | كوتلن",
+      "channel": "Ahmed Tawfik",
+      "language": "ar"
+    }
+  ],
+  "kt-null-safety": [
+    {
+      "videoId": "fxQbpy-s3Bw",
+      "title": "Kotlin NULL Safe Operators | Best Explanation Ever | Elvis Operator and Non Null Assertion Operators",
+      "channel": "Yash Nagayach",
+      "language": "en"
+    },
+    {
+      "videoId": "URrT36x5_fw",
+      "title": "Kotlin For Beginners - Null Safety and Null Types",
+      "channel": "Charfaoui Younes",
+      "language": "en"
+    },
+    {
+      "videoId": "OiSM6zXqwEU",
+      "title": "Kotlin Null Safety In Depth",
+      "channel": "STUDevLantern",
+      "language": "en"
+    },
+    {
+      "videoId": "joJ_cdO3XAM",
+      "title": "Kotlin Null Safety - Arabic",
+      "channel": "Ramadan Mostafa",
+      "language": "ar"
+    }
+  ],
+  "kt-oop": [
+    {
+      "videoId": "xAslJ-f9PWs",
+      "title": "All Classes In Kotlin Explained",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "Ly_onmXpDiw",
+      "title": "Kotlin Classes and Constructors - Primary vs Secondary",
+      "channel": "Will Tollefson",
+      "language": "en"
+    },
+    {
+      "videoId": "8ru1xueu-Gc",
+      "title": "Learn Kotlin Quickly - Constructors",
+      "channel": "Reso Coder",
+      "language": "en"
+    },
+    {
+      "videoId": "mTouGUN6q2A",
+      "title": "#68 kotlin البرمجة كائنية التوجه | oop object oriented programming",
+      "channel": "Hassouna Academy",
+      "language": "ar"
+    },
+    {
+      "videoId": "OBkJH2EuEdU",
+      "title": "الدرس الحادي عشر : مفهوم البرمجه الكائنيه Kotlin OOP",
+      "channel": "Ahmed Azz",
+      "language": "ar"
+    }
+  ],
+  "kt-data-sealed-enum": [
+    {
+      "videoId": "kLJRZpRhX1o",
+      "title": "Sealed Classes VS. Enum Classes VS. Sealed Interfaces - When to Use Which?",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "OyIRuxjBORY",
+      "title": "Sealed classes - Kotlin Vocabulary",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "xvAYzqgIvDs",
+      "title": "Enum vs Sealed Interface vs Sealed Class",
+      "channel": "coding with nerds",
+      "language": "en"
+    },
+    {
+      "videoId": "vdXQ63pHF1Q",
+      "title": "الدرس التاسع عشر: شرح مفهوم Sealed Class و Data Class في لغة Kotlin",
+      "channel": "akwad dev- اكواد ديف",
+      "language": "ar"
+    },
+    {
+      "videoId": "pDkPlGT9ZvY",
+      "title": "58- Kotlin - Data and Sealed Classes | كوتلن",
+      "channel": "Ahmed Tawfik",
+      "language": "ar"
+    }
+  ],
+  "kt-generics-extensions": [
+    {
+      "videoId": "Vy-dS2SVoHk",
+      "title": "Let, Also, Apply, Run, With - Kotlin Scope Functions",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "vDP9yVrN_UM",
+      "title": "Kotlin apply, let, with, run functions | Scoped Functions in Kotlin | Cheezycode #37",
+      "channel": "Cheezy Code",
+      "language": "en"
+    },
+    {
+      "videoId": "-Lha9n8VJf0",
+      "title": "Kotlin - Apply, Let, Run, With, Also - Higher Order Standard Functions",
+      "channel": "Reso Coder",
+      "language": "en"
+    },
+    {
+      "videoId": "wg8b-Cw_STs",
+      "title": "شرح let also run apply with في كوتلين",
+      "channel": "رؤوف رحيش - Raouf Rahiche",
+      "language": "ar"
+    }
+  ],
+  "kt-errors-idioms": [
+    {
+      "videoId": "D2wwqr8bu3Y",
+      "title": "Try-Catch vs. runCatching()",
+      "channel": "Dave Leeds",
+      "language": "en"
+    },
+    {
+      "videoId": "ThlFnnaxsuE",
+      "title": "Kotlin: Beyond the Try/Catch (Exception Handling)",
+      "channel": "Coding with Raphael De Lio",
+      "language": "en"
+    },
+    {
+      "videoId": "svIYlYj-Sr8",
+      "title": "Kotlin RunCatching: Is It ACTUALLY Better Than Try Catch?",
+      "channel": "Ali Mansour",
+      "language": "en"
+    },
+    {
+      "videoId": "8lsfYtj6JUQ",
+      "title": "#55 kotlin فهم معالجة الاستثناءات في كوتلن | handling exceptions",
+      "channel": "Hassouna Academy",
+      "language": "ar"
+    },
+    {
+      "videoId": "ouUXTNSSkvg",
+      "title": "45- Kotlin - Exception Handling | كوتلن",
+      "channel": "Ahmed Tawfik",
+      "language": "ar"
+    }
+  ],
+  "and-studio-gradle": [
+    {
+      "videoId": "RCRQlz78wCg",
+      "title": "The Ultimate Gradle Kotlin Beginner's Crash Course For 2025",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "h3ylwK6MINI",
+      "title": "Android Project Structure",
+      "channel": "Ben Kadel",
+      "language": "en"
+    },
+    {
+      "videoId": "RZelz5A0j3A",
+      "title": "Gradle Explained (Android Tutorial)",
+      "channel": "Ahmed Guedmioui",
+      "language": "en"
+    },
+    {
+      "videoId": "PwjKQ6YXwO0",
+      "title": "شرح أساسيات Android Studio في 10 دقائق!",
+      "channel": "Pixel Shark بالعربي",
+      "language": "ar"
+    },
+    {
+      "videoId": "TP0upos70mk",
+      "title": "كورس برمجة تطبيقات أندرويد العملي (01): تهيئة بيئة العمل وبناء التطبيق الأول (إضافة الصور والنص)",
+      "channel": "GeekHood",
+      "language": "ar"
+    }
+  ],
+  "and-app-components": [
+    {
+      "videoId": "m6i-m4c6I64",
+      "title": "Introduction of Android Application Components | Core Components (Activities, Services, Broadcast..)",
+      "channel": "Daily Coding",
+      "language": "en"
+    },
+    {
+      "videoId": "W2Xn42Id2V4",
+      "title": "Main Components of Android App (Activities, Content Provider, Services and Broadcast Receivers)",
+      "channel": "WsCube Tech",
+      "language": "en"
+    },
+    {
+      "videoId": "HDVyFsFUuVg",
+      "title": "Broadcasts & Broadcast Receivers - Android Basics 2023",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "NLy0_dNuELw",
+      "title": "3-  Android Studio Tutorial (Explain the components of the project and android)|جميع مكونات المشروع",
+      "channel": "محمد شوشان",
+      "language": "ar"
+    }
+  ],
+  "and-activity-lifecycle": [
+    {
+      "videoId": "SJw3Nu_h8kk",
+      "title": "Activities & the Activity Lifecycle - Android Basics 2023",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "UJN3AL4tiqw",
+      "title": "The Activity Lifecycle Explained - Android Studio Tutorial",
+      "channel": "Coding in Flow",
+      "language": "en"
+    },
+    {
+      "videoId": "odqACn2Vgic",
+      "title": "Android Tutorial for Beginners 5 # Android Activity Lifecycle",
+      "channel": "ProgrammingKnowledge",
+      "language": "en"
+    },
+    {
+      "videoId": "n7-2ArwchlU",
+      "title": "Learn Android in Arabic #24 - دورة حياة اندرويد android activity lifecycle مفهوم البداية",
+      "channel": "Hassouna Academy",
+      "language": "ar"
+    },
+    {
+      "videoId": "kR0YHMlJTk4",
+      "title": "022 شرح تفصيلي عن دورة حياة النافذة activity lifecycle",
+      "channel": "م. علي جمال - Arab Coding",
+      "language": "ar"
+    }
+  ],
+  "and-intents": [
+    {
+      "videoId": "2hIY1xuImuQ",
+      "title": "Intents & Intent Filters - Android Basics 2023",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "CAPlP2QcHnM",
+      "title": "Intents in Android Studio using Kotlin | Explicit Intent and Implicit Intent with Examples",
+      "channel": "Android Knowledge",
+      "language": "en"
+    },
+    {
+      "videoId": "ZCU4RJo8Djg",
+      "title": "Android Implicit Intent and Explicit Intent | Android Intent Explained",
+      "channel": "Daily Coding",
+      "language": "en"
+    },
+    {
+      "videoId": "QK_qIKB-JRY",
+      "title": "35) كورس برمجة تطبيقات الأندرويد بالكوتلن - Intent in android - 1",
+      "channel": "Lazy programmers",
+      "language": "ar"
+    },
+    {
+      "videoId": "1D6qcRDhPS8",
+      "title": "كورس أندرويد للمبتدئين (25) | ما هو الـ Intent في الأندرويد؟ وكيف تتنقل بين شاشات التطبيق؟ 🚀",
+      "channel": "Nour Tech",
+      "language": "ar"
+    }
+  ],
+  "and-permissions": [
+    {
+      "videoId": "D3JCtaK8LSU",
+      "title": "The ULTIMATE Permission Handling Guide (Showing rationale + Permanently Declined)",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "ltHN50BdDc4",
+      "title": "How to Do PROPER Permission Handling in Jetpack Compose - Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "SCnhztsTMtA",
+      "title": "Android Run time Permissions طلبات الوصول ★ | Android 21 دورة اندرويد",
+      "channel": "TheNewBaghdad (‫بغداد الجديدة‬‎)",
+      "language": "ar"
+    },
+    {
+      "videoId": "RG_wKHEExMI",
+      "title": "دورة برمجة الأندرويد للمبتدئين#27 : شرح كامل عن Permissions - الجزء الأول",
+      "channel": "قناة المبرمج اللبناني",
+      "language": "ar"
+    }
+  ],
+  "and-debugging": [
+    {
+      "videoId": "ln5hc-zprEM",
+      "title": "The Full Guide to Debugging Your Android Apps - Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "XMHih8aHnvg",
+      "title": "The basics of the Android Studio debugger",
+      "channel": "Coding Diary",
+      "language": "en"
+    },
+    {
+      "videoId": "12WkXT26pEE",
+      "title": "Android Debugging Complete Course 🔥 | Fix App Errors Like a PRO (ADB, Logcat, Studio Tools)",
+      "channel": "Codeleka",
+      "language": "en"
+    },
+    {
+      "videoId": "Vz_CulNIKnw",
+      "title": "#22 تطوير تطبيقات الأندرويد  Android | استخدام السجل Log",
+      "channel": "برمج Barmej",
+      "language": "ar"
+    },
+    {
+      "videoId": "qTsXtFwXESk",
+      "title": "برمجة الاندرويد للمبتدئين- الطباعة باستخدام Log #31",
+      "channel": "Abdullah Alhazmy",
+      "language": "ar"
+    }
+  ],
+  "and-build-release-basics": [
+    {
+      "videoId": "IPLhLu0kvYw",
+      "title": "App Bundles: Building your first app bundle - MAD Skills",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "odv_1fxt9BI",
+      "title": "App Bundles: Everything to know about Play App Signing - MAD Skills",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "1P2NSWx2-Qg",
+      "title": "Build variants",
+      "channel": "Mohsen Coder",
+      "language": "en"
+    }
   ]
 }

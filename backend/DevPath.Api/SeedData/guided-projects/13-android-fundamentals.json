@@ -1,0 +1,199 @@
+[
+  {
+    "key": "and-share-notes",
+    "skill": "Android",
+    "level": "Beginner",
+    "hours": 6,
+    "titleEn": "Quick notes that survive anything",
+    "titleAr": "ملاحظات سريعة تنجو من كل شيء",
+    "summaryEn": "A one-screen notes app that keeps the draft through rotation and process death, receives text shared from other apps, shares notes out, asks for the notification permission at the right time, and ships in Arabic and English with staging and production builds.",
+    "summaryAr": "تطبيق ملاحظات من شاشة واحدة يحتفظ بالمسودة بعد التدوير وموت العملية، ويستقبل النصوص المشاركة من التطبيقات الأخرى، ويشارك الملاحظات، ويطلب إذن الإشعارات في الوقت المناسب، ويُصدر بالعربية والإنجليزية ببناءات staging وproduction.",
+    "techStack": "Kotlin · Android Studio · Jetpack Compose (default template) · ViewModel · SavedStateHandle · Intents",
+    "goalsEn": [
+      "Read and change the manifest, resources and Gradle files",
+      "Keep state correct across the Activity lifecycle and process death",
+      "Use implicit Intents and intent filters",
+      "Request a runtime permission in context",
+      "Produce debug, staging and release builds"
+    ],
+    "goalsAr": [
+      "قراءة ملف Manifest والموارد وملفات Gradle وتعديلها",
+      "الحفاظ على الحالة صحيحة عبر دورة حياة Activity وموت العملية",
+      "استخدام Intent الضمني ومرشحات Intent",
+      "طلب إذن وقت التشغيل في سياقه",
+      "إنتاج بناءات debug وstaging وrelease"
+    ],
+    "requirementsEn": [
+      "A text field for the current draft and a list of saved notes (kept in memory for now)",
+      "The draft survives rotation and process death",
+      "Text shared from another app (ACTION_SEND, text/plain) opens the app with that text as the draft",
+      "Each note has a Share button that uses a chooser",
+      "A \"Remind me\" switch requests POST_NOTIFICATIONS on Android 13+ only when turned on",
+      "All texts in English and Arabic, and the layout mirrors in Arabic",
+      "staging and production flavors with different app names"
+    ],
+    "requirementsAr": [
+      "حقل نص للمسودة الحالية وقائمة بالملاحظات المحفوظة (في الذاكرة حاليًا)",
+      "المسودة تبقى بعد التدوير وموت العملية",
+      "النص المشارك من تطبيق آخر (ACTION_SEND وtext/plain) يفتح التطبيق وفيه ذلك النص كمسودة",
+      "لكل ملاحظة زر Share يستخدم نافذة اختيار",
+      "مفتاح «ذكّرني» يطلب POST_NOTIFICATIONS على Android 13 فأحدث فقط عند تفعيله",
+      "كل النصوص بالإنجليزية والعربية، والتصميم ينعكس بالعربية",
+      "نكهتا staging وproduction باسمي تطبيق مختلفين"
+    ],
+    "acceptanceEn": [
+      "Type a draft, rotate, run adb shell am kill while in the background, return: the draft is still there",
+      "Sharing text from Chrome shows the app in the share sheet and fills the draft",
+      "Denying the notification permission keeps the app working and the switch explains how to enable it",
+      "Both flavors install side by side and a release AAB builds"
+    ],
+    "acceptanceAr": [
+      "اكتب مسودة، ودوّر الشاشة، وشغّل adb shell am kill والتطبيق في الخلفية، ثم ارجع: المسودة ما زالت موجودة",
+      "مشاركة نص من Chrome تُظهر التطبيق في نافذة المشاركة وتملأ المسودة",
+      "رفض إذن الإشعارات يُبقي التطبيق يعمل، والمفتاح يشرح كيف يُفعَّل",
+      "النكهتان تُثبتان جنبًا إلى جنب، وبناء AAB من نوع release ينجح"
+    ],
+    "stretchEn": [
+      "Save notes to a file in filesDir so they survive restarts",
+      "Open links inside notes with ACTION_VIEW",
+      "Log lifecycle callbacks in debug builds only"
+    ],
+    "stretchAr": [
+      "احفظ الملاحظات في ملف داخل filesDir حتى تبقى بعد إعادة التشغيل",
+      "افتح الروابط داخل الملاحظات بـ ACTION_VIEW",
+      "سجّل دوال دورة الحياة في بناءات debug فقط"
+    ],
+    "steps": [
+      {
+        "key": "and-notes-setup",
+        "titleEn": "Create the project and read it",
+        "titleAr": "أنشئ المشروع واقرأه",
+        "bodyEn": "Create an Empty Activity project named QuickNotes with minSdk 24. Before writing code, open AndroidManifest.xml, app/build.gradle.kts and libs.versions.toml and find the namespace, the launcher Activity and the Compose dependencies.\n\nRun it once on an emulator with Android 13 or newer.",
+        "bodyAr": "أنشئ مشروع Empty Activity باسم QuickNotes مع minSdk 24. وقبل كتابة الكود، افتح AndroidManifest.xml وapp/build.gradle.kts وlibs.versions.toml وابحث عن namespace وActivity الإطلاق واعتماديات Compose.\n\nوشغّله مرة على محاكٍ بإصدار Android 13 أو أحدث.",
+        "hintsEn": [
+          "The Device Manager creates emulators; choose a recent system image.",
+          "The launcher Activity has the MAIN action and LAUNCHER category."
+        ],
+        "hintsAr": [
+          "أداة Device Manager تنشئ المحاكيات، فاختر صورة نظام حديثة.",
+          "شاشة Activity الإطلاق فيها الفعل MAIN والفئة LAUNCHER."
+        ]
+      },
+      {
+        "key": "and-notes-state",
+        "titleEn": "A ViewModel with saved state",
+        "titleAr": "ViewModel بحالة محفوظة",
+        "bodyEn": "Create NotesViewModel that takes a SavedStateHandle. Keep the draft in it with getStateFlow so it survives process death, and the list of notes in a MutableStateFlow.\n\nIn the screen, collect both with collectAsStateWithLifecycle and add a Save button that moves the draft into the list.",
+        "bodyAr": "أنشئ NotesViewModel تأخذ SavedStateHandle. واحفظ المسودة فيها بـ getStateFlow حتى تبقى بعد موت العملية، وقائمة الملاحظات في MutableStateFlow.\n\nوفي الشاشة اجمع الاثنين بـ collectAsStateWithLifecycle، وأضف زر Save ينقل المسودة إلى القائمة.",
+        "hintsEn": [
+          "Add androidx.lifecycle:lifecycle-viewmodel-compose and lifecycle-runtime-compose through the version catalog.",
+          "viewModel() gives you a SavedStateHandle automatically."
+        ],
+        "hintsAr": [
+          "أضف androidx.lifecycle:lifecycle-viewmodel-compose وlifecycle-runtime-compose عبر كتالوج الإصدارات.",
+          "الدالة viewModel() تعطيك SavedStateHandle تلقائيًا."
+        ],
+        "code": "class NotesViewModel(private val saved: SavedStateHandle) : ViewModel() {\n    val draft = saved.getStateFlow(\"draft\", \"\")\n    private val _notes = MutableStateFlow<List<String>>(emptyList())\n    val notes = _notes.asStateFlow()\n\n    fun onDraftChange(text: String) { saved[\"draft\"] = text }\n    fun save() {\n        val text = draft.value.trim()\n        if (text.isEmpty()) return\n        _notes.value = listOf(text) + _notes.value\n        saved[\"draft\"] = \"\"\n    }\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "and-notes-test-death",
+        "titleEn": "Prove it survives",
+        "titleAr": "أثبت أنها تنجو",
+        "bodyEn": "Type a draft and rotate: it stays. Now press Home and run adb shell am kill com.example.quicknotes, then open the app from Recents: the draft must still be there, while the saved notes list is empty (it lived only in memory).\n\nWrite down why the two behave differently; you will fix the list in a later phase with Room.",
+        "bodyAr": "اكتب مسودة ودوّر الشاشة: تبقى. ثم اضغط Home وشغّل adb shell am kill com.example.quicknotes، وافتح التطبيق من التطبيقات الأخيرة: يجب أن تبقى المسودة، بينما قائمة الملاحظات فارغة (كانت في الذاكرة فقط).\n\nواكتب لماذا يختلف سلوكهما، وستصلح القائمة في مرحلة لاحقة بـ Room.",
+        "hintsEn": [
+          "am kill only works when the app is in the background.",
+          "Developer options > Don't keep activities is another way to test."
+        ],
+        "hintsAr": [
+          "الأمر am kill يعمل فقط عندما يكون التطبيق في الخلفية.",
+          "خيار Developer options > Don't keep activities طريقة أخرى للاختبار."
+        ]
+      },
+      {
+        "key": "and-notes-receive",
+        "titleEn": "Receive shared text",
+        "titleAr": "استقبل النص المشارك",
+        "bodyEn": "Add an intent filter for ACTION_SEND with mimeType text/plain to MainActivity. In onCreate, and in onNewIntent for an already open app, read Intent.EXTRA_TEXT and pass it to the ViewModel as the draft.\n\nTest it by sharing a page from Chrome.",
+        "bodyAr": "أضف مرشح Intent لـ ACTION_SEND مع mimeType قيمته text/plain إلى MainActivity. وفي onCreate، وفي onNewIntent للتطبيق المفتوح مسبقًا، اقرأ Intent.EXTRA_TEXT ومرّره إلى ViewModel كمسودة.\n\nواختبره بمشاركة صفحة من Chrome.",
+        "hintsEn": [
+          "The Activity needs android:exported=\"true\" for the filter to work.",
+          "Only take the text when intent?.action == Intent.ACTION_SEND."
+        ],
+        "hintsAr": [
+          "تحتاج Activity إلى android:exported=\"true\" حتى يعمل المرشح.",
+          "خذ النص فقط عندما يكون intent?.action == Intent.ACTION_SEND."
+        ],
+        "code": "<intent-filter>\n    <action android:name=\"android.intent.action.SEND\" />\n    <category android:name=\"android.intent.category.DEFAULT\" />\n    <data android:mimeType=\"text/plain\" />\n</intent-filter>",
+        "language": "xml"
+      },
+      {
+        "key": "and-notes-share",
+        "titleEn": "Share notes out",
+        "titleAr": "شارك الملاحظات",
+        "bodyEn": "Give each note a Share icon button that builds an ACTION_SEND Intent with EXTRA_TEXT and starts it inside Intent.createChooser. No permission is needed.",
+        "bodyAr": "أعطِ كل ملاحظة زر أيقونة Share يبني Intent بـ ACTION_SEND مع EXTRA_TEXT ويشغّله داخل Intent.createChooser. ولا يحتاج ذلك أي إذن.",
+        "hintsEn": [
+          "Get the Context in Compose with LocalContext.current.",
+          "Icons.Default.Share is in material-icons-core."
+        ],
+        "hintsAr": [
+          "احصل على Context في Compose بـ LocalContext.current.",
+          "الأيقونة Icons.Default.Share موجودة في material-icons-core."
+        ]
+      },
+      {
+        "key": "and-notes-permission",
+        "titleEn": "Ask for notifications in context",
+        "titleAr": "اطلب الإشعارات في سياقها",
+        "bodyEn": "Add a \"Remind me\" switch. When the user turns it on, on Android 13+ check POST_NOTIFICATIONS and request it with rememberLauncherForActivityResult. If it is denied, turn the switch back off and show a short line with an \"Open settings\" button.\n\nDeclare the permission in the manifest. Don't send real reminders yet; that comes with WorkManager.",
+        "bodyAr": "أضف مفتاح «ذكّرني». وعندما يفعّله المستخدم، على Android 13 فأحدث افحص POST_NOTIFICATIONS واطلبه بـ rememberLauncherForActivityResult. وإذا رُفض أعد المفتاح إلى الإيقاف واعرض سطرًا قصيرًا مع زر «Open settings».\n\nوعرّف الإذن في ملف Manifest. ولا ترسل تذكيرات حقيقية بعد، فذلك يأتي مع WorkManager.",
+        "hintsEn": [
+          "Build.VERSION.SDK_INT >= 33 means Android 13 or newer.",
+          "Settings.ACTION_APP_NOTIFICATION_SETTINGS with EXTRA_APP_PACKAGE opens the right page."
+        ],
+        "hintsAr": [
+          "الشرط Build.VERSION.SDK_INT >= 33 يعني Android 13 أو أحدث.",
+          "الإعداد Settings.ACTION_APP_NOTIFICATION_SETTINGS مع EXTRA_APP_PACKAGE تفتح الصفحة الصحيحة."
+        ]
+      },
+      {
+        "key": "and-notes-resources",
+        "titleEn": "Arabic, dark mode and flavors",
+        "titleAr": "العربية والوضع الداكن والنكهات",
+        "bodyEn": "Move every text into strings.xml and add values-ar/strings.xml. Check the layout in Arabic and in dark mode on the emulator.\n\nThen add staging and production flavors, staging with applicationIdSuffix \".staging\" and its own app name, install both, and build bundleProductionRelease.",
+        "bodyAr": "انقل كل نص إلى strings.xml وأضف values-ar/strings.xml. وافحص التصميم بالعربية وفي الوضع الداكن على المحاكي.\n\nثم أضف نكهتي staging وproduction، وstaging مع applicationIdSuffix \".staging\" واسم تطبيق خاص بها، وثبّت الاثنتين، وابنِ bundleProductionRelease.",
+        "hintsEn": [
+          "Use padding with start/end, never left/right.",
+          "resValue(\"string\", \"app_name\", \"QuickNotes Staging\") sets a name per flavor."
+        ],
+        "hintsAr": [
+          "استخدم الهوامش بـ start وend، لا left وright أبدًا.",
+          "الدالة resValue(\"string\", \"app_name\", \"QuickNotes Staging\") يضبط اسمًا لكل نكهة."
+        ]
+      },
+      {
+        "key": "and-notes-finish",
+        "titleEn": "Check and publish to GitHub",
+        "titleAr": "افحص وانشر على GitHub",
+        "bodyEn": "Go through the acceptance criteria one by one, with Logcat open to catch any warning or crash. Push the project to GitHub with a README that lists what the app demonstrates and two screenshots, one in Arabic.",
+        "bodyAr": "مُرّ على معايير القبول واحدًا تلو الآخر مع فتح Logcat لالتقاط أي تحذير أو انهيار. وارفع المشروع إلى GitHub مع README يسرد ما يوضحه التطبيق ولقطتي شاشة، إحداهما بالعربية.",
+        "hintsEn": [
+          "Add .gitignore entries for local.properties and build/ (the template already does).",
+          "Never commit a keystore."
+        ],
+        "hintsAr": [
+          "أضف local.properties وbuild/ إلى .gitignore (القالب يفعل ذلك بالفعل).",
+          "لا ترفع ملف keystore أبدًا."
+        ]
+      }
+    ],
+    "topics": [
+      "and-app-components",
+      "and-activity-lifecycle",
+      "and-intents",
+      "and-permissions"
+    ]
+  }
+]
