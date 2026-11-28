@@ -54,6 +54,11 @@ describe('tour configuration', () => {
       for (const id of HELP_IDS) expect(c.pages[id].summary.trim(), id).not.toBe('');
     }
     expect(ar.ui.welcomePoints.length).toBe(en.ui.welcomePoints.length);
+    expect(Object.keys(ar.ui.welcomeByTrack).sort()).toEqual(Object.keys(en.ui.welcomeByTrack).sort());
+    for (const [slug, w] of Object.entries(en.ui.welcomeByTrack)) {
+      expect(ar.ui.welcomeByTrack[slug].points.length, slug).toBe(w.points.length);
+      expect(w.title.trim() && ar.ui.welcomeByTrack[slug].body.trim(), slug).not.toBe('');
+    }
     expect(ar.tips.length).toBe(en.tips.length);
   });
 });
