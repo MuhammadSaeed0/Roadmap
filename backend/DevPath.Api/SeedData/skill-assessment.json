@@ -88,7 +88,8 @@
       "android-quality": "testing",
       "android-firebase": "apis",
       "android-ai-apps": "apis",
-      "android-professional": "devops"
+      "android-professional": "devops",
+      "android-specializations": "frontend"
     }
   },
 
@@ -113,7 +114,8 @@
     "android-quality": "Intermediate",
     "android-firebase": "Intermediate",
     "android-ai-apps": "Advanced",
-    "android-professional": "Intermediate"
+    "android-professional": "Intermediate",
+    "android-specializations": "Advanced"
   },
 
   "exerciseExtraCategories": {

@@ -43,6 +43,6 @@
     "outcomeEn": "You can design, build, test and publish real Android apps on Google Play and apply for Android developer roles.",
     "outcomeAr": "تصمّم تطبيقات Android حقيقية وتبنيها وتختبرها وتنشرها على Google Play، وتتقدّم لوظائف مطوّر Android.",
     "technologies": ["Kotlin", "Jetpack Compose", "Coroutines", "Room", "Retrofit", "Hilt", "Firebase"],
-    "phases": ["kotlin-fundamentals", "android-fundamentals", "android-compose", "android-architecture", "android-coroutines", "android-data", "android-networking", "android-security", "android-device", "android-quality", "android-firebase", "android-ai-apps", "android-professional"]
+    "phases": ["kotlin-fundamentals", "android-fundamentals", "android-compose", "android-architecture", "android-coroutines", "android-data", "android-networking", "android-security", "android-device", "android-quality", "android-firebase", "android-ai-apps", "android-professional", "android-specializations"]
   }
 ]

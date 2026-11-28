@@ -1,0 +1,1010 @@
+[
+  {
+    "key": "qz-and-spec-adaptive-1",
+    "topic": "and-spec-adaptive",
+    "questionEn": "What should adaptive layouts branch on?",
+    "questionAr": "على ماذا يجب أن تتفرع التخطيطات المتكيفة؟",
+    "optionsEn": [
+      "The window size class",
+      "The device model name",
+      "The Android version",
+      "The screen density"
+    ],
+    "optionsAr": [
+      "فئة حجم النافذة",
+      "اسم طراز الجهاز",
+      "إصدار Android",
+      "كثافة الشاشة"
+    ],
+    "answer": 0,
+    "explanationEn": "The same device changes class when resized or folded.",
+    "explanationAr": "يغيّر الجهاز نفسه فئته عند تغيير الحجم أو الطي."
+  },
+  {
+    "key": "qz-and-spec-adaptive-2",
+    "topic": "and-spec-adaptive",
+    "questionEn": "What does NavigationSuiteScaffold switch between?",
+    "questionAr": "بين ماذا يبدّل NavigationSuiteScaffold؟",
+    "optionsEn": [
+      "Light and dark themes",
+      "Portrait and landscape",
+      "Two activities",
+      "Bottom bar, rail and drawer"
+    ],
+    "optionsAr": [
+      "السمتين الفاتحة والداكنة",
+      "الوضعين العمودي والأفقي",
+      "نشاطين مختلفين",
+      "شريط سفلي وجانبي ودرج"
+    ],
+    "answer": 3,
+    "explanationEn": "It picks one from the window size.",
+    "explanationAr": "يختار واحدًا حسب حجم النافذة."
+  },
+  {
+    "key": "qz-and-spec-adaptive-3",
+    "topic": "and-spec-adaptive",
+    "questionEn": "What does ListDetailPaneScaffold show on a wide window?",
+    "questionAr": "ماذا يعرض ListDetailPaneScaffold في نافذة عريضة؟",
+    "optionsEn": [
+      "A full-screen dialog window",
+      "A modal bottom sheet only",
+      "List and detail side by side",
+      "Only the detail pane"
+    ],
+    "optionsAr": [
+      "نافذة حوار بملء الشاشة",
+      "لوحة سفلية منبثقة فقط",
+      "القائمة والتفاصيل متجاورتين",
+      "لوحة التفاصيل وحدها فقط"
+    ],
+    "answer": 2,
+    "explanationEn": "On compact windows it shows one pane.",
+    "explanationAr": "وفي النوافذ الضيقة يعرض لوحة واحدة."
+  },
+  {
+    "key": "qz-and-spec-adaptive-4",
+    "topic": "and-spec-adaptive",
+    "questionEn": "Where should the selected item be kept so resizing keeps it?",
+    "questionAr": "أين يُحفظ العنصر المحدد حتى يبقى بعد تغيير الحجم؟",
+    "optionsEn": [
+      "Inside the layout XML",
+      "ViewModel or rememberSaveable",
+      "In a plain remember call",
+      "In a static companion field"
+    ],
+    "optionsAr": [
+      "داخل ملف XML الخاص بالتخطيط",
+      "في ViewModel أو rememberSaveable",
+      "في استدعاء remember عادي",
+      "في حقل ثابت داخل الصنف"
+    ],
+    "answer": 1,
+    "explanationEn": "Plain remember is lost on recreation.",
+    "explanationAr": "يضيع remember العادي عند إعادة الإنشاء."
+  },
+  {
+    "key": "qz-and-spec-adaptive-5",
+    "topic": "and-spec-adaptive",
+    "questionEn": "A half-opened horizontal fold is called:",
+    "questionAr": "يُسمى الطي الأفقي نصف المفتوح:",
+    "optionsEn": [
+      "Tabletop posture",
+      "Book posture",
+      "Flat posture",
+      "Tent posture"
+    ],
+    "optionsAr": [
+      "وضع الطاولة",
+      "وضع الكتاب",
+      "الوضع المسطح",
+      "وضع الخيمة"
+    ],
+    "answer": 0,
+    "explanationEn": "Content above, controls below the hinge.",
+    "explanationAr": "المحتوى فوق المفصل والأزرار تحته."
+  },
+  {
+    "key": "qz-and-spec-adaptive-6",
+    "topic": "and-spec-adaptive",
+    "questionEn": "Which API reports fold position and state?",
+    "questionAr": "أي واجهة تبلّغ عن موضع الطي وحالته؟",
+    "optionsEn": [
+      "SensorManager",
+      "DisplayMetrics",
+      "ActivityManager",
+      "WindowInfoTracker"
+    ],
+    "optionsAr": [
+      "SensorManager",
+      "DisplayMetrics",
+      "ActivityManager",
+      "WindowInfoTracker"
+    ],
+    "answer": 3,
+    "explanationEn": "It emits FoldingFeature objects.",
+    "explanationAr": "تُصدر كائنات FoldingFeature."
+  },
+  {
+    "key": "qz-and-spec-adaptive-7",
+    "topic": "and-spec-adaptive",
+    "questionEn": "Which modifier accepts content dropped from other apps?",
+    "questionAr": "أي معدّل يستقبل محتوى مُفلتًا من تطبيقات أخرى؟",
+    "optionsEn": [
+      "focusable",
+      "pointerHoverIcon",
+      "dragAndDropTarget",
+      "clickable"
+    ],
+    "optionsAr": [
+      "focusable",
+      "pointerHoverIcon",
+      "dragAndDropTarget",
+      "clickable"
+    ],
+    "answer": 2,
+    "explanationEn": "It works between apps in split screen.",
+    "explanationAr": "يعمل بين التطبيقات في الشاشة المقسمة."
+  },
+  {
+    "key": "qz-and-spec-adaptive-8",
+    "topic": "and-spec-adaptive",
+    "questionEn": "What does Android 16 change for large screens?",
+    "questionAr": "ماذا يغيّر Android 16 في الشاشات الكبيرة؟",
+    "optionsEn": [
+      "Foldables need root",
+      "Apps can't lock orientation",
+      "Apps must use XML",
+      "Tablets drop Compose"
+    ],
+    "optionsAr": [
+      "تحتاج القابلة للطي إلى root",
+      "لا تستطيع التطبيقات قفل الاتجاه",
+      "يجب أن تستخدم التطبيقات XML",
+      "تتخلى الأجهزة اللوحية عن Compose"
+    ],
+    "answer": 1,
+    "explanationEn": "Most apps must handle any size there.",
+    "explanationAr": "يجب أن تتعامل معظم التطبيقات مع أي حجم هناك."
+  },
+  {
+    "key": "qz-and-spec-kmp-1",
+    "topic": "and-spec-kmp",
+    "questionEn": "Which source set holds code for every target?",
+    "questionAr": "أي مجموعة مصادر تحمل الكود لكل الأهداف؟",
+    "optionsEn": [
+      "androidMain",
+      "iosMain",
+      "main",
+      "commonMain"
+    ],
+    "optionsAr": [
+      "androidMain",
+      "iosMain",
+      "main",
+      "commonMain"
+    ],
+    "answer": 3,
+    "explanationEn": "Platform sets hold the rest.",
+    "explanationAr": "وتحمل مجموعات المنصات الباقي."
+  },
+  {
+    "key": "qz-and-spec-kmp-2",
+    "topic": "and-spec-kmp",
+    "questionEn": "What bridges a platform API into common code?",
+    "questionAr": "ما الذي يربط واجهة منصة بالكود المشترك؟",
+    "optionsEn": [
+      "lateinit and lazy",
+      "open and override",
+      "expect and actual",
+      "inline and reified"
+    ],
+    "optionsAr": [
+      "الكلمتان lateinit وlazy",
+      "الكلمتان open وoverride",
+      "التعريفان expect وactual",
+      "الكلمتان inline وreified"
+    ],
+    "answer": 2,
+    "explanationEn": "An injected interface also works.",
+    "explanationAr": "وتعمل الواجهة المحقونة أيضًا."
+  },
+  {
+    "key": "qz-and-spec-kmp-3",
+    "topic": "and-spec-kmp",
+    "questionEn": "Which networking library works in commonMain?",
+    "questionAr": "أي مكتبة شبكة تعمل في commonMain؟",
+    "optionsEn": [
+      "HttpURLConnection",
+      "Ktor",
+      "Retrofit",
+      "Volley"
+    ],
+    "optionsAr": [
+      "HttpURLConnection",
+      "Ktor",
+      "Retrofit",
+      "Volley"
+    ],
+    "answer": 1,
+    "explanationEn": "Each platform plugs in its own engine.",
+    "explanationAr": "تضيف كل منصة محركها الخاص."
+  },
+  {
+    "key": "qz-and-spec-kmp-4",
+    "topic": "and-spec-kmp",
+    "questionEn": "How does the iOS app use the shared module?",
+    "questionAr": "كيف يستخدم تطبيق iOS الوحدة المشتركة؟",
+    "optionsEn": [
+      "As a framework in Xcode",
+      "As an APK",
+      "Through a web view",
+      "As a JAR file"
+    ],
+    "optionsAr": [
+      "كإطار عمل في Xcode",
+      "كملف APK",
+      "عبر web view",
+      "كملف JAR"
+    ],
+    "answer": 0,
+    "explanationEn": "Gradle builds it for each iOS target.",
+    "explanationAr": "يبنيه Gradle لكل هدف iOS."
+  },
+  {
+    "key": "qz-and-spec-kmp-5",
+    "topic": "and-spec-kmp",
+    "questionEn": "What does SKIE improve for Swift callers?",
+    "questionAr": "ماذا تحسّن أداة SKIE لمن يستدعي من Swift؟",
+    "optionsEn": [
+      "The Android build speed",
+      "The final app bundle size",
+      "The Play Store review time",
+      "Flows and suspend functions"
+    ],
+    "optionsAr": [
+      "سرعة بناء تطبيق Android",
+      "حجم حزمة التطبيق النهائية",
+      "زمن مراجعة متجر Play",
+      "التدفقات والدوال المعلقة"
+    ],
+    "answer": 3,
+    "explanationEn": "They become AsyncSequence and async.",
+    "explanationAr": "تصبح AsyncSequence وasync."
+  },
+  {
+    "key": "qz-and-spec-kmp-6",
+    "topic": "and-spec-kmp",
+    "questionEn": "Which layers do teams usually share first?",
+    "questionAr": "أي الطبقات تشاركها الفرق أولًا عادة؟",
+    "optionsEn": [
+      "Only resources",
+      "The manifest",
+      "Data and domain",
+      "Only the UI"
+    ],
+    "optionsAr": [
+      "الموارد فقط",
+      "ملف البيان",
+      "البيانات والمجال",
+      "الواجهة فقط"
+    ],
+    "answer": 2,
+    "explanationEn": "UI sharing is decided per screen.",
+    "explanationAr": "وتُقرر مشاركة الواجهة لكل شاشة."
+  },
+  {
+    "key": "qz-and-spec-kmp-7",
+    "topic": "and-spec-kmp",
+    "questionEn": "What lets you share UI with iOS too?",
+    "questionAr": "ما الذي يتيح مشاركة الواجهة مع iOS أيضًا؟",
+    "optionsEn": [
+      "Data Binding library",
+      "Compose Multiplatform",
+      "Jetpack Glance widgets",
+      "View Binding classes"
+    ],
+    "optionsAr": [
+      "Data Binding library",
+      "Compose Multiplatform",
+      "Jetpack Glance widgets",
+      "View Binding classes"
+    ],
+    "answer": 1,
+    "explanationEn": "It's stable on iOS.",
+    "explanationAr": "وهي مستقرة على iOS."
+  },
+  {
+    "key": "qz-and-spec-kmp-8",
+    "topic": "and-spec-kmp",
+    "questionEn": "Where do tests that run on every target go?",
+    "questionAr": "أين توضع الاختبارات التي تعمل على كل الأهداف؟",
+    "optionsEn": [
+      "commonTest",
+      "androidTest",
+      "testDebug",
+      "iosApp"
+    ],
+    "optionsAr": [
+      "commonTest",
+      "androidTest",
+      "testDebug",
+      "iosApp"
+    ],
+    "answer": 0,
+    "explanationEn": "Use kotlin.test assertions.",
+    "explanationAr": "استخدم تأكيدات kotlin.test."
+  },
+  {
+    "key": "qz-and-spec-wear-1",
+    "topic": "and-spec-wear",
+    "questionEn": "How long do most watch interactions last?",
+    "questionAr": "كم تستمر معظم تفاعلات الساعة؟",
+    "optionsEn": [
+      "A few seconds",
+      "About ten minutes",
+      "Half an hour",
+      "A full hour"
+    ],
+    "optionsAr": [
+      "بضع ثوانٍ",
+      "نحو عشر دقائق",
+      "نصف ساعة",
+      "ساعة كاملة"
+    ],
+    "answer": 0,
+    "explanationEn": "Design one task per screen.",
+    "explanationAr": "صمّم لمهمة واحدة في كل شاشة."
+  },
+  {
+    "key": "qz-and-spec-wear-2",
+    "topic": "and-spec-wear",
+    "questionEn": "Which list scales items near the round edges?",
+    "questionAr": "أي قائمة تكبّر العناصر قرب الحواف الدائرية؟",
+    "optionsEn": [
+      "LazyVerticalGrid",
+      "RecyclerView",
+      "FlowRow",
+      "TransformingLazyColumn"
+    ],
+    "optionsAr": [
+      "LazyVerticalGrid",
+      "RecyclerView",
+      "FlowRow",
+      "TransformingLazyColumn"
+    ],
+    "answer": 3,
+    "explanationEn": "ScalingLazyColumn does the same.",
+    "explanationAr": "ويفعل ScalingLazyColumn الشيء نفسه."
+  },
+  {
+    "key": "qz-and-spec-wear-3",
+    "topic": "and-spec-wear",
+    "questionEn": "What does swiping right do in a Wear app?",
+    "questionAr": "ماذا يفعل السحب لليمين في تطبيق Wear؟",
+    "optionsEn": [
+      "Starts a workout",
+      "Locks the watch",
+      "Goes back",
+      "Opens settings"
+    ],
+    "optionsAr": [
+      "يبدأ تمرينًا",
+      "يقفل الساعة",
+      "يرجع للخلف",
+      "يفتح الإعدادات"
+    ],
+    "answer": 2,
+    "explanationEn": "Use SwipeDismissableNavHost.",
+    "explanationAr": "استخدم SwipeDismissableNavHost."
+  },
+  {
+    "key": "qz-and-spec-wear-4",
+    "topic": "and-spec-wear",
+    "questionEn": "What are tiles for?",
+    "questionAr": "لماذا تُستخدم البلاطات؟",
+    "optionsEn": [
+      "App settings screens only",
+      "Quick summaries and actions",
+      "Long text articles to read",
+      "Full video playback"
+    ],
+    "optionsAr": [
+      "شاشات إعدادات التطبيق فقط",
+      "ملخصات وإجراءات سريعة",
+      "مقالات نصية طويلة للقراءة",
+      "تشغيل الفيديو كاملًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Users swipe to them from the watch face.",
+    "explanationAr": "يسحب المستخدمون إليها من واجهة الساعة."
+  },
+  {
+    "key": "qz-and-spec-wear-5",
+    "topic": "and-spec-wear",
+    "questionEn": "Where do complications appear?",
+    "questionAr": "أين تظهر الإضافات؟",
+    "optionsEn": [
+      "On watch faces",
+      "In the phone's status bar",
+      "In Play Store listings",
+      "In the app's settings"
+    ],
+    "optionsAr": [
+      "على واجهات الساعة",
+      "في شريط حالة الهاتف",
+      "في صفحات متجر Play",
+      "في إعدادات التطبيق"
+    ],
+    "answer": 0,
+    "explanationEn": "The user chooses which ones to show.",
+    "explanationAr": "يختار المستخدم أيها يعرض."
+  },
+  {
+    "key": "qz-and-spec-wear-6",
+    "topic": "and-spec-wear",
+    "questionEn": "What tracks workouts with heart rate efficiently?",
+    "questionAr": "ما الذي يتتبع التمارين مع نبض القلب بكفاءة؟",
+    "optionsEn": [
+      "Raw SensorManager",
+      "Location polling",
+      "A WorkManager job",
+      "Health Services"
+    ],
+    "optionsAr": [
+      "واجهة SensorManager مباشرة",
+      "سؤال الموقع المتكرر",
+      "مهمة WorkManager",
+      "خدمة Health Services"
+    ],
+    "answer": 3,
+    "explanationEn": "It batches sensor work to save battery.",
+    "explanationAr": "تجمّع عمل الحساسات لتوفير البطارية."
+  },
+  {
+    "key": "qz-and-spec-wear-7",
+    "topic": "and-spec-wear",
+    "questionEn": "Which API syncs data with the phone app?",
+    "questionAr": "أي واجهة تزامن البيانات مع تطبيق الهاتف؟",
+    "optionsEn": [
+      "SharedPreferences",
+      "ContentProvider only",
+      "The Data Layer API",
+      "Firebase Hosting"
+    ],
+    "optionsAr": [
+      "ملف SharedPreferences",
+      "مزوّد ContentProvider فقط",
+      "واجهة Data Layer",
+      "خدمة Firebase Hosting"
+    ],
+    "answer": 2,
+    "explanationEn": "DataClient, MessageClient and ChannelClient.",
+    "explanationAr": "واجهات DataClient وMessageClient وChannelClient."
+  },
+  {
+    "key": "qz-and-spec-wear-8",
+    "topic": "and-spec-wear",
+    "questionEn": "Why should Wear apps be standalone?",
+    "questionAr": "لماذا يجب أن تكون تطبيقات Wear مستقلة؟",
+    "optionsEn": [
+      "It makes the APK smaller",
+      "The phone may be absent",
+      "Play forbids phone apps",
+      "Watches can't use Bluetooth"
+    ],
+    "optionsAr": [
+      "لأنه يصغّر APK",
+      "قد لا يكون الهاتف موجودًا",
+      "لأن Play تمنع تطبيقات الهاتف",
+      "لأن الساعات لا تستخدم Bluetooth"
+    ],
+    "answer": 1,
+    "explanationEn": "Some users pair with an iPhone.",
+    "explanationAr": "بعض المستخدمين يقرنون ساعتهم بـ iPhone."
+  },
+  {
+    "key": "qz-and-spec-tv-1",
+    "topic": "and-spec-tv",
+    "questionEn": "How do users move around a TV app?",
+    "questionAr": "كيف يتنقل المستخدمون في تطبيق التلفزيون؟",
+    "optionsEn": [
+      "With a stylus pen",
+      "By shaking the remote",
+      "With a D-pad remote",
+      "By touching the screen"
+    ],
+    "optionsAr": [
+      "بقلم الكتابة الرقمي",
+      "بهز جهاز التحكم بقوة",
+      "بجهاز تحكم بأزرار اتجاه",
+      "بلمس شاشة التلفزيون"
+    ],
+    "answer": 2,
+    "explanationEn": "Every element must be focusable.",
+    "explanationAr": "يجب أن يكون كل عنصر قابلًا للتركيز."
+  },
+  {
+    "key": "qz-and-spec-tv-2",
+    "topic": "and-spec-tv",
+    "questionEn": "What sets initial focus on a TV screen?",
+    "questionAr": "ما الذي يضبط التركيز الأولي في شاشة التلفزيون؟",
+    "optionsEn": [
+      "A BroadcastReceiver",
+      "A FocusRequester",
+      "A Toast",
+      "A Snackbar"
+    ],
+    "optionsAr": [
+      "BroadcastReceiver",
+      "FocusRequester",
+      "Toast",
+      "Snackbar"
+    ],
+    "answer": 1,
+    "explanationEn": "Never leave the user without focus.",
+    "explanationAr": "لا تترك المستخدم دون تركيز أبدًا."
+  },
+  {
+    "key": "qz-and-spec-tv-3",
+    "topic": "and-spec-tv",
+    "questionEn": "Which component shows featured items on TV?",
+    "questionAr": "أي مكوّن يعرض العناصر المميزة على التلفزيون؟",
+    "optionsEn": [
+      "Carousel",
+      "BottomSheet",
+      "Snackbar",
+      "DatePicker"
+    ],
+    "optionsAr": [
+      "Carousel",
+      "BottomSheet",
+      "Snackbar",
+      "DatePicker"
+    ],
+    "answer": 0,
+    "explanationEn": "It's part of Compose for TV.",
+    "explanationAr": "وهو جزء من Compose for TV."
+  },
+  {
+    "key": "qz-and-spec-tv-4",
+    "topic": "and-spec-tv",
+    "questionEn": "Why keep 48 dp horizontal margins on TV?",
+    "questionAr": "لماذا تحتفظ بهوامش أفقية 48 dp على التلفزيون؟",
+    "optionsEn": [
+      "To save battery",
+      "To pass lint",
+      "To speed up scrolling",
+      "To avoid overscan cropping"
+    ],
+    "optionsAr": [
+      "لتوفير البطارية",
+      "لاجتياز lint",
+      "لتسريع التمرير",
+      "لتجنب القص على الحواف"
+    ],
+    "answer": 3,
+    "explanationEn": "Some TVs cut off the edges.",
+    "explanationAr": "بعض التلفزيونات تقص الحواف."
+  },
+  {
+    "key": "qz-and-spec-tv-5",
+    "topic": "and-spec-tv",
+    "questionEn": "Which intent category puts the app on the TV launcher?",
+    "questionAr": "أي فئة نية تضع التطبيق في مشغّل التلفزيون؟",
+    "optionsEn": [
+      "BROWSABLE",
+      "DEFAULT only",
+      "LEANBACK_LAUNCHER",
+      "HOME"
+    ],
+    "optionsAr": [
+      "BROWSABLE",
+      "DEFAULT only",
+      "LEANBACK_LAUNCHER",
+      "HOME"
+    ],
+    "answer": 2,
+    "explanationEn": "Add a banner image too.",
+    "explanationAr": "أضف صورة شعار أيضًا."
+  },
+  {
+    "key": "qz-and-spec-tv-6",
+    "topic": "and-spec-tv",
+    "questionEn": "What makes the remote's play and pause buttons work?",
+    "questionAr": "ما الذي يجعل زري التشغيل والإيقاف في جهاز التحكم يعملان؟",
+    "optionsEn": [
+      "A WebView",
+      "A MediaSession",
+      "A custom key handler",
+      "A foreground toast"
+    ],
+    "optionsAr": [
+      "عرض WebView",
+      "جلسة MediaSession",
+      "معالج مفاتيح مخصص",
+      "رسالة Toast أمامية"
+    ],
+    "answer": 1,
+    "explanationEn": "It also enables Assistant commands.",
+    "explanationAr": "وتتيح أيضًا أوامر Assistant."
+  },
+  {
+    "key": "qz-and-spec-tv-7",
+    "topic": "and-spec-tv",
+    "questionEn": "What does focusRestorer help with?",
+    "questionAr": "بماذا يساعد focusRestorer؟",
+    "optionsEn": [
+      "Returning to the last card",
+      "Making all text larger",
+      "Playing HDR video files",
+      "Signing the release app"
+    ],
+    "optionsAr": [
+      "العودة إلى آخر بطاقة",
+      "تكبير النص كله",
+      "تشغيل ملفات فيديو HDR",
+      "توقيع تطبيق الإصدار"
+    ],
+    "answer": 0,
+    "explanationEn": "Back lands where the user was.",
+    "explanationAr": "يعود الرجوع إلى حيث كان المستخدم."
+  },
+  {
+    "key": "qz-and-spec-tv-8",
+    "topic": "and-spec-tv",
+    "questionEn": "How do you add \"continue watching\" on Google TV?",
+    "questionAr": "كيف تضيف «تابع المشاهدة» في Google TV؟",
+    "optionsEn": [
+      "Pin an ongoing notification",
+      "Post the data to Firebase",
+      "Add a home-screen widget",
+      "Publish through the Engage SDK"
+    ],
+    "optionsAr": [
+      "تثبيت إشعار مستمر",
+      "نشر البيانات إلى Firebase",
+      "إضافة أداة للشاشة الرئيسية",
+      "النشر عبر Engage SDK"
+    ],
+    "answer": 3,
+    "explanationEn": "Update it as playback progresses.",
+    "explanationAr": "حدّثه مع تقدم التشغيل."
+  },
+  {
+    "key": "qz-and-spec-auto-1",
+    "topic": "and-spec-auto",
+    "questionEn": "What's the difference between Android Auto and Automotive OS?",
+    "questionAr": "ما الفرق بين Android Auto وAutomotive OS؟",
+    "optionsEn": [
+      "Auto mirrors, Automotive is built in",
+      "They're exactly the same product",
+      "Auto is only made for trucks",
+      "Automotive always needs a phone"
+    ],
+    "optionsAr": [
+      "الأول يعرض والثاني يعمل في السيارة",
+      "هما المنتج نفسه تمامًا",
+      "الأول مخصص للشاحنات الكبيرة فقط",
+      "الثاني يحتاج هاتفًا دائمًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Automotive apps are installed in the car.",
+    "explanationAr": "تُثبت تطبيقات Automotive في السيارة."
+  },
+  {
+    "key": "qz-and-spec-auto-2",
+    "topic": "and-spec-auto",
+    "questionEn": "Who draws a media app's UI in the car?",
+    "questionAr": "من يرسم واجهة تطبيق الوسائط في السيارة؟",
+    "optionsEn": [
+      "Your Compose code",
+      "A WebView",
+      "The phone's launcher",
+      "The car's host"
+    ],
+    "optionsAr": [
+      "كود Compose لديك",
+      "عرض WebView",
+      "مشغّل الهاتف",
+      "مضيف السيارة"
+    ],
+    "answer": 3,
+    "explanationEn": "You provide the media tree and session.",
+    "explanationAr": "توفر أنت شجرة الوسائط والجلسة."
+  },
+  {
+    "key": "qz-and-spec-auto-3",
+    "topic": "and-spec-auto",
+    "questionEn": "Which service exposes a media library to cars?",
+    "questionAr": "أي خدمة تعرض مكتبة الوسائط للسيارات؟",
+    "optionsEn": [
+      "AccessibilityService",
+      "VpnService",
+      "MediaLibraryService",
+      "JobService"
+    ],
+    "optionsAr": [
+      "AccessibilityService",
+      "VpnService",
+      "MediaLibraryService",
+      "JobService"
+    ],
+    "answer": 2,
+    "explanationEn": "It's part of Media3.",
+    "explanationAr": "وهي جزء من Media3."
+  },
+  {
+    "key": "qz-and-spec-auto-4",
+    "topic": "and-spec-auto",
+    "questionEn": "How do messaging apps work in the car?",
+    "questionAr": "كيف تعمل تطبيقات المراسلة في السيارة؟",
+    "optionsEn": [
+      "Through email only",
+      "MessagingStyle notifications",
+      "A custom chat screen",
+      "A floating chat window"
+    ],
+    "optionsAr": [
+      "عبر البريد الإلكتروني فقط",
+      "إشعارات MessagingStyle",
+      "شاشة محادثة مخصصة",
+      "نافذة محادثة عائمة"
+    ],
+    "answer": 1,
+    "explanationEn": "Add reply and mark-as-read actions.",
+    "explanationAr": "أضف إجراءي الرد والتعليم كمقروء."
+  },
+  {
+    "key": "qz-and-spec-auto-5",
+    "topic": "and-spec-auto",
+    "questionEn": "What do Car App Library screens return?",
+    "questionAr": "ماذا تُرجع شاشات Car App Library؟",
+    "optionsEn": [
+      "A template",
+      "A Composable",
+      "A layout XML",
+      "An HTML page"
+    ],
+    "optionsAr": [
+      "قالبًا",
+      "دالة Composable",
+      "ملف XML للتخطيط",
+      "صفحة HTML"
+    ],
+    "answer": 0,
+    "explanationEn": "For example ListTemplate or PaneTemplate.",
+    "explanationAr": "مثل ListTemplate أو PaneTemplate."
+  },
+  {
+    "key": "qz-and-spec-auto-6",
+    "topic": "and-spec-auto",
+    "questionEn": "Why does the host limit rows while driving?",
+    "questionAr": "لماذا يحد المضيف الصفوف أثناء القيادة؟",
+    "optionsEn": [
+      "To save mobile data",
+      "To speed up rendering",
+      "To reduce app size",
+      "To limit driver distraction"
+    ],
+    "optionsAr": [
+      "لتوفير بيانات الهاتف",
+      "لتسريع الرسم",
+      "لتصغير التطبيق",
+      "للحد من تشتيت السائق"
+    ],
+    "answer": 3,
+    "explanationEn": "Safety rules shape every car app.",
+    "explanationAr": "قواعد السلامة تشكّل كل تطبيق سيارة."
+  },
+  {
+    "key": "qz-and-spec-auto-7",
+    "topic": "and-spec-auto",
+    "questionEn": "What tests Android Auto on a computer?",
+    "questionAr": "ما الذي يختبر Android Auto على الحاسوب؟",
+    "optionsEn": [
+      "Layout Inspector",
+      "Baseline Profiles",
+      "The Desktop Head Unit",
+      "The Wear emulator"
+    ],
+    "optionsAr": [
+      "أداة Layout Inspector",
+      "ملفات Baseline Profiles",
+      "أداة Desktop Head Unit",
+      "محاكي Wear"
+    ],
+    "answer": 2,
+    "explanationEn": "Automotive OS has its own emulator images.",
+    "explanationAr": "ولـ Automotive OS صور محاكٍ خاصة."
+  },
+  {
+    "key": "qz-and-spec-auto-8",
+    "topic": "and-spec-auto",
+    "questionEn": "Which category uses the Car App Library?",
+    "questionAr": "أي فئة تستخدم Car App Library؟",
+    "optionsEn": [
+      "Audiobook players",
+      "EV charging",
+      "Music streaming",
+      "Podcast players"
+    ],
+    "optionsAr": [
+      "مشغلات الكتب الصوتية",
+      "شحن السيارات الكهربائية",
+      "بث الموسيقى عبر الإنترنت",
+      "مشغلات البودكاست"
+    ],
+    "answer": 1,
+    "explanationEn": "Audio apps use the media APIs instead.",
+    "explanationAr": "تستخدم تطبيقات الصوت واجهات الوسائط بدلًا منها."
+  },
+  {
+    "key": "qz-and-spec-xr-1",
+    "topic": "and-spec-xr",
+    "questionEn": "How do existing Android apps run on Android XR?",
+    "questionAr": "كيف تعمل تطبيقات Android الموجودة على Android XR؟",
+    "optionsEn": [
+      "Only as home widgets",
+      "Only inside a browser",
+      "As 2D panels in space",
+      "They can't run at all"
+    ],
+    "optionsAr": [
+      "كأدوات للشاشة الرئيسية فقط",
+      "داخل متصفح الويب فقط",
+      "كلوحات ثنائية الأبعاد في المساحة",
+      "لا تعمل على الإطلاق"
+    ],
+    "answer": 2,
+    "explanationEn": "Adaptive apps already feel right.",
+    "explanationAr": "التطبيقات المتكيفة مناسبة أصلًا."
+  },
+  {
+    "key": "qz-and-spec-xr-2",
+    "topic": "and-spec-xr",
+    "questionEn": "What's the first step toward a good XR app?",
+    "questionAr": "ما الخطوة الأولى نحو تطبيق XR جيد؟",
+    "optionsEn": [
+      "Drop phone support",
+      "Make it adaptive",
+      "Add 3D models",
+      "Write OpenGL code"
+    ],
+    "optionsAr": [
+      "إسقاط دعم الهاتف",
+      "جعله متكيفًا",
+      "إضافة نماذج ثلاثية الأبعاد",
+      "كتابة كود OpenGL"
+    ],
+    "answer": 1,
+    "explanationEn": "Large-screen work carries over.",
+    "explanationAr": "عمل الشاشات الكبيرة ينتقل إليه."
+  },
+  {
+    "key": "qz-and-spec-xr-3",
+    "topic": "and-spec-xr",
+    "questionEn": "What is an orbiter?",
+    "questionAr": "ما هو المدار؟",
+    "optionsEn": [
+      "Floating controls on a panel's edge",
+      "A file format for 3D models",
+      "A sensor for hand tracking",
+      "A kind of XR headset"
+    ],
+    "optionsAr": [
+      "أزرار عائمة على حافة لوحة",
+      "صيغة ملفات للنماذج ثلاثية الأبعاد",
+      "حساس مخصص لتتبع اليدين",
+      "نوع من أجهزة رأس XR"
+    ],
+    "answer": 0,
+    "explanationEn": "Toolbars and rails often become orbiters.",
+    "explanationAr": "تصبح أشرطة الأدوات والتنقل مدارات غالبًا."
+  },
+  {
+    "key": "qz-and-spec-xr-4",
+    "topic": "and-spec-xr",
+    "questionEn": "When does spatial UI appear?",
+    "questionAr": "متى تظهر الواجهة المكانية؟",
+    "optionsEn": [
+      "In Home Space only",
+      "On every phone",
+      "Only in debug builds",
+      "In Full Space mode"
+    ],
+    "optionsAr": [
+      "في Home Space فقط",
+      "في كل هاتف",
+      "في بناءات debug فقط",
+      "في وضع Full Space"
+    ],
+    "answer": 3,
+    "explanationEn": "Check LocalSpatialCapabilities.",
+    "explanationAr": "افحص LocalSpatialCapabilities."
+  },
+  {
+    "key": "qz-and-spec-xr-5",
+    "topic": "and-spec-xr",
+    "questionEn": "Which library places 3D models in the scene?",
+    "questionAr": "أي مكتبة تضع النماذج ثلاثية الأبعاد في المشهد؟",
+    "optionsEn": [
+      "Paging",
+      "WorkManager",
+      "SceneCore",
+      "Room"
+    ],
+    "optionsAr": [
+      "Paging",
+      "WorkManager",
+      "SceneCore",
+      "Room"
+    ],
+    "answer": 2,
+    "explanationEn": "Models load from glTF files.",
+    "explanationAr": "تُحمّل النماذج من ملفات glTF."
+  },
+  {
+    "key": "qz-and-spec-xr-6",
+    "topic": "and-spec-xr",
+    "questionEn": "Why make XR targets at least 56 dp?",
+    "questionAr": "لماذا تكون أهداف XR بحجم 56 dp على الأقل؟",
+    "optionsEn": [
+      "It saves battery life",
+      "Eye targeting is less precise",
+      "Headsets have low resolution",
+      "Play requires it for apps"
+    ],
+    "optionsAr": [
+      "لأنه يوفر عمر البطارية",
+      "الاستهداف بالعين أقل دقة",
+      "دقة أجهزة الرأس منخفضة",
+      "لأن Play تشترطه للتطبيقات"
+    ],
+    "answer": 1,
+    "explanationEn": "Generous spacing helps too.",
+    "explanationAr": "وتساعد المسافات الواسعة أيضًا."
+  },
+  {
+    "key": "qz-and-spec-xr-7",
+    "topic": "and-spec-xr",
+    "questionEn": "Where should content usually be placed?",
+    "questionAr": "أين يوضع المحتوى عادة؟",
+    "optionsEn": [
+      "Slightly below eye level",
+      "Directly above the head",
+      "Behind the user's back",
+      "Down on the floor"
+    ],
+    "optionsAr": [
+      "أدنى قليلًا من مستوى العين",
+      "فوق الرأس مباشرة تمامًا",
+      "خلف ظهر المستخدم",
+      "في الأسفل على الأرض"
+    ],
+    "answer": 0,
+    "explanationEn": "Avoid forcing head turns.",
+    "explanationAr": "تجنب فرض التفات الرأس."
+  },
+  {
+    "key": "qz-and-spec-xr-8",
+    "topic": "and-spec-xr",
+    "questionEn": "What should the app keep for phones and Home Space?",
+    "questionAr": "بماذا يحتفظ التطبيق للهواتف وHome Space؟",
+    "optionsEn": [
+      "Nothing at all",
+      "A 3D-only scene",
+      "A separate APK",
+      "A normal 2D layout"
+    ],
+    "optionsAr": [
+      "لا شيء على الإطلاق",
+      "مشهد ثلاثي الأبعاد فقط",
+      "ملف APK منفصل",
+      "تخطيط ثنائي الأبعاد عادي"
+    ],
+    "answer": 3,
+    "explanationEn": "Spatial features sit behind a check.",
+    "explanationAr": "تقع الميزات المكانية خلف فحص."
+  }
+]

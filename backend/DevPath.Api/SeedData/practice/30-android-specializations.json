@@ -1,0 +1,146 @@
+[
+  {
+    "key": "and-ex-spec-adaptive",
+    "type": "Coding",
+    "topic": "and-spec-adaptive",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "Make a notes app adaptive",
+    "titleAr": "اجعل تطبيق ملاحظات متكيفًا",
+    "problemEn": "This notes screen always shows a list and navigates to a separate editor, uses a bottom bar everywhere, and keeps the open note in remember. Rewrite it with NavigationSuiteScaffold and ListDetailPaneScaffold, keep the selection in the ViewModel, and add Ctrl+N for a new note.",
+    "problemAr": "شاشة الملاحظات هذه تعرض قائمة دائمًا وتنتقل إلى محرر منفصل، وتستخدم شريطًا سفليًا في كل مكان، وتحفظ الملاحظة المفتوحة في remember. فأعد كتابتها بـ NavigationSuiteScaffold وListDetailPaneScaffold، واحفظ التحديد في ViewModel، وأضف Ctrl+N لملاحظة جديدة.",
+    "expectedEn": "Two panes on expanded windows and one on compact, correct Back behaviour, a rail on wide windows, the selection surviving resizing, and a working keyboard shortcut.",
+    "expectedAr": "لوحتان في النوافذ الواسعة وواحدة في الضيقة، وسلوك رجوع صحيح، وشريط جانبي في النوافذ العريضة، وتحديد ينجو من تغيير الحجم، واختصار لوحة مفاتيح يعمل.",
+    "hintsEn": [
+      "The scaffold navigator handles Back for you in both layouts.",
+      "Store the selected id, not the whole note, in SavedStateHandle."
+    ],
+    "hintsAr": [
+      "يتعامل موجّه الهيكل مع الرجوع نيابة عنك في التخطيطين.",
+      "احفظ المعرّف المحدد لا الملاحظة كاملة في SavedStateHandle."
+    ],
+    "solutionEn": "NotesViewModel exposes notes and selectedId from SavedStateHandle. NotesApp wraps everything in NavigationSuiteScaffold. Inside, rememberListDetailPaneScaffoldNavigator<Long>() drives ListDetailPaneScaffold: the list pane calls navigator.navigateTo(Detail, id) and viewModel.select(id); the detail pane shows the editor for contentKey or an empty state. BackHandler(navigator.canNavigateBack()) { navigator.navigateBack() }. A Modifier.onPreviewKeyEvent on the root handles Ctrl+N by creating a note and navigating to it.",
+    "solutionAr": "تعرض NotesViewModel الملاحظات وselectedId من SavedStateHandle. وتغلّف NotesApp كل شيء بـ NavigationSuiteScaffold. وفي الداخل يقود rememberListDetailPaneScaffoldNavigator<Long>() هيكل ListDetailPaneScaffold: تستدعي لوحة القائمة navigator.navigateTo(Detail, id) وviewModel.select(id)، وتعرض لوحة التفاصيل المحرر لقيمة contentKey أو حالة فارغة. ويعمل BackHandler(navigator.canNavigateBack()) { navigator.navigateBack() }. ويتعامل Modifier.onPreviewKeyEvent على الجذر مع Ctrl+N بإنشاء ملاحظة والانتقال إليها.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-spec-kmp",
+    "type": "Practical",
+    "topic": "and-spec-kmp",
+    "difficulty": "Advanced",
+    "minutes": 90,
+    "titleEn": "Share a repository with iOS",
+    "titleAr": "شارك مستودعًا مع iOS",
+    "problemEn": "Create a KMP shared module for a quotes app: a Ktor client that fetches quotes, a repository that caches them, a FeedViewModel exposing StateFlow<FeedState>, and commonTest tests with Ktor's MockEngine. Use it from the Android app and show the same data on a minimal iOS screen.",
+    "problemAr": "أنشئ وحدة KMP مشتركة لتطبيق اقتباسات: عميل Ktor يجلب الاقتباسات، ومستودعًا يخزنها مؤقتًا، وFeedViewModel تعرض StateFlow<FeedState>، واختبارات commonTest مع MockEngine من Ktor. واستخدمها من تطبيق Android واعرض البيانات نفسها في شاشة iOS بسيطة.",
+    "expectedEn": "A shared module with commonMain, androidMain and iosMain dependencies, passing commonTest tests, Android UI using the shared ViewModel, and an iOS screen that observes the state.",
+    "expectedAr": "وحدة مشتركة باعتماديات commonMain وandroidMain وiosMain، واختبارات commonTest ناجحة، وواجهة Android تستخدم ViewModel المشتركة، وشاشة iOS تراقب الحالة.",
+    "hintsEn": [
+      "Pass the HttpClient into the repository so tests can use MockEngine.",
+      "Expose sealed state classes, they map well to Swift enums with SKIE."
+    ],
+    "hintsAr": [
+      "مرّر HttpClient إلى المستودع حتى تستطيع الاختبارات استخدام MockEngine.",
+      "اعرض أصناف حالة مغلقة، فهي تتحول جيدًا إلى enum في Swift مع SKIE."
+    ],
+    "solutionEn": "commonMain: @Serializable data class Quote; class QuotesApi(client) with suspend fun latest(): List<Quote>; class QuotesRepository(api) caching the last result in a MutableStateFlow; FeedViewModel(repo) with state = repo.quotes.map(Loaded).catch(Error).stateIn(...). androidMain uses the OkHttp engine and iosMain the Darwin engine through a createClient() expect/actual. commonTest builds HttpClient(MockEngine { respond(json, headers = headersOf(\"Content-Type\", \"application/json\")) }) and asserts Loaded with two quotes, plus an error case returning 500. Android collects state with collectAsStateWithLifecycle; iOS (with SKIE) uses for await state in viewModel.state.",
+    "solutionAr": "في commonMain: ‏@Serializable data class Quote، وclass QuotesApi(client) فيها suspend fun latest(): List<Quote>، وclass QuotesRepository(api) تخزن آخر نتيجة في MutableStateFlow، وFeedViewModel(repo) فيها state = repo.quotes.map(Loaded).catch(Error).stateIn(...). ويستخدم androidMain محرك OkHttp ويستخدم iosMain محرك Darwin عبر createClient() بـ expect/actual. ويبني commonTest عميل HttpClient(MockEngine { respond(json, headers = headersOf(\"Content-Type\", \"application/json\")) }) ويتأكد من Loaded باقتباسين، مع حالة خطأ تُرجع 500. ويجمع Android الحالة بـ collectAsStateWithLifecycle، ويستخدم iOS (مع SKIE) ‏for await state in viewModel.state.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-spec-wear",
+    "type": "Practical",
+    "topic": "and-spec-wear",
+    "difficulty": "Intermediate",
+    "minutes": 75,
+    "titleEn": "A water tracker for the wrist",
+    "titleAr": "متتبع ماء على المعصم",
+    "problemEn": "Build a standalone Wear OS water tracker: a main screen with today's count and Add and Undo buttons, a tile with the count and an Add action, a ranged-value complication showing progress toward 8 glasses, and hourly reminders between 9:00 and 21:00.",
+    "problemAr": "ابنِ متتبعًا مستقلًا لشرب الماء على Wear OS: شاشة رئيسية فيها عدد اليوم وزرا الإضافة والتراجع، وبلاطة فيها العدد وإجراء الإضافة، وإضافة بقيمة متدرجة تعرض التقدم نحو 8 أكواب، وتذكيرات كل ساعة بين 9:00 و21:00.",
+    "expectedEn": "A Compose for Wear OS screen, a TileService and ComplicationDataSourceService reading the same DataStore, updates requested after each change, and WorkManager reminders.",
+    "expectedAr": "شاشة Compose for Wear OS، وTileService وComplicationDataSourceService يقرآن من DataStore نفسه، وتحديثات تُطلب بعد كل تغيير، وتذكيرات WorkManager.",
+    "hintsEn": [
+      "Call the tile and complication updaters after writing to DataStore.",
+      "A tile's clickable can launch your activity or run a LoadAction."
+    ],
+    "hintsAr": [
+      "استدعِ محدّثي البلاطة والإضافة بعد الكتابة في DataStore.",
+      "يستطيع عنصر النقر في البلاطة إطلاق نشاطك أو تشغيل LoadAction."
+    ],
+    "solutionEn": "WaterRepository wraps a DataStore with today's date and count (resetting when the date changes). The app uses AppScaffold, ScreenScaffold and TransformingLazyColumn with a ListHeader and two Buttons. After each change it calls TileService.getUpdater(context).requestUpdate(WaterTile::class.java) and ComplicationDataSourceUpdateRequester.create(...).requestUpdateAll(). WaterTile builds a layout with the count text and a clickable that launches MainActivity with an \"add\" extra. GoalComplication returns RangedValueComplicationData(value = count, min = 0, max = 8). A periodic worker posts a reminder when the hour is between 9 and 21 and the goal isn't met.",
+    "solutionAr": "تغلّف WaterRepository مخزن DataStore فيه تاريخ اليوم والعدد (ويُعاد ضبطه عند تغير التاريخ). ويستخدم التطبيق AppScaffold وScreenScaffold وTransformingLazyColumn مع ListHeader وزرين. وبعد كل تغيير يستدعي TileService.getUpdater(context).requestUpdate(WaterTile::class.java) وComplicationDataSourceUpdateRequester.create(...).requestUpdateAll(). وتبني WaterTile تخطيطًا فيه نص العدد وعنصر نقر يطلق MainActivity مع إضافة \"add\". وتُرجع GoalComplication قيمة RangedValueComplicationData(value = count, min = 0, max = 8). ويرسل عامل دوري تذكيرًا عندما تكون الساعة بين 9 و21 ولم يتحقق الهدف.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-spec-tv",
+    "type": "Debugging",
+    "topic": "and-spec-tv",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Fix focus on a TV browse screen",
+    "titleAr": "أصلح التركيز في شاشة تصفح للتلفزيون",
+    "problemEn": "On this TV browse screen nothing is focused when it opens, pressing Back from a course returns focus to the first row instead of the card you opened, and the custom \"Play\" chip can't be reached with the D-pad. Find and fix all three problems.",
+    "problemAr": "في شاشة التصفح هذه للتلفزيون لا يُركّز على أي شيء عند فتحها، ويعيد الضغط على الرجوع من دورة التركيز إلى الصف الأول بدل البطاقة التي فتحتها، ولا يمكن الوصول إلى رقاقة «Play» المخصصة بأزرار الاتجاه. فاعثر على المشكلات الثلاث وأصلحها.",
+    "expectedEn": "Initial focus on the first card, focus restored to the opened card on return, and a focusable Play control with a visible focus state.",
+    "expectedAr": "تركيز أولي على البطاقة الأولى، واستعادة التركيز إلى البطاقة المفتوحة عند العودة، وزر Play قابل للتركيز بحالة تركيز ظاهرة.",
+    "hintsEn": [
+      "Modifier.clickable on a Box isn't enough for a clear TV focus state.",
+      "Stable item keys matter for focus restoration."
+    ],
+    "hintsAr": [
+      "لا يكفي Modifier.clickable على Box لحالة تركيز واضحة على التلفزيون.",
+      "المفاتيح الثابتة للعناصر مهمة لاستعادة التركيز."
+    ],
+    "solutionEn": "1) Add a FocusRequester to the first card and request it in LaunchedEffect(Unit) once data is loaded. 2) Give LazyColumn and each LazyRow stable keys (course.id) and Modifier.focusRestorer(), so returning lands on the last focused card. 3) Replace the Box with clickable by a TV Material Button or Surface (or add Modifier.focusable() with an onFocusChanged border), so the D-pad can reach it and the focus is visible.",
+    "solutionAr": "1) أضف FocusRequester إلى البطاقة الأولى واطلبه في LaunchedEffect(Unit) بعد تحميل البيانات. 2) أعطِ LazyColumn وكل LazyRow مفاتيح ثابتة (‏course.id) وModifier.focusRestorer()، حتى تصل العودة إلى آخر بطاقة مركّز عليها. 3) استبدل Box مع clickable بـ Button أو Surface من TV Material (أو أضف Modifier.focusable() مع إطار في onFocusChanged)، حتى تصل إليه أزرار الاتجاه ويظهر التركيز.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-spec-auto",
+    "type": "Scenario",
+    "topic": "and-spec-auto",
+    "difficulty": "Intermediate",
+    "minutes": 25,
+    "titleEn": "Bring a podcast app to the car",
+    "titleAr": "انقل تطبيق بودكاست إلى السيارة",
+    "problemEn": "Your podcast app has a phone UI and plays with ExoPlayer inside the activity. Plan the work to support Android Auto: what changes in the app's architecture, what the browse tree looks like, how search and resume work, and how you'll test and get approved.",
+    "problemAr": "تطبيق البودكاست لديك له واجهة هاتف ويشغّل بـ ExoPlayer داخل النشاط. فخطط للعمل لدعم Android Auto: ماذا يتغير في بنية التطبيق، وكيف تبدو شجرة التصفح، وكيف يعمل البحث والاستئناف، وكيف ستختبر وتحصل على الموافقة.",
+    "expectedEn": "Moving playback into a MediaLibraryService, a shallow tree with tabs, voice search, resumption, manifest entries, and testing on the Desktop Head Unit against the quality guidelines.",
+    "expectedAr": "نقل التشغيل إلى MediaLibraryService، وشجرة ضحلة بتبويبات، وبحث صوتي، واستئناف، ومدخلات البيان، والاختبار على Desktop Head Unit مقابل إرشادات الجودة.",
+    "hintsEn": [
+      "The car can start playback when your activity has never been opened.",
+      "Four tabs is the usual maximum at the root."
+    ],
+    "hintsAr": [
+      "تستطيع السيارة بدء التشغيل حتى لو لم يُفتح نشاطك أبدًا.",
+      "أربعة تبويبات هي الحد المعتاد في الجذر."
+    ],
+    "solutionEn": "Architecture: move ExoPlayer into a MediaLibraryService with a MediaLibrarySession; the phone UI becomes a MediaController client, which also fixes background playback. Tree: root with up to four browsable tabs (Continue, Subscriptions, Downloads, Discover), each a list of shows or episodes with artwork and short titles; episodes are playable items. Search: implement onSearch/onGetSearchResult for voice requests like \"play the latest episode of X\". Resume: implement onPlaybackResumption so the car can resume the last episode. Manifest: automotive_app_desc.xml with media and the service intent filters. Test on the Desktop Head Unit, including starting playback with the app closed, then submit for Android Auto review in Play Console.",
+    "solutionAr": "البنية: انقل ExoPlayer إلى MediaLibraryService مع MediaLibrarySession، فتصبح واجهة الهاتف عميل MediaController، وهذا يصلح التشغيل في الخلفية أيضًا. والشجرة: جذر بأربعة تبويبات قابلة للتصفح على الأكثر (تابع والاشتراكات والتنزيلات واكتشف)، كل منها قائمة برامج أو حلقات بصور وعناوين قصيرة، والحلقات عناصر قابلة للتشغيل. والبحث: نفّذ onSearch وonGetSearchResult للطلبات الصوتية مثل «شغّل آخر حلقة من X». والاستئناف: نفّذ onPlaybackResumption حتى تستطيع السيارة استئناف آخر حلقة. والبيان: ملف automotive_app_desc.xml مع media ومرشحات نية الخدمة. واختبر على Desktop Head Unit، بما في ذلك بدء التشغيل والتطبيق مغلق، ثم أرسل لمراجعة Android Auto في Play Console.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-spec-xr",
+    "type": "Conceptual",
+    "topic": "and-spec-xr",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Panel first, spatial second",
+    "titleAr": "اللوحة أولًا ثم الفضاء",
+    "problemEn": "A team plans to rebuild their shopping app as a fully 3D XR experience. Explain why you'd start with the existing app as a panel, list the large-screen fixes that matter on a headset, and propose two small spatial features that add real value.",
+    "problemAr": "يخطط فريق لإعادة بناء تطبيق التسوق الخاص به كتجربة XR ثلاثية الأبعاد بالكامل. فاشرح لماذا تبدأ بالتطبيق الموجود كلوحة، واذكر إصلاحات الشاشات الكبيرة المهمة على جهاز الرأس، واقترح ميزتين مكانيتين صغيرتين تضيفان قيمة حقيقية.",
+    "expectedEn": "An argument based on reach, cost and risk, a list of adaptive fixes, and two concrete spatial features with fallbacks.",
+    "expectedAr": "حجة مبنية على الانتشار والكلفة والمخاطر، وقائمة إصلاحات التكيف، وميزتان مكانيتان محددتان مع بدائل.",
+    "hintsEn": [
+      "Every compatible app already runs as a panel.",
+      "3D should answer a question users have, such as size or fit."
+    ],
+    "hintsAr": [
+      "كل تطبيق متوافق يعمل كلوحة أصلًا.",
+      "يجب أن يجيب البعد الثالث عن سؤال لدى المستخدمين، مثل الحجم أو الملاءمة."
+    ],
+    "solutionEn": "Start with the panel because it ships to XR users immediately, reuses all existing work, and the same fixes improve tablets, foldables and ChromeOS; a 3D rebuild is expensive and the audience is still small. Fixes: adaptive layouts with list-detail, no orientation locks or letterboxing, state kept across resizing, keyboard and mouse support, larger touch targets. Spatial features: move filters and the cart button into an orbiter in Full Space with Material 3 for XR; and \"view in your room\" for furniture with a SceneCore glTF model placed on a detected plane, with a 2D 3D-viewer or AR fallback on phones.",
+    "solutionAr": "ابدأ باللوحة لأنها تصل إلى مستخدمي XR فورًا، وتعيد استخدام كل العمل الموجود، والإصلاحات نفسها تحسّن الأجهزة اللوحية والقابلة للطي وChromeOS، أما إعادة البناء ثلاثية الأبعاد فمكلفة والجمهور ما زال صغيرًا. والإصلاحات: تخطيطات متكيفة بالقائمة والتفاصيل، ودون قفل للاتجاه أو أشرطة سوداء، وحالة محفوظة عبر تغيير الحجم، ودعم لوحة المفاتيح والفأرة، وأهداف لمس أكبر. والميزات المكانية: نقل المرشحات وزر السلة إلى مدار في Full Space بـ Material 3 for XR، و«اعرضه في غرفتك» للأثاث بنموذج glTF من SceneCore يوضع على سطح مكتشف، مع بديل لعرض ثلاثي الأبعاد على الشاشة أو الواقع المعزز في الهواتف.",
+    "runner": "None"
+  }
+]

@@ -8761,5 +8761,125 @@
       "channel": "Ahmed Atia",
       "language": "ar"
     }
+  ],
+  "and-spec-adaptive": [
+    {
+      "videoId": "HmXgVBys7BU",
+      "title": "How to Support All Screen Sizes in Jetpack Compose",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "fQjDtCtri4s",
+      "title": "Compose: Implementing responsive UI for larger screens",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "Yvv0KR785u4",
+      "title": "Master Adaptive Screen Sizes For Foldable Support In Your Jetpack Compose Android App",
+      "channel": "Yanneck Reiß",
+      "language": "en"
+    }
+  ],
+  "and-spec-kmp": [
+    {
+      "videoId": "RSBO1C_Du2U",
+      "title": "What Is Kotlin Multiplatform And How Does It Work? - KMP for Beginners",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "gP5Y-ct6QXI",
+      "title": "Get started with Kotlin Multiplatform",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "vvP5vnmzY84",
+      "title": "Building Your First Compose Multiplatform Hello World App - KMP for Beginners",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "d-O97DbZsfc",
+      "title": "كل ما تحتاج معرفته عن Kotlin Multiplatform (KMP) و Compose Multiplatform",
+      "channel": "Basem Nasr",
+      "language": "ar"
+    },
+    {
+      "videoId": "Nu-kGyu8ESk",
+      "title": "Build a kotlin multiplatform app using AI (أحمد نبيل)",
+      "channel": "المطورون في العالم العربي - DevMENA",
+      "language": "ar"
+    }
+  ],
+  "and-spec-wear": [
+    {
+      "videoId": "irIGZj1YON8",
+      "title": "Building Your First Wear OS App with Jetpack Compose - Full Crash Course",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "5fX-bft3ja8",
+      "title": "Build a modern and expressive Wear OS app - Chiara Chiappini | droidcon London 2025",
+      "channel": "nextapp devCon",
+      "language": "en"
+    }
+  ],
+  "and-spec-tv": [
+    {
+      "videoId": "ruJj-wXE3aE",
+      "title": "Compose for TV | Jetpack Compose Tips",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "CYMjUJruAsM",
+      "title": "Focus Management in Jetpack Compose for Android TV | Jetpack Compose for Android TV | Kotlin",
+      "channel": "Pixel Developer",
+      "language": "en"
+    }
+  ],
+  "and-spec-auto": [
+    {
+      "videoId": "ELeNmFrm4vM",
+      "title": "Bringing your apps to cars",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "Q96Sw6v4ULg",
+      "title": "Devbytes: Android Auto Audio",
+      "channel": "Google for Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "FKaBhUue-nE",
+      "title": "What’s new with Android for Cars | Session",
+      "channel": "Android Developers",
+      "language": "en"
+    }
+  ],
+  "and-spec-xr": [
+    {
+      "videoId": "L5nOk5gQvCo",
+      "title": "Android XR Introduction - Build Apps With AR & VR Support",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "fE9CAZ8n3-0",
+      "title": "Jetpack XR SDK: New features for immersive apps",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "e_jwEMGQZ3U",
+      "title": "Walking Through the Android XR Device Emulator in Android Studio",
+      "channel": "Erik Hartley",
+      "language": "en"
+    }
   ]
 }
