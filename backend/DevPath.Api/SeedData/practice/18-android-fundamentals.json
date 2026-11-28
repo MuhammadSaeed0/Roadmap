@@ -1,0 +1,170 @@
+[
+  {
+    "key": "and-ex-first-project",
+    "type": "Practical",
+    "topic": "and-studio-gradle",
+    "difficulty": "Beginner",
+    "minutes": 45,
+    "titleEn": "Set up and explore your first project",
+    "titleAr": "جهّز مشروعك الأول واستكشفه",
+    "problemEn": "Install Android Studio, create an Empty Activity project called HelloAndroid, and run it on an emulator. Then: change the app name in strings.xml, set minSdk to 26, add the Coil library through the version catalog and show an image from a URL with AsyncImage. Write down what each Gradle file is for in one sentence each.",
+    "problemAr": "ثبّت Android Studio، وأنشئ مشروع Empty Activity باسم HelloAndroid، وشغّله على محاكٍ. ثم: غيّر اسم التطبيق في strings.xml، واضبط minSdk على 26، وأضف مكتبة Coil عبر كتالوج الإصدارات واعرض صورة من رابط بـ AsyncImage. واكتب جملة واحدة عن وظيفة كل ملف Gradle.",
+    "expectedEn": "The app runs with the new name and an image loaded from the internet, the INTERNET permission is in the manifest, and you have four sentences describing settings.gradle.kts, both build.gradle.kts files and libs.versions.toml.",
+    "expectedAr": "يعمل التطبيق بالاسم الجديد وصورة محمّلة من الإنترنت، والإذن INTERNET موجود في ملف Manifest، ولديك أربع جمل تصف settings.gradle.kts وملفي build.gradle.kts وlibs.versions.toml.",
+    "hintsEn": [
+      "Images from the internet need <uses-permission android:name=\"android.permission.INTERNET\" />.",
+      "After editing libs.versions.toml click Sync Now before using libs.coil.compose."
+    ],
+    "hintsAr": [
+      "الصور من الإنترنت تحتاج <uses-permission android:name=\"android.permission.INTERNET\" />.",
+      "بعد تعديل libs.versions.toml اضغط Sync Now قبل استخدام libs.coil.compose."
+    ],
+    "solutionEn": "Add coil = \"2.7.0\" under [versions] and coil-compose = { group = \"io.coil-kt\", name = \"coil-compose\", version.ref = \"coil\" } under [libraries], then implementation(libs.coil.compose). In MainActivity call AsyncImage(model = \"https://...\", contentDescription = null). settings.gradle.kts declares modules and repositories; the top-level build file declares plugins; app/build.gradle.kts configures the app; libs.versions.toml centralises versions.",
+    "solutionAr": "أضف coil = \"2.7.0\" تحت [versions] وcoil-compose = { group = \"io.coil-kt\", name = \"coil-compose\", version.ref = \"coil\" } تحت [libraries]، ثم implementation(libs.coil.compose). وفي MainActivity استدعِ AsyncImage(model = \"https://...\", contentDescription = null). والملف settings.gradle.kts يعرّف الوحدات والمستودعات، وملف البناء الأعلى يعرّف الإضافات، وapp/build.gradle.kts يهيئ التطبيق، وlibs.versions.toml يجمع الإصدارات في مكان واحد.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-arabic-dark",
+    "type": "Practical",
+    "topic": "and-app-components",
+    "difficulty": "Beginner",
+    "minutes": 40,
+    "titleEn": "Arabic and dark mode with resources only",
+    "titleAr": "العربية والوضع الداكن بالموارد فقط",
+    "problemEn": "Take a small app with a title, a description and a button. Move every text into strings.xml, add values-ar/strings.xml with Arabic text, make sure android:supportsRtl is true, and add a dark color scheme. Switch the emulator to Arabic and to dark mode and check that the app adapts without any Kotlin change. Then explain which Context you would give a Room database and why.",
+    "problemAr": "خذ تطبيقًا صغيرًا فيه عنوان ووصف وزر. انقل كل نص إلى strings.xml، وأضف values-ar/strings.xml بنصوص عربية، وتأكد أن android:supportsRtl مضبوطة على true، وأضف ألوان الوضع الداكن. ثم غيّر لغة المحاكي إلى العربية وإلى الوضع الداكن وتحقق أن التطبيق يتكيف دون أي تغيير في Kotlin. واشرح بعدها أي Context تعطيه لقاعدة بيانات Room ولماذا.",
+    "expectedEn": "No hard-coded strings left, the layout mirrors in Arabic, colors change in dark mode, and the answer names applicationContext with the reason.",
+    "expectedAr": "لا تبقى نصوص مكتوبة في الكود، والتصميم ينعكس بالعربية، والألوان تتغير في الوضع الداكن، والإجابة تسمّي applicationContext مع السبب.",
+    "hintsEn": [
+      "Android Studio's Extract string resource (Alt+Enter on a string) moves text quickly.",
+      "Use start and end instead of left and right so the layout mirrors."
+    ],
+    "hintsAr": [
+      "أداة Extract string resource في Android Studio (Alt+Enter على النص) تنقل النصوص بسرعة.",
+      "استخدم start وend بدل left وright حتى ينعكس التصميم."
+    ],
+    "solutionEn": "Each text becomes stringResource(R.string.title) and gets an entry in both strings files. With supportsRtl and start/end padding, Arabic mirrors automatically. The Compose theme picks darkColorScheme() when isSystemInDarkTheme() is true. A database outlives any screen, so it must be built with applicationContext; an Activity context would keep the destroyed screen in memory.",
+    "solutionAr": "يصبح كل نص stringResource(R.string.title) ويحصل على مدخل في ملفي النصوص. ومع supportsRtl والهوامش start وend تنعكس العربية تلقائيًا. ومظهر Compose يختار darkColorScheme() عندما تكون isSystemInDarkTheme() صحيحة. وقاعدة البيانات تعيش أطول من أي شاشة، فيجب بناؤها بـ applicationContext، لأن سياق Activity سيُبقي الشاشة المدمّرة في الذاكرة.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-lifecycle-log",
+    "type": "Debugging",
+    "topic": "and-activity-lifecycle",
+    "difficulty": "Beginner",
+    "minutes": 40,
+    "titleEn": "Why does the form lose its text?",
+    "titleAr": "لماذا يفقد النموذج نصه؟",
+    "problemEn": "Users complain that a feedback form loses everything they typed when they rotate the phone, and sometimes when they come back from another app. Find the cause in the code below, explain the difference between the two situations, and fix both.",
+    "problemAr": "يشتكي المستخدمون من أن نموذج الملاحظات يفقد كل ما كتبوه عند تدوير الهاتف، وأحيانًا عند العودة من تطبيق آخر. أوجد السبب في الكود أدناه، واشرح الفرق بين الحالتين، وأصلح الاثنتين.",
+    "expectedEn": "The text survives rotation and survives process death (tested with adb shell am kill), and the explanation names configuration change and process death.",
+    "expectedAr": "يبقى النص بعد التدوير وبعد موت العملية (مختبرًا بـ adb shell am kill)، والشرح يسمّي تغيير الإعدادات وموت العملية.",
+    "hintsEn": [
+      "remember lives only as long as the composition, which is rebuilt on rotation.",
+      "A plain ViewModel field is lost when the system kills the process."
+    ],
+    "hintsAr": [
+      "الدالة remember تعيش فقط ما دام التركيب قائمًا، ويُعاد بناؤه عند التدوير.",
+      "الحقل العادي في ViewModel يضيع عندما يُنهي النظام العملية."
+    ],
+    "solutionEn": "Rotation recreates the Activity, so state held in remember is lost: use rememberSaveable for simple values. Returning from another app can mean the process was killed while in the background, so even a ViewModel is new: keep the draft in a SavedStateHandle (or a database if it must never be lost). The solution moves the fields into a ViewModel backed by SavedStateHandle.",
+    "solutionAr": "التدوير يعيد إنشاء Activity، فتضيع الحالة المحفوظة في remember، فاستخدم rememberSaveable للقيم البسيطة. والعودة من تطبيق آخر قد تعني أن العملية أُنهيت في الخلفية، فحتى ViewModel تكون جديدة، فاحفظ المسودة في SavedStateHandle (أو في قاعدة بيانات إذا كان يجب ألا تضيع أبدًا). والحل ينقل الحقول إلى ViewModel مدعومة بـ SavedStateHandle.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-share-actions",
+    "type": "Practical",
+    "topic": "and-intents",
+    "difficulty": "Beginner",
+    "minutes": 40,
+    "titleEn": "An order screen with share, call and map",
+    "titleAr": "شاشة طلب بالمشاركة والاتصال والخريطة",
+    "problemEn": "Build an order details screen with four buttons using Intents: Share order (text with a chooser), Call support (opens the dialer, no permission), Show store on map (geo: Uri) and Attach a photo (photo picker, shows the chosen image). Every implicit Intent must handle the case where no app can open it.",
+    "problemAr": "ابنِ شاشة تفاصيل طلب بأربعة أزرار تستخدم Intent: مشاركة الطلب (نص مع نافذة اختيار)، والاتصال بالدعم (يفتح لوحة الاتصال دون إذن)، وعرض المتجر على الخريطة (رابط geo:)، وإرفاق صورة (أداة اختيار الصور وعرض الصورة المختارة). ويجب أن يعالج كل Intent ضمني حالة عدم وجود تطبيق يفتحه.",
+    "expectedEn": "All four actions work on the emulator, the app declares no CALL_PHONE or storage permission, and a missing map app shows a message instead of crashing.",
+    "expectedAr": "تعمل الأفعال الأربعة على المحاكي، ولا يعرّف التطبيق إذن CALL_PHONE ولا إذن تخزين، وغياب تطبيق الخرائط يعرض رسالة بدل الانهيار.",
+    "hintsEn": [
+      "ACTION_DIAL with tel: needs no permission; ACTION_CALL does.",
+      "rememberLauncherForActivityResult(PickVisualMedia()) returns the chosen Uri."
+    ],
+    "hintsAr": [
+      "الفعل ACTION_DIAL مع tel: لا يحتاج إذنًا، أما ACTION_CALL فيحتاج.",
+      "الدالة rememberLauncherForActivityResult(PickVisualMedia()) تُرجع الرابط Uri المختار."
+    ],
+    "solutionEn": "Write small Context extensions: shareText with ACTION_SEND and createChooser, dial with ACTION_DIAL, openMap with ACTION_VIEW and a geo: Uri inside runCatching or a catch for ActivityNotFoundException that shows a Toast. The photo button uses a PickVisualMedia launcher and shows the Uri with AsyncImage, keeping it in rememberSaveable.",
+    "solutionAr": "اكتب امتدادات صغيرة على Context: shareText بـ ACTION_SEND وcreateChooser، وdial بـ ACTION_DIAL، وopenMap بـ ACTION_VIEW ورابط geo: داخل runCatching أو التقاط ActivityNotFoundException مع عرض Toast. وزر الصورة يستخدم مُطلِق PickVisualMedia ويعرض الرابط بـ AsyncImage مع حفظه في rememberSaveable.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-permission-review",
+    "type": "CodeReview",
+    "topic": "and-permissions",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Review a permission-hungry app",
+    "titleAr": "راجع تطبيقًا يطلب أذونات كثيرة",
+    "problemEn": "A recipe app's manifest declares CAMERA, READ_CONTACTS, ACCESS_FINE_LOCATION, ACCESS_BACKGROUND_LOCATION, READ_MEDIA_IMAGES, CALL_PHONE and POST_NOTIFICATIONS, and MainActivity requests all of them in onCreate. Features: users add a photo to a recipe, share recipes with friends, see nearby shops and get a daily recipe notification. Review it: which permissions are needed, which can be replaced, and when should each remaining one be requested?",
+    "problemAr": "ملف Manifest لتطبيق وصفات يعرّف CAMERA وREAD_CONTACTS وACCESS_FINE_LOCATION وACCESS_BACKGROUND_LOCATION وREAD_MEDIA_IMAGES وCALL_PHONE وPOST_NOTIFICATIONS، وMainActivity تطلبها كلها في onCreate. والميزات: يضيف المستخدم صورة إلى الوصفة، ويشارك الوصفات مع الأصدقاء، ويرى المتاجر القريبة، ويحصل على إشعار يومي بوصفة. راجعه: أي الأذونات مطلوبة، وأيها يمكن استبداله، ومتى يُطلب كل إذن باقٍ؟",
+    "expectedEn": "Only coarse location and POST_NOTIFICATIONS remain, each requested in context; the rest are replaced by the photo picker, the share sheet and the dialer, and background location is removed.",
+    "expectedAr": "يبقى الموقع التقريبي وPOST_NOTIFICATIONS فقط، وكل منهما يُطلب في سياقه، ويُستبدل الباقي بأداة اختيار الصور ونافذة المشاركة ولوحة الاتصال، ويُحذف الموقع في الخلفية.",
+    "hintsEn": [
+      "For each feature ask: is there a system picker or Intent that does this?",
+      "Does \"nearby shops\" need the exact street, or the area?"
+    ],
+    "hintsAr": [
+      "اسأل عن كل ميزة: هل توجد أداة اختيار أو Intent في النظام يفعل ذلك؟",
+      "هل تحتاج «المتاجر القريبة» الشارع بالضبط أم المنطقة؟"
+    ],
+    "solutionEn": "Photo: the photo picker (or the camera app via an Intent) replaces READ_MEDIA_IMAGES and CAMERA. Sharing: ACTION_SEND lets the user choose contacts in their own app, so READ_CONTACTS goes. CALL_PHONE: use ACTION_DIAL. Nearby shops: ACCESS_COARSE_LOCATION when the user opens the map, no fine or background location. Daily notification: request POST_NOTIFICATIONS when the user turns on the daily recipe, on Android 13+. Nothing is requested in onCreate, and every feature works when a request is denied.",
+    "solutionAr": "الصورة: أداة اختيار الصور (أو تطبيق الكاميرا عبر Intent) تحل محل READ_MEDIA_IMAGES وCAMERA. والمشاركة: ACTION_SEND تتيح للمستخدم اختيار جهات الاتصال في تطبيقه هو، فيُحذف READ_CONTACTS. وCALL_PHONE: استخدم ACTION_DIAL. والمتاجر القريبة: ACCESS_COARSE_LOCATION عندما يفتح المستخدم الخريطة، دون موقع دقيق أو في الخلفية. والإشعار اليومي: اطلب POST_NOTIFICATIONS عندما يفعّل المستخدم الوصفة اليومية على Android 13 فأحدث. ولا يُطلب شيء في onCreate، وكل ميزة تعمل عند رفض الطلب.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-crash-hunt",
+    "type": "Debugging",
+    "topic": "and-debugging",
+    "difficulty": "Beginner",
+    "minutes": 30,
+    "titleEn": "Hunt down a crash with Logcat",
+    "titleAr": "تتبّع انهيارًا بـ Logcat",
+    "problemEn": "Run the starter code: it crashes when the list contains an order without a courier. Using only Logcat and the debugger (no guessing), find the exact line, the value that causes it and the cause. Write down the stack trace line you used, set a conditional breakpoint on the bad order, and fix the bug so the screen shows \"Courier not assigned\".",
+    "problemAr": "شغّل كود البداية: ينهار عندما تحتوي القائمة طلبًا بلا مندوب. باستخدام Logcat والمصحح فقط (دون تخمين)، أوجد السطر بالضبط والقيمة التي تسببه والسبب. واكتب سطر تتبع المكدس الذي استخدمته، وضع نقطة توقف مشروطة على الطلب السيئ، وأصلح الخطأ حتى تعرض الشاشة «Courier not assigned».",
+    "expectedEn": "You quote the first stack trace line from your package, the breakpoint condition is order.courier == null, and the fix removes the !! instead of catching the exception.",
+    "expectedAr": "تقتبس أول سطر من حزمتك في تتبع المكدس، وشرط نقطة التوقف order.courier == null، والإصلاح يحذف !! بدل التقاط الاستثناء.",
+    "hintsEn": [
+      "Filter Logcat by your package and search for FATAL EXCEPTION.",
+      "Right-click a breakpoint to add a condition."
+    ],
+    "hintsAr": [
+      "صفِّ Logcat بحزمتك وابحث عن FATAL EXCEPTION.",
+      "اضغط نقطة التوقف بالزر الأيمن لإضافة شرط."
+    ],
+    "solutionEn": "The trace points to courierLabel in OrderRow.kt, where order.courier!!.name throws for cash orders that have no courier yet. The fix is order.courier?.name ?: \"Courier not assigned\". Catching the NullPointerException would hide the real issue; the data model says courier can be null, so the UI must handle it.",
+    "solutionAr": "يشير التتبع إلى courierLabel في OrderRow.kt، حيث يرمي order.courier!!.name استثناء للطلبات النقدية التي لا مندوب لها بعد. والإصلاح order.courier?.name ?: \"Courier not assigned\". والتقاط NullPointerException سيخفي المشكلة الحقيقية، فنموذج البيانات يقول إن courier قد يكون null، فيجب أن تعالجه الواجهة.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-build-variants",
+    "type": "Practical",
+    "topic": "and-build-release-basics",
+    "difficulty": "Intermediate",
+    "minutes": 50,
+    "titleEn": "Staging and production builds",
+    "titleAr": "بناءات staging وproduction",
+    "problemEn": "Add two product flavors, staging and production, to a project. Each has its own API_URL in BuildConfig and staging has the suffix .staging and the app name \"MyApp Staging\". Turn on R8 for release. Then: install stagingDebug and productionDebug side by side, build productionRelease as an AAB, and write down the output path and the versionCode you used.",
+    "problemAr": "أضف نكهتين، staging وproduction، إلى مشروع. لكل منهما API_URL خاص في BuildConfig، وللنكهة staging اللاحقة .staging واسم التطبيق «MyApp Staging». وفعّل R8 لـ release. ثم: ثبّت stagingDebug وproductionDebug جنبًا إلى جنب، وابنِ productionRelease كملف AAB، واكتب مسار الناتج وقيمة versionCode التي استخدمتها.",
+    "expectedEn": "Two icons on the emulator with different names, BuildConfig.API_URL differs per flavor, and a .aab file under app/build/outputs/bundle/productionRelease/.",
+    "expectedAr": "أيقونتان على المحاكي باسمين مختلفين، وقيمة BuildConfig.API_URL تختلف حسب النكهة، وملف ‎.aab تحت app/build/outputs/bundle/productionRelease/.",
+    "hintsEn": [
+      "buildConfigField needs buildFeatures { buildConfig = true }.",
+      "A per-flavor app name can be a resValue(\"string\", \"app_name\", \"MyApp Staging\")."
+    ],
+    "hintsAr": [
+      "الدالة buildConfigField تحتاج buildFeatures { buildConfig = true }.",
+      "اسم التطبيق لكل نكهة يمكن أن يكون resValue(\"string\", \"app_name\", \"MyApp Staging\")."
+    ],
+    "solutionEn": "Declare flavorDimensions += \"environment\" and create both flavors with buildConfigField(\"String\", \"API_URL\", ...); give staging applicationIdSuffix = \".staging\" and resValue for the name (and remove app_name from strings.xml to avoid a duplicate). Set isMinifyEnabled = true in release. Run ./gradlew installStagingDebug installProductionDebug and ./gradlew bundleProductionRelease.",
+    "solutionAr": "عرّف flavorDimensions += \"environment\" وأنشئ النكهتين بـ buildConfigField(\"String\", \"API_URL\", ...)، وأعطِ staging القيمة applicationIdSuffix = \".staging\" وresValue للاسم (واحذف app_name من strings.xml لتجنب التكرار). واضبط isMinifyEnabled = true في release. وشغّل ./gradlew installStagingDebug installProductionDebug ثم ./gradlew bundleProductionRelease.",
+    "runner": "None"
+  }
+]

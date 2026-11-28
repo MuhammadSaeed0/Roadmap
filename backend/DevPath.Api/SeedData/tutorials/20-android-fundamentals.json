@@ -1,0 +1,163 @@
+[
+  {
+    "topic": "and-studio-gradle",
+    "lessons": [
+      {
+        "key": "tut-and-studio-gradle-1",
+        "titleEn": "A tour of a new project",
+        "titleAr": "جولة في مشروع جديد",
+        "bodyEn": "Create a project with File > New > New Project > Empty Activity. Android Studio shows the Android view; switch to Project view to see the real folders.\n\nsettings.gradle.kts lists the modules and where libraries come from. app/build.gradle.kts configures the app module. gradle/libs.versions.toml holds versions. app/src/main contains AndroidManifest.xml, your Kotlin code and the res folder. app/src/test holds unit tests and app/src/androidTest holds tests that run on a device.",
+        "bodyAr": "أنشئ مشروعًا من File > New > New Project > Empty Activity. وتعرض Android Studio عرض Android، فانتقل إلى عرض Project لترى المجلدات الحقيقية.\n\nالملف settings.gradle.kts يسرد الوحدات ومن أين تأتي المكتبات. وapp/build.gradle.kts يهيئ وحدة التطبيق. وgradle/libs.versions.toml يحفظ الإصدارات. وapp/src/main يحتوي AndroidManifest.xml وكود Kotlin ومجلد res. وapp/src/test فيه اختبارات الوحدات، وapp/src/androidTest فيه الاختبارات التي تعمل على جهاز.",
+        "code": "MyApp/\n├─ settings.gradle.kts          modules and repositories\n├─ build.gradle.kts             plugins for all modules\n├─ gradle/libs.versions.toml    versions and library names\n└─ app/\n   ├─ build.gradle.kts          namespace, SDK levels, dependencies\n   └─ src/\n      ├─ main/\n      │  ├─ AndroidManifest.xml\n      │  ├─ java/com/example/myapp/MainActivity.kt\n      │  └─ res/  values/strings.xml, drawable/, mipmap/\n      ├─ test/                  unit tests (JVM)\n      └─ androidTest/           instrumented tests (device)",
+        "language": "text"
+      },
+      {
+        "key": "tut-and-studio-gradle-2",
+        "titleEn": "Adding a library with the version catalog",
+        "titleAr": "إضافة مكتبة بكتالوج الإصدارات",
+        "bodyEn": "Declare the version and the library once in libs.versions.toml, then refer to it by name in any module. After editing, click Sync Now. If the build fails, open the Build window: the first red error usually names the missing repository, the wrong version or the typo.\n\nminSdk is the oldest Android you support, targetSdk is the version whose behaviour you have tested, and compileSdk is the API level you compile against. Google Play requires a recent targetSdk.",
+        "bodyAr": "عرّف الإصدار والمكتبة مرة واحدة في libs.versions.toml، ثم أشر إليها بالاسم في أي وحدة. وبعد التعديل اضغط Sync Now. وإذا فشل البناء فافتح نافذة Build: أول خطأ أحمر يسمّي غالبًا المستودع الناقص أو الإصدار الخاطئ أو الخطأ الإملائي.\n\nوminSdk أقدم إصدار Android تدعمه، وtargetSdk الإصدار الذي اختبرت سلوكه، وcompileSdk مستوى الواجهة الذي تترجم عليه. ويشترط Google Play قيمة حديثة لـ targetSdk.",
+        "code": "# gradle/libs.versions.toml\n[versions]\ncoil = \"2.7.0\"\n\n[libraries]\ncoil-compose = { group = \"io.coil-kt\", name = \"coil-compose\", version.ref = \"coil\" }\n\n# app/build.gradle.kts\ndependencies {\n    implementation(libs.coil.compose)\n}\n\n# Then, in a composable:\n# AsyncImage(model = product.imageUrl, contentDescription = product.name)",
+        "language": "text"
+      }
+    ]
+  },
+  {
+    "topic": "and-app-components",
+    "lessons": [
+      {
+        "key": "tut-and-app-components-1",
+        "titleEn": "The four components and the manifest",
+        "titleAr": "المكونات الأربعة وملف Manifest",
+        "bodyEn": "The system starts your app through components declared in the manifest. Most modern apps have a single Activity that hosts all Compose screens. Services do work without a screen, such as playing music. BroadcastReceivers react to events such as the device booting. ContentProviders share data between apps, such as contacts.\n\nexported=\"true\" means other apps can start the component, which is required for the launcher Activity and anything with an intent filter. Keep everything else unexported.",
+        "bodyAr": "يشغّل النظام تطبيقك عبر مكونات معرّفة في ملف Manifest. وأغلب التطبيقات الحديثة فيها Activity واحدة تستضيف كل شاشات Compose. والـ Service تقوم بعمل دون شاشة مثل تشغيل الموسيقى. والـ BroadcastReceiver يستجيب لأحداث مثل تشغيل الجهاز. والـ ContentProvider يشارك البيانات بين التطبيقات مثل جهات الاتصال.\n\nوالقيمة exported=\"true\" تعني أن التطبيقات الأخرى تستطيع تشغيل المكون، وهي مطلوبة لـ Activity الإطلاق ولأي مكون فيه مرشح Intent. واترك كل ما عداها غير مُصدَّر.",
+        "code": "<application android:label=\"@string/app_name\" android:supportsRtl=\"true\">\n    <activity android:name=\".MainActivity\" android:exported=\"true\">\n        <intent-filter>\n            <action android:name=\"android.intent.action.MAIN\" />\n            <category android:name=\"android.intent.category.LAUNCHER\" />\n        </intent-filter>\n    </activity>\n\n    <service android:name=\".PlayerService\" android:exported=\"false\"\n        android:foregroundServiceType=\"mediaPlayback\" />\n\n    <receiver android:name=\".BootReceiver\" android:exported=\"false\">\n        <intent-filter>\n            <action android:name=\"android.intent.action.BOOT_COMPLETED\" />\n        </intent-filter>\n    </receiver>\n</application>",
+        "language": "xml"
+      },
+      {
+        "key": "tut-and-app-components-2",
+        "titleEn": "Resources, languages and Context",
+        "titleAr": "الموارد واللغات وContext",
+        "bodyEn": "Put text in res/values/strings.xml and its Arabic version in res/values-ar/strings.xml; Android picks the right file from the device language. The same works for values-night (dark theme) and sw600dp (tablets).\n\nIn Compose read strings with stringResource(R.string.key). A Context is needed for many system calls; an Activity context is tied to the screen and must not be kept after the screen is gone, while applicationContext is safe for long-lived objects such as a database.",
+        "bodyAr": "ضع النصوص في res/values/strings.xml ونسختها العربية في res/values-ar/strings.xml، ويختار Android الملف الصحيح حسب لغة الجهاز. والأمر نفسه يعمل مع values-night (المظهر الداكن) وsw600dp (الأجهزة اللوحية).\n\nوفي Compose اقرأ النصوص بـ stringResource(R.string.key). والـ Context مطلوب لكثير من استدعاءات النظام، وسياق Activity مرتبط بالشاشة ويجب ألا يُحفظ بعد اختفائها، أما applicationContext فآمن للكائنات طويلة العمر مثل قاعدة البيانات.",
+        "code": "// res/values/strings.xml      <string name=\"orders_count\">%1$d orders</string>\n// res/values-ar/strings.xml   <string name=\"orders_count\">%1$d طلبات</string>\n\n@Composable\nfun OrdersHeader(count: Int) {\n    Text(stringResource(R.string.orders_count, count))\n}\n\nclass NotesApp : Application() {\n    // Long-lived: built once with the Application context, never an Activity.\n    val database by lazy { NotesDatabase.create(applicationContext) }\n}\n\n// Leak: a singleton that keeps a screen alive after it closes.\n// object Cache { lateinit var activity: Activity }   // never do this",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-activity-lifecycle",
+    "lessons": [
+      {
+        "key": "tut-and-activity-lifecycle-1",
+        "titleEn": "What happens when you rotate or leave",
+        "titleAr": "ماذا يحدث عند التدوير أو المغادرة",
+        "bodyEn": "Launching shows onCreate, onStart, onResume. Pressing Home shows onPause, onStop. Coming back shows onStart, onResume. Rotating, by default, destroys and recreates the Activity: onPause, onStop, onDestroy, then onCreate, onStart, onResume, with savedInstanceState not null.\n\nPressing Back on the last screen finishes the Activity, so onDestroy runs with isFinishing = true. If the app sits in the background, the system may kill the whole process without calling onDestroy at all.",
+        "bodyAr": "التشغيل يُظهر onCreate ثم onStart ثم onResume. والضغط على Home يُظهر onPause ثم onStop. والرجوع يُظهر onStart ثم onResume. والتدوير، افتراضيًا، يدمّر Activity ويعيد إنشاءها: onPause وonStop وonDestroy، ثم onCreate وonStart وonResume، مع savedInstanceState ليست null.\n\nوالضغط على Back في آخر شاشة ينهي Activity، فتعمل onDestroy مع isFinishing = true. وإذا بقي التطبيق في الخلفية، قد يُنهي النظام العملية كلها دون استدعاء onDestroy أصلًا.",
+        "code": "Launch:   onCreate -> onStart -> onResume\nHome:     onPause -> onStop\nReturn:   onStart -> onResume\nRotate:   onPause -> onStop -> onDestroy -> onCreate(saved state) -> onStart -> onResume\nBack:     onPause -> onStop -> onDestroy (isFinishing = true)\nLow memory in background: process killed, no callback; on return onCreate(saved state)",
+        "language": "text"
+      },
+      {
+        "key": "tut-and-activity-lifecycle-2",
+        "titleEn": "Keeping state in the right place",
+        "titleAr": "حفظ الحالة في المكان الصحيح",
+        "bodyEn": "remember keeps a value across recompositions but loses it on rotation. rememberSaveable saves it in the Activity's Bundle, so it survives rotation and process death, but only small, simple values fit. A ViewModel survives rotation and holds screen data and logic, but not process death; give it a SavedStateHandle for the few values that must come back, such as a search query or a form draft.\n\nData that must never be lost, such as a saved note, belongs in a database, not in UI state.",
+        "bodyAr": "الدالة remember تحفظ القيمة عبر إعادة التركيب (Recomposition) لكنها تفقدها عند التدوير. وrememberSaveable تحفظها في Bundle الخاص بـ Activity، فتبقى بعد التدوير وموت العملية، لكن القيم الصغيرة البسيطة فقط تتسع فيها. وViewModel تبقى بعد التدوير وتحمل بيانات الشاشة ومنطقها، لكنها لا تبقى بعد موت العملية، فأعطها SavedStateHandle للقيم القليلة التي يجب أن تعود، مثل نص البحث أو مسودة نموذج.\n\nوالبيانات التي يجب ألا تضيع أبدًا، مثل ملاحظة محفوظة، مكانها قاعدة بيانات لا حالة الواجهة.",
+        "code": "class SearchViewModel(private val saved: SavedStateHandle, private val repo: ProductRepository) : ViewModel() {\n    val query = saved.getStateFlow(\"query\", \"\")          // back after process death\n    private val _results = MutableStateFlow<List<Product>>(emptyList())\n    val results = _results.asStateFlow()                // reloaded from the query when needed\n\n    fun onQueryChange(text: String) {\n        saved[\"query\"] = text\n        viewModelScope.launch { _results.value = repo.search(text) }\n    }\n}\n\n@Composable\nfun Filters() {\n    var expanded by remember { mutableStateOf(false) }        // fine to lose on rotation\n    var onlyInStock by rememberSaveable { mutableStateOf(true) } // the user expects it to stay\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-intents",
+    "lessons": [
+      {
+        "key": "tut-and-intents-1",
+        "titleEn": "Explicit and implicit Intents",
+        "titleAr": "Intent الصريح والضمني",
+        "bodyEn": "An explicit Intent names a class: Intent(context, DetailsActivity::class.java). An implicit Intent names an action and data: Intent(Intent.ACTION_VIEW, Uri.parse(url)). The system shows a chooser when several apps can handle it.\n\nAlways expect that no app may handle an implicit Intent, for example on a device with no browser profile or a work profile, and catch ActivityNotFoundException. Since Android 11, to query which apps exist you must declare queries in the manifest, so it is simpler to try and catch.",
+        "bodyAr": "الـ Intent الصريح يسمّي صنفًا: Intent(context, DetailsActivity::class.java). والضمني يسمّي فعلًا وبيانات: Intent(Intent.ACTION_VIEW, Uri.parse(url)). ويعرض النظام نافذة اختيار عندما تستطيع عدة تطبيقات تنفيذه.\n\nوتوقّع دائمًا ألا يوجد تطبيق يستطيع تنفيذ Intent ضمني، مثلًا على جهاز بلا متصفح أو في ملف عمل، والتقط ActivityNotFoundException. ومنذ Android 11، لمعرفة التطبيقات الموجودة يجب تعريف queries في ملف Manifest، فالأبسط أن تحاول وتلتقط الاستثناء.",
+        "code": "fun Context.sendEmail(to: String, subject: String) {\n    val intent = Intent(Intent.ACTION_SENDTO).apply {\n        data = Uri.parse(\"mailto:\")                       // only email apps\n        putExtra(Intent.EXTRA_EMAIL, arrayOf(to))\n        putExtra(Intent.EXTRA_SUBJECT, subject)\n    }\n    try {\n        startActivity(intent)\n    } catch (e: ActivityNotFoundException) {\n        Toast.makeText(this, \"No email app found\", Toast.LENGTH_SHORT).show()\n    }\n}\n\nfun Context.openMap(lat: Double, lng: Double, label: String) =\n    runCatching { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(\"geo:$lat,$lng?q=$lat,$lng($label)\"))) }",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-intents-2",
+        "titleEn": "Getting results back",
+        "titleAr": "استقبال النتائج",
+        "bodyEn": "To get something back, such as a photo or a contact, register a launcher with a contract before you need it, then launch it from a click. The result arrives in a callback even if your Activity was recreated in the meantime.\n\nThe photo picker (PickVisualMedia) needs no storage permission and is the recommended way to choose images.",
+        "bodyAr": "لاستقبال شيء مثل صورة أو جهة اتصال، سجّل مُطلِقًا (Launcher) بعقد قبل أن تحتاجه، ثم أطلقه من نقرة. وتصل النتيجة في دالة استدعاء راجعة حتى لو أُعيد إنشاء Activity في أثناء ذلك.\n\nوأداة اختيار الصور (PickVisualMedia) لا تحتاج إذن تخزين، وهي الطريقة الموصى بها لاختيار الصور.",
+        "code": "@Composable\nfun ProfilePhoto() {\n    var photo by rememberSaveable { mutableStateOf<Uri?>(null) }\n    val pickPhoto = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->\n        photo = uri                                        // null when the user cancels\n    }\n    Column {\n        photo?.let { AsyncImage(model = it, contentDescription = \"Profile photo\") }\n        Button(onClick = {\n            pickPhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))\n        }) { Text(\"Choose photo\") }\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-permissions",
+    "lessons": [
+      {
+        "key": "tut-and-permissions-1",
+        "titleEn": "The permission flow",
+        "titleAr": "مسار طلب الإذن",
+        "bodyEn": "Declare the permission in the manifest, then at the moment the user starts the feature: check whether it is granted; if not, and shouldShowRequestPermissionRationale is true, explain why in one sentence; then request it. Handle the answer: granted, denied (ask again later only after an explanation), or permanently denied (the system no longer shows the dialog, so link to Settings).\n\nNever request everything on first launch; users deny what they don't understand.",
+        "bodyAr": "عرّف الإذن في ملف Manifest، ثم في اللحظة التي يبدأ فيها المستخدم الميزة: افحص هل الإذن ممنوح، وإن لم يكن وكانت shouldShowRequestPermissionRationale صحيحة فاشرح السبب في جملة واحدة، ثم اطلبه. وعالج الإجابة: ممنوح، أو مرفوض (اطلب مرة أخرى لاحقًا فقط بعد شرح)، أو مرفوض دائمًا (لم يعد النظام يعرض النافذة، فضع رابطًا إلى الإعدادات).\n\nولا تطلب كل شيء عند أول تشغيل، فالمستخدمون يرفضون ما لا يفهمونه.",
+        "code": "User taps \"Scan receipt\"\n  ├─ CAMERA granted? ─ yes ─> open camera\n  └─ no\n     ├─ shouldShowRequestPermissionRationale? ─ yes ─> explain, then request\n     └─ no ─> request\n         ├─ granted ─> open camera\n         └─ denied\n            ├─ first time ─> keep manual entry, explain on next tap\n            └─ \"Don't ask again\" ─> show \"Enable in Settings\" link",
+        "language": "text"
+      },
+      {
+        "key": "tut-and-permissions-2",
+        "titleEn": "Avoiding permissions you don't need",
+        "titleAr": "تجنب الأذونات التي لا تحتاجها",
+        "bodyEn": "Many features work without a dangerous permission: the photo picker instead of READ_MEDIA_IMAGES, ACTION_DIAL instead of CALL_PHONE, ACTION_SEND for sharing, approximate location instead of precise when a city is enough, and the system camera app through an Intent instead of building a camera.\n\nFewer permissions mean fewer dialogs, more trust and an easier Google Play review.",
+        "bodyAr": "كثير من الخصائص تعمل دون إذن خطر: أداة اختيار الصور بدل READ_MEDIA_IMAGES، وACTION_DIAL بدل CALL_PHONE، وACTION_SEND للمشاركة، والموقع التقريبي بدل الدقيق عندما تكفي المدينة، وتطبيق الكاميرا في النظام عبر Intent بدل بناء كاميرا.\n\nوأذونات أقل تعني نوافذ أقل وثقة أكبر ومراجعة أسهل في Google Play.",
+        "code": "// Needs CALL_PHONE and places the call immediately:\n// startActivity(Intent(Intent.ACTION_CALL, Uri.parse(\"tel:16000\")))\n\n// No permission: opens the dialer with the number filled in.\nstartActivity(Intent(Intent.ACTION_DIAL, Uri.parse(\"tel:16000\")))\n\n// Location: ask for approximate only when the city is enough.\nval launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->\n    val approximate = result[Manifest.permission.ACCESS_COARSE_LOCATION] == true\n    if (approximate) loadNearbyStores() else showCityPicker()\n}\nlauncher.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION))",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-debugging",
+    "lessons": [
+      {
+        "key": "tut-and-debugging-1",
+        "titleEn": "Reading a crash",
+        "titleAr": "قراءة الانهيار",
+        "bodyEn": "When the app stops, open Logcat, filter to your package and look for FATAL EXCEPTION. The first line names the exception and its message. Below it is the stack trace: lines from Android and libraries, and somewhere your own package. That line is where to start, and \"Caused by:\" lines further down show the original error.\n\nClick the file link in Logcat to jump to the line, set a breakpoint there and reproduce the bug.",
+        "bodyAr": "عندما يتوقف التطبيق، افتح Logcat وصفِّه على حزمتك وابحث عن FATAL EXCEPTION. والسطر الأول يسمّي الاستثناء ورسالته. وتحته تتبع المكدس: أسطر من Android والمكتبات، وفي مكان ما حزمتك. وذلك السطر هو نقطة البداية، وأسطر «Caused by:» في الأسفل تُظهر الخطأ الأصلي.\n\nواضغط رابط الملف في Logcat للانتقال إلى السطر، وضع نقطة توقف هناك، وأعد إنتاج الخطأ.",
+        "code": "FATAL EXCEPTION: main\nProcess: com.example.shop, PID: 8123\njava.lang.NullPointerException: courierName must not be null\n    at com.example.shop.orders.OrderRow.bind(OrderRow.kt:42)        <- start here\n    at com.example.shop.orders.OrdersAdapter.onBindViewHolder(OrdersAdapter.kt:27)\n    at androidx.recyclerview.widget.RecyclerView$Adapter.bindViewHolder(...)\n    ...\nCaused by: ...                                                        <- the original error, when present",
+        "language": "text"
+      },
+      {
+        "key": "tut-and-debugging-2",
+        "titleEn": "Breakpoints, logs and adb",
+        "titleAr": "نقاط التوقف والسجلات وadb",
+        "bodyEn": "Run with the Debug button (the bug icon) instead of Run. Click the margin to add a breakpoint, right-click it to add a condition such as order.id == 1042, and use Step Over, Step Into and Evaluate Expression. Logpoints print a message without stopping or changing code.\n\nadb talks to devices from the terminal: install builds, read logs, simulate process death and capture screenshots or videos for bug reports.",
+        "bodyAr": "شغّل بزر Debug (أيقونة الحشرة) بدل Run. واضغط الهامش لإضافة نقطة توقف، واضغطها بالزر الأيمن لإضافة شرط مثل order.id == 1042، واستخدم Step Over وStep Into وEvaluate Expression. ونقاط التسجيل (Logpoints) تطبع رسالة دون توقف ودون تغيير الكود.\n\nوأداة adb تتحدث مع الأجهزة من الطرفية: تثبّت الإصدارات، وتقرأ السجلات، وتحاكي موت العملية، وتلتقط صورًا أو فيديو لتقارير الأخطاء.",
+        "code": "adb devices\nadb install -r app/build/outputs/apk/debug/app-debug.apk\nadb logcat --pid=$(adb shell pidof -s com.example.shop) *:W\nadb shell am kill com.example.shop        # app must be in the background\nadb exec-out screencap -p > bug.png",
+        "language": "bash"
+      }
+    ]
+  },
+  {
+    "topic": "and-build-release-basics",
+    "lessons": [
+      {
+        "key": "tut-and-build-release-basics-1",
+        "titleEn": "Debug, release and flavors",
+        "titleAr": "debug وrelease والنكهات",
+        "bodyEn": "Every module has a debug build type (debuggable, not shrunk) and a release build type (shrunk by R8 when enabled, signed with your key). Flavors add another dimension, such as staging and production, and Gradle builds every combination: stagingDebug, productionRelease and so on. Choose the active one in the Build Variants window.\n\nR8 removes unused code and renames classes, which can break code that uses reflection, such as some JSON libraries; keep rules in proguard-rules.pro fix that. Always test the release build before you publish.",
+        "bodyAr": "كل وحدة فيها نوع بناء debug (قابل للتصحيح وغير مصغّر)، ونوع بناء release (مصغّر بـ R8 عند تفعيله وموقّع بمفتاحك). والنكهات تضيف بُعدًا آخر مثل staging وproduction، ويبني Gradle كل تركيبة: stagingDebug وproductionRelease وهكذا. واختر المتغير النشط من نافذة Build Variants.\n\nوR8 يحذف الكود غير المستخدم ويعيد تسمية الأصناف، وقد يكسر هذا الكود الذي يستخدم الانعكاس (Reflection) مثل بعض مكتبات JSON، وقواعد keep في proguard-rules.pro تصلح ذلك. واختبر بناء release دائمًا قبل النشر.",
+        "code": "android {\n    buildTypes {\n        release {\n            isMinifyEnabled = true\n            isShrinkResources = true\n            proguardFiles(getDefaultProguardFile(\"proguard-android-optimize.txt\"), \"proguard-rules.pro\")\n        }\n    }\n    flavorDimensions += \"environment\"\n    productFlavors {\n        create(\"staging\") { dimension = \"environment\"; applicationIdSuffix = \".staging\" }\n        create(\"production\") { dimension = \"environment\" }\n    }\n}\n// Variants: stagingDebug, stagingRelease, productionDebug, productionRelease",
+        "language": "text"
+      },
+      {
+        "key": "tut-and-build-release-basics-2",
+        "titleEn": "APK or App Bundle",
+        "titleAr": "APK أم App Bundle",
+        "bodyEn": "An APK is the installable file: you can send it to a tester or install it with adb. An Android App Bundle (.aab) contains all code and resources; Google Play builds and signs small APKs per device from it, so users download only their language, screen density and CPU. New apps on Google Play must use AAB.\n\nGoogle Play App Signing keeps the app signing key; you sign uploads with an upload key. Lose the upload key and you can reset it, but keep it private and backed up all the same.",
+        "bodyAr": "ملف APK هو الملف القابل للتثبيت: تستطيع إرساله إلى مختبر أو تثبيته بـ adb. وAndroid App Bundle (.aab) يحتوي كل الكود والموارد، ويبني منه Google Play ملفات APK صغيرة لكل جهاز ويوقّعها، فيحمّل المستخدم لغته وكثافة شاشته ومعالجه فقط. والتطبيقات الجديدة على Google Play يجب أن تستخدم AAB.\n\nوخدمة Google Play App Signing تحتفظ بمفتاح توقيع التطبيق، وأنت توقّع ما ترفعه بمفتاح رفع. وإذا فقدت مفتاح الرفع تستطيع إعادة تعيينه، لكن احفظه سرًا مع نسخة احتياطية في كل الأحوال.",
+        "code": "./gradlew assembleStagingDebug        # APK for testers: app/build/outputs/apk/staging/debug/\n./gradlew bundleProductionRelease     # AAB for Google Play: app/build/outputs/bundle/productionRelease/\n\n# See which APKs Play would deliver to a connected device:\njava -jar bundletool.jar build-apks --bundle=app-production-release.aab --output=app.apks --connected-device\njava -jar bundletool.jar install-apks --apks=app.apks",
+        "language": "bash"
+      }
+    ]
+  }
+]

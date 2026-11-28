@@ -76,7 +76,8 @@
       "ai-python-for-devs": "fundamentals",
       "ai-dotnet-models": "dotnet",
       "ai-prompt-engineering": "dotnet",
-      "kotlin-fundamentals": "fundamentals"
+      "kotlin-fundamentals": "fundamentals",
+      "android-fundamentals": "frontend"
     }
   },
 
@@ -89,7 +90,8 @@
     "ai-python-for-devs": "Beginner",
     "ai-dotnet-models": "Intermediate",
     "ai-prompt-engineering": "Intermediate",
-    "kotlin-fundamentals": "Beginner"
+    "kotlin-fundamentals": "Beginner",
+    "android-fundamentals": "Beginner"
   },
 
   "exerciseExtraCategories": {
