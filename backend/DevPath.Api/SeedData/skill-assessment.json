@@ -86,7 +86,8 @@
       "android-security": "security",
       "android-device": "fundamentals",
       "android-quality": "testing",
-      "android-firebase": "apis"
+      "android-firebase": "apis",
+      "android-ai-apps": "apis"
     }
   },
 
@@ -109,7 +110,8 @@
     "android-security": "Advanced",
     "android-device": "Intermediate",
     "android-quality": "Intermediate",
-    "android-firebase": "Intermediate"
+    "android-firebase": "Intermediate",
+    "android-ai-apps": "Advanced"
   },
 
   "exerciseExtraCategories": {

@@ -2063,5 +2063,68 @@
     "shortEn": "Server code that runs on Google's infrastructure in response to requests or events.",
     "shortAr": "كود خادم يعمل على بنية Google استجابة للطلبات أو الأحداث.",
     "topicSlug": "and-fb-storage-functions"
+  },
+  {
+    "term": "server-sent events",
+    "arabic": "أحداث الخادم",
+    "shortEn": "A simple HTTP format where the server keeps the response open and sends events as lines of text.",
+    "shortAr": "صيغة HTTP بسيطة يُبقي فيها الخادم الاستجابة مفتوحة ويرسل الأحداث كأسطر نصية.",
+    "topicSlug": "and-ai-streaming"
+  },
+  {
+    "term": "context window",
+    "arabic": "نافذة السياق",
+    "shortEn": "The maximum amount of text, in tokens, a model can take in one request.",
+    "shortAr": "أقصى كمية من النص، مقيسة بالرموز، يستطيع النموذج استقبالها في طلب واحد.",
+    "topicSlug": "and-ai-chat-ux"
+  },
+  {
+    "term": "multimodal model",
+    "arabic": "النموذج متعدد الوسائط",
+    "shortEn": "A model that accepts more than text, such as images or audio.",
+    "shortAr": "نموذج يقبل أكثر من النص، مثل الصور أو الصوت.",
+    "topicSlug": "and-ai-multimodal"
+  },
+  {
+    "term": "Gemini Nano",
+    "arabic": "النموذج Gemini Nano",
+    "shortEn": "Google's small on-device model, available on supported Android devices through AICore.",
+    "shortAr": "نموذج Google الصغير الذي يعمل على الجهاز، ويتوفر على أجهزة Android المدعومة عبر AICore.",
+    "topicSlug": "and-ai-on-device"
+  },
+  {
+    "term": "LiteRT",
+    "arabic": "مكتبة LiteRT",
+    "shortEn": "Google's runtime for on-device machine learning models, formerly TensorFlow Lite.",
+    "shortAr": "بيئة تشغيل Google لنماذج التعلم الآلي على الجهاز، المعروفة سابقًا بـ TensorFlow Lite.",
+    "topicSlug": "and-ai-on-device"
+  },
+  {
+    "term": "Firebase AI Logic",
+    "arabic": "خدمة Firebase AI Logic",
+    "shortEn": "A Firebase service and SDK for calling Gemini models from apps, protected by App Check.",
+    "shortAr": "خدمة وSDK من Firebase لاستدعاء نماذج Gemini من التطبيقات، محمية بـ App Check.",
+    "topicSlug": "and-ai-firebase"
+  },
+  {
+    "term": "structured output",
+    "arabic": "الإخراج المنظم",
+    "shortEn": "Model output constrained to a JSON schema so code can parse it.",
+    "shortAr": "إخراج النموذج مقيدًا بمخطط JSON حتى يستطيع الكود تحليله.",
+    "topicSlug": "and-ai-firebase"
+  },
+  {
+    "term": "prompt injection",
+    "arabic": "حقن التعليمات",
+    "shortEn": "An attack where text the model reads contains instructions that try to override yours.",
+    "shortAr": "هجوم يحتوي فيه نص يقرؤه النموذج على تعليمات تحاول تجاوز تعليماتك.",
+    "topicSlug": "and-ai-responsible"
+  },
+  {
+    "term": "evaluation set",
+    "arabic": "مجموعة التقييم",
+    "shortEn": "A versioned set of realistic inputs and expected qualities used to test prompts and models.",
+    "shortAr": "مجموعة بإصدارات من المدخلات الواقعية والصفات المتوقعة تُستخدم لاختبار التعليمات والنماذج.",
+    "topicSlug": "and-ai-responsible"
   }
 ]

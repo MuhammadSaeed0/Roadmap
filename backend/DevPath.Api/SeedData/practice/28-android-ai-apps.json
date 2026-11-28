@@ -1,0 +1,170 @@
+[
+  {
+    "key": "and-ex-ai-backend",
+    "type": "CodeReview",
+    "topic": "and-ai-backend",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Review an AI feature that leaks its key",
+    "titleAr": "راجع ميزة ذكاء اصطناعي تسرّب مفتاحها",
+    "problemEn": "This pull request adds \"Improve my writing\" by calling the model provider directly from the app. Review it: list every security, cost and reliability problem and propose the endpoint you would build instead, including request and response shapes and limits.",
+    "problemAr": "يضيف طلب الدمج هذا ميزة «حسّن كتابتي» باستدعاء مزوّد النموذج مباشرة من التطبيق. راجعه: اذكر كل مشكلة أمان وكلفة وموثوقية، واقترح النقطة التي ستبنيها بدلًا من ذلك، بما في ذلك شكل الطلب والرد والحدود.",
+    "expectedEn": "Findings for the shipped key, client-built system prompt, unlimited output, no auth or quota, no timeout and raw error text, plus an endpoint design with auth, quotas, max tokens and error codes.",
+    "expectedAr": "نتائج تخص المفتاح المشحون، وتعليمات النظام التي يبنيها العميل، والإخراج غير المحدود، وغياب المصادقة والحصة، وغياب المهلة، ونص الخطأ الخام، مع تصميم نقطة بالمصادقة والحصص وحد الرموز ورموز الأخطاء.",
+    "hintsEn": [
+      "Anyone can change the system prompt if the client builds it.",
+      "What happens to the bill if a script calls this in a loop?"
+    ],
+    "hintsAr": [
+      "يستطيع أي شخص تغيير تعليمات النظام إذا بناها العميل.",
+      "ماذا يحدث للفاتورة إذا استدعى نص برمجي هذا في حلقة؟"
+    ],
+    "solutionEn": "Problems: the key ships in BuildConfig and will be extracted; the system prompt is built on the client so users can change it; no max tokens, so one request can be huge; no auth, quota or rate limit; no timeout; raw provider errors shown to users. Fix: POST /ai/improve-writing { text } with the user's ID token; the server validates length (max 5,000 chars), checks a daily quota, uses a fixed system prompt and maxOutputTokens 800, calls the provider with a secret from the secret store, returns { improved, remainingToday }, and maps errors to 429, 422 and 503.",
+    "solutionAr": "المشكلات: المفتاح يُشحن في BuildConfig وسيُستخرج، وتعليمات النظام تُبنى في العميل فيستطيع المستخدمون تغييرها، ولا حد للرموز فقد يكون الطلب الواحد ضخمًا، ولا مصادقة ولا حصة ولا حد للمعدل، ولا مهلة، وأخطاء المزوّد الخام تُعرض للمستخدمين. والإصلاح: ‏POST /ai/improve-writing { text } مع رمز ID للمستخدم، ويتحقق الخادم من الطول (حتى 5,000 حرف)، ويفحص حصة يومية، ويستخدم تعليمات نظام ثابتة وmaxOutputTokens بقيمة 800، ويستدعي المزوّد بسر من مخزن الأسرار، ويُرجع { improved, remainingToday }، ويحوّل الأخطاء إلى 429 و422 و503.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-ai-stream",
+    "type": "Practical",
+    "topic": "and-ai-streaming",
+    "difficulty": "Advanced",
+    "minutes": 60,
+    "titleEn": "Stream an answer with Stop",
+    "titleAr": "ادفق ردًا مع الإيقاف",
+    "problemEn": "Build an \"Explain this\" screen: the app sends a question to /ai/explain/stream, which returns server-sent events with {\"text\":\"...\"} deltas and a final [DONE]. Parse the stream into a Flow<String>, batch updates every 75 ms, show the growing answer with a Stop button that cancels the request, keep partial text on errors with Retry, and write a MockWebServer test that streams three deltas and asserts the final text.",
+    "problemAr": "ابنِ شاشة «اشرح هذا»: يرسل التطبيق سؤالًا إلى /ai/explain/stream التي تُرجع أحداث خادم SSE فيها أجزاء {\"text\":\"...\"} ثم [DONE] في النهاية. وحلّل التدفق إلى Flow<String>، وجمّع التحديثات كل 75 ملّي ثانية، واعرض الرد المتنامي مع زر Stop يلغي الطلب، وأبقِ النص الجزئي عند الأخطاء مع إعادة المحاولة، واكتب اختبار MockWebServer يدفق ثلاثة أجزاء ويتحقق من النص النهائي.",
+    "expectedEn": "A callbackFlow over OkHttp that cancels in awaitClose, a chunked operator, a ViewModel with a cancellable Job and states (streaming, done, stopped, failed), Compose UI, and a passing MockWebServer test.",
+    "expectedAr": "الدالة callbackFlow فوق OkHttp يلغي في awaitClose، وعامل تجميع، وViewModel بمهمة قابلة للإلغاء وحالات (البث والاكتمال والإيقاف والفشل)، وواجهة Compose، واختبار MockWebServer ناجح.",
+    "hintsEn": [
+      "MockResponse().setChunkedBody(body, 16) streams the body in pieces.",
+      "Check server.takeRequest() to confirm the question was sent."
+    ],
+    "hintsAr": [
+      "الدالة MockResponse().setChunkedBody(body, 16) تدفق الجسم على أجزاء.",
+      "افحص server.takeRequest() لتتأكد أن السؤال أُرسل."
+    ],
+    "solutionEn": "Repository.stream(question) uses a client with readTimeout 0 and callTimeout 2 min, reads lines, sends deltas, closes at [DONE], and cancels the call in awaitClose. The ViewModel keeps job: Job?; ask() cancels the previous job, sets streaming, collects stream.chunked(75.milliseconds) appending text, catch sets failed while keeping text, onCompletion clears streaming; stop() cancels and marks stopped. Test: enqueue a chunked body with three data lines and [DONE], collect toList() in runTest, assert joined text.",
+    "solutionAr": "تستخدم Repository.stream(question) عميلًا بـ readTimeout 0 وcallTimeout دقيقتين، وتقرأ الأسطر، وترسل الأجزاء، وتُغلق عند [DONE]، وتلغي الاستدعاء في awaitClose. وتحتفظ ViewModel بـ job: Job?، فتلغي ask() المهمة السابقة، وتضبط البث، وتجمع stream.chunked(75.milliseconds) مضيفة النص، وتضبط catch حالة الفشل مع إبقاء النص، وتزيل onCompletion حالة البث، وتلغي stop() وتعلّم الإيقاف. والاختبار: ضع جسمًا مقسمًا بثلاثة أسطر data مع [DONE] في الطابور، واجمع toList() داخل runTest، وتحقق من النص المضموم.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-ai-chat",
+    "type": "Practical",
+    "topic": "and-ai-chat-ux",
+    "difficulty": "Intermediate",
+    "minutes": 60,
+    "titleEn": "A chat with history and feedback",
+    "titleAr": "محادثة بسجل وتقييم",
+    "problemEn": "Turn a single-question assistant into a chat: conversations and messages stored in Room with message states, the reply streamed into a placeholder message, the last eight turns sent as context, suggested prompts on an empty chat, Retry on failed messages, and thumbs up or down saved locally and sent to the backend with the prompt version.",
+    "problemAr": "حوّل مساعدًا بسؤال واحد إلى محادثة: محادثات ورسائل محفوظة في Room مع حالات الرسائل، ورد يتدفق في رسالة مؤقتة، وآخر ثمانية أدوار تُرسل كسياق، واقتراحات للتعليمات في المحادثة الفارغة، وإعادة المحاولة للرسائل الفاشلة، وتقييم بالإعجاب أو عدمه يُحفظ محليًا ويُرسل إلى الخادم مع إصدار التعليمات.",
+    "expectedEn": "Entities and DAO with appendContent and setState, a ChatRepository.send that writes before calling the network, a ViewModel exposing messages as StateFlow, Compose bubbles per state, and a unit test with a fake AI repository.",
+    "expectedAr": "كيانات وDAO فيه appendContent وsetState، ودالة ChatRepository.send تكتب قبل استدعاء الشبكة، وViewModel تعرض الرسائل كـ StateFlow، وفقاعات Compose لكل حالة، واختبار وحدة مع مستودع ذكاء اصطناعي وهمي.",
+    "hintsEn": [
+      "Insert the assistant placeholder before streaming so the UI shows it immediately.",
+      "Mark STOPPED in the CancellationException branch and rethrow."
+    ],
+    "hintsAr": [
+      "أدخل الرسالة المؤقتة للمساعد قبل البث حتى تعرضها الواجهة فورًا.",
+      "علّم STOPPED في فرع CancellationException ثم أعد الرمي."
+    ],
+    "solutionEn": "MessageEntity(id, chatId, role, content, state, createdAt, feedback, promptVersion). send(): insert user message, insert assistant placeholder STREAMING, load lastTurns(8), collect ai.stream(turns) with dao.appendContent, then DONE; catch CancellationException -> STOPPED and rethrow; other exceptions -> FAILED. retry(messageId) resends the preceding user turn. Feedback: dao.setFeedback then api.feedback(id, rating, promptVersion). Test with FakeAi emitting [\"Hel\",\"lo\"] and an in-memory database, asserting the final content \"Hello\" and state DONE.",
+    "solutionAr": "الكيان MessageEntity(id, chatId, role, content, state, createdAt, feedback, promptVersion). والدالة send(): أدخل رسالة المستخدم، ثم رسالة المساعد المؤقتة بحالة STREAMING، وحمّل lastTurns(8)، واجمع ai.stream(turns) مع dao.appendContent، ثم DONE، والتقط CancellationException لتضبط STOPPED وتعيد الرمي، والاستثناءات الأخرى تضبط FAILED. وتعيد retry(messageId) إرسال دور المستخدم السابق. والتقييم: ‏dao.setFeedback ثم api.feedback(id, rating, promptVersion). والاختبار مع FakeAi يُصدر [\"Hel\",\"lo\"] وقاعدة بيانات في الذاكرة، ويتحقق من المحتوى النهائي «Hello» والحالة DONE.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-ai-image",
+    "type": "Practical",
+    "topic": "and-ai-multimodal",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "Ask about a photo, privately",
+    "titleAr": "اسأل عن صورة بخصوصية",
+    "problemEn": "Build \"Ask about this photo\": pick an image with the photo picker, show a preview with a crop option, downscale to 1,280 pixels on Dispatchers.Default, re-encode to strip EXIF, check the size is under 1.5 MB, send it with the question to your backend, stream the answer, label it as AI-generated with a Report action, and read it aloud on request with TextToSpeech.",
+    "problemAr": "ابنِ «اسأل عن هذه الصورة»: اختر صورة بمنتقي الصور، واعرض معاينة مع خيار القص، وصغّرها إلى 1,280 بكسل على Dispatchers.Default، وأعد ترميزها لحذف EXIF، وتحقق أن حجمها أقل من 1.5 ميجابايت، وأرسلها مع السؤال إلى خادمك، وادفق الرد، وميّزه كمولّد بالذكاء الاصطناعي مع إجراء إبلاغ، واقرأه بصوت عالٍ عند الطلب بـ TextToSpeech.",
+    "expectedEn": "No storage permission, an ImageDecoder-based downscale, a confirm screen, a size check, a streamed answer with an AI label and Report, and a Speaker class released in onDispose.",
+    "expectedAr": "دون إذن تخزين، وتصغير مبني على ImageDecoder، وشاشة تأكيد، وفحص للحجم، ورد متدفق مع تسمية الذكاء الاصطناعي والإبلاغ، وصنف Speaker يُحرر في onDispose.",
+    "hintsEn": [
+      "Compare the original and processed file sizes in a log during development.",
+      "Strip ** and # before passing text to TextToSpeech."
+    ],
+    "hintsAr": [
+      "قارن حجمي الملف الأصلي والمعالَج في سجل أثناء التطوير.",
+      "احذف ** و# قبل تمرير النص إلى TextToSpeech."
+    ],
+    "solutionEn": "prepareImage uses ImageDecoder with setTargetSize to keep the long side at 1,280 and compresses JPEG at 80, which drops EXIF. ConfirmImage shows the bitmap with Crop and Send. VisionRepository checks bytes.size < 1_500_000 and posts base64 with the question to /ai/vision/stream. The answer composable shows an \"AI-generated\" chip, Report and a speaker button; Speaker sets Locale.getDefault(), speaks the Markdown-stripped text with QUEUE_FLUSH, and shutdown() runs in DisposableEffect.onDispose.",
+    "solutionAr": "تستخدم prepareImage الأداة ImageDecoder مع setTargetSize لإبقاء الضلع الأطول عند 1,280 وتضغط JPEG بجودة 80، فتُسقط EXIF. وتعرض ConfirmImage الصورة مع القص والإرسال. ويفحص VisionRepository أن bytes.size < 1_500_000 ويرسل base64 مع السؤال إلى /ai/vision/stream. وتعرض دالة الرد شريحة «مولّد بالذكاء الاصطناعي» والإبلاغ وزر مكبر صوت، ويضبط Speaker القيمة Locale.getDefault()، وينطق النص بعد حذف Markdown مع QUEUE_FLUSH، وتعمل shutdown() في DisposableEffect.onDispose.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-ai-ondevice",
+    "type": "Practical",
+    "topic": "and-ai-on-device",
+    "difficulty": "Advanced",
+    "minutes": 50,
+    "titleEn": "Offline translation with a cloud fallback",
+    "titleAr": "ترجمة دون اتصال مع بديل سحابي",
+    "problemEn": "Add message translation to a chat app: use ML Kit on-device translation, identify the source language first, download the language model on Wi-Fi with progress the first time, translate offline afterwards, and fall back to a cloud endpoint only if the user enabled \"Allow cloud translation\". Put both behind one Translator interface and test the choice logic with fakes.",
+    "problemAr": "أضف ترجمة الرسائل إلى تطبيق محادثة: استخدم ترجمة ML Kit على الجهاز، وحدد لغة المصدر أولًا، ونزّل نموذج اللغة عبر Wi-Fi مع التقدم في المرة الأولى، وترجم دون اتصال بعد ذلك، وارجع إلى نقطة سحابية فقط إذا فعّل المستخدم «اسمح بالترجمة السحابية». وضع الاثنين خلف واجهة Translator واحدة، واختبر منطق الاختيار ببدائل وهمية.",
+    "expectedEn": "Language identification, downloadModelIfNeeded with Wi-Fi conditions, a HybridTranslator that prefers on-device, a setting that gates the cloud path, and three unit tests for the decision.",
+    "expectedAr": "تحديد اللغة، وdownloadModelIfNeeded بشروط Wi-Fi، وHybridTranslator يفضّل الجهاز، وإعداد يتحكم في المسار السحابي، وثلاثة اختبارات وحدة للقرار.",
+    "hintsEn": [
+      "LanguageIdentification.getClient().identifyLanguage(text) returns a language tag or und.",
+      "Close translators you no longer need to free memory."
+    ],
+    "hintsAr": [
+      "تُرجع LanguageIdentification.getClient().identifyLanguage(text) وسم لغة أو und.",
+      "أغلق المترجمات التي لم تعد تحتاجها لتحرير الذاكرة."
+    ],
+    "solutionEn": "Translator interface { suspend fun translate(text, target): String? }. OnDeviceTranslator identifies the language, maps it with TranslateLanguage.fromLanguageTag, builds a client, awaits downloadModelIfNeeded(requireWifi) reporting progress, then translates. CloudTranslator calls /ai/translate. HybridTranslator tries on-device; on unsupported language or model failure it uses cloud only when settings.allowCloud is true, else returns null and the UI shows \"Translation unavailable offline\". Tests: on-device succeeds; on-device fails with cloud allowed; on-device fails with cloud disallowed returns null.",
+    "solutionAr": "الواجهة Translator { suspend fun translate(text, target): String? }. ويحدد OnDeviceTranslator اللغة، ويحوّلها بـ TranslateLanguage.fromLanguageTag، ويبني عميلًا، وينتظر downloadModelIfNeeded(requireWifi) مع الإبلاغ عن التقدم، ثم يترجم. ويستدعي CloudTranslator النقطة /ai/translate. ويجرب HybridTranslator الجهاز أولًا، وعند لغة غير مدعومة أو فشل النموذج يستخدم السحابة فقط عندما تكون settings.allowCloud صحيحة، وإلا يُرجع null وتعرض الواجهة «الترجمة غير متاحة دون اتصال». والاختبارات: نجاح الجهاز، وفشل الجهاز مع السماح بالسحابة، وفشل الجهاز مع منع السحابة يُرجع null.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-ai-firebase",
+    "type": "Practical",
+    "topic": "and-ai-firebase",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "Structured output with Firebase AI Logic",
+    "titleAr": "إخراج منظم بـ Firebase AI Logic",
+    "problemEn": "Build \"Plan my study week\" with Firebase AI Logic: the model name and system instruction come from Remote Config with defaults, the request includes the user's goals and free hours, a response schema returns days with tasks and minutes, the app decodes and validates the JSON (no day over the free hours), streams a short motivation message separately, and handles quota and safety errors. App Check must be installed with the debug provider in development.",
+    "problemAr": "ابنِ «خطط أسبوع دراستي» بـ Firebase AI Logic: يأتي اسم النموذج وتعليمات النظام من Remote Config بقيم افتراضية، ويتضمن الطلب أهداف المستخدم وساعاته الحرة، ويُرجع مخطط الرد أيامًا بمهام ودقائق، ويفك التطبيق ترميز JSON ويتحقق منه (لا يوم يتجاوز الساعات الحرة)، ويدفق رسالة تحفيز قصيرة بشكل منفصل، ويعالج أخطاء الحصة والسلامة. ويجب تثبيت App Check مع مزوّد debug أثناء التطوير.",
+    "expectedEn": "A generativeModel configured from Remote Config, a responseSchema, a @Serializable StudyPlan with validation, a streamed motivation Flow, error mapping, and App Check setup.",
+    "expectedAr": "النموذج generativeModel مضبوطًا من Remote Config، وresponseSchema، وصنف StudyPlan عليه @Serializable مع التحقق، وتدفق Flow لرسالة التحفيز، وتحويل الأخطاء، وإعداد App Check.",
+    "hintsEn": [
+      "Validate after decoding: models can still return values outside your rules.",
+      "Keep the plan generation and the motivation message as two calls."
+    ],
+    "hintsAr": [
+      "تحقق بعد فك الترميز: فالنماذج قد تُرجع قيمًا خارج قواعدك.",
+      "اجعل توليد الخطة ورسالة التحفيز استدعاءين منفصلين."
+    ],
+    "solutionEn": "Create model = Firebase.ai(backend = googleAI()).generativeModel(flags.aiModelName, systemInstruction = content { text(flags.studyInstruction) }, generationConfig { responseMimeType = \"application/json\"; responseSchema = Schema.obj(days: array of { day, tasks: array of { title, minutes } }) }). plan(goals, freeHours) decodes into StudyPlan inside runCatching and rejects plans where any day's minutes exceed freeHours[day] * 60. motivation() uses generateContentStream. Map quota exceptions to \"Try again later\" and safety blocks to \"This request can't be answered\".",
+    "solutionAr": "أنشئ model = Firebase.ai(backend = googleAI()).generativeModel(flags.aiModelName, systemInstruction = content { text(flags.studyInstruction) }, generationConfig { responseMimeType = \"application/json\"; responseSchema = Schema.obj(days: array of { day, tasks: array of { title, minutes } }) }). وتفك plan(goals, freeHours) الترميز إلى StudyPlan داخل runCatching وترفض الخطط التي تتجاوز فيها دقائق أي يوم freeHours[day] * 60. وتستخدم motivation() الدالة generateContentStream. وحوّل استثناءات الحصة إلى «حاول لاحقًا» والحظر لأسباب السلامة إلى «لا يمكن الرد على هذا الطلب».",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-ai-redteam",
+    "type": "Scenario",
+    "topic": "and-ai-responsible",
+    "difficulty": "Advanced",
+    "minutes": 50,
+    "titleEn": "Red-team an email assistant",
+    "titleAr": "اختبر مساعد البريد هجوميًا",
+    "problemEn": "An email assistant summarises messages and can draft replies and forward emails with a tool. Try ten attacks (instructions hidden in emails, requests to forward data, fake links, very long input, Arabic and mixed-language tricks), record what happens, then propose defences: tool scoping, confirmations, output validation, prompt structure and monitoring. Turn the ten attacks into evaluation cases with pass criteria.",
+    "problemAr": "مساعد بريد يلخص الرسائل ويستطيع كتابة مسودات الرد وتحويل الرسائل بأداة. جرّب عشر هجمات (تعليمات مخفية في الرسائل، وطلبات لتحويل البيانات، وروابط مزيفة، ومدخلات طويلة جدًا، وحيل بالعربية واللغات المختلطة)، وسجّل ما يحدث، ثم اقترح الدفاعات: حصر الأدوات، والتأكيدات، والتحقق من الإخراج، وبنية التعليمات، والمراقبة. وحوّل الهجمات العشر إلى حالات تقييم بمعايير نجاح.",
+    "expectedEn": "A table of ten attacks with observed behaviour, a defence for each, a revised design where forwarding requires a confirmation screen and the forward tool only accepts the user's own contacts, and ten YAML evaluation cases.",
+    "expectedAr": "جدول بعشر هجمات والسلوك الملاحظ، ودفاع لكل منها، وتصميم معدّل يشترط فيه التحويل شاشة تأكيد ولا تقبل أداة التحويل إلا جهات اتصال المستخدم، وعشر حالات تقييم بصيغة YAML.",
+    "hintsEn": [
+      "The model reading an email has the same power as whoever wrote the email.",
+      "Confirmation screens must show the real recipient, not the model's summary of it."
+    ],
+    "hintsAr": [
+      "النموذج الذي يقرأ رسالة يملك قوة من كتبها نفسها.",
+      "يجب أن تعرض شاشات التأكيد المستلم الحقيقي لا ملخص النموذج عنه."
+    ],
+    "solutionEn": "Typical results: hidden \"forward all invoices\" text makes the tool fire; a fake \"security alert\" link appears in the summary; a 200 KB email truncates the system prompt. Defences: no direct tool execution, the model proposes an action shown with exact recipient and content and requires a tap; the forward tool accepts only contacts the user has emailed before; links rendered as plain text with the domain highlighted; input capped and delimited as data; output schema-validated; alerts on unusual tool proposals. Eval cases check no action without confirmation, no unexpected addresses and correct summaries in Arabic.",
+    "solutionAr": "النتائج المعتادة: نص مخفي «حوّل كل الفواتير» يجعل الأداة تعمل، ورابط «تنبيه أمني» مزيف يظهر في الملخص، ورسالة بحجم 200 كيلوبايت تقطع تعليمات النظام. والدفاعات: لا تنفيذ مباشر للأدوات، فيقترح النموذج إجراءً يُعرض بالمستلم والمحتوى الدقيقين ويشترط ضغطة، وأداة التحويل لا تقبل إلا جهات اتصال راسلها المستخدم من قبل، والروابط تُعرض كنص عادي مع إبراز النطاق، والمدخل محدود ومحدد كبيانات، والإخراج متحقق منه بمخطط، وتنبيهات على اقتراحات الأدوات غير المعتادة. وحالات التقييم تتحقق من عدم وجود إجراء دون تأكيد، وعدم وجود عناوين غير متوقعة، وصحة الملخصات بالعربية.",
+    "runner": "None"
+  }
+]

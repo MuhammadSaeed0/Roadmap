@@ -1,0 +1,200 @@
+[
+  {
+    "key": "and-study-assistant",
+    "skill": "Android",
+    "level": "Advanced",
+    "hours": 16,
+    "titleEn": "AI study assistant",
+    "titleAr": "مساعد دراسة بالذكاء الاصطناعي",
+    "summaryEn": "A study companion that explains topics in a streaming chat, quizzes the learner, reads photos of textbook pages, works by voice, translates offline, and keeps every AI call safe: keys on a backend or Firebase AI Logic with App Check, quotas, a visible AI label with reporting, prompt-injection defences and an evaluation set in CI.",
+    "summaryAr": "رفيق دراسة يشرح الموضوعات في محادثة متدفقة، ويختبر المتعلم، ويقرأ صور صفحات الكتب، ويعمل بالصوت، ويترجم دون اتصال، ويُبقي كل استدعاء للذكاء الاصطناعي آمنًا: المفاتيح في خادم أو في Firebase AI Logic مع App Check، والحصص، وتسمية ظاهرة للذكاء الاصطناعي مع الإبلاغ، ودفاعات ضد حقن التعليمات، ومجموعة تقييم في CI.",
+    "techStack": "Kotlin · Jetpack Compose · Room · OkHttp SSE or Firebase AI Logic · App Check · Remote Config · CameraX · ML Kit · SpeechRecognizer · TextToSpeech · WorkManager",
+    "goalsEn": [
+      "Call models safely through a backend or Firebase AI Logic",
+      "Stream answers into a polished chat",
+      "Use images and voice input",
+      "Run part of the app on the device",
+      "Ship AI responsibly with evaluation"
+    ],
+    "goalsAr": [
+      "استدعاء النماذج بأمان عبر خادم أو Firebase AI Logic",
+      "دفق الردود في محادثة مصقولة",
+      "استخدام الصور والإدخال الصوتي",
+      "تشغيل جزء من التطبيق على الجهاز",
+      "شحن الذكاء الاصطناعي بمسؤولية مع التقييم"
+    ],
+    "requirementsEn": [
+      "No provider key in the APK; every call goes through a backend endpoint or Firebase AI Logic with App Check enforced",
+      "A streaming chat with history in Room, Stop, Retry, Regenerate and thumbs feedback",
+      "\"Quiz me\" returns structured questions that the app validates before showing",
+      "\"Explain this page\" accepts a photo, downscaled and stripped of EXIF",
+      "Voice questions with SpeechRecognizer and answers read aloud",
+      "Offline translation of answers with ML Kit",
+      "Every AI answer has a label and a Report action; a 30-case evaluation set runs in CI"
+    ],
+    "requirementsAr": [
+      "لا مفتاح مزوّد في APK، وكل استدعاء يمر عبر نقطة خادم أو Firebase AI Logic مع فرض App Check",
+      "محادثة متدفقة بسجل في Room مع الإيقاف وإعادة المحاولة وإعادة التوليد والتقييم",
+      "«اختبرني» تُرجع أسئلة منظمة يتحقق منها التطبيق قبل عرضها",
+      "«اشرح هذه الصفحة» تقبل صورة مصغّرة ومجرّدة من EXIF",
+      "أسئلة صوتية بـ SpeechRecognizer وردود تُقرأ بصوت عالٍ",
+      "ترجمة الردود دون اتصال بـ ML Kit",
+      "لكل رد تسمية وإجراء إبلاغ، ومجموعة تقييم من 30 حالة تعمل في CI"
+    ],
+    "acceptanceEn": [
+      "jadx finds no provider keys in the release APK",
+      "The first words of an answer appear within a second on Wi-Fi and Stop ends generation",
+      "Injection cases in the evaluation set never trigger an action or leak the system prompt",
+      "Per-user daily limits are enforced and shown in the UI"
+    ],
+    "acceptanceAr": [
+      "لا تجد jadx أي مفاتيح مزوّد في APK الإصداري",
+      "تظهر الكلمات الأولى للرد خلال ثانية على Wi-Fi، وينهي Stop التوليد",
+      "حالات الحقن في مجموعة التقييم لا تطلق أي إجراء ولا تسرّب تعليمات النظام",
+      "تُفرض الحدود اليومية لكل مستخدم وتظهر في الواجهة"
+    ],
+    "stretchEn": [
+      "Use an on-device GenAI summary when available",
+      "Add spaced-repetition flashcards generated from chats",
+      "Sync chats across devices with Firestore"
+    ],
+    "stretchAr": [
+      "استخدم ملخص GenAI على الجهاز عند توفره",
+      "أضف بطاقات مراجعة متباعدة مولّدة من المحادثات",
+      "زامن المحادثات بين الأجهزة بـ Firestore"
+    ],
+    "steps": [
+      {
+        "key": "and-sa-backend",
+        "titleEn": "Choose and secure the AI path",
+        "titleAr": "اختر مسار الذكاء الاصطناعي وأمّنه",
+        "bodyEn": "Pick a small backend (Ktor or Cloud Functions) or Firebase AI Logic. Either way: authentication, App Check, per-user daily limits, max output tokens, the model name and system prompt kept server-side or in Remote Config, and clear 429, 422 and 503 errors.",
+        "bodyAr": "اختر خادمًا صغيرًا (‏Ktor أو Cloud Functions) أو Firebase AI Logic. وفي الحالتين: المصادقة، وApp Check، وحدود يومية لكل مستخدم، وحد أقصى لرموز الإخراج، واسم النموذج وتعليمات النظام محفوظة في الخادم أو Remote Config، وأخطاء 429 و422 و503 واضحة.",
+        "hintsEn": [
+          "Write the threat model first: who could abuse this and how much it would cost.",
+          "Set a budget alert before the first test call."
+        ],
+        "hintsAr": [
+          "اكتب نموذج التهديد أولًا: من قد يسيء استخدام هذا وكم سيكلف.",
+          "اضبط تنبيه ميزانية قبل أول استدعاء تجريبي."
+        ]
+      },
+      {
+        "key": "and-sa-chat",
+        "titleEn": "Streaming chat with history",
+        "titleAr": "محادثة متدفقة بسجل",
+        "bodyEn": "Store conversations and messages in Room, stream replies into a placeholder with batched updates, support Stop, Retry and Regenerate, send the last eight turns plus a summary, and show suggested prompts for empty chats.",
+        "bodyAr": "احفظ المحادثات والرسائل في Room، وادفق الردود في رسالة مؤقتة بتحديثات مجمعة، وادعم الإيقاف وإعادة المحاولة وإعادة التوليد، وأرسل آخر ثمانية أدوار مع ملخص، واعرض اقتراحات للتعليمات في المحادثات الفارغة.",
+        "hintsEn": [
+          "Cancellation must close the connection, not just stop collecting.",
+          "Test the stream parser with MockWebServer."
+        ],
+        "hintsAr": [
+          "يجب أن يغلق الإلغاء الاتصال لا أن يوقف الجمع فقط.",
+          "اختبر محلل التدفق بـ MockWebServer."
+        ]
+      },
+      {
+        "key": "and-sa-quiz",
+        "titleEn": "Structured quizzes",
+        "titleAr": "اختبارات منظمة",
+        "bodyEn": "Add \"Quiz me on this chat\": request JSON with a schema of questions, four options and the correct index, decode and validate it (four distinct options, index in range), discard invalid questions, and show the quiz.",
+        "bodyAr": "أضف «اختبرني في هذه المحادثة»: اطلب JSON بمخطط للأسئلة وأربعة خيارات وفهرس الإجابة الصحيحة، وفك ترميزه وتحقق منه (أربعة خيارات مختلفة وفهرس ضمن المجال)، واستبعد الأسئلة غير الصالحة، واعرض الاختبار.",
+        "code": "@Serializable data class QuizQuestion(val question: String, val options: List<String>, val answer: Int)\n\nfun List<QuizQuestion>.valid() = filter { q ->\n    q.options.size == 4 && q.options.toSet().size == 4 && q.answer in 0..3 && q.question.length in 10..300\n}",
+        "language": "kotlin",
+        "hintsEn": [
+          "Shuffle options on the device so the model's ordering doesn't leak the answer.",
+          "Log the share of invalid questions to improve the prompt."
+        ],
+        "hintsAr": [
+          "اخلط الخيارات على الجهاز حتى لا يكشف ترتيب النموذج الإجابة.",
+          "سجّل نسبة الأسئلة غير الصالحة لتحسين التعليمات."
+        ]
+      },
+      {
+        "key": "and-sa-photo",
+        "titleEn": "Explain a textbook page",
+        "titleAr": "اشرح صفحة من كتاب",
+        "bodyEn": "Let the learner take or pick a photo, crop it, downscale to 1,280 pixels, strip EXIF and send it with a question. Show the exact image before sending and stream the explanation.",
+        "bodyAr": "دع المتعلم يلتقط صورة أو يختارها، ويقصها، ثم صغّرها إلى 1,280 بكسل، واحذف EXIF، وأرسلها مع سؤال. واعرض الصورة بالضبط قبل الإرسال، وادفق الشرح.",
+        "hintsEn": [
+          "Use the photo picker so no storage permission is needed.",
+          "For blurry photos, ask the user to retake before spending a request."
+        ],
+        "hintsAr": [
+          "استخدم منتقي الصور حتى لا يلزم إذن التخزين.",
+          "للصور الضبابية اطلب من المستخدم إعادة الالتقاط قبل إنفاق طلب."
+        ]
+      },
+      {
+        "key": "and-sa-voice",
+        "titleEn": "Voice in and out",
+        "titleAr": "الصوت إدخالًا وإخراجًا",
+        "bodyEn": "Add a microphone button using SpeechRecognizer with partial results and a clear listening state, and a speaker button that reads answers with TextToSpeech in the app's language after removing Markdown.",
+        "bodyAr": "أضف زر ميكروفون يستخدم SpeechRecognizer مع النتائج الجزئية وحالة استماع واضحة، وزر مكبر صوت يقرأ الردود بـ TextToSpeech بلغة التطبيق بعد حذف Markdown.",
+        "hintsEn": [
+          "Request RECORD_AUDIO only on the first tap.",
+          "Check TextToSpeech language availability for Arabic."
+        ],
+        "hintsAr": [
+          "اطلب RECORD_AUDIO فقط عند أول ضغطة.",
+          "افحص توفر لغة TextToSpeech للعربية."
+        ]
+      },
+      {
+        "key": "and-sa-offline",
+        "titleEn": "Offline translation",
+        "titleAr": "الترجمة دون اتصال",
+        "bodyEn": "Add \"Translate\" on answers using ML Kit on-device translation between Arabic and English, downloading models on Wi-Fi the first time, and keep it working in airplane mode afterwards.",
+        "bodyAr": "أضف «ترجم» على الردود باستخدام ترجمة ML Kit على الجهاز بين العربية والإنجليزية، مع تنزيل النماذج عبر Wi-Fi في المرة الأولى، واجعلها تعمل في وضع الطيران بعد ذلك.",
+        "hintsEn": [
+          "Show the model download size and progress.",
+          "Close translators when the screen goes away."
+        ],
+        "hintsAr": [
+          "اعرض حجم تنزيل النموذج وتقدمه.",
+          "أغلق المترجمات عند زوال الشاشة."
+        ]
+      },
+      {
+        "key": "and-sa-safety",
+        "titleEn": "Labels, reporting and injection defences",
+        "titleAr": "التسميات والإبلاغ ودفاعات الحقن",
+        "bodyEn": "Label every AI answer, add Report with a short reason that goes to the backend, keep the system prompt server-side, mark user and photo content as data, validate all structured output, and make sure no AI output can trigger an action without a tap.",
+        "bodyAr": "ميّز كل رد بالذكاء الاصطناعي، وأضف الإبلاغ مع سبب قصير يذهب إلى الخادم، وأبقِ تعليمات النظام في الخادم، وعلّم محتوى المستخدم والصور كبيانات، وتحقق من كل إخراج منظم، وتأكد أن أي إخراج لا يستطيع إطلاق إجراء دون ضغطة.",
+        "hintsEn": [
+          "Include the prompt version with each report.",
+          "Update the Data safety form for AI processing."
+        ],
+        "hintsAr": [
+          "ضمّن إصدار التعليمات مع كل بلاغ.",
+          "حدّث نموذج Data safety لمعالجة الذكاء الاصطناعي."
+        ]
+      },
+      {
+        "key": "and-sa-eval",
+        "titleEn": "Evaluation in CI",
+        "titleAr": "التقييم في CI",
+        "bodyEn": "Write 30 evaluation cases (explanations, Arabic questions, quizzes, photos, injection attempts, empty input) with must and must-not rules, run them against a staging endpoint in CI on every prompt change, and fail the build when the pass rate drops.",
+        "bodyAr": "اكتب 30 حالة تقييم (الشروح والأسئلة العربية والاختبارات والصور ومحاولات الحقن والمدخل الفارغ) بقواعد ما يجب وما لا يجب، وشغّلها مقابل نقطة تجهيز في CI مع كل تغيير في التعليمات، وأفشل البناء عندما تنخفض نسبة النجاح.",
+        "hintsEn": [
+          "Cache evaluation runs per prompt version to save cost.",
+          "Review a sample of answers by hand every release."
+        ],
+        "hintsAr": [
+          "خزّن تشغيلات التقييم لكل إصدار تعليمات لتوفير الكلفة.",
+          "راجع عينة من الردود يدويًا مع كل إصدار."
+        ]
+      }
+    ],
+    "topics": [
+      "and-ai-backend",
+      "and-ai-streaming",
+      "and-ai-chat-ux",
+      "and-ai-multimodal",
+      "and-ai-on-device",
+      "and-ai-firebase",
+      "and-ai-responsible"
+    ]
+  }
+]

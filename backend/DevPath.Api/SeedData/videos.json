@@ -8445,5 +8445,169 @@
       "channel": "WTF Code",
       "language": "en"
     }
+  ],
+  "and-ai-backend": [
+    {
+      "videoId": "Mo1_dYHYNSM",
+      "title": "How to Secure API Keys in AI Mobile Apps",
+      "channel": "John Kealy",
+      "language": "en"
+    },
+    {
+      "videoId": "28YhHH1mp3o",
+      "title": "Protect Your API Keys in Android |  Best Practices for Secure Apps",
+      "channel": "Himanshu Gaur",
+      "language": "en"
+    },
+    {
+      "videoId": "lDjtglgGssw",
+      "title": "Why Every AI Mobile App Needs a Backend! NestJS, API Security & Rate Limiting",
+      "channel": "The Techzeen",
+      "language": "en"
+    }
+  ],
+  "and-ai-streaming": [
+    {
+      "videoId": "X_DdIXrmWOo",
+      "title": "Server-Sent Events vs WebSockets | System Design",
+      "channel": "System Design School",
+      "language": "en"
+    },
+    {
+      "videoId": "4HlNv1qpZFY",
+      "title": "Server-Sent Events Crash Course",
+      "channel": "Hussein Nasser",
+      "language": "en"
+    },
+    {
+      "videoId": "xTTtqwGWemw",
+      "title": "Streaming LLM Responses with FastAPI",
+      "channel": "Irtiza Hafiz",
+      "language": "en"
+    },
+    {
+      "videoId": "CI_kdHh4PUc",
+      "title": "ازاي الشات في الذكاء الأصطناعي بيرجع نتايج بسرعة من السيرفر؟ | Server Sent Events - SSE in Arabic 🩵⚡",
+      "channel": "Yehia Tech يحيى تك",
+      "language": "ar"
+    },
+    {
+      "videoId": "wsXlPZJs-_U",
+      "title": "Frontend System Design - #18 Real-time updates - Part #3 Server-Sent Events بالعربي",
+      "channel": "Abdallah Hemdan",
+      "language": "ar"
+    }
+  ],
+  "and-ai-chat-ux": [
+    {
+      "videoId": "i7PJwg0lrU0",
+      "title": "I've Built an Android App With Google's New AI Gemini",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "Xp0wRyO0a9g",
+      "title": "Build an AI Chat App With Gemini (Android Tutorial)",
+      "channel": "Ahmed Guedmioui",
+      "language": "en"
+    },
+    {
+      "videoId": "30NSplCIOo4",
+      "title": "How to create ChatBot Gemini android app | Full Tutorial | 2024",
+      "channel": "Easy Tuto",
+      "language": "en"
+    }
+  ],
+  "and-ai-multimodal": [
+    {
+      "videoId": "hSsBAT0PbNs",
+      "title": "Building intelligent Android apps with Gemini",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "a7-Z9awsods",
+      "title": "Google Speech/Voice to Text in Android Studio Tutorial (Kotlin)",
+      "channel": "Indently",
+      "language": "en"
+    },
+    {
+      "videoId": "Kr02N3p60Dg",
+      "title": "How to Implement Speech to Text in Android Studio Kotlin",
+      "channel": "Coding Meet",
+      "language": "en"
+    }
+  ],
+  "and-ai-on-device": [
+    {
+      "videoId": "mP9QESmEDls",
+      "title": "Gemini Nano on Android: Building with on-device gen AI",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "Z7zx_sTbFPI",
+      "title": "Deploy Android on-device AI with ML Kit GenAI and LiteRT-LM",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "EpKghZYqVW4",
+      "title": "A walkthrough for Android’s on-device GenAI solutions | Spotlight Week",
+      "channel": "Android Developers",
+      "language": "en"
+    }
+  ],
+  "and-ai-firebase": [
+    {
+      "videoId": "0UoReIOwC-Q",
+      "title": "Get Started with Firebase AI Logic on Android",
+      "channel": "Firebase",
+      "language": "en"
+    },
+    {
+      "videoId": "ms3vRyTM8w0",
+      "title": "Build secure AI Android apps in Google AI Studio with Firebase AI Logic & App Check",
+      "channel": "Firebase",
+      "language": "en"
+    },
+    {
+      "videoId": "OaRI87uwU-k",
+      "title": "Building a cooking assistant with Firebase AI Logic",
+      "channel": "Firebase",
+      "language": "en"
+    }
+  ],
+  "and-ai-responsible": [
+    {
+      "videoId": "jrHRe9lSqqA",
+      "title": "What Is a Prompt Injection Attack?",
+      "channel": "IBM Technology",
+      "language": "en"
+    },
+    {
+      "videoId": "gUNXZMcd2jU",
+      "title": "OWASP's Top 10 Ways to Attack LLMs: AI Vulnerabilities Exposed",
+      "channel": "IBM Technology",
+      "language": "en"
+    },
+    {
+      "videoId": "Sv5OLj2nVAQ",
+      "title": "Attacking LLM - Prompt Injection",
+      "channel": "LiveOverflow",
+      "language": "en"
+    },
+    {
+      "videoId": "NrAJZ2Hj7d0",
+      "title": "البرومبت المظلم: إزاي الـAI بيتخدع؟ | شرح Prompt Injection بالعربي",
+      "channel": "Ahmed Morgan",
+      "language": "ar"
+    },
+    {
+      "videoId": "Vre621O-UgE",
+      "title": "كيف يتم اختراق الذكاء الإصطناعي؟ | شرح الـ Prompt Injection",
+      "channel": "تيك سيكيورد",
+      "language": "ar"
+    }
   ]
 }
