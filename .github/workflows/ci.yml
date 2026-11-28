@@ -13,13 +13,15 @@ permissions:
 jobs:
   backend:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
       - name: Test (in-memory SQLite, no secrets needed)
-        run: dotnet test backend/DevPath.Api.Tests --nologo
+        # A test stuck for 5 minutes fails the run and names itself, instead of hanging until the job limit.
+        run: dotnet test backend/DevPath.Api.Tests --nologo --blame-hang-timeout 5m --blame-hang-dump-type none
 
   frontend:
     runs-on: ubuntu-latest
