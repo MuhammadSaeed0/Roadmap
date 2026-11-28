@@ -51,8 +51,11 @@ public class LearningState
         topic.PrerequisiteIds.Select(id => ById[id]).Where(p => !p.IsDone);
 }
 
-public class LearningStateLoader(AppDbContext db, TrackContext tracks)
+public class LearningStateLoader(AppDbContext db, TrackContext tracks, ContentCache cache)
 {
+    private record TopicRow(int Id, string Slug, int PhaseId, int PhaseOrder, int Order, SkillArea Skill, TopicPriority Priority,
+        int EstimatedMinutes, string TitleEn, string TitleAr, List<int> Prereqs);
+
     /// <summary>
     /// The learner's active roadmap: its phases in roadmap order and their topics. With <paramref name="wholeCatalog"/>,
     /// every phase and topic the user can see instead (for pages that open any topic by id: search, topic detail).
@@ -60,26 +63,25 @@ public class LearningStateLoader(AppDbContext db, TrackContext tracks)
     public async Task<LearningState> LoadAsync(CancellationToken ct, bool wholeCatalog = false)
     {
         var track = wholeCatalog ? null : await tracks.GetAsync(ct);
-        var phases = await db.Phases.AsNoTracking()
+        // Phases and topics are catalogue content (cached); only the progress is read per request.
+        var phases = await cache.GetAsync("learning-phases", db.ShowDrafts, () => db.Phases.AsNoTracking()
             .OrderBy(p => p.Order)
             .Select(p => new PhaseState(p.Id, p.Slug, p.Order, p.TitleEn, p.TitleAr))
-            .ToListAsync(ct);
+            .ToListAsync(CancellationToken.None));
 
         // The signed-in user's progress (the query filter keeps other accounts' rows out).
         var progress = await db.TopicProgress.AsNoTracking()
             .Select(p => new { p.TopicId, p.Status, p.Knowledge, p.Confidence, p.CompletedAt })
             .ToDictionaryAsync(p => p.TopicId, ct);
 
-        var rows = await db.Topics.AsNoTracking()
+        var rows = await cache.GetAsync("learning-topics", db.ShowDrafts, () => db.Topics.AsNoTracking()
             .OrderBy(t => t.Phase.Order).ThenBy(t => t.Order)
-            .Select(t => new
-            {
-                t.Id, t.Slug, t.PhaseId, PhaseOrder = t.Phase.Order, t.Order,
+            .Select(t => new TopicRow(
+                t.Id, t.Slug, t.PhaseId, t.Phase.Order, t.Order,
                 t.Skill, t.Priority, t.EstimatedMinutes, t.TitleEn, t.TitleAr,
-                Prereqs = t.Prerequisites.Select(p => p.PrerequisiteTopicId).ToList()
-            })
+                t.Prerequisites.Select(p => p.PrerequisiteTopicId).ToList()))
             .AsSplitQuery()
-            .ToListAsync(ct);
+            .ToListAsync(CancellationToken.None));
 
         var topics = rows.Select(r =>
         {

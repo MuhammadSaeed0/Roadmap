@@ -891,7 +891,7 @@ button.stat-card:hover { border-color: var(--accent); }
 }
 .video-duration { inset-inline-end: 8px; direction: ltr; }
 .video-watched { inset-inline-start: 8px; background: color-mix(in srgb, var(--success) 88%, #000); }
-.video-body { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px 8px; flex: 1; }
+.video-body { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px 8px; flex: 1; min-width: 0; }
 .video-title {
   margin: 0; font-weight: 600; font-size: 0.92rem; line-height: 1.35;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
@@ -1381,7 +1381,7 @@ fieldset:disabled .quiz-option { cursor: default; }
 .workspace-actions .btn { min-height: 34px; }
 .video-lang-filter { margin-bottom: 12px; }
 .video-lang[data-lang='Arabic'] { background: var(--accent-soft); color: var(--accent-text); }
-.video-desc { margin: 4px 0 0; color: var(--text-2); }
+.video-desc { margin: 4px 0 0; color: var(--text-2); overflow-wrap: anywhere; } /* long links in descriptions */
 .video-grid > li { display: flex; }
 .video-grid > li > app-video-card { flex: 1; }
 .video-topic { margin-top: 16px; }

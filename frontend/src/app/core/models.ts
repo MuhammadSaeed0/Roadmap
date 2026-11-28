@@ -63,6 +63,8 @@ export interface Track {
   slug: string; order: number; titleEn: string; titleAr: string; summaryEn: string; summaryAr: string;
   outcomeEn: string; outcomeAr: string; technologies: string[]; icon: string; isDraft: boolean;
   phaseCount: number; topicCount: number; minutes: number; doneTopics: number; sharedPhases: number;
+  /** The roadmap's phases in its own order: Phase N of this roadmap is phaseIds[N - 1]. */
+  phaseIds: number[];
 }
 /** chosenSlug is null until the learner picks a roadmap (new accounts); activeSlug is what they see meanwhile. */
 export interface Tracks { tracks: Track[]; activeSlug: string | null; chosenSlug: string | null; }

@@ -145,6 +145,8 @@ public class TrackTests(TrackTests.Factory factory) : IClassFixture<TrackTests.F
             await db.SaveChangesAsync();
             topicId = topic.Id;
             phaseId = phase.Id;
+            // Content is cached in memory once read; rows added behind the app's back need a fresh read.
+            scope.ServiceProvider.GetRequiredService<DevPath.Api.Services.ContentCache>().Clear();
         }
 
         var learner = await factory.CreateUserClientAsync();

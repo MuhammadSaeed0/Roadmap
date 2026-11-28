@@ -179,6 +179,7 @@ builder.Services.AddHttpClient<IYouTubeClient, YouTubeClient>(client =>
 builder.Services.Configure<ProgressOptions>(builder.Configuration.GetSection(ProgressOptions.SectionName));
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<DbSeeder>();
+builder.Services.AddSingleton<ContentCache>();
 builder.Services.AddScoped<LearningStateLoader>();
 builder.Services.AddScoped<TrackContext>();
 builder.Services.AddScoped<TrackService>();
@@ -251,10 +252,15 @@ if (hasFrontend)
 
 // index.html names the current hashed bundles. Without this header browsers may reuse an old copy after a deploy,
 // and keep showing the previous release until a hard refresh.
+// The bundles (main-XXXXXXXX.js, chunk-XXXXXXXX.js, styles-XXXXXXXX.css …) carry a content hash in their name, so a
+// browser may keep them for a year without asking again; without a header it re-validated each one with the slow host.
 static void NoCacheForHtml(StaticFileResponseContext ctx)
 {
-    if (ctx.File.Name.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+    var name = ctx.File.Name;
+    if (name.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
         ctx.Context.Response.Headers.CacheControl = "no-cache";
+    else if (HashedBundle().IsMatch(name))
+        ctx.Context.Response.Headers.CacheControl = "public, max-age=31536000, immutable";
 }
 
 if (app.Environment.IsDevelopment()) app.UseCors(FrontendCors);
@@ -293,3 +299,9 @@ static Task WriteAuthProblem(RedirectContext<CookieAuthenticationOptions> ctx, i
 
 // Exposes the auto-generated Program class to WebApplicationFactory in the test project.
 public partial class Program;
+
+partial class Program
+{
+    [System.Text.RegularExpressions.GeneratedRegex(@"-[A-Za-z0-9_-]{8}\.(js|css)$")]
+    private static partial System.Text.RegularExpressions.Regex HashedBundle();
+}

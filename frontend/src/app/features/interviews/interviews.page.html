@@ -11,13 +11,13 @@
     </button>
   </div>
 </app-page-header>
-<app-roadmap-scope [(all)]="everyRoadmap" (changed)="data.reload(); pool.value() && pool.reload()" />
+<app-roadmap-scope [(all)]="everyRoadmap" (changed)="reloadScope()" />
 
 @if (mode() === 'mock') {
-  @if (pool.value(); as all) {
+  @if (data.value(); as all) {
     <app-mock-interview [pool]="all.questions" (rated)="onMockRated($event)" />
-  } @else if (pool.error()) {
-    <app-error-state [error]="pool.error()" (retry)="pool.reload()" />
+  } @else if (data.error()) {
+    <app-error-state [error]="data.error()" (retry)="data.reload()" />
   } @else {
     <div class="card"><app-skeleton [rows]="5" /></div>
   }

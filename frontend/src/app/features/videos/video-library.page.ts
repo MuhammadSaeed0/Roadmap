@@ -1,5 +1,5 @@
-import { RoadmapScopeComponent } from '../../shared/roadmap-scope.component';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { TrackStore } from '../../core/track.service';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -9,7 +9,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import '../../core/i18n/workspace-strings';
 import { LocalizePipe, TranslatePipe } from '../../core/i18n/pipes';
 import { createLoader } from '../../core/loader';
-import { SKILLS, SavedVideo, SkillArea, TopicVideo, VideoLibrary } from '../../core/models';
+import { SKILLS, SavedVideo, SkillArea, TopicVideo, Track, VideoLibrary } from '../../core/models';
 import { ToastService } from '../../core/ui-services';
 import { VideoLanguageFilter, VideoLanguageService, provideVideoLanguage } from '../../core/video-language';
 import { embedUrl, watchUrl } from '../../core/youtube';
@@ -19,13 +19,45 @@ import { VideoCardComponent } from '../../shared/video-card.component';
 
 type Tab = 'all' | 'saved';
 type Flags = { isWatched: boolean; isBookmarked: boolean };
+type LibraryPhase = VideoLibrary['phases'][number];
+/** A phase with its number inside its own roadmap (every roadmap starts at Phase 1). */
+export type NumberedPhase = LibraryPhase & { number: number };
+/** The phases shown under one roadmap heading; track is null for phases no roadmap holds. */
+export interface RoadmapSection { track: Track | null; phases: NumberedPhase[]; }
+
+/**
+ * Groups the library's phases by roadmap. One roadmap: only its phases, numbered by their position in it. Every
+ * roadmap (slug ''): a section per roadmap in roadmap order, each numbered from 1; a phase two roadmaps share is shown
+ * once, under the first roadmap that holds it (keeping its number there).
+ */
+export function roadmapSections(phases: LibraryPhase[], tracks: Track[], slug: string): RoadmapSection[] {
+  const byId = new Map(phases.map(p => [p.id, p]));
+  const numbered = (t: Track) => t.phaseIds
+    .map((id, i) => ({ phase: byId.get(id), number: i + 1 }))
+    .filter((x): x is { phase: LibraryPhase; number: number } => !!x.phase)
+    .map(x => ({ ...x.phase, number: x.number }));
+  if (slug) {
+    const track = tracks.find(t => t.slug === slug);
+    return track ? [{ track, phases: numbered(track) }] : [];
+  }
+  const shown = new Set<number>();
+  const sections: RoadmapSection[] = [];
+  for (const track of tracks) {
+    const list = numbered(track).filter(p => !shown.has(p.id));
+    list.forEach(p => shown.add(p.id));
+    if (list.length) sections.push({ track, phases: list });
+  }
+  const rest = phases.filter(p => !shown.has(p.id)).map(p => ({ ...p, number: p.order }));
+  if (rest.length) sections.push({ track: null, phases: rest });
+  return sections;
+}
 
 /** Every hand-picked video of the roadmap, by phase and topic, in Arabic and English, plus the videos you saved. */
 @Component({
   selector: 'app-video-library-page',
   providers: [provideVideoLanguage('library')],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RoadmapScopeComponent, FormsModule, RouterLink, IconComponent, TranslatePipe, LocalizePipe, PageHeaderComponent, SkeletonComponent,
+  imports: [FormsModule, RouterLink, IconComponent, TranslatePipe, LocalizePipe, PageHeaderComponent, SkeletonComponent,
     ErrorStateComponent, EmptyStateComponent, VideoCardComponent],
   template: `
     <app-page-header [title]="'videoLibrary.title' | t" [subtitle]="'videoLibrary.subtitle' | t">
@@ -36,7 +68,16 @@ type Flags = { isWatched: boolean; isBookmarked: boolean };
         </div>
       }
     </app-page-header>
-    <app-roadmap-scope [(all)]="everyRoadmap" (changed)="data.reload()" />
+    @if (tracks.tracks().length > 1) {
+      <div class="segmented roadmap-filter" role="radiogroup" [attr.aria-label]="'tracks.scopeLabel' | t">
+        <button type="button" role="radio" [class.active]="roadmap() === ''" [attr.aria-checked]="roadmap() === ''" (click)="setRoadmap('')">
+          <app-icon name="layers" [size]="15" /> {{ 'tracks.scopeAll' | t }}</button>
+        @for (t of tracks.tracks(); track t.slug) {
+          <button type="button" role="radio" [class.active]="roadmap() === t.slug" [attr.aria-checked]="roadmap() === t.slug" (click)="setRoadmap(t.slug)">
+            <app-icon [name]="t.icon" [size]="15" /> {{ t | loc: 'title' }}</button>
+        }
+      </div>
+    }
 
     @if (data.initialLoading()) {
       <div class="card"><app-skeleton [rows]="6" /></div>
@@ -44,9 +85,9 @@ type Flags = { isWatched: boolean; isBookmarked: boolean };
       <app-error-state [error]="data.error()" (retry)="data.reload()" />
     } @else if (data.value(); as lib) {
       <div class="grid grid-3 stat-cards" data-tour="videos-stats">
-        <div class="card stat-card"><span class="stat-label">{{ 'videos.language.Arabic' | t }}</span><span class="stat-value">{{ lib.arabicCount }}</span></div>
-        <div class="card stat-card"><span class="stat-label">{{ 'videos.language.English' | t }}</span><span class="stat-value">{{ lib.englishCount }}</span></div>
-        <div class="card stat-card"><span class="stat-label">{{ 'videoLibrary.watched' | t }}</span><span class="stat-value">{{ lib.watchedCount }}</span></div>
+        <div class="card stat-card"><span class="stat-label">{{ 'videos.language.Arabic' | t }}</span><span class="stat-value">{{ counts().arabic }}</span></div>
+        <div class="card stat-card"><span class="stat-label">{{ 'videos.language.English' | t }}</span><span class="stat-value">{{ counts().english }}</span></div>
+        <div class="card stat-card"><span class="stat-label">{{ 'videoLibrary.watched' | t }}</span><span class="stat-value">{{ counts().watched }}</span></div>
       </div>
 
       <div class="tabs video-tabs" role="tablist" [attr.aria-label]="'videoLibrary.tabs' | t">
@@ -72,12 +113,14 @@ type Flags = { isWatched: boolean; isBookmarked: boolean };
         <label class="check-label small"><input type="checkbox" [ngModel]="unwatchedOnly()" (ngModelChange)="unwatchedOnly.set($event)"> {{ 'videoLibrary.unwatchedOnly' | t }}</label>
       </div>
 
-      <div class="chip-rail" role="group" [attr.aria-label]="'library.allSkills' | t">
-        <button type="button" class="chip chip-btn" [class.active]="skill() === ''" [attr.aria-pressed]="skill() === ''" (click)="skill.set('')">{{ 'library.allSkills' | t }}</button>
-        @for (s of skills; track s) {
-          <button type="button" class="chip chip-btn" [class.active]="skill() === s" [attr.aria-pressed]="skill() === s" (click)="skill.set(s)">{{ 'skills.' + s | t }}</button>
-        }
-      </div>
+      @if (skills().length > 1) {
+        <div class="chip-rail chip-wrap" role="group" [attr.aria-label]="'library.allSkills' | t">
+          <button type="button" class="chip chip-btn" [class.active]="skill() === ''" [attr.aria-pressed]="skill() === ''" (click)="skill.set('')">{{ 'library.allSkills' | t }}</button>
+          @for (s of skills(); track s) {
+            <button type="button" class="chip chip-btn" [class.active]="skill() === s" [attr.aria-pressed]="skill() === s" (click)="skill.set(s)">{{ 'skills.' + s | t }}</button>
+          }
+        </div>
+      }
 
       @if (playing(); as p) {
         <div class="video-player card">
@@ -98,14 +141,18 @@ type Flags = { isWatched: boolean; isBookmarked: boolean };
         @if (phases().length === 0) {
           <app-empty-state icon="video" [title]="'videoLibrary.empty' | t" />
         }
+        @for (section of sections(); track section.track?.slug ?? '') {
+        @if (roadmap() === '' && section.track) {
+          <h2 class="roadmap-heading"><app-icon [name]="section.track.icon" [size]="18" /> {{ section.track | loc: 'title' }}</h2>
+        }
         <ol class="timeline" role="list">
-          @for (phase of phases(); track phase.id) {
+          @for (phase of section.phases; track phase.id) {
             <li class="phase card" data-tour="videos-phase">
               <button type="button" class="phase-head" (click)="toggle(phase.id)" [attr.aria-expanded]="isOpen(phase.id)"
                       [attr.aria-controls]="'vphase-' + phase.id">
-                <span class="phase-num" aria-hidden="true">{{ phase.order }}</span>
+                <span class="phase-num" aria-hidden="true">{{ phase.number }}</span>
                 <span class="phase-info">
-                  <span class="phase-eyebrow">{{ 'roadmap.phase' | t: { n: phase.order } }}</span>
+                  <span class="phase-eyebrow">{{ 'roadmap.phase' | t: { n: phase.number } }}</span>
                   <span class="phase-title">{{ phase | loc: 'title' }}</span>
                 </span>
                 <span class="phase-stats"><span class="small">{{ 'videoLibrary.count' | t: { n: phase.count } }}</span></span>
@@ -132,6 +179,7 @@ type Flags = { isWatched: boolean; isBookmarked: boolean };
             </li>
           }
         </ol>
+        }
       } @else {
         @if (saved.initialLoading()) {
           <div class="card"><app-skeleton [rows]="3" /></div>
@@ -158,6 +206,13 @@ type Flags = { isWatched: boolean; isBookmarked: boolean };
       </div>
     }
   `,
+  styles: `
+    .roadmap-filter { flex-wrap: wrap; margin: 0 0 16px; }
+    /* Skills wrap onto more rows instead of scrolling past the page edge. */
+    .chip-wrap { flex-wrap: wrap; overflow-x: visible; }
+    .chip-wrap .chip { flex: none; max-width: 100%; }
+    .roadmap-heading { display: flex; align-items: center; gap: 8px; font-size: 1.05rem; margin: 20px 0 10px; }
+  `,
 })
 export default class VideoLibraryPage {
   private readonly api = inject(ApiService);
@@ -169,10 +224,36 @@ export default class VideoLibraryPage {
   protected readonly languages = inject(VideoLanguageService);
 
   protected readonly languageOptions: VideoLanguageFilter[] = ['all', 'Arabic', 'English'];
-  protected readonly skills = SKILLS;
-  /** Show every roadmap's content instead of the learner's roadmap only. */
-  protected readonly everyRoadmap = signal(false);
-  protected readonly data = createLoader(() => this.api.videoLibrary(null, this.everyRoadmap()));
+  protected readonly tracks = inject(TrackStore);
+  /**
+   * Every roadmap's videos, loaded once; the roadmap filter works in the browser. The roadmap list loads alongside,
+   * so the page never shows every roadmap first and then jumps to the learner's own.
+   */
+  protected readonly data = createLoader(() => Promise.all([this.api.videoLibrary(null, true), this.tracks.load()]).then(([lib]) => lib));
+  /** The roadmap picked by hand: '' for every roadmap; null until then, which means the learner's own roadmap. */
+  private readonly picked = signal<string | null>(null);
+  protected readonly roadmap = computed(() => {
+    const picked = this.picked();
+    if (picked !== null) return picked;
+    return this.tracks.tracks().length > 1 ? this.tracks.activeSlug() ?? '' : '';
+  });
+  /** The roadmap's phases, numbered inside each roadmap. */
+  private readonly scoped = computed(() => roadmapSections(this.data.value()?.phases ?? [], this.tracks.tracks(), this.roadmap()));
+  /** Topics of the chosen roadmap, for the saved list. */
+  private readonly scopedTopics = computed(() => new Set(this.scoped().flatMap(s => s.phases.flatMap(p => p.topics.map(t => t.id)))));
+  /** Only the skills that have videos in the chosen roadmap, in the usual skill order. */
+  protected readonly skills = computed(() => {
+    const present = new Set(this.scoped().flatMap(s => s.phases.flatMap(p => p.topics.filter(t => t.videos.length).map(t => t.skill))));
+    return SKILLS.filter(s => present.has(s));
+  });
+  protected readonly counts = computed(() => {
+    const videos = this.scoped().flatMap(s => s.phases.flatMap(p => p.topics.flatMap(t => t.videos)));
+    return {
+      arabic: videos.filter(v => v.language === 'Arabic').length,
+      english: videos.filter(v => v.language === 'English').length,
+      watched: videos.filter(v => v.isWatched).length,
+    };
+  });
   protected readonly saved = createLoader(() => this.api.savedVideos());
   /** The open list is in the URL (?tab=saved), so it survives a refresh and can be linked to. */
   protected readonly tab = signal<Tab>(this.route.snapshot.queryParamMap.get('tab') === 'saved' ? 'saved' : 'all');
@@ -196,25 +277,27 @@ export default class VideoLibraryPage {
       && (topicMatches || video.title.toLowerCase().includes(q) || video.channelTitle.toLowerCase().includes(q));
   }
 
-  protected readonly phases = computed(() => {
-    const lib = this.data.value();
-    if (!lib) return [];
+  /** The chosen roadmap's sections with search, skill, language and watched filters applied. */
+  protected readonly sections = computed(() => {
     const q = this.search().trim().toLowerCase();
-    return lib.phases.map(phase => {
+    const skill = this.skill();
+    return this.scoped().map(section => ({ ...section, phases: section.phases.map(phase => {
       const topics = phase.topics
-        .filter(t => !this.skill() || t.skill === this.skill())
+        .filter(t => !skill || t.skill === skill)
         .map(t => {
           const topicMatches = !q || t.titleEn.toLowerCase().includes(q) || t.titleAr.includes(q);
           return { ...t, videos: this.languages.apply(t.videos).filter(v => this.matches(v, q, topicMatches)) };
         })
         .filter(t => t.videos.length > 0);
       return { ...phase, topics, count: topics.reduce((n, t) => n + t.videos.length, 0) };
-    }).filter(p => p.topics.length > 0);
+    }).filter(p => p.topics.length > 0) })).filter(s => s.phases.length > 0);
   });
+  protected readonly phases = computed(() => this.sections().flatMap(s => s.phases));
 
   protected readonly savedShown = computed<SavedVideo[]>(() => {
     const q = this.search().trim().toLowerCase();
-    const list = (this.saved.value() ?? []).filter(s => !this.skill() || s.skill === this.skill());
+    const topics = this.scopedTopics();
+    const list = (this.saved.value() ?? []).filter(s => (!this.skill() || s.skill === this.skill()) && (!this.data.value() || topics.has(s.topicId)));
     const byLanguage = new Set(this.languages.apply(list.map(s => s.video)));
     return list.filter(s => byLanguage.has(s.video)
       && this.matches(s.video, q, !q || s.topicTitleEn.toLowerCase().includes(q) || s.topicTitleAr.includes(q)));
@@ -233,7 +316,13 @@ export default class VideoLibraryPage {
   }
 
   protected setAll(open: boolean): void {
-    this.toggled.set(new Map((this.data.value()?.phases ?? []).map(p => [p.id, open])));
+    this.toggled.set(new Map(this.scoped().flatMap(s => s.phases).map(p => [p.id, open])));
+  }
+
+  /** Switches the roadmap; a skill that this roadmap has no videos for is cleared so it can't hide everything. */
+  protected setRoadmap(slug: string): void {
+    this.picked.set(slug);
+    if (this.skill() && !this.skills().includes(this.skill() as SkillArea)) this.skill.set('');
   }
 
   protected setTab(tab: Tab): void {
