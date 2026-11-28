@@ -7677,5 +7677,157 @@
       "channel": "DroidPrep",
       "language": "en"
     }
+  ],
+  "and-net-retrofit": [
+    {
+      "videoId": "F5sj_PFzzx0",
+      "title": "Retrofit Android Tutorial for Beginners with Kotlin",
+      "channel": "Daniel Talks Code",
+      "language": "en"
+    },
+    {
+      "videoId": "rAk1j2CmPJs",
+      "title": "Easy Retrofit 2 Tutorial in Android Studio using Kotlin & Coroutines",
+      "channel": "Indently",
+      "language": "en"
+    },
+    {
+      "videoId": "S-10lLA0nbk",
+      "title": "Coroutines with Retrofit - Kotlin Coroutines",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "02NxM7Gecoo",
+      "title": "22 - Android - Kotlin - Rest API - Retrofit Builder - شرح",
+      "channel": "Ahmed Tawfik",
+      "language": "ar"
+    },
+    {
+      "videoId": "jmuGZ6Rc8to",
+      "title": "Retrofit implementation in one video | Arabic",
+      "channel": "coding with nerds",
+      "language": "ar"
+    }
+  ],
+  "and-net-okhttp": [
+    {
+      "videoId": "dh86zr4C2zg",
+      "title": "Retrofit Tutorial — Manage Request Headers in OkHttp Interceptor",
+      "channel": "Future Studio",
+      "language": "en"
+    },
+    {
+      "videoId": "R2c5Pv5cXc0",
+      "title": "Retrofit Tutorial Part 5 - LOG HTTP REQUEST & RESPONSE WITH LOGGING INTERCEPTOR - Android Tutorial",
+      "channel": "Coding in Flow",
+      "language": "en"
+    },
+    {
+      "videoId": "uSY2RqdBL04",
+      "title": "How to use the OkHttp library in Android Studio",
+      "channel": "Codes Easy",
+      "language": "en"
+    },
+    {
+      "videoId": "M2XSkzGMc-4",
+      "title": "#okhttp الدرس الرابع والتسعين شرح مكتبة okhttp جلب البيانات من اليسرفر (الدرس الثاني select)",
+      "channel": "شرح اساسيات البرمجة",
+      "language": "ar"
+    }
+  ],
+  "and-net-errors": [
+    {
+      "videoId": "t6Sql3WMAnk",
+      "title": "The Ultimate Retrofit Crash Course",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "KWJH7Ns1Bfk",
+      "title": "2021 Android Guide: Handle failed network request",
+      "channel": "The Android Factory",
+      "language": "en"
+    }
+  ],
+  "and-net-auth": [
+    {
+      "videoId": "SJePkypZCzo",
+      "title": "😍  #3 Authorization Token in Retrofit 🥳 | OKHttpClient  | Android | Kotlin 🤩 🖖✅",
+      "channel": "Programming Simplified",
+      "language": "en"
+    },
+    {
+      "videoId": "Uy8sD-UpGOo",
+      "title": "Android Refresh Token with OkHttp Authenticator: Fix the 401 Race",
+      "channel": "Promptly Coded",
+      "language": "en"
+    },
+    {
+      "videoId": "5lXLIZMhf5Y",
+      "title": "86 - شرح ال Access Token And Refresh Token",
+      "channel": "Nageeb Darwish",
+      "language": "ar"
+    }
+  ],
+  "and-net-paging": [
+    {
+      "videoId": "AasI-0IRXUM",
+      "title": "Pagination from Remote API & Local Cache Using Paging3, Compose and Clean Architecture",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "2Tj0LO5L2Dk",
+      "title": "Paging 3 & Jetpack Compose - Android Development | Part 1 - Introduction",
+      "channel": "Stevdza-San",
+      "language": "en"
+    },
+    {
+      "videoId": "dqj9aj-Z898",
+      "title": "Paging 3 & Jetpack Compose - Android Development | Part 4 - Remote Mediator - Offline Caching",
+      "channel": "Stevdza-San",
+      "language": "en"
+    }
+  ],
+  "and-net-images": [
+    {
+      "videoId": "qQVCtkg-O7w",
+      "title": "Image Caching with Coil Compose - Everything You Need to Know",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "pbcAVtqZ8bg",
+      "title": "Coil - Image Loading Library with Jetpack Compose",
+      "channel": "Stevdza-San",
+      "language": "en"
+    },
+    {
+      "videoId": "jdoJVM5xJBI",
+      "title": "Jetpack Compose + Coil image loading tutorial",
+      "channel": "The Android Factory",
+      "language": "en"
+    }
+  ],
+  "and-net-realtime": [
+    {
+      "videoId": "Zj4Y6Q2QzNU",
+      "title": "Learn to use WebSockets on Android with OkHttp",
+      "channel": "Sylvain Saurel",
+      "language": "en"
+    },
+    {
+      "videoId": "s29fBrupF2g",
+      "title": "Websocket Integration in Android | Websocket Android Tutorial #websocket #android #androidapp  #app",
+      "channel": "Android in Flow",
+      "language": "en"
+    },
+    {
+      "videoId": "YnvUZ68MZIg",
+      "title": "WEBSOCKET STRUCTURE ANDROID KOTLIN",
+      "channel": "Burak Selcuk",
+      "language": "en"
+    }
   ]
 }

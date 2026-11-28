@@ -1,0 +1,197 @@
+[
+  {
+    "key": "and-movie-explorer",
+    "skill": "Android",
+    "level": "Intermediate",
+    "hours": 12,
+    "titleEn": "Movie explorer with a real API",
+    "titleAr": "مستكشف أفلام بواجهة برمجية حقيقية",
+    "summaryEn": "A movie browsing app on a free public API: a paged, cached catalogue, search as you type, details with images, favourites saved locally, sign-in with a token that refreshes, and clear behaviour on slow or missing networks, all covered by MockWebServer tests.",
+    "summaryAr": "تطبيق لتصفح الأفلام على واجهة برمجية عامة مجانية: فهرس مقسم إلى صفحات ومخزن، وبحث أثناء الكتابة، وتفاصيل مع صور، ومفضلات محفوظة محليًا، وتسجيل دخول برمز يتجدد، وسلوك واضح على الشبكات البطيئة أو الغائبة، وكلها مغطاة باختبارات MockWebServer.",
+    "techStack": "Kotlin · Jetpack Compose · Retrofit · OkHttp · kotlinx.serialization · Paging 3 · Room · Coil · Hilt",
+    "goalsEn": [
+      "Call a real REST API with Retrofit",
+      "Configure OkHttp for headers, auth, caching and logging",
+      "Page and cache a large catalogue",
+      "Load images efficiently",
+      "Handle errors and offline use deliberately"
+    ],
+    "goalsAr": [
+      "استدعاء واجهة REST حقيقية بـ Retrofit",
+      "ضبط OkHttp للترويسات والمصادقة والتخزين المؤقت والتسجيل",
+      "تقسيم فهرس كبير إلى صفحات وتخزينه",
+      "تحميل الصور بكفاءة",
+      "معالجة الأخطاء والعمل دون اتصال عن قصد"
+    ],
+    "requirementsEn": [
+      "Popular movies load page by page through a RemoteMediator and open instantly from cache",
+      "Search waits 300 ms, cancels stale requests and pages results",
+      "The details screen shows poster, backdrop, cast and similar movies",
+      "Favourites are saved in Room and work offline",
+      "The API key is sent by an interceptor and never logged; a fake sign-in uses a refreshing token",
+      "Every error shows a clear message and action, and airplane mode shows cached content"
+    ],
+    "requirementsAr": [
+      "الأفلام الشائعة تُحمّل صفحة بعد صفحة عبر RemoteMediator وتُفتح فورًا من الذاكرة المؤقتة",
+      "البحث ينتظر 300 ملّي ثانية، ويلغي الطلبات القديمة، ويقسّم النتائج إلى صفحات",
+      "شاشة التفاصيل تعرض الملصق والخلفية وطاقم التمثيل والأفلام المشابهة",
+      "المفضلات تُحفظ في Room وتعمل دون اتصال",
+      "مفتاح الـ API يرسله معترض ولا يُسجَّل أبدًا، وتسجيل دخول وهمي يستخدم رمزًا يتجدد",
+      "كل خطأ يعرض رسالة وإجراءً واضحين، ووضع الطيران يعرض المحتوى المخزن"
+    ],
+    "acceptanceEn": [
+      "Scrolling 500 movies stays smooth and memory stays flat",
+      "Ten parallel requests with an expired token cause one refresh",
+      "No request is made per keystroke while typing quickly",
+      "MockWebServer tests cover the API, errors, paging and auth"
+    ],
+    "acceptanceAr": [
+      "تمرير 500 فيلم يبقى سلسًا وتبقى الذاكرة ثابتة",
+      "عشرة طلبات متوازية برمز منتهٍ تسبب تحديثًا واحدًا",
+      "لا يُرسل طلب مع كل ضغطة أثناء الكتابة السريعة",
+      "اختبارات MockWebServer تغطي الواجهة البرمجية والأخطاء والتقسيم والمصادقة"
+    ],
+    "stretchEn": [
+      "Add a watchlist synced to a small backend you write",
+      "Stream trailer availability updates over a WebSocket",
+      "Support tablets with a list-detail layout"
+    ],
+    "stretchAr": [
+      "أضف قائمة مشاهدة تتزامن مع خادم صغير تكتبه",
+      "ادفق تحديثات توفر الإعلانات عبر WebSocket",
+      "ادعم الأجهزة اللوحية بتخطيط قائمة وتفاصيل"
+    ],
+    "steps": [
+      {
+        "key": "and-me-api",
+        "titleEn": "Pick an API and model it",
+        "titleAr": "اختر واجهة برمجية ومثّلها",
+        "bodyEn": "Choose a free movie API that issues a personal key (for example TMDB), read its docs for popular, search, details and images, and write @Serializable DTOs with defaults for optional fields. Store the key in local.properties and expose it through BuildConfig for this learning project, and note in the README that production apps should proxy keys through a backend.",
+        "bodyAr": "اختر واجهة برمجية مجانية للأفلام تمنح مفتاحًا شخصيًا (مثل TMDB)، واقرأ توثيقها للشائع والبحث والتفاصيل والصور، واكتب أصناف DTO عليها @Serializable بقيم افتراضية للحقول الاختيارية. واحفظ المفتاح في local.properties واعرضه عبر BuildConfig لهذا المشروع التعليمي، واذكر في README أن تطبيقات الإنتاج يجب أن تمرر المفاتيح عبر خادم.",
+        "hintsEn": [
+          "Add local.properties to .gitignore before you paste the key.",
+          "Read the image URL format: base URL plus size plus file path."
+        ],
+        "hintsAr": [
+          "أضف local.properties إلى .gitignore قبل لصق المفتاح.",
+          "اقرأ صيغة عنوان الصورة: العنوان الأساسي مع الحجم مع مسار الملف."
+        ]
+      },
+      {
+        "key": "and-me-client",
+        "titleEn": "The network stack",
+        "titleAr": "مكدس الشبكة",
+        "bodyEn": "Provide one OkHttpClient with an interceptor that adds the API key and language, a 10 MB cache, timeouts and debug-only logging with the key redacted, and one Retrofit instance. Write the MovieApi interface and a MockWebServer test for the popular endpoint.",
+        "bodyAr": "وفّر OkHttpClient واحدًا بمعترض يضيف مفتاح الـ API واللغة، وذاكرة مؤقتة بـ 10 ميجابايت، ومهلات، وتسجيلًا في debug فقط مع إخفاء المفتاح، ونسخة Retrofit واحدة. واكتب واجهة MovieApi واختبار MockWebServer لنقطة الأفلام الشائعة.",
+        "code": "class ApiKeyInterceptor(private val key: String) : Interceptor {\n    override fun intercept(chain: Interceptor.Chain): Response {\n        val url = chain.request().url.newBuilder()\n            .addQueryParameter(\"api_key\", key)\n            .addQueryParameter(\"language\", Locale.getDefault().toLanguageTag())\n            .build()\n        return chain.proceed(chain.request().newBuilder().url(url).build())\n    }\n}",
+        "language": "kotlin",
+        "hintsEn": [
+          "If the key is a query parameter, make sure logging hides it too.",
+          "Keep Retrofit and OkHttp in a Hilt NetworkModule."
+        ],
+        "hintsAr": [
+          "إذا كان المفتاح معامل استعلام فتأكد أن التسجيل يخفيه أيضًا.",
+          "أبقِ Retrofit وOkHttp في وحدة NetworkModule في Hilt."
+        ]
+      },
+      {
+        "key": "and-me-errors",
+        "titleEn": "Errors and connectivity",
+        "titleAr": "الأخطاء والاتصال",
+        "bodyEn": "Add safeApiCall with a sealed NetworkError, a connectivity Flow, and a mapping from each error to a message and action. Test 401, 404, 500, a timeout and a malformed body.",
+        "bodyAr": "أضف safeApiCall مع NetworkError من نوع sealed، وتدفقًا للاتصال، وتحويلًا من كل خطأ إلى رسالة وإجراء. واختبر 401 و404 و500 وانتهاء المهلة وجسمًا مشوهًا.",
+        "hintsEn": [
+          "The API's error body has a status_message field.",
+          "Show an offline banner from the connectivity Flow."
+        ],
+        "hintsAr": [
+          "جسم الخطأ في الواجهة البرمجية فيه حقل status_message.",
+          "اعرض شريط عدم الاتصال من تدفق الاتصال."
+        ]
+      },
+      {
+        "key": "and-me-paging",
+        "titleEn": "Paged, cached catalogue",
+        "titleAr": "فهرس مقسم إلى صفحات ومخزن",
+        "bodyEn": "Store movies and remote keys in Room and write a RemoteMediator for the popular list, skipping the initial refresh when the cache is under an hour old. Show it in a LazyVerticalGrid with load states and a retry footer.",
+        "bodyAr": "احفظ الأفلام والمفاتيح البعيدة في Room، واكتب RemoteMediator لقائمة الأفلام الشائعة يتخطى التحديث الأول عندما يكون عمر الذاكرة المؤقتة أقل من ساعة. واعرضها في LazyVerticalGrid مع حالات التحميل وتذييل إعادة المحاولة.",
+        "hintsEn": [
+          "This API uses page numbers: the next key is page + 1 until total_pages.",
+          "Give grid items key = { it.id }."
+        ],
+        "hintsAr": [
+          "هذه الواجهة تستخدم أرقام الصفحات: المفتاح التالي هو page + 1 حتى total_pages.",
+          "أعطِ عناصر الشبكة key = { it.id }."
+        ]
+      },
+      {
+        "key": "and-me-search",
+        "titleEn": "Search as you type",
+        "titleAr": "البحث أثناء الكتابة",
+        "bodyEn": "Turn the query into a Flow with debounce(300), distinctUntilChanged and flatMapLatest into a network-only Pager, so typing quickly never fires a request per key and old searches are cancelled.",
+        "bodyAr": "حوّل نص البحث إلى Flow مع debounce(300) وdistinctUntilChanged وflatMapLatest إلى Pager للشبكة فقط، حتى لا تطلق الكتابة السريعة طلبًا مع كل ضغطة وتُلغى عمليات البحث القديمة.",
+        "hintsEn": [
+          "Apply cachedIn after flatMapLatest.",
+          "Show recent searches when the query is empty."
+        ],
+        "hintsAr": [
+          "طبّق cachedIn بعد flatMapLatest.",
+          "اعرض عمليات البحث الأخيرة عندما يكون النص فارغًا."
+        ]
+      },
+      {
+        "key": "and-me-images",
+        "titleEn": "Images and details",
+        "titleAr": "الصور والتفاصيل",
+        "bodyEn": "Configure one Coil ImageLoader with the shared OkHttpClient and a disk cache. Request poster sizes that match the grid cell, and a larger backdrop on the details screen, with placeholders, crossfade and content descriptions.",
+        "bodyAr": "اضبط ImageLoader واحدًا من Coil مع OkHttpClient المشترك وذاكرة قرص. واطلب أحجام ملصقات تطابق خلية الشبكة، وخلفية أكبر في شاشة التفاصيل، مع صور مؤقتة وتلاشٍ متقاطع وأوصاف محتوى.",
+        "hintsEn": [
+          "Pick the image size segment (w185, w342, w780) by screen width.",
+          "Use aspectRatio(2f / 3f) for posters."
+        ],
+        "hintsAr": [
+          "اختر جزء حجم الصورة (‏w185 أو w342 أو w780) حسب عرض الشاشة.",
+          "استخدم aspectRatio(2f / 3f) للملصقات."
+        ]
+      },
+      {
+        "key": "and-me-auth",
+        "titleEn": "Sign-in with a refreshing token",
+        "titleAr": "تسجيل الدخول برمز يتجدد",
+        "bodyEn": "Add a small fake auth server with MockWebServer or a local Ktor module that issues tokens valid for one minute. Add an AuthInterceptor and a Mutex-guarded Authenticator, store tokens encrypted, and prove with a test that ten parallel requests cause one refresh.",
+        "bodyAr": "أضف خادم مصادقة وهميًا صغيرًا بـ MockWebServer أو وحدة Ktor محلية يصدر رموزًا صالحة لدقيقة واحدة. وأضف AuthInterceptor وAuthenticator محميًا بـ Mutex، واحفظ الرموز مشفرة، وأثبت باختبار أن عشرة طلبات متوازية تسبب تحديثًا واحدًا.",
+        "hintsEn": [
+          "Use a Dispatcher on MockWebServer to answer by path.",
+          "Count requests to /refresh in the test."
+        ],
+        "hintsAr": [
+          "استخدم Dispatcher في MockWebServer للرد حسب المسار.",
+          "احسب الطلبات إلى /refresh في الاختبار."
+        ]
+      },
+      {
+        "key": "and-me-polish",
+        "titleEn": "Favourites and the offline check",
+        "titleAr": "المفضلات واختبار عدم الاتصال",
+        "bodyEn": "Save favourites in Room with an optimistic heart toggle. Then turn on airplane mode: the catalogue, details you opened before and favourites must still show, with a clear offline banner and no error dialogs.",
+        "bodyAr": "احفظ المفضلات في Room مع تبديل متفائل لأيقونة القلب. ثم فعّل وضع الطيران: يجب أن يظهر الفهرس، والتفاصيل التي فتحتها من قبل، والمفضلات، مع شريط عدم اتصال واضح ودون نوافذ أخطاء.",
+        "hintsEn": [
+          "Cache details in Room when a movie is opened.",
+          "Record a short screen video of the offline test for your portfolio."
+        ],
+        "hintsAr": [
+          "خزّن التفاصيل في Room عند فتح فيلم.",
+          "سجّل فيديو قصيرًا للشاشة لاختبار عدم الاتصال لملف أعمالك."
+        ]
+      }
+    ],
+    "topics": [
+      "and-net-retrofit",
+      "and-net-okhttp",
+      "and-net-errors",
+      "and-net-auth",
+      "and-net-paging",
+      "and-net-images"
+    ]
+  }
+]
