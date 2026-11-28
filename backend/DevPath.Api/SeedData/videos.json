@@ -7961,5 +7961,155 @@
       "channel": "Android Developers",
       "language": "en"
     }
+  ],
+  "and-dev-notifications": [
+    {
+      "videoId": "FbpD5RZtbCc",
+      "title": "How to Start a Foreground Service in Android (With Notification Channels)",
+      "channel": "Coding in Flow",
+      "language": "en"
+    },
+    {
+      "videoId": "JLmo4a_Ws3o",
+      "title": "🚨 Android 11 Notifications In-Depth Guide",
+      "channel": "tutorialsEU",
+      "language": "en"
+    },
+    {
+      "videoId": "YoFBKWPS70A",
+      "title": "Foreground Services with Notification Channel in Android Kotlin",
+      "channel": "Isaias Cuvula",
+      "language": "en"
+    },
+    {
+      "videoId": "QfSWTLAy6lU",
+      "title": "فيديو #305 | الإشعارات Notifications - الجزء الأول",
+      "channel": "م.جعفر محمد الأغا",
+      "language": "ar"
+    },
+    {
+      "videoId": "QCuAehAb7k8",
+      "title": "شرح الـ Notification في الاندرويد ستوديو",
+      "channel": "سعيد الحداد",
+      "language": "ar"
+    }
+  ],
+  "and-dev-camera": [
+    {
+      "videoId": "asl1mFtkMkc",
+      "title": "How to Make a QR Code Scanner in Jetpack Compose - Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "wCADCaeS8-A",
+      "title": "Integrating Google's ML Kit with CameraX and Android Jetpack Compose: Text Recognition in Real-Time",
+      "channel": "Yanneck Reiß",
+      "language": "en"
+    },
+    {
+      "videoId": "VhbD12AYT74",
+      "title": "In a splash add barcode scan to your app with CameraX MlKitAnalyzer.",
+      "channel": "AllTechies | Pankaj Rai GDE",
+      "language": "en"
+    }
+  ],
+  "and-dev-location": [
+    {
+      "videoId": "Jj14sw4Yxk0",
+      "title": "How to Track Your Users Location in the Background in Android - Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "ohk0YPeCjHs",
+      "title": "Retrieving current location | Google Maps | Android Studio | Android Tutorial",
+      "channel": "LearningHub",
+      "language": "en"
+    },
+    {
+      "videoId": "CTZPjiKQODI",
+      "title": "Android Studio Kotlin-Location App Part-2 - Google Maps and Geo Coding API -Retrofit-Jetpack Compose",
+      "channel": "TutorialMadeSimple",
+      "language": "en"
+    }
+  ],
+  "and-dev-media": [
+    {
+      "videoId": "JX1fwti2LI4",
+      "title": "How to Build a Simple Video Player With Jetpack Compose & ExoPlayer (Media3)",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "6Wh1CXzRF2k",
+      "title": "Custom Video Player In Jetpack Compose On Android (Media3 Library)",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "DU3KFHqV85E",
+      "title": "EXO Player - MEDIA3 in Android Jetpack Compose.",
+      "channel": "Mohsen Mashkour",
+      "language": "en"
+    },
+    {
+      "videoId": "JP_1lOQj_HM",
+      "title": "27 - How to make Media Player app using \"ExoPlayer\"",
+      "channel": "Eslam Medhat  |  اسلام مدحت",
+      "language": "ar"
+    }
+  ],
+  "and-dev-sensors": [
+    {
+      "videoId": "xcsuDDQHrLo",
+      "title": "Accelerometer Sensor Tutorial in Android Studio (Kotlin 2021)",
+      "channel": "Indently",
+      "language": "en"
+    },
+    {
+      "videoId": "cw3IIsSuQMM",
+      "title": "Spirit Level with Accelerometer | Sensors in Jetpack Compose | Kotlin | Android Studio",
+      "channel": "Decode Android",
+      "language": "en"
+    },
+    {
+      "videoId": "JSQhRyTKnW4",
+      "title": "Master BLE Basics in Just 10 Minutes: The Ultimate Guide!",
+      "channel": "Novel Bits",
+      "language": "en"
+    },
+    {
+      "videoId": "hnFQJpGb4d8",
+      "title": "Hardware| light sensor جهاز استشعار الضوء | android 111 دورة اندرويد",
+      "channel": "TheNewBaghdad (‫بغداد الجديدة‬‎)",
+      "language": "ar"
+    }
+  ],
+  "and-dev-widgets": [
+    {
+      "videoId": "jI1LKN7jBVk",
+      "title": "Build beautiful Android widgets with Jetpack Glance",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "bhrN7yFG0D4",
+      "title": "How to Build a Home Screen Widget in Jetpack Compose with Glance",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "jcFYbk8WszQ",
+      "title": "A glance into your app 👀 Glance Widget Tutorial (Jetpack Compose)",
+      "channel": "Luca Nicoletti",
+      "language": "en"
+    },
+    {
+      "videoId": "fiHJXjRjJ5o",
+      "title": "app widgets  كيفية عمل القوائم المختصرة - android دورة اندرويد 23",
+      "channel": "TheNewBaghdad (‫بغداد الجديدة‬‎)",
+      "language": "ar"
+    }
   ]
 }

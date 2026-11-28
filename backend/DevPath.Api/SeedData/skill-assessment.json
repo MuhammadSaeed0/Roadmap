@@ -83,7 +83,8 @@
       "android-coroutines": "fundamentals",
       "android-data": "database",
       "android-networking": "apis",
-      "android-security": "security"
+      "android-security": "security",
+      "android-device": "fundamentals"
     }
   },
 
@@ -103,7 +104,8 @@
     "android-coroutines": "Intermediate",
     "android-data": "Intermediate",
     "android-networking": "Intermediate",
-    "android-security": "Advanced"
+    "android-security": "Advanced",
+    "android-device": "Intermediate"
   },
 
   "exerciseExtraCategories": {

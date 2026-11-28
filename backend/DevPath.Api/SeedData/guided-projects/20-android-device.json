@@ -1,0 +1,197 @@
+[
+  {
+    "key": "and-fitness-companion",
+    "skill": "Android",
+    "level": "Advanced",
+    "hours": 14,
+    "titleEn": "Fitness companion: runs, heart rate and widgets",
+    "titleAr": "رفيق اللياقة: الجري ونبض القلب والأدوات",
+    "summaryEn": "A workout app that uses the phone's hardware: records runs with location in a foreground service, draws the route on a map, reads a BLE heart-rate strap, plays a coaching audio track in the background, scans a QR code to join a group run, posts helpful notifications, and shows the weekly streak in a home-screen widget.",
+    "summaryAr": "تطبيق تمارين يستخدم عتاد الهاتف: يسجل الجري بالموقع في خدمة في المقدمة، ويرسم المسار على خريطة، ويقرأ حزام نبض BLE، ويشغّل مسار تدريب صوتي في الخلفية، ويمسح رمز QR للانضمام إلى جري جماعي، وينشر إشعارات مفيدة، ويعرض سلسلة الأسبوع في أداة على الشاشة الرئيسية.",
+    "techStack": "Kotlin · Jetpack Compose · Fused Location · Maps Compose · CameraX · ML Kit · Media3 · Bluetooth LE · Glance · WorkManager · Room",
+    "goalsEn": [
+      "Use location responsibly in a foreground service",
+      "Integrate camera scanning and BLE",
+      "Play audio in the background with system controls",
+      "Notify users helpfully",
+      "Extend the app to the home screen"
+    ],
+    "goalsAr": [
+      "استخدام الموقع بمسؤولية في خدمة في المقدمة",
+      "دمج المسح بالكاميرا وBLE",
+      "تشغيل الصوت في الخلفية مع أزرار النظام",
+      "إخطار المستخدمين بشكل مفيد",
+      "مد التطبيق إلى الشاشة الرئيسية"
+    ],
+    "requirementsEn": [
+      "Start and stop a run; location is collected only during a run in a location-type foreground service",
+      "The route, distance, pace and duration appear live and are saved in Room",
+      "Optional BLE heart-rate strap shows live BPM and survives disconnects",
+      "A coaching audio track plays in the background with lock-screen controls",
+      "Scanning a QR code joins a group run",
+      "A Glance widget shows this week's runs and streak"
+    ],
+    "requirementsAr": [
+      "بدء الجري وإيقافه، والموقع يُجمع فقط أثناء الجري في خدمة في المقدمة من نوع location",
+      "المسار والمسافة والسرعة والمدة تظهر مباشرة وتُحفظ في Room",
+      "حزام نبض BLE اختياري يعرض النبضات مباشرة وينجو من الانقطاع",
+      "مسار تدريب صوتي يعمل في الخلفية مع أزرار شاشة القفل",
+      "مسح رمز QR ينضم إلى جري جماعي",
+      "أداة Glance تعرض جري هذا الأسبوع والسلسلة"
+    ],
+    "acceptanceEn": [
+      "No location use when no run is active (checked in the battery settings)",
+      "Locking the phone mid-run keeps tracking, audio and the notification working",
+      "Denying any permission leaves the rest of the app usable",
+      "The widget updates within seconds after a run ends"
+    ],
+    "acceptanceAr": [
+      "لا استخدام للموقع عندما لا يكون هناك جري نشط (يُفحص في إعدادات البطارية)",
+      "قفل الهاتف أثناء الجري يُبقي التتبع والصوت والإشعار تعمل",
+      "رفض أي إذن يترك بقية التطبيق قابلة للاستخدام",
+      "تتحدث الأداة خلال ثوانٍ بعد انتهاء الجري"
+    ],
+    "stretchEn": [
+      "Write runs to Health Connect",
+      "Add a Wear OS tile showing the current pace",
+      "Export a run as a GPX file with SAF"
+    ],
+    "stretchAr": [
+      "اكتب الجري في Health Connect",
+      "أضف بطاقة Wear OS تعرض السرعة الحالية",
+      "صدّر الجري كملف GPX عبر SAF"
+    ],
+    "steps": [
+      {
+        "key": "and-fc-model",
+        "titleEn": "Data model and permissions plan",
+        "titleAr": "نموذج البيانات وخطة الأذونات",
+        "bodyEn": "Model Run and RoutePoint in Room. Write down each permission (location, notifications, camera, Bluetooth), the moment you'll ask for it, and what the app does if it's denied.",
+        "bodyAr": "مثّل Run وRoutePoint في Room. ودوّن كل إذن (الموقع والإشعارات والكاميرا وBluetooth)، واللحظة التي ستطلبه فيها، وما يفعله التطبيق إذا رُفض.",
+        "hintsEn": [
+          "Ask for location when the user taps Start, not on launch.",
+          "Notifications are needed for the run's ongoing notification."
+        ],
+        "hintsAr": [
+          "اطلب الموقع عندما يضغط المستخدم Start، لا عند الفتح.",
+          "الإشعارات لازمة لإشعار الجري المستمر."
+        ]
+      },
+      {
+        "key": "and-fc-service",
+        "titleEn": "Run tracking service",
+        "titleAr": "خدمة تتبع الجري",
+        "bodyEn": "Create a foreground service of type location that collects high-accuracy updates every 2 seconds into Room while a run is active, shows a notification with distance and time, and stops itself when the run ends.",
+        "bodyAr": "أنشئ خدمة في المقدمة من نوع location تجمع تحديثات عالية الدقة كل ثانيتين في Room ما دام الجري نشطًا، وتعرض إشعارًا بالمسافة والوقت، وتوقف نفسها عند انتهاء الجري.",
+        "code": "ServiceCompat.startForeground(this, RUN_NOTIFICATION_ID, runNotification(0.0, 0),\n    ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION)\nlifecycleScope.launch {\n    fused.updates(Priority.PRIORITY_HIGH_ACCURACY, 2_000).collect { loc ->\n        runs.addPoint(runId, loc.latitude, loc.longitude, loc.time)\n    }\n}",
+        "language": "kotlin",
+        "hintsEn": [
+          "Filter out points with poor accuracy (loc.accuracy > 30 m).",
+          "Compute distance with Location.distanceBetween."
+        ],
+        "hintsAr": [
+          "استبعد النقاط ضعيفة الدقة (‏loc.accuracy > 30 م).",
+          "احسب المسافة بـ Location.distanceBetween."
+        ]
+      },
+      {
+        "key": "and-fc-map",
+        "titleEn": "Live map and stats",
+        "titleAr": "الخريطة والإحصاءات المباشرة",
+        "bodyEn": "Show the route with a Polyline in Maps Compose, follow the latest point with the camera, and display distance, pace and duration from a StateFlow built on the Room points.",
+        "bodyAr": "اعرض المسار بـ Polyline في Maps Compose، واجعل الكاميرا تتبع آخر نقطة، واعرض المسافة والسرعة والمدة من StateFlow مبني على نقاط Room.",
+        "hintsEn": [
+          "Restrict the Maps key to your package and SHA-1.",
+          "Pace is minutes per kilometre: duration / distance."
+        ],
+        "hintsAr": [
+          "قيّد مفتاح الخرائط بحزمتك وبصمة SHA-1.",
+          "السرعة دقائق لكل كيلومتر: المدة / المسافة."
+        ]
+      },
+      {
+        "key": "and-fc-ble",
+        "titleEn": "Heart-rate strap",
+        "titleAr": "حزام نبض القلب",
+        "bodyEn": "Add an optional \"Connect strap\" screen that scans for the Heart Rate service, connects, subscribes to measurements and feeds BPM into the run. Handle disconnects with a Reconnecting state and backoff.",
+        "bodyAr": "أضف شاشة اختيارية «ربط الحزام» تبحث عن خدمة Heart Rate، وتتصل، وتشترك في القياسات، وتغذي الجري بالنبضات. وعالج الانقطاع بحالة إعادة الاتصال وانتظار متزايد.",
+        "hintsEn": [
+          "Use Companion Device Manager to avoid location permission for pairing.",
+          "Unit-test the measurement parser."
+        ],
+        "hintsAr": [
+          "استخدم Companion Device Manager لتجنب إذن الموقع في الإقران.",
+          "اكتب اختبارات وحدة لمحلل القياس."
+        ]
+      },
+      {
+        "key": "and-fc-audio",
+        "titleEn": "Coaching audio",
+        "titleAr": "الصوت التدريبي",
+        "bodyEn": "Play a coaching track through a MediaSessionService so it continues with the screen locked, ducks for notifications and shows lock-screen controls with the track title and artwork.",
+        "bodyAr": "شغّل مسارًا تدريبيًا عبر MediaSessionService حتى يستمر والشاشة مقفلة، ويخفض صوته للإشعارات، ويعرض أزرار شاشة القفل مع عنوان المسار وصورته.",
+        "hintsEn": [
+          "Set AudioAttributes with handleAudioFocus = true.",
+          "Connect from the run screen with a MediaController."
+        ],
+        "hintsAr": [
+          "اضبط AudioAttributes مع handleAudioFocus = true.",
+          "اتصل من شاشة الجري بـ MediaController."
+        ]
+      },
+      {
+        "key": "and-fc-qr",
+        "titleEn": "Join a group run by QR",
+        "titleAr": "الانضمام إلى جري جماعي برمز QR",
+        "bodyEn": "Add a scanner screen with CameraX and ML Kit that reads a QR code containing a group-run link, validates it like any untrusted deep link, and joins the group.",
+        "bodyAr": "أضف شاشة مسح بـ CameraX وML Kit تقرأ رمز QR يحتوي رابط جري جماعي، وتتحقق منه كأي رابط عميق غير موثوق، وتنضم إلى المجموعة.",
+        "hintsEn": [
+          "Only accept https links on your own host.",
+          "Stop analysing after the first valid code."
+        ],
+        "hintsAr": [
+          "اقبل روابط https على نطاقك فقط.",
+          "أوقف التحليل بعد أول رمز صالح."
+        ]
+      },
+      {
+        "key": "and-fc-widget",
+        "titleEn": "Weekly streak widget and notifications",
+        "titleAr": "أداة سلسلة الأسبوع والإشعارات",
+        "bodyEn": "Build a Glance widget with this week's runs and the streak, refreshed when a run ends. Post a summary notification after each run and a gentle reminder on days the user usually runs, each in its own channel.",
+        "bodyAr": "ابنِ أداة Glance بجري هذا الأسبوع والسلسلة، تتحدث عند انتهاء الجري. وانشر إشعار ملخص بعد كل جري وتذكيرًا لطيفًا في الأيام التي يجري فيها المستخدم عادة، كلٌ في قناته الخاصة.",
+        "hintsEn": [
+          "Schedule reminders with WorkManager, not exact alarms.",
+          "Let users turn reminders off in app settings too."
+        ],
+        "hintsAr": [
+          "جدول التذكيرات بـ WorkManager لا بالمنبهات الدقيقة.",
+          "اسمح للمستخدمين بإطفاء التذكيرات من إعدادات التطبيق أيضًا."
+        ]
+      },
+      {
+        "key": "and-fc-check",
+        "titleEn": "Battery and permission check",
+        "titleAr": "فحص البطارية والأذونات",
+        "bodyEn": "Run for 20 minutes with the screen off, then check battery and location usage in Settings. Repeat the app's flows with each permission denied and confirm nothing crashes and the rest still works.",
+        "bodyAr": "اجرِ 20 دقيقة والشاشة مطفأة، ثم افحص استخدام البطارية والموقع في الإعدادات. وكرر مسارات التطبيق مع رفض كل إذن، وتأكد أن شيئًا لا ينهار وأن البقية ما زالت تعمل.",
+        "hintsEn": [
+          "Use the Energy profiler for a detailed view.",
+          "Record a short demo video for your portfolio."
+        ],
+        "hintsAr": [
+          "استخدم محلل الطاقة لرؤية مفصلة.",
+          "سجّل فيديو عرض قصيرًا لملف أعمالك."
+        ]
+      }
+    ],
+    "topics": [
+      "and-dev-notifications",
+      "and-dev-location",
+      "and-dev-camera",
+      "and-dev-media",
+      "and-dev-sensors",
+      "and-dev-widgets"
+    ]
+  }
+]

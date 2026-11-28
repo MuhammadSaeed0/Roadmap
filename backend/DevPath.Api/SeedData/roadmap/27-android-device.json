@@ -1,0 +1,232 @@
+{
+  "slug": "android-device",
+  "order": 27,
+  "titleEn": "Device capabilities",
+  "titleAr": "قدرات الجهاز",
+  "descriptionEn": "Use what makes phones special: notifications and foreground services done right, the camera with CameraX and on-device barcode scanning, location and maps with battery in mind, audio and video playback with Media3, sensors and Bluetooth Low Energy, and home-screen widgets with Glance. Pick the topics your apps need; most are optional.",
+  "descriptionAr": "استخدم ما يميز الهواتف: الإشعارات والخدمات في المقدمة بالطريقة الصحيحة، والكاميرا عبر CameraX ومسح الرموز الشريطية على الجهاز، والموقع والخرائط مع مراعاة البطارية، وتشغيل الصوت والفيديو بـ Media3، والمستشعرات وBluetooth منخفض الطاقة، وأدوات الشاشة الرئيسية بـ Glance. اختر الموضوعات التي تحتاجها تطبيقاتك، فمعظمها اختياري.",
+  "topics": [
+    {
+      "slug": "and-dev-notifications",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Notifications and foreground services",
+      "titleAr": "الإشعارات والخدمات في المقدمة",
+      "summaryEn": "Notifications are built with NotificationCompat and posted to a channel; channels (created once, at startup) let users control each kind of notification. Since Android 13, apps need the POST_NOTIFICATIONS runtime permission. Rich notifications add actions, direct reply, progress bars, big pictures and grouping, and a tap opens a screen through an immutable PendingIntent or a deep link. Long-running work the user is aware of, such as playback, navigation or an upload in progress, runs as a foreground service with a declared type and a visible notification.",
+      "summaryAr": "تُبنى الإشعارات بـ NotificationCompat وتُنشر في قناة، والقنوات (تُنشأ مرة واحدة عند البدء) تسمح للمستخدمين بالتحكم في كل نوع من الإشعارات. ومنذ Android 13 تحتاج التطبيقات إذن POST_NOTIFICATIONS وقت التشغيل. والإشعارات الغنية تضيف الإجراءات، والرد المباشر، وأشرطة التقدم، والصور الكبيرة، والتجميع، والضغط يفتح شاشة عبر PendingIntent غير قابل للتغيير أو رابط عميق. والعمل الطويل الذي يدركه المستخدم، مثل التشغيل أو الملاحة أو رفع جارٍ، يعمل كخدمة في المقدمة بنوع معلن وإشعار ظاهر.",
+      "whyEn": "Notifications bring users back, but noisy ones get the app's notifications turned off or the app uninstalled. Foreground services are tightly restricted in recent Android versions, and getting the type or timing wrong crashes the app.",
+      "whyAr": "الإشعارات تعيد المستخدمين، لكن الإشعارات المزعجة تجعلهم يطفئون إشعارات التطبيق أو يحذفونه. والخدمات في المقدمة مقيدة بشدة في إصدارات Android الحديثة، والخطأ في نوعها أو توقيتها يُسقط التطبيق.",
+      "howEn": "Create one channel per purpose with a sensible importance, ask for POST_NOTIFICATIONS after the user opts into something that needs it, and keep notifications actionable and grouped. Use WorkManager for deferrable background work and a foreground service only for ongoing, user-visible tasks, with the right foregroundServiceType and permission in the manifest.",
+      "howAr": "أنشئ قناة لكل غرض بأهمية معقولة، واطلب POST_NOTIFICATIONS بعد أن يختار المستخدم شيئًا يحتاجه، واجعل الإشعارات قابلة للتصرف ومجمعة. واستخدم WorkManager للعمل الخلفي القابل للتأجيل، والخدمة في المقدمة فقط للمهام المستمرة التي يراها المستخدم، مع foregroundServiceType والإذن الصحيحين في الـ manifest.",
+      "exampleEn": "A messaging app has channels for messages, mentions and app updates. A message notification shows the sender's avatar, a Reply action with RemoteInput and a Mark as read action; messages in the same chat are grouped with MessagingStyle, and tapping opens the conversation through a deep link.",
+      "exampleAr": "تطبيق مراسلة له قنوات للرسائل والإشارات وتحديثات التطبيق. ويعرض إشعار الرسالة صورة المرسل، وإجراء رد مع RemoteInput، وإجراء تعليم كمقروءة، وتُجمع رسائل المحادثة نفسها بـ MessagingStyle، والضغط يفتح المحادثة عبر رابط عميق.",
+      "practiceEn": "1) Create two channels and post a notification to each. 2) Request POST_NOTIFICATIONS at the right moment. 3) Add a direct reply action.",
+      "practiceAr": "1) أنشئ قناتين وانشر إشعارًا في كل منهما. 2) اطلب POST_NOTIFICATIONS في اللحظة المناسبة. 3) أضف إجراء رد مباشر.",
+      "challengeEn": "Build a workout timer that runs as a foreground service of type health or specialUse with a live countdown notification, pause and stop actions, and correct behaviour when the user swipes the app away.",
+      "challengeAr": "ابنِ مؤقت تمارين يعمل كخدمة في المقدمة من نوع health أو specialUse مع إشعار عد تنازلي حي، وإجراءي الإيقاف المؤقت والإيقاف، وسلوك صحيح عندما يمسح المستخدم التطبيق من قائمة التطبيقات الأخيرة.",
+      "objectivesEn": [
+        "Create channels and rich notifications",
+        "Request the notification permission well",
+        "Open screens from notifications safely",
+        "Run a typed foreground service"
+      ],
+      "objectivesAr": [
+        "إنشاء القنوات والإشعارات الغنية",
+        "طلب إذن الإشعارات بشكل جيد",
+        "فتح الشاشات من الإشعارات بأمان",
+        "تشغيل خدمة في المقدمة بنوع محدد"
+      ],
+      "prerequisites": [
+        "and-permissions",
+        "and-app-components"
+      ]
+    },
+    {
+      "slug": "and-dev-camera",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Camera with CameraX and ML Kit",
+      "titleAr": "الكاميرا بـ CameraX وML Kit",
+      "summaryEn": "CameraX is the Jetpack camera library that hides device differences behind use cases: Preview shows the camera feed, ImageCapture takes photos, VideoCapture records video, and ImageAnalysis hands you frames to process. You bind use cases to a lifecycle with ProcessCameraProvider, and in Compose you can use the camera-compose CameraXViewfinder. ML Kit runs models on the device for barcode scanning, text recognition and face detection, fed from ImageAnalysis frames. For a single photo, the system camera intent may be enough and needs no permission.",
+      "summaryAr": "مكتبة CameraX هي مكتبة الكاميرا في Jetpack التي تخفي اختلافات الأجهزة خلف حالات استخدام: ‏Preview يعرض بث الكاميرا، وImageCapture يلتقط الصور، وVideoCapture يسجل الفيديو، وImageAnalysis يسلّمك الإطارات لمعالجتها. وتربط حالات الاستخدام بدورة حياة عبر ProcessCameraProvider، وفي Compose تستطيع استخدام CameraXViewfinder من camera-compose. وتشغّل ML Kit النماذج على الجهاز لمسح الرموز الشريطية والتعرف على النصوص واكتشاف الوجوه، وتُغذّى من إطارات ImageAnalysis. ولصورة واحدة قد تكفي نية كاميرا النظام دون حاجة إلى إذن.",
+      "whyEn": "Scanning a QR code, a receipt or a document is a feature many apps need. Raw Camera2 code is long and full of device quirks; CameraX and ML Kit make it a few dozen lines that work across thousands of phones.",
+      "whyAr": "مسح رمز QR أو إيصال أو مستند ميزة تحتاجها تطبيقات كثيرة. وكود Camera2 الخام طويل ومليء بخصائص الأجهزة، وتجعله CameraX مع ML Kit بضع عشرات من الأسطر تعمل على آلاف الهواتف.",
+      "howEn": "Ask for CAMERA only on the screen that needs it. Bind use cases to the screen's lifecycle, use STRATEGY_KEEP_ONLY_LATEST for analysis so slow processing drops frames instead of piling up, close each ImageProxy, and run heavy processing off the main thread. Save photos to app storage or MediaStore, and test on a few real devices.",
+      "howAr": "اطلب CAMERA فقط في الشاشة التي تحتاجها. واربط حالات الاستخدام بدورة حياة الشاشة، واستخدم STRATEGY_KEEP_ONLY_LATEST للتحليل حتى تُسقط المعالجة البطيئة الإطارات بدل تراكمها، وأغلق كل ImageProxy، وشغّل المعالجة الثقيلة خارج الخيط الرئيسي. واحفظ الصور في تخزين التطبيق أو MediaStore، واختبر على بضعة أجهزة حقيقية.",
+      "exampleEn": "An inventory app scans product barcodes: a full-screen Preview with an overlay frame, ImageAnalysis feeding ML Kit's barcode scanner, a short vibration and a bottom sheet with the product as soon as a code is found, and a torch toggle for dark warehouses.",
+      "exampleAr": "تطبيق مخزون يمسح الرموز الشريطية للمنتجات: ‏Preview بملء الشاشة مع إطار علوي، وImageAnalysis يغذي ماسح الرموز في ML Kit، واهتزاز قصير مع لوحة سفلية تعرض المنتج فور العثور على رمز، ومفتاح للكشاف في المستودعات المظلمة.",
+      "practiceEn": "1) Show a camera preview in Compose. 2) Take a photo with ImageCapture and save it. 3) Scan a QR code with ML Kit.",
+      "practiceAr": "1) اعرض معاينة الكاميرا في Compose. 2) التقط صورة بـ ImageCapture واحفظها. 3) امسح رمز QR بـ ML Kit.",
+      "challengeEn": "Build a document scanner that detects text with ML Kit, lets the user crop the page, saves a PDF to app storage and shares it with FileProvider.",
+      "challengeAr": "ابنِ ماسح مستندات يكتشف النص بـ ML Kit، ويسمح للمستخدم بقص الصفحة، ويحفظ ملف PDF في تخزين التطبيق، ويشاركه عبر FileProvider.",
+      "objectivesEn": [
+        "Bind CameraX use cases to a lifecycle",
+        "Capture photos and analyse frames",
+        "Run ML Kit on-device models",
+        "Request the camera permission in context"
+      ],
+      "objectivesAr": [
+        "ربط حالات استخدام CameraX بدورة حياة",
+        "التقاط الصور وتحليل الإطارات",
+        "تشغيل نماذج ML Kit على الجهاز",
+        "طلب إذن الكاميرا في سياقه"
+      ],
+      "prerequisites": [
+        "and-permissions",
+        "and-compose-side-effects"
+      ]
+    },
+    {
+      "slug": "and-dev-location",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Location and maps",
+      "titleAr": "الموقع والخرائط",
+      "summaryEn": "The fused location provider (Google Play services) combines GPS, Wi-Fi and cell data. getCurrentLocation gives a one-off fix; requestLocationUpdates streams updates with a priority (high accuracy, balanced, low power) and an interval. Apps request ACCESS_COARSE_LOCATION, optionally ACCESS_FINE_LOCATION, and only rarely ACCESS_BACKGROUND_LOCATION, which needs strong justification. Geofencing triggers when the user enters or leaves an area, and Maps Compose draws Google Maps with markers, polylines and camera control in composables.",
+      "summaryAr": "يجمع مزوّد الموقع المدمج (من خدمات Google Play) بين GPS وWi-Fi وبيانات شبكة الجوال. وتعطي getCurrentLocation قراءة واحدة، وتبث requestLocationUpdates التحديثات بأولوية (دقة عالية أو متوازنة أو طاقة منخفضة) وفاصل زمني. وتطلب التطبيقات ACCESS_COARSE_LOCATION، واختياريًا ACCESS_FINE_LOCATION، ونادرًا ACCESS_BACKGROUND_LOCATION الذي يحتاج مبررًا قويًا. ويُطلق السياج الجغرافي عند دخول المستخدم منطقة أو مغادرتها، وترسم Maps Compose خرائط Google بالعلامات والخطوط والتحكم في الكاميرا داخل دوال composable.",
+      "whyEn": "Location powers delivery, ride, fitness and local-search apps, and it is also the fastest way to drain a battery and lose user trust. Using the right accuracy and lifecycle makes the difference.",
+      "whyAr": "يشغّل الموقع تطبيقات التوصيل والتنقل واللياقة والبحث المحلي، وهو أيضًا أسرع طريقة لاستنزاف البطارية وفقدان ثقة المستخدم. واستخدام الدقة ودورة الحياة الصحيحتين يصنع الفرق.",
+      "howEn": "Default to coarse location and balanced priority; ask for precise only for features that truly need it. Wrap updates in callbackFlow and collect only while the screen is visible. Prefer geofences or WorkManager over continuous background tracking, and when you must track in the background (a run or a delivery), do it in a foreground service of type location with a clear notification.",
+      "howAr": "اجعل الافتراضي الموقع التقريبي والأولوية المتوازنة، واطلب الدقيق فقط للميزات التي تحتاجه فعلًا. وغلّف التحديثات في callbackFlow واجمعها فقط ما دامت الشاشة ظاهرة. وفضّل السياجات الجغرافية أو WorkManager على التتبع المستمر في الخلفية، وعندما يلزمك التتبع في الخلفية (جري أو توصيل) فنفّذه في خدمة في المقدمة من نوع location مع إشعار واضح.",
+      "exampleEn": "A running app asks for precise location when the user taps Start, runs a foreground service of type location that collects high-accuracy updates every few seconds into Room, draws the route with a Polyline in Maps Compose, and stops updates the moment the run ends.",
+      "exampleAr": "تطبيق جري يطلب الموقع الدقيق عندما يضغط المستخدم Start، ويشغّل خدمة في المقدمة من نوع location تجمع تحديثات عالية الدقة كل بضع ثوانٍ في Room، ويرسم المسار بـ Polyline في Maps Compose، ويوقف التحديثات لحظة انتهاء الجري.",
+      "practiceEn": "1) Get the current location once with a balanced priority. 2) Show location updates as a Flow on a map. 3) Handle the user granting only approximate location.",
+      "practiceAr": "1) احصل على الموقع الحالي مرة واحدة بأولوية متوازنة. 2) اعرض تحديثات الموقع كـ Flow على خريطة. 3) تعامل مع منح المستخدم الموقع التقريبي فقط.",
+      "challengeEn": "Add a geofence around the user's saved home address that posts a reminder notification on arrival, and measure the battery impact compared with continuous updates.",
+      "challengeAr": "أضف سياجًا جغرافيًا حول عنوان منزل المستخدم المحفوظ ينشر إشعار تذكير عند الوصول، وقِس أثره على البطارية مقارنة بالتحديثات المستمرة.",
+      "objectivesEn": [
+        "Use the fused location provider",
+        "Choose accuracy and permissions wisely",
+        "Stream location with Flow and lifecycle",
+        "Draw maps with Maps Compose"
+      ],
+      "objectivesAr": [
+        "استخدام مزوّد الموقع المدمج",
+        "اختيار الدقة والأذونات بحكمة",
+        "بث الموقع بـ Flow ومراعاة دورة الحياة",
+        "رسم الخرائط بـ Maps Compose"
+      ],
+      "prerequisites": [
+        "and-permissions",
+        "kt-flow-basics"
+      ]
+    },
+    {
+      "slug": "and-dev-media",
+      "skill": "Android",
+      "priority": "Optional",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Audio and video with Media3",
+      "titleAr": "الصوت والفيديو بـ Media3",
+      "summaryEn": "Jetpack Media3 is the media stack for Android. ExoPlayer plays local and streamed audio and video (MP4, HLS, DASH) with caching and adaptive quality. A MediaSession exposes playback to the system so lock-screen controls, Bluetooth headsets, Android Auto and Wear work, and a MediaSessionService keeps playback running in the background with a media notification. In Compose, the player is shown with PlayerSurface or an AndroidView around PlayerView. Audio focus and becoming-noisy handling make the app behave well with calls and headphones.",
+      "summaryAr": "مكتبة Media3 من Jetpack هي مكدس الوسائط في Android. ويشغّل ExoPlayer الصوت والفيديو المحليين والمتدفقين (‏MP4 وHLS وDASH) مع التخزين المؤقت والجودة المتكيفة. وتعرض MediaSession التشغيل للنظام فتعمل أزرار شاشة القفل وسماعات Bluetooth وAndroid Auto وWear، وتُبقي MediaSessionService التشغيل مستمرًا في الخلفية مع إشعار وسائط. وفي Compose يُعرض المشغل بـ PlayerSurface أو AndroidView حول PlayerView. ومعالجة تركيز الصوت وفصل السماعات تجعل التطبيق يتصرف جيدًا مع المكالمات والسماعات.",
+      "whyEn": "Podcasts, courses, music and short videos are everywhere. Building playback on MediaPlayer leads to broken background play and missing system controls; Media3 gives you all of it with a small amount of code.",
+      "whyAr": "البودكاست والدورات والموسيقى والفيديوهات القصيرة في كل مكان. وبناء التشغيل على MediaPlayer يؤدي إلى تشغيل خلفي معطوب وأزرار نظام مفقودة، وتعطيك Media3 كل ذلك بقليل من الكود.",
+      "howEn": "Create one ExoPlayer per playback session and release it when done. For background audio, put the player in a MediaSessionService and connect from the UI with a MediaController. Set audio attributes so focus is handled for you, use a SimpleCache for offline episodes, and save the playback position to resume later.",
+      "howAr": "أنشئ ExoPlayer واحدًا لكل جلسة تشغيل وحرّره عند الانتهاء. وللصوت في الخلفية ضع المشغل في MediaSessionService واتصل من الواجهة بـ MediaController. واضبط خصائص الصوت حتى يُعالج التركيز عنك، واستخدم SimpleCache للحلقات دون اتصال، واحفظ موضع التشغيل للاستئناف لاحقًا.",
+      "exampleEn": "A learning app plays lesson videos with ExoPlayer from HLS streams that adapt to the network, remembers where each lesson stopped, and plays audio-only lessons in the background through a MediaSessionService so learners can lock the phone and use headset buttons.",
+      "exampleAr": "تطبيق تعليمي يشغّل فيديوهات الدروس بـ ExoPlayer من تدفقات HLS تتكيف مع الشبكة، ويتذكر أين توقف كل درس، ويشغّل الدروس الصوتية فقط في الخلفية عبر MediaSessionService حتى يقفل المتعلمون الهاتف ويستخدموا أزرار السماعات.",
+      "practiceEn": "1) Play a video URL with ExoPlayer in Compose. 2) Save and restore the playback position. 3) Keep audio playing in the background with a MediaSessionService.",
+      "practiceAr": "1) شغّل عنوان فيديو بـ ExoPlayer في Compose. 2) احفظ موضع التشغيل واستعده. 3) أبقِ الصوت يعمل في الخلفية بـ MediaSessionService.",
+      "challengeEn": "Build a podcast player with a queue, download-for-offline using Media3's DownloadManager, playback speed control and lock-screen controls.",
+      "challengeAr": "ابنِ مشغل بودكاست بقائمة انتظار، وتنزيل للاستماع دون اتصال باستخدام DownloadManager من Media3، والتحكم في سرعة التشغيل، وأزرار شاشة القفل.",
+      "objectivesEn": [
+        "Play media with ExoPlayer",
+        "Expose playback through a MediaSession",
+        "Play in the background with a service",
+        "Handle audio focus and lifecycle"
+      ],
+      "objectivesAr": [
+        "تشغيل الوسائط بـ ExoPlayer",
+        "عرض التشغيل عبر MediaSession",
+        "التشغيل في الخلفية بخدمة",
+        "معالجة تركيز الصوت ودورة الحياة"
+      ],
+      "prerequisites": [
+        "and-dev-notifications",
+        "and-compose-side-effects"
+      ]
+    },
+    {
+      "slug": "and-dev-sensors",
+      "skill": "Android",
+      "priority": "Optional",
+      "minutes": 40,
+      "difficulty": "Advanced",
+      "titleEn": "Sensors and Bluetooth Low Energy",
+      "titleAr": "المستشعرات وBluetooth منخفض الطاقة",
+      "summaryEn": "SensorManager gives access to the accelerometer, gyroscope, magnetometer, step counter, proximity and light sensors; you register a listener with a sampling rate and unregister it when you no longer need data. Bluetooth Low Energy (BLE) connects to fitness bands, scales, medical devices and beacons: scan for advertising devices, connect with GATT, discover services, and read, write or subscribe to characteristics. Since Android 12, BLE needs BLUETOOTH_SCAN and BLUETOOTH_CONNECT permissions, and Companion Device Manager can pair a device without location permission.",
+      "summaryAr": "يعطي SensorManager الوصول إلى مقياس التسارع والجيروسكوب والمغناطيسية وعدّاد الخطوات والقرب والضوء، فتسجّل مستمعًا بمعدل أخذ عينات وتلغي تسجيله عندما لا تحتاج البيانات. ويتصل Bluetooth منخفض الطاقة (‏BLE) بأساور اللياقة والموازين والأجهزة الطبية والمنارات: تبحث عن الأجهزة التي تبث، وتتصل عبر GATT، وتكتشف الخدمات، وتقرأ الخصائص أو تكتب فيها أو تشترك فيها. ومنذ Android 12 يحتاج BLE إذني BLUETOOTH_SCAN وBLUETOOTH_CONNECT، ويستطيع Companion Device Manager إقران جهاز دون إذن الموقع.",
+      "whyEn": "Health, fitness, smart-home and IoT apps live on sensors and BLE. They are also where battery drain and flaky connections are most common, so lifecycle and reconnection logic matter more than anywhere else.",
+      "whyAr": "تعيش تطبيقات الصحة واللياقة والمنزل الذكي وإنترنت الأشياء على المستشعرات وBLE. وهي أيضًا حيث يكثر استنزاف البطارية والاتصالات غير المستقرة، فيصبح منطق دورة الحياة وإعادة الاتصال أهم من أي مكان آخر.",
+      "howEn": "Wrap sensor and BLE callbacks in callbackFlow and collect them only while needed. Use the slowest sampling rate that works and batch sensor events when possible. For BLE, scan with filters and a timeout, queue GATT operations one at a time, handle disconnects with backoff, and keep long connections in a foreground service of type connectedDevice.",
+      "howAr": "غلّف استدعاءات المستشعرات وBLE في callbackFlow واجمعها فقط عند الحاجة. واستخدم أبطأ معدل عينات يعمل، واجمع أحداث المستشعرات على دفعات عندما يمكن. ولـ BLE ابحث بمرشحات ومهلة، وضع عمليات GATT في طابور واحدة تلو الأخرى، وعالج الانقطاع بانتظار متزايد، وأبقِ الاتصالات الطويلة في خدمة في المقدمة من نوع connectedDevice.",
+      "exampleEn": "A heart-rate app scans for devices advertising the standard Heart Rate service, connects, subscribes to the measurement characteristic and shows live beats per minute in a StateFlow. When the strap goes out of range it shows \"Reconnecting\" and retries with backoff.",
+      "exampleAr": "تطبيق نبض القلب يبحث عن الأجهزة التي تبث خدمة Heart Rate القياسية، ويتصل، ويشترك في خاصية القياس، ويعرض النبضات في الدقيقة حيًا عبر StateFlow. وعندما يخرج الحزام عن النطاق يعرض «جارٍ إعادة الاتصال» ويعيد المحاولة بانتظار متزايد.",
+      "practiceEn": "1) Show accelerometer values as a Flow. 2) Count steps with the step counter sensor. 3) Scan for nearby BLE devices with a filter and timeout.",
+      "practiceAr": "1) اعرض قيم مقياس التسارع كـ Flow. 2) عدّ الخطوات بمستشعر عدّاد الخطوات. 3) ابحث عن أجهزة BLE القريبة بمرشح ومهلة.",
+      "challengeEn": "Connect to a BLE heart-rate monitor (or a phone running a BLE peripheral simulator), parse the measurement bytes per the specification, and handle disconnects and permission denial gracefully.",
+      "challengeAr": "اتصل بجهاز قياس نبض BLE (أو بهاتف يشغّل محاكي جهاز BLE)، وحلّل بايتات القياس وفق المواصفة، وعالج الانقطاع ورفض الأذونات بلطف.",
+      "objectivesEn": [
+        "Read sensors efficiently",
+        "Scan and connect to BLE devices",
+        "Use GATT services and notifications",
+        "Handle permissions, lifecycle and reconnection"
+      ],
+      "objectivesAr": [
+        "قراءة المستشعرات بكفاءة",
+        "البحث عن أجهزة BLE والاتصال بها",
+        "استخدام خدمات GATT والإشعارات",
+        "معالجة الأذونات ودورة الحياة وإعادة الاتصال"
+      ],
+      "prerequisites": [
+        "kt-flow-basics",
+        "and-permissions"
+      ]
+    },
+    {
+      "slug": "and-dev-widgets",
+      "skill": "Android",
+      "priority": "Optional",
+      "minutes": 35,
+      "difficulty": "Intermediate",
+      "titleEn": "Home-screen widgets and shortcuts",
+      "titleAr": "أدوات الشاشة الرئيسية والاختصارات",
+      "summaryEn": "Jetpack Glance builds app widgets with a Compose-like API: you write a GlanceAppWidget whose provideGlance renders composables such as Column, Text and Button that are translated to RemoteViews. Widgets update when you call update or updateAll, typically from a WorkManager job or after data changes, and their actions start activities or run callbacks. App shortcuts (static, dynamic and pinned) let users jump straight to common tasks from a long press on the icon.",
+      "summaryAr": "تبني Jetpack Glance أدوات التطبيق بواجهة تشبه Compose: تكتب GlanceAppWidget تعرض دالته provideGlance دوال composable مثل Column وText وButton تُترجم إلى RemoteViews. وتتحدث الأدوات عندما تستدعي update أو updateAll، عادة من مهمة WorkManager أو بعد تغيّر البيانات، وإجراءاتها تشغّل أنشطة أو تنفذ استدعاءات. وتسمح اختصارات التطبيق (الثابتة والديناميكية والمثبتة) للمستخدمين بالقفز مباشرة إلى المهام الشائعة بالضغط المطول على الأيقونة.",
+      "whyEn": "A good widget puts the app's most useful information on the home screen, which raises daily engagement without a notification. Widgets have tight limits on layout and update frequency, so they need their own design.",
+      "whyAr": "الأداة الجيدة تضع أكثر معلومات التطبيق فائدة على الشاشة الرئيسية، فترفع الاستخدام اليومي دون إشعار. وللأدوات حدود صارمة على التخطيط وتكرار التحديث، فتحتاج تصميمًا خاصًا بها.",
+      "howEn": "Show one glanceable piece of information with one or two actions. Read data from Room or DataStore inside provideGlance, update from WorkManager or when data changes rather than on a timer, support several sizes with SizeMode.Responsive, and respect dynamic colors and dark theme with GlanceTheme.",
+      "howAr": "اعرض معلومة واحدة سريعة القراءة مع إجراء أو إجراءين. واقرأ البيانات من Room أو DataStore داخل provideGlance، وحدّث من WorkManager أو عند تغيّر البيانات بدل مؤقت، وادعم عدة أحجام بـ SizeMode.Responsive، واحترم الألوان الديناميكية والسمة الداكنة بـ GlanceTheme.",
+      "exampleEn": "A to-do app's widget shows today's three next tasks with checkboxes; checking one runs an ActionCallback that updates Room and refreshes the widget. A dynamic shortcut \"New task\" opens the editor directly.",
+      "exampleAr": "أداة تطبيق مهام تعرض المهام الثلاث التالية لليوم مع مربعات اختيار، واختيار إحداها يشغّل ActionCallback يحدّث Room ويعيد رسم الأداة. واختصار ديناميكي «مهمة جديدة» يفتح المحرر مباشرة.",
+      "practiceEn": "1) Build a Glance widget that shows a value from DataStore. 2) Add a button that opens the app. 3) Add a dynamic shortcut.",
+      "practiceAr": "1) ابنِ أداة Glance تعرض قيمة من DataStore. 2) أضف زرًا يفتح التطبيق. 3) أضف اختصارًا ديناميكيًا.",
+      "challengeEn": "Build a responsive widget with small, medium and large layouts, interactive checkboxes and updates from a periodic WorkManager job, and preview it in Android Studio.",
+      "challengeAr": "ابنِ أداة متجاوبة بتخطيطات صغيرة ومتوسطة وكبيرة، ومربعات اختيار تفاعلية، وتحديثات من مهمة WorkManager دورية، وعاينها في Android Studio.",
+      "objectivesEn": [
+        "Build widgets with Glance",
+        "Update widgets from data changes",
+        "Handle widget actions",
+        "Add app shortcuts"
+      ],
+      "objectivesAr": [
+        "بناء الأدوات بـ Glance",
+        "تحديث الأدوات عند تغيّر البيانات",
+        "معالجة إجراءات الأدوات",
+        "إضافة اختصارات التطبيق"
+      ],
+      "prerequisites": [
+        "and-compose-basics",
+        "and-data-workmanager"
+      ]
+    }
+  ]
+}
