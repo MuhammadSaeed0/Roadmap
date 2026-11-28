@@ -20,7 +20,7 @@ public class GlossaryTests(ApiFactory factory) : IClassFixture<ApiFactory>
     public void The_seed_has_about_150_unique_complete_terms_linked_to_real_topics()
     {
         var terms = GlossaryService.LoadSeed();
-        Assert.InRange(terms.Count, 140, 250);
+        Assert.InRange(terms.Count, 140, 400);   // grows with each roadmap
         Assert.Equal(terms.Count, terms.Select(t => t.Term.ToLowerInvariant()).Distinct().Count());
         Assert.Equal(terms.Count, terms.Select(t => t.Arabic).Distinct().Count());
         var slugs = TopicSlugs();

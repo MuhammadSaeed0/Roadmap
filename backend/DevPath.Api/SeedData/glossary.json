@@ -1503,5 +1503,40 @@
     "shortEn": "The View-system list that recycles item views as the user scrolls.",
     "shortAr": "قائمة نظام Views التي تعيد استخدام عناصرها أثناء التمرير.",
     "topicSlug": "and-views-xml"
+  },
+  {
+    "term": "UI state",
+    "arabic": "حالة الواجهة (UI state)",
+    "shortEn": "An immutable object holding everything a screen shows, exposed by a ViewModel.",
+    "shortAr": "كائن غير قابل للتغيير يحمل كل ما تعرضه الشاشة، وتعرضه ViewModel.",
+    "topicSlug": "and-arch-mvvm"
+  },
+  {
+    "term": "ViewModel",
+    "arabic": "كائن ViewModel",
+    "shortEn": "A class that holds a screen's state and logic and survives configuration changes.",
+    "shortAr": "صنف يحمل حالة الشاشة ومنطقها وينجو من تغييرات الإعدادات.",
+    "topicSlug": "and-arch-mvvm"
+  },
+  {
+    "term": "single source of truth",
+    "arabic": "المصدر الوحيد للحقيقة",
+    "shortEn": "The one place that owns a piece of data; everything else reads from it.",
+    "shortAr": "المكان الوحيد الذي يملك جزءًا من البيانات، وكل ما عداه يقرأ منه.",
+    "topicSlug": "and-arch-repository"
+  },
+  {
+    "term": "use case",
+    "arabic": "حالة الاستخدام (Use case)",
+    "shortEn": "A domain-layer class holding one reusable business operation.",
+    "shortAr": "صنف في طبقة المجال يحمل عملية عمل واحدة قابلة لإعادة الاستخدام.",
+    "topicSlug": "and-arch-clean-solid"
+  },
+  {
+    "term": "feature module",
+    "arabic": "وحدة الميزة",
+    "shortEn": "A Gradle module with one feature's screens, depending only on core modules.",
+    "shortAr": "وحدة Gradle فيها شاشات ميزة واحدة، وتعتمد على الوحدات الأساسية فقط.",
+    "topicSlug": "and-arch-modularization"
   }
 ]

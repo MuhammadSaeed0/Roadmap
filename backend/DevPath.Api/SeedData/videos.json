@@ -7185,5 +7185,193 @@
       "channel": "Osama Al-atraqchi",
       "language": "ar"
     }
+  ],
+  "and-arch-layers": [
+    {
+      "videoId": "p9VR8KbmzEE",
+      "title": "Architecture: The UI layer - MAD Skills",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "r5AseKQh2ZE",
+      "title": "Architecture: The data layer - MAD Skills",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "-QExSMcBvOg",
+      "title": "The Ultimate Beginner's Roadmap to Android App Architecture",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "PEObNW6uhdo",
+      "title": " مفهوم بنية تطبيقات الاندرويد ",
+      "channel": "ذا سويم The Soim",
+      "language": "ar"
+    }
+  ],
+  "and-arch-mvvm": [
+    {
+      "videoId": "9sqvBydNJSg",
+      "title": "ViewModels & Configuration Changes - Android Basics 2023",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "T8vApYJlW8o",
+      "title": "Should You Use Compose State or StateFlow in Your ViewModels?",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "6Jc6-INantQ",
+      "title": "StateFlow vs. Flow vs. SharedFlow vs. LiveData... When to Use What?! - Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "9FKfsdQYen4",
+      "title": "Android Architecture Patterns - MVVM",
+      "channel": "Ahmed Azz",
+      "language": "ar"
+    },
+    {
+      "videoId": "pYscSle4ELI",
+      "title": "كورس برمجة تطبيقات الاندرويد 01 - شرح MVVM من Architecture Pattern عن طريق تطبيق counter",
+      "channel": "عبقرينو_3bkareno",
+      "language": "ar"
+    }
+  ],
+  "and-arch-repository": [
+    {
+      "videoId": "Ex9IT1bq0PQ",
+      "title": "Single Source of Truth Principal in Software Development",
+      "channel": "CodingWithMitch",
+      "language": "en"
+    },
+    {
+      "videoId": "pCX9wvu-Bq0",
+      "title": "State holders and state production in the UI Layer",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "vHrcXdEypKs",
+      "title": "02 - What is Repository Pattern in Arabic",
+      "channel": "Mohamed A Assem",
+      "language": "ar"
+    }
+  ],
+  "and-arch-di-hilt": [
+    {
+      "videoId": "bbMsuI2p1DQ",
+      "title": "The Ultimate Dagger-Hilt Guide (Dependency Injection) - Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "1Zt6aIqZnqU",
+      "title": "Hilt and dependency injection - MAD Skills",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "_qb87PN7jlI",
+      "title": "Dagger-Hilt vs. Koin vs. Manual Dependency Injection - Pick THIS",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "LHQp-mLQPnc",
+      "title": "Android Dependency Injection Dagger Hilt || بالعربي",
+      "channel": "Ahmed Azz",
+      "language": "ar"
+    }
+  ],
+  "and-arch-clean-solid": [
+    {
+      "videoId": "KmnEsiQdd0M",
+      "title": "Do You Have to Learn Clean Architecture as a Beginner? - Android Development",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "xrxC5gRNV48",
+      "title": "Clean Architecture: The ONE Change That Transforms Use Cases From Terrible to Super Useful",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "1OLSE6tX71Y",
+      "title": "Understand Clean Architecture in 7 Minutes",
+      "channel": "Amichai Mantinband",
+      "language": "en"
+    },
+    {
+      "videoId": "3rjJLBaLB_A",
+      "title": "Clean architecture vs MVVM مين أحسن وليه ؟",
+      "channel": "Omar Ahmed",
+      "language": "ar"
+    }
+  ],
+  "and-arch-errors": [
+    {
+      "videoId": "MiLN2vs2Oe0",
+      "title": "This Is My FAVORITE Error Handling Class",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "92KBVz2i-UQ",
+      "title": "Error Handling in Kotlin: The Result Monad with Adam Bennett, Android Worldwide, July 14th 2020",
+      "channel": "Android Worldwide",
+      "language": "en"
+    },
+    {
+      "videoId": "sSQAo_o40Es",
+      "title": "Kotlin Error Handling - Result4k and Sealed Error Types",
+      "channel": "Pairing with Duncan",
+      "language": "en"
+    },
+    {
+      "videoId": "us3anW9pXeI",
+      "title": "#56 kotlin معالجة الاستثناءات او الاخطاء | handling exceptions with try and catch and finally",
+      "channel": "Hassouna Academy",
+      "language": "ar"
+    }
+  ],
+  "and-arch-modularization": [
+    {
+      "videoId": "p7-AffMucBw",
+      "title": "Don't Do These Fatal Mistakes With a Multi-Module Architecture",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "16SwTvzDO0A",
+      "title": "By layer or feature? Why not both?! Guide to Android app modularization",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "lv1raAvwcgI",
+      "title": "Navigation In Multi-Module Android Apps - Why You're Doing It Wrong!",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "k71eKRaZ6pE",
+      "title": "Android app modularization (Multi module) in Arabic part 4",
+      "channel": "Azmi Radi - عزمي راضي",
+      "language": "ar"
+    },
+    {
+      "videoId": "LsY4Ip0pQOc",
+      "title": "Android app modularization (Multi module) in Arabic part 3",
+      "channel": "Azmi Radi - عزمي راضي",
+      "language": "ar"
+    }
   ]
 }

@@ -1,0 +1,200 @@
+[
+  {
+    "key": "and-clean-notes",
+    "skill": "Android",
+    "level": "Intermediate",
+    "hours": 12,
+    "titleEn": "Notes app with clean architecture and Hilt",
+    "titleAr": "تطبيق ملاحظات بمعمارية نظيفة وHilt",
+    "summaryEn": "A notes app built the way teams build production apps: UI, domain and data layers, MVVM with one UI state per screen, a repository behind an interface, Hilt for dependency injection, clear error handling, tests for every layer, and three Gradle modules.",
+    "summaryAr": "تطبيق ملاحظات مبني بالطريقة التي تبني بها الفرق تطبيقات الإنتاج: طبقات الواجهة والمجال والبيانات، وMVVM بحالة واجهة واحدة لكل شاشة، ومستودع خلف واجهة، وHilt لحقن الاعتماديات، ومعالجة أخطاء واضحة، واختبارات لكل طبقة، وثلاث وحدات Gradle.",
+    "techStack": "Kotlin · Jetpack Compose · ViewModel + StateFlow · Hilt · Coroutines · JUnit + Turbine · Gradle modules",
+    "goalsEn": [
+      "Separate UI, domain and data layers",
+      "Expose a single UiState per screen",
+      "Hide data sources behind a repository interface",
+      "Wire the app with Hilt and swap fakes in tests",
+      "Map errors to recoverable UI states",
+      "Split the app into feature and core modules"
+    ],
+    "goalsAr": [
+      "فصل طبقات الواجهة والمجال والبيانات",
+      "عرض UiState واحدة لكل شاشة",
+      "إخفاء مصادر البيانات خلف واجهة مستودع",
+      "ربط التطبيق بـ Hilt واستبدال النسخ الوهمية في الاختبارات",
+      "تحويل الأخطاء إلى حالات واجهة قابلة للتعافي",
+      "تقسيم التطبيق إلى وحدات ميزات ووحدات أساسية"
+    ],
+    "requirementsEn": [
+      "Notes have a title, a body, tags, a pinned flag and an updated time",
+      "List screen: search, tag filter, pinned notes first",
+      "Editor screen: create and edit, autosave after 1 second of no typing",
+      "A use case decides the sort order (pinned first, then newest) and is used by list and widgets later",
+      "A simulated slow, sometimes failing storage shows errors without losing typed text",
+      "Modules: :app, :feature:notes, :core:data, :core:designsystem"
+    ],
+    "requirementsAr": [
+      "لكل ملاحظة عنوان ونص ووسوم وعلامة تثبيت ووقت تحديث",
+      "شاشة القائمة: بحث وفلترة بالوسم والملاحظات المثبتة أولًا",
+      "شاشة المحرر: إنشاء وتعديل وحفظ تلقائي بعد ثانية من التوقف عن الكتابة",
+      "حالة استخدام تقرر ترتيب العرض (المثبتة أولًا ثم الأحدث)، وتستخدمها القائمة ولاحقًا الأدوات المصغرة",
+      "تخزين بطيء محاكى يفشل أحيانًا يعرض الأخطاء دون فقدان النص المكتوب",
+      "الوحدات: ‏:app و:feature:notes و:core:data و:core:designsystem"
+    ],
+    "acceptanceEn": [
+      "No composable or ViewModel creates its own dependencies",
+      "Every screen has one public StateFlow and no public mutable state",
+      "Unit tests cover the use case, the repository (with fake sources) and both ViewModels",
+      "A failed save shows a retry message and the text stays in the editor",
+      "The feature module does not depend on :app"
+    ],
+    "acceptanceAr": [
+      "لا دالة قابلة للتركيب ولا ViewModel تنشئ اعتمادياتها بنفسها",
+      "لكل شاشة StateFlow عامة واحدة ولا حالة قابلة للتغيير عامة",
+      "اختبارات الوحدات تغطي حالة الاستخدام والمستودع (بمصادر وهمية) وكلتا ViewModel",
+      "الحفظ الفاشل يعرض رسالة إعادة محاولة ويبقى النص في المحرر",
+      "وحدة الميزة لا تعتمد على :app"
+    ],
+    "stretchEn": [
+      "Add a convention plugin for the feature module",
+      "Add an Undo for deleting a note",
+      "Write an architecture decision record in the README"
+    ],
+    "stretchAr": [
+      "أضف إضافة اصطلاحية لوحدة الميزة",
+      "أضف تراجعًا عن حذف ملاحظة",
+      "اكتب سجل قرار معماري في README"
+    ],
+    "steps": [
+      {
+        "key": "and-notes-arch-model",
+        "titleEn": "Domain model and repository interface",
+        "titleAr": "نموذج المجال وواجهة المستودع",
+        "bodyEn": "Create data class Note and the NotesRepository interface: observeNotes(), observeNote(id), save(note): Result<Unit>, delete(id). These are the only types the UI will know. Put them where :core:data and features can share them.",
+        "bodyAr": "أنشئ data class Note وواجهة NotesRepository: ‏observeNotes() وobserveNote(id) وsave(note): Result<Unit> وdelete(id). وهذه هي الأنواع الوحيدة التي ستعرفها الواجهة. وضعها حيث تستطيع :core:data والميزات مشاركتها.",
+        "hintsEn": [
+          "Use Instant for updatedAt.",
+          "Return Flow for reads and suspend functions for writes."
+        ],
+        "hintsAr": [
+          "استخدم Instant لـ updatedAt.",
+          "أرجِع Flow للقراءة ودوال suspend للكتابة."
+        ],
+        "code": "data class Note(val id: Long, val title: String, val body: String, val tags: Set<String> = emptySet(),\n                val pinned: Boolean = false, val updatedAt: Instant = Instant.now())\n\ninterface NotesRepository {\n    fun observeNotes(): Flow<List<Note>>\n    fun observeNote(id: Long): Flow<Note?>\n    suspend fun save(note: Note): Result<Unit>\n    suspend fun delete(id: Long): Result<Unit>\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "and-notes-arch-data",
+        "titleEn": "Data layer with a flaky source",
+        "titleAr": "طبقة البيانات مع مصدر غير مستقر",
+        "bodyEn": "Implement the repository over a NotesDataSource interface. For now the source is in memory, but add a delay and a configurable failure rate so you can see loading and error handling. Map failures to a sealed DataError and always rethrow CancellationException.",
+        "bodyAr": "نفّذ المستودع فوق واجهة NotesDataSource. والمصدر في الذاكرة حاليًا، لكن أضف تأخيرًا ونسبة فشل قابلة للضبط حتى ترى التحميل ومعالجة الأخطاء. وحوّل الأعطال إلى DataError من نوع sealed، وأعد رمي CancellationException دائمًا.",
+        "hintsEn": [
+          "Inject the dispatcher so tests can control time.",
+          "Room replaces this source in the next phases without touching the UI."
+        ],
+        "hintsAr": [
+          "احقن الـ Dispatcher حتى تتحكم الاختبارات في الزمن.",
+          "ستحل Room محل هذا المصدر في المراحل التالية دون لمس الواجهة."
+        ]
+      },
+      {
+        "key": "and-notes-arch-usecase",
+        "titleEn": "A use case for ordering",
+        "titleAr": "حالة استخدام للترتيب",
+        "bodyEn": "Write GetSortedNotesUseCase(query, tag) that observes notes, filters by text and tag, and sorts pinned first then newest. Unit test it with a fake repository, including ties and an empty query.",
+        "bodyAr": "اكتب GetSortedNotesUseCase(query, tag) التي تراقب الملاحظات، وتفلتر بالنص والوسم، وترتب المثبتة أولًا ثم الأحدث. واختبرها بمستودع وهمي، ومنها حالات التساوي والبحث الفارغ.",
+        "hintsEn": [
+          "compareByDescending<Note> { it.pinned }.thenByDescending { it.updatedAt }",
+          "Keep it free of Android imports."
+        ],
+        "hintsAr": [
+          "التعبير compareByDescending<Note> { it.pinned }.thenByDescending { it.updatedAt }",
+          "أبقِها خالية من أي استيراد من Android."
+        ]
+      },
+      {
+        "key": "and-notes-arch-viewmodels",
+        "titleEn": "ViewModels with one state each",
+        "titleAr": "ViewModel بحالة واحدة لكل منها",
+        "bodyEn": "NotesListViewModel combines the query and tag (in SavedStateHandle) with the use case into NotesListUiState. EditorViewModel loads the note, keeps the draft in state, autosaves with debounce(1000), and shows saving and error states without clearing the draft.",
+        "bodyAr": "تجمع NotesListViewModel نص البحث والوسم (في SavedStateHandle) مع حالة الاستخدام في NotesListUiState. وتحمّل EditorViewModel الملاحظة، وتحفظ المسودة في الحالة، وتحفظ تلقائيًا بـ debounce(1000)، وتعرض حالتي الحفظ والخطأ دون مسح المسودة.",
+        "hintsEn": [
+          "A MutableStateFlow of the draft plus draft.debounce(1000).collectLatest { save(it) } in init.",
+          "Test autosave with a TestDispatcher and advanceTimeBy."
+        ],
+        "hintsAr": [
+          "استخدم MutableStateFlow للمسودة مع draft.debounce(1000).collectLatest { save(it) } داخل init.",
+          "اختبر الحفظ التلقائي بـ TestDispatcher وadvanceTimeBy."
+        ]
+      },
+      {
+        "key": "and-notes-arch-hilt",
+        "titleEn": "Hilt",
+        "titleAr": "إضافة Hilt",
+        "bodyEn": "Add Hilt. Bind NotesRepository and NotesDataSource in a DataModule, provide the dispatcher with an @IoDispatcher qualifier, and turn the ViewModels into @HiltViewModel. Screens get them with hiltViewModel().",
+        "bodyAr": "أضف Hilt. واربط NotesRepository وNotesDataSource في وحدة DataModule، ووفّر الـ Dispatcher بمؤهل @IoDispatcher، وحوّل ViewModel إلى @HiltViewModel. والشاشات تحصل عليها بـ hiltViewModel().",
+        "hintsEn": [
+          "Hilt needs KSP and the Hilt Gradle plugin.",
+          "Keep the fake source for tests in a test fixtures folder."
+        ],
+        "hintsAr": [
+          "تحتاج Hilt إلى KSP وإضافة Hilt لـ Gradle.",
+          "احفظ المصدر الوهمي للاختبارات في مجلد مخصص لها."
+        ]
+      },
+      {
+        "key": "and-notes-arch-ui",
+        "titleEn": "Stateless screens",
+        "titleAr": "شاشات بلا حالة",
+        "bodyEn": "Each screen is a thin Route composable that collects the ViewModel and a stateless Content composable with previews. Error states: an inline message with Retry in the editor, and a banner in the list. Use the design system module for all components.",
+        "bodyAr": "كل شاشة دالة Route رفيعة تجمع من ViewModel، ودالة Content بلا حالة مع معاينات. وحالات الخطأ: رسالة داخلية مع Retry في المحرر، وشريط في القائمة. واستخدم وحدة نظام التصميم لكل المكونات.",
+        "hintsEn": [
+          "Previews of Content need no Hilt.",
+          "Show \"Saving...\" and \"Saved\" subtly, not as dialogs."
+        ],
+        "hintsAr": [
+          "معاينات Content لا تحتاج Hilt.",
+          "اعرض «Saving...» و«Saved» بشكل خفيف لا كنوافذ."
+        ]
+      },
+      {
+        "key": "and-notes-arch-modules",
+        "titleEn": "Split into modules",
+        "titleAr": "التقسيم إلى وحدات",
+        "bodyEn": "Move the code into :core:data (models, repository, data source, DataModule), :core:designsystem (theme and components) and :feature:notes (screens, ViewModels, use case, navigation entry point). :app holds the Application, MainActivity and the NavHost. Check that the feature module doesn't depend on :app.",
+        "bodyAr": "انقل الكود إلى :core:data (النماذج والمستودع ومصدر البيانات وDataModule)، و:core:designsystem (المظهر والمكونات)، و:feature:notes (الشاشات وViewModel وحالة الاستخدام ونقطة دخول التنقل). وتحمل :app كلًا من Application وMainActivity وNavHost. وتحقق أن وحدة الميزة لا تعتمد على :app.",
+        "hintsEn": [
+          "./gradlew :feature:notes:dependencies shows the graph.",
+          "Use implementation, not api, between modules."
+        ],
+        "hintsAr": [
+          "الأمر ./gradlew :feature:notes:dependencies يعرض المخطط.",
+          "استخدم implementation لا api بين الوحدات."
+        ]
+      },
+      {
+        "key": "and-notes-arch-tests",
+        "titleEn": "Tests and README",
+        "titleAr": "الاختبارات وREADME",
+        "bodyEn": "Make sure unit tests cover the use case, the repository with fake sources (success, failure, cancellation) and both ViewModels (search, autosave, error keeps the draft). Write a README with a layer diagram, the module graph and the decisions you made, including what you chose not to abstract.",
+        "bodyAr": "تأكد أن اختبارات الوحدات تغطي حالة الاستخدام، والمستودع بمصادر وهمية (النجاح والفشل والإلغاء)، وكلتا ViewModel (البحث والحفظ التلقائي وبقاء المسودة عند الخطأ). واكتب README فيه مخطط الطبقات ومخطط الوحدات والقرارات التي اتخذتها، ومنها ما اخترت ألا تجرّده.",
+        "hintsEn": [
+          "Turbine's test { } helps assert flow emissions in order.",
+          "Keep the README short and visual."
+        ],
+        "hintsAr": [
+          "الدالة test { } في Turbine تساعد على التحقق من إصدارات التدفق بالترتيب.",
+          "اجعل README قصيرًا وبصريًا."
+        ]
+      }
+    ],
+    "topics": [
+      "and-arch-mvvm",
+      "and-arch-repository",
+      "and-arch-di-hilt",
+      "and-arch-errors",
+      "and-arch-modularization"
+    ]
+  }
+]
