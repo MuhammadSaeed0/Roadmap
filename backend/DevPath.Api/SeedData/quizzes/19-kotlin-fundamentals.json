@@ -1,0 +1,1346 @@
+[
+  {
+    "key": "qz-kt-basics-1",
+    "topic": "kt-basics",
+    "questionEn": "What is the difference between val and var?",
+    "questionAr": "ما الفرق بين val وvar؟",
+    "optionsEn": [
+      "val can't be reassigned",
+      "val is faster to run",
+      "var is only for numbers",
+      "var can't change type"
+    ],
+    "optionsAr": [
+      "val لا يُعاد إسنادها",
+      "val أسرع في التشغيل",
+      "var للأرقام فقط",
+      "var لا تغيّر نوعها"
+    ],
+    "answer": 0,
+    "explanationEn": "val is a read-only reference; var can be reassigned. Neither changes type.",
+    "explanationAr": "val مرجع للقراءة فقط وvar يمكن إعادة إسنادها، ولا يغيّر أي منهما نوعه."
+  },
+  {
+    "key": "qz-kt-basics-2",
+    "topic": "kt-basics",
+    "questionEn": "What type does val n = 7 have?",
+    "questionAr": "ما نوع val n = 7؟",
+    "optionsEn": [
+      "Long",
+      "Int",
+      "Double",
+      "Number"
+    ],
+    "optionsAr": [
+      "Long",
+      "Int",
+      "Double",
+      "Number"
+    ],
+    "answer": 1,
+    "explanationEn": "Integer literals that fit are inferred as Int.",
+    "explanationAr": "الأرقام الصحيحة التي تتسع تُستنتج كـ Int."
+  },
+  {
+    "key": "qz-kt-basics-3",
+    "topic": "kt-basics",
+    "questionEn": "What does 1 until 5 contain?",
+    "questionAr": "ماذا يحتوي 1 until 5؟",
+    "optionsEn": [
+      "1, 2, 3, 4, 5",
+      "1, 2, 3, 4",
+      "2, 3, 4, 5",
+      "0, 1, 2, 3, 4"
+    ],
+    "optionsAr": [
+      "1, 2, 3, 4, 5",
+      "1, 2, 3, 4",
+      "2, 3, 4, 5",
+      "0, 1, 2, 3, 4"
+    ],
+    "answer": 1,
+    "explanationEn": "until excludes the end; .. includes it.",
+    "explanationAr": "until لا تتضمن النهاية و.. تتضمنها."
+  },
+  {
+    "key": "qz-kt-basics-4",
+    "topic": "kt-basics",
+    "questionEn": "Which statement about when is true?",
+    "questionAr": "أي عبارة عن when صحيحة؟",
+    "optionsEn": [
+      "It only works on Int",
+      "It can return a value",
+      "It needs a break",
+      "It can't use ranges"
+    ],
+    "optionsAr": [
+      "تعمل على Int فقط",
+      "يمكن أن تُرجع قيمة",
+      "تحتاج إلى break",
+      "لا تستخدم النطاقات"
+    ],
+    "answer": 1,
+    "explanationEn": "when is an expression and matches values, ranges, types or conditions.",
+    "explanationAr": "when تعبير يطابق القيم والنطاقات والأنواع والشروط."
+  },
+  {
+    "key": "qz-kt-basics-5",
+    "topic": "kt-basics",
+    "questionEn": "How do you insert a variable into a string?",
+    "questionAr": "كيف تُدرج متغيرًا داخل نص؟",
+    "optionsEn": [
+      "\"Hi \" + name only",
+      "\"Hi $name\"",
+      "\"Hi {name}\"",
+      "\"Hi %name\""
+    ],
+    "optionsAr": [
+      "\"Hi \" + name فقط",
+      "\"Hi $name\"",
+      "\"Hi {name}\"",
+      "\"Hi %name\""
+    ],
+    "answer": 1,
+    "explanationEn": "String templates use $name or ${expression}.",
+    "explanationAr": "قوالب النصوص تستخدم $name أو ${expression}."
+  },
+  {
+    "key": "qz-kt-basics-6",
+    "topic": "kt-basics",
+    "questionEn": "Can an Int be passed where a Long is expected?",
+    "questionAr": "هل يمكن تمرير Int حيث يُنتظر Long؟",
+    "optionsEn": [
+      "Yes, always",
+      "No, convert with toLong()",
+      "Only inside loops",
+      "Only if it is small"
+    ],
+    "optionsAr": [
+      "نعم دائمًا",
+      "لا، حوّله بـ toLong()",
+      "داخل الحلقات فقط",
+      "فقط إذا كان صغيرًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Kotlin has no implicit widening conversions.",
+    "explanationAr": "Kotlin لا تحوّل الأرقام ضمنيًا إلى نوع أوسع."
+  },
+  {
+    "key": "qz-kt-basics-7",
+    "topic": "kt-basics",
+    "questionEn": "Which loop counts 10, 8, 6...?",
+    "questionAr": "أي حلقة تعدّ 10 ثم 8 ثم 6...؟",
+    "optionsEn": [
+      "for (i in 10..0)",
+      "for (i in 10 downTo 0 step 2)",
+      "for (i in 0..10 step -2)",
+      "for (i in 10 until 0)"
+    ],
+    "optionsAr": [
+      "for (i in 10..0)",
+      "for (i in 10 downTo 0 step 2)",
+      "for (i in 0..10 step -2)",
+      "for (i in 10 until 0)"
+    ],
+    "answer": 1,
+    "explanationEn": "downTo goes backwards and step sets the size.",
+    "explanationAr": "downTo تعدّ للخلف وstep تحدد حجم الخطوة."
+  },
+  {
+    "key": "qz-kt-basics-8",
+    "topic": "kt-basics",
+    "questionEn": "Which should you prefer by default?",
+    "questionAr": "أيهما تفضّل افتراضيًا؟",
+    "optionsEn": [
+      "var",
+      "val",
+      "const var",
+      "lateinit var"
+    ],
+    "optionsAr": [
+      "var",
+      "val",
+      "const var",
+      "lateinit var"
+    ],
+    "answer": 1,
+    "explanationEn": "Read-only values are easier to reason about.",
+    "explanationAr": "القيم للقراءة فقط أسهل في الفهم."
+  },
+  {
+    "key": "qz-kt-functions-1",
+    "topic": "kt-functions",
+    "questionEn": "What does a default argument let callers do?",
+    "questionAr": "ماذا يتيح الوسيط الافتراضي للمستدعي؟",
+    "optionsEn": [
+      "Skip that argument",
+      "Change its type",
+      "Call it twice",
+      "Return two values"
+    ],
+    "optionsAr": [
+      "تخطي ذلك الوسيط",
+      "تغيير نوعه",
+      "استدعاءه مرتين",
+      "إرجاع قيمتين"
+    ],
+    "answer": 0,
+    "explanationEn": "The default value is used when the argument is left out.",
+    "explanationAr": "القيمة الافتراضية تُستخدم عند حذف الوسيط."
+  },
+  {
+    "key": "qz-kt-functions-2",
+    "topic": "kt-functions",
+    "questionEn": "What is it inside a lambda?",
+    "questionAr": "ما هو it داخل lambda؟",
+    "optionsEn": [
+      "The lambda itself",
+      "The single parameter",
+      "The return value",
+      "The outer class"
+    ],
+    "optionsAr": [
+      "الـ lambda نفسها",
+      "الوسيط الوحيد",
+      "قيمة الإرجاع",
+      "الصنف الخارجي"
+    ],
+    "answer": 1,
+    "explanationEn": "it names the only parameter when you don't name it.",
+    "explanationAr": "it اسم الوسيط الوحيد عندما لا تسمّيه."
+  },
+  {
+    "key": "qz-kt-functions-3",
+    "topic": "kt-functions",
+    "questionEn": "What type is { x: Int -> x > 0 }?",
+    "questionAr": "ما نوع { x: Int -> x > 0 }؟",
+    "optionsEn": [
+      "(Int) -> Boolean",
+      "Int -> Int",
+      "() -> Boolean",
+      "(Boolean) -> Int"
+    ],
+    "optionsAr": [
+      "(Int) -> Boolean",
+      "Int -> Int",
+      "() -> Boolean",
+      "(Boolean) -> Int"
+    ],
+    "answer": 0,
+    "explanationEn": "It takes an Int and returns a Boolean.",
+    "explanationAr": "يأخذ Int ويُرجع Boolean."
+  },
+  {
+    "key": "qz-kt-functions-4",
+    "topic": "kt-functions",
+    "questionEn": "What is a higher-order function?",
+    "questionAr": "ما هي الدالة العليا (Higher-order)؟",
+    "optionsEn": [
+      "A function inside a class",
+      "One taking or returning functions",
+      "A function that runs faster",
+      "A function calling itself"
+    ],
+    "optionsAr": [
+      "دالة موجودة داخل صنف",
+      "دالة تأخذ دوالًا أو تُرجعها",
+      "دالة تعمل بسرعة أكبر",
+      "دالة تستدعي نفسها ذاتيًا"
+    ],
+    "answer": 1,
+    "explanationEn": "map, filter and onClick parameters are examples.",
+    "explanationAr": "الدوال map وfilter ووسائط onClick أمثلة عليها."
+  },
+  {
+    "key": "qz-kt-functions-5",
+    "topic": "kt-functions",
+    "questionEn": "Where can a trailing lambda go?",
+    "questionAr": "أين يمكن أن توضع lambda الأخيرة؟",
+    "optionsEn": [
+      "Before the function name",
+      "After the parentheses",
+      "Only in a variable",
+      "Inside a string"
+    ],
+    "optionsAr": [
+      "قبل اسم الدالة",
+      "بعد الأقواس",
+      "في متغير فقط",
+      "داخل نص"
+    ],
+    "answer": 1,
+    "explanationEn": "When the last parameter is a function, pass it outside ().",
+    "explanationAr": "عندما يكون آخر وسيط دالة، مرّرها خارج الأقواس."
+  },
+  {
+    "key": "qz-kt-functions-6",
+    "topic": "kt-functions",
+    "questionEn": "How is fun sq(x: Int) = x * x written?",
+    "questionAr": "كيف تُكتب fun sq(x: Int) = x * x؟",
+    "optionsEn": [
+      "As an anonymous lambda",
+      "As a single-expression function",
+      "As an extension function",
+      "As a computed property"
+    ],
+    "optionsAr": [
+      "كتعبير lambda مجهول",
+      "كدالة بتعبير واحد",
+      "كدالة امتداد",
+      "كخاصية محسوبة"
+    ],
+    "answer": 1,
+    "explanationEn": "= replaces the block and return type is inferred.",
+    "explanationAr": "= تحل محل الكتلة ويُستنتج نوع الإرجاع."
+  },
+  {
+    "key": "qz-kt-functions-7",
+    "topic": "kt-functions",
+    "questionEn": "Why use named arguments?",
+    "questionAr": "لماذا تستخدم الوسائط المسماة؟",
+    "optionsEn": [
+      "They run faster",
+      "Calls are clearer",
+      "They are required",
+      "They skip type checks"
+    ],
+    "optionsAr": [
+      "لأنها أسرع",
+      "لأن الاستدعاء أوضح",
+      "لأنها إلزامية",
+      "لأنها تتخطى فحص الأنواع"
+    ],
+    "answer": 1,
+    "explanationEn": "price(base = 100.0, discount = 0.2) is easy to read.",
+    "explanationAr": "الاستدعاء price(base = 100.0, discount = 0.2) سهل القراءة."
+  },
+  {
+    "key": "qz-kt-functions-8",
+    "topic": "kt-functions",
+    "questionEn": "A Compose onClick parameter is usually...",
+    "questionAr": "الوسيط onClick في Compose عادةً...",
+    "optionsEn": [
+      "A String",
+      "A lambda",
+      "An Int",
+      "A class"
+    ],
+    "optionsAr": [
+      "نص String",
+      "تعبير lambda",
+      "رقم Int",
+      "صنف"
+    ],
+    "answer": 1,
+    "explanationEn": "onClick = { viewModel.save() } passes a function.",
+    "explanationAr": "onClick = { viewModel.save() } يمرر دالة."
+  },
+  {
+    "key": "qz-kt-collections-1",
+    "topic": "kt-collections",
+    "questionEn": "What does listOf return?",
+    "questionAr": "ماذا تُرجع listOf؟",
+    "optionsEn": [
+      "A read-only List",
+      "A MutableList",
+      "An Array",
+      "A Set"
+    ],
+    "optionsAr": [
+      "List للقراءة فقط",
+      "MutableList",
+      "مصفوفة Array",
+      "مجموعة Set"
+    ],
+    "answer": 0,
+    "explanationEn": "Use mutableListOf for a changeable list.",
+    "explanationAr": "استخدم mutableListOf لقائمة قابلة للتغيير."
+  },
+  {
+    "key": "qz-kt-collections-2",
+    "topic": "kt-collections",
+    "questionEn": "Which collection keeps no duplicates?",
+    "questionAr": "أي مجموعة لا تحتفظ بالتكرار؟",
+    "optionsEn": [
+      "List",
+      "Set",
+      "Array",
+      "Pair"
+    ],
+    "optionsAr": [
+      "List",
+      "Set",
+      "Array",
+      "Pair"
+    ],
+    "answer": 1,
+    "explanationEn": "A Set holds each element once.",
+    "explanationAr": "الـ Set تحمل كل عنصر مرة واحدة."
+  },
+  {
+    "key": "qz-kt-collections-3",
+    "topic": "kt-collections",
+    "questionEn": "items.filter { it.price > 100 } returns...",
+    "questionAr": "التعبير items.filter { it.price > 100 } يُرجع...",
+    "optionsEn": [
+      "A new list",
+      "The same list changed",
+      "A Boolean",
+      "The first match"
+    ],
+    "optionsAr": [
+      "قائمة جديدة",
+      "القائمة نفسها بعد تعديلها",
+      "قيمة Boolean",
+      "أول تطابق"
+    ],
+    "answer": 0,
+    "explanationEn": "Collection operations return new collections.",
+    "explanationAr": "عمليات المجموعات تُرجع مجموعات جديدة."
+  },
+  {
+    "key": "qz-kt-collections-4",
+    "topic": "kt-collections",
+    "questionEn": "Which sums price × quantity?",
+    "questionAr": "أي تعبير يجمع السعر × الكمية؟",
+    "optionsEn": [
+      "items.count { it.price }",
+      "items.sumOf { it.price * it.quantity }",
+      "items.map { it.price }.first()",
+      "items.sortedBy { it.quantity }"
+    ],
+    "optionsAr": [
+      "items.count { it.price }",
+      "items.sumOf { it.price * it.quantity }",
+      "items.map { it.price }.first()",
+      "items.sortedBy { it.quantity }"
+    ],
+    "answer": 1,
+    "explanationEn": "sumOf adds the value computed for each item.",
+    "explanationAr": "sumOf تجمع القيمة المحسوبة لكل عنصر."
+  },
+  {
+    "key": "qz-kt-collections-5",
+    "topic": "kt-collections",
+    "questionEn": "What does groupBy { it.category } give?",
+    "questionAr": "ماذا يعطي groupBy { it.category }؟",
+    "optionsEn": [
+      "A Map of lists",
+      "A sorted list",
+      "A Set of categories",
+      "A single item"
+    ],
+    "optionsAr": [
+      "Map من القوائم",
+      "قائمة مرتبة",
+      "Set بالتصنيفات",
+      "عنصرًا واحدًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Each key maps to the items with that key.",
+    "explanationAr": "كل مفتاح يشير إلى العناصر التي تحمله."
+  },
+  {
+    "key": "qz-kt-collections-6",
+    "topic": "kt-collections",
+    "questionEn": "Why expose List but keep MutableList private?",
+    "questionAr": "لماذا تعرض List وتحتفظ بـ MutableList خاصة؟",
+    "optionsEn": [
+      "To save a lot of memory",
+      "So only the class can change it",
+      "Because lists run faster",
+      "Because Kotlin requires it"
+    ],
+    "optionsAr": [
+      "لتوفير كثير من الذاكرة",
+      "حتى لا يغيّرها إلا الصنف",
+      "لأن القوائم تعمل أسرع",
+      "لأن Kotlin تشترط ذلك"
+    ],
+    "answer": 1,
+    "explanationEn": "Callers can read but not modify the data.",
+    "explanationAr": "المستدعون يقرؤون البيانات ولا يعدّلونها."
+  },
+  {
+    "key": "qz-kt-collections-7",
+    "topic": "kt-collections",
+    "questionEn": "When does asSequence() help?",
+    "questionAr": "متى يفيد asSequence()؟",
+    "optionsEn": [
+      "For lists of two items",
+      "For long chains on big data",
+      "To sort a list faster",
+      "To remove null values"
+    ],
+    "optionsAr": [
+      "لقوائم من عنصرين فقط",
+      "للسلاسل الطويلة على بيانات كبيرة",
+      "لترتيب القائمة بسرعة أكبر",
+      "لحذف القيم الفارغة null"
+    ],
+    "answer": 1,
+    "explanationEn": "Sequences are lazy and can stop early.",
+    "explanationAr": "التسلسلات كسولة ويمكنها التوقف مبكرًا."
+  },
+  {
+    "key": "qz-kt-collections-8",
+    "topic": "kt-collections",
+    "questionEn": "Which finds a value by key quickly?",
+    "questionAr": "أي بنية تجد قيمة بالمفتاح بسرعة؟",
+    "optionsEn": [
+      "List",
+      "Map",
+      "Sequence",
+      "Pair"
+    ],
+    "optionsAr": [
+      "List",
+      "Map",
+      "Sequence",
+      "Pair"
+    ],
+    "answer": 1,
+    "explanationEn": "Maps are built for lookup by key.",
+    "explanationAr": "الـ Map مصممة للبحث بالمفتاح."
+  },
+  {
+    "key": "qz-kt-null-safety-1",
+    "topic": "kt-null-safety",
+    "questionEn": "Which type can hold null?",
+    "questionAr": "أي نوع يمكن أن يحمل null؟",
+    "optionsEn": [
+      "String",
+      "String?",
+      "Any",
+      "Nothing"
+    ],
+    "optionsAr": [
+      "String",
+      "String?",
+      "Any",
+      "Nothing"
+    ],
+    "answer": 1,
+    "explanationEn": "Only types marked with ? accept null.",
+    "explanationAr": "الأنواع المعلّمة بـ ? فقط تقبل null."
+  },
+  {
+    "key": "qz-kt-null-safety-2",
+    "topic": "kt-null-safety",
+    "questionEn": "What does user?.name return if user is null?",
+    "questionAr": "ماذا يُرجع user?.name إذا كان user يساوي null؟",
+    "optionsEn": [
+      "An exception",
+      "null",
+      "An empty string",
+      "\"null\""
+    ],
+    "optionsAr": [
+      "استثناء",
+      "null",
+      "نصًا فارغًا",
+      "\"null\""
+    ],
+    "answer": 1,
+    "explanationEn": "The safe call stops and returns null.",
+    "explanationAr": "الاستدعاء الآمن يتوقف ويُرجع null."
+  },
+  {
+    "key": "qz-kt-null-safety-3",
+    "topic": "kt-null-safety",
+    "questionEn": "What does name ?: \"Guest\" do?",
+    "questionAr": "ماذا يفعل name ?: \"Guest\"؟",
+    "optionsEn": [
+      "Throws when null",
+      "Uses Guest when null",
+      "Compares two strings",
+      "Converts to upper case"
+    ],
+    "optionsAr": [
+      "يرمي عند null",
+      "يستخدم Guest عند null",
+      "يقارن نصين",
+      "يحوّل إلى حروف كبيرة"
+    ],
+    "answer": 1,
+    "explanationEn": "The Elvis operator gives a fallback.",
+    "explanationAr": "عامل Elvis يعطي بديلًا."
+  },
+  {
+    "key": "qz-kt-null-safety-4",
+    "topic": "kt-null-safety",
+    "questionEn": "What does !! do when the value is null?",
+    "questionAr": "ماذا يفعل !! عندما تكون القيمة null؟",
+    "optionsEn": [
+      "Returns a default",
+      "Throws an exception",
+      "Skips the line",
+      "Logs a warning"
+    ],
+    "optionsAr": [
+      "يُرجع قيمة افتراضية",
+      "يرمي استثناء",
+      "يتخطى السطر",
+      "يسجل تحذيرًا"
+    ],
+    "answer": 1,
+    "explanationEn": "It throws NullPointerException, so use it rarely.",
+    "explanationAr": "يرمي NullPointerException، فاستخدمه نادرًا."
+  },
+  {
+    "key": "qz-kt-null-safety-5",
+    "topic": "kt-null-safety",
+    "questionEn": "After if (x != null), x is treated as...",
+    "questionAr": "بعد if (x != null) يُعامل x على أنه...",
+    "optionsEn": [
+      "Still a nullable type",
+      "Non-null (smart cast)",
+      "Always a String value",
+      "An unknown type"
+    ],
+    "optionsAr": [
+      "ما زال نوعًا يقبل null",
+      "ليس null (تحويل ذكي)",
+      "قيمة نصية String دائمًا",
+      "نوعًا غير معروف"
+    ],
+    "answer": 1,
+    "explanationEn": "The compiler knows the check passed.",
+    "explanationAr": "المترجم يعرف أن الفحص نجح."
+  },
+  {
+    "key": "qz-kt-null-safety-6",
+    "topic": "kt-null-safety",
+    "questionEn": "How do you run code only for a non-null value?",
+    "questionAr": "كيف تنفّذ كودًا فقط لقيمة ليست null؟",
+    "optionsEn": [
+      "value!!.run { }",
+      "value?.let { }",
+      "value.apply { }",
+      "value ?: { }"
+    ],
+    "optionsAr": [
+      "value!!.run { }",
+      "value?.let { }",
+      "value.apply { }",
+      "value ?: { }"
+    ],
+    "answer": 1,
+    "explanationEn": "The block runs only when value is not null.",
+    "explanationAr": "الكتلة تعمل فقط عندما لا تكون القيمة null."
+  },
+  {
+    "key": "qz-kt-null-safety-7",
+    "topic": "kt-null-safety",
+    "questionEn": "\"12a\".toIntOrNull() returns...",
+    "questionAr": "التعبير \"12a\".toIntOrNull() يُرجع...",
+    "optionsEn": [
+      "12",
+      "null",
+      "0",
+      "An exception"
+    ],
+    "optionsAr": [
+      "12",
+      "null",
+      "0",
+      "استثناء"
+    ],
+    "answer": 1,
+    "explanationEn": "It returns null instead of throwing.",
+    "explanationAr": "يُرجع null بدل رمي استثناء."
+  },
+  {
+    "key": "qz-kt-null-safety-8",
+    "topic": "kt-null-safety",
+    "questionEn": "Values from Java APIs should be treated as...",
+    "questionAr": "القيم القادمة من واجهات Java يجب معاملتها على أنها...",
+    "optionsEn": [
+      "Never null",
+      "Possibly null",
+      "Always strings",
+      "Always empty"
+    ],
+    "optionsAr": [
+      "ليست null أبدًا",
+      "قد تكون null",
+      "نصوص دائمًا",
+      "فارغة دائمًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Java types carry no null information by default.",
+    "explanationAr": "أنواع Java لا تحمل معلومات null افتراضيًا."
+  },
+  {
+    "key": "qz-kt-oop-1",
+    "topic": "kt-oop",
+    "questionEn": "Kotlin classes are by default...",
+    "questionAr": "أصناف Kotlin افتراضيًا...",
+    "optionsEn": [
+      "open",
+      "final",
+      "abstract",
+      "sealed"
+    ],
+    "optionsAr": [
+      "open",
+      "final",
+      "abstract",
+      "sealed"
+    ],
+    "answer": 1,
+    "explanationEn": "Mark a class open to allow inheritance.",
+    "explanationAr": "علّم الصنف بـ open للسماح بالوراثة."
+  },
+  {
+    "key": "qz-kt-oop-2",
+    "topic": "kt-oop",
+    "questionEn": "What does val in a primary constructor create?",
+    "questionAr": "ماذا تنشئ val في المُنشئ الأساسي؟",
+    "optionsEn": [
+      "A local variable",
+      "A read-only property",
+      "A static field",
+      "A function"
+    ],
+    "optionsAr": [
+      "متغيرًا محليًا",
+      "خاصية للقراءة فقط",
+      "حقلًا ثابتًا",
+      "دالة"
+    ],
+    "answer": 1,
+    "explanationEn": "class User(val name: String) has a name property.",
+    "explanationAr": "الصنف class User(val name: String) فيه خاصية name."
+  },
+  {
+    "key": "qz-kt-oop-3",
+    "topic": "kt-oop",
+    "questionEn": "Where do you validate constructor values?",
+    "questionAr": "أين تتحقق من قيم المُنشئ؟",
+    "optionsEn": [
+      "In an init block",
+      "In toString",
+      "In a companion object",
+      "Nowhere"
+    ],
+    "optionsAr": [
+      "في كتلة init",
+      "في toString",
+      "في companion object",
+      "في أي مكان لا"
+    ],
+    "answer": 0,
+    "explanationEn": "init runs when the object is created.",
+    "explanationAr": "كتلة init تعمل عند إنشاء الكائن."
+  },
+  {
+    "key": "qz-kt-oop-4",
+    "topic": "kt-oop",
+    "questionEn": "What does object Logger declare?",
+    "questionAr": "ماذا يعرّف object Logger؟",
+    "optionsEn": [
+      "A data class with fields",
+      "A singleton",
+      "An interface to implement",
+      "An enum of constants"
+    ],
+    "optionsAr": [
+      "صنف data فيه عدة حقول",
+      "كائنًا وحيدًا (Singleton)",
+      "واجهة يجب على الأصناف تنفيذها",
+      "تعدادًا من الثوابت المحددة"
+    ],
+    "answer": 1,
+    "explanationEn": "There is exactly one Logger instance.",
+    "explanationAr": "توجد نسخة واحدة فقط من Logger."
+  },
+  {
+    "key": "qz-kt-oop-5",
+    "topic": "kt-oop",
+    "questionEn": "Why depend on an interface in a constructor?",
+    "questionAr": "لماذا تعتمد على واجهة في المُنشئ؟",
+    "optionsEn": [
+      "It runs faster",
+      "To swap implementations",
+      "Kotlin requires it",
+      "To avoid null"
+    ],
+    "optionsAr": [
+      "لأنه أسرع",
+      "لتبديل التنفيذات",
+      "لأن Kotlin تشترطه",
+      "لتجنب null"
+    ],
+    "answer": 1,
+    "explanationEn": "Tests can pass a fake implementation.",
+    "explanationAr": "الاختبارات تستطيع تمرير تنفيذ وهمي."
+  },
+  {
+    "key": "qz-kt-oop-6",
+    "topic": "kt-oop",
+    "questionEn": "var balance with private set means...",
+    "questionAr": "الكتابة var balance مع private set تعني...",
+    "optionsEn": [
+      "Nobody can ever read it",
+      "Readable outside, set inside",
+      "It is a compile-time constant",
+      "It is computed lazily"
+    ],
+    "optionsAr": [
+      "لا أحد يستطيع قراءتها أبدًا",
+      "تُقرأ خارجيًا وتُغيَّر داخليًا",
+      "أنها ثابت يُحدد وقت الترجمة",
+      "أنها تُحسب بشكل كسول عند الطلب"
+    ],
+    "answer": 1,
+    "explanationEn": "The setter is private, the getter is public.",
+    "explanationAr": "الـ Setter خاص والـ Getter عام."
+  },
+  {
+    "key": "qz-kt-oop-7",
+    "topic": "kt-oop",
+    "questionEn": "Composition means...",
+    "questionAr": "التركيب (Composition) يعني...",
+    "optionsEn": [
+      "Inheriting from many classes",
+      "Holding objects that do work",
+      "Writing one big class",
+      "Using only interfaces"
+    ],
+    "optionsAr": [
+      "الوراثة من أصناف كثيرة",
+      "حمل كائنات تقوم بالعمل",
+      "كتابة صنف واحد كبير",
+      "استخدام الواجهات فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "A class receives collaborators instead of extending them.",
+    "explanationAr": "الصنف يستقبل من يتعاون معهم بدل وراثتهم."
+  },
+  {
+    "key": "qz-kt-oop-8",
+    "topic": "kt-oop",
+    "questionEn": "Which keyword overrides a member?",
+    "questionAr": "أي كلمة تعيد تعريف عضو؟",
+    "optionsEn": [
+      "open",
+      "override",
+      "super",
+      "final"
+    ],
+    "optionsAr": [
+      "open",
+      "override",
+      "super",
+      "final"
+    ],
+    "answer": 1,
+    "explanationEn": "The base member must also be open.",
+    "explanationAr": "العضو الأساسي يجب أن يكون open أيضًا."
+  },
+  {
+    "key": "qz-kt-data-sealed-enum-1",
+    "topic": "kt-data-sealed-enum",
+    "questionEn": "What does a data class add for you?",
+    "questionAr": "ماذا يضيف لك صنف data؟",
+    "optionsEn": [
+      "Network calls to an API",
+      "equals, copy and toString",
+      "Database tables and keys",
+      "Thread safety for fields"
+    ],
+    "optionsAr": [
+      "استدعاءات شبكة إلى API",
+      "equals وcopy وtoString",
+      "جداول ومفاتيح قاعدة بيانات",
+      "أمان الخيوط للحقول"
+    ],
+    "answer": 1,
+    "explanationEn": "Plus hashCode and componentN for destructuring.",
+    "explanationAr": "إضافة إلى hashCode وcomponentN للتفكيك."
+  },
+  {
+    "key": "qz-kt-data-sealed-enum-2",
+    "topic": "kt-data-sealed-enum",
+    "questionEn": "How do you change one field of a data class value?",
+    "questionAr": "كيف تغيّر حقلًا واحدًا في قيمة صنف data؟",
+    "optionsEn": [
+      "state.copy(isLoading = false)",
+      "state.isLoading = false always",
+      "new state()",
+      "state.update()"
+    ],
+    "optionsAr": [
+      "state.copy(isLoading = false)",
+      "state.isLoading = false دائمًا",
+      "new state()",
+      "state.update()"
+    ],
+    "answer": 0,
+    "explanationEn": "copy makes a new value with that change.",
+    "explanationAr": "copy تنشئ قيمة جديدة بذلك التغيير."
+  },
+  {
+    "key": "qz-kt-data-sealed-enum-3",
+    "topic": "kt-data-sealed-enum",
+    "questionEn": "Two data class values with the same fields are...",
+    "questionAr": "قيمتان من صنف data بالحقول نفسها...",
+    "optionsEn": [
+      "Never equal",
+      "Equal with ==",
+      "Equal only with ===",
+      "Errors"
+    ],
+    "optionsAr": [
+      "لا تتساويان أبدًا",
+      "متساويتان بـ ==",
+      "متساويتان بـ === فقط",
+      "أخطاء"
+    ],
+    "answer": 1,
+    "explanationEn": "== compares content for data classes.",
+    "explanationAr": "== تقارن المحتوى في أصناف data."
+  },
+  {
+    "key": "qz-kt-data-sealed-enum-4",
+    "topic": "kt-data-sealed-enum",
+    "questionEn": "When is a sealed type better than an enum?",
+    "questionAr": "متى يكون النوع sealed أفضل من enum؟",
+    "optionsEn": [
+      "When cases carry different data",
+      "When there are many cases",
+      "When the values are numbers",
+      "Never, enums are always better"
+    ],
+    "optionsAr": [
+      "عندما تحمل الحالات بيانات مختلفة",
+      "عندما تكثر الحالات",
+      "عندما تكون القيم أرقامًا",
+      "أبدًا، التعداد أفضل دائمًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Success can hold a list and Error a message.",
+    "explanationAr": "Success تحمل قائمة وError تحمل رسالة."
+  },
+  {
+    "key": "qz-kt-data-sealed-enum-5",
+    "topic": "kt-data-sealed-enum",
+    "questionEn": "Why avoid else in a when over a sealed type?",
+    "questionAr": "لماذا تتجنب else في when على نوع sealed؟",
+    "optionsEn": [
+      "It makes when slower",
+      "So new cases fail to compile",
+      "else is not allowed there",
+      "To save some memory"
+    ],
+    "optionsAr": [
+      "لأنه يجعل تعبير when أبطأ",
+      "حتى تفشل الحالات الجديدة في الترجمة",
+      "لأن else غير مسموحة في هذا المكان",
+      "لتوفير قدر من الذاكرة"
+    ],
+    "answer": 1,
+    "explanationEn": "The compiler then reports unhandled cases.",
+    "explanationAr": "عندها يبلّغ المترجم عن الحالات غير المعالجة."
+  },
+  {
+    "key": "qz-kt-data-sealed-enum-6",
+    "topic": "kt-data-sealed-enum",
+    "questionEn": "What can an enum constant have?",
+    "questionAr": "ماذا يمكن أن يملك ثابت enum؟",
+    "optionsEn": [
+      "Properties and methods",
+      "Only a name",
+      "Only a number",
+      "Mutable subclasses"
+    ],
+    "optionsAr": [
+      "خصائص ودوال",
+      "اسمًا فقط",
+      "رقمًا فقط",
+      "أصنافًا فرعية قابلة للتغيير"
+    ],
+    "answer": 0,
+    "explanationEn": "enum class Priority(val label: String) works.",
+    "explanationAr": "التعريف enum class Priority(val label: String) يعمل."
+  },
+  {
+    "key": "qz-kt-data-sealed-enum-7",
+    "topic": "kt-data-sealed-enum",
+    "questionEn": "A typical screen state in Android is...",
+    "questionAr": "حالة الشاشة النموذجية في Android...",
+    "optionsEn": [
+      "A data class",
+      "An Activity",
+      "A global var",
+      "A JSON string"
+    ],
+    "optionsAr": [
+      "صنف data",
+      "Activity",
+      "متغير عام",
+      "نص JSON"
+    ],
+    "answer": 0,
+    "explanationEn": "It is updated with copy and observed by the UI.",
+    "explanationAr": "تُحدَّث بـ copy وتراقبها الواجهة."
+  },
+  {
+    "key": "qz-kt-data-sealed-enum-8",
+    "topic": "kt-data-sealed-enum",
+    "questionEn": "What does val (id, title) = task do?",
+    "questionAr": "ماذا يفعل val (id, title) = task؟",
+    "optionsEn": [
+      "Copies task to a new value",
+      "Destructures its first fields",
+      "Compares two tasks",
+      "Creates a new Pair type"
+    ],
+    "optionsAr": [
+      "ينسخ task إلى قيمة جديدة",
+      "يفكك أول حقوله",
+      "يقارن بين مهمتين",
+      "ينشئ نوع Pair جديدًا"
+    ],
+    "answer": 1,
+    "explanationEn": "componentN functions supply the values.",
+    "explanationAr": "دوال componentN تعطي القيم."
+  },
+  {
+    "key": "qz-kt-generics-extensions-1",
+    "topic": "kt-generics-extensions",
+    "questionEn": "What does <T> in class Box<T> mean?",
+    "questionAr": "ماذا يعني <T> في class Box<T>؟",
+    "optionsEn": [
+      "A type parameter",
+      "A template string",
+      "A nullable type",
+      "A thread"
+    ],
+    "optionsAr": [
+      "وسيط نوع",
+      "قالب نصي",
+      "نوعًا يقبل null",
+      "خيطًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Box<String> and Box<Int> are both possible.",
+    "explanationAr": "يمكن إنشاء Box<String> وBox<Int> كليهما."
+  },
+  {
+    "key": "qz-kt-generics-extensions-2",
+    "topic": "kt-generics-extensions",
+    "questionEn": "What does <T : Comparable<T>> add?",
+    "questionAr": "ماذا يضيف <T : Comparable<T>>؟",
+    "optionsEn": [
+      "A bound on T",
+      "A default for T",
+      "A second class",
+      "Null safety"
+    ],
+    "optionsAr": [
+      "قيدًا على T",
+      "قيمة افتراضية لـ T",
+      "صنفًا ثانيًا",
+      "أمانًا من null"
+    ],
+    "answer": 0,
+    "explanationEn": "Only comparable types can be used, so you can compare them.",
+    "explanationAr": "لا تُستخدم إلا الأنواع القابلة للمقارنة، فتستطيع مقارنتها."
+  },
+  {
+    "key": "qz-kt-generics-extensions-3",
+    "topic": "kt-generics-extensions",
+    "questionEn": "Can an extension function read private members?",
+    "questionAr": "هل تقرأ دالة الامتداد الأعضاء الخاصة؟",
+    "optionsEn": [
+      "Yes, always",
+      "No, only public API",
+      "Only in data classes",
+      "Only with !!"
+    ],
+    "optionsAr": [
+      "نعم دائمًا",
+      "لا، الواجهة العامة فقط",
+      "في أصناف data فقط",
+      "مع !! فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Extensions are resolved statically and see only visible members.",
+    "explanationAr": "الامتدادات تُحل وقت الترجمة ولا ترى إلا الأعضاء المرئية."
+  },
+  {
+    "key": "qz-kt-generics-extensions-4",
+    "topic": "kt-generics-extensions",
+    "questionEn": "Which returns the object itself?",
+    "questionAr": "أي دالة تُرجع الكائن نفسه؟",
+    "optionsEn": [
+      "let",
+      "apply",
+      "run",
+      "with"
+    ],
+    "optionsAr": [
+      "let",
+      "apply",
+      "run",
+      "with"
+    ],
+    "answer": 1,
+    "explanationEn": "apply and also return the receiver.",
+    "explanationAr": "apply وalso تُرجعان الكائن نفسه."
+  },
+  {
+    "key": "qz-kt-generics-extensions-5",
+    "topic": "kt-generics-extensions",
+    "questionEn": "Which is best for configuring a new object?",
+    "questionAr": "أي دالة الأفضل لتهيئة كائن جديد؟",
+    "optionsEn": [
+      "apply",
+      "let",
+      "also",
+      "takeIf"
+    ],
+    "optionsAr": [
+      "apply",
+      "let",
+      "also",
+      "takeIf"
+    ],
+    "answer": 0,
+    "explanationEn": "Inside apply the object is this and it is returned.",
+    "explanationAr": "داخل apply يكون الكائن this ويُرجع في النهاية."
+  },
+  {
+    "key": "qz-kt-generics-extensions-6",
+    "topic": "kt-generics-extensions",
+    "questionEn": "value?.let { } is typically used for...",
+    "questionAr": "التعبير value?.let { } يُستخدم عادةً لـ...",
+    "optionsEn": [
+      "Nullable values",
+      "Loops",
+      "Configuring views",
+      "Inheritance"
+    ],
+    "optionsAr": [
+      "القيم التي تقبل null",
+      "الحلقات",
+      "تهيئة الواجهات",
+      "الوراثة"
+    ],
+    "answer": 0,
+    "explanationEn": "The block runs only when value exists.",
+    "explanationAr": "الكتلة تعمل فقط عند وجود القيمة."
+  },
+  {
+    "key": "qz-kt-generics-extensions-7",
+    "topic": "kt-generics-extensions",
+    "questionEn": "What does out in List<out T> allow?",
+    "questionAr": "ماذا يتيح out في List<out T>؟",
+    "optionsEn": [
+      "Adding items of any type",
+      "Using List<Int> as List<Number>",
+      "Removing every null value",
+      "Faster loops over the items"
+    ],
+    "optionsAr": [
+      "إضافة عناصر من أي نوع كان",
+      "استخدام List<Int> كـ List<Number>",
+      "حذف كل القيم الفارغة null منها",
+      "حلقات أسرع على عناصر القائمة"
+    ],
+    "answer": 1,
+    "explanationEn": "A producer of T can be treated as a producer of a supertype.",
+    "explanationAr": "منتِج T يمكن معاملته كمنتِج لنوع أعلى."
+  },
+  {
+    "key": "qz-kt-generics-extensions-8",
+    "topic": "kt-generics-extensions",
+    "questionEn": "Where should a small extension function live?",
+    "questionAr": "أين يجب أن تعيش دالة امتداد صغيرة؟",
+    "optionsEn": [
+      "Near where it is used",
+      "In every file",
+      "Inside main()",
+      "In the manifest"
+    ],
+    "optionsAr": [
+      "قرب مكان استخدامها",
+      "في كل ملف",
+      "داخل main()",
+      "في ملف Manifest"
+    ],
+    "answer": 0,
+    "explanationEn": "Scope helpers to the module or file that needs them.",
+    "explanationAr": "اجعل المساعدات في الوحدة أو الملف الذي يحتاجها."
+  },
+  {
+    "key": "qz-kt-errors-idioms-1",
+    "topic": "kt-errors-idioms",
+    "questionEn": "Does Kotlin have checked exceptions?",
+    "questionAr": "هل في Kotlin استثناءات مُلزِمة (Checked)؟",
+    "optionsEn": [
+      "Yes, like Java",
+      "No, all are unchecked",
+      "Only for IO",
+      "Only on Android"
+    ],
+    "optionsAr": [
+      "نعم مثل Java",
+      "لا، كلها غير مُلزِمة",
+      "للإدخال والإخراج فقط",
+      "على Android فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "You are not forced to catch or declare them.",
+    "explanationAr": "لست مجبرًا على التقاطها أو التصريح بها."
+  },
+  {
+    "key": "qz-kt-errors-idioms-2",
+    "topic": "kt-errors-idioms",
+    "questionEn": "require(x > 0) throws...",
+    "questionAr": "الدالة require(x > 0) ترمي...",
+    "optionsEn": [
+      "IllegalArgumentException",
+      "IllegalStateException",
+      "NullPointerException",
+      "Nothing"
+    ],
+    "optionsAr": [
+      "IllegalArgumentException",
+      "IllegalStateException",
+      "NullPointerException",
+      "لا شيء"
+    ],
+    "answer": 0,
+    "explanationEn": "require checks arguments; check checks state.",
+    "explanationAr": "require تفحص الوسائط وcheck تفحص الحالة."
+  },
+  {
+    "key": "qz-kt-errors-idioms-3",
+    "topic": "kt-errors-idioms",
+    "questionEn": "What does runCatching { } return?",
+    "questionAr": "ماذا تُرجع runCatching { }؟",
+    "optionsEn": [
+      "A Result",
+      "A Boolean",
+      "An Exception",
+      "Unit"
+    ],
+    "optionsAr": [
+      "Result",
+      "Boolean",
+      "Exception",
+      "Unit"
+    ],
+    "answer": 0,
+    "explanationEn": "Success or failure wrapped in Result<T>.",
+    "explanationAr": "النجاح أو الفشل مغلّف في Result<T>."
+  },
+  {
+    "key": "qz-kt-errors-idioms-4",
+    "topic": "kt-errors-idioms",
+    "questionEn": "What is wrong with an empty catch block?",
+    "questionAr": "ما الخطأ في كتلة catch فارغة؟",
+    "optionsEn": [
+      "It is too slow",
+      "It hides failures",
+      "It does not compile",
+      "Nothing at all"
+    ],
+    "optionsAr": [
+      "أنها بطيئة جدًا",
+      "أنها تخفي الأعطال",
+      "أنها لا تُترجم",
+      "لا شيء أبدًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Errors disappear and bugs become hard to find.",
+    "explanationAr": "الأخطاء تختفي ويصعب إيجاد العلل."
+  },
+  {
+    "key": "qz-kt-errors-idioms-5",
+    "topic": "kt-errors-idioms",
+    "questionEn": "val n = try { s.toInt() } catch (e: Exception) { 0 } works because...",
+    "questionAr": "السطر val n = try { s.toInt() } catch (e: Exception) { 0 } يعمل لأن...",
+    "optionsEn": [
+      "try is an expression",
+      "toInt never fails",
+      "catch is optional",
+      "n is a var"
+    ],
+    "optionsAr": [
+      "try تعبير",
+      "toInt لا تفشل أبدًا",
+      "catch اختيارية",
+      "n من نوع var"
+    ],
+    "answer": 0,
+    "explanationEn": "Both branches produce a value.",
+    "explanationAr": "كلا الفرعين يُنتج قيمة."
+  },
+  {
+    "key": "qz-kt-errors-idioms-6",
+    "topic": "kt-errors-idioms",
+    "questionEn": "Which structure counts items best?",
+    "questionAr": "أي بنية الأفضل لعدّ العناصر؟",
+    "optionsEn": [
+      "A Map from item to count",
+      "A sorted List of items",
+      "A single long String",
+      "A Pair of two values"
+    ],
+    "optionsAr": [
+      "Map من العنصر إلى العدد",
+      "قائمة List مرتبة",
+      "نص String طويل واحد",
+      "Pair من قيمتين"
+    ],
+    "answer": 0,
+    "explanationEn": "groupingBy { it }.eachCount() builds it.",
+    "explanationAr": "groupingBy { it }.eachCount() تبنيها."
+  },
+  {
+    "key": "qz-kt-errors-idioms-7",
+    "topic": "kt-errors-idioms",
+    "questionEn": "First step when solving a coding problem?",
+    "questionAr": "ما أول خطوة عند حل مسألة برمجية؟",
+    "optionsEn": [
+      "Write code at once",
+      "Restate it with examples",
+      "Pick the fastest algorithm",
+      "Search for the answer"
+    ],
+    "optionsAr": [
+      "اكتب الكود فورًا",
+      "أعد صياغتها بأمثلة",
+      "اختر أسرع خوارزمية",
+      "ابحث عن الإجابة"
+    ],
+    "answer": 1,
+    "explanationEn": "Examples and edge cases show what correct means.",
+    "explanationAr": "الأمثلة والحالات الحدّية توضح معنى الصحة."
+  },
+  {
+    "key": "qz-kt-errors-idioms-8",
+    "topic": "kt-errors-idioms",
+    "questionEn": "Two-sum in one pass uses...",
+    "questionAr": "حل Two-sum في مرور واحد يستخدم...",
+    "optionsEn": [
+      "Two nested for loops",
+      "A HashMap of seen values",
+      "Sorting the list first",
+      "Recursion on sublists"
+    ],
+    "optionsAr": [
+      "حلقتي for متداخلتين",
+      "HashMap للقيم التي رأيتها",
+      "ترتيب القائمة أولًا",
+      "الاستدعاء الذاتي على أجزاء"
+    ],
+    "answer": 1,
+    "explanationEn": "Look up target minus the current number.",
+    "explanationAr": "ابحث عن الهدف ناقص الرقم الحالي."
+  }
+]

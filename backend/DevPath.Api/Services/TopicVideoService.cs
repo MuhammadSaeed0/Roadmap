@@ -38,6 +38,8 @@ public class TopicVideoService(
         [SkillArea.Professional] = ("software developer", []),
         [SkillArea.DevOps] = (".NET", [".net", "dotnet", "c#", "asp.net", "docker", "kubernetes", "azure", "devops", "ci/cd", "cloud", "rabbitmq", "microservice"]),
         [SkillArea.AI] = ("AI", ["ai", "llm", "gpt", "rag", "prompt", "embedding", "agent", "semantic kernel", "openai", "python", ".net"]),
+        [SkillArea.Kotlin] = ("Kotlin", ["kotlin", "android"]),
+        [SkillArea.Android] = ("Android", ["android", "kotlin", "jetpack", "compose"]),
     };
 
     // A skill added later without an entry falls back to a stack-neutral search instead of failing the request.

@@ -30,5 +30,19 @@
     "outcomeAr": "تبني مساعد محادثة يجيب من مستنداتك ويستخدم الأدوات، وتقيّمه وتنشره.",
     "technologies": ["C#", "ASP.NET Core", "Microsoft.Extensions.AI", "Semantic Kernel", "RAG", "Python"],
     "phases": ["csharp-fundamentals", "object-oriented-programming", "modern-csharp", "aspnet-core", "ai-llm-foundations", "ai-python-for-devs", "ai-dotnet-models", "ai-prompt-engineering"]
+  },
+  {
+    "slug": "android-developer",
+    "order": 3,
+    "published": false,
+    "icon": "smartphone",
+    "titleEn": "Android app developer",
+    "titleAr": "مطوّر تطبيقات Android",
+    "summaryEn": "From your first line of Kotlin to production Android apps with Jetpack Compose, clean architecture, Room, Retrofit, Firebase and AI features.",
+    "summaryAr": "من أول سطر Kotlin حتى تطبيقات Android جاهزة للإنتاج بـ Jetpack Compose والمعمارية النظيفة وRoom وRetrofit وFirebase وميزات الذكاء الاصطناعي.",
+    "outcomeEn": "You can design, build, test and publish real Android apps on Google Play and apply for Android developer roles.",
+    "outcomeAr": "تصمّم تطبيقات Android حقيقية وتبنيها وتختبرها وتنشرها على Google Play، وتتقدّم لوظائف مطوّر Android.",
+    "technologies": ["Kotlin", "Jetpack Compose", "Coroutines", "Room", "Retrofit", "Hilt", "Firebase"],
+    "phases": ["kotlin-fundamentals"]
   }
 ]

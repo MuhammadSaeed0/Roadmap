@@ -1,0 +1,194 @@
+[
+  {
+    "key": "kt-ex-fizzbuzz-when",
+    "type": "Practical",
+    "topic": "kt-basics",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "FizzBuzz and grades with when",
+    "titleAr": "FizzBuzz والتقديرات بـ when",
+    "problemEn": "Write two Kotlin functions in play.kotlinlang.org or IntelliJ. fizzBuzz(n: Int): String returns \"Fizz\" for multiples of 3, \"Buzz\" for multiples of 5, \"FizzBuzz\" for both, otherwise the number. grade(score: Int): String returns A for 90-100, B for 80-89, C for 65-79, F for 0-64 and \"Invalid\" otherwise. Use when as an expression in both, and print fizzBuzz for 1..15.",
+    "problemAr": "اكتب دالتين بـ Kotlin في play.kotlinlang.org أو IntelliJ. الدالة fizzBuzz(n: Int): String تُرجع \"Fizz\" لمضاعفات 3، و\"Buzz\" لمضاعفات 5، و\"FizzBuzz\" لمضاعفاتهما معًا، وإلا الرقم. والدالة grade(score: Int): String تُرجع A للدرجات 90-100، وB لـ 80-89، وC لـ 65-79، وF لـ 0-64، و\"Invalid\" لغير ذلك. استخدم when كتعبير في الدالتين، واطبع fizzBuzz للأرقام 1..15.",
+    "expectedEn": "fizzBuzz(15) is \"FizzBuzz\", fizzBuzz(7) is \"7\", grade(84) is \"B\" and grade(120) is \"Invalid\".",
+    "expectedAr": "الاستدعاء fizzBuzz(15) يُرجع \"FizzBuzz\"، وfizzBuzz(7) يُرجع \"7\"، وgrade(84) يُرجع \"B\"، وgrade(120) يُرجع \"Invalid\".",
+    "hintsEn": [
+      "Check the multiple of 15 first, or the Fizz branch wins.",
+      "when (score) { in 90..100 -> ... } matches ranges."
+    ],
+    "hintsAr": [
+      "افحص مضاعف 15 أولًا، وإلا يفوز فرع Fizz.",
+      "التعبير when (score) { in 90..100 -> ... } يطابق النطاقات."
+    ],
+    "solutionEn": "Both are single-expression functions. fizzBuzz uses when without an argument and checks n % 15 first; grade uses when (score) with ranges and an else branch for invalid values. Because when is an expression, the functions are one statement each.",
+    "solutionAr": "الدالتان بتعبير واحد. وfizzBuzz تستخدم when دون وسيط وتفحص n % 15 أولًا، وgrade تستخدم when (score) بالنطاقات وفرع else للقيم غير الصالحة. ولأن when تعبير، فكل دالة جملة واحدة.",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-own-filter-map",
+    "type": "Practical",
+    "topic": "kt-functions",
+    "difficulty": "Beginner",
+    "minutes": 25,
+    "titleEn": "Write your own filter and map",
+    "titleAr": "اكتب filter وmap بنفسك",
+    "problemEn": "Without using the standard filter and map, write fun <T> myFilter(items: List<T>, keep: (T) -> Boolean): List<T> and fun <T, R> myMap(items: List<T>, transform: (T) -> R): List<R>. Then use them with trailing lambdas to get the squares of the even numbers in 1..10.",
+    "problemAr": "دون استخدام filter وmap القياسيتين، اكتب fun <T> myFilter(items: List<T>, keep: (T) -> Boolean): List<T> وfun <T, R> myMap(items: List<T>, transform: (T) -> R): List<R>. ثم استخدمهما مع lambda أخيرة للحصول على مربعات الأرقام الزوجية في 1..10.",
+    "expectedEn": "myMap(myFilter((1..10).toList()) { it % 2 == 0 }) { it * it } gives [4, 16, 36, 64, 100].",
+    "expectedAr": "التعبير myMap(myFilter((1..10).toList()) { it % 2 == 0 }) { it * it } يعطي [4, 16, 36, 64, 100].",
+    "hintsEn": [
+      "Build the result in a mutableListOf<T>() and return it.",
+      "A function parameter is called like a function: keep(item)."
+    ],
+    "hintsAr": [
+      "ابنِ النتيجة في mutableListOf<T>() وأرجِعها.",
+      "الوسيط الذي نوعه دالة يُستدعى كدالة: keep(item)."
+    ],
+    "solutionEn": "Each function loops over the items and adds to a new mutable list: myFilter adds the item when keep(item) is true, and myMap adds transform(item). Because the last parameter is a function, callers can pass a trailing lambda, exactly like the standard library versions.",
+    "solutionAr": "كل دالة تمر على العناصر وتضيف إلى قائمة جديدة قابلة للتغيير: myFilter تضيف العنصر عندما تكون keep(item) صحيحة، وmyMap تضيف transform(item). ولأن آخر وسيط دالة، يستطيع المستدعي تمرير lambda أخيرة تمامًا مثل نسخ المكتبة القياسية.",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-sales-report",
+    "type": "Practical",
+    "topic": "kt-collections",
+    "difficulty": "Beginner",
+    "minutes": 30,
+    "titleEn": "A sales report with collection operations",
+    "titleAr": "تقرير مبيعات بعمليات المجموعات",
+    "problemEn": "Given data class Sale(val product: String, val category: String, val price: Double, val quantity: Int), write functions that return: the total revenue; revenue per category; the three best-selling products by quantity; and the set of categories with no sale over 100. Use only collection operations, no for loops.",
+    "problemAr": "لديك data class Sale(val product: String, val category: String, val price: Double, val quantity: Int). اكتب دوالًا تُرجع: إجمالي الإيرادات، والإيرادات لكل تصنيف، وأكثر ثلاثة منتجات مبيعًا بالكمية، ومجموعة التصنيفات التي ليس فيها بيع فوق 100. استخدم عمليات المجموعات فقط دون حلقات for.",
+    "expectedEn": "Four short functions, each a chain of sumOf, groupBy, mapValues, sortedByDescending, take, filter or none.",
+    "expectedAr": "أربع دوال قصيرة، كل منها سلسلة من sumOf وgroupBy وmapValues وsortedByDescending وtake وfilter أو none.",
+    "hintsEn": [
+      "Revenue for one sale is price * quantity.",
+      "For the last one: group by category and keep groups where none { it.price > 100 }."
+    ],
+    "hintsAr": [
+      "إيراد البيع الواحد هو price * quantity.",
+      "للأخيرة: جمّع حسب التصنيف واحتفظ بالمجموعات التي فيها none { it.price > 100 }."
+    ],
+    "solutionEn": "total = sales.sumOf { it.price * it.quantity }. perCategory = sales.groupBy { it.category }.mapValues { (_, l) -> l.sumOf { it.price * it.quantity } }. topThree = sales.groupBy { it.product }.mapValues { (_, l) -> l.sumOf { it.quantity } }.entries.sortedByDescending { it.value }.take(3).map { it.key }. cheapCategories = sales.groupBy { it.category }.filterValues { l -> l.none { it.price > 100 } }.keys.",
+    "solutionAr": "الإجمالي: sales.sumOf { it.price * it.quantity }. ولكل تصنيف: sales.groupBy { it.category }.mapValues { (_, l) -> l.sumOf { it.price * it.quantity } }. والثلاثة الأعلى: sales.groupBy { it.product }.mapValues { (_, l) -> l.sumOf { it.quantity } }.entries.sortedByDescending { it.value }.take(3).map { it.key }. والتصنيفات الرخيصة: sales.groupBy { it.category }.filterValues { l -> l.none { it.price > 100 } }.keys.",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-fix-nulls",
+    "type": "Debugging",
+    "topic": "kt-null-safety",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Remove the crashes",
+    "titleAr": "أزل الانهيارات",
+    "problemEn": "This code crashes with a NullPointerException for some users. Find every place that can crash, explain why, and rewrite it so it never crashes and shows sensible defaults.",
+    "problemAr": "هذا الكود ينهار بـ NullPointerException لبعض المستخدمين. أوجد كل مكان قد ينهار، واشرح السبب، وأعد كتابته بحيث لا ينهار أبدًا ويعرض قيمًا افتراضية معقولة.",
+    "expectedEn": "No !! left, a missing user, city or phone shows a default, and a non-numeric age gives null instead of crashing.",
+    "expectedAr": "لا يبقى أي !!، والمستخدم أو المدينة أو الهاتف الناقص يعرض قيمة افتراضية، والعمر غير الرقمي يعطي null بدل الانهيار.",
+    "hintsEn": [
+      "Each !! is a possible crash; replace it with ?. and ?:.",
+      "toInt() throws on bad text; toIntOrNull() does not."
+    ],
+    "hintsAr": [
+      "كل !! انهيار محتمل، فاستبدله بـ ?. و?:.",
+      "الدالة toInt() ترمي عند النص الخاطئ وtoIntOrNull() لا ترمي."
+    ],
+    "solutionEn": "There are four crash points: user!!, address!!, phone!! and age.toInt(). Use user?.address?.city ?: \"Unknown city\", user?.phone ?: \"No phone\" and ageText?.toIntOrNull(). Returning early with ?: return for the missing user also works.",
+    "solutionAr": "توجد أربع نقاط انهيار: user!! وaddress!! وphone!! وage.toInt(). فاستخدم user?.address?.city ?: \"Unknown city\" وuser?.phone ?: \"No phone\" وageText?.toIntOrNull(). والرجوع المبكر بـ ?: return للمستخدم الناقص يعمل أيضًا.",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-library-model",
+    "type": "Practical",
+    "topic": "kt-oop",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "Model a small library",
+    "titleAr": "صمّم مكتبة صغيرة",
+    "problemEn": "Model a library: Book (id, title, author), Member (id, name) and a LibraryService that lends and returns books. A member can borrow at most 3 books, a book can be lent to one member at a time, and invalid actions return false with no change. Storage goes through an interface BookStore with an in-memory implementation. Write a main that exercises every rule.",
+    "problemAr": "صمّم مكتبة: Book (id وtitle وauthor)، وMember (id وname)، وLibraryService تعير الكتب وتستعيدها. والعضو يستعير 3 كتب على الأكثر، والكتاب يُعار لعضو واحد في الوقت نفسه، والأفعال غير الصالحة تُرجع false دون أي تغيير. والتخزين يمر عبر واجهة BookStore بتنفيذ في الذاكرة. واكتب main تجرّب كل قاعدة.",
+    "expectedEn": "LibraryService receives a BookStore in its constructor, keeps loans private, and lending a fourth book or a lent book returns false.",
+    "expectedAr": "تستقبل LibraryService واجهة BookStore في مُنشئها، وتحتفظ بالإعارات خاصة، وإعارة كتاب رابع أو كتاب معار تُرجع false.",
+    "hintsEn": [
+      "Keep loans in a private mutableMapOf<Int, Int>() from book id to member id.",
+      "Count a member's loans with loans.values.count { it == memberId }."
+    ],
+    "hintsAr": [
+      "احفظ الإعارات في mutableMapOf<Int, Int>() خاصة من رقم الكتاب إلى رقم العضو.",
+      "عُدّ إعارات العضو بـ loans.values.count { it == memberId }."
+    ],
+    "solutionEn": "Book and Member are data classes. BookStore is an interface with find(id) and all(), implemented by InMemoryBookStore. LibraryService(private val store: BookStore) keeps a private loans map; lend checks the book exists, is not lent, and the member has fewer than 3 loans before adding; giveBack removes the entry only if that member holds it. Composition through the interface lets a test pass a fake store.",
+    "solutionAr": "الصنفان Book وMember من نوع data. وBookStore واجهة فيها find(id) وall()، وينفذها InMemoryBookStore. وLibraryService(private val store: BookStore) تحتفظ بـ Map خاصة للإعارات، والدالة lend تتحقق أن الكتاب موجود وغير معار وأن لدى العضو أقل من 3 إعارات قبل الإضافة، والدالة giveBack تحذف السجل فقط إذا كان ذلك العضو يحمل الكتاب. والتركيب عبر الواجهة يتيح للاختبار تمرير مخزن وهمي.",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-payment-states",
+    "type": "Practical",
+    "topic": "kt-data-sealed-enum",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Payment states with sealed types",
+    "titleAr": "حالات الدفع بالأنواع sealed",
+    "problemEn": "Model a checkout. Write enum class PaymentMethod (CARD, WALLET, CASH_ON_DELIVERY) with a fee percentage property, and a sealed interface CheckoutState with Idle, Processing(method), Paid(receiptId, total) and Failed(reason, canRetry). Write fun message(state: CheckoutState): String with an exhaustive when, and fun retry(state): CheckoutState that returns Processing only when the state is Failed with canRetry = true.",
+    "problemAr": "صمّم عملية دفع. اكتب enum class PaymentMethod (CARD وWALLET وCASH_ON_DELIVERY) بخاصية لنسبة الرسوم، وواجهة sealed interface CheckoutState فيها Idle وProcessing(method) وPaid(receiptId, total) وFailed(reason, canRetry). واكتب fun message(state: CheckoutState): String بـ when شامل، وfun retry(state): CheckoutState تُرجع Processing فقط عندما تكون الحالة Failed مع canRetry = true.",
+    "expectedEn": "The when has no else branch, every state has its own message, and retry leaves other states unchanged.",
+    "expectedAr": "تعبير when بلا فرع else، ولكل حالة رسالتها، والدالة retry تترك الحالات الأخرى دون تغيير.",
+    "hintsEn": [
+      "Idle can be a data object.",
+      "Failed needs to remember the method to retry: add it as a property."
+    ],
+    "hintsAr": [
+      "يمكن أن تكون Idle من نوع data object.",
+      "الحالة Failed تحتاج إلى تذكّر طريقة الدفع لإعادة المحاولة، فأضفها كخاصية."
+    ],
+    "solutionEn": "PaymentMethod has val feePercent. CheckoutState has data object Idle and data classes for the rest, with Failed(reason, canRetry, method). message uses when over every case. retry returns if (state is CheckoutState.Failed && state.canRetry) CheckoutState.Processing(state.method) else state; the smart cast gives access to state.method.",
+    "solutionAr": "التعداد PaymentMethod فيه val feePercent. وCheckoutState فيها data object Idle وأصناف data للبقية، مع Failed(reason, canRetry, method). والدالة message تستخدم when على كل الحالات. والدالة retry تُرجع if (state is CheckoutState.Failed && state.canRetry) CheckoutState.Processing(state.method) else state، والتحويل الذكي يتيح الوصول إلى state.method.",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-scope-review",
+    "type": "CodeReview",
+    "topic": "kt-generics-extensions",
+    "difficulty": "Intermediate",
+    "minutes": 25,
+    "titleEn": "Review scope functions and helpers",
+    "titleAr": "راجع دوال النطاق والمساعدات",
+    "problemEn": "Review this code from a pull request. Point out every readability or correctness problem, then rewrite it with the right scope functions, one generic helper and one extension function.",
+    "problemAr": "راجع هذا الكود من طلب دمج. أشر إلى كل مشكلة في الوضوح أو الصحة، ثم أعد كتابته بدوال النطاق الصحيحة ودالة عامة واحدة ودالة امتداد واحدة.",
+    "expectedEn": "Nested let and run removed, apply used to configure, the duplicated max functions replaced by one generic function, and email validation moved into a String extension.",
+    "expectedAr": "إزالة let وrun المتداخلة، واستخدام apply للتهيئة، واستبدال دوال max المكررة بدالة عامة واحدة، ونقل التحقق من البريد إلى امتداد على String.",
+    "hintsEn": [
+      "Ask what it refers to on each line; if you have to think, it is too nested.",
+      "maxInt and maxDouble do the same thing with different types."
+    ],
+    "hintsAr": [
+      "اسأل إلى ماذا يشير it في كل سطر، فإذا احتجت إلى التفكير فالتداخل زائد.",
+      "الدالتان maxInt وmaxDouble تفعلان الشيء نفسه بأنواع مختلفة."
+    ],
+    "solutionEn": "Problems: three nested scope functions where it changes meaning; run used only for side effects; settings configured with repeated assignments; two copies of the same max logic; email validation duplicated inline. Rewrite: val settings = Settings().apply { theme = \"dark\"; fontSize = 16 }; fun <T : Comparable<T>> List<T>.maxOrDefault(default: T) = maxOrNull() ?: default; fun String.isValidEmail() = contains('@') && substringAfter('@').contains('.'); user.email?.takeIf { it.isValidEmail() }?.let(::sendWelcome).",
+    "solutionAr": "المشكلات: ثلاث دوال نطاق متداخلة يتغير فيها معنى it، واستخدام run للآثار الجانبية فقط، وتهيئة الإعدادات بإسنادات متكررة، ونسختان من منطق max نفسه، وتكرار التحقق من البريد داخل الكود. وإعادة الكتابة: val settings = Settings().apply { theme = \"dark\"; fontSize = 16 }، وfun <T : Comparable<T>> List<T>.maxOrDefault(default: T) = maxOrNull() ?: default، وfun String.isValidEmail() = contains('@') && substringAfter('@').contains('.')، وuser.email?.takeIf { it.isValidEmail() }?.let(::sendWelcome).",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-classic-problems",
+    "type": "Practical",
+    "topic": "kt-errors-idioms",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "Three classic problems in idiomatic Kotlin",
+    "titleAr": "ثلاث مسائل كلاسيكية بـ Kotlin اصطلاحية",
+    "problemEn": "Solve each problem with a short explanation of the data structure you chose and its time complexity: 1) twoSum(numbers, target) returns the indexes of two numbers that add up to target, or null. 2) groupAnagrams(words) groups words made of the same letters. 3) mergeIntervals(list of start to end pairs) merges overlapping intervals. Handle empty input, and validate that every interval has start <= end with require.",
+    "problemAr": "حل كل مسألة مع شرح قصير لبنية البيانات التي اخترتها وتعقيدها الزمني: 1) twoSum(numbers, target) تُرجع موقعي رقمين مجموعهما target أو null. 2) groupAnagrams(words) تجمّع الكلمات المكونة من الحروف نفسها. 3) mergeIntervals(قائمة أزواج بداية ونهاية) تدمج الفترات المتداخلة. وعالج المدخل الفارغ، وتحقق بـ require أن لكل فترة start <= end.",
+    "expectedEn": "twoSum in O(n) with a HashMap, groupAnagrams with groupBy on sorted letters, mergeIntervals in O(n log n) after sorting by start.",
+    "expectedAr": "twoSum في O(n) بـ HashMap، وgroupAnagrams بـ groupBy على الحروف المرتبة، وmergeIntervals في O(n log n) بعد الترتيب حسب البداية.",
+    "hintsEn": [
+      "twoSum: for each number, check whether target - n was seen before.",
+      "mergeIntervals: sort by start, then extend the last merged interval while the next one starts before it ends."
+    ],
+    "hintsAr": [
+      "في twoSum: لكل رقم افحص هل رأيت target - n من قبل.",
+      "في mergeIntervals: رتّب حسب البداية، ثم مدّد آخر فترة مدمجة ما دامت التالية تبدأ قبل نهايتها."
+    ],
+    "solutionEn": "twoSum keeps a HashMap from value to index and returns as soon as target - n is in it: O(n) time and space. groupAnagrams uses groupBy { it.toCharArray().sorted().joinToString(\"\") }: O(n·k log k). mergeIntervals sorts by start, then walks the list keeping a mutable last interval and extends its end with maxOf when the next start <= last end: O(n log n).",
+    "solutionAr": "الدالة twoSum تحتفظ بـ HashMap من القيمة إلى الموقع وتُرجع النتيجة فور وجود target - n فيها: زمن ومساحة O(n). وgroupAnagrams تستخدم groupBy { it.toCharArray().sorted().joinToString(\"\") }: التعقيد O(n·k log k). وmergeIntervals ترتّب حسب البداية، ثم تمر على القائمة مع آخر فترة قابلة للتغيير وتمدّ نهايتها بـ maxOf عندما تكون البداية التالية <= النهاية الأخيرة: التعقيد O(n log n).",
+    "runner": "None"
+  }
+]

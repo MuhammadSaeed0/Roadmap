@@ -19,7 +19,11 @@ public enum SkillArea
     /// <summary>Containers, CI/CD, cloud platforms and the infrastructure an application runs on.</summary>
     DevOps,
     /// <summary>Building applications on language models: prompts, RAG, tools and agents (the AI roadmap).</summary>
-    AI
+    AI,
+    /// <summary>The Kotlin language (the Android roadmap).</summary>
+    Kotlin,
+    /// <summary>Android apps: the platform, Jetpack Compose, architecture, data and publishing (the Android roadmap).</summary>
+    Android
 }
 
 public enum TopicPriority
@@ -164,7 +168,11 @@ public enum InterviewCategory
     Concurrency,
     Behavioral,
     /// <summary>Containers, CI/CD, cloud platforms, microservices and messaging.</summary>
-    DevOps
+    DevOps,
+    // The Android roadmap.
+    Kotlin,
+    Android,
+    Compose
 }
 
 public enum InterviewRating

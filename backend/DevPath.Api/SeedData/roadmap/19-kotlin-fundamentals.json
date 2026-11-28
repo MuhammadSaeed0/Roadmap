@@ -1,0 +1,298 @@
+{
+  "slug": "kotlin-fundamentals",
+  "order": 19,
+  "titleEn": "Kotlin fundamentals",
+  "titleAr": "أساسيات Kotlin",
+  "descriptionEn": "Learn Kotlin, the language of modern Android: values and control flow, functions and lambdas, collections, null safety, classes and interfaces, data and sealed classes, generics, extensions and scope functions, errors, and idiomatic code.",
+  "descriptionAr": "تعلّم Kotlin، لغة Android الحديثة: القيم والتحكم في التدفق، والدوال وتعبيرات Lambda، والمجموعات، والأمان من null، والأصناف والواجهات، وأصناف data وsealed، والأنواع العامة، ودوال الامتداد ودوال النطاق، والأخطاء، والكود بأسلوب Kotlin.",
+  "topics": [
+    {
+      "slug": "kt-basics",
+      "skill": "Kotlin",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Beginner",
+      "titleEn": "Values, types and control flow",
+      "titleAr": "القيم والأنواع والتحكم في التدفق",
+      "summaryEn": "Kotlin programs are built from values declared with val (read-only) or var (changeable). The compiler infers most types: Int, Long, Double, Boolean, Char and String. Control flow uses if and when, which are expressions that return a value, and loops use for over ranges such as 1..10 or collections, plus while. String templates like \"Hello, $name\" insert values into text.",
+      "summaryAr": "برامج Kotlin تُبنى من قيم تُعرَّف بـ val (للقراءة فقط) أو var (قابلة للتغيير). والمترجم يستنتج أغلب الأنواع: Int وLong وDouble وBoolean وChar وString. والتحكم في التدفق يستخدم if وwhen، وهما تعبيران يُرجعان قيمة، والحلقات تستخدم for على نطاقات مثل 1..10 أو على مجموعات، إضافة إلى while. وقوالب النصوص مثل \"Hello, $name\" تُدرج القيم داخل النص.",
+      "whyEn": "Every Android screen, rule and calculation is written in Kotlin. Preferring val, using when instead of long if chains and treating if as an expression are habits that make Android code shorter and safer from the first day.",
+      "whyAr": "كل شاشة وقاعدة وحساب في Android يُكتب بـ Kotlin. وتفضيل val، واستخدام when بدل سلاسل if الطويلة، والتعامل مع if كتعبير، عادات تجعل كود Android أقصر وأكثر أمانًا من اليوم الأول.",
+      "howEn": "Install IntelliJ IDEA or Android Studio, or open play.kotlinlang.org in a browser. Write fun main() and print values with println. Declare with val by default and switch to var only when the value must change. Use when for several branches, ranges with .., until, step and downTo, and string templates instead of concatenation.",
+      "howAr": "ثبّت IntelliJ IDEA أو Android Studio، أو افتح play.kotlinlang.org في المتصفح. واكتب fun main() واطبع القيم بـ println. وعرّف بـ val افتراضيًا وانتقل إلى var فقط عندما يجب أن تتغير القيمة. واستخدم when للفروع المتعددة، والنطاقات بـ .. وuntil وstep وdownTo، وقوالب النصوص بدل دمج النصوص.",
+      "exampleEn": "A shop app computes a delivery fee: when (distanceKm) { in 0..5 -> 10.0; in 6..15 -> 20.0; else -> 35.0 }. The result is a val, the branches cover every case, and the fee is shown with \"Delivery: $fee EGP\".",
+      "exampleAr": "تطبيق متجر يحسب رسوم التوصيل: when (distanceKm) { in 0..5 -> 10.0; in 6..15 -> 20.0; else -> 35.0 }. والنتيجة val، والفروع تغطي كل الحالات، والرسوم تُعرض بـ \"Delivery: $fee EGP\".",
+      "practiceEn": "1) Print the numbers 1 to 20, replacing multiples of 3 with Fizz, of 5 with Buzz and of both with FizzBuzz, using when. 2) Count down from 10 to 0 with downTo and step 2. 3) Rewrite three var declarations as val where possible.",
+      "practiceAr": "1) اطبع الأرقام من 1 إلى 20 مع استبدال مضاعفات 3 بـ Fizz ومضاعفات 5 بـ Buzz ومضاعفاتهما معًا بـ FizzBuzz، باستخدام when. 2) عُدّ تنازليًا من 10 إلى 0 بـ downTo وstep 2. 3) أعد كتابة ثلاثة تعريفات var كـ val حيث أمكن.",
+      "challengeEn": "Write a small grade calculator: read a score from 0 to 100 with readln(), reject invalid input, and print the letter grade and a message using a single when expression.",
+      "challengeAr": "اكتب حاسبة درجات صغيرة: اقرأ درجة من 0 إلى 100 بـ readln()، وارفض المدخل غير الصالح، واطبع التقدير ورسالة باستخدام تعبير when واحد.",
+      "objectivesEn": [
+        "Declare values with val and var and know when to use each",
+        "Use Kotlin's basic types and type inference",
+        "Write if and when as expressions",
+        "Loop with ranges, until, step and downTo"
+      ],
+      "objectivesAr": [
+        "تعريف القيم بـ val وvar ومعرفة متى تستخدم كلًا منهما",
+        "استخدام أنواع Kotlin الأساسية واستنتاج الأنواع",
+        "كتابة if وwhen كتعبيرات",
+        "التكرار بالنطاقات وuntil وstep وdownTo"
+      ],
+      "prerequisites": []
+    },
+    {
+      "slug": "kt-functions",
+      "skill": "Kotlin",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Beginner",
+      "titleEn": "Functions and lambdas",
+      "titleAr": "الدوال وتعبيرات Lambda",
+      "summaryEn": "Functions are declared with fun, can have default and named arguments, and a single-expression function can be written with =. Functions are values too: a lambda such as { x: Int -> x * 2 } can be stored in a variable, passed to another function or returned from one. Higher-order functions take functions as parameters, which is how Kotlin's collection operations and Android callbacks work.",
+      "summaryAr": "الدوال تُعرَّف بـ fun، ويمكن أن تكون لها وسائط افتراضية ومسماة، والدالة ذات التعبير الواحد تُكتب بـ =. والدوال قيم أيضًا: تعبير lambda مثل { x: Int -> x * 2 } يمكن حفظه في متغير أو تمريره إلى دالة أخرى أو إرجاعه منها. والدوال العليا (Higher-order) تأخذ دوالًا كوسائط، وهكذا تعمل عمليات المجموعات في Kotlin واستدعاءات Android الراجعة.",
+      "whyEn": "Jetpack Compose is built from functions, button clicks are lambdas, and list processing is a chain of higher-order functions. Reading and writing lambdas fluently is required for almost every line of modern Android code.",
+      "whyAr": "Jetpack Compose مبني من دوال، والنقر على الأزرار تعبيرات lambda، ومعالجة القوائم سلسلة من الدوال العليا. فقراءة تعبيرات lambda وكتابتها بطلاقة ضرورية لكل سطر تقريبًا من كود Android الحديث.",
+      "howEn": "Give functions clear names and small bodies. Use default arguments instead of overloads and named arguments when calls have several values of the same type. Learn the lambda shortcuts: it for a single parameter, and a trailing lambda written outside the parentheses. Declare function types such as (Int) -> Boolean for parameters.",
+      "howAr": "أعطِ الدوال أسماء واضحة وأجسامًا صغيرة. واستخدم الوسائط الافتراضية بدل تعدد التعريفات (Overloads)، والوسائط المسماة عندما يكون في الاستدعاء عدة قيم من النوع نفسه. وتعلّم اختصارات lambda: it للوسيط الواحد، وlambda الأخيرة المكتوبة خارج الأقواس. وعرّف أنواع الدوال مثل (Int) -> Boolean للوسائط.",
+      "exampleEn": "A Compose button is Button(onClick = { viewModel.save() }) { Text(\"Save\") }: onClick is a lambda parameter and the content is a trailing lambda. The same idea lets a repository accept a retry policy as a function.",
+      "exampleAr": "زر Compose يُكتب Button(onClick = { viewModel.save() }) { Text(\"Save\") }: الوسيط onClick تعبير lambda والمحتوى lambda أخيرة. والفكرة نفسها تتيح لمستودع البيانات (Repository) قبول سياسة إعادة محاولة كدالة.",
+      "practiceEn": "1) Write fun price(base: Double, discount: Double = 0.0, tax: Double = 0.14). Call it with named arguments. 2) Write a function repeatAction(times: Int, action: (Int) -> Unit). 3) Store three lambdas in a map from name to operation and call them.",
+      "practiceAr": "1) اكتب fun price(base: Double, discount: Double = 0.0, tax: Double = 0.14). واستدعها بوسائط مسماة. 2) اكتب دالة repeatAction(times: Int, action: (Int) -> Unit). 3) احفظ ثلاثة تعبيرات lambda في Map من الاسم إلى العملية واستدعها.",
+      "challengeEn": "Write your own versions of filter and map for List<Int> as higher-order functions, then make them generic for any type.",
+      "challengeAr": "اكتب نسختك من filter وmap لـ List<Int> كدوال عليا، ثم اجعلها عامة لأي نوع.",
+      "objectivesEn": [
+        "Declare functions with default and named arguments",
+        "Write single-expression functions",
+        "Write lambdas, it and trailing lambdas",
+        "Use function types and higher-order functions"
+      ],
+      "objectivesAr": [
+        "تعريف الدوال بوسائط افتراضية ومسماة",
+        "كتابة الدوال ذات التعبير الواحد",
+        "كتابة تعبيرات lambda وit وlambda الأخيرة",
+        "استخدام أنواع الدوال والدوال العليا"
+      ],
+      "prerequisites": [
+        "kt-basics"
+      ]
+    },
+    {
+      "slug": "kt-collections",
+      "skill": "Kotlin",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Beginner",
+      "titleEn": "Collections",
+      "titleAr": "المجموعات (Collections)",
+      "summaryEn": "Kotlin has List, Set and Map, each in a read-only form (listOf, setOf, mapOf) and a mutable form (mutableListOf and so on). A rich set of operations works on all of them: map, filter, first, any, all, count, sortedBy, groupBy, associateBy, sumOf and fold. Sequences evaluate these steps lazily for long chains or large data.",
+      "summaryAr": "في Kotlin توجد List وSet وMap، ولكل منها صورة للقراءة فقط (listOf وsetOf وmapOf) وصورة قابلة للتغيير (mutableListOf وغيرها). ومجموعة غنية من العمليات تعمل عليها كلها: map وfilter وfirst وany وall وcount وsortedBy وgroupBy وassociateBy وsumOf وfold. والتسلسلات (Sequences) تنفّذ هذه الخطوات بشكل كسول للسلاسل الطويلة أو البيانات الكبيرة.",
+      "whyEn": "Apps are mostly lists: products, messages, tasks and search results. Transforming data with collection operations instead of manual loops gives shorter, clearer code, and read-only collections make UI state safer to share.",
+      "whyAr": "التطبيقات في أغلبها قوائم: منتجات ورسائل ومهام ونتائج بحث. وتحويل البيانات بعمليات المجموعات بدل الحلقات اليدوية يعطي كودًا أقصر وأوضح، والمجموعات للقراءة فقط تجعل حالة الواجهة أكثر أمانًا عند مشاركتها.",
+      "howEn": "Expose read-only List, Set and Map from your classes and keep mutable ones private. Chain operations that each do one thing, give lambdas clear parameter names when it is unclear, and choose the right structure: List for order, Set for uniqueness, Map for lookup by key.",
+      "howAr": "اعرض List وSet وMap للقراءة فقط من أصنافك واحتفظ بالقابلة للتغيير خاصة. وسلسل العمليات بحيث تفعل كل واحدة شيئًا واحدًا، وأعطِ وسائط lambda أسماء واضحة عندما لا تكون it واضحة، واختر البنية الصحيحة: List للترتيب، وSet لعدم التكرار، وMap للبحث بالمفتاح.",
+      "exampleEn": "A cart screen computes its total with items.sumOf { it.price * it.quantity }, shows the categories with items.map { it.category }.toSet(), and groups orders by day with orders.groupBy { it.date }.",
+      "exampleAr": "شاشة سلة المشتريات تحسب الإجمالي بـ items.sumOf { it.price * it.quantity }، وتعرض التصنيفات بـ items.map { it.category }.toSet()، وتجمّع الطلبات حسب اليوم بـ orders.groupBy { it.date }.",
+      "practiceEn": "1) From a list of words, find the five longest without repeats. 2) Count how often each letter appears with groupingBy and eachCount. 3) Rewrite a for loop that builds a list into a single map and filter chain.",
+      "practiceAr": "1) من قائمة كلمات، أوجد أطول خمس كلمات دون تكرار. 2) عُدّ مرات ظهور كل حرف بـ groupingBy وeachCount. 3) أعد كتابة حلقة for تبني قائمة كسلسلة map وfilter واحدة.",
+      "challengeEn": "Given a list of orders with customer, amount and date, print the top three customers by total spending in the last 30 days, using only collection operations.",
+      "challengeAr": "من قائمة طلبات فيها العميل والمبلغ والتاريخ، اطبع أعلى ثلاثة عملاء حسب إجمالي الإنفاق في آخر 30 يومًا، باستخدام عمليات المجموعات فقط.",
+      "objectivesEn": [
+        "Choose between List, Set and Map",
+        "Separate read-only and mutable collections",
+        "Transform data with map, filter, groupBy, sumOf and fold",
+        "Know when a Sequence helps"
+      ],
+      "objectivesAr": [
+        "الاختيار بين List وSet وMap",
+        "الفصل بين المجموعات للقراءة فقط والقابلة للتغيير",
+        "تحويل البيانات بـ map وfilter وgroupBy وsumOf وfold",
+        "معرفة متى يفيد Sequence"
+      ],
+      "prerequisites": [
+        "kt-functions"
+      ]
+    },
+    {
+      "slug": "kt-null-safety",
+      "skill": "Kotlin",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Beginner",
+      "titleEn": "Null safety",
+      "titleAr": "الأمان من null",
+      "summaryEn": "In Kotlin a type cannot hold null unless it is marked nullable with ?, such as String?. The compiler forces you to handle the null case before use: the safe call ?. returns null instead of crashing, the Elvis operator ?: supplies a default, smart casts treat a checked value as non-null, and let runs a block only for non-null values. The !! operator throws if the value is null and should be rare.",
+      "summaryAr": "في Kotlin لا يمكن للنوع أن يحمل null إلا إذا عُلّم بأنه يقبل null بعلامة ?، مثل String?. والمترجم يجبرك على معالجة حالة null قبل الاستخدام: الاستدعاء الآمن ?. يُرجع null بدل الانهيار، وعامل Elvis ?: يعطي قيمة افتراضية، والتحويل الذكي (Smart cast) يعامل القيمة التي فُحصت على أنها ليست null، وlet تنفّذ كتلة فقط للقيم غير الفارغة. والعامل !! يرمي استثناء إذا كانت القيمة null ويجب أن يكون نادرًا.",
+      "whyEn": "NullPointerException was the most common crash in Java Android apps. Kotlin's type system removes most of them at compile time, but only if you model missing data honestly with nullable types and avoid !! as a shortcut.",
+      "whyAr": "كان NullPointerException أكثر الانهيارات شيوعًا في تطبيقات Android المكتوبة بـ Java. ونظام الأنواع في Kotlin يزيل أغلبها وقت الترجمة، لكن فقط إذا عبّرت عن البيانات الناقصة بصدق بأنواع تقبل null وتجنبت !! كاختصار.",
+      "howEn": "Make a type nullable only when \"no value\" is a real case, such as an optional middle name or a user who is not signed in. Handle it close to where it appears with ?., ?: and let, return early with ?: return, and treat values from Java APIs and JSON as possibly null.",
+      "howAr": "اجعل النوع يقبل null فقط عندما يكون «عدم وجود قيمة» حالة حقيقية، مثل اسم أوسط اختياري أو مستخدم لم يسجّل الدخول. وعالجه قريبًا من مكان ظهوره بـ ?. و?: وlet، وارجع مبكرًا بـ ?: return، وتعامل مع القيم القادمة من واجهات Java ومن JSON على أنها قد تكون null.",
+      "exampleEn": "A profile screen shows user?.address?.city ?: \"City not set\". If the user or the address is missing, the screen shows the default text instead of crashing.",
+      "exampleAr": "شاشة الملف الشخصي تعرض user?.address?.city ?: \"City not set\". فإذا كان المستخدم أو العنوان غير موجود، تعرض الشاشة النص الافتراضي بدل الانهيار.",
+      "practiceEn": "1) Write fun initials(first: String, middle: String?, last: String). 2) Parse a list of strings to numbers with toIntOrNull and sum only the valid ones. 3) Find every !! in a sample and replace it with a safe alternative.",
+      "practiceAr": "1) اكتب fun initials(first: String, middle: String?, last: String). 2) حوّل قائمة نصوص إلى أرقام بـ toIntOrNull واجمع الصالحة فقط. 3) أوجد كل !! في نموذج واستبدلها ببديل آمن.",
+      "challengeEn": "Model a settings object where some values are optional, load it from a Map<String, String?> and produce a fully valid object with defaults and a list of warnings for missing values.",
+      "challengeAr": "صمّم كائن إعدادات بعض قيمه اختيارية، وحمّله من Map<String, String?>، وأنتج كائنًا صالحًا بالكامل بقيم افتراضية مع قائمة تحذيرات للقيم الناقصة.",
+      "objectivesEn": [
+        "Declare nullable and non-null types",
+        "Use ?., ?:, let and smart casts",
+        "Avoid !! and explain when it is acceptable",
+        "Handle values from Java and JSON safely"
+      ],
+      "objectivesAr": [
+        "تعريف الأنواع التي تقبل null والتي لا تقبله",
+        "استخدام ?. و?: وlet والتحويل الذكي",
+        "تجنب !! وشرح متى يكون مقبولًا",
+        "التعامل بأمان مع القيم القادمة من Java وJSON"
+      ],
+      "prerequisites": [
+        "kt-basics"
+      ]
+    },
+    {
+      "slug": "kt-oop",
+      "skill": "Kotlin",
+      "priority": "Core",
+      "minutes": 70,
+      "difficulty": "Beginner",
+      "titleEn": "Classes, interfaces and inheritance",
+      "titleAr": "الأصناف والواجهات والوراثة",
+      "summaryEn": "Kotlin classes declare properties in the primary constructor, add logic in init blocks and methods, and control access with private, protected, internal and public. Classes are final by default: inheritance needs open, and overriding needs override. Interfaces define behaviour and can have default methods. object declares a singleton and a companion object holds factory functions. Composition, passing objects into a class, is usually preferred over deep inheritance.",
+      "summaryAr": "أصناف Kotlin تعرّف الخصائص في المُنشئ الأساسي، وتضيف المنطق في كتل init والدوال، وتتحكم في الوصول بـ private وprotected وinternal وpublic. والأصناف نهائية (final) افتراضيًا: الوراثة تحتاج open، وإعادة التعريف تحتاج override. والواجهات تعرّف السلوك ويمكن أن تحتوي دوالًا افتراضية. وobject يعرّف كائنًا وحيدًا (Singleton)، وcompanion object يحمل دوال الإنشاء. والتركيب (Composition)، أي تمرير الكائنات إلى الصنف، مفضّل عادةً على الوراثة العميقة.",
+      "whyEn": "Android code is organised into classes: ViewModels, repositories, data sources and services. Interfaces let you swap a real network source for a fake one in tests, and composition keeps classes small enough to understand and change.",
+      "whyAr": "كود Android منظّم في أصناف: ViewModel والمستودعات ومصادر البيانات والخدمات. والواجهات تتيح استبدال مصدر الشبكة الحقيقي بآخر وهمي في الاختبارات، والتركيب يبقي الأصناف صغيرة بما يكفي لفهمها وتغييرها.",
+      "howEn": "Put required data in the primary constructor as val properties, validate in init with require, keep state private, and expose behaviour through methods. Depend on interfaces in constructors, mark a class open only when you design it for extension, and use object for stateless helpers.",
+      "howAr": "ضع البيانات المطلوبة في المُنشئ الأساسي كخصائص val، وتحقق منها في init بـ require، واحتفظ بالحالة خاصة، واعرض السلوك عبر الدوال. واعتمد على الواجهات في المُنشئات، وعلّم الصنف بـ open فقط عندما تصممه للتوسيع، واستخدم object للأدوات التي لا تحمل حالة.",
+      "exampleEn": "class TaskRepository(private val local: TaskDataSource, private val remote: TaskDataSource) depends on an interface, so the app passes a Room source and an API source, and tests pass two in-memory fakes.",
+      "exampleAr": "الصنف class TaskRepository(private val local: TaskDataSource, private val remote: TaskDataSource) يعتمد على واجهة، فيمرر التطبيق مصدر Room ومصدر API، وتمرر الاختبارات مصدرين وهميين في الذاكرة.",
+      "practiceEn": "1) Write a BankAccount class with a private balance, deposit and withdraw that reject invalid amounts. 2) Define a Shape interface with area() and two classes. 3) Replace an inheritance chain of three classes with composition.",
+      "practiceAr": "1) اكتب صنف BankAccount برصيد خاص ودالتي deposit وwithdraw ترفضان المبالغ غير الصالحة. 2) عرّف واجهة Shape فيها area() وصنفين ينفذانها. 3) استبدل سلسلة وراثة من ثلاثة أصناف بالتركيب.",
+      "challengeEn": "Design the classes of a small library system (books, members, loans) with interfaces for storage, then write a second storage implementation without changing any other class.",
+      "challengeAr": "صمّم أصناف نظام مكتبة صغير (كتب وأعضاء وإعارات) مع واجهات للتخزين، ثم اكتب تنفيذًا ثانيًا للتخزين دون تغيير أي صنف آخر.",
+      "objectivesEn": [
+        "Write classes with primary constructors, properties and init",
+        "Use visibility modifiers to protect state",
+        "Use open, override, interfaces and object",
+        "Prefer composition over deep inheritance"
+      ],
+      "objectivesAr": [
+        "كتابة الأصناف بالمُنشئ الأساسي والخصائص وinit",
+        "استخدام محددات الوصول لحماية الحالة",
+        "استخدام open وoverride والواجهات وobject",
+        "تفضيل التركيب على الوراثة العميقة"
+      ],
+      "prerequisites": [
+        "kt-functions",
+        "kt-null-safety"
+      ]
+    },
+    {
+      "slug": "kt-data-sealed-enum",
+      "skill": "Kotlin",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Beginner",
+      "titleEn": "Data classes, sealed classes and enums",
+      "titleAr": "أصناف data وsealed والتعدادات",
+      "summaryEn": "A data class holds values and gets equals, hashCode, toString, copy and destructuring for free. An enum class lists a fixed set of constants. A sealed class or sealed interface lists a fixed set of subtypes that can carry different data, so a when over it must handle every case and the compiler tells you when one is missing.",
+      "summaryAr": "صنف data يحمل القيم ويحصل مجانًا على equals وhashCode وtoString وcopy والتفكيك (Destructuring). وصنف enum يسرد مجموعة ثابتة من الثوابت. والصنف أو الواجهة sealed تسرد مجموعة ثابتة من الأنواع الفرعية التي يمكن أن تحمل بيانات مختلفة، فيجب على when أن تعالج كل حالة، ويخبرك المترجم عندما تنقص حالة.",
+      "whyEn": "Screen state in Android is usually a data class updated with copy, and loading, success and error states are a sealed interface. These types make impossible states impossible and turn forgotten cases into compile errors instead of bugs.",
+      "whyAr": "حالة الشاشة في Android تكون عادةً صنف data يُحدَّث بـ copy، وحالات التحميل والنجاح والخطأ تكون واجهة sealed. وهذه الأنواع تجعل الحالات المستحيلة مستحيلة فعلًا، وتحوّل الحالات المنسية إلى أخطاء ترجمة بدل أخطاء تشغيل.",
+      "howEn": "Use a data class for values compared by content, with val properties so copies are the only way to change them. Use an enum when every case has the same shape, and a sealed type when cases carry different data. Write when without an else branch over sealed types so new cases are caught.",
+      "howAr": "استخدم صنف data للقيم التي تُقارن بمحتواها، مع خصائص val حتى يكون النسخ بـ copy هو الطريقة الوحيدة لتغييرها. واستخدم enum عندما يكون لكل الحالات الشكل نفسه، وsealed عندما تحمل الحالات بيانات مختلفة. واكتب when دون فرع else على الأنواع sealed حتى تُكتشف الحالات الجديدة.",
+      "exampleEn": "sealed interface UiState { data object Loading : UiState; data class Success(val items: List<Task>) : UiState; data class Error(val message: String) : UiState }. The screen's when shows a spinner, the list or the error, and a new state cannot be added without updating it.",
+      "exampleAr": "الواجهة sealed interface UiState { data object Loading : UiState; data class Success(val items: List<Task>) : UiState; data class Error(val message: String) : UiState }. وتعبير when في الشاشة يعرض مؤشر تحميل أو القائمة أو الخطأ، ولا يمكن إضافة حالة جديدة دون تحديثه.",
+      "practiceEn": "1) Write data class Product and use copy to change its price. 2) Write enum class Priority with a label property. 3) Model a payment result as a sealed interface with three cases and handle it with when.",
+      "practiceAr": "1) اكتب data class Product واستخدم copy لتغيير سعره. 2) اكتب enum class Priority بخاصية label. 3) صمّم نتيجة دفع كواجهة sealed بثلاث حالات وعالجها بـ when.",
+      "challengeEn": "Model a network request result as a sealed type that is generic over its data, and write a function that maps a successful result while passing errors through unchanged.",
+      "challengeAr": "صمّم نتيجة طلب شبكة كنوع sealed عام على بياناته، واكتب دالة تحوّل النتيجة الناجحة وتمرر الأخطاء كما هي دون تغيير.",
+      "objectivesEn": [
+        "Write data classes and use copy and destructuring",
+        "Use enum classes with properties",
+        "Model states with sealed classes and interfaces",
+        "Write exhaustive when expressions"
+      ],
+      "objectivesAr": [
+        "كتابة أصناف data واستخدام copy والتفكيك",
+        "استخدام أصناف enum بخصائص",
+        "تمثيل الحالات بالأصناف والواجهات sealed",
+        "كتابة تعبيرات when شاملة"
+      ],
+      "prerequisites": [
+        "kt-oop"
+      ]
+    },
+    {
+      "slug": "kt-generics-extensions",
+      "skill": "Kotlin",
+      "priority": "Important",
+      "minutes": 60,
+      "difficulty": "Intermediate",
+      "titleEn": "Generics, extensions and scope functions",
+      "titleAr": "الأنواع العامة ودوال الامتداد ودوال النطاق",
+      "summaryEn": "Generics let one class or function work with any type, such as class Box<T>(val value: T), with constraints like <T : Comparable<T>> and variance with out (producer) and in (consumer). Extension functions add methods to existing types without inheritance, such as fun String.isEmail(). Scope functions let, run, with, apply and also run a block on an object and differ in how they refer to it (it or this) and what they return.",
+      "summaryAr": "الأنواع العامة (Generics) تتيح لصنف أو دالة واحدة العمل مع أي نوع، مثل class Box<T>(val value: T)، مع قيود مثل <T : Comparable<T>> والتباين (Variance) بـ out (منتِج) وin (مستهلِك). ودوال الامتداد تضيف دوالًا إلى أنواع موجودة دون وراثة، مثل fun String.isEmail(). ودوال النطاق let وrun وwith وapply وalso تنفّذ كتلة على كائن، وتختلف في طريقة الإشارة إليه (it أو this) وفي ما تُرجعه.",
+      "whyEn": "Android and Kotlin libraries are full of generics (List<T>, Flow<T>, Result<T>) and extension functions (Modifier, collection helpers). Knowing them lets you read library code, write reusable helpers, and use apply and let the way Android code does.",
+      "whyAr": "مكتبات Android وKotlin مليئة بالأنواع العامة (List<T> وFlow<T> وResult<T>) ودوال الامتداد (Modifier ومساعدات المجموعات). ومعرفتها تتيح لك قراءة كود المكتبات، وكتابة مساعدات قابلة لإعادة الاستخدام، واستخدام apply وlet بالطريقة التي يستخدمها كود Android.",
+      "howEn": "Write generic code when the same logic really applies to many types, and add bounds instead of casting. Put extension functions near their use, keep them small and pure, and don't use them to reach into private state. Choose scope functions by purpose: apply to configure an object, let for nullable values and transformations, also for side effects such as logging.",
+      "howAr": "اكتب كودًا عامًا عندما ينطبق المنطق نفسه فعلًا على أنواع كثيرة، وأضف القيود بدل التحويل القسري. وضع دوال الامتداد قرب مكان استخدامها، واجعلها صغيرة ونقية، ولا تستخدمها للوصول إلى حالة خاصة. واختر دالة النطاق حسب الغرض: apply لتهيئة كائن، وlet للقيم التي تقبل null وللتحويلات، وalso للآثار الجانبية مثل التسجيل.",
+      "exampleEn": "fun <T> List<T>.secondOrNull(): T? = if (size >= 2) this[1] else null works for any list. val request = Request.Builder().apply { url(api); header(\"Accept\", \"application/json\") }.build() configures a builder in one readable block.",
+      "exampleAr": "الدالة fun <T> List<T>.secondOrNull(): T? = if (size >= 2) this[1] else null تعمل مع أي قائمة. والسطر val request = Request.Builder().apply { url(api); header(\"Accept\", \"application/json\") }.build() يهيئ كائن بناء في كتلة واحدة مقروءة.",
+      "practiceEn": "1) Write a generic Stack<T> with push, pop and peek. 2) Add String.toTitleCase() and Int.isEven extensions. 3) Rewrite four snippets using the most fitting scope function and explain each choice.",
+      "practiceAr": "1) اكتب Stack<T> عامًا بـ push وpop وpeek. 2) أضف امتدادَي String.toTitleCase() وInt.isEven. 3) أعد كتابة أربعة مقاطع باستخدام دالة النطاق الأنسب واشرح كل اختيار.",
+      "challengeEn": "Write a generic fun <T : Comparable<T>> maxOfOrNull(items: List<T>) and an extension Map<K, V>.invert(), then explain why List<out T> lets you pass a List<Int> where a List<Number> is expected.",
+      "challengeAr": "اكتب دالة عامة fun <T : Comparable<T>> maxOfOrNull(items: List<T>) وامتدادًا Map<K, V>.invert()، ثم اشرح لماذا تتيح List<out T> تمرير List<Int> حيث يُنتظر List<Number>.",
+      "objectivesEn": [
+        "Write generic classes and functions with bounds",
+        "Explain in and out variance at a basic level",
+        "Write extension functions and properties",
+        "Choose between let, run, with, apply and also"
+      ],
+      "objectivesAr": [
+        "كتابة أصناف ودوال عامة بقيود",
+        "شرح التباين in وout بمستوى أساسي",
+        "كتابة دوال وخصائص امتداد",
+        "الاختيار بين let وrun وwith وapply وalso"
+      ],
+      "prerequisites": [
+        "kt-collections",
+        "kt-data-sealed-enum"
+      ]
+    },
+    {
+      "slug": "kt-errors-idioms",
+      "skill": "Kotlin",
+      "priority": "Important",
+      "minutes": 60,
+      "difficulty": "Intermediate",
+      "titleEn": "Errors, idioms and problem solving",
+      "titleAr": "الأخطاء والأسلوب الاصطلاحي وحل المشكلات",
+      "summaryEn": "Kotlin has only unchecked exceptions. try is an expression that returns a value, require and check validate arguments and state, and runCatching wraps a call in a Result you can map, recover or fold. Idiomatic Kotlin prefers expressions, immutability, early returns and small functions. Solving problems means breaking a task into steps, choosing a data structure and testing edge cases before writing code.",
+      "summaryAr": "في Kotlin توجد استثناءات غير مُلزِمة فقط (Unchecked). وtry تعبير يُرجع قيمة، وrequire وcheck تتحققان من الوسائط والحالة، وrunCatching تغلّف استدعاء في Result يمكنك تحويله أو التعافي منه أو طيّه. وKotlin الاصطلاحية تفضّل التعبيرات وعدم التغيير والرجوع المبكر والدوال الصغيرة. وحل المشكلات يعني تقسيم المهمة إلى خطوات واختيار بنية البيانات واختبار الحالات الحدّية قبل كتابة الكود.",
+      "whyEn": "Apps fail: networks drop, files are missing, users type anything. Handling errors at the right level keeps apps from crashing and shows useful messages. Clean, idiomatic code and a habit of solving problems step by step are also what interviewers test in Kotlin coding rounds.",
+      "whyAr": "التطبيقات تفشل: الشبكات تنقطع، والملفات تختفي، والمستخدمون يكتبون أي شيء. ومعالجة الأخطاء في المستوى الصحيح تمنع انهيار التطبيق وتعرض رسائل مفيدة. والكود النظيف الاصطلاحي وعادة حل المشكلات خطوة بخطوة هما أيضًا ما يختبره من يجري المقابلات في جولات البرمجة بـ Kotlin.",
+      "howEn": "Validate inputs at the edge with require, catch exceptions where you can do something useful, and convert them to a clear result or message for the UI. Never swallow exceptions silently. For problems, restate the task, write examples with edge cases, pick a structure (Map for counting, Set for seen items), write the simplest correct solution, then improve it.",
+      "howAr": "تحقق من المدخلات عند الحدود بـ require، والتقط الاستثناءات حيث تستطيع فعل شيء مفيد، وحوّلها إلى نتيجة أو رسالة واضحة للواجهة. ولا تبتلع الاستثناءات بصمت أبدًا. وفي المشكلات، أعد صياغة المهمة، واكتب أمثلة بحالات حدّية، واختر بنية (Map للعدّ وSet للعناصر التي رأيتها)، واكتب أبسط حل صحيح، ثم حسّنه.",
+      "exampleEn": "val age = runCatching { input.toInt() }.getOrElse { return Error(\"Enter a number\") } turns bad input into a message. require(quantity > 0) { \"Quantity must be positive\" } stops a bug at its source instead of three screens later.",
+      "exampleAr": "السطر val age = runCatching { input.toInt() }.getOrElse { return Error(\"Enter a number\") } يحوّل المدخل الخاطئ إلى رسالة. والسطر require(quantity > 0) { \"Quantity must be positive\" } يوقف الخطأ عند مصدره بدل ثلاث شاشات لاحقًا.",
+      "practiceEn": "1) Write a safe divide that returns Result<Double>. 2) Add require and check to a class that has invalid states today. 3) Solve: is a string a palindrome ignoring spaces and case? Then: return the first character that does not repeat.",
+      "practiceAr": "1) اكتب قسمة آمنة تُرجع Result<Double>. 2) أضف require وcheck إلى صنف فيه حالات غير صالحة اليوم. 3) حل: هل النص متناظر (Palindrome) مع تجاهل المسافات وحالة الحروف؟ ثم: أرجِع أول حرف لا يتكرر.",
+      "challengeEn": "Solve three classic problems in idiomatic Kotlin (two-sum, grouping anagrams, merging overlapping intervals), each with a short explanation of the data structure you chose and its complexity.",
+      "challengeAr": "حل ثلاث مسائل كلاسيكية بـ Kotlin اصطلاحية (Two-sum وتجميع الكلمات المتجانسة الحروف ودمج الفترات المتداخلة)، مع شرح قصير لكل حل عن بنية البيانات التي اخترتها وتعقيدها.",
+      "objectivesEn": [
+        "Use try as an expression, require, check and runCatching",
+        "Handle errors at the right level without swallowing them",
+        "Write idiomatic Kotlin: expressions, immutability, early returns",
+        "Solve problems step by step with the right data structure"
+      ],
+      "objectivesAr": [
+        "استخدام try كتعبير وrequire وcheck وrunCatching",
+        "معالجة الأخطاء في المستوى الصحيح دون ابتلاعها",
+        "كتابة Kotlin اصطلاحية: تعبيرات وعدم تغيير ورجوع مبكر",
+        "حل المشكلات خطوة بخطوة ببنية البيانات الصحيحة"
+      ],
+      "prerequisites": [
+        "kt-generics-extensions"
+      ]
+    }
+  ]
+}

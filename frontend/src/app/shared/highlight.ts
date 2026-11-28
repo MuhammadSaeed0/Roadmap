@@ -22,6 +22,12 @@ const KEYWORDS: Record<string, string[]> = {
 KEYWORDS['python'] = ['and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else',
   'except', 'False', 'finally', 'for', 'from', 'if', 'import', 'in', 'is', 'lambda', 'None', 'not', 'or', 'pass', 'raise',
   'return', 'True', 'try', 'while', 'with', 'yield', 'self', 'print', 'len', 'range', 'int', 'str', 'float', 'list', 'dict'];
+KEYWORDS['kotlin'] = ['abstract', 'as', 'break', 'by', 'catch', 'class', 'companion', 'const', 'continue', 'data', 'do',
+  'else', 'enum', 'false', 'final', 'finally', 'for', 'fun', 'get', 'if', 'import', 'in', 'init', 'inline', 'interface',
+  'internal', 'is', 'lateinit', 'null', 'object', 'open', 'operator', 'out', 'override', 'package', 'private', 'protected',
+  'public', 'reified', 'return', 'sealed', 'set', 'super', 'suspend', 'this', 'throw', 'true', 'try', 'typealias', 'val',
+  'value', 'var', 'vararg', 'when', 'where', 'while', 'it'];
+KEYWORDS['kt'] = KEYWORDS['kotlin'];
 KEYWORDS['aspnet'] = KEYWORDS['csharp'];
 KEYWORDS['html'] = ['@if', '@else', '@for', '@switch', '@case', '@default', 'track'];
 
