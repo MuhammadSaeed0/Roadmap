@@ -119,7 +119,19 @@ public class TopicService(
         // Any topic can be opened, also one outside the learner's roadmap.
         var state = await stateLoader.LoadAsync(ct, wholeCatalog: true);
         var me = state.ById[id];
-        var ordered = state.Topics.OrderBy(t => t.PhaseOrder).ThenBy(t => t.Order).ThenBy(t => t.Id).ToList();
+        // Previous and next stay inside one roadmap: the learner's own when it has this topic, otherwise the first
+        // roadmap that does. Phases shared by several roadmaps (C# basics) follow that roadmap's phase order.
+        var active = await tracks.GetAsync(ct);
+        var positions = active is not null && active.Positions.ContainsKey(me.PhaseId)
+            ? active.Positions
+            : (await db.TrackPhases.AsNoTracking()
+                    .Where(tp => tp.Track.Phases.Any(p => p.PhaseId == me.PhaseId))
+                    .Select(tp => new { tp.TrackId, TrackOrder = tp.Track.Order, tp.PhaseId, tp.Position })
+                    .ToListAsync(ct))
+                .GroupBy(tp => new { tp.TrackId, tp.TrackOrder }).OrderBy(g => g.Key.TrackOrder).FirstOrDefault()
+                ?.ToDictionary(tp => tp.PhaseId, tp => tp.Position);
+        var ordered = (positions is null ? state.Topics : state.Topics.Where(t => positions.ContainsKey(t.PhaseId)))
+            .OrderBy(t => positions is null ? t.PhaseOrder : positions[t.PhaseId]).ThenBy(t => t.Order).ThenBy(t => t.Id).ToList();
         var position = ordered.FindIndex(t => t.Id == id);
         TopicRefDto Ref(int topicId) => ProgressCalculator.ToRef(state.ById[topicId]);
 

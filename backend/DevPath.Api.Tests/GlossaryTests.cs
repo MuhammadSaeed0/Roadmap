@@ -39,7 +39,8 @@ public class GlossaryTests(ApiFactory factory) : IClassFixture<ApiFactory>
         Assert.Equal(HttpStatusCode.Unauthorized, (await factory.CreateClient().GetAsync("/api/glossary")).StatusCode);
 
         var client = await factory.CreateUserClientAsync();
-        var response = await client.GetAsync("/api/glossary");
+        // The glossary shows the learner's roadmap by default; ?all=true lists every published roadmap's terms.
+        var response = await client.GetAsync("/api/glossary?all=true");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var terms = JsonNode.Parse(await response.Content.ReadAsStringAsync())!.AsArray();
         // Terms of draft topics (roadmaps not published yet) are hidden from learners.

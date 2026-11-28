@@ -34,7 +34,7 @@
   {
     "slug": "android-developer",
     "order": 3,
-    "published": false,
+    "published": true,
     "icon": "smartphone",
     "titleEn": "Android app developer",
     "titleAr": "مطوّر تطبيقات Android",

@@ -55,7 +55,7 @@ describe('Landing page', () => {
     const fixture = TestBed.createComponent(LandingPage);
     fixture.detectChanges();
     const el = fixture.nativeElement as HTMLElement;
-    expect([...el.querySelectorAll('.ld-fact dd')].map(d => d.textContent?.trim())).toEqual(['14', '166', '250+', '97', '66', '900+']);
+    expect([...el.querySelectorAll('.ld-fact dd')].map(d => d.textContent?.trim())).toEqual(['28', '265', '350+', '97', '80', '1,100+']);
     const images = [...el.querySelectorAll<HTMLImageElement>('.ld-shots img')];
     expect(images.length).toBe(4);
     expect(images.every(i => i.getAttribute('src')!.startsWith('marketing/') && i.getAttribute('loading') === 'lazy' && i.alt.length > 0)).toBe(true);
