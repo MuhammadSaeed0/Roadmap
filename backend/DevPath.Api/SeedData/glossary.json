@@ -1818,5 +1818,82 @@
     "shortEn": "The Google Play listing section where apps declare what data they collect and share.",
     "shortAr": "قسم في صفحة التطبيق على Google Play تصرّح فيه التطبيقات بالبيانات التي تجمعها وتشاركها.",
     "topicSlug": "and-sec-privacy"
+  },
+  {
+    "term": "notification channel",
+    "arabic": "قناة الإشعارات",
+    "shortEn": "A category of notifications that users can configure or silence separately.",
+    "shortAr": "فئة من الإشعارات يستطيع المستخدمون ضبطها أو إسكاتها بشكل منفصل.",
+    "topicSlug": "and-dev-notifications"
+  },
+  {
+    "term": "foreground service",
+    "arabic": "خدمة في المقدمة",
+    "shortEn": "A service doing ongoing work the user is aware of, shown with a persistent notification.",
+    "shortAr": "خدمة تنفذ عملًا مستمرًا يدركه المستخدم، وتظهر بإشعار دائم.",
+    "topicSlug": "and-dev-notifications"
+  },
+  {
+    "term": "CameraX",
+    "arabic": "مكتبة CameraX",
+    "shortEn": "The Jetpack camera library built on use cases such as Preview, ImageCapture and ImageAnalysis.",
+    "shortAr": "مكتبة الكاميرا في Jetpack المبنية على حالات استخدام مثل Preview وImageCapture وImageAnalysis.",
+    "topicSlug": "and-dev-camera"
+  },
+  {
+    "term": "ML Kit",
+    "arabic": "مجموعة ML Kit",
+    "shortEn": "Google's on-device machine learning APIs for barcodes, text, faces and more.",
+    "shortAr": "واجهات Google للتعلم الآلي على الجهاز للرموز الشريطية والنصوص والوجوه وغيرها.",
+    "topicSlug": "and-dev-camera"
+  },
+  {
+    "term": "fused location provider",
+    "arabic": "مزوّد الموقع المدمج",
+    "shortEn": "The Google Play services API that combines GPS, Wi-Fi and cell data into one location stream.",
+    "shortAr": "واجهة في خدمات Google Play تجمع GPS وWi-Fi وبيانات شبكة الجوال في تدفق موقع واحد.",
+    "topicSlug": "and-dev-location"
+  },
+  {
+    "term": "geofence",
+    "arabic": "السياج الجغرافي",
+    "shortEn": "A virtual area that triggers your app when the user enters, stays in or leaves it.",
+    "shortAr": "منطقة افتراضية تحفّز تطبيقك عندما يدخلها المستخدم أو يمكث فيها أو يغادرها.",
+    "topicSlug": "and-dev-location"
+  },
+  {
+    "term": "ExoPlayer",
+    "arabic": "المشغل ExoPlayer",
+    "shortEn": "The Media3 player for local and streamed audio and video, including HLS and DASH.",
+    "shortAr": "مشغل Media3 للصوت والفيديو المحليين والمتدفقين، بما في ذلك HLS وDASH.",
+    "topicSlug": "and-dev-media"
+  },
+  {
+    "term": "MediaSession",
+    "arabic": "جلسة الوسائط MediaSession",
+    "shortEn": "The object that exposes playback to system controls, headsets, cars and watches.",
+    "shortAr": "الكائن الذي يعرض التشغيل لأزرار النظام والسماعات والسيارات والساعات.",
+    "topicSlug": "and-dev-media"
+  },
+  {
+    "term": "Bluetooth Low Energy",
+    "arabic": "تقنية Bluetooth منخفض الطاقة",
+    "shortEn": "A low-power Bluetooth protocol used by wearables, sensors and beacons.",
+    "shortAr": "بروتوكول Bluetooth قليل الاستهلاك تستخدمه الأجهزة القابلة للارتداء والمستشعرات والمنارات.",
+    "topicSlug": "and-dev-sensors"
+  },
+  {
+    "term": "GATT",
+    "arabic": "البروتوكول GATT",
+    "shortEn": "The BLE protocol for reading, writing and subscribing to a device's services and characteristics.",
+    "shortAr": "بروتوكول BLE لقراءة خدمات الجهاز وخصائصه والكتابة فيها والاشتراك فيها.",
+    "topicSlug": "and-dev-sensors"
+  },
+  {
+    "term": "Glance",
+    "arabic": "مكتبة Glance",
+    "shortEn": "The Jetpack library for building app widgets with a Compose-like API.",
+    "shortAr": "مكتبة Jetpack لبناء أدوات التطبيق بواجهة تشبه Compose.",
+    "topicSlug": "and-dev-widgets"
   }
 ]

@@ -1,0 +1,146 @@
+[
+  {
+    "key": "and-ex-dev-notifications",
+    "type": "Practical",
+    "topic": "and-dev-notifications",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "Order notifications done right",
+    "titleAr": "إشعارات الطلبات بالطريقة الصحيحة",
+    "problemEn": "Add notifications to a shop app: channels for order updates and promotions, the POST_NOTIFICATIONS request right after the user taps \"Track order\", an \"Out for delivery\" notification with a Track action that opens the order through an immutable PendingIntent, updates that replace the same notification, and a test that the app still works when the permission is denied.",
+    "problemAr": "أضف إشعارات إلى تطبيق متجر: قنوات لتحديثات الطلبات والعروض، وطلب POST_NOTIFICATIONS مباشرة بعد ضغط المستخدم «تتبع الطلب»، وإشعار «خرج للتوصيل» بإجراء تتبع يفتح الطلب عبر PendingIntent غير قابل للتغيير، وتحديثات تستبدل الإشعار نفسه، واختبار أن التطبيق يستمر في العمل عند رفض الإذن.",
+    "expectedEn": "Two channels created at startup, a permission request tied to the Track button, one notification id per order, FLAG_IMMUTABLE intents, and a denied-permission path that shows tracking in the app.",
+    "expectedAr": "قناتان تُنشآن عند البدء، وطلب إذن مرتبط بزر التتبع، ومعرّف إشعار واحد لكل طلب، ونوايا مع FLAG_IMMUTABLE، ومسار للإذن المرفوض يعرض التتبع داخل التطبيق.",
+    "hintsEn": [
+      "Use orderId.hashCode() as the notification id.",
+      "NotificationManagerCompat.areNotificationsEnabled() tells you if posting will show."
+    ],
+    "hintsAr": [
+      "استخدم orderId.hashCode() كمعرّف للإشعار.",
+      "الدالة NotificationManagerCompat.areNotificationsEnabled() تخبرك هل سيظهر النشر."
+    ],
+    "solutionEn": "Create channels in Application.onCreate. In the Track button, launch RequestPermission on API 33+ and start tracking either way. notifyStatus(order) builds NotificationCompat with the orders channel, a content intent and a Track action, both PendingIntent.getActivity with FLAG_IMMUTABLE and a per-order request code, and calls notify(order.id.hashCode(), ...). When notifications are disabled, the order screen shows the status and a banner linking to settings.",
+    "solutionAr": "أنشئ القنوات في Application.onCreate. وفي زر التتبع شغّل RequestPermission على الواجهة 33 فأحدث وابدأ التتبع في الحالتين. وتبني notifyStatus(order) إشعار NotificationCompat في قناة الطلبات، مع نية محتوى وإجراء تتبع، كلاهما PendingIntent.getActivity مع FLAG_IMMUTABLE ورمز طلب لكل طلب، وتستدعي notify(order.id.hashCode(), ...). وعندما تكون الإشعارات معطلة تعرض شاشة الطلب الحالة وشريطًا يربط بالإعدادات.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-dev-scanner",
+    "type": "Practical",
+    "topic": "and-dev-camera",
+    "difficulty": "Intermediate",
+    "minutes": 50,
+    "titleEn": "A product barcode scanner",
+    "titleAr": "ماسح الرموز الشريطية للمنتجات",
+    "problemEn": "Build a Compose screen that scans EAN-13 and QR codes with CameraX and ML Kit, shows the product in a bottom sheet on the first valid code, prevents duplicate results while the sheet is open, has a torch toggle, releases the camera when leaving, and shows a helpful screen with a Settings button when the permission is denied.",
+    "problemAr": "ابنِ شاشة Compose تمسح رموز EAN-13 وQR بـ CameraX وML Kit، وتعرض المنتج في لوحة سفلية عند أول رمز صالح، وتمنع النتائج المكررة ما دامت اللوحة مفتوحة، وفيها مفتاح للكشاف، وتحرر الكاميرا عند المغادرة، وتعرض شاشة مفيدة مع زر للإعدادات عند رفض الإذن.",
+    "expectedEn": "Preview and ImageAnalysis bound to the lifecycle, KEEP_ONLY_LATEST, frames always closed, a paused flag while the sheet is visible, enableTorch, and a permission-denied state.",
+    "expectedAr": "حالتا Preview وImageAnalysis مربوطتان بدورة الحياة، وKEEP_ONLY_LATEST، وإغلاق الإطارات دائمًا، وعلامة إيقاف مؤقت ما دامت اللوحة ظاهرة، وenableTorch، وحالة رفض الإذن.",
+    "hintsEn": [
+      "Keep the Camera returned by bindToLifecycle to control the torch.",
+      "Use a StateFlow<Boolean> paused that the analyzer checks."
+    ],
+    "hintsAr": [
+      "احتفظ بكائن Camera الذي تُرجعه bindToLifecycle للتحكم في الكشاف.",
+      "استخدم StateFlow<Boolean> باسم paused يفحصها المحلل."
+    ],
+    "solutionEn": "bindToLifecycle(owner, BACK, preview, analysis) returns camera; torch = camera.cameraControl.enableTorch(on). The analyzer returns early (closing the proxy) when paused is true, otherwise runs the scanner limited to FORMAT_EAN_13 and FORMAT_QR_CODE; on success it sets paused = true and emits the code. Closing the sheet sets paused = false. Permission: rememberLauncherForActivityResult(RequestPermission) on entry, and a denied composable with an intent to ACTION_APPLICATION_DETAILS_SETTINGS.",
+    "solutionAr": "تُرجع bindToLifecycle(owner, BACK, preview, analysis) الكائن camera، والكشاف = camera.cameraControl.enableTorch(on). ويعود المحلل مبكرًا (مع إغلاق proxy) عندما تكون paused صحيحة، وإلا يشغّل الماسح مقيدًا بـ FORMAT_EAN_13 وFORMAT_QR_CODE، وعند النجاح يضبط paused = true ويُصدر الرمز. وإغلاق اللوحة يضبط paused = false. والإذن: ‏rememberLauncherForActivityResult(RequestPermission) عند الدخول، ودالة composable للرفض مع نية إلى ACTION_APPLICATION_DETAILS_SETTINGS.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-dev-location",
+    "type": "Debugging",
+    "topic": "and-dev-location",
+    "difficulty": "Intermediate",
+    "minutes": 35,
+    "titleEn": "The app that keeps GPS on",
+    "titleAr": "التطبيق الذي يُبقي GPS يعمل",
+    "problemEn": "Users say the battery icon shows the app using location all day, even when it's closed. Find the causes in the code below and fix them so location is used only while the map screen is visible, with balanced accuracy unless navigation is active.",
+    "problemAr": "يقول المستخدمون إن أيقونة البطارية تُظهر استخدام التطبيق للموقع طوال اليوم، حتى وهو مغلق. أوجد الأسباب في الكود أدناه وأصلحها بحيث لا يُستخدم الموقع إلا ما دامت شاشة الخريطة ظاهرة، وبدقة متوازنة ما لم تكن الملاحة نشطة.",
+    "expectedEn": "Updates wrapped in callbackFlow with removeLocationUpdates in awaitClose, collected with the screen lifecycle, priority chosen by mode, and nothing started from Application.",
+    "expectedAr": "تحديثات مغلفة في callbackFlow مع removeLocationUpdates في awaitClose، تُجمع مع دورة حياة الشاشة، وأولوية تُختار حسب الوضع، ولا شيء يبدأ من Application.",
+    "hintsEn": [
+      "Who calls removeLocationUpdates in the current code?",
+      "What does HIGH_ACCURACY every 1 second cost?"
+    ],
+    "hintsAr": [
+      "من يستدعي removeLocationUpdates في الكود الحالي؟",
+      "ما كلفة HIGH_ACCURACY كل ثانية واحدة؟"
+    ],
+    "solutionEn": "Bugs: requestLocationUpdates starts in Application.onCreate and is never removed; the callback is an anonymous object so it can't be removed later; HIGH_ACCURACY at 1 s for a map that only needs city-level detail. Fix: a FusedLocationProviderClient.updates(priority, interval) callbackFlow with awaitClose { removeLocationUpdates(callback) }, collected in the map ViewModel with stateIn(WhileSubscribed(5_000)), using BALANCED at 10 s by default and HIGH_ACCURACY at 2 s only while navigation is on.",
+    "solutionAr": "الأخطاء: تبدأ requestLocationUpdates في Application.onCreate ولا تُزال أبدًا، والاستدعاء الراجع كائن مجهول فلا يمكن إزالته لاحقًا، وHIGH_ACCURACY كل ثانية لخريطة لا تحتاج إلا تفاصيل بمستوى المدينة. والإصلاح: ‏callbackFlow باسم FusedLocationProviderClient.updates(priority, interval) مع awaitClose { removeLocationUpdates(callback) }، يُجمع في ViewModel الخريطة بـ stateIn(WhileSubscribed(5_000))، ويستخدم BALANCED كل 10 ثوانٍ افتراضيًا وHIGH_ACCURACY كل ثانيتين فقط أثناء تشغيل الملاحة.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-dev-player",
+    "type": "Practical",
+    "topic": "and-dev-media",
+    "difficulty": "Intermediate",
+    "minutes": 50,
+    "titleEn": "A lesson player that remembers",
+    "titleAr": "مشغل دروس يتذكر",
+    "problemEn": "Build a lesson screen that plays an HLS video with ExoPlayer in Compose, pauses when the app goes to the background, remembers each lesson's position in Room and resumes from it, shows loading and error states, and plays audio-only lessons in the background through a MediaSessionService with lock-screen controls.",
+    "problemAr": "ابنِ شاشة درس تشغّل فيديو HLS بـ ExoPlayer في Compose، وتتوقف مؤقتًا عندما يذهب التطبيق إلى الخلفية، وتتذكر موضع كل درس في Room وتستأنف منه، وتعرض حالتي التحميل والخطأ، وتشغّل الدروس الصوتية فقط في الخلفية عبر MediaSessionService مع أزرار شاشة القفل.",
+    "expectedEn": "A remembered player released in onDispose, ON_STOP pause with position saved, a Player.Listener mapped to UI state, and a PlaybackService with a MediaSession used through MediaController for audio lessons.",
+    "expectedAr": "مشغل محفوظ بـ remember يُحرر في onDispose، وإيقاف مؤقت عند ON_STOP مع حفظ الموضع، وPlayer.Listener محوّل إلى حالة واجهة، وPlaybackService مع MediaSession تُستخدم عبر MediaController للدروس الصوتية.",
+    "hintsEn": [
+      "Public HLS test streams exist for development.",
+      "Save the position every 10 seconds too, not only on pause."
+    ],
+    "hintsAr": [
+      "توجد تدفقات HLS عامة للاختبار أثناء التطوير.",
+      "احفظ الموضع كل 10 ثوانٍ أيضًا، لا عند الإيقاف المؤقت فقط."
+    ],
+    "solutionEn": "Video: remember { ExoPlayer.Builder(ctx).build() }, setMediaItem(MediaItem.fromUri(hls)), seekTo(saved), DisposableEffect with a LifecycleEventObserver pausing on ON_STOP and saving currentPosition, release in onDispose; a listener maps STATE_BUFFERING, STATE_READY and onPlayerError to UI state. Audio: PlaybackService(MediaSessionService) owns the player and session; the ViewModel builds a MediaController from a SessionToken and calls setMediaItem with MediaMetadata.",
+    "solutionAr": "الفيديو: ‏remember { ExoPlayer.Builder(ctx).build() }، ثم setMediaItem(MediaItem.fromUri(hls))، ثم seekTo(saved)، وDisposableEffect مع LifecycleEventObserver يوقف مؤقتًا عند ON_STOP ويحفظ currentPosition، والتحرير في onDispose، ويحوّل مستمع الحالات STATE_BUFFERING وSTATE_READY وonPlayerError إلى حالة واجهة. والصوت: ‏PlaybackService(MediaSessionService) تملك المشغل والجلسة، وتبني ViewModel مكوّن MediaController من SessionToken وتستدعي setMediaItem مع MediaMetadata.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-dev-ble",
+    "type": "Challenge",
+    "topic": "and-dev-sensors",
+    "difficulty": "Advanced",
+    "minutes": 75,
+    "titleEn": "Live heart rate over BLE",
+    "titleAr": "نبض القلب مباشرة عبر BLE",
+    "problemEn": "Connect to a BLE heart-rate monitor (or a phone app that simulates one), show live beats per minute and a one-minute chart, handle permissions on Android 12+, scan with a filter and timeout, parse 8- and 16-bit measurements, reconnect with backoff when the strap goes out of range, and keep the session running in a connectedDevice foreground service during a workout.",
+    "problemAr": "اتصل بجهاز قياس نبض BLE (أو تطبيق هاتف يحاكيه)، واعرض النبضات في الدقيقة مباشرة مع رسم بياني لدقيقة، وعالج الأذونات في Android 12 فأحدث، وابحث بمرشح ومهلة، وحلّل القياسات بـ 8 و16 بت، وأعد الاتصال بانتظار متزايد عندما يخرج الحزام عن النطاق، وأبقِ الجلسة تعمل في خدمة في المقدمة من نوع connectedDevice أثناء التمرين.",
+    "expectedEn": "Scan and connect Flows, a GATT queue, a parser with unit tests for both formats, a Connected/Reconnecting/Failed state, and a foreground service with a live notification.",
+    "expectedAr": "تدفقات للبحث والاتصال، وطابور GATT، ومحلل باختبارات وحدة للصيغتين، وحالة متصل أو جارٍ إعادة الاتصال أو فاشل، وخدمة في المقدمة بإشعار حي.",
+    "hintsEn": [
+      "The first byte's bit 0 tells you if the value is 16-bit.",
+      "nRF Connect can act as a BLE peripheral for testing."
+    ],
+    "hintsAr": [
+      "البت 0 في البايت الأول يخبرك هل القيمة 16 بت.",
+      "يستطيع nRF Connect العمل كجهاز BLE طرفي للاختبار."
+    ],
+    "solutionEn": "parseHeartRate(bytes): if (bytes[0] and 1) != 0 read UInt16 little-endian from bytes[1..2], else UInt8 bytes[1]; test both. Repository: scan(filter = HR service, timeout 15 s), then device.heartRate() callbackFlow that enables notifications via the CCCD, with retryWhen on IOException up to 5 times with exponential delays emitting Reconnecting. A WorkoutService of type connectedDevice collects the flow and updates its notification once per second with setOnlyAlertOnce.",
+    "solutionAr": "الدالة parseHeartRate(bytes): إذا كان (bytes[0] and 1) != 0 فاقرأ UInt16 بترتيب little-endian من bytes[1..2]، وإلا UInt8 من bytes[1]، واختبر الحالتين. والمستودع: ‏scan(filter = HR service, timeout 15 s)، ثم callbackFlow باسم device.heartRate() يفعّل الإشعارات عبر CCCD، مع retryWhen عند IOException حتى 5 مرات بتأخير أُسّي ويُصدر Reconnecting. وتجمع WorkoutService من نوع connectedDevice التدفق وتحدّث إشعارها مرة في الثانية مع setOnlyAlertOnce.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-dev-widget",
+    "type": "Practical",
+    "topic": "and-dev-widgets",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "A habit widget",
+    "titleAr": "أداة للعادات",
+    "problemEn": "Build a Glance widget for a habit tracker that shows today's habits with checkboxes in medium size and only the streak number in small size. Checking a habit updates Room through an ActionCallback and refreshes the widget; marking a habit in the app also refreshes it; a daily WorkManager job resets the view at midnight. Add a dynamic shortcut for \"Add habit\".",
+    "problemAr": "ابنِ أداة Glance لمتتبع عادات تعرض عادات اليوم مع مربعات اختيار في الحجم المتوسط، ورقم السلسلة فقط في الحجم الصغير. واختيار عادة يحدّث Room عبر ActionCallback ويعيد رسم الأداة، وتعليم عادة داخل التطبيق يعيد رسمها أيضًا، ومهمة WorkManager يومية تعيد ضبط العرض عند منتصف الليل. وأضف اختصارًا ديناميكيًا «إضافة عادة».",
+    "expectedEn": "A GlanceAppWidget with SizeMode.Responsive and two layouts, an ActionCallback toggle, updateAll calls from the repository and a daily worker, and a pushed dynamic shortcut.",
+    "expectedAr": "أداة GlanceAppWidget مع SizeMode.Responsive وتخطيطين، وتبديل عبر ActionCallback، واستدعاءات updateAll من المستودع ومن Worker يومي، واختصار ديناميكي منشور.",
+    "hintsEn": [
+      "LocalSize.current tells you which size is being drawn.",
+      "Schedule the daily worker with an initial delay to midnight."
+    ],
+    "hintsAr": [
+      "تخبرك LocalSize.current بالحجم الجاري رسمه.",
+      "جدول الـ Worker اليومي بتأخير أولي حتى منتصف الليل."
+    ],
+    "solutionEn": "provideGlance loads today's habits and streak; inside provideContent, if LocalSize.current.width < 150.dp show the streak only, else a Column of CheckBox items with actionRunCallback<ToggleHabit>. ToggleHabit updates the DAO and calls HabitWidget().update(context, glanceId). HabitRepository.markDone calls updateAll. MidnightWorker is a periodic 24 h request with setInitialDelay(untilMidnight). The shortcut uses ShortcutManagerCompat.pushDynamicShortcut with an intent to the add screen.",
+    "solutionAr": "تحمّل provideGlance عادات اليوم والسلسلة، وداخل provideContent إذا كان LocalSize.current.width < 150.dp فاعرض السلسلة فقط، وإلا فعمود من عناصر CheckBox مع actionRunCallback<ToggleHabit>. ويحدّث ToggleHabit الـ DAO ويستدعي HabitWidget().update(context, glanceId). وتستدعي HabitRepository.markDone الدالة updateAll. وMidnightWorker طلب دوري كل 24 ساعة مع setInitialDelay(untilMidnight). ويستخدم الاختصار ShortcutManagerCompat.pushDynamicShortcut مع نية إلى شاشة الإضافة.",
+    "runner": "None"
+  }
+]

@@ -1,0 +1,1010 @@
+[
+  {
+    "key": "qz-and-dev-notifications-1",
+    "topic": "and-dev-notifications",
+    "questionEn": "Why split notifications into channels?",
+    "questionAr": "لماذا تقسّم الإشعارات إلى قنوات؟",
+    "optionsEn": [
+      "Users control each kind",
+      "They load faster",
+      "Play requires one per screen",
+      "They skip the permission"
+    ],
+    "optionsAr": [
+      "يتحكم المستخدم في كل نوع",
+      "لأنها تُحمّل أسرع",
+      "لأن Play تشترط قناة لكل شاشة",
+      "لأنها تتخطى الإذن"
+    ],
+    "answer": 0,
+    "explanationEn": "Users can mute promotions but keep order updates.",
+    "explanationAr": "يستطيع المستخدم كتم العروض مع إبقاء تحديثات الطلبات."
+  },
+  {
+    "key": "qz-and-dev-notifications-2",
+    "topic": "and-dev-notifications",
+    "questionEn": "Which permission do notifications need on Android 13+?",
+    "questionAr": "أي إذن تحتاجه الإشعارات في Android 13 فأحدث؟",
+    "optionsEn": [
+      "SEND_SMS",
+      "WAKE_LOCK",
+      "VIBRATE only",
+      "POST_NOTIFICATIONS"
+    ],
+    "optionsAr": [
+      "SEND_SMS",
+      "WAKE_LOCK",
+      "VIBRATE فقط",
+      "POST_NOTIFICATIONS"
+    ],
+    "answer": 3,
+    "explanationEn": "It's a runtime permission.",
+    "explanationAr": "وهو إذن وقت تشغيل."
+  },
+  {
+    "key": "qz-and-dev-notifications-3",
+    "topic": "and-dev-notifications",
+    "questionEn": "When should you ask for the notification permission?",
+    "questionAr": "متى تطلب إذن الإشعارات؟",
+    "optionsEn": [
+      "During the app's installation",
+      "Every single time the app opens",
+      "When the user opts into a feature",
+      "On the very first launch"
+    ],
+    "optionsAr": [
+      "أثناء تثبيت التطبيق على الجهاز",
+      "في كل مرة يُفتح فيها التطبيق",
+      "عندما يختار المستخدم ميزة تحتاجه",
+      "عند أول فتح للتطبيق مباشرة"
+    ],
+    "answer": 2,
+    "explanationEn": "Context explains why the app needs it.",
+    "explanationAr": "السياق يشرح لماذا يحتاجه التطبيق."
+  },
+  {
+    "key": "qz-and-dev-notifications-4",
+    "topic": "and-dev-notifications",
+    "questionEn": "Which style suits chat notifications?",
+    "questionAr": "أي نمط يناسب إشعارات المحادثة؟",
+    "optionsEn": [
+      "DecoratedCustomView",
+      "MessagingStyle",
+      "BigPictureStyle",
+      "InboxStyle only"
+    ],
+    "optionsAr": [
+      "DecoratedCustomView",
+      "MessagingStyle",
+      "BigPictureStyle",
+      "InboxStyle فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "It shows senders and groups messages.",
+    "explanationAr": "يعرض المرسلين ويجمع الرسائل."
+  },
+  {
+    "key": "qz-and-dev-notifications-5",
+    "topic": "and-dev-notifications",
+    "questionEn": "What lets users reply from the notification?",
+    "questionAr": "ما الذي يسمح للمستخدمين بالرد من الإشعار؟",
+    "optionsEn": [
+      "A RemoteInput action",
+      "A big picture",
+      "A progress bar",
+      "A custom sound"
+    ],
+    "optionsAr": [
+      "إجراء RemoteInput",
+      "صورة كبيرة",
+      "شريط تقدم",
+      "صوت مخصص"
+    ],
+    "answer": 0,
+    "explanationEn": "Update the notification after handling the reply.",
+    "explanationAr": "حدّث الإشعار بعد معالجة الرد."
+  },
+  {
+    "key": "qz-and-dev-notifications-6",
+    "topic": "and-dev-notifications",
+    "questionEn": "When is a foreground service the right tool?",
+    "questionAr": "متى تكون الخدمة في المقدمة الأداة الصحيحة؟",
+    "optionsEn": [
+      "A nightly cleanup job",
+      "Syncing when Wi-Fi returns",
+      "Formatting a date",
+      "Ongoing work the user is watching"
+    ],
+    "optionsAr": [
+      "مهمة تنظيف ليلية",
+      "المزامنة عند عودة Wi-Fi",
+      "تنسيق تاريخ",
+      "عمل مستمر يتابعه المستخدم"
+    ],
+    "answer": 3,
+    "explanationEn": "Deferrable work belongs in WorkManager.",
+    "explanationAr": "العمل القابل للتأجيل مكانه WorkManager."
+  },
+  {
+    "key": "qz-and-dev-notifications-7",
+    "topic": "and-dev-notifications",
+    "questionEn": "What must a foreground service declare in the manifest?",
+    "questionAr": "ماذا يجب أن تعلن الخدمة في المقدمة في الـ manifest؟",
+    "optionsEn": [
+      "Its daily battery budget",
+      "The screen size it supports",
+      "Its foregroundServiceType",
+      "The text of its notification"
+    ],
+    "optionsAr": [
+      "ميزانية البطارية اليومية لها",
+      "حجم الشاشة الذي تدعمه",
+      "نوعها foregroundServiceType",
+      "النص الذي يحمله إشعارها"
+    ],
+    "answer": 2,
+    "explanationEn": "Plus the matching FOREGROUND_SERVICE_* permission.",
+    "explanationAr": "مع إذن FOREGROUND_SERVICE_* المطابق."
+  },
+  {
+    "key": "qz-and-dev-notifications-8",
+    "topic": "and-dev-notifications",
+    "questionEn": "Why give a notification a stable id?",
+    "questionAr": "لماذا تعطي الإشعار معرّفًا ثابتًا؟",
+    "optionsEn": [
+      "It survives uninstall",
+      "Updates replace it",
+      "It plays a sound",
+      "It bypasses channels"
+    ],
+    "optionsAr": [
+      "لينجو من الحذف",
+      "لتستبدله التحديثات",
+      "ليشغّل صوتًا",
+      "ليتجاوز القنوات"
+    ],
+    "answer": 1,
+    "explanationEn": "Otherwise updates stack up as new notifications.",
+    "explanationAr": "وإلا تتراكم التحديثات كإشعارات جديدة."
+  },
+  {
+    "key": "qz-and-dev-camera-1",
+    "topic": "and-dev-camera",
+    "questionEn": "What does CameraX hide from you?",
+    "questionAr": "ماذا تخفي عنك CameraX؟",
+    "optionsEn": [
+      "Kotlin coroutines",
+      "Device-specific camera quirks",
+      "The need for any permission",
+      "The whole UI layer"
+    ],
+    "optionsAr": [
+      "Coroutines في Kotlin",
+      "خصائص الكاميرا لكل جهاز",
+      "الحاجة إلى أي إذن",
+      "طبقة الواجهة كلها"
+    ],
+    "answer": 1,
+    "explanationEn": "It wraps Camera2 behind simple use cases.",
+    "explanationAr": "تغلّف Camera2 خلف حالات استخدام بسيطة."
+  },
+  {
+    "key": "qz-and-dev-camera-2",
+    "topic": "and-dev-camera",
+    "questionEn": "Which use case hands you frames to process?",
+    "questionAr": "أي حالة استخدام تسلّمك الإطارات لمعالجتها؟",
+    "optionsEn": [
+      "ImageAnalysis",
+      "ImageCapture",
+      "Preview",
+      "VideoCapture"
+    ],
+    "optionsAr": [
+      "ImageAnalysis",
+      "ImageCapture",
+      "Preview",
+      "VideoCapture"
+    ],
+    "answer": 0,
+    "explanationEn": "Feed the frames to ML Kit or your own code.",
+    "explanationAr": "غذِّ ML Kit أو كودك بالإطارات."
+  },
+  {
+    "key": "qz-and-dev-camera-3",
+    "topic": "and-dev-camera",
+    "questionEn": "What does bindToLifecycle give you?",
+    "questionAr": "ماذا تعطيك bindToLifecycle؟",
+    "optionsEn": [
+      "Higher resolution photos",
+      "Free cloud storage",
+      "No need for permissions",
+      "Automatic open and release"
+    ],
+    "optionsAr": [
+      "صور بدقة أعلى",
+      "تخزين سحابي مجاني",
+      "لا حاجة إلى أذونات",
+      "فتح وتحرير تلقائيين"
+    ],
+    "answer": 3,
+    "explanationEn": "The camera follows the screen's lifecycle.",
+    "explanationAr": "تتبع الكاميرا دورة حياة الشاشة."
+  },
+  {
+    "key": "qz-and-dev-camera-4",
+    "topic": "and-dev-camera",
+    "questionEn": "Why use STRATEGY_KEEP_ONLY_LATEST?",
+    "questionAr": "لماذا تستخدم STRATEGY_KEEP_ONLY_LATEST؟",
+    "optionsEn": [
+      "It turns on the camera flash",
+      "It records audio with video",
+      "Slow analysis drops frames",
+      "It saves photos to disk faster"
+    ],
+    "optionsAr": [
+      "لأنها تفعّل فلاش الكاميرا",
+      "لأنها تسجل الصوت مع الفيديو",
+      "لتُسقط المعالجة البطيئة الإطارات",
+      "لأنها تحفظ الصور على القرص أسرع"
+    ],
+    "answer": 2,
+    "explanationEn": "Old frames don't queue up and add lag.",
+    "explanationAr": "لا تتراكم الإطارات القديمة فتضيف تأخيرًا."
+  },
+  {
+    "key": "qz-and-dev-camera-5",
+    "topic": "and-dev-camera",
+    "questionEn": "What happens if you never close an ImageProxy?",
+    "questionAr": "ماذا يحدث إذا لم تغلق ImageProxy أبدًا؟",
+    "optionsEn": [
+      "Nothing at all happens",
+      "Frames stop arriving",
+      "The app runs much faster",
+      "Photos come out sharper"
+    ],
+    "optionsAr": [
+      "لا يحدث أي شيء على الإطلاق",
+      "تتوقف الإطارات عن الوصول",
+      "يعمل التطبيق أسرع بكثير",
+      "تخرج الصور أوضح"
+    ],
+    "answer": 1,
+    "explanationEn": "Close every frame, usually in addOnCompleteListener.",
+    "explanationAr": "أغلق كل إطار، عادة في addOnCompleteListener."
+  },
+  {
+    "key": "qz-and-dev-camera-6",
+    "topic": "and-dev-camera",
+    "questionEn": "Where does ML Kit barcode scanning run?",
+    "questionAr": "أين يعمل مسح الرموز الشريطية في ML Kit؟",
+    "optionsEn": [
+      "On the device",
+      "On Google's servers",
+      "In a WebView",
+      "On your backend"
+    ],
+    "optionsAr": [
+      "على الجهاز",
+      "على خوادم Google",
+      "في WebView",
+      "على خادمك"
+    ],
+    "answer": 0,
+    "explanationEn": "No image leaves the phone, and it works offline.",
+    "explanationAr": "لا تغادر أي صورة الهاتف، ويعمل دون اتصال."
+  },
+  {
+    "key": "qz-and-dev-camera-7",
+    "topic": "and-dev-camera",
+    "questionEn": "How do you take one photo without the CAMERA permission?",
+    "questionAr": "كيف تلتقط صورة واحدة دون إذن CAMERA؟",
+    "optionsEn": [
+      "ImageAnalysis",
+      "A hidden Preview",
+      "Camera2 directly",
+      "TakePicture contract"
+    ],
+    "optionsAr": [
+      "ImageAnalysis",
+      "Preview مخفية",
+      "Camera2 مباشرة",
+      "العقد TakePicture"
+    ],
+    "answer": 3,
+    "explanationEn": "The system camera app takes the photo.",
+    "explanationAr": "تطبيق كاميرا النظام يلتقط الصورة."
+  },
+  {
+    "key": "qz-and-dev-camera-8",
+    "topic": "and-dev-camera",
+    "questionEn": "Why limit barcode formats in the scanner options?",
+    "questionAr": "لماذا تقيّد صيغ الرموز في خيارات الماسح؟",
+    "optionsEn": [
+      "Because QR is deprecated",
+      "To avoid the permission",
+      "Faster, more reliable scans",
+      "To reduce APK size to zero"
+    ],
+    "optionsAr": [
+      "لأن QR مهمل",
+      "لتجنب الإذن",
+      "مسح أسرع وأكثر موثوقية",
+      "لتقليل حجم APK إلى الصفر"
+    ],
+    "answer": 2,
+    "explanationEn": "The detector checks fewer formats per frame.",
+    "explanationAr": "يفحص الكاشف صيغًا أقل في كل إطار."
+  },
+  {
+    "key": "qz-and-dev-location-1",
+    "topic": "and-dev-location",
+    "questionEn": "Which permission fits a weather app?",
+    "questionAr": "أي إذن يناسب تطبيق طقس؟",
+    "optionsEn": [
+      "ACCESS_FINE_LOCATION",
+      "ACCESS_BACKGROUND_LOCATION",
+      "READ_PHONE_STATE",
+      "ACCESS_COARSE_LOCATION"
+    ],
+    "optionsAr": [
+      "ACCESS_FINE_LOCATION",
+      "ACCESS_BACKGROUND_LOCATION",
+      "READ_PHONE_STATE",
+      "ACCESS_COARSE_LOCATION"
+    ],
+    "answer": 3,
+    "explanationEn": "City-level accuracy is enough.",
+    "explanationAr": "دقة مستوى المدينة كافية."
+  },
+  {
+    "key": "qz-and-dev-location-2",
+    "topic": "and-dev-location",
+    "questionEn": "What can the user do on Android 12+ when you ask for fine location?",
+    "questionAr": "ماذا يستطيع المستخدم أن يفعل في Android 12 فأحدث عندما تطلب الموقع الدقيق؟",
+    "optionsEn": [
+      "Grant background only",
+      "Change the GPS chip",
+      "Grant only approximate",
+      "Nothing but accept"
+    ],
+    "optionsAr": [
+      "يمنح الخلفية فقط",
+      "يغيّر شريحة GPS",
+      "يمنح التقريبي فقط",
+      "لا شيء سوى القبول"
+    ],
+    "answer": 2,
+    "explanationEn": "Your app must work with approximate location.",
+    "explanationAr": "يجب أن يعمل تطبيقك مع الموقع التقريبي."
+  },
+  {
+    "key": "qz-and-dev-location-3",
+    "topic": "and-dev-location",
+    "questionEn": "Why prefer getCurrentLocation over lastLocation?",
+    "questionAr": "لماذا تفضّل getCurrentLocation على lastLocation؟",
+    "optionsEn": [
+      "It is synchronous",
+      "It returns a fresh fix",
+      "It needs no permission",
+      "It works without GPS ever"
+    ],
+    "optionsAr": [
+      "لأنها متزامنة",
+      "تُرجع قراءة حديثة",
+      "لا تحتاج إذنًا",
+      "تعمل دون GPS أبدًا"
+    ],
+    "answer": 1,
+    "explanationEn": "lastLocation can be stale or null.",
+    "explanationAr": "قد تكون lastLocation قديمة أو null."
+  },
+  {
+    "key": "qz-and-dev-location-4",
+    "topic": "and-dev-location",
+    "questionEn": "Why wrap location updates in callbackFlow?",
+    "questionAr": "لماذا تغلّف تحديثات الموقع في callbackFlow؟",
+    "optionsEn": [
+      "Updates stop with collection",
+      "It makes the GPS more precise",
+      "It removes the need to ask",
+      "It caches the map tiles"
+    ],
+    "optionsAr": [
+      "تتوقف التحديثات مع توقف الجمع",
+      "لأنه يجعل GPS أكثر دقة",
+      "لأنه يلغي الحاجة إلى الإذن",
+      "لأنه يخزّن بلاطات الخريطة"
+    ],
+    "answer": 0,
+    "explanationEn": "awaitClose removes the callback.",
+    "explanationAr": "تزيل awaitClose الاستدعاء الراجع."
+  },
+  {
+    "key": "qz-and-dev-location-5",
+    "topic": "and-dev-location",
+    "questionEn": "What is the cheapest way to react when a user nears a store?",
+    "questionAr": "ما أرخص طريقة للتفاعل عندما يقترب المستخدم من متجر؟",
+    "optionsEn": [
+      "High-accuracy updates",
+      "Polling every second",
+      "A WebSocket",
+      "A geofence"
+    ],
+    "optionsAr": [
+      "تحديثات عالية الدقة",
+      "استطلاع كل ثانية",
+      "WebSocket",
+      "سياج جغرافي"
+    ],
+    "answer": 3,
+    "explanationEn": "Play services watches the area for you.",
+    "explanationAr": "تراقب خدمات Play المنطقة نيابة عنك."
+  },
+  {
+    "key": "qz-and-dev-location-6",
+    "topic": "and-dev-location",
+    "questionEn": "How should a run tracker collect location in the background?",
+    "questionAr": "كيف يجمع متتبع الجري الموقع في الخلفية؟",
+    "optionsEn": [
+      "A static Thread that never ends",
+      "A widget that updates periodically",
+      "A foreground service of type location",
+      "An Activity hidden behind others"
+    ],
+    "optionsAr": [
+      "خيط Thread ثابت لا ينتهي",
+      "أداة تتحدث بشكل دوري",
+      "خدمة في المقدمة من نوع location",
+      "نشاط مخفي خلف غيره"
+    ],
+    "answer": 2,
+    "explanationEn": "With an ongoing notification the user can see.",
+    "explanationAr": "مع إشعار مستمر يراه المستخدم."
+  },
+  {
+    "key": "qz-and-dev-location-7",
+    "topic": "and-dev-location",
+    "questionEn": "Which library draws Google Maps in composables?",
+    "questionAr": "أي مكتبة ترسم خرائط Google داخل دوال composable؟",
+    "optionsEn": [
+      "CameraX",
+      "Maps Compose",
+      "Glance",
+      "Media3"
+    ],
+    "optionsAr": [
+      "CameraX",
+      "Maps Compose",
+      "Glance",
+      "Media3"
+    ],
+    "answer": 1,
+    "explanationEn": "GoogleMap, Marker and Polyline are composables.",
+    "explanationAr": "الدوال GoogleMap وMarker وPolyline كلها دوال composable."
+  },
+  {
+    "key": "qz-and-dev-location-8",
+    "topic": "and-dev-location",
+    "questionEn": "Why restrict the Maps API key?",
+    "questionAr": "لماذا تقيّد مفتاح Maps API؟",
+    "optionsEn": [
+      "It ships in the APK",
+      "It speeds up tiles",
+      "It hides the map",
+      "It's required by Room"
+    ],
+    "optionsAr": [
+      "لأنه يُشحن داخل APK",
+      "لتسريع تحميل البلاطات",
+      "لإخفاء الخريطة",
+      "لأن Room تشترطه"
+    ],
+    "answer": 0,
+    "explanationEn": "Limit it to your package and signing certificate.",
+    "explanationAr": "قيّده بحزمتك وشهادة التوقيع."
+  },
+  {
+    "key": "qz-and-dev-media-1",
+    "topic": "and-dev-media",
+    "questionEn": "Which Media3 component plays HLS and DASH?",
+    "questionAr": "أي مكوّن في Media3 يشغّل HLS وDASH؟",
+    "optionsEn": [
+      "ExoPlayer",
+      "MediaRecorder",
+      "SoundPool",
+      "AudioTrack only"
+    ],
+    "optionsAr": [
+      "ExoPlayer",
+      "MediaRecorder",
+      "SoundPool",
+      "AudioTrack فقط"
+    ],
+    "answer": 0,
+    "explanationEn": "It adapts quality to the network.",
+    "explanationAr": "يكيّف الجودة مع الشبكة."
+  },
+  {
+    "key": "qz-and-dev-media-2",
+    "topic": "and-dev-media",
+    "questionEn": "What must you do when the screen with a player goes away?",
+    "questionAr": "ماذا يجب أن تفعل عند زوال الشاشة التي فيها مشغل؟",
+    "optionsEn": [
+      "Keep it in a static field",
+      "Restart the app",
+      "Clear the cache",
+      "Release the player"
+    ],
+    "optionsAr": [
+      "احفظه في حقل ثابت",
+      "أعد تشغيل التطبيق",
+      "امسح الذاكرة المؤقتة",
+      "حرّر المشغل"
+    ],
+    "answer": 3,
+    "explanationEn": "Players hold decoders and memory.",
+    "explanationAr": "المشغلات تحجز وحدات فك الترميز والذاكرة."
+  },
+  {
+    "key": "qz-and-dev-media-3",
+    "topic": "and-dev-media",
+    "questionEn": "What does a MediaSession provide?",
+    "questionAr": "ماذا توفر MediaSession؟",
+    "optionsEn": [
+      "Translation of the subtitles",
+      "Faster downloads of media",
+      "System and headset controls",
+      "Encoding of recorded video"
+    ],
+    "optionsAr": [
+      "ترجمة نصوص الترجمة",
+      "تنزيلات أسرع للوسائط",
+      "أزرار النظام والسماعات",
+      "ترميز الفيديو المسجل"
+    ],
+    "answer": 2,
+    "explanationEn": "Lock screen, Bluetooth, Auto and Wear can control playback.",
+    "explanationAr": "تتحكم شاشة القفل وBluetooth وAuto وWear في التشغيل."
+  },
+  {
+    "key": "qz-and-dev-media-4",
+    "topic": "and-dev-media",
+    "questionEn": "Where should background audio playback live?",
+    "questionAr": "أين يجب أن يعيش تشغيل الصوت في الخلفية؟",
+    "optionsEn": [
+      "A BroadcastReceiver",
+      "A MediaSessionService",
+      "A ViewModel",
+      "A composable"
+    ],
+    "optionsAr": [
+      "BroadcastReceiver",
+      "MediaSessionService",
+      "ViewModel",
+      "دالة composable"
+    ],
+    "answer": 1,
+    "explanationEn": "It handles the foreground service and notification.",
+    "explanationAr": "تدير الخدمة في المقدمة والإشعار."
+  },
+  {
+    "key": "qz-and-dev-media-5",
+    "topic": "and-dev-media",
+    "questionEn": "How does the UI talk to a MediaSessionService?",
+    "questionAr": "كيف تتحدث الواجهة إلى MediaSessionService؟",
+    "optionsEn": [
+      "Through a MediaController",
+      "By a static player field",
+      "With a WebSocket",
+      "Through SharedPreferences"
+    ],
+    "optionsAr": [
+      "عبر MediaController",
+      "بحقل مشغل ثابت",
+      "عبر WebSocket",
+      "عبر SharedPreferences"
+    ],
+    "answer": 0,
+    "explanationEn": "Build it from a SessionToken.",
+    "explanationAr": "ابنِه من SessionToken."
+  },
+  {
+    "key": "qz-and-dev-media-6",
+    "topic": "and-dev-media",
+    "questionEn": "What does handleAudioFocus = true do?",
+    "questionAr": "ماذا تفعل handleAudioFocus = true؟",
+    "optionsEn": [
+      "Boosts the playback volume",
+      "Blocks incoming phone calls",
+      "Mutes the whole device",
+      "Pauses or ducks for other audio"
+    ],
+    "optionsAr": [
+      "ترفع مستوى صوت التشغيل",
+      "تمنع المكالمات الواردة",
+      "تكتم صوت الجهاز كله",
+      "توقف أو تخفض الصوت لغيره"
+    ],
+    "answer": 3,
+    "explanationEn": "Calls and navigation prompts behave correctly.",
+    "explanationAr": "تتصرف المكالمات وتنبيهات الملاحة بشكل صحيح."
+  },
+  {
+    "key": "qz-and-dev-media-7",
+    "topic": "and-dev-media",
+    "questionEn": "Why call setHandleAudioBecomingNoisy(true)?",
+    "questionAr": "لماذا تستدعي setHandleAudioBecomingNoisy(true)؟",
+    "optionsEn": [
+      "Raise the bitrate",
+      "Enable subtitles",
+      "Pause when headphones unplug",
+      "Remove background noise"
+    ],
+    "optionsAr": [
+      "رفع معدل البت",
+      "تفعيل الترجمة",
+      "الإيقاف عند فصل السماعات",
+      "إزالة الضوضاء الخلفية"
+    ],
+    "answer": 2,
+    "explanationEn": "So audio doesn't suddenly play out loud.",
+    "explanationAr": "حتى لا يعلو الصوت فجأة من السماعة الخارجية."
+  },
+  {
+    "key": "qz-and-dev-media-8",
+    "topic": "and-dev-media",
+    "questionEn": "How should a list of short videos use players?",
+    "questionAr": "كيف تستخدم قائمة فيديوهات قصيرة المشغلات؟",
+    "optionsEn": [
+      "No player at all",
+      "Reuse one player",
+      "One player per item",
+      "A new player per frame"
+    ],
+    "optionsAr": [
+      "دون أي مشغل",
+      "أعد استخدام مشغل واحد",
+      "مشغل لكل عنصر",
+      "مشغل جديد لكل إطار"
+    ],
+    "answer": 1,
+    "explanationEn": "Creating many players wastes memory and decoders.",
+    "explanationAr": "إنشاء مشغلات كثيرة يهدر الذاكرة ووحدات فك الترميز."
+  },
+  {
+    "key": "qz-and-dev-sensors-1",
+    "topic": "and-dev-sensors",
+    "questionEn": "What is the main battery cost of sensors?",
+    "questionAr": "ما الكلفة الرئيسية للمستشعرات على البطارية؟",
+    "optionsEn": [
+      "The screen size",
+      "The app's icon",
+      "The sampling rate",
+      "The sensor's name"
+    ],
+    "optionsAr": [
+      "حجم الشاشة",
+      "أيقونة التطبيق",
+      "معدل أخذ العينات",
+      "اسم المستشعر"
+    ],
+    "answer": 2,
+    "explanationEn": "Use the slowest rate that works.",
+    "explanationAr": "استخدم أبطأ معدل يعمل."
+  },
+  {
+    "key": "qz-and-dev-sensors-2",
+    "topic": "and-dev-sensors",
+    "questionEn": "Which rate suits a compass screen?",
+    "questionAr": "أي معدل يناسب شاشة بوصلة؟",
+    "optionsEn": [
+      "No rate at all",
+      "SENSOR_DELAY_UI",
+      "SENSOR_DELAY_FASTEST",
+      "SENSOR_DELAY_GAME"
+    ],
+    "optionsAr": [
+      "دون معدل إطلاقًا",
+      "SENSOR_DELAY_UI",
+      "SENSOR_DELAY_FASTEST",
+      "SENSOR_DELAY_GAME"
+    ],
+    "answer": 1,
+    "explanationEn": "Faster rates are for games and analysis.",
+    "explanationAr": "المعدلات الأسرع للألعاب والتحليل."
+  },
+  {
+    "key": "qz-and-dev-sensors-3",
+    "topic": "and-dev-sensors",
+    "questionEn": "What does the step counter report?",
+    "questionAr": "بماذا يبلّغ عدّاد الخطوات؟",
+    "optionsEn": [
+      "Steps since boot",
+      "Steps per minute",
+      "Distance in metres",
+      "Heart rate"
+    ],
+    "optionsAr": [
+      "الخطوات منذ التشغيل",
+      "الخطوات في الدقيقة",
+      "المسافة بالأمتار",
+      "نبض القلب"
+    ],
+    "answer": 0,
+    "explanationEn": "Store a baseline to compute daily steps.",
+    "explanationAr": "احفظ قيمة أساس لحساب خطوات اليوم."
+  },
+  {
+    "key": "qz-and-dev-sensors-4",
+    "topic": "and-dev-sensors",
+    "questionEn": "Which permissions does BLE need on Android 12+?",
+    "questionAr": "أي أذونات يحتاجها BLE في Android 12 فأحدث؟",
+    "optionsEn": [
+      "CAMERA and RECORD_AUDIO",
+      "READ_CONTACTS",
+      "INTERNET only",
+      "BLUETOOTH_SCAN and CONNECT"
+    ],
+    "optionsAr": [
+      "CAMERA وRECORD_AUDIO",
+      "READ_CONTACTS",
+      "INTERNET فقط",
+      "BLUETOOTH_SCAN وCONNECT"
+    ],
+    "answer": 3,
+    "explanationEn": "Older versions needed location for scanning.",
+    "explanationAr": "الإصدارات الأقدم احتاجت الموقع للبحث."
+  },
+  {
+    "key": "qz-and-dev-sensors-5",
+    "topic": "and-dev-sensors",
+    "questionEn": "Why scan with a service UUID filter?",
+    "questionAr": "لماذا تبحث بمرشح UUID للخدمة؟",
+    "optionsEn": [
+      "To pair with every device",
+      "To charge the device faster",
+      "Find only relevant devices",
+      "To skip asking for permission"
+    ],
+    "optionsAr": [
+      "للإقران مع كل جهاز تلقائيًا",
+      "لشحن الجهاز بشكل أسرع",
+      "لإيجاد الأجهزة المعنية فقط",
+      "لتخطي طلب الإذن"
+    ],
+    "answer": 2,
+    "explanationEn": "It saves battery and avoids noise.",
+    "explanationAr": "يوفر البطارية ويتجنب الضوضاء."
+  },
+  {
+    "key": "qz-and-dev-sensors-6",
+    "topic": "and-dev-sensors",
+    "questionEn": "How many GATT operations can run at once per connection?",
+    "questionAr": "كم عملية GATT يمكن أن تعمل معًا لكل اتصال؟",
+    "optionsEn": [
+      "One per characteristic",
+      "One",
+      "Ten",
+      "Unlimited"
+    ],
+    "optionsAr": [
+      "واحدة لكل خاصية",
+      "واحدة",
+      "عشر",
+      "دون حد"
+    ],
+    "answer": 1,
+    "explanationEn": "Queue them and wait for each callback.",
+    "explanationAr": "ضعها في طابور وانتظر كل استدعاء راجع."
+  },
+  {
+    "key": "qz-and-dev-sensors-7",
+    "topic": "and-dev-sensors",
+    "questionEn": "What should happen when a BLE device disconnects?",
+    "questionAr": "ماذا يجب أن يحدث عند انقطاع جهاز BLE؟",
+    "optionsEn": [
+      "Show reconnecting and retry",
+      "Crash the app with an error",
+      "Ask the user to reinstall",
+      "Ignore the problem silently"
+    ],
+    "optionsAr": [
+      "اعرض إعادة الاتصال وأعد المحاولة",
+      "إسقاط التطبيق مع رسالة خطأ",
+      "مطالبة المستخدم بإعادة التثبيت",
+      "تجاهل المشكلة بصمت تام"
+    ],
+    "answer": 0,
+    "explanationEn": "Disconnects are normal in BLE.",
+    "explanationAr": "الانقطاع أمر عادي في BLE."
+  },
+  {
+    "key": "qz-and-dev-sensors-8",
+    "topic": "and-dev-sensors",
+    "questionEn": "What pairs a device without location permission?",
+    "questionAr": "ما الذي يقرن جهازًا دون إذن الموقع؟",
+    "optionsEn": [
+      "The Geofencing API",
+      "Fused location provider",
+      "A WorkManager job",
+      "Companion Device Manager"
+    ],
+    "optionsAr": [
+      "واجهة Geofencing API",
+      "مزوّد الموقع المدمج",
+      "مهمة من WorkManager",
+      "Companion Device Manager"
+    ],
+    "answer": 3,
+    "explanationEn": "It shows a system pairing dialog.",
+    "explanationAr": "يعرض نافذة إقران من النظام."
+  },
+  {
+    "key": "qz-and-dev-widgets-1",
+    "topic": "and-dev-widgets",
+    "questionEn": "Which library builds widgets with a Compose-like API?",
+    "questionAr": "أي مكتبة تبني الأدوات بواجهة تشبه Compose؟",
+    "optionsEn": [
+      "CameraX",
+      "Paging",
+      "Glance",
+      "Media3"
+    ],
+    "optionsAr": [
+      "CameraX",
+      "Paging",
+      "Glance",
+      "Media3"
+    ],
+    "answer": 2,
+    "explanationEn": "Its composables become RemoteViews.",
+    "explanationAr": "تتحول دوالها إلى RemoteViews."
+  },
+  {
+    "key": "qz-and-dev-widgets-2",
+    "topic": "and-dev-widgets",
+    "questionEn": "Can you use regular Compose components in a widget?",
+    "questionAr": "هل تستطيع استخدام مكونات Compose العادية في أداة؟",
+    "optionsEn": [
+      "Only LazyColumn",
+      "No, only Glance ones",
+      "Yes, all of them",
+      "Only Material 3 ones"
+    ],
+    "optionsAr": [
+      "LazyColumn فقط",
+      "لا، مكونات Glance فقط",
+      "نعم، كلها",
+      "مكونات Material 3 فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Glance has its own set of composables and modifiers.",
+    "explanationAr": "لدى Glance مجموعتها الخاصة من الدوال والمعدّلات."
+  },
+  {
+    "key": "qz-and-dev-widgets-3",
+    "topic": "and-dev-widgets",
+    "questionEn": "How does a widget get fresh data after a save?",
+    "questionAr": "كيف تحصل الأداة على بيانات حديثة بعد الحفظ؟",
+    "optionsEn": [
+      "Call updateAll",
+      "It refreshes every second",
+      "Restart the phone",
+      "Reinstall the widget"
+    ],
+    "optionsAr": [
+      "استدعِ updateAll",
+      "تتحدث كل ثانية",
+      "أعد تشغيل الهاتف",
+      "أعد تثبيت الأداة"
+    ],
+    "answer": 0,
+    "explanationEn": "Widgets don't redraw by themselves.",
+    "explanationAr": "الأدوات لا تعيد رسم نفسها."
+  },
+  {
+    "key": "qz-and-dev-widgets-4",
+    "topic": "and-dev-widgets",
+    "questionEn": "What is the minimum updatePeriodMillis the system honours?",
+    "questionAr": "ما أقل updatePeriodMillis يحترمه النظام؟",
+    "optionsEn": [
+      "1 second",
+      "1 minute",
+      "5 seconds",
+      "30 minutes"
+    ],
+    "optionsAr": [
+      "ثانية واحدة",
+      "دقيقة واحدة",
+      "5 ثوانٍ",
+      "30 دقيقة"
+    ],
+    "answer": 3,
+    "explanationEn": "Prefer 0 and update on demand or with WorkManager.",
+    "explanationAr": "فضّل 0 والتحديث عند الطلب أو بـ WorkManager."
+  },
+  {
+    "key": "qz-and-dev-widgets-5",
+    "topic": "and-dev-widgets",
+    "questionEn": "Which action runs code without opening the app?",
+    "questionAr": "أي إجراء يشغّل كودًا دون فتح التطبيق؟",
+    "optionsEn": [
+      "A static intent",
+      "A deep link",
+      "actionRunCallback",
+      "actionStartActivity"
+    ],
+    "optionsAr": [
+      "نية ثابتة",
+      "رابط عميق",
+      "actionRunCallback",
+      "actionStartActivity"
+    ],
+    "answer": 2,
+    "explanationEn": "An ActionCallback runs in the background.",
+    "explanationAr": "يعمل ActionCallback في الخلفية."
+  },
+  {
+    "key": "qz-and-dev-widgets-6",
+    "topic": "and-dev-widgets",
+    "questionEn": "How does a widget follow the user's colors?",
+    "questionAr": "كيف تتبع الأداة ألوان المستخدم؟",
+    "optionsEn": [
+      "The app icon",
+      "GlanceTheme",
+      "Hard-coded hex colors",
+      "A custom font"
+    ],
+    "optionsAr": [
+      "أيقونة التطبيق",
+      "GlanceTheme",
+      "ألوان hex ثابتة",
+      "خط مخصص"
+    ],
+    "answer": 1,
+    "explanationEn": "It applies dynamic colors and dark theme.",
+    "explanationAr": "يطبق الألوان الديناميكية والسمة الداكنة."
+  },
+  {
+    "key": "qz-and-dev-widgets-7",
+    "topic": "and-dev-widgets",
+    "questionEn": "What adapts a widget's layout to its size?",
+    "questionAr": "ما الذي يكيّف تخطيط الأداة مع حجمها؟",
+    "optionsEn": [
+      "SizeMode.Responsive",
+      "A bigger icon",
+      "A longer title",
+      "WorkManager"
+    ],
+    "optionsAr": [
+      "SizeMode.Responsive",
+      "أيقونة أكبر",
+      "عنوان أطول",
+      "WorkManager"
+    ],
+    "answer": 0,
+    "explanationEn": "Provide a few target sizes.",
+    "explanationAr": "وفّر بضعة أحجام مستهدفة."
+  },
+  {
+    "key": "qz-and-dev-widgets-8",
+    "topic": "and-dev-widgets",
+    "questionEn": "Which shortcuts can an app add at runtime?",
+    "questionAr": "أي اختصارات يستطيع التطبيق إضافتها وقت التشغيل؟",
+    "optionsEn": [
+      "Static shortcuts",
+      "Launcher icons",
+      "Manifest activities",
+      "Dynamic shortcuts"
+    ],
+    "optionsAr": [
+      "الاختصارات الثابتة",
+      "أيقونات المشغل",
+      "أنشطة الـ manifest",
+      "الاختصارات الديناميكية"
+    ],
+    "answer": 3,
+    "explanationEn": "pushDynamicShortcut keeps the most recent ones.",
+    "explanationAr": "تحتفظ pushDynamicShortcut بأحدثها."
+  }
+]
