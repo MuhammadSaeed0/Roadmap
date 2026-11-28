@@ -10,7 +10,7 @@ const track = (slug: string, order: number, extra: Partial<Track> = {}): Track =
   slug, order, titleEn: slug === 'dotnet-fullstack' ? '.NET full-stack developer' : 'AI application developer',
   titleAr: slug === 'dotnet-fullstack' ? 'مطوّر Full-Stack بـ .NET' : 'مطوّر تطبيقات الذكاء الاصطناعي',
   summaryEn: 'S', summaryAr: 'م', outcomeEn: 'O', outcomeAr: 'ن', technologies: ['C#'], icon: 'map', isDraft: false,
-  phaseCount: 10, topicCount: 80, minutes: 600, doneTopics: 0, sharedPhases: 0, ...extra,
+  phaseCount: 10, topicCount: 80, minutes: 600, doneTopics: 0, sharedPhases: 0, phaseIds: [], ...extra,
 });
 
 async function render(tracks: Track[], mode: 'cards' | 'quiz', lang: 'en' | 'ar' = 'en') {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DevPath.Api.Services;
 
 /// <summary>The roadmaps a learner can follow, and which one they follow.</summary>
-public class TrackService(AppDbContext db, ICurrentUser user, TrackContext context, TimeProvider clock)
+public class TrackService(AppDbContext db, ICurrentUser user, TrackContext context, TimeProvider clock, ContentCache cache)
 {
     public async Task<TracksDto> ListAsync(CancellationToken ct)
     {
@@ -14,7 +14,7 @@ public class TrackService(AppDbContext db, ICurrentUser user, TrackContext conte
             .Where(t => t.IsPublished || user.CanSeeDrafts).ToList();
         // Topics per phase (draft content is already filtered out for learners), and the learner's finished topics.
         var phases = await db.TrackPhases.AsNoTracking()
-            .Select(tp => new { tp.TrackId, tp.PhaseId }).ToListAsync(ct);
+            .Select(tp => new { tp.TrackId, tp.PhaseId, tp.Position }).ToListAsync(ct);
         var topics = await db.Topics.AsNoTracking()
             .Select(t => new { t.Id, t.PhaseId, t.EstimatedMinutes }).ToListAsync(ct);
         var done = user.Id is null ? [] : (await db.TopicProgress.AsNoTracking()
@@ -34,7 +34,8 @@ public class TrackService(AppDbContext db, ICurrentUser user, TrackContext conte
                 t.Technologies.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
                 t.Icon, !t.IsPublished, phaseIds.Count, mine.Count, mine.Sum(x => x.EstimatedMinutes),
                 mine.Count(x => done.Contains(x.Id)),
-                active is null || active.Slug == t.Slug ? 0 : phaseIds.Count(activePhases.Contains));
+                active is null || active.Slug == t.Slug ? 0 : phaseIds.Count(activePhases.Contains),
+                phases.Where(p => p.TrackId == t.Id).OrderBy(p => p.Position).Select(p => p.PhaseId).ToList());
         }).ToList();
         return new TracksDto(list, active?.Slug, list.Any(t => t.Slug == chosen) ? chosen : null);
     }
@@ -50,6 +51,6 @@ public class TrackService(AppDbContext db, ICurrentUser user, TrackContext conte
         row.TrackSlug = slug;
         row.ChosenAt = clock.GetUtcNow().UtcDateTime;
         await db.SaveChangesAsync(ct);
-        return await new TrackService(db, user, new TrackContext(db, user), clock).ListAsync(ct);
+        return await new TrackService(db, user, new TrackContext(db, user, cache), clock, cache).ListAsync(ct);
     }
 }

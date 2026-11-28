@@ -13,7 +13,7 @@ const track = (slug: string, extra: Partial<Track> = {}): Track => ({
   titleAr: slug === 'dotnet' ? 'مطوّر Full-Stack بـ .NET' : 'مطوّر تطبيقات الذكاء الاصطناعي',
   summaryEn: 'Summary ' + slug, summaryAr: 'ملخص ' + slug, outcomeEn: 'Outcome ' + slug, outcomeAr: 'النتيجة ' + slug,
   technologies: ['C#', 'Angular'], icon: 'layers', isDraft: false, phaseCount: 14, topicCount: 166, minutes: 6000,
-  doneTopics: 0, sharedPhases: 0, ...extra,
+  doneTopics: 0, sharedPhases: 0, phaseIds: [], ...extra,
 });
 
 async function render(lang: 'en' | 'ar', data: Tracks, query: Record<string, string> = {}) {
