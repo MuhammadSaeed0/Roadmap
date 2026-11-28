@@ -7373,5 +7373,151 @@
       "channel": "Azmi Radi - عزمي راضي",
       "language": "ar"
     }
+  ],
+  "kt-coroutines-basics": [
+    {
+      "videoId": "Of6cqKjEBGw",
+      "title": "What Really Is Structured Concurrency In Kotlin? - Android Coding Interview Q&A",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "t-3TOke8tq8",
+      "title": "Async and Await - Kotlin Coroutines",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "pw17l53waSM",
+      "title": "Coroutines Need a Scope... and That's a Good Thing!",
+      "channel": "Dave Leeds",
+      "language": "en"
+    },
+    {
+      "videoId": "pbq8ema7YTA",
+      "title": "مقدمة عن Kotlin Coroutines (أحمد نبيل)",
+      "channel": "المطورون في العالم العربي - DevMENA",
+      "language": "ar"
+    }
+  ],
+  "kt-coroutines-dispatchers": [
+    {
+      "videoId": "KUQKQ8rtF0k",
+      "title": "withContext() - Kotlin Coroutines",
+      "channel": "Stevdza-San",
+      "language": "en"
+    },
+    {
+      "videoId": "m5SweN__k04",
+      "title": "Kotlin Coroutines Dispatchers Explained: Main, IO, Default & Unconfined for Beginners",
+      "channel": "CodeLucky",
+      "language": "en"
+    },
+    {
+      "videoId": "vG000mb3ues",
+      "title": "EP 5 - Kotlin Dispatchers Explained: Main vs IO vs Default (+ withContext) | Deep Dive",
+      "channel": "Android Atlas",
+      "language": "en"
+    }
+  ],
+  "kt-coroutines-cancellation": [
+    {
+      "videoId": "VWlwkqmTLHc",
+      "title": "In-Depth Guide to Coroutine Cancellation & Exception Handling - Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "9PYfYKRZ4Vo",
+      "title": "Supervisor Job (Kotlin Coroutines)",
+      "channel": "CodingWithMitch",
+      "language": "en"
+    },
+    {
+      "videoId": "i9sfnvUU3Ug",
+      "title": "EP 6 - Kotlin Coroutines Cancellation: Why job.cancel() Doesn't Stop Your Coroutine | Deep Dive",
+      "channel": "Android Atlas",
+      "language": "en"
+    }
+  ],
+  "kt-flow-basics": [
+    {
+      "videoId": "ZX8VsqNO_Ss",
+      "title": "Flow Basics - The Ultimate Guide to Kotlin Flows (Part 1)",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "6dOXCV_8nEI",
+      "title": "Intro to Kotlin's Flow API",
+      "channel": "Dave Leeds",
+      "language": "en"
+    },
+    {
+      "videoId": "9GGBC8crV44",
+      "title": "onStart & onCompletion Lifecycle Operators | Kotlin Flow for Android Development",
+      "channel": "Lukas Lechner",
+      "language": "en"
+    },
+    {
+      "videoId": "hZsKIuyUpvk",
+      "title": "لمطوري الأندرويد (عمر التميمي) Flows الكوتلن",
+      "channel": "المطورون في العالم العربي - DevMENA",
+      "language": "ar"
+    }
+  ],
+  "kt-stateflow-sharedflow": [
+    {
+      "videoId": "za-EEkqJLCQ",
+      "title": "StateFlow & SharedFlow - The Ultimate Guide to Kotlin Flows (Part 3)",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "6Jc6-INantQ",
+      "title": "StateFlow vs. Flow vs. SharedFlow vs. LiveData... When to Use What?! - Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "YBJWFgFvbg0",
+      "title": "EP7 - SharedFlow vs Channel in Android: Events, replay & The Right Tool | Deep Dive",
+      "channel": "Android Atlas",
+      "language": "en"
+    }
+  ],
+  "kt-concurrency-safety": [
+    {
+      "videoId": "Ap-cVIM5ORY",
+      "title": "How to Prevent Race Conditions in Kotlin Coroutines",
+      "channel": "Dave Leeds",
+      "language": "en"
+    },
+    {
+      "videoId": "-pqkw2dy1l4",
+      "title": "Mutex vs Atomic vs StateFlow.update — How Senior Engineers Choose",
+      "channel": "Mobile Coding Academy",
+      "language": "en"
+    }
+  ],
+  "kt-coroutines-testing": [
+    {
+      "videoId": "hzTU0lh-TIw",
+      "title": "Untangling Coroutine Testing by Márton Braun, Google EN",
+      "channel": "Mobile Makers",
+      "language": "en"
+    },
+    {
+      "videoId": "-0PFpQIRyH4",
+      "title": "Kickstart Testing Kotlin Flow (A Step-by-Step Guide) 🌝",
+      "channel": "Charfaoui Younes",
+      "language": "en"
+    },
+    {
+      "videoId": "n4cUnf86vDs",
+      "title": "Test Coroutines, Datastore Preferences, and Flows with JUnit 5, Turbine, and Shared Test Modules",
+      "channel": "Sarah Brenner",
+      "language": "en"
+    }
   ]
 }

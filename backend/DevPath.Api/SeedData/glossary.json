@@ -1538,5 +1538,68 @@
     "shortEn": "A Gradle module with one feature's screens, depending only on core modules.",
     "shortAr": "وحدة Gradle فيها شاشات ميزة واحدة، وتعتمد على الوحدات الأساسية فقط.",
     "topicSlug": "and-arch-modularization"
+  },
+  {
+    "term": "coroutine",
+    "arabic": "الـ Coroutine",
+    "shortEn": "A lightweight, suspendable computation that runs on threads without blocking them while it waits.",
+    "shortAr": "حساب خفيف قابل للتعليق يعمل على الخيوط دون حجبها أثناء الانتظار.",
+    "topicSlug": "kt-coroutines-basics"
+  },
+  {
+    "term": "suspend function",
+    "arabic": "دالة suspend",
+    "shortEn": "A Kotlin function that can pause and resume later, callable only from coroutines or other suspend functions.",
+    "shortAr": "دالة Kotlin تستطيع التوقف ثم الاستئناف لاحقًا، ولا تُستدعى إلا من Coroutine أو دالة suspend أخرى.",
+    "topicSlug": "kt-coroutines-basics"
+  },
+  {
+    "term": "structured concurrency",
+    "arabic": "التزامن المنظم",
+    "shortEn": "The rule that coroutines live inside scopes, so parents wait for, cancel and see the failures of their children.",
+    "shortAr": "قاعدة أن الـ Coroutines تعيش داخل نطاقات، فينتظر الآباء أبناءهم ويلغونهم ويرون أعطالهم.",
+    "topicSlug": "kt-coroutines-basics"
+  },
+  {
+    "term": "dispatcher",
+    "arabic": "الـ Dispatcher",
+    "shortEn": "The part of a coroutine context that decides which thread or thread pool runs it.",
+    "shortAr": "جزء سياق الـ Coroutine الذي يقرر أي خيط أو مجموعة خيوط تشغّلها.",
+    "topicSlug": "kt-coroutines-dispatchers"
+  },
+  {
+    "term": "main-safe",
+    "arabic": "آمن للخيط الرئيسي",
+    "shortEn": "Describes a function that can be called from the main thread because it moves its own blocking work elsewhere.",
+    "shortAr": "وصف لدالة يمكن استدعاؤها من الخيط الرئيسي لأنها تنقل عملها المعطِّل بنفسها إلى مكان آخر.",
+    "topicSlug": "kt-coroutines-dispatchers"
+  },
+  {
+    "term": "cold flow",
+    "arabic": "التدفق البارد",
+    "shortEn": "A Flow that runs its producer only when collected, once per collector.",
+    "shortAr": "تدفق Flow يشغّل منتِجه فقط عند الجمع، مرة لكل جامع.",
+    "topicSlug": "kt-flow-basics"
+  },
+  {
+    "term": "StateFlow",
+    "arabic": "التدفق StateFlow",
+    "shortEn": "A hot flow that always holds a current value and replays it to new collectors.",
+    "shortAr": "تدفق ساخن يحمل دائمًا قيمة حالية ويعيد بثها للجامعين الجدد.",
+    "topicSlug": "kt-stateflow-sharedflow"
+  },
+  {
+    "term": "race condition",
+    "arabic": "حالة السباق",
+    "shortEn": "A bug where the result depends on the timing of concurrent operations on shared data.",
+    "shortAr": "خطأ تعتمد فيه النتيجة على توقيت العمليات المتزامنة على بيانات مشتركة.",
+    "topicSlug": "kt-concurrency-safety"
+  },
+  {
+    "term": "virtual time",
+    "arabic": "الزمن الافتراضي",
+    "shortEn": "Simulated time in coroutine tests, where delays are skipped instantly and controlled by the test.",
+    "shortAr": "زمن محاكى في اختبارات الـ Coroutines تُتخطى فيه التأخيرات فورًا ويتحكم فيه الاختبار.",
+    "topicSlug": "kt-coroutines-testing"
   }
 ]
