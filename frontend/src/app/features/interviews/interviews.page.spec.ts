@@ -4,7 +4,7 @@ import { ApiService } from '../../core/api.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { InterviewCategory, InterviewList, InterviewQuestion } from '../../core/models';
 import InterviewsPage from './interviews.page';
-import { pickMockQuestions } from './mock-interview.component';
+import { pickMockQuestions, poolForLevel, splitAnswer, suggestedRating, weakTopics } from './mock-interview.component';
 
 const question = (id: number, category: InterviewCategory, topicId: number, topic: string): InterviewQuestion => ({
   id, key: 'q' + id, category, topicId, topicTitleEn: topic, topicTitleAr: topic, difficulty: 'Beginner',
@@ -39,6 +39,32 @@ describe('Interview preparation', () => {
     expect(new Set(picked.slice(0, 3).map(q => q.category)).size).toBe(3);
     expect(new Set(picked.map(q => q.id)).size).toBe(4);
     expect(pickMockQuestions(all, ['SqlServer'], 5)).toHaveLength(1);
+  });
+
+  it('draws questions for the chosen level, falling back to the whole pool', () => {
+    const mixed = [{ ...all[0], difficulty: 'Advanced' as const }, ...all.slice(1)];
+    expect(poolForLevel(mixed, 'senior', 1).map(q => q.id)).toEqual([1]);
+    expect(poolForLevel(mixed, 'senior', 3)).toHaveLength(6);
+    expect(poolForLevel(mixed, 'junior', 1)).toHaveLength(5);
+  });
+
+  it('splits key concepts and the common mistake out of an answer', () => {
+    const p = splitAnswer('Use a catalog. Key concepts: one place for versions. Common mistake: hard-coding them.');
+    expect(p).toEqual({ body: 'Use a catalog.', keyConcepts: 'one place for versions.', mistake: 'hard-coding them.' });
+    expect(splitAnswer('أستخدم فهرسًا. والخطأ الشائع: كتابة الإصدارات يدويًا.').mistake).toBe('كتابة الإصدارات يدويًا.');
+    expect(splitAnswer('Plain answer.')).toEqual({ body: 'Plain answer.', keyConcepts: null, mistake: null });
+  });
+
+  it('suggests a rating from the rubric and lists weak topics', () => {
+    expect(suggestedRating(4, 4, false)).toBe('Confident');
+    expect(suggestedRating(4, 4, true)).toBe('Partial');
+    expect(suggestedRating(2, 4, false)).toBe('Partial');
+    expect(suggestedRating(1, 4, false)).toBe('NeedReview');
+    const weak = weakTopics([
+      { question: all[1], rating: 'Partial' }, { question: all[2], rating: null }, { question: all[0], rating: 'Confident' },
+      { question: all[3], rating: 'NeedReview' },
+    ]);
+    expect(weak.map(w => [w.topicTitleEn, w.count])).toEqual([['LINQ', 2], ['Signals', 1]]);
   });
 
   it('filters the questions by topic', async () => {
@@ -76,8 +102,14 @@ describe('Interview preparation', () => {
       expect(rateQuestion).toHaveBeenCalledTimes(1);
       expect(el.querySelector('.mock-timer')?.textContent).toBe('2:00');
 
+      button(el, 'Show a hint').click();
+      fixture.detectChanges();
+      expect(el.querySelector('.mock-hint')?.textContent).toContain('Start from what you know about');
       button(el, 'I answered').click();
       fixture.detectChanges();
+      el.querySelectorAll<HTMLInputElement>('.mock-rubric input').forEach(i => i.click());
+      fixture.detectChanges();
+      expect(el.querySelector('.rate-btn.suggested')?.getAttribute('data-rating')).toBe('Partial');
       button(el, 'Confident').click();
       await fixture.whenStable();
       fixture.detectChanges();
@@ -88,6 +120,8 @@ describe('Interview preparation', () => {
       expect(summary.querySelectorAll('.mock-results li').length).toBe(3);
       expect(summary.textContent).toContain('Not rated');
       expect(summary.textContent).toContain('time ran out');
+      expect(summary.textContent).toContain('hint used');
+      expect(summary.querySelectorAll('.mock-weak li').length).toBeGreaterThan(0);
     } finally {
       vi.useRealTimers();
     }
