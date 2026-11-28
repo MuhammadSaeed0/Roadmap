@@ -1,0 +1,1178 @@
+[
+  {
+    "key": "qz-kt-coroutines-basics-1",
+    "topic": "kt-coroutines-basics",
+    "questionEn": "What can a suspend function do that a normal one can't?",
+    "questionAr": "ماذا تستطيع دالة suspend أن تفعل ولا تستطيعه الدالة العادية؟",
+    "optionsEn": [
+      "Run without any thread at all",
+      "Skip the compiler's type checks",
+      "Return two values at once",
+      "Pause without blocking the thread"
+    ],
+    "optionsAr": [
+      "العمل دون أي خيط إطلاقًا",
+      "تجاوز فحص الأنواع في المترجم",
+      "إرجاع قيمتين في وقت واحد",
+      "التوقف دون حجب الخيط"
+    ],
+    "answer": 3,
+    "explanationEn": "It suspends at suspension points and resumes later.",
+    "explanationAr": "تتوقف عند نقاط التعليق وتستأنف لاحقًا."
+  },
+  {
+    "key": "qz-kt-coroutines-basics-2",
+    "topic": "kt-coroutines-basics",
+    "questionEn": "Which builder returns a value you await?",
+    "questionAr": "أي بنّاء يُرجع قيمة تنتظرها بـ await؟",
+    "optionsEn": [
+      "runBlocking in apps",
+      "GlobalScope.launch",
+      "async",
+      "launch"
+    ],
+    "optionsAr": [
+      "runBlocking في التطبيقات",
+      "GlobalScope.launch",
+      "async",
+      "launch"
+    ],
+    "answer": 2,
+    "explanationEn": "async returns a Deferred; await gives the value.",
+    "explanationAr": "الدالة async تُرجع Deferred وawait تعطي القيمة."
+  },
+  {
+    "key": "qz-kt-coroutines-basics-3",
+    "topic": "kt-coroutines-basics",
+    "questionEn": "How do two asyncs run in parallel?",
+    "questionAr": "كيف يعمل استدعاءا async بالتوازي؟",
+    "optionsEn": [
+      "Use Thread.sleep between them",
+      "Start both, then await both",
+      "Await the first, then start the second",
+      "Wrap them in runBlocking"
+    ],
+    "optionsAr": [
+      "استخدم Thread.sleep بينهما",
+      "ابدأ الاثنين ثم انتظرهما",
+      "انتظر الأول ثم ابدأ الثاني",
+      "غلّفهما بـ runBlocking"
+    ],
+    "answer": 1,
+    "explanationEn": "Awaiting immediately makes them sequential.",
+    "explanationAr": "الانتظار الفوري يجعلهما متسلسلين."
+  },
+  {
+    "key": "qz-kt-coroutines-basics-4",
+    "topic": "kt-coroutines-basics",
+    "questionEn": "What happens to children when the parent scope is cancelled?",
+    "questionAr": "ماذا يحدث للأبناء عند إلغاء نطاق الأب؟",
+    "optionsEn": [
+      "They are cancelled too",
+      "They keep running",
+      "They restart later",
+      "They become GlobalScope jobs"
+    ],
+    "optionsAr": [
+      "تُلغى هي أيضًا",
+      "تستمر في العمل",
+      "تُعاد لاحقًا",
+      "تصبح مهام GlobalScope"
+    ],
+    "answer": 0,
+    "explanationEn": "That's structured concurrency.",
+    "explanationAr": "هذا هو التزامن المنظم."
+  },
+  {
+    "key": "qz-kt-coroutines-basics-5",
+    "topic": "kt-coroutines-basics",
+    "questionEn": "Why avoid GlobalScope?",
+    "questionAr": "لماذا تتجنب GlobalScope؟",
+    "optionsEn": [
+      "It is slower than Main",
+      "It can't call suspend functions",
+      "It needs a permission",
+      "Work outlives screens and leaks"
+    ],
+    "optionsAr": [
+      "لأنه أبطأ من Main",
+      "لأنه لا يستدعي دوال suspend",
+      "لأنه يحتاج إذنًا",
+      "العمل يعيش بعد الشاشات ويتسرب"
+    ],
+    "answer": 3,
+    "explanationEn": "Use scopes tied to a lifecycle.",
+    "explanationAr": "استخدم نطاقات مرتبطة بدورة حياة."
+  },
+  {
+    "key": "qz-kt-coroutines-basics-6",
+    "topic": "kt-coroutines-basics",
+    "questionEn": "Which scope should a ViewModel use?",
+    "questionAr": "أي نطاق تستخدمه ViewModel؟",
+    "optionsEn": [
+      "MainScope created per call",
+      "runBlocking",
+      "viewModelScope",
+      "GlobalScope"
+    ],
+    "optionsAr": [
+      "MainScope يُنشأ لكل استدعاء",
+      "runBlocking",
+      "viewModelScope",
+      "GlobalScope"
+    ],
+    "answer": 2,
+    "explanationEn": "It is cancelled in onCleared.",
+    "explanationAr": "يُلغى في onCleared."
+  },
+  {
+    "key": "qz-kt-coroutines-basics-7",
+    "topic": "kt-coroutines-basics",
+    "questionEn": "What does coroutineScope { } guarantee?",
+    "questionAr": "ماذا تضمن coroutineScope { }؟",
+    "optionsEn": [
+      "It never suspends",
+      "It returns after all children finish",
+      "It runs on a new thread pool",
+      "It ignores child failures"
+    ],
+    "optionsAr": [
+      "لا تعلّق أبدًا",
+      "تعود بعد انتهاء كل الأبناء",
+      "تعمل على مجموعة خيوط جديدة",
+      "تتجاهل أعطال الأبناء"
+    ],
+    "answer": 1,
+    "explanationEn": "A failing child cancels the others.",
+    "explanationAr": "الابن الفاشل يلغي الآخرين."
+  },
+  {
+    "key": "qz-kt-coroutines-basics-8",
+    "topic": "kt-coroutines-basics",
+    "questionEn": "How do you turn a callback API into a suspend function?",
+    "questionAr": "كيف تحوّل واجهة استدعاء راجع إلى دالة suspend؟",
+    "optionsEn": [
+      "suspendCancellableCoroutine",
+      "Thread.join()",
+      "A while(true) loop",
+      "LiveData.observeForever"
+    ],
+    "optionsAr": [
+      "suspendCancellableCoroutine",
+      "Thread.join()",
+      "حلقة while(true)",
+      "LiveData.observeForever"
+    ],
+    "answer": 0,
+    "explanationEn": "Resume once and handle cancellation.",
+    "explanationAr": "استأنف مرة واحدة وعالج الإلغاء."
+  },
+  {
+    "key": "qz-kt-coroutines-dispatchers-1",
+    "topic": "kt-coroutines-dispatchers",
+    "questionEn": "Which dispatcher fits a blocking file read?",
+    "questionAr": "أي Dispatcher يناسب قراءة ملف معطِّلة؟",
+    "optionsEn": [
+      "Dispatchers.IO",
+      "Dispatchers.Main",
+      "Dispatchers.Unconfined",
+      "No dispatcher at all"
+    ],
+    "optionsAr": [
+      "Dispatchers.IO",
+      "Dispatchers.Main",
+      "Dispatchers.Unconfined",
+      "لا Dispatcher إطلاقًا"
+    ],
+    "answer": 0,
+    "explanationEn": "IO has many threads for waiting.",
+    "explanationAr": "الـ Dispatcher المسمى IO فيه خيوط كثيرة للانتظار."
+  },
+  {
+    "key": "qz-kt-coroutines-dispatchers-2",
+    "topic": "kt-coroutines-dispatchers",
+    "questionEn": "Which fits sorting a huge list?",
+    "questionAr": "أيها يناسب ترتيب قائمة ضخمة؟",
+    "optionsEn": [
+      "Dispatchers.Main",
+      "Dispatchers.IO only",
+      "The UI thread directly",
+      "Dispatchers.Default"
+    ],
+    "optionsAr": [
+      "Dispatchers.Main",
+      "Dispatchers.IO فقط",
+      "خيط الواجهة مباشرة",
+      "Dispatchers.Default"
+    ],
+    "answer": 3,
+    "explanationEn": "Default is sized for CPU work.",
+    "explanationAr": "الـ Dispatcher المسمى Default مصمم لعمل المعالج."
+  },
+  {
+    "key": "qz-kt-coroutines-dispatchers-3",
+    "topic": "kt-coroutines-dispatchers",
+    "questionEn": "What does withContext return?",
+    "questionAr": "ماذا تُرجع withContext؟",
+    "optionsEn": [
+      "A new thread",
+      "Nothing at all",
+      "The block's result",
+      "A Job to cancel"
+    ],
+    "optionsAr": [
+      "خيطًا جديدًا",
+      "لا شيء إطلاقًا",
+      "ناتج الكتلة",
+      "Job للإلغاء"
+    ],
+    "answer": 2,
+    "explanationEn": "It switches, runs, and comes back.",
+    "explanationAr": "تبدّل وتشغّل ثم تعود."
+  },
+  {
+    "key": "qz-kt-coroutines-dispatchers-4",
+    "topic": "kt-coroutines-dispatchers",
+    "questionEn": "What does main-safe mean?",
+    "questionAr": "ماذا يعني آمن للخيط الرئيسي؟",
+    "optionsEn": [
+      "Needs the UI to be visible",
+      "Safe to call from the main thread",
+      "Runs only on the main thread",
+      "Never uses coroutines"
+    ],
+    "optionsAr": [
+      "يحتاج أن تكون الواجهة ظاهرة",
+      "آمن للاستدعاء من الخيط الرئيسي",
+      "يعمل على الخيط الرئيسي فقط",
+      "لا يستخدم Coroutines أبدًا"
+    ],
+    "answer": 1,
+    "explanationEn": "It moves its own blocking work.",
+    "explanationAr": "ينقل عمله المعطِّل بنفسه."
+  },
+  {
+    "key": "qz-kt-coroutines-dispatchers-5",
+    "topic": "kt-coroutines-dispatchers",
+    "questionEn": "Do Room and Retrofit suspend calls need withContext(IO)?",
+    "questionAr": "هل تحتاج استدعاءات suspend في Room وRetrofit إلى withContext(IO)؟",
+    "optionsEn": [
+      "No, they are already main-safe",
+      "Yes, always wrap every call",
+      "Only on Android 14 and newer",
+      "Only when running inside tests"
+    ],
+    "optionsAr": [
+      "لا، فهي آمنة للخيط الرئيسي",
+      "نعم، غلّف كل استدعاء دائمًا",
+      "فقط على Android 14 فأحدث",
+      "فقط عند العمل داخل الاختبارات"
+    ],
+    "answer": 0,
+    "explanationEn": "They switch internally.",
+    "explanationAr": "تبدّل داخليًا."
+  },
+  {
+    "key": "qz-kt-coroutines-dispatchers-6",
+    "topic": "kt-coroutines-dispatchers",
+    "questionEn": "Why inject dispatchers?",
+    "questionAr": "لماذا تحقن الـ Dispatchers؟",
+    "optionsEn": [
+      "Injection makes code run faster",
+      "Hilt requires it for every class",
+      "To avoid having to use Flow",
+      "Tests can use a test dispatcher"
+    ],
+    "optionsAr": [
+      "لأن الحقن يجعل الكود أسرع",
+      "لأن Hilt تشترطه لكل صنف",
+      "لتجنب الاضطرار إلى استخدام Flow",
+      "لتستخدم الاختبارات Dispatcher اختبار"
+    ],
+    "answer": 3,
+    "explanationEn": "Tests become instant and deterministic.",
+    "explanationAr": "فتصبح الاختبارات فورية وحتمية."
+  },
+  {
+    "key": "qz-kt-coroutines-dispatchers-7",
+    "topic": "kt-coroutines-dispatchers",
+    "questionEn": "What does StrictMode catch in debug builds?",
+    "questionAr": "ماذا يكشف StrictMode في بناءات debug؟",
+    "optionsEn": [
+      "Unused plugins in Gradle files",
+      "App icons in the wrong size",
+      "Disk or network on the main thread",
+      "Strings missing a translation"
+    ],
+    "optionsAr": [
+      "إضافات غير مستخدمة في ملفات Gradle",
+      "أيقونات تطبيق بحجم خاطئ",
+      "القرص أو الشبكة على الخيط الرئيسي",
+      "نصوص ينقصها ترجمة"
+    ],
+    "answer": 2,
+    "explanationEn": "Fix them before users see jank.",
+    "explanationAr": "أصلحها قبل أن يرى المستخدمون التقطع."
+  },
+  {
+    "key": "qz-kt-coroutines-dispatchers-8",
+    "topic": "kt-coroutines-dispatchers",
+    "questionEn": "Blocking the main thread for 5 s causes...",
+    "questionAr": "حجب الخيط الرئيسي 5 ثوانٍ يسبب...",
+    "optionsEn": [
+      "Nothing the user can see",
+      "An App Not Responding dialog",
+      "A faster next frame on screen",
+      "An automatic Gradle sync"
+    ],
+    "optionsAr": [
+      "لا شيء يراه المستخدم",
+      "نافذة «التطبيق لا يستجيب»",
+      "إطارًا تاليًا أسرع على الشاشة",
+      "مزامنة Gradle تلقائية"
+    ],
+    "answer": 1,
+    "explanationEn": "Short blocks drop frames already.",
+    "explanationAr": "الحجب القصير يُسقط الإطارات أصلًا."
+  },
+  {
+    "key": "qz-kt-coroutines-cancellation-1",
+    "topic": "kt-coroutines-cancellation",
+    "questionEn": "Is coroutine cancellation forced or cooperative?",
+    "questionAr": "هل إلغاء الـ Coroutine إجباري أم تعاوني؟",
+    "optionsEn": [
+      "Impossible",
+      "Cooperative",
+      "Forced at any line",
+      "Only on Main"
+    ],
+    "optionsAr": [
+      "مستحيل",
+      "تعاوني",
+      "إجباري عند أي سطر",
+      "على Main فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Code stops at suspension points or checks.",
+    "explanationAr": "يتوقف الكود عند نقاط التعليق أو الفحوص."
+  },
+  {
+    "key": "qz-kt-coroutines-cancellation-2",
+    "topic": "kt-coroutines-cancellation",
+    "questionEn": "A long CPU loop ignores cancel(). What fixes it?",
+    "questionAr": "حلقة معالج طويلة تتجاهل cancel(). ما الإصلاح؟",
+    "optionsEn": [
+      "Call ensureActive() in the loop",
+      "Switch it to Dispatchers.Main",
+      "Add more threads to the pool",
+      "Catch every exception inside"
+    ],
+    "optionsAr": [
+      "استدعِ ensureActive() داخل الحلقة",
+      "انقلها إلى Dispatchers.Main",
+      "أضف خيوطًا أكثر إلى المجموعة",
+      "التقط كل استثناء بداخلها"
+    ],
+    "answer": 0,
+    "explanationEn": "It throws when the job is cancelled.",
+    "explanationAr": "ترمي استثناء عندما تُلغى المهمة."
+  },
+  {
+    "key": "qz-kt-coroutines-cancellation-3",
+    "topic": "kt-coroutines-cancellation",
+    "questionEn": "What does withTimeoutOrNull return on timeout?",
+    "questionAr": "ماذا تُرجع withTimeoutOrNull عند انتهاء المهلة؟",
+    "optionsEn": [
+      "An empty string",
+      "The last value",
+      "A crash",
+      "null"
+    ],
+    "optionsAr": [
+      "نصًا فارغًا",
+      "آخر قيمة",
+      "انهيارًا",
+      "null"
+    ],
+    "answer": 3,
+    "explanationEn": "withTimeout throws instead.",
+    "explanationAr": "الدالة withTimeout ترمي استثناء بدلًا من ذلك."
+  },
+  {
+    "key": "qz-kt-coroutines-cancellation-4",
+    "topic": "kt-coroutines-cancellation",
+    "questionEn": "Why rethrow CancellationException?",
+    "questionAr": "لماذا تعيد رمي CancellationException؟",
+    "optionsEn": [
+      "To retry the call",
+      "Kotlin forbids catching it",
+      "So cancellation keeps propagating",
+      "To show it to the user"
+    ],
+    "optionsAr": [
+      "لإعادة محاولة الاستدعاء",
+      "لأن Kotlin تمنع التقاطه",
+      "حتى يستمر الإلغاء في الانتشار",
+      "لعرضه على المستخدم"
+    ],
+    "answer": 2,
+    "explanationEn": "Swallowing it breaks structured concurrency.",
+    "explanationAr": "ابتلاعه يكسر التزامن المنظم."
+  },
+  {
+    "key": "qz-kt-coroutines-cancellation-5",
+    "topic": "kt-coroutines-cancellation",
+    "questionEn": "When should you use supervisorScope?",
+    "questionAr": "متى تستخدم supervisorScope؟",
+    "optionsEn": [
+      "To make work faster",
+      "When children may fail independently",
+      "When all work depends on each other",
+      "For every network call"
+    ],
+    "optionsAr": [
+      "لجعل العمل أسرع",
+      "عندما يفشل الأبناء بشكل مستقل",
+      "عندما يعتمد كل العمل على بعضه",
+      "لكل استدعاء شبكة"
+    ],
+    "answer": 1,
+    "explanationEn": "One failing widget won't cancel the rest.",
+    "explanationAr": "عنصر فاشل لا يلغي البقية."
+  },
+  {
+    "key": "qz-kt-coroutines-cancellation-6",
+    "topic": "kt-coroutines-cancellation",
+    "questionEn": "Where does an exception in async surface?",
+    "questionAr": "أين يظهر الاستثناء في async؟",
+    "optionsEn": [
+      "At await()",
+      "Immediately in launch",
+      "In onCreate",
+      "Never"
+    ],
+    "optionsAr": [
+      "عند await()",
+      "فورًا في launch",
+      "في onCreate",
+      "أبدًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Wrap await in try/catch.",
+    "explanationAr": "غلّف await بـ try/catch."
+  },
+  {
+    "key": "qz-kt-coroutines-cancellation-7",
+    "topic": "kt-coroutines-cancellation",
+    "questionEn": "What does CoroutineExceptionHandler handle?",
+    "questionAr": "ماذا يعالج CoroutineExceptionHandler؟",
+    "optionsEn": [
+      "Errors stored inside async results",
+      "Normal cancellation exceptions",
+      "Compile errors in Kotlin files",
+      "Uncaught errors in root launches"
+    ],
+    "optionsAr": [
+      "الأخطاء المحفوظة داخل نتائج async",
+      "استثناءات الإلغاء العادية",
+      "أخطاء الترجمة في ملفات Kotlin",
+      "الأخطاء غير الملتقطة في launch الجذرية"
+    ],
+    "answer": 3,
+    "explanationEn": "Use it for logging, not control flow.",
+    "explanationAr": "استخدمه للتسجيل لا للتحكم في التدفق."
+  },
+  {
+    "key": "qz-kt-coroutines-cancellation-8",
+    "topic": "kt-coroutines-cancellation",
+    "questionEn": "Cleanup that must suspend after cancel runs in...",
+    "questionAr": "التنظيف الذي يجب أن يعلّق بعد الإلغاء يعمل في...",
+    "optionsEn": [
+      "Dispatchers.Unconfined",
+      "A new Activity",
+      "withContext(NonCancellable)",
+      "GlobalScope.launch"
+    ],
+    "optionsAr": [
+      "Dispatchers.Unconfined",
+      "Activity جديدة",
+      "withContext(NonCancellable)",
+      "GlobalScope.launch"
+    ],
+    "answer": 2,
+    "explanationEn": "Inside finally.",
+    "explanationAr": "داخل finally."
+  },
+  {
+    "key": "qz-kt-flow-basics-1",
+    "topic": "kt-flow-basics",
+    "questionEn": "What does cold mean for a Flow?",
+    "questionAr": "ماذا يعني أن الـ Flow بارد؟",
+    "optionsEn": [
+      "It runs on a cold thread",
+      "It runs only when collected",
+      "It keeps running in the background",
+      "It caches every value forever"
+    ],
+    "optionsAr": [
+      "يعمل على خيط بارد",
+      "يعمل فقط عند جمعه",
+      "يستمر في العمل في الخلفية",
+      "يخزّن كل قيمة إلى الأبد"
+    ],
+    "answer": 1,
+    "explanationEn": "Each collector triggers its own run.",
+    "explanationAr": "كل جامع يشغّل تنفيذه الخاص."
+  },
+  {
+    "key": "qz-kt-flow-basics-2",
+    "topic": "kt-flow-basics",
+    "questionEn": "Which operator cancels the previous inner flow?",
+    "questionAr": "أي عملية تلغي التدفق الداخلي السابق؟",
+    "optionsEn": [
+      "flatMapLatest",
+      "flatMapConcat",
+      "map",
+      "onEach"
+    ],
+    "optionsAr": [
+      "flatMapLatest",
+      "flatMapConcat",
+      "map",
+      "onEach"
+    ],
+    "answer": 0,
+    "explanationEn": "Ideal for search queries.",
+    "explanationAr": "مثالية لنصوص البحث."
+  },
+  {
+    "key": "qz-kt-flow-basics-3",
+    "topic": "kt-flow-basics",
+    "questionEn": "Which operator waits for a pause in input?",
+    "questionAr": "أي عملية تنتظر توقفًا في المدخلات؟",
+    "optionsEn": [
+      "take",
+      "zip",
+      "first",
+      "debounce"
+    ],
+    "optionsAr": [
+      "take",
+      "zip",
+      "first",
+      "debounce"
+    ],
+    "answer": 3,
+    "explanationEn": "Use it for typing.",
+    "explanationAr": "استخدمها للكتابة."
+  },
+  {
+    "key": "qz-kt-flow-basics-4",
+    "topic": "kt-flow-basics",
+    "questionEn": "What does combine emit?",
+    "questionAr": "ماذا تُصدر combine؟",
+    "optionsEn": [
+      "Only the first value",
+      "Values in pairs one by one",
+      "A value when any input emits",
+      "Only when all inputs emit together"
+    ],
+    "optionsAr": [
+      "القيمة الأولى فقط",
+      "قيمًا أزواجًا واحدة بواحدة",
+      "قيمة عندما يُصدر أي مدخل",
+      "فقط عندما تُصدر كل المدخلات معًا"
+    ],
+    "answer": 2,
+    "explanationEn": "It uses the latest of each input.",
+    "explanationAr": "تستخدم أحدث قيمة من كل مدخل."
+  },
+  {
+    "key": "qz-kt-flow-basics-5",
+    "topic": "kt-flow-basics",
+    "questionEn": "What does flowOn(Dispatchers.IO) change?",
+    "questionAr": "ماذا تغيّر flowOn(Dispatchers.IO)؟",
+    "optionsEn": [
+      "Nothing at all",
+      "The dispatcher of the upstream",
+      "The collector's dispatcher",
+      "Every flow in the app"
+    ],
+    "optionsAr": [
+      "لا شيء إطلاقًا",
+      "Dispatcher المصدر",
+      "Dispatcher الجامع",
+      "كل تدفق في التطبيق"
+    ],
+    "answer": 1,
+    "explanationEn": "Downstream stays where it was.",
+    "explanationAr": "الجزء اللاحق يبقى حيث كان."
+  },
+  {
+    "key": "qz-kt-flow-basics-6",
+    "topic": "kt-flow-basics",
+    "questionEn": "Where does catch handle errors?",
+    "questionAr": "أين تعالج catch الأخطاء؟",
+    "optionsEn": [
+      "Upstream of it",
+      "Downstream of it",
+      "In other flows",
+      "Only in tests"
+    ],
+    "optionsAr": [
+      "في الجزء السابق لها",
+      "في الجزء اللاحق لها",
+      "في تدفقات أخرى",
+      "في الاختبارات فقط"
+    ],
+    "answer": 0,
+    "explanationEn": "Put it near the end of the chain.",
+    "explanationAr": "ضعها قرب نهاية السلسلة."
+  },
+  {
+    "key": "qz-kt-flow-basics-7",
+    "topic": "kt-flow-basics",
+    "questionEn": "What turns a listener API into a Flow?",
+    "questionAr": "ما الذي يحوّل واجهة مستمع إلى Flow؟",
+    "optionsEn": [
+      "flowOf with a listener inside",
+      "Wrapping it in runBlocking",
+      "A for loop that polls it",
+      "callbackFlow with awaitClose"
+    ],
+    "optionsAr": [
+      "flowOf مع مستمع بداخلها",
+      "تغليفها بـ runBlocking",
+      "حلقة for تفحصها باستمرار",
+      "callbackFlow مع awaitClose"
+    ],
+    "answer": 3,
+    "explanationEn": "awaitClose unregisters the listener.",
+    "explanationAr": "الدالة awaitClose تلغي تسجيل المستمع."
+  },
+  {
+    "key": "qz-kt-flow-basics-8",
+    "topic": "kt-flow-basics",
+    "questionEn": "What does distinctUntilChanged drop?",
+    "questionAr": "ماذا تُسقط distinctUntilChanged؟",
+    "optionsEn": [
+      "Null values only",
+      "The first value",
+      "Consecutive equal values",
+      "All duplicate values ever"
+    ],
+    "optionsAr": [
+      "قيم null فقط",
+      "القيمة الأولى",
+      "القيم المتساوية المتتالية",
+      "كل القيم المكررة على الإطلاق"
+    ],
+    "answer": 2,
+    "explanationEn": "Only repeats in a row.",
+    "explanationAr": "التكرار المتتالي فقط."
+  },
+  {
+    "key": "qz-kt-stateflow-sharedflow-1",
+    "topic": "kt-stateflow-sharedflow",
+    "questionEn": "Which always has a current value?",
+    "questionAr": "أيها له دائمًا قيمة حالية؟",
+    "optionsEn": [
+      "Channel",
+      "A cold Flow",
+      "StateFlow",
+      "SharedFlow with replay 0"
+    ],
+    "optionsAr": [
+      "Channel",
+      "Flow بارد",
+      "StateFlow",
+      "SharedFlow مع replay 0"
+    ],
+    "answer": 2,
+    "explanationEn": "New collectors get it at once.",
+    "explanationAr": "الجامعون الجدد يحصلون عليها فورًا."
+  },
+  {
+    "key": "qz-kt-stateflow-sharedflow-2",
+    "topic": "kt-stateflow-sharedflow",
+    "questionEn": "Why expose asStateFlow() instead of the mutable type?",
+    "questionAr": "لماذا تعرض asStateFlow() بدل النوع القابل للتغيير؟",
+    "optionsEn": [
+      "It adds replay of old values",
+      "Only the owner can change state",
+      "It is much faster to collect",
+      "Compose can't read the other"
+    ],
+    "optionsAr": [
+      "لأنه يضيف إعادة بث القيم القديمة",
+      "لا يغيّر الحالة إلا مالكها",
+      "لأن جمعه أسرع بكثير",
+      "لأن Compose لا تقرأ النوع الآخر"
+    ],
+    "answer": 1,
+    "explanationEn": "Readers can't write.",
+    "explanationAr": "القرّاء لا يستطيعون الكتابة."
+  },
+  {
+    "key": "qz-kt-stateflow-sharedflow-3",
+    "topic": "kt-stateflow-sharedflow",
+    "questionEn": "Why use update { } on MutableStateFlow?",
+    "questionAr": "لماذا تستخدم update { } على MutableStateFlow؟",
+    "optionsEn": [
+      "It is atomic under concurrency",
+      "It skips recomposition in Compose",
+      "It saves the state to disk",
+      "It replays all the old values"
+    ],
+    "optionsAr": [
+      "لأنها ذرية مع التزامن",
+      "لأنها تتخطى إعادة التركيب في Compose",
+      "لأنها تحفظ الحالة على القرص",
+      "لأنها تعيد بث كل القيم القديمة"
+    ],
+    "answer": 0,
+    "explanationEn": "It retries if the value changed meanwhile.",
+    "explanationAr": "تعيد المحاولة إذا تغيرت القيمة في أثناء ذلك."
+  },
+  {
+    "key": "qz-kt-stateflow-sharedflow-4",
+    "topic": "kt-stateflow-sharedflow",
+    "questionEn": "Setting a StateFlow to an equal value...",
+    "questionAr": "ضبط StateFlow على قيمة مساوية...",
+    "optionsEn": [
+      "Emits it twice",
+      "Throws an exception",
+      "Clears the flow",
+      "Emits nothing"
+    ],
+    "optionsAr": [
+      "يُصدرها مرتين",
+      "يرمي استثناء",
+      "يمسح التدفق",
+      "لا يُصدر شيئًا"
+    ],
+    "answer": 3,
+    "explanationEn": "StateFlow is conflated and distinct.",
+    "explanationAr": "الـ StateFlow مدمجة ومميزة."
+  },
+  {
+    "key": "qz-kt-stateflow-sharedflow-5",
+    "topic": "kt-stateflow-sharedflow",
+    "questionEn": "What does shareIn do?",
+    "questionAr": "ماذا تفعل shareIn؟",
+    "optionsEn": [
+      "Converts the flow into a LiveData",
+      "Stores every emitted value in Room",
+      "Shares one upstream with many collectors",
+      "Copies the flow once per collector"
+    ],
+    "optionsAr": [
+      "تحوّل التدفق إلى كائن LiveData",
+      "تحفظ كل قيمة صادرة في Room",
+      "تشارك مصدرًا واحدًا مع جامعين كثيرين",
+      "تنسخ التدفق مرة لكل جامع"
+    ],
+    "answer": 2,
+    "explanationEn": "Expensive work runs once.",
+    "explanationAr": "العمل المكلف يعمل مرة واحدة."
+  },
+  {
+    "key": "qz-kt-stateflow-sharedflow-6",
+    "topic": "kt-stateflow-sharedflow",
+    "questionEn": "SharedFlow with replay = 0: a late collector...",
+    "questionAr": "تدفق SharedFlow مع replay = 0: الجامع المتأخر...",
+    "optionsEn": [
+      "Crashes",
+      "Misses earlier values",
+      "Gets every past value",
+      "Gets the latest value"
+    ],
+    "optionsAr": [
+      "ينهار",
+      "تفوته القيم السابقة",
+      "يحصل على كل القيم الماضية",
+      "يحصل على أحدث قيمة"
+    ],
+    "answer": 1,
+    "explanationEn": "replay = 1 keeps the last value.",
+    "explanationAr": "القيمة replay = 1 تحتفظ بآخر قيمة."
+  },
+  {
+    "key": "qz-kt-stateflow-sharedflow-7",
+    "topic": "kt-stateflow-sharedflow",
+    "questionEn": "Which suits one-off events like a snackbar?",
+    "questionAr": "أيها يناسب الأحداث لمرة واحدة مثل Snackbar؟",
+    "optionsEn": [
+      "A Channel or consumed state",
+      "StateFlow that keeps the event",
+      "A cold flowOf",
+      "A global variable"
+    ],
+    "optionsAr": [
+      "Channel أو حالة تُستهلك",
+      "StateFlow تحتفظ بالحدث",
+      "flowOf باردة",
+      "متغير عام"
+    ],
+    "answer": 0,
+    "explanationEn": "Each event should be handled once.",
+    "explanationAr": "يجب معالجة كل حدث مرة واحدة."
+  },
+  {
+    "key": "qz-kt-stateflow-sharedflow-8",
+    "topic": "kt-stateflow-sharedflow",
+    "questionEn": "What does WhileSubscribed(5_000) avoid?",
+    "questionAr": "ماذا يتجنب WhileSubscribed(5_000)؟",
+    "optionsEn": [
+      "Collecting in the UI",
+      "Using StateFlow at all",
+      "Network errors",
+      "Restarting work on rotation"
+    ],
+    "optionsAr": [
+      "الجمع في الواجهة",
+      "استخدام StateFlow إطلاقًا",
+      "أخطاء الشبكة",
+      "إعادة تشغيل العمل عند التدوير"
+    ],
+    "answer": 3,
+    "explanationEn": "The upstream survives short gaps.",
+    "explanationAr": "المصدر ينجو من الفجوات القصيرة."
+  },
+  {
+    "key": "qz-kt-concurrency-safety-1",
+    "topic": "kt-concurrency-safety",
+    "questionEn": "Why can count++ lose updates across threads?",
+    "questionAr": "لماذا قد يفقد count++ تحديثات عبر الخيوط؟",
+    "optionsEn": [
+      "It is read, add, write in steps",
+      "Kotlin ints are immutable",
+      "Threads can't share memory",
+      "It runs on the GPU"
+    ],
+    "optionsAr": [
+      "لأنه قراءة ثم إضافة ثم كتابة",
+      "لأن أعداد Kotlin غير قابلة للتغيير",
+      "لأن الخيوط لا تشارك الذاكرة",
+      "لأنه يعمل على معالج الرسوميات"
+    ],
+    "answer": 0,
+    "explanationEn": "Two threads can read the same old value.",
+    "explanationAr": "قد يقرأ خيطان القيمة القديمة نفسها."
+  },
+  {
+    "key": "qz-kt-concurrency-safety-2",
+    "topic": "kt-concurrency-safety",
+    "questionEn": "What does Mutex.withLock do?",
+    "questionAr": "ماذا تفعل Mutex.withLock؟",
+    "optionsEn": [
+      "Blocks the main thread",
+      "Cancels other coroutines",
+      "Copies the data",
+      "Lets one coroutine in at a time"
+    ],
+    "optionsAr": [
+      "تحجب الخيط الرئيسي",
+      "تلغي الـ Coroutines الأخرى",
+      "تنسخ البيانات",
+      "تسمح لـ Coroutine واحدة في كل مرة"
+    ],
+    "answer": 3,
+    "explanationEn": "It suspends waiters instead of blocking.",
+    "explanationAr": "تعلّق المنتظرين بدل الحجب."
+  },
+  {
+    "key": "qz-kt-concurrency-safety-3",
+    "topic": "kt-concurrency-safety",
+    "questionEn": "Which is best for a simple shared counter?",
+    "questionAr": "أيها الأفضل لعدّاد مشترك بسيط؟",
+    "optionsEn": [
+      "A List<Int>",
+      "A String",
+      "AtomicInteger",
+      "A plain var"
+    ],
+    "optionsAr": [
+      "List<Int>",
+      "String",
+      "AtomicInteger",
+      "متغير var عادي"
+    ],
+    "answer": 2,
+    "explanationEn": "Atomic operations need no lock.",
+    "explanationAr": "العمليات الذرية لا تحتاج قفلًا."
+  },
+  {
+    "key": "qz-kt-concurrency-safety-4",
+    "topic": "kt-concurrency-safety",
+    "questionEn": "Why avoid synchronized around suspend calls?",
+    "questionAr": "لماذا تتجنب synchronized حول استدعاءات suspend؟",
+    "optionsEn": [
+      "It turns off all Flow collection",
+      "It blocks threads while suspended work waits",
+      "It is not valid Kotlin syntax at all",
+      "It makes the code run much too fast"
+    ],
+    "optionsAr": [
+      "لأنه يوقف كل عمليات جمع Flow",
+      "لأنه يحجب الخيوط أثناء انتظار العمل المعلّق",
+      "لأنه ليس صياغة Kotlin صالحة إطلاقًا",
+      "لأنه يجعل الكود يعمل بسرعة زائدة جدًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Use Mutex for suspending code.",
+    "explanationAr": "استخدم Mutex للكود المعلّق."
+  },
+  {
+    "key": "qz-kt-concurrency-safety-5",
+    "topic": "kt-concurrency-safety",
+    "questionEn": "What protects several related database writes?",
+    "questionAr": "ما الذي يحمي عدة كتابات مترابطة في قاعدة البيانات؟",
+    "optionsEn": [
+      "A Room @Transaction",
+      "Separate coroutines",
+      "A longer timeout",
+      "More indexes"
+    ],
+    "optionsAr": [
+      "@Transaction في Room",
+      "Coroutines منفصلة",
+      "مهلة أطول",
+      "فهارس أكثر"
+    ],
+    "answer": 0,
+    "explanationEn": "All succeed or none do.",
+    "explanationAr": "تنجح كلها أو لا ينجح أي منها."
+  },
+  {
+    "key": "qz-kt-concurrency-safety-6",
+    "topic": "kt-concurrency-safety",
+    "questionEn": "Ten requests get 401 at once. Safe fix?",
+    "questionAr": "عشرة طلبات تحصل على 401 معًا. ما الإصلاح الآمن؟",
+    "optionsEn": [
+      "Ten parallel refreshes",
+      "Log the user out",
+      "Retry forever",
+      "One refresh behind a Mutex"
+    ],
+    "optionsAr": [
+      "عشرة تحديثات متوازية",
+      "إخراج المستخدم",
+      "إعادة المحاولة للأبد",
+      "تحديث واحد خلف Mutex"
+    ],
+    "answer": 3,
+    "explanationEn": "Others reuse the new token.",
+    "explanationAr": "البقية تعيد استخدام الرمز الجديد."
+  },
+  {
+    "key": "qz-kt-concurrency-safety-7",
+    "topic": "kt-concurrency-safety",
+    "questionEn": "Which state style reduces races?",
+    "questionAr": "أي أسلوب للحالة يقلل حالات السباق؟",
+    "optionsEn": [
+      "Global var objects everywhere",
+      "Static fields shared by classes",
+      "Immutable data replaced atomically",
+      "Mutable lists shared between threads"
+    ],
+    "optionsAr": [
+      "كائنات var عامة في كل مكان",
+      "حقول static تشترك فيها الأصناف",
+      "بيانات غير قابلة للتغيير تُستبدل ذريًا",
+      "قوائم قابلة للتغيير مشتركة بين الخيوط"
+    ],
+    "answer": 2,
+    "explanationEn": "One writer, many readers.",
+    "explanationAr": "كاتب واحد وقرّاء كثيرون."
+  },
+  {
+    "key": "qz-kt-concurrency-safety-8",
+    "topic": "kt-concurrency-safety",
+    "questionEn": "How do you expose a race in tests?",
+    "questionAr": "كيف تكشف حالة سباق في الاختبارات؟",
+    "optionsEn": [
+      "Skip the flaky test entirely",
+      "Run many coroutines concurrently",
+      "Run the test once, slowly",
+      "Add println calls and read them"
+    ],
+    "optionsAr": [
+      "تخطَّ الاختبار غير المستقر كليًا",
+      "شغّل Coroutines كثيرة بالتزامن",
+      "شغّل الاختبار مرة واحدة ببطء",
+      "أضف استدعاءات println واقرأها"
+    ],
+    "answer": 1,
+    "explanationEn": "On Dispatchers.Default with many repeats.",
+    "explanationAr": "على Dispatchers.Default مع تكرار كثير."
+  },
+  {
+    "key": "qz-kt-coroutines-testing-1",
+    "topic": "kt-coroutines-testing",
+    "questionEn": "What does runTest give you?",
+    "questionAr": "ماذا تعطيك runTest؟",
+    "optionsEn": [
+      "A coroutine test with virtual time",
+      "A real device to run on",
+      "A rule for Compose UI tests",
+      "A fake server for HTTP calls"
+    ],
+    "optionsAr": [
+      "اختبار Coroutine بزمن افتراضي",
+      "جهازًا حقيقيًا للتشغيل عليه",
+      "قاعدة لاختبارات واجهة Compose",
+      "خادمًا وهميًا لاستدعاءات HTTP"
+    ],
+    "answer": 0,
+    "explanationEn": "delay() is skipped instantly.",
+    "explanationAr": "الدالة delay() تُتخطى فورًا."
+  },
+  {
+    "key": "qz-kt-coroutines-testing-2",
+    "topic": "kt-coroutines-testing",
+    "questionEn": "What does advanceTimeBy(1000) do?",
+    "questionAr": "ماذا تفعل advanceTimeBy(1000)؟",
+    "optionsEn": [
+      "Sleeps the thread 1 s",
+      "Cancels the test",
+      "Retries the last call",
+      "Moves virtual time by 1 s"
+    ],
+    "optionsAr": [
+      "تنوّم الخيط ثانية",
+      "تلغي الاختبار",
+      "تعيد الاستدعاء الأخير",
+      "تحرّك الزمن الافتراضي ثانية"
+    ],
+    "answer": 3,
+    "explanationEn": "Tasks due by then run.",
+    "explanationAr": "المهام المستحقة حتى ذلك الوقت تعمل."
+  },
+  {
+    "key": "qz-kt-coroutines-testing-3",
+    "topic": "kt-coroutines-testing",
+    "questionEn": "Why replace Dispatchers.Main in tests?",
+    "questionAr": "لماذا تستبدل Dispatchers.Main في الاختبارات؟",
+    "optionsEn": [
+      "To run the test on the GPU",
+      "Hilt requires it in all tests",
+      "There is no Android main looper",
+      "Main is too fast for assertions"
+    ],
+    "optionsAr": [
+      "لتشغيل الاختبار على معالج الرسوميات",
+      "لأن Hilt تشترطه في كل الاختبارات",
+      "لا توجد حلقة Android رئيسية",
+      "لأن Main أسرع من أن يُتحقق منه"
+    ],
+    "answer": 2,
+    "explanationEn": "Use Dispatchers.setMain in a rule.",
+    "explanationAr": "استخدم Dispatchers.setMain في قاعدة."
+  },
+  {
+    "key": "qz-kt-coroutines-testing-4",
+    "topic": "kt-coroutines-testing",
+    "questionEn": "StandardTestDispatcher runs launched coroutines...",
+    "questionAr": "النوع StandardTestDispatcher يشغّل الـ Coroutines المطلقة...",
+    "optionsEn": [
+      "Never, the scheduler ignores them",
+      "When the test advances the scheduler",
+      "Immediately and eagerly on start",
+      "On a real pool of worker threads"
+    ],
+    "optionsAr": [
+      "أبدًا، فالمجدول يتجاهلها",
+      "عندما يقدّم الاختبار المجدول",
+      "فورًا وبشكل مبكر عند البدء",
+      "على مجموعة خيوط عاملة حقيقية"
+    ],
+    "answer": 1,
+    "explanationEn": "Unconfined runs them eagerly.",
+    "explanationAr": "النوع Unconfined يشغّلها مبكرًا."
+  },
+  {
+    "key": "qz-kt-coroutines-testing-5",
+    "topic": "kt-coroutines-testing",
+    "questionEn": "Why never use Thread.sleep in coroutine tests?",
+    "questionAr": "لماذا لا تستخدم Thread.sleep في اختبارات الـ Coroutines؟",
+    "optionsEn": [
+      "It is slow and flaky",
+      "It fails to compile",
+      "It cancels the scope",
+      "It leaks memory always"
+    ],
+    "optionsAr": [
+      "لأنه بطيء وغير مستقر",
+      "لأنه لا يُترجم",
+      "لأنه يلغي النطاق",
+      "لأنه يسرّب الذاكرة دائمًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Virtual time is exact and instant.",
+    "explanationAr": "الزمن الافتراضي دقيق وفوري."
+  },
+  {
+    "key": "qz-kt-coroutines-testing-6",
+    "topic": "kt-coroutines-testing",
+    "questionEn": "What does Turbine's test { } help with?",
+    "questionAr": "فيمَ تساعد test { } في Turbine؟",
+    "optionsEn": [
+      "Mocking Retrofit interfaces",
+      "Running Compose UI tests",
+      "Measuring battery usage",
+      "Asserting flow emissions in order"
+    ],
+    "optionsAr": [
+      "محاكاة واجهات Retrofit",
+      "تشغيل اختبارات واجهة Compose",
+      "قياس استهلاك البطارية",
+      "التحقق من إصدارات التدفق بالترتيب"
+    ],
+    "answer": 3,
+    "explanationEn": "awaitItem() returns the next value.",
+    "explanationAr": "الدالة awaitItem() تُرجع القيمة التالية."
+  },
+  {
+    "key": "qz-kt-coroutines-testing-7",
+    "topic": "kt-coroutines-testing",
+    "questionEn": "A stateIn(WhileSubscribed) flow shows no updates in a test. Why?",
+    "questionAr": "تدفق stateIn(WhileSubscribed) لا يُظهر تحديثات في اختبار. لماذا؟",
+    "optionsEn": [
+      "StateFlow can't be tested",
+      "Main isn't replaced by Default",
+      "Nothing is collecting it",
+      "The test is too fast"
+    ],
+    "optionsAr": [
+      "لأن StateFlow لا تُختبر",
+      "لأن Main لم يُستبدل بـ Default",
+      "لا شيء يجمعه",
+      "لأن الاختبار سريع جدًا"
+    ],
+    "answer": 2,
+    "explanationEn": "Launch a collector in backgroundScope.",
+    "explanationAr": "أطلق جامعًا في backgroundScope."
+  },
+  {
+    "key": "qz-kt-coroutines-testing-8",
+    "topic": "kt-coroutines-testing",
+    "questionEn": "How should classes get dispatchers for testability?",
+    "questionAr": "كيف تأخذ الأصناف الـ Dispatchers لتصبح قابلة للاختبار؟",
+    "optionsEn": [
+      "From the Activity",
+      "Through constructor injection",
+      "From a static field",
+      "Hard-coded Dispatchers.IO"
+    ],
+    "optionsAr": [
+      "من Activity",
+      "عبر الحقن في المُنشئ",
+      "من حقل static",
+      "Dispatchers.IO مكتوبة مباشرة"
+    ],
+    "answer": 1,
+    "explanationEn": "Tests pass the test dispatcher.",
+    "explanationAr": "الاختبارات تمرر Dispatcher الاختبار."
+  }
+]

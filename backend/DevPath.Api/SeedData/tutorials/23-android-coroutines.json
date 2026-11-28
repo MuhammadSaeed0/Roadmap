@@ -1,0 +1,163 @@
+[
+  {
+    "topic": "kt-coroutines-basics",
+    "lessons": [
+      {
+        "key": "tut-kt-coroutines-basics-1",
+        "titleEn": "suspend, launch and async",
+        "titleAr": "suspend وlaunch وasync",
+        "bodyEn": "A suspend function can pause at a suspension point and resume later on the same or another thread, while the thread itself is free to do other work. You can only call it from another suspend function or a coroutine.\n\nlaunch starts a coroutine and returns a Job you can cancel; use it for work whose result you don't need back. async returns a Deferred; call await() to get the value. Starting two asyncs before awaiting either runs them in parallel.",
+        "bodyAr": "دالة suspend تستطيع التوقف عند نقطة تعليق ثم الاستئناف لاحقًا على الخيط نفسه أو آخر، بينما يبقى الخيط حرًا لعمل آخر. ولا تستطيع استدعاءها إلا من دالة suspend أخرى أو من Coroutine.\n\nوالدالة launch تبدأ Coroutine وتُرجع Job تستطيع إلغاءها، واستخدمها لعمل لا تحتاج ناتجه. وasync تُرجع Deferred، فاستدعِ await() للحصول على القيمة. وبدء استدعاءي async قبل انتظار أي منهما يشغّلهما بالتوازي.",
+        "code": "fun main() = runBlocking {                    // only for main() and tests, never in app code\n    val start = System.currentTimeMillis()\n\n    val a = async { delay(1000); 2 }            // both start now\n    val b = async { delay(1000); 3 }\n    println(\"Sum: ${a.await() + b.await()}\")    // Sum: 5 after about 1 s, not 2 s\n\n    val job = launch {\n        repeat(5) { i -> println(\"Working $i\"); delay(300) }\n    }\n    delay(700)\n    job.cancel()                                 // prints Working 0, 1, 2 then stops\n    println(\"Took ${System.currentTimeMillis() - start} ms\")\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-coroutines-basics-2",
+        "titleEn": "Structured concurrency",
+        "titleAr": "التزامن المنظم",
+        "bodyEn": "Every coroutine has a parent scope. A parent waits for its children, cancelling the parent cancels the children, and a child's failure cancels the parent and its siblings. That's why work started in viewModelScope stops when the screen is gone.\n\nInside a suspend function, coroutineScope { } creates a child scope: the function returns only when all coroutines inside it finish, and an error in one cancels the rest. GlobalScope breaks all of this and leaks work, so avoid it.",
+        "bodyAr": "لكل Coroutine نطاق أب. والأب ينتظر أبناءه، وإلغاء الأب يلغي الأبناء، وفشل ابن يلغي الأب وإخوته. ولهذا يتوقف العمل الذي بدأ في viewModelScope عندما تختفي الشاشة.\n\nوداخل دالة suspend تنشئ coroutineScope { } نطاقًا فرعيًا: لا تعود الدالة إلا عندما تنتهي كل الـ Coroutines داخله، والخطأ في إحداها يلغي البقية. أما GlobalScope فتكسر كل ذلك وتسرّب العمل، فتجنبها.",
+        "code": "suspend fun syncAll(): Unit = coroutineScope {\n    launch { syncOrders() }\n    launch { syncAddresses() }\n    launch { syncFavourites() }\n}   // returns when all three finish; if one throws, the others are cancelled\n\nclass SyncViewModel(private val sync: SyncRepository) : ViewModel() {\n    fun onSyncClick() {\n        viewModelScope.launch { sync.syncAll() }      // stops if the user leaves the screen\n    }\n}\n\n// Leaks: keeps running after the screen is gone and its errors are easy to lose.\n// GlobalScope.launch { sync.syncAll() }",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-coroutines-dispatchers",
+    "lessons": [
+      {
+        "key": "tut-kt-coroutines-dispatchers-1",
+        "titleEn": "Which dispatcher?",
+        "titleAr": "أي Dispatcher؟",
+        "bodyEn": "Main runs on the UI thread: update state and call other suspend functions there. IO has many threads for waiting on blocking IO. Default has as many threads as CPU cores for computation. withContext switches for one block and comes back, returning the block's value.\n\nSuspend functions from Room, Retrofit and DataStore already switch internally, so you call them from Main without withContext.",
+        "bodyAr": "الـ Dispatcher المسمى Main يعمل على خيط الواجهة: حدّث الحالة واستدعِ دوال suspend الأخرى هناك. وIO فيه خيوط كثيرة لانتظار الإدخال والإخراج المعطِّل. وDefault فيه خيوط بعدد أنوية المعالج للحساب. وwithContext تبدّل لكتلة واحدة ثم تعود، وتُرجع قيمة الكتلة.\n\nودوال suspend في Room وRetrofit وDataStore تبدّل داخليًا بالفعل، فتستدعيها من Main دون withContext.",
+        "code": "viewModelScope.launch {                                  // Main\n    _state.update { it.copy(loading = true) }\n    val orders = repo.orders()                           // Retrofit suspend: already main-safe\n    val report = withContext(Dispatchers.Default) {       // CPU work off the main thread\n        orders.groupBy { it.month }.mapValues { (_, l) -> l.sumOf { it.total } }\n    }\n    withContext(Dispatchers.IO) { File(cacheDir, \"report.json\").writeText(Json.encodeToString(report)) }\n    _state.update { it.copy(loading = false, report = report) }   // back on Main\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-coroutines-dispatchers-2",
+        "titleEn": "Main safety and injected dispatchers",
+        "titleAr": "أمان الخيط الرئيسي والـ Dispatchers المحقونة",
+        "bodyEn": "Make each data-layer function responsible for its own threading: the caller shouldn't need to know that a file read blocks. Inject the dispatcher (with a default) so that tests pass a test dispatcher and run instantly and deterministically.\n\nStrictMode in debug builds reports disk and network access on the main thread, which catches mistakes before users do.",
+        "bodyAr": "اجعل كل دالة في طبقة البيانات مسؤولة عن خيوطها: يجب ألا يحتاج المستدعي إلى معرفة أن قراءة الملف معطِّلة. واحقن الـ Dispatcher (بقيمة افتراضية) حتى تمرر الاختبارات Dispatcher اختبار فتعمل فورًا وبشكل حتمي.\n\nوStrictMode في بناءات debug يبلّغ عن الوصول إلى القرص والشبكة على الخيط الرئيسي، فيكشف الأخطاء قبل أن يراها المستخدمون.",
+        "code": "class NotesFileStore(\n    private val dir: File,\n    private val io: CoroutineDispatcher = Dispatchers.IO,\n) {\n    suspend fun read(name: String): String? = withContext(io) {\n        File(dir, name).takeIf { it.exists() }?.readText()\n    }\n    suspend fun write(name: String, text: String) = withContext(io) {\n        File(dir, name).writeText(text)\n    }\n}\n\n// In a test: everything runs on the test scheduler, no real threads.\n@Test fun writesAndReads() = runTest {\n    val store = NotesFileStore(tempDir, io = StandardTestDispatcher(testScheduler))\n    store.write(\"a.txt\", \"hello\")\n    assertEquals(\"hello\", store.read(\"a.txt\"))\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-coroutines-cancellation",
+    "lessons": [
+      {
+        "key": "tut-kt-coroutines-cancellation-1",
+        "titleEn": "Cooperative cancellation and timeouts",
+        "titleAr": "الإلغاء التعاوني والمهلات",
+        "bodyEn": "cancel() does not stop a thread; it sets a flag. Suspending functions from kotlinx.coroutines (delay, withContext, channel operations) check it and throw CancellationException. A loop that never suspends must check isActive or call ensureActive().\n\nwithTimeout(duration) cancels the block and throws TimeoutCancellationException; withTimeoutOrNull returns null instead. Clean up in finally; if cleanup must suspend, wrap it in withContext(NonCancellable).",
+        "bodyAr": "الدالة cancel() لا توقف خيطًا، بل تضبط علامة. ودوال التعليق في kotlinx.coroutines (‏delay وwithContext وعمليات القنوات) تفحصها وترمي CancellationException. والحلقة التي لا تعلّق أبدًا يجب أن تفحص isActive أو تستدعي ensureActive().\n\nوwithTimeout(duration) تلغي الكتلة وترمي TimeoutCancellationException، وwithTimeoutOrNull تُرجع null بدلًا من ذلك. ونظّف في finally، وإذا كان التنظيف يحتاج تعليقًا فغلّفه بـ withContext(NonCancellable).",
+        "code": "suspend fun exportCsv(rows: List<Row>, out: File) = withContext(Dispatchers.IO) {\n    out.bufferedWriter().use { writer ->\n        for (row in rows) {\n            ensureActive()                         // stop quickly if the user cancels\n            writer.appendLine(row.toCsv())\n        }\n    }\n}\n\nsuspend fun loadOrNull(): Profile? = withTimeoutOrNull(5.seconds) { api.profile() }\n\nsuspend fun uploadWithCleanup(file: File) {\n    try {\n        api.upload(file)\n    } finally {\n        withContext(NonCancellable) { tempStore.delete(file) }   // runs even after cancellation\n    }\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-coroutines-cancellation-2",
+        "titleEn": "Exceptions, supervisorScope and handlers",
+        "titleAr": "الاستثناءات وsupervisorScope والمعالجات",
+        "bodyEn": "In a regular scope, one failing child cancels everything: that's right when the parts depend on each other. When they don't, use supervisorScope, so a failing child only fails itself, and handle each result.\n\nAn uncaught exception in launch propagates to the parent and, at the root, to a CoroutineExceptionHandler (or crashes). async stores the exception and throws it at await(), so wrap await in try/catch. Never catch and ignore CancellationException.",
+        "bodyAr": "في النطاق العادي يلغي ابن فاشل كل شيء، وهذا صحيح عندما تعتمد الأجزاء على بعضها. وعندما لا تعتمد، استخدم supervisorScope فيفشل الابن الفاشل وحده، وعالج كل نتيجة.\n\nوالاستثناء غير الملتقط في launch ينتقل إلى الأب، وعند الجذر إلى CoroutineExceptionHandler (أو ينهار التطبيق). أما async فتحفظ الاستثناء وترميه عند await()، فغلّف await بـ try/catch. ولا تلتقط CancellationException وتتجاهلها أبدًا.",
+        "code": "suspend fun loadHome(): HomeUiState = supervisorScope {\n    val banners = async { api.banners() }\n    val offers = async { api.offers() }\n    HomeUiState(\n        banners = try { banners.await() } catch (e: CancellationException) { throw e } catch (e: Exception) { emptyList() },\n        offers = try { offers.await() } catch (e: CancellationException) { throw e } catch (e: Exception) { emptyList() },\n    )\n}\n\n// Root launch: report instead of crashing.\nval reporter = CoroutineExceptionHandler { _, e -> crashReporter.log(e) }\nappScope.launch(reporter) { analytics.flush() }",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-flow-basics",
+    "lessons": [
+      {
+        "key": "tut-kt-flow-basics-1",
+        "titleEn": "Cold flows and operators",
+        "titleAr": "التدفقات الباردة والعمليات",
+        "bodyEn": "flow { } describes how to produce values; nothing runs until collect. Each collect runs the block again, which is what cold means. Operators return new flows and don't run anything themselves.\n\nCommon operators: map and filter transform values, onEach runs a side effect, take limits the count, distinctUntilChanged drops repeats, and debounce waits for a pause. flowOn(Dispatchers.IO) runs the upstream part on another dispatcher; catch handles errors from upstream.",
+        "bodyAr": "الدالة flow { } تصف كيف تُنتج القيم، ولا يعمل شيء حتى collect. وكل collect تشغّل الكتلة من جديد، وهذا معنى بارد. والعمليات تُرجع تدفقات جديدة ولا تشغّل شيئًا بنفسها.\n\nوالعمليات الشائعة: map وfilter تحوّلان القيم، وonEach تنفّذ أثرًا جانبيًا، وtake تحدد العدد، وdistinctUntilChanged تُسقط التكرار، وdebounce تنتظر توقفًا. وflowOn(Dispatchers.IO) تشغّل جزء المصدر على Dispatcher آخر، وcatch تعالج أخطاء المصدر.",
+        "code": "fun countdown(from: Int): Flow<Int> = flow {\n    for (i in from downTo 0) {\n        emit(i)\n        delay(1000)\n    }\n}\n\nfun main() = runBlocking {\n    countdown(5)\n        .filter { it % 2 == 1 }\n        .map { \"T-minus $it\" }\n        .onEach { println(it) }            // T-minus 5, T-minus 3, T-minus 1\n        .collect()\n\n    val f = flow { println(\"started\"); emit(1) }\n    f.first(); f.first()                     // prints \"started\" twice: cold\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-flow-basics-2",
+        "titleEn": "Combining and switching flows",
+        "titleAr": "دمج التدفقات والتبديل بينها",
+        "bodyEn": "combine(a, b) { x, y -> ... } emits whenever any input emits, using the latest value of each: perfect for building UI state from several sources. zip pairs values one by one. flatMapLatest maps each value to a new flow and cancels the previous inner flow, which is exactly what search needs.\n\ncallbackFlow turns listener-based APIs into flows; awaitClose unregisters the listener when collection stops.",
+        "bodyAr": "الدالة combine(a, b) { x, y -> ... } تُصدر كلما أصدر أي مدخل، مستخدمة أحدث قيمة من كل منهما، وهي مثالية لبناء حالة الواجهة من عدة مصادر. وzip تقرن القيم واحدة بواحدة. وflatMapLatest تحوّل كل قيمة إلى تدفق جديد وتلغي التدفق الداخلي السابق، وهذا بالضبط ما يحتاجه البحث.\n\nوcallbackFlow تحوّل الواجهات المعتمدة على المستمعين إلى تدفقات، وawaitClose تلغي تسجيل المستمع عندما يتوقف الجمع.",
+        "code": "val filtered: Flow<List<Task>> = combine(\n    repo.observeTasks(),          // Room\n    settings.showCompleted,       // DataStore\n    query,                        // user input\n) { tasks, showDone, q ->\n    tasks.filter { (showDone || !it.done) && it.title.contains(q, ignoreCase = true) }\n}\n\nval suggestions: Flow<List<String>> = query\n    .debounce(250)\n    .distinctUntilChanged()\n    .flatMapLatest { q -> if (q.isBlank()) flowOf(emptyList()) else api.suggest(q).asFlow() }\n\nfun ConnectivityManager.isOnline(): Flow<Boolean> = callbackFlow {\n    val cb = object : ConnectivityManager.NetworkCallback() {\n        override fun onAvailable(n: Network) { trySend(true) }\n        override fun onLost(n: Network) { trySend(false) }\n    }\n    registerDefaultNetworkCallback(cb)\n    awaitClose { unregisterNetworkCallback(cb) }\n}.distinctUntilChanged()",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-stateflow-sharedflow",
+    "lessons": [
+      {
+        "key": "tut-kt-stateflow-sharedflow-1",
+        "titleEn": "StateFlow for state",
+        "titleAr": "StateFlow للحالة",
+        "bodyEn": "A StateFlow always holds one value. New collectors get it immediately, and setting an equal value emits nothing. Keep a private MutableStateFlow and expose StateFlow with asStateFlow(), so only the owner can change it.\n\nUse update { } instead of value = value.copy(...): update reads, transforms and writes in a loop that retries if another coroutine changed the value meanwhile, so concurrent updates are never lost.",
+        "bodyAr": "الـ StateFlow تحمل دائمًا قيمة واحدة. والجامعون الجدد يحصلون عليها فورًا، وضبط قيمة مساوية لا يُصدر شيئًا. واحتفظ بـ MutableStateFlow خاصة واعرض StateFlow بـ asStateFlow()، حتى لا يغيّرها إلا مالكها.\n\nواستخدم update { } بدل value = value.copy(...): فـ update تقرأ وتحوّل وتكتب في حلقة تعيد المحاولة إذا غيّرت Coroutine أخرى القيمة في أثناء ذلك، فلا تضيع التحديثات المتزامنة أبدًا.",
+        "code": "data class CounterState(val count: Int = 0, val lastChangedBy: String = \"\")\n\nclass CounterViewModel : ViewModel() {\n    private val _state = MutableStateFlow(CounterState())\n    val state: StateFlow<CounterState> = _state.asStateFlow()\n\n    fun increment(by: String) = _state.update { it.copy(count = it.count + 1, lastChangedBy = by) }\n}\n\nfun main() = runBlocking {\n    val flow = MutableStateFlow(1)\n    val job = launch { flow.collect { println(\"Got $it\") } }   // Got 1 immediately\n    delay(10)\n    flow.value = 1                                            // equal: nothing emitted\n    flow.value = 2                                            // Got 2\n    delay(10); job.cancel()\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-stateflow-sharedflow-2",
+        "titleEn": "SharedFlow, shareIn and Channels",
+        "titleAr": "SharedFlow وshareIn وChannel",
+        "bodyEn": "SharedFlow broadcasts to every active collector. replay = N keeps the last N values for new collectors; replay = 0 means late collectors miss earlier values. shareIn turns a cold flow into a SharedFlow so expensive upstream work runs once for many collectors.\n\nFor one-off UI events, a Channel delivers each value to a single collector and buffers values sent while nobody is collecting, so a message sent during rotation is not lost. Google's guidance also accepts modelling events as state that the UI clears after handling.",
+        "bodyAr": "الـ SharedFlow تبث إلى كل جامع نشط. وreplay = N تحتفظ بآخر N قيم للجامعين الجدد، وreplay = 0 تعني أن الجامعين المتأخرين تفوتهم القيم السابقة. وshareIn تحوّل تدفقًا باردًا إلى SharedFlow فيعمل عمل المصدر المكلف مرة واحدة لجامعين كثيرين.\n\nولأحداث الواجهة لمرة واحدة، يسلّم الـ Channel كل قيمة إلى جامع واحد ويخزّن القيم المرسلة حين لا يجمع أحد، فلا تضيع رسالة أُرسلت أثناء التدوير. وإرشادات Google تقبل أيضًا تمثيل الأحداث كحالة تمسحها الواجهة بعد معالجتها.",
+        "code": "fun main() = runBlocking {\n    val shared = MutableSharedFlow<Int>(replay = 1)\n    shared.emit(1); shared.emit(2)\n    val job = launch { shared.collect { println(\"Late collector got $it\") } }   // got 2 (replay = 1)\n    delay(10)\n    shared.emit(3)                                                              // got 3\n    delay(10); job.cancel()\n\n    val events = Channel<String>(Channel.BUFFERED)\n    events.send(\"Saved\")                         // sent before anyone collects: kept in the buffer\n    println(events.receive())                    // Saved\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-concurrency-safety",
+    "lessons": [
+      {
+        "key": "tut-kt-concurrency-safety-1",
+        "titleEn": "Seeing a race condition",
+        "titleAr": "رؤية حالة سباق",
+        "bodyEn": "count++ is three steps: read, add, write. When two threads do it at the same time, both can read 41 and both write 42, losing one increment. On Dispatchers.Default, coroutines really run in parallel, so this shows up quickly.\n\nThe fixes trade convenience for safety: an atomic type for a single number, a Mutex around a group of related changes, or confining all changes to one thread so there is nothing to race.",
+        "bodyAr": "العملية count++ ثلاث خطوات: قراءة ثم إضافة ثم كتابة. وعندما ينفذها خيطان في الوقت نفسه، قد يقرأ كلاهما 41 ويكتب كلاهما 42، فتضيع زيادة. وعلى Dispatchers.Default تعمل الـ Coroutines فعلًا بالتوازي، فيظهر هذا بسرعة.\n\nوالحلول تقايض السهولة بالأمان: نوع ذري لرقم واحد، أو Mutex حول مجموعة تغييرات مترابطة، أو حصر كل التغييرات في خيط واحد فلا يبقى ما يتسابق عليه.",
+        "code": "suspend fun main() {\n    var unsafe = 0\n    val atomic = AtomicInteger(0)\n    val mutex = Mutex()\n    var locked = 0\n\n    withContext(Dispatchers.Default) {\n        repeat(1_000) {\n            launch {\n                repeat(100) {\n                    unsafe++                              // lost updates\n                    atomic.incrementAndGet()              // always correct\n                    mutex.withLock { locked++ }           // always correct\n                }\n            }\n        }\n    }\n    println(\"unsafe=$unsafe atomic=${atomic.get()} locked=$locked\")   // unsafe < 100000\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-concurrency-safety-2",
+        "titleEn": "Safe patterns for app state",
+        "titleAr": "أنماط آمنة لحالة التطبيق",
+        "bodyEn": "In app code you rarely need low-level locks. Keep state immutable (data classes, read-only lists) and change it with MutableStateFlow.update, which is atomic. Let one owner, such as a repository, be the only writer to a piece of data. Use Room transactions when several tables must change together.\n\nUse Mutex for operations that must never overlap, such as a token refresh or a one-time migration, and never call blocking synchronized code around suspend functions.",
+        "bodyAr": "في كود التطبيق نادرًا ما تحتاج الأقفال منخفضة المستوى. أبقِ الحالة غير قابلة للتغيير (أصناف data وقوائم للقراءة فقط) وغيّرها بـ MutableStateFlow.update الذرية. ودع مالكًا واحدًا، مثل المستودع، يكون الكاتب الوحيد لجزء من البيانات. واستخدم معاملات Room عندما يجب أن تتغير عدة جداول معًا.\n\nواستخدم Mutex للعمليات التي يجب ألا تتداخل أبدًا، مثل تحديث الرمز أو ترحيل لمرة واحدة، ولا تستدعِ كود synchronized المعطِّل حول دوال suspend أبدًا.",
+        "code": "@Dao\ninterface OrderDao {\n    @Insert suspend fun insertOrder(order: OrderEntity): Long\n    @Insert suspend fun insertItems(items: List<OrderItemEntity>)\n    @Query(\"DELETE FROM cart\") suspend fun clearCart()\n\n    @Transaction                                 // all three succeed or none do\n    suspend fun placeOrder(order: OrderEntity, items: List<OrderItemEntity>) {\n        val id = insertOrder(order)\n        insertItems(items.map { it.copy(orderId = id) })\n        clearCart()\n    }\n}\n\nclass Migrator(private val mutex: Mutex = Mutex()) {\n    private var done = false\n    suspend fun migrateOnce(block: suspend () -> Unit) = mutex.withLock {\n        if (!done) { block(); done = true }\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-coroutines-testing",
+    "lessons": [
+      {
+        "key": "tut-kt-coroutines-testing-1",
+        "titleEn": "runTest and virtual time",
+        "titleAr": "runTest والزمن الافتراضي",
+        "bodyEn": "runTest runs the test body in a coroutine on a TestCoroutineScheduler. delay() advances virtual time instantly, so a test of a 10-second timeout finishes in milliseconds. With StandardTestDispatcher, launched coroutines wait in a queue; advanceUntilIdle() runs everything, advanceTimeBy(ms) moves the clock, and runCurrent() runs what is due now.\n\nEvery dispatcher used in the test must share the test scheduler, which is why classes should accept injected dispatchers.",
+        "bodyAr": "الدالة runTest تشغّل جسم الاختبار داخل Coroutine على TestCoroutineScheduler. وdelay() تقدّم الزمن الافتراضي فورًا، فينتهي اختبار مهلة 10 ثوانٍ في أجزاء من الثانية. ومع StandardTestDispatcher تنتظر الـ Coroutines المطلقة في طابور، وadvanceUntilIdle() تشغّل كل شيء، وadvanceTimeBy(ms) تحرّك الساعة، وrunCurrent() تشغّل ما حان وقته.\n\nويجب أن يشترك كل Dispatcher مستخدم في الاختبار في مجدول الاختبار، ولهذا يجب أن تقبل الأصناف Dispatchers محقونة.",
+        "code": "@Test fun retriesThreeTimesWithBackoff() = runTest {\n    val api = FakeApi(failuresBeforeSuccess = 2)\n    val start = currentTime\n    val result = retryWithBackoff(times = 3, initialDelay = 1_000) { api.call() }\n    assertEquals(\"ok\", result)\n    assertEquals(3, api.calls)\n    assertEquals(3_000, currentTime - start)      // 1 s + 2 s of virtual time, instant in reality\n}\n\n@Test fun timesOut() = runTest {\n    val result = withTimeoutOrNull(5_000) { delay(10_000); \"late\" }\n    assertNull(result)\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-coroutines-testing-2",
+        "titleEn": "Testing flows and ViewModels",
+        "titleAr": "اختبار التدفقات وViewModel",
+        "bodyEn": "A ViewModel launches coroutines in viewModelScope, which uses Dispatchers.Main, so tests replace Main with a test dispatcher through a JUnit rule. To test a StateFlow built with stateIn(WhileSubscribed), something must collect it: launch a collector in backgroundScope.\n\nTurbine's test { } collects a flow and lets you await items in order, failing on unexpected emissions, which makes flow tests short and precise.",
+        "bodyAr": "تطلق ViewModel الـ Coroutines في viewModelScope التي تستخدم Dispatchers.Main، فتستبدل الاختبارات Main بـ Dispatcher اختبار عبر قاعدة JUnit. ولاختبار StateFlow مبنية بـ stateIn(WhileSubscribed) يجب أن يجمعها شيء ما: أطلق جامعًا في backgroundScope.\n\nوالدالة test { } في Turbine تجمع تدفقًا وتتيح انتظار العناصر بالترتيب، وتفشل عند إصدارات غير متوقعة، فتصبح اختبارات التدفقات قصيرة ودقيقة.",
+        "code": "@Test fun searchEmitsLoadingThenResults() = runTest {\n    val repo = FakeProductRepository(results = listOf(product(\"Kotlin in Action\")))\n    val vm = SearchViewModel(repo)\n\n    vm.state.test {\n        assertEquals(SearchUiState(), awaitItem())                 // initial\n        vm.onQueryChange(\"kotlin\")\n        advanceTimeBy(301)\n        assertTrue(awaitItem().loading)\n        assertEquals(listOf(\"Kotlin in Action\"), awaitItem().results.map { it.title })\n        cancelAndIgnoreRemainingEvents()\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  }
+]

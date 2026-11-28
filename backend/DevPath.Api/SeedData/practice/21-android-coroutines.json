@@ -1,0 +1,170 @@
+[
+  {
+    "key": "kt-ex-co-parallel",
+    "type": "Practical",
+    "topic": "kt-coroutines-basics",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Load a profile page in parallel",
+    "titleAr": "حمّل صفحة الملف الشخصي بالتوازي",
+    "problemEn": "loadProfilePage(userId) calls three suspend functions one after another: user(), posts() and followers(), each taking about 1 second. Rewrite it to run them in parallel with structured concurrency, so the page loads in about 1 second, and so that if posts() fails, the other calls are cancelled and the error reaches the caller.",
+    "problemAr": "الدالة loadProfilePage(userId) تستدعي ثلاث دوال suspend واحدة بعد الأخرى: user() وposts() وfollowers()، وتستغرق كل منها ثانية تقريبًا. أعد كتابتها لتشغيلها بالتوازي بالتزامن المنظم، فتُحمّل الصفحة في ثانية تقريبًا، وإذا فشلت posts() تُلغى الاستدعاءات الأخرى ويصل الخطأ إلى المستدعي.",
+    "expectedEn": "coroutineScope with three asyncs started before any await, measured with measureTimeMillis in runBlocking at about 1,000 ms.",
+    "expectedAr": "استخدام coroutineScope مع ثلاثة async تبدأ قبل أي await، وقياس بـ measureTimeMillis داخل runBlocking يقارب 1,000 ملّي ثانية.",
+    "hintsEn": [
+      "Start all asyncs first, then await them.",
+      "coroutineScope makes a failure cancel the siblings."
+    ],
+    "hintsAr": [
+      "ابدأ كل async أولًا ثم انتظرها.",
+      "الدالة coroutineScope تجعل الفشل يلغي الإخوة."
+    ],
+    "solutionEn": "suspend fun loadProfilePage(id: String) = coroutineScope { val u = async { user(id) }; val p = async { posts(id) }; val f = async { followers(id) }; ProfilePage(u.await(), p.await(), f.await()) }. Because the asyncs are children of coroutineScope, an exception in posts cancels the others and is rethrown from coroutineScope.",
+    "solutionAr": "الحل: suspend fun loadProfilePage(id: String) = coroutineScope { val u = async { user(id) }; val p = async { posts(id) }; val f = async { followers(id) }; ProfilePage(u.await(), p.await(), f.await()) }. ولأن استدعاءات async أبناء coroutineScope، يلغي استثناء في posts البقية ويُعاد رميه من coroutineScope.",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-co-main-safe",
+    "type": "Debugging",
+    "topic": "kt-coroutines-dispatchers",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Fix the frozen screen",
+    "titleAr": "أصلح الشاشة المتجمدة",
+    "problemEn": "Users report that the reports screen freezes for two seconds when it opens, and sometimes shows \"App isn't responding\". Find the main-thread work in the code below and fix it so every function the ViewModel calls is main-safe, with dispatchers injected for testing.",
+    "problemAr": "يبلّغ المستخدمون أن شاشة التقارير تتجمد ثانيتين عند فتحها، وأحيانًا تعرض «التطبيق لا يستجيب». أوجد العمل على الخيط الرئيسي في الكود أدناه وأصلحه بحيث تكون كل دالة تستدعيها ViewModel آمنة للخيط الرئيسي، مع حقن الـ Dispatchers للاختبار.",
+    "expectedEn": "The file read runs on IO, the aggregation on Default, the ViewModel only launches and updates state, and dispatchers are constructor parameters with defaults.",
+    "expectedAr": "قراءة الملف تعمل على IO، والتجميع على Default، وViewModel تطلق وتحدّث الحالة فقط، والـ Dispatchers وسائط في المُنشئ بقيم افتراضية.",
+    "hintsEn": [
+      "viewModelScope.launch runs on Main by default.",
+      "readText() and groupBy over 200,000 rows both block."
+    ],
+    "hintsAr": [
+      "الدالة viewModelScope.launch تعمل على Main افتراضيًا.",
+      "كل من readText() وgroupBy على 200,000 صف كلاهما يحجب."
+    ],
+    "solutionEn": "ReportsRepository gets io and cpu dispatchers. load() = withContext(io) { file.readText() } then withContext(cpu) { parse and aggregate }. The ViewModel calls repo.load() inside viewModelScope.launch and sets the state. Tests pass StandardTestDispatcher(testScheduler) for both.",
+    "solutionAr": "يأخذ ReportsRepository الـ Dispatchers الخاصة بـ io وcpu. والدالة load() = withContext(io) { file.readText() } ثم withContext(cpu) { التحليل والتجميع }. وتستدعي ViewModel الدالة repo.load() داخل viewModelScope.launch وتضبط الحالة. والاختبارات تمرر StandardTestDispatcher(testScheduler) للاثنين.",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-co-retry",
+    "type": "Practical",
+    "topic": "kt-coroutines-cancellation",
+    "difficulty": "Advanced",
+    "minutes": 45,
+    "titleEn": "Retry with backoff that respects cancellation",
+    "titleAr": "إعادة محاولة بانتظار متزايد تحترم الإلغاء",
+    "problemEn": "Write suspend fun <T> retryWithBackoff(times: Int = 3, initialDelay: Long = 1_000, factor: Double = 2.0, shouldRetry: (Throwable) -> Boolean = { it is IOException }, block: suspend () -> T): T. It retries only when shouldRetry says so, waits 1 s, 2 s, 4 s..., rethrows the last error, never catches CancellationException, and stops immediately when the caller is cancelled. Test it with runTest and virtual time.",
+    "problemAr": "اكتب suspend fun <T> retryWithBackoff(times: Int = 3, initialDelay: Long = 1_000, factor: Double = 2.0, shouldRetry: (Throwable) -> Boolean = { it is IOException }, block: suspend () -> T): T. تعيد المحاولة فقط عندما تسمح shouldRetry، وتنتظر 1 ثم 2 ثم 4 ثوانٍ، وتعيد رمي آخر خطأ، ولا تلتقط CancellationException أبدًا، وتتوقف فورًا عندما يُلغى المستدعي. واختبرها بـ runTest والزمن الافتراضي.",
+    "expectedEn": "Tests prove: success on the third try after exactly 3,000 ms of virtual time; a non-retryable error is thrown at once; cancellation during a delay stops without another attempt.",
+    "expectedAr": "الاختبارات تثبت: النجاح في المحاولة الثالثة بعد 3,000 ملّي ثانية افتراضية بالضبط، والخطأ غير القابل لإعادة المحاولة يُرمى فورًا، والإلغاء أثناء التأخير يوقف دون محاولة أخرى.",
+    "hintsEn": [
+      "delay() is itself a cancellation point.",
+      "Catch Exception, not Throwable, and check CancellationException first."
+    ],
+    "hintsAr": [
+      "الدالة delay() نفسها نقطة إلغاء.",
+      "التقط Exception لا Throwable، وافحص CancellationException أولًا."
+    ],
+    "solutionEn": "Loop attempt from 1 to times: try { return block() } catch (e: CancellationException) { throw e } catch (e: Exception) { if (attempt == times || !shouldRetry(e)) throw e; delay(currentDelay); currentDelay = (currentDelay * factor).toLong() }. delay suspends cooperatively, so cancelling the caller ends the loop.",
+    "solutionAr": "كرّر المحاولة من 1 حتى times: try { return block() } catch (e: CancellationException) { throw e } catch (e: Exception) { if (attempt == times || !shouldRetry(e)) throw e; delay(currentDelay); currentDelay = (currentDelay * factor).toLong() }. ولأن delay تعلّق بشكل تعاوني، فإلغاء المستدعي ينهي الحلقة.",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-co-search-flow",
+    "type": "Practical",
+    "topic": "kt-flow-basics",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "A search pipeline with Flow",
+    "titleAr": "خط بحث بـ Flow",
+    "problemEn": "Build a SearchViewModel that exposes StateFlow<SearchUiState(query, results, loading, error)>. Typing calls onQueryChange. Requirements: wait 300 ms after typing stops, ignore queries shorter than 2 characters, skip identical queries, cancel a running search when a new query arrives, show loading while searching, and turn failures into an error message without breaking the stream.",
+    "problemAr": "ابنِ SearchViewModel تعرض StateFlow<SearchUiState(query, results, loading, error)>. والكتابة تستدعي onQueryChange. والمتطلبات: انتظر 300 ملّي ثانية بعد توقف الكتابة، وتجاهل النصوص الأقصر من حرفين، وتجاوز النصوص المتطابقة، وألغِ البحث الجاري عند وصول نص جديد، واعرض التحميل أثناء البحث، وحوّل الأعطال إلى رسالة خطأ دون كسر التدفق.",
+    "expectedEn": "A pipeline using debounce, distinctUntilChanged, flatMapLatest, onStart for loading and catch inside the inner flow, plus a test proving one search per pause.",
+    "expectedAr": "خط معالجة يستخدم debounce وdistinctUntilChanged وflatMapLatest وonStart للتحميل وcatch داخل التدفق الداخلي، مع اختبار يثبت بحثًا واحدًا لكل توقف.",
+    "hintsEn": [
+      "Put catch inside flatMapLatest so one failure doesn't end the outer flow.",
+      "Emit a Loading state with onStart on the inner flow."
+    ],
+    "hintsAr": [
+      "ضع catch داخل flatMapLatest حتى لا ينهي فشل واحد التدفق الخارجي.",
+      "أصدر حالة تحميل بـ onStart على التدفق الداخلي."
+    ],
+    "solutionEn": "query.debounce(300).map(String::trim).distinctUntilChanged().flatMapLatest { q -> if (q.length < 2) flowOf(SearchUiState(q)) else repo.search(q).map { SearchUiState(q, it) }.onStart { emit(SearchUiState(q, loading = true)) }.catch { emit(SearchUiState(q, error = \"Search failed\")) } }.stateIn(viewModelScope, WhileSubscribed(5_000), SearchUiState()).",
+    "solutionAr": "الحل: query.debounce(300).map(String::trim).distinctUntilChanged().flatMapLatest { q -> if (q.length < 2) flowOf(SearchUiState(q)) else repo.search(q).map { SearchUiState(q, it) }.onStart { emit(SearchUiState(q, loading = true)) }.catch { emit(SearchUiState(q, error = \"Search failed\")) } }.stateIn(viewModelScope, WhileSubscribed(5_000), SearchUiState()).",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-co-events",
+    "type": "CodeReview",
+    "topic": "kt-stateflow-sharedflow",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Review state and events",
+    "titleAr": "راجع الحالة والأحداث",
+    "problemEn": "Review this ViewModel. Users see the \"Saved\" toast again after rotating, never see it when they save the same note twice, and other classes change the state directly. Explain each bug and rewrite it.",
+    "problemAr": "راجع ViewModel هذه. يرى المستخدمون رسالة «Saved» مرة أخرى بعد التدوير، ولا يرونها أبدًا عندما يحفظون الملاحظة نفسها مرتين، وأصناف أخرى تغيّر الحالة مباشرة. اشرح كل خطأ وأعد كتابتها.",
+    "expectedEn": "The message moves out of a public MutableStateFlow into a Channel (or consumed state), state becomes private with asStateFlow, and updates use update { }.",
+    "expectedAr": "تخرج الرسالة من MutableStateFlow العامة إلى Channel (أو حالة تُستهلك)، وتصبح الحالة خاصة مع asStateFlow، وتستخدم التحديثات update { }.",
+    "hintsEn": [
+      "Why does an equal value never emit from StateFlow?",
+      "What does a new collector receive from StateFlow after rotation?"
+    ],
+    "hintsAr": [
+      "لماذا لا تُصدر StateFlow قيمة مساوية أبدًا؟",
+      "ماذا يستقبل الجامع الجديد من StateFlow بعد التدوير؟"
+    ],
+    "solutionEn": "Bugs: message is a StateFlow, so after rotation the new collector receives the last \"Saved\" again (replay of current value) and saving twice sets an equal value that StateFlow drops; state is a public MutableStateFlow so anyone can write it; value = value.copy() can lose concurrent updates. Fix: private val _state + asStateFlow, _state.update { }, and a Channel<String>(BUFFERED) exposed with receiveAsFlow() for messages, collected once in LaunchedEffect.",
+    "solutionAr": "الأخطاء: الرسالة StateFlow، فبعد التدوير يستقبل الجامع الجديد آخر «Saved» مرة أخرى (إعادة بث القيمة الحالية)، والحفظ مرتين يضبط قيمة مساوية تُسقطها StateFlow، والحالة MutableStateFlow عامة فيستطيع أي أحد الكتابة فيها، وvalue = value.copy() قد تفقد تحديثات متزامنة. والإصلاح: private val _state مع asStateFlow، و_state.update { }، وChannel<String>(BUFFERED) معروضة بـ receiveAsFlow() للرسائل، تُجمع مرة واحدة في LaunchedEffect.",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-co-race",
+    "type": "Debugging",
+    "topic": "kt-concurrency-safety",
+    "difficulty": "Advanced",
+    "minutes": 40,
+    "titleEn": "The cart that loses items",
+    "titleAr": "السلة التي تفقد عناصر",
+    "problemEn": "When users tap \"Add\" quickly on several products, the cart sometimes ends with fewer items than taps, and the token refresher logs users out when many requests fail with 401 at once. Find both race conditions in the code and fix them, then write a test that adds 1,000 items concurrently and checks the count.",
+    "problemAr": "عندما يضغط المستخدمون «Add» بسرعة على عدة منتجات، تنتهي السلة أحيانًا بعناصر أقل من عدد الضغطات، ومُحدِّث الرموز يُخرج المستخدمين عندما تفشل طلبات كثيرة بـ 401 معًا. أوجد حالتي السباق في الكود وأصلحهما، ثم اكتب اختبارًا يضيف 1,000 عنصر بالتزامن ويتحقق من العدد.",
+    "expectedEn": "The cart uses _cart.update { }, the refresher uses a Mutex with a check of the current token, and the test passes on Dispatchers.Default.",
+    "expectedAr": "السلة تستخدم _cart.update { }، والمُحدِّث يستخدم Mutex مع فحص الرمز الحالي، والاختبار ينجح على Dispatchers.Default.",
+    "hintsEn": [
+      "Read-modify-write from several coroutines is the classic race.",
+      "After waiting for the lock, check whether someone already refreshed."
+    ],
+    "hintsAr": [
+      "القراءة ثم التعديل ثم الكتابة من عدة Coroutines هي حالة السباق الكلاسيكية.",
+      "بعد انتظار القفل، افحص هل حدّث أحد الرمز بالفعل."
+    ],
+    "solutionEn": "Cart: replace _cart.value = _cart.value.copy(items = _cart.value.items + item) with _cart.update { it.copy(items = it.items + item) }. Refresher: wrap the body in mutex.withLock { if (store.access != failedToken) return store.access; refresh... }. Test: runTest { withContext(Dispatchers.Default) { repeat(1_000) { launch { vm.add(item(it)) } } }; assertEquals(1_000, vm.cart.value.items.size) }.",
+    "solutionAr": "السلة: استبدل _cart.value = _cart.value.copy(items = _cart.value.items + item) بـ _cart.update { it.copy(items = it.items + item) }. والمُحدِّث: غلّف الجسم بـ mutex.withLock { if (store.access != failedToken) return store.access; التحديث... }. والاختبار: runTest { withContext(Dispatchers.Default) { repeat(1_000) { launch { vm.add(item(it)) } } }; assertEquals(1_000, vm.cart.value.items.size) }.",
+    "runner": "None"
+  },
+  {
+    "key": "kt-ex-co-tests",
+    "type": "Practical",
+    "topic": "kt-coroutines-testing",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "Test a timer ViewModel",
+    "titleAr": "اختبر ViewModel لمؤقت",
+    "problemEn": "A FocusTimerViewModel counts down from 25 minutes, updating StateFlow<TimerState(secondsLeft, running)> every second, with start, pause and reset. Write tests with runTest and virtual time: start then advance 60 s shows 1,440 left; pause stops the countdown; reset returns to 1,500; reaching zero sets running = false and emits a Finished event once.",
+    "problemAr": "تعدّ FocusTimerViewModel تنازليًا من 25 دقيقة، وتحدّث StateFlow<TimerState(secondsLeft, running)> كل ثانية، مع start وpause وreset. اكتب اختبارات بـ runTest والزمن الافتراضي: البدء ثم التقدم 60 ثانية يعرض 1,440 متبقية، والإيقاف المؤقت يوقف العد، وإعادة الضبط تُرجع 1,500، والوصول إلى الصفر يضبط running = false ويُصدر حدث Finished مرة واحدة.",
+    "expectedEn": "Four tests under a second in total, a MainDispatcherRule, no Thread.sleep, and Turbine or backgroundScope for the event.",
+    "expectedAr": "أربعة اختبارات في أقل من ثانية إجمالًا، وقاعدة MainDispatcherRule، ولا Thread.sleep، وTurbine أو backgroundScope للحدث.",
+    "hintsEn": [
+      "The ViewModel's ticking coroutine runs on Main, so Main must be the test dispatcher.",
+      "advanceTimeBy(60_000) then runCurrent() processes the ticks due."
+    ],
+    "hintsAr": [
+      "الـ Coroutine التي تعدّ في ViewModel تعمل على Main، فيجب أن يكون Main هو Dispatcher الاختبار.",
+      "استدعاء advanceTimeBy(60_000) ثم runCurrent() تعالج الدقات المستحقة."
+    ],
+    "solutionEn": "Use a MainDispatcherRule with StandardTestDispatcher. In each test create the ViewModel inside runTest, call start(), then advanceTimeBy and runCurrent and assert state.value. For the event, vm.events.test { advanceTimeBy(1_500_000); runCurrent(); assertEquals(Finished, awaitItem()); expectNoEvents() }.",
+    "solutionAr": "استخدم MainDispatcherRule مع StandardTestDispatcher. وفي كل اختبار أنشئ ViewModel داخل runTest، واستدعِ start()، ثم advanceTimeBy وrunCurrent وتحقق من state.value. وللحدث: vm.events.test { advanceTimeBy(1_500_000); runCurrent(); assertEquals(Finished, awaitItem()); expectNoEvents() }.",
+    "runner": "None"
+  }
+]

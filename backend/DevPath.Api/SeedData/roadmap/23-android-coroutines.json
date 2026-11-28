@@ -1,0 +1,265 @@
+{
+  "slug": "android-coroutines",
+  "order": 23,
+  "titleEn": "Coroutines and Flow",
+  "titleAr": "الـ Coroutines وFlow",
+  "descriptionEn": "Write asynchronous Kotlin that is correct and readable: suspend functions and structured concurrency, dispatchers and main safety, cancellation, timeouts and exceptions, cold Flows and their operators, StateFlow, SharedFlow and Channels, avoiding race conditions, and testing coroutine code with virtual time.",
+  "descriptionAr": "اكتب كود Kotlin غير متزامن صحيحًا ومقروءًا: دوال suspend والتزامن المنظم، والـ Dispatchers وأمان الخيط الرئيسي، والإلغاء والمهلات والاستثناءات، وتدفقات Flow الباردة وعملياتها، وStateFlow وSharedFlow وChannel، وتجنب حالات السباق، واختبار كود الـ Coroutines بالزمن الافتراضي.",
+  "topics": [
+    {
+      "slug": "kt-coroutines-basics",
+      "skill": "Kotlin",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Intermediate",
+      "titleEn": "Suspend functions and structured concurrency",
+      "titleAr": "دوال suspend والتزامن المنظم",
+      "summaryEn": "A coroutine is a lightweight piece of work that can pause without blocking a thread. suspend functions can pause at suspension points (a network call, delay, another suspend call) and resume later. Builders start coroutines: launch for fire-and-forget work that returns a Job, async for work that returns a value through await. Structured concurrency means every coroutine runs in a CoroutineScope (viewModelScope, lifecycleScope, coroutineScope { }), so children are tracked, cancelled with their parent, and their failures are not lost.",
+      "summaryAr": "الـ Coroutine قطعة عمل خفيفة تستطيع التوقف مؤقتًا دون حجب خيط. ودوال suspend تستطيع التوقف عند نقاط التعليق (استدعاء شبكة أو delay أو استدعاء suspend آخر) ثم الاستئناف لاحقًا. والبنّاءات تبدأ الـ Coroutines: launch لعمل لا يُنتظر له ناتج وتُرجع Job، وasync لعمل يُرجع قيمة عبر await. والتزامن المنظم يعني أن كل Coroutine تعمل داخل CoroutineScope (‏viewModelScope وlifecycleScope وcoroutineScope { })، فتُتتبع الأبناء، وتُلغى مع الأب، ولا تضيع أعطالها.",
+      "whyEn": "Every Android app waits for networks, databases and files without freezing the UI. Coroutines are the standard way to do that in Kotlin and Jetpack libraries (Room, Retrofit, DataStore, WorkManager) expose suspend functions and Flows, so this topic underlies every later phase.",
+      "whyAr": "كل تطبيق Android ينتظر الشبكات وقواعد البيانات والملفات دون تجميد الواجهة. والـ Coroutines هي الطريقة القياسية لذلك في Kotlin، ومكتبات Jetpack (‏Room وRetrofit وDataStore وWorkManager) تعرض دوال suspend وتدفقات Flow، فهذا الموضوع أساس كل المراحل اللاحقة.",
+      "howEn": "Write suspend functions that read like sequential code. Launch coroutines only from a scope tied to a lifecycle; never use GlobalScope. Use coroutineScope { } inside suspend functions to run parallel work with async and wait for all of it, and let exceptions and cancellation follow the scope tree.",
+      "howAr": "اكتب دوال suspend تُقرأ ككود متسلسل. وأطلق الـ Coroutines فقط من نطاق مرتبط بدورة حياة، ولا تستخدم GlobalScope أبدًا. واستخدم coroutineScope { } داخل دوال suspend لتشغيل عمل متوازٍ بـ async وانتظاره كله، ودع الاستثناءات والإلغاء تتبع شجرة النطاقات.",
+      "exampleEn": "A product screen loads the product, its reviews and recommendations in parallel: coroutineScope { val p = async { api.product(id) }; val r = async { api.reviews(id) }; ProductPage(p.await(), r.await()) }. If reviews fail, the product request is cancelled too, and if the user leaves, viewModelScope cancels everything.",
+      "exampleAr": "شاشة منتج تحمّل المنتج ومراجعاته والتوصيات بالتوازي: coroutineScope { val p = async { api.product(id) }; val r = async { api.reviews(id) }; ProductPage(p.await(), r.await()) }. وإذا فشلت المراجعات يُلغى طلب المنتج أيضًا، وإذا غادر المستخدم تلغي viewModelScope كل شيء.",
+      "practiceEn": "1) Convert a callback-based function to a suspend function. 2) Load two things in parallel with async and compare the time with sequential calls. 3) Show that cancelling the parent cancels both children.",
+      "practiceAr": "1) حوّل دالة تعتمد على الاستدعاء الراجع إلى دالة suspend. 2) حمّل شيئين بالتوازي بـ async وقارن الزمن مع الاستدعاءات المتسلسلة. 3) وضّح أن إلغاء الأب يلغي الابنين.",
+      "challengeEn": "Wrap a callback API (such as a location listener) with suspendCancellableCoroutine so it resumes once, cancels the request when the coroutine is cancelled, and never leaks the listener.",
+      "challengeAr": "غلّف واجهة تعتمد على الاستدعاء الراجع (مثل مستمع الموقع) بـ suspendCancellableCoroutine بحيث تستأنف مرة واحدة، وتلغي الطلب عند إلغاء الـ Coroutine، ولا تسرّب المستمع أبدًا.",
+      "objectivesEn": [
+        "Write and call suspend functions",
+        "Use launch, async and await",
+        "Explain structured concurrency and scopes",
+        "Run parallel work inside coroutineScope"
+      ],
+      "objectivesAr": [
+        "كتابة دوال suspend واستدعاؤها",
+        "استخدام launch وasync وawait",
+        "شرح التزامن المنظم والنطاقات",
+        "تشغيل عمل متوازٍ داخل coroutineScope"
+      ],
+      "prerequisites": [
+        "kt-functions",
+        "and-arch-mvvm"
+      ]
+    },
+    {
+      "slug": "kt-coroutines-dispatchers",
+      "skill": "Kotlin",
+      "priority": "Core",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Dispatchers, threads and main safety",
+      "titleAr": "الـ Dispatchers والخيوط وأمان الخيط الرئيسي",
+      "summaryEn": "Dispatchers decide which threads run a coroutine: Dispatchers.Main for UI work, Dispatchers.IO for blocking IO (files, sockets, legacy blocking APIs), Dispatchers.Default for CPU work such as sorting or parsing large data. withContext(dispatcher) switches for a block and returns its result. A function is main-safe when it can be called from the main thread because it moves its own blocking work elsewhere; Room and Retrofit suspend functions already are.",
+      "summaryAr": "الـ Dispatchers تقرر أي الخيوط تشغّل الـ Coroutine: ‏Dispatchers.Main لعمل الواجهة، وDispatchers.IO للإدخال والإخراج المعطِّل (الملفات والمقابس والواجهات القديمة المعطِّلة)، وDispatchers.Default لعمل المعالج مثل الترتيب أو تحليل بيانات كبيرة. وwithContext(dispatcher) تبدّل لكتلة وتُرجع ناتجها. والدالة آمنة للخيط الرئيسي عندما يمكن استدعاؤها منه لأنها تنقل عملها المعطِّل بنفسها إلى مكان آخر، ودوال suspend في Room وRetrofit كذلك بالفعل.",
+      "whyEn": "Blocking the main thread for more than a few milliseconds drops frames, and for five seconds shows an \"App not responding\" dialog. Choosing the right dispatcher, and making data-layer functions main-safe, keeps the UI smooth without the caller having to think about threads.",
+      "whyAr": "حجب الخيط الرئيسي أكثر من بضع ملّي ثوانٍ يُسقط الإطارات، ولخمس ثوانٍ يعرض نافذة «التطبيق لا يستجيب». واختيار الـ Dispatcher المناسب، وجعل دوال طبقة البيانات آمنة للخيط الرئيسي، يبقي الواجهة سلسة دون أن يفكر المستدعي في الخيوط.",
+      "howEn": "Call suspend APIs from Main freely. Wrap blocking calls in withContext(Dispatchers.IO) inside the data layer, and heavy computation in withContext(Dispatchers.Default). Inject dispatchers instead of hard-coding them so tests can use a test dispatcher. Use StrictMode in debug builds to catch disk and network access on the main thread.",
+      "howAr": "استدعِ واجهات suspend من Main بحرية. وغلّف الاستدعاءات المعطِّلة بـ withContext(Dispatchers.IO) داخل طبقة البيانات، والحساب الثقيل بـ withContext(Dispatchers.Default). واحقن الـ Dispatchers بدل كتابتها مباشرة حتى تستخدم الاختبارات Dispatcher اختبار. واستخدم StrictMode في بناءات debug لكشف الوصول إلى القرص والشبكة على الخيط الرئيسي.",
+      "exampleEn": "An image editor applies a filter to a 12-megapixel photo inside withContext(Dispatchers.Default), saves it with withContext(Dispatchers.IO), and the ViewModel calls one main-safe suspend function, so the progress indicator keeps spinning smoothly.",
+      "exampleAr": "محرر صور يطبّق مرشحًا على صورة 12 ميجابكسل داخل withContext(Dispatchers.Default)، ويحفظها داخل withContext(Dispatchers.IO)، وتستدعي ViewModel دالة suspend واحدة آمنة للخيط الرئيسي، فيستمر مؤشر التقدم في الدوران بسلاسة.",
+      "practiceEn": "1) Turn on StrictMode and find a main-thread disk read. 2) Make a blocking file read main-safe. 3) Move a sort of 100,000 items to Dispatchers.Default and measure the frame drops before and after.",
+      "practiceAr": "1) فعّل StrictMode وأوجد قراءة من القرص على الخيط الرئيسي. 2) اجعل قراءة ملف معطِّلة آمنة للخيط الرئيسي. 3) انقل ترتيب 100,000 عنصر إلى Dispatchers.Default وقِس الإطارات الساقطة قبل وبعد.",
+      "challengeEn": "Profile a screen with the CPU profiler, list everything that runs on the main thread during load, and move each item to the right dispatcher or remove it.",
+      "challengeAr": "حلّل شاشة بمحلل المعالج، واكتب كل ما يعمل على الخيط الرئيسي أثناء التحميل، وانقل كل عنصر إلى الـ Dispatcher المناسب أو احذفه.",
+      "objectivesEn": [
+        "Choose between Main, IO and Default",
+        "Switch context with withContext",
+        "Write main-safe functions",
+        "Inject dispatchers for testing"
+      ],
+      "objectivesAr": [
+        "الاختيار بين Main وIO وDefault",
+        "تبديل السياق بـ withContext",
+        "كتابة دوال آمنة للخيط الرئيسي",
+        "حقن الـ Dispatchers للاختبار"
+      ],
+      "prerequisites": [
+        "kt-coroutines-basics"
+      ]
+    },
+    {
+      "slug": "kt-coroutines-cancellation",
+      "skill": "Kotlin",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Advanced",
+      "titleEn": "Cancellation, timeouts and exceptions",
+      "titleAr": "الإلغاء والمهلات والاستثناءات",
+      "summaryEn": "Cancellation is cooperative: cancel() marks a Job cancelled, and the coroutine stops at the next suspension point or when it checks isActive or ensureActive(). withTimeout throws on timeout, withTimeoutOrNull returns null. In a normal scope an exception in one child cancels the parent and its siblings; supervisorScope and SupervisorJob let children fail independently. Exceptions in launch go to a CoroutineExceptionHandler, while async keeps them until await. CancellationException is normal and must be rethrown.",
+      "summaryAr": "الإلغاء تعاوني: cancel() تعلّم الـ Job كملغاة، والـ Coroutine تتوقف عند نقطة التعليق التالية أو عندما تفحص isActive أو ensureActive(). وwithTimeout ترمي استثناء عند انتهاء المهلة، وwithTimeoutOrNull تُرجع null. وفي النطاق العادي يلغي استثناء في أحد الأبناء الأب وإخوته، أما supervisorScope وSupervisorJob فتتيحان للأبناء الفشل بشكل مستقل. واستثناءات launch تذهب إلى CoroutineExceptionHandler، بينما تحتفظ async بها حتى await. وCancellationException طبيعية ويجب إعادة رميها.",
+      "whyEn": "Leaving a screen, typing a new search or rotating the device should stop old work immediately to save battery and data and avoid showing stale results. Wrong exception handling either crashes the app or silently hides failures, and both are common interview questions.",
+      "whyAr": "مغادرة الشاشة أو كتابة بحث جديد أو تدوير الجهاز يجب أن توقف العمل القديم فورًا لتوفير البطارية والبيانات وتجنب عرض نتائج قديمة. ومعالجة الاستثناءات الخاطئة إما تُسقط التطبيق أو تخفي الأعطال بصمت، والحالتان من أسئلة المقابلات الشائعة.",
+      "howEn": "Use scopes tied to lifecycles and cancellation happens for you. In long CPU loops call ensureActive(). Wrap slow calls in withTimeout. Catch exceptions where you can recover, rethrow CancellationException, use supervisorScope when one failing child must not cancel the others (such as loading independent widgets), and release resources in finally or with use.",
+      "howAr": "استخدم نطاقات مرتبطة بدورات الحياة فيحدث الإلغاء تلقائيًا. وفي حلقات المعالج الطويلة استدعِ ensureActive(). وغلّف الاستدعاءات البطيئة بـ withTimeout. والتقط الاستثناءات حيث تستطيع التعافي، وأعد رمي CancellationException، واستخدم supervisorScope عندما يجب ألا يلغي ابن فاشل الآخرين (مثل تحميل عناصر واجهة مستقلة)، وحرّر الموارد في finally أو بـ use.",
+      "exampleEn": "A dashboard loads weather, news and a calendar widget with supervisorScope: if news fails, weather and calendar still appear and news shows a retry card. Each call uses withTimeout(10.seconds), and leaving the screen cancels all three.",
+      "exampleAr": "لوحة رئيسية تحمّل عناصر الطقس والأخبار والتقويم بـ supervisorScope: إذا فشلت الأخبار يظهر الطقس والتقويم مع ذلك، وتعرض الأخبار بطاقة إعادة محاولة. وكل استدعاء يستخدم withTimeout(10.seconds)، ومغادرة الشاشة تلغي الثلاثة.",
+      "practiceEn": "1) Show that a CPU loop without ensureActive keeps running after cancel. 2) Load three independent things with supervisorScope and make one fail. 3) Add a timeout with a friendly message.",
+      "practiceAr": "1) وضّح أن حلقة معالج دون ensureActive تستمر بعد الإلغاء. 2) حمّل ثلاثة أشياء مستقلة بـ supervisorScope واجعل أحدها يفشل. 3) أضف مهلة برسالة لطيفة.",
+      "challengeEn": "Write a search that cancels the previous request when the user types, retries transient failures with exponential backoff up to three times, and never retries after cancellation.",
+      "challengeAr": "اكتب بحثًا يلغي الطلب السابق عندما يكتب المستخدم، ويعيد محاولة الأعطال المؤقتة بانتظار متزايد حتى ثلاث مرات، ولا يعيد المحاولة أبدًا بعد الإلغاء.",
+      "objectivesEn": [
+        "Explain cooperative cancellation",
+        "Use withTimeout and withTimeoutOrNull",
+        "Handle exceptions in launch and async",
+        "Choose between coroutineScope and supervisorScope"
+      ],
+      "objectivesAr": [
+        "شرح الإلغاء التعاوني",
+        "استخدام withTimeout وwithTimeoutOrNull",
+        "معالجة الاستثناءات في launch وasync",
+        "الاختيار بين coroutineScope وsupervisorScope"
+      ],
+      "prerequisites": [
+        "kt-coroutines-dispatchers"
+      ]
+    },
+    {
+      "slug": "kt-flow-basics",
+      "skill": "Kotlin",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Intermediate",
+      "titleEn": "Flow and its operators",
+      "titleAr": "تدفق Flow وعملياته",
+      "summaryEn": "A Flow is a cold stream of values: nothing runs until someone collects it, and each collector gets its own execution. You build flows with flow { emit(x) }, flowOf or asFlow, and libraries return them (Room queries, DataStore). Intermediate operators such as map, filter, onEach, debounce, distinctUntilChanged, flatMapLatest and combine describe transformations; terminal operators such as collect, first and toList run them. flowOn changes the upstream dispatcher and catch handles upstream errors.",
+      "summaryAr": "الـ Flow تدفق بارد من القيم: لا يعمل شيء حتى يجمعه أحد، وكل جامع يحصل على تنفيذه الخاص. وتبني التدفقات بـ flow { emit(x) } أو flowOf أو asFlow، والمكتبات تُرجعها (استعلامات Room وDataStore). والعمليات الوسيطة مثل map وfilter وonEach وdebounce وdistinctUntilChanged وflatMapLatest وcombine تصف التحويلات، والعمليات الطرفية مثل collect وfirst وtoList تشغّلها. وflowOn تغيّر Dispatcher المصدر، وcatch تعالج أخطاء المصدر.",
+      "whyEn": "Data that changes over time (database rows, settings, search input, location) is naturally a stream. Flow lets you describe the pipeline once and get updates automatically, which removes manual refresh code and many bugs.",
+      "whyAr": "البيانات التي تتغير مع الوقت (صفوف قاعدة البيانات والإعدادات ونص البحث والموقع) تدفق بطبيعتها. وFlow تتيح لك وصف خط المعالجة مرة واحدة والحصول على التحديثات تلقائيًا، فيختفي كود التحديث اليدوي وكثير من الأخطاء.",
+      "howEn": "Keep flows cold in the data layer and transform them with operators. Use flatMapLatest to switch to a new inner flow when the input changes (a new search query), debounce for typing, combine to merge several sources, distinctUntilChanged to skip duplicates, and catch near the end to turn errors into values. Collect in a lifecycle-aware way in the UI.",
+      "howAr": "أبقِ التدفقات باردة في طبقة البيانات وحوّلها بالعمليات. واستخدم flatMapLatest للانتقال إلى تدفق داخلي جديد عندما يتغير المدخل (نص بحث جديد)، وdebounce للكتابة، وcombine لدمج عدة مصادر، وdistinctUntilChanged لتجاوز المكرر، وcatch قرب النهاية لتحويل الأخطاء إلى قيم. واجمع بطريقة تراعي دورة الحياة في الواجهة.",
+      "exampleEn": "Search: queryFlow.debounce(300).map { it.trim() }.distinctUntilChanged().flatMapLatest { q -> if (q.length < 2) flowOf(emptyList()) else repo.search(q) }.catch { emit(emptyList()) }. Typing \"kotl\" quickly makes one request, and a new letter cancels the old one.",
+      "exampleAr": "البحث: queryFlow.debounce(300).map { it.trim() }.distinctUntilChanged().flatMapLatest { q -> if (q.length < 2) flowOf(emptyList()) else repo.search(q) }.catch { emit(emptyList()) }. فكتابة «kotl» بسرعة تُرسل طلبًا واحدًا، والحرف الجديد يلغي الطلب القديم.",
+      "practiceEn": "1) Write a countdown flow with delay. 2) Build a search pipeline with debounce and flatMapLatest. 3) combine two Room flows into one UI model.",
+      "practiceAr": "1) اكتب تدفق عد تنازلي بـ delay. 2) ابنِ خط بحث بـ debounce وflatMapLatest. 3) ادمج تدفقي Room بـ combine في نموذج واجهة واحد.",
+      "challengeEn": "Turn a callback-based sensor or location API into a Flow with callbackFlow and awaitClose, and use it in a screen that starts and stops listening with the lifecycle.",
+      "challengeAr": "حوّل واجهة حساس أو موقع تعتمد على الاستدعاء الراجع إلى Flow بـ callbackFlow وawaitClose، واستخدمها في شاشة تبدأ الاستماع وتوقفه مع دورة الحياة.",
+      "objectivesEn": [
+        "Explain cold flows and collection",
+        "Use map, filter, debounce, flatMapLatest and combine",
+        "Handle errors with catch and change context with flowOn",
+        "Create flows from callbacks with callbackFlow"
+      ],
+      "objectivesAr": [
+        "شرح التدفقات الباردة والجمع",
+        "استخدام map وfilter وdebounce وflatMapLatest وcombine",
+        "معالجة الأخطاء بـ catch وتغيير السياق بـ flowOn",
+        "إنشاء تدفقات من الاستدعاءات الراجعة بـ callbackFlow"
+      ],
+      "prerequisites": [
+        "kt-coroutines-basics",
+        "kt-collections"
+      ]
+    },
+    {
+      "slug": "kt-stateflow-sharedflow",
+      "skill": "Kotlin",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Intermediate",
+      "titleEn": "StateFlow, SharedFlow and Channels",
+      "titleAr": "StateFlow وSharedFlow وChannel",
+      "summaryEn": "StateFlow is a hot flow that always has a current value, replays it to new collectors and skips equal values; it is the standard holder of UI state. SharedFlow is a hot flow for broadcasting values to many collectors, with configurable replay and buffer. stateIn and shareIn convert cold flows into hot ones inside a scope with a SharingStarted policy. A Channel is a queue where each value is received by one consumer, useful for one-off events.",
+      "summaryAr": "الـ StateFlow تدفق ساخن له دائمًا قيمة حالية، يعيد بثها للجامعين الجدد ويتجاوز القيم المتساوية، وهو الحاوية القياسية لحالة الواجهة. والـ SharedFlow تدفق ساخن لبث القيم إلى جامعين كثيرين، مع إعادة بث ومخزن مؤقت قابلين للضبط. وstateIn وshareIn تحوّلان التدفقات الباردة إلى ساخنة داخل نطاق بسياسة SharingStarted. والـ Channel طابور يستقبل كل قيمة فيه مستهلك واحد، ومفيد للأحداث لمرة واحدة.",
+      "whyEn": "Choosing the wrong stream causes classic bugs: a snackbar shown twice, events lost during rotation, work restarted on every rotation, or two screens doing the same network call. Knowing which one fits state, broadcasts and events is asked in almost every Android interview.",
+      "whyAr": "اختيار التدفق الخاطئ يسبب أخطاء كلاسيكية: Snackbar تظهر مرتين، وأحداث تضيع أثناء التدوير، وعمل يُعاد تشغيله مع كل تدوير، أو شاشتان تنفذان استدعاء الشبكة نفسه. ومعرفة أيها يناسب الحالة والبث والأحداث سؤال في كل مقابلة Android تقريبًا.",
+      "howEn": "Use StateFlow for state (expose asStateFlow or stateIn, update with update { }). Use stateIn(scope, WhileSubscribed(5_000), initial) to share a repository flow across rotations. Use SharedFlow (often via shareIn) when several collectors need the same hot data, and model one-off UI events as state or send them through a Channel collected once. Never expose the mutable type.",
+      "howAr": "استخدم StateFlow للحالة (اعرضها بـ asStateFlow أو stateIn، وحدّثها بـ update { }). واستخدم stateIn(scope, WhileSubscribed(5_000), initial) لمشاركة تدفق المستودع عبر التدويرات. واستخدم SharedFlow (غالبًا عبر shareIn) عندما يحتاج عدة جامعين البيانات الساخنة نفسها، ومثّل أحداث الواجهة لمرة واحدة كحالة أو أرسلها عبر Channel تُجمع مرة واحدة. ولا تعرض النوع القابل للتغيير أبدًا.",
+      "exampleEn": "A music app shares the player position with shareIn(appScope, WhileSubscribed(), replay = 1) so the mini player and the full player read one stream. Each screen's state is a StateFlow, and \"Added to playlist\" messages travel through a Channel.",
+      "exampleAr": "تطبيق موسيقى يشارك موضع التشغيل بـ shareIn(appScope, WhileSubscribed(), replay = 1) فيقرأ المشغل المصغر والمشغل الكامل تدفقًا واحدًا. وحالة كل شاشة StateFlow، ورسائل «أُضيف إلى قائمة التشغيل» تمر عبر Channel.",
+      "practiceEn": "1) Replace a MutableStateFlow exposed publicly with a private one and asStateFlow. 2) Convert a repository flow with stateIn and test rotation. 3) Send one-off events with a Channel and collect them once.",
+      "practiceAr": "1) استبدل MutableStateFlow معروضة للعامة بأخرى خاصة مع asStateFlow. 2) حوّل تدفق المستودع بـ stateIn واختبر التدوير. 3) أرسل أحداثًا لمرة واحدة بـ Channel واجمعها مرة واحدة.",
+      "challengeEn": "Explain and demonstrate with code the difference between replay = 0 and replay = 1 on a SharedFlow, and when StateFlow's conflation drops values you actually needed.",
+      "challengeAr": "اشرح ووضّح بالكود الفرق بين replay = 0 وreplay = 1 في SharedFlow، ومتى يُسقط دمج StateFlow قيمًا كنت تحتاجها فعلًا.",
+      "objectivesEn": [
+        "Explain hot and cold flows",
+        "Hold state in StateFlow and update it safely",
+        "Share flows with stateIn and shareIn",
+        "Choose between SharedFlow, Channel and state for events"
+      ],
+      "objectivesAr": [
+        "شرح التدفقات الساخنة والباردة",
+        "حفظ الحالة في StateFlow وتحديثها بأمان",
+        "مشاركة التدفقات بـ stateIn وshareIn",
+        "الاختيار بين SharedFlow وChannel والحالة للأحداث"
+      ],
+      "prerequisites": [
+        "kt-flow-basics"
+      ]
+    },
+    {
+      "slug": "kt-concurrency-safety",
+      "skill": "Kotlin",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Advanced",
+      "titleEn": "Race conditions and thread safety",
+      "titleAr": "حالات السباق وأمان الخيوط",
+      "summaryEn": "When several coroutines on several threads change the same data, updates can be lost or seen half-done: a race condition. Kotlin offers several fixes: keep state immutable and replace it atomically (MutableStateFlow.update with a copy), confine changes to one thread or one coroutine, protect critical sections with a Mutex (withLock suspends instead of blocking), or use atomic types for counters. Database transactions protect related writes.",
+      "summaryAr": "عندما تغيّر عدة Coroutines على عدة خيوط البيانات نفسها، قد تضيع التحديثات أو تُرى نصف منتهية: هذه حالة سباق. وتقدّم Kotlin عدة حلول: إبقاء الحالة غير قابلة للتغيير واستبدالها بشكل ذري (MutableStateFlow.update مع copy)، وحصر التغييرات في خيط واحد أو Coroutine واحدة، وحماية الأقسام الحرجة بـ Mutex (‏withLock تعلّق بدل أن تحجب)، أو استخدام الأنواع الذرية للعدّادات. ومعاملات قاعدة البيانات تحمي الكتابات المترابطة.",
+      "whyEn": "Race conditions cause the worst bugs: rare, impossible to reproduce on your phone, and visible to thousands of users (a cart total off by one item, a token refreshed twice, a counter that loses taps). Senior interviews almost always include a concurrency question.",
+      "whyAr": "حالات السباق تسبب أسوأ الأخطاء: نادرة، ويستحيل إعادة إنتاجها على هاتفك، ويراها آلاف المستخدمين (إجمالي سلة ينقص عنصرًا، أو رمز يُحدّث مرتين، أو عدّاد يفقد نقرات). ومقابلات المستوى المتقدم تتضمن سؤال تزامن دائمًا تقريبًا.",
+      "howEn": "Prefer immutable data and single writers: update state with MutableStateFlow.update { it.copy(...) }, which retries atomically. Use Mutex for code that must not run twice at once, such as refreshing an auth token, and keep the locked part short. Don't use synchronized or blocking locks around suspend calls. Use Room transactions for multi-table writes, and write tests that run many coroutines at once to expose races.",
+      "howAr": "فضّل البيانات غير القابلة للتغيير والكاتب الواحد: حدّث الحالة بـ MutableStateFlow.update { it.copy(...) } التي تعيد المحاولة بشكل ذري. واستخدم Mutex للكود الذي يجب ألا يعمل مرتين في الوقت نفسه، مثل تحديث رمز التوثيق، واجعل الجزء المقفول قصيرًا. ولا تستخدم synchronized أو الأقفال المعطِّلة حول استدعاءات suspend. واستخدم معاملات Room للكتابات على عدة جداول، واكتب اختبارات تشغّل Coroutines كثيرة معًا لكشف حالات السباق.",
+      "exampleEn": "Ten API calls fail with 401 at the same moment. Without protection, the app refreshes the token ten times and logs the user out when nine refreshes are rejected. A Mutex lets the first caller refresh while the others wait and then reuse the new token.",
+      "exampleAr": "عشرة استدعاءات API تفشل بـ 401 في اللحظة نفسها. ودون حماية يحدّث التطبيق الرمز عشر مرات ويُخرج المستخدم عندما تُرفض تسعة تحديثات. والـ Mutex يتيح للمستدعي الأول التحديث بينما ينتظر الآخرون ثم يعيدون استخدام الرمز الجديد.",
+      "practiceEn": "1) Increment a shared counter from 1,000 coroutines on Dispatchers.Default and see the wrong result. 2) Fix it three ways: Mutex, AtomicInteger, single-thread confinement. 3) Replace value = value.copy(...) with update { }.",
+      "practiceAr": "1) زِد عدّادًا مشتركًا من 1,000 Coroutine على Dispatchers.Default ولاحظ النتيجة الخاطئة. 2) أصلحه بثلاث طرق: Mutex وAtomicInteger والحصر في خيط واحد. 3) استبدل value = value.copy(...) بـ update { }.",
+      "challengeEn": "Implement a token refresher that guarantees one refresh at a time, shares the result with waiting callers, and has a test that fires 50 concurrent requests.",
+      "challengeAr": "نفّذ مُحدِّث رموز يضمن تحديثًا واحدًا في كل مرة، ويشارك النتيجة مع المستدعين المنتظرين، ومعه اختبار يطلق 50 طلبًا متزامنًا.",
+      "objectivesEn": [
+        "Recognise race conditions in shared mutable state",
+        "Use immutable state and atomic updates",
+        "Protect critical sections with Mutex",
+        "Test concurrent code"
+      ],
+      "objectivesAr": [
+        "التعرف على حالات السباق في الحالة المشتركة القابلة للتغيير",
+        "استخدام الحالة غير القابلة للتغيير والتحديثات الذرية",
+        "حماية الأقسام الحرجة بـ Mutex",
+        "اختبار الكود المتزامن"
+      ],
+      "prerequisites": [
+        "kt-stateflow-sharedflow",
+        "kt-coroutines-cancellation"
+      ]
+    },
+    {
+      "slug": "kt-coroutines-testing",
+      "skill": "Kotlin",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Testing coroutines and flows",
+      "titleAr": "اختبار الـ Coroutines والتدفقات",
+      "summaryEn": "kotlinx-coroutines-test provides runTest, which runs a test coroutine with virtual time: delays are skipped, and advanceTimeBy or advanceUntilIdle move the clock. StandardTestDispatcher queues coroutines until the test lets them run; UnconfinedTestDispatcher runs them eagerly. Replace Dispatchers.Main with Dispatchers.setMain in a rule, inject other dispatchers, and test flows by collecting them in backgroundScope or with the Turbine library.",
+      "summaryAr": "مكتبة kotlinx-coroutines-test توفر runTest التي تشغّل Coroutine الاختبار بزمن افتراضي: تُتخطى التأخيرات، وadvanceTimeBy أو advanceUntilIdle تحرّكان الساعة. وStandardTestDispatcher تضع الـ Coroutines في طابور حتى يسمح لها الاختبار بالعمل، وUnconfinedTestDispatcher تشغّلها فورًا. واستبدل Dispatchers.Main بـ Dispatchers.setMain في قاعدة، واحقن الـ Dispatchers الأخرى، واختبر التدفقات بجمعها في backgroundScope أو بمكتبة Turbine.",
+      "whyEn": "Asynchronous code is where flaky tests live. With virtual time, a test of a 30-second timeout or a 300 ms debounce runs in milliseconds and gives the same result every time, so you can trust a red test.",
+      "whyAr": "الكود غير المتزامن هو موطن الاختبارات غير المستقرة. ومع الزمن الافتراضي يعمل اختبار مهلة 30 ثانية أو debounce مدتها 300 ملّي ثانية في أجزاء من الثانية ويعطي النتيجة نفسها كل مرة، فتستطيع الوثوق بالاختبار الأحمر.",
+      "howEn": "Wrap every coroutine test in runTest, never use Thread.sleep or real delays, inject a TestDispatcher into classes under test, and use advanceTimeBy for time-based behaviour. For flows, assert emissions in order with Turbine's test { awaitItem() } or collect into a list in backgroundScope.",
+      "howAr": "غلّف كل اختبار Coroutine بـ runTest، ولا تستخدم Thread.sleep أو تأخيرات حقيقية أبدًا، واحقن TestDispatcher في الأصناف المختبرة، واستخدم advanceTimeBy للسلوك المعتمد على الزمن. وللتدفقات تحقق من الإصدارات بالترتيب بـ test { awaitItem() } في Turbine أو اجمعها في قائمة داخل backgroundScope.",
+      "exampleEn": "A test checks a search debounce: it sends \"k\", \"ko\", \"kot\" 100 ms apart, advances 299 ms (no request yet), then 1 ms more, and asserts exactly one search for \"kot\". It runs in 20 ms.",
+      "exampleAr": "اختبار يتحقق من debounce البحث: يرسل «k» ثم «ko» ثم «kot» بفاصل 100 ملّي ثانية، ويتقدم 299 ملّي ثانية (لا طلب بعد)، ثم 1 ملّي ثانية أخرى، ويتحقق من بحث واحد بالضبط عن «kot». ويعمل في 20 ملّي ثانية.",
+      "practiceEn": "1) Test a suspend function with runTest. 2) Test a timeout with advanceTimeBy. 3) Test a StateFlow's sequence of states with Turbine.",
+      "practiceAr": "1) اختبر دالة suspend بـ runTest. 2) اختبر مهلة بـ advanceTimeBy. 3) اختبر تسلسل حالات StateFlow بـ Turbine.",
+      "challengeEn": "Write tests for a retry-with-backoff function covering success on the third attempt, giving up after three, cancellation during the wait, and the exact delays used.",
+      "challengeAr": "اكتب اختبارات لدالة إعادة محاولة بانتظار متزايد تغطي النجاح في المحاولة الثالثة، والتوقف بعد ثلاث، والإلغاء أثناء الانتظار، والتأخيرات الدقيقة المستخدمة.",
+      "objectivesEn": [
+        "Use runTest and virtual time",
+        "Choose StandardTestDispatcher or UnconfinedTestDispatcher",
+        "Replace Main and inject dispatchers",
+        "Test flows with Turbine or backgroundScope"
+      ],
+      "objectivesAr": [
+        "استخدام runTest والزمن الافتراضي",
+        "الاختيار بين StandardTestDispatcher وUnconfinedTestDispatcher",
+        "استبدال Main وحقن الـ Dispatchers",
+        "اختبار التدفقات بـ Turbine أو backgroundScope"
+      ],
+      "prerequisites": [
+        "kt-stateflow-sharedflow"
+      ]
+    }
+  ]
+}

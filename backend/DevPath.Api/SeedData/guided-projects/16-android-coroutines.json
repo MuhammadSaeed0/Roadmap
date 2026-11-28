@@ -1,0 +1,181 @@
+[
+  {
+    "key": "kt-downloads-manager",
+    "skill": "Kotlin",
+    "level": "Intermediate",
+    "hours": 10,
+    "titleEn": "Download manager with coroutines and Flow",
+    "titleAr": "مدير تنزيلات بالـ Coroutines وFlow",
+    "summaryEn": "A screen that downloads several files at once with live progress, pause and cancel, retries with backoff, a limit on parallel downloads, and a search box over finished files, all built with coroutines, Flow and tests on virtual time.",
+    "summaryAr": "شاشة تنزّل عدة ملفات في وقت واحد مع تقدم حي وإيقاف مؤقت وإلغاء، وإعادة محاولة بانتظار متزايد، وحد لعدد التنزيلات المتوازية، ومربع بحث في الملفات المكتملة، وكلها مبنية بالـ Coroutines وFlow واختبارات بالزمن الافتراضي.",
+    "techStack": "Kotlin · Coroutines · Flow · StateFlow · Jetpack Compose · kotlinx-coroutines-test · Turbine",
+    "goalsEn": [
+      "Run parallel work with structured concurrency and a limit",
+      "Report progress with Flow and StateFlow",
+      "Cancel and retry correctly",
+      "Avoid race conditions in shared state",
+      "Test everything with virtual time"
+    ],
+    "goalsAr": [
+      "تشغيل عمل متوازٍ بالتزامن المنظم مع حد",
+      "الإبلاغ عن التقدم بـ Flow وStateFlow",
+      "الإلغاء وإعادة المحاولة بشكل صحيح",
+      "تجنب حالات السباق في الحالة المشتركة",
+      "اختبار كل شيء بالزمن الافتراضي"
+    ],
+    "requirementsEn": [
+      "A fake downloader emits progress 0-100% over a few seconds and fails randomly",
+      "At most 2 downloads run at once; the rest wait in a queue",
+      "Each item shows progress and has Cancel and Retry",
+      "Failed downloads retry automatically up to 3 times with 1 s, 2 s, 4 s waits",
+      "Leaving the screen cancels running downloads; nothing leaks",
+      "A search box filters finished files with a 300 ms debounce"
+    ],
+    "requirementsAr": [
+      "منزّل وهمي يُصدر التقدم من 0 إلى 100% خلال بضع ثوانٍ ويفشل عشوائيًا",
+      "يعمل تنزيلان على الأكثر في وقت واحد، والبقية تنتظر في طابور",
+      "يعرض كل عنصر تقدمه وفيه Cancel وRetry",
+      "التنزيلات الفاشلة تُعاد تلقائيًا حتى 3 مرات بانتظار 1 ثم 2 ثم 4 ثوانٍ",
+      "مغادرة الشاشة تلغي التنزيلات الجارية دون تسرب",
+      "مربع بحث يفلتر الملفات المكتملة مع debounce مدتها 300 ملّي ثانية"
+    ],
+    "acceptanceEn": [
+      "Starting 6 downloads never shows more than 2 in progress",
+      "Cancel stops one item within a second without affecting others",
+      "State updates from many coroutines never lose an item",
+      "Tests cover the limit, retries with exact delays, cancellation and the search debounce in under 2 seconds total"
+    ],
+    "acceptanceAr": [
+      "بدء 6 تنزيلات لا يُظهر أبدًا أكثر من 2 قيد التقدم",
+      "الزر Cancel يوقف عنصرًا خلال ثانية دون التأثير على الآخرين",
+      "تحديثات الحالة من Coroutines كثيرة لا تفقد أي عنصر",
+      "الاختبارات تغطي الحد وإعادة المحاولة بالتأخيرات الدقيقة والإلغاء وdebounce البحث في أقل من ثانيتين إجمالًا"
+    ],
+    "stretchEn": [
+      "Replace the fake with real downloads through OkHttp, writing to filesDir",
+      "Move downloads to WorkManager so they survive the app closing",
+      "Show total progress across all downloads"
+    ],
+    "stretchAr": [
+      "استبدل المنزّل الوهمي بتنزيلات حقيقية عبر OkHttp تكتب في filesDir",
+      "انقل التنزيلات إلى WorkManager حتى تنجو من إغلاق التطبيق",
+      "اعرض التقدم الإجمالي لكل التنزيلات"
+    ],
+    "steps": [
+      {
+        "key": "kt-dl-model",
+        "titleEn": "Model the downloads",
+        "titleAr": "صمّم التنزيلات",
+        "bodyEn": "Model each item as data class Download(id, name, status) with a sealed DownloadStatus: Queued, Running(percent), Done(file), Failed(message, attempts), Cancelled. Keep all items in one MutableStateFlow<Map<Int, Download>> inside a DownloadsRepository.",
+        "bodyAr": "مثّل كل عنصر بـ data class Download(id, name, status) مع DownloadStatus من نوع sealed: ‏Queued وRunning(percent) وDone(file) وFailed(message, attempts) وCancelled. واحفظ كل العناصر في MutableStateFlow<Map<Int, Download>> واحدة داخل DownloadsRepository.",
+        "hintsEn": [
+          "A Map keyed by id makes updates easy with update { it + (id to ...) }.",
+          "Expose it as StateFlow."
+        ],
+        "hintsAr": [
+          "الـ Map ذات المفتاح id تسهّل التحديث بـ update { it + (id to ...) }.",
+          "اعرضها كـ StateFlow."
+        ]
+      },
+      {
+        "key": "kt-dl-fake",
+        "titleEn": "A fake downloader as a Flow",
+        "titleAr": "منزّل وهمي كـ Flow",
+        "bodyEn": "Write fun download(name: String): Flow<Int> that emits progress every 100 ms with delay and throws IOException with some probability. Inject the random source so tests can force success or failure.",
+        "bodyAr": "اكتب fun download(name: String): Flow<Int> تُصدر التقدم كل 100 ملّي ثانية بـ delay وترمي IOException باحتمال معيّن. واحقن مصدر العشوائية حتى تفرض الاختبارات النجاح أو الفشل.",
+        "hintsEn": [
+          "flow { for (p in 0..100 step 5) { emit(p); delay(100) } }",
+          "Throw inside the flow block to simulate failure."
+        ],
+        "hintsAr": [
+          "الكتلة flow { for (p in 0..100 step 5) { emit(p); delay(100) } }",
+          "ارمِ استثناء داخل كتلة flow لمحاكاة الفشل."
+        ],
+        "code": "class FakeDownloader(private val failureRate: Double, private val random: Random = Random.Default) {\n    fun download(name: String): Flow<Int> = flow {\n        for (percent in 0..100 step 5) {\n            if (percent == 50 && random.nextDouble() < failureRate) throw IOException(\"Connection lost\")\n            emit(percent)\n            delay(100)\n        }\n    }\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "kt-dl-limit",
+        "titleEn": "Run at most two at once",
+        "titleAr": "شغّل اثنين على الأكثر",
+        "bodyEn": "Start each download in a scope owned by the repository's caller and guard it with a Semaphore(2), so extra downloads stay Queued until a permit frees up. Keep each Job in a map so it can be cancelled individually.",
+        "bodyAr": "ابدأ كل تنزيل في نطاق يملكه مستدعي المستودع، واحمه بـ Semaphore(2)، فتبقى التنزيلات الإضافية في حالة Queued حتى يتحرر تصريح. واحفظ كل Job في Map حتى يمكن إلغاؤها منفردة.",
+        "hintsEn": [
+          "semaphore.withPermit { ... } suspends instead of blocking.",
+          "Set Running only after acquiring the permit."
+        ],
+        "hintsAr": [
+          "الدالة semaphore.withPermit { ... } تعلّق بدل الحجب.",
+          "اضبط Running فقط بعد الحصول على التصريح."
+        ]
+      },
+      {
+        "key": "kt-dl-retry",
+        "titleEn": "Retry with backoff",
+        "titleAr": "إعادة المحاولة بانتظار متزايد",
+        "bodyEn": "Wrap the collection of each download in your retryWithBackoff from the exercises: retry only IOException, wait 1 s, 2 s, 4 s, and record the attempt count in Failed. Never catch CancellationException, so Cancel always wins over Retry.",
+        "bodyAr": "غلّف جمع كل تنزيل بدالة retryWithBackoff التي كتبتها في التمارين: أعد المحاولة لـ IOException فقط، وانتظر 1 ثم 2 ثم 4 ثوانٍ، وسجّل عدد المحاولات في Failed. ولا تلتقط CancellationException أبدًا، حتى ينتصر Cancel دائمًا على Retry.",
+        "hintsEn": [
+          "Update status to Running(0) at the start of each attempt.",
+          "When all retries fail, set Failed with the last message."
+        ],
+        "hintsAr": [
+          "حدّث الحالة إلى Running(0) في بداية كل محاولة.",
+          "عندما تفشل كل المحاولات، اضبط Failed بآخر رسالة."
+        ]
+      },
+      {
+        "key": "kt-dl-safe-state",
+        "titleEn": "Race-free state updates",
+        "titleAr": "تحديثات حالة خالية من السباق",
+        "bodyEn": "Progress arrives from many coroutines at once. Use only _items.update { } to change the map, never read-then-assign. Add a test that starts 50 fake downloads on Dispatchers.Default and checks that all 50 end Done.",
+        "bodyAr": "التقدم يصل من Coroutines كثيرة في وقت واحد. فاستخدم _items.update { } فقط لتغيير الـ Map، ولا تقرأ ثم تُسند أبدًا. وأضف اختبارًا يبدأ 50 تنزيلًا وهميًا على Dispatchers.Default ويتحقق أن الخمسين تنتهي بحالة Done.",
+        "hintsEn": [
+          "update retries automatically when another coroutine wrote first.",
+          "Throttle UI updates with sample(100) if recomposition gets heavy."
+        ],
+        "hintsAr": [
+          "الدالة update تعيد المحاولة تلقائيًا عندما تكتب Coroutine أخرى أولًا.",
+          "قلّل تحديثات الواجهة بـ sample(100) إذا ثقلت إعادة التركيب."
+        ]
+      },
+      {
+        "key": "kt-dl-ui",
+        "titleEn": "The screen",
+        "titleAr": "الشاشة",
+        "bodyEn": "DownloadsViewModel exposes the items list as StateFlow and a search query flow with debounce(300) and combine for finished files. The Compose screen shows LinearProgressIndicator per item and Cancel or Retry buttons, and uses viewModelScope so leaving the screen cancels everything.",
+        "bodyAr": "تعرض DownloadsViewModel قائمة العناصر كـ StateFlow، وتدفق نص بحث مع debounce(300) وcombine للملفات المكتملة. وتعرض شاشة Compose مؤشر LinearProgressIndicator لكل عنصر مع زري Cancel أو Retry، وتستخدم viewModelScope فتلغي مغادرة الشاشة كل شيء.",
+        "hintsEn": [
+          "Pass the ViewModel's scope into the repository's start function.",
+          "Give list items stable keys by id."
+        ],
+        "hintsAr": [
+          "مرّر نطاق ViewModel إلى دالة البدء في المستودع.",
+          "أعطِ عناصر القائمة مفاتيح ثابتة بالمعرّف."
+        ]
+      },
+      {
+        "key": "kt-dl-tests",
+        "titleEn": "Tests on virtual time",
+        "titleAr": "اختبارات بالزمن الافتراضي",
+        "bodyEn": "With runTest and an injected StandardTestDispatcher, test: the parallel limit (6 started, never more than 2 Running), exact retry delays with currentTime, cancelling one item, and the search debounce. The whole suite should run in under two seconds.",
+        "bodyAr": "باستخدام runTest وStandardTestDispatcher محقون، اختبر: حد التوازي (6 تبدأ ولا يزيد Running على 2 أبدًا)، وتأخيرات إعادة المحاولة الدقيقة بـ currentTime، وإلغاء عنصر واحد، وdebounce البحث. ويجب أن تعمل المجموعة كلها في أقل من ثانيتين.",
+        "hintsEn": [
+          "Collect the state in backgroundScope and record the max number of Running items.",
+          "advanceUntilIdle() finishes everything that is due."
+        ],
+        "hintsAr": [
+          "اجمع الحالة في backgroundScope وسجّل أكبر عدد من العناصر Running.",
+          "الدالة advanceUntilIdle() تُنهي كل ما هو مستحق."
+        ]
+      }
+    ],
+    "topics": [
+      "kt-coroutines-basics",
+      "kt-coroutines-cancellation",
+      "kt-flow-basics",
+      "kt-concurrency-safety",
+      "kt-coroutines-testing"
+    ]
+  }
+]
