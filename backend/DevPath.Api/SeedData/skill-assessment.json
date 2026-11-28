@@ -77,7 +77,8 @@
       "ai-dotnet-models": "dotnet",
       "ai-prompt-engineering": "dotnet",
       "kotlin-fundamentals": "fundamentals",
-      "android-fundamentals": "frontend"
+      "android-fundamentals": "frontend",
+      "android-compose": "frontend"
     }
   },
 
@@ -91,7 +92,8 @@
     "ai-dotnet-models": "Intermediate",
     "ai-prompt-engineering": "Intermediate",
     "kotlin-fundamentals": "Beginner",
-    "android-fundamentals": "Beginner"
+    "android-fundamentals": "Beginner",
+    "android-compose": "Intermediate"
   },
 
   "exerciseExtraCategories": {

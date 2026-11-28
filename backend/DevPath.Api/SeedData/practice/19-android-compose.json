@@ -1,0 +1,242 @@
+[
+  {
+    "key": "and-ex-compose-profile-card",
+    "type": "Practical",
+    "topic": "and-compose-basics",
+    "difficulty": "Beginner",
+    "minutes": 40,
+    "titleEn": "Build a profile card",
+    "titleAr": "ابنِ بطاقة ملف شخصي",
+    "problemEn": "Build ProfileCard(name, role, avatarUrl, onMessage, modifier): a Card with a round avatar on the start side, name and role stacked next to it, and a Message button at the end. Add two previews (light and dark) and use it twice in a Column with different data.",
+    "problemAr": "ابنِ ProfileCard(name, role, avatarUrl, onMessage, modifier): بطاقة Card فيها صورة دائرية في جهة البداية، والاسم والوظيفة فوق بعضهما بجانبها، وزر Message في النهاية. وأضف معاينتين (فاتحة وداكنة)، واستخدمها مرتين في Column ببيانات مختلفة.",
+    "expectedEn": "The card fills the width, the text column takes the remaining space with weight, the button never gets pushed off screen with a long name, and both previews render.",
+    "expectedAr": "البطاقة تملأ العرض، وعمود النص يأخذ المساحة المتبقية بـ weight، والزر لا يُدفع خارج الشاشة مع اسم طويل، والمعاينتان تعملان.",
+    "hintsEn": [
+      "Modifier.weight(1f) on the middle Column keeps the button visible.",
+      "maxLines = 1 and TextOverflow.Ellipsis handle long names."
+    ],
+    "hintsAr": [
+      "المعدّل Modifier.weight(1f) على العمود الأوسط يبقي الزر ظاهرًا.",
+      "الخاصيتان maxLines = 1 وTextOverflow.Ellipsis تعالجان الأسماء الطويلة."
+    ],
+    "solutionEn": "Card { Row(verticalAlignment = CenterVertically) { AsyncImage(... Modifier.size(48.dp).clip(CircleShape)); Column(Modifier.weight(1f).padding(horizontal = 12.dp)) { Text(name, maxLines = 1, overflow = Ellipsis); Text(role) }; FilledTonalButton(onMessage) { Text(\"Message\") } } }, with the modifier parameter applied to the Card and @PreviewLightDark on a preview function.",
+    "solutionAr": "البناء: Card { Row(verticalAlignment = CenterVertically) { AsyncImage(... Modifier.size(48.dp).clip(CircleShape)); Column(Modifier.weight(1f).padding(horizontal = 12.dp)) { Text(name, maxLines = 1, overflow = Ellipsis); Text(role) }; FilledTonalButton(onMessage) { Text(\"Message\") } } }، مع تطبيق وسيط modifier على Card واستخدام @PreviewLightDark على دالة معاينة.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-compose-state-bugs",
+    "type": "Debugging",
+    "topic": "and-compose-state",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Fix three state bugs",
+    "titleAr": "أصلح ثلاثة أخطاء في الحالة",
+    "problemEn": "The screen below has three bugs: the like counter never changes on screen, the search text resets when the phone rotates, and the cart total doesn't update when the quantity changes in the child component. Find each cause and fix it with the smallest correct change.",
+    "problemAr": "الشاشة أدناه فيها ثلاثة أخطاء: عدّاد الإعجاب لا يتغير على الشاشة أبدًا، ونص البحث يعود فارغًا عند تدوير الهاتف، وإجمالي السلة لا يتحدث عندما تتغير الكمية في المكون الفرعي. أوجد سبب كل خطأ وأصلحه بأصغر تغيير صحيح.",
+    "expectedEn": "likes uses mutableStateOf with remember, the query uses rememberSaveable, and the quantity is hoisted so the parent owns it and the total is computed from it.",
+    "expectedAr": "العدّاد يستخدم mutableStateOf مع remember، ونص البحث يستخدم rememberSaveable، والكمية مرفوعة فيملكها الأب ويُحسب الإجمالي منها.",
+    "hintsEn": [
+      "A plain var is invisible to Compose.",
+      "The stepper keeps its own copy of the quantity; who should own it?"
+    ],
+    "hintsAr": [
+      "المتغير العادي var غير مرئي لـ Compose.",
+      "المكون Stepper يحتفظ بنسخة خاصة من الكمية، فمن يجب أن يملكها؟"
+    ],
+    "solutionEn": "1) var likes = 0 is not observable: use var likes by remember { mutableStateOf(0) }. 2) remember loses the query on rotation: use rememberSaveable. 3) Stepper owns its quantity, so the parent never learns about changes: make Stepper(quantity, onQuantityChange) stateless and keep quantity in the parent, computing total = price * quantity.",
+    "solutionAr": "1) المتغير var likes = 0 غير قابل للمراقبة، فاستخدم var likes by remember { mutableStateOf(0) }. 2) remember تُضيع نص البحث عند التدوير، فاستخدم rememberSaveable. 3) المكون Stepper يملك كميته فلا يعرف الأب بالتغييرات، فاجعل Stepper(quantity, onQuantityChange) بلا حالة واحتفظ بالكمية في الأب واحسب total = price * quantity.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-compose-catalogue",
+    "type": "Practical",
+    "topic": "and-compose-lists",
+    "difficulty": "Intermediate",
+    "minutes": 50,
+    "titleEn": "A product catalogue grid",
+    "titleAr": "شبكة كتالوج منتجات",
+    "problemEn": "Show 500 generated products in a LazyVerticalGrid with adaptive columns (minimum 160dp). Each tile shows a name, a price and a favourite toggle that keeps its state while scrolling. Add a sticky \"Results: N\" header in a LazyColumn version, a scroll-to-top button that appears after the sixth item, and remove a product with an animation when its delete button is pressed.",
+    "problemAr": "اعرض 500 منتج مولّد في LazyVerticalGrid بأعمدة متكيفة (160dp على الأقل). وتعرض كل بطاقة الاسم والسعر وزر مفضلة يحتفظ بحالته أثناء التمرير. وأضف عنوانًا ثابتًا «Results: N» في نسخة LazyColumn، وزر العودة إلى الأعلى يظهر بعد العنصر السادس، واحذف المنتج بحركة عند ضغط زر الحذف.",
+    "expectedEn": "Stable keys from product IDs, favourites stored in the ViewModel (not in each tile), derivedStateOf for the button visibility and animateItem on items.",
+    "expectedAr": "مفاتيح ثابتة من معرّفات المنتجات، والمفضلات محفوظة في ViewModel (لا في كل بطاقة)، وderivedStateOf لظهور الزر، وanimateItem على العناصر.",
+    "hintsEn": [
+      "If the favourite is remember-ed inside the tile, deleting an item above shifts favourites unless keys are set.",
+      "The scroll button visibility should not recompose on every pixel."
+    ],
+    "hintsAr": [
+      "إذا حُفظت المفضلة بـ remember داخل البطاقة، فحذف عنصر فوقها يُزيح المفضلات ما لم تُضبط المفاتيح.",
+      "ظهور زر التمرير يجب ألا يعيد التركيب مع كل بكسل."
+    ],
+    "solutionEn": "The ViewModel holds products and a Set<Int> of favourite IDs in one StateFlow. The grid uses items(products, key = { it.id }) with Modifier.animateItem(), tiles are stateless (isFavourite, onToggle, onDelete). showTop = derivedStateOf { gridState.firstVisibleItemIndex > 6 } drives AnimatedVisibility of a FAB that calls animateScrollToItem(0) in rememberCoroutineScope.",
+    "solutionAr": "تحتفظ ViewModel بالمنتجات وبمجموعة Set<Int> لمعرّفات المفضلة في StateFlow واحدة. وتستخدم الشبكة items(products, key = { it.id }) مع Modifier.animateItem()، والبطاقات بلا حالة (isFavourite وonToggle وonDelete). والقيمة showTop = derivedStateOf { gridState.firstVisibleItemIndex > 6 } تتحكم في AnimatedVisibility لزر عائم يستدعي animateScrollToItem(0) داخل rememberCoroutineScope.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-compose-theme",
+    "type": "Practical",
+    "topic": "and-compose-theming",
+    "difficulty": "Beginner",
+    "minutes": 40,
+    "titleEn": "A themed app with dark mode",
+    "titleAr": "تطبيق بمظهر ووضع داكن",
+    "problemEn": "Create a theme for a café app: brand colors (light and dark schemes), a typography with a display font for titles, and rounded shapes. Build three components on it (PrimaryButton, PriceTag, EmptyState) and a menu screen that uses only them and MaterialTheme values. No Color(...) or sp/dp literals inside the screen.",
+    "problemAr": "أنشئ مظهرًا لتطبيق مقهى: ألوان العلامة (مخطط فاتح وداكن)، وخطوط فيها خط عرض للعناوين، وأشكالًا منحنية. وابنِ عليه ثلاثة مكونات (PrimaryButton وPriceTag وEmptyState)، وشاشة قائمة طعام تستخدمها هي وقيم MaterialTheme فقط. ولا قيم Color(...) أو sp أو dp مباشرة داخل الشاشة.",
+    "expectedEn": "The screen looks right in light and dark mode and in Arabic, and changing the primary color in Theme.kt changes every button.",
+    "expectedAr": "تبدو الشاشة صحيحة في الوضع الفاتح والداكن وبالعربية، وتغيير اللون primary في Theme.kt يغيّر كل الأزرار.",
+    "hintsEn": [
+      "Material Theme Builder can export Compose color files.",
+      "A Spacing object keeps dimensions out of screens."
+    ],
+    "hintsAr": [
+      "أداة Material Theme Builder تصدّر ملفات ألوان لـ Compose.",
+      "كائن Spacing يبقي الأبعاد خارج الشاشات."
+    ],
+    "solutionEn": "Theme.kt defines LightColors and DarkColors with lightColorScheme/darkColorScheme, CafeTypography and Shapes(medium = RoundedCornerShape(16.dp)), and CafeTheme chooses by isSystemInDarkTheme(). Components read colorScheme and typography roles; the screen composes components and uses Spacing values. Previews with @PreviewLightDark and locale = \"ar\" check both modes and RTL.",
+    "solutionAr": "يعرّف Theme.kt المخططين LightColors وDarkColors بـ lightColorScheme وdarkColorScheme، وCafeTypography، وShapes(medium = RoundedCornerShape(16.dp))، ويختار CafeTheme حسب isSystemInDarkTheme(). والمكونات تقرأ أدوار colorScheme وtypography، والشاشة تركّب المكونات وتستخدم قيم Spacing. ومعاينات @PreviewLightDark مع locale = \"ar\" تفحص الوضعين والاتجاه من اليمين إلى اليسار.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-compose-nav-flow",
+    "type": "Practical",
+    "topic": "and-compose-navigation",
+    "difficulty": "Intermediate",
+    "minutes": 60,
+    "titleEn": "Sign-in, tabs and details",
+    "titleAr": "الدخول والتبويبات والتفاصيل",
+    "problemEn": "Build the navigation of a small shop: SignIn, then a bottom bar with Home, Search and Profile. Home lists products; tapping one opens ProductDetails(id) with a type-safe route. After sign-in, Back must exit the app. Tabs must keep their scroll position, and Profile has a Sign out button that returns to SignIn with an empty back stack.",
+    "problemAr": "ابنِ تنقل متجر صغير: SignIn، ثم شريط سفلي بـ Home وSearch وProfile. وHome تعرض المنتجات، والضغط على منتج يفتح ProductDetails(id) بمسار آمن بالأنواع. وبعد الدخول يجب أن يُغلق Back التطبيق. ويجب أن تحتفظ التبويبات بموضع التمرير، وفي Profile زر Sign out يعود إلى SignIn بمكدس رجوع فارغ.",
+    "expectedEn": "Screens take lambdas instead of NavController, the details ViewModel reads the ID with toRoute(), tab switching uses saveState/restoreState, and both sign-in and sign-out clear the back stack.",
+    "expectedAr": "الشاشات تأخذ تعبيرات lambda بدل NavController، وViewModel التفاصيل تقرأ المعرّف بـ toRoute()، وتبديل التبويبات يستخدم saveState وrestoreState، والدخول والخروج كلاهما يمسح مكدس الرجوع.",
+    "hintsEn": [
+      "popUpTo(0) { inclusive = true } clears the whole stack on sign-out.",
+      "Hide the bottom bar on SignIn and ProductDetails by checking the current destination."
+    ],
+    "hintsAr": [
+      "الاستدعاء popUpTo(0) { inclusive = true } يمسح المكدس كله عند الخروج.",
+      "أخفِ الشريط السفلي في SignIn وProductDetails بفحص الوجهة الحالية."
+    ],
+    "solutionEn": "Routes are @Serializable objects plus ProductDetails(val id: Int). SignIn's onSignedIn navigates to Home with popUpTo<SignIn> { inclusive = true }. Bottom items call navigate(tab) { popUpTo(graph.findStartDestination().id) { saveState = true }; launchSingleTop = true; restoreState = true }. Sign out calls navigate(SignIn) { popUpTo(0) { inclusive = true } }. The Scaffold shows the bottom bar only when currentDestination is a tab.",
+    "solutionAr": "المسارات كائنات @Serializable إضافة إلى ProductDetails(val id: Int). والدالة onSignedIn في SignIn تنتقل إلى Home مع popUpTo<SignIn> { inclusive = true }. وعناصر الشريط السفلي تستدعي navigate(tab) { popUpTo(graph.findStartDestination().id) { saveState = true }; launchSingleTop = true; restoreState = true }. والخروج يستدعي navigate(SignIn) { popUpTo(0) { inclusive = true } }. وScaffold يعرض الشريط السفلي فقط عندما تكون currentDestination تبويبًا.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-compose-signup",
+    "type": "Practical",
+    "topic": "and-compose-forms",
+    "difficulty": "Intermediate",
+    "minutes": 50,
+    "titleEn": "A validated sign-up form",
+    "titleAr": "نموذج تسجيل مع التحقق",
+    "problemEn": "Build a sign-up screen with name, email, password and confirm password. Validation: name required, valid email, password of 8+ characters with a digit, matching confirmation. Errors appear after a field loses focus or on submit. Keyboard: Next between fields, Done submits. The button is disabled while submitting (fake a 2-second request) and every value survives rotation. Unit test the validator.",
+    "problemAr": "ابنِ شاشة تسجيل فيها الاسم والبريد وكلمة المرور وتأكيدها. والتحقق: الاسم مطلوب، والبريد صالح، وكلمة المرور 8 أحرف أو أكثر وفيها رقم، والتأكيد مطابق. والأخطاء تظهر بعد مغادرة الحقل أو عند الإرسال. ولوحة المفاتيح: Next بين الحقول وDone للإرسال. والزر معطّل أثناء الإرسال (حاكِ طلبًا مدته ثانيتان)، وكل قيمة تبقى بعد التدوير. واختبر صنف التحقق باختبارات وحدات.",
+    "expectedEn": "A stateless SignUpForm, a SignUpViewModel holding one state data class, a pure validator with at least five unit tests, and correct keyboard and focus behaviour.",
+    "expectedAr": "دالة SignUpForm بلا حالة، وSignUpViewModel تحمل صنف data واحدًا للحالة، وصنف تحقق نقي مع خمسة اختبارات وحدات على الأقل، وسلوك صحيح للوحة المفاتيح والتركيز.",
+    "hintsEn": [
+      "Track which fields were touched in the state so errors appear at the right time.",
+      "Modifier.onFocusChanged tells you when a field loses focus."
+    ],
+    "hintsAr": [
+      "تتبّع في الحالة أي الحقول لمسها المستخدم حتى تظهر الأخطاء في الوقت المناسب.",
+      "المعدّل Modifier.onFocusChanged يخبرك عندما يفقد الحقل التركيز."
+    ],
+    "solutionEn": "SignUpState holds values, a set of touched fields, errors and isSubmitting. The ViewModel recomputes errors with SignUpValidator but exposes only errors of touched fields; submit marks all fields touched and returns early when invalid. Values are mirrored into SavedStateHandle. The form uses OutlinedTextField with supportingText, KeyboardOptions and KeyboardActions moving focus, and onFocusChanged calling onFieldBlur(field).",
+    "solutionAr": "الحالة SignUpState تحمل القيم ومجموعة الحقول الملموسة والأخطاء وisSubmitting. وViewModel تعيد حساب الأخطاء بـ SignUpValidator لكنها تعرض أخطاء الحقول الملموسة فقط، والإرسال يعلّم كل الحقول كملموسة ويرجع مبكرًا عند عدم الصلاحية. وتُنسخ القيم في SavedStateHandle. والنموذج يستخدم OutlinedTextField مع supportingText وKeyboardOptions وKeyboardActions لنقل التركيز، وonFocusChanged تستدعي onFieldBlur(field).",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-compose-effects-review",
+    "type": "CodeReview",
+    "topic": "and-compose-side-effects",
+    "difficulty": "Advanced",
+    "minutes": 30,
+    "titleEn": "Review side effects",
+    "titleAr": "راجع الآثار الجانبية",
+    "problemEn": "Review this screen from a pull request. List every side-effect problem (things that run too often, never stop, use stale values or show twice) and rewrite it correctly.",
+    "problemAr": "راجع هذه الشاشة من طلب دمج. اذكر كل مشكلة في الآثار الجانبية (أشياء تعمل كثيرًا جدًا، أو لا تتوقف أبدًا، أو تستخدم قيمًا قديمة، أو تظهر مرتين)، وأعد كتابتها بشكل صحيح.",
+    "expectedEn": "At least five problems found and fixed with LaunchedEffect keyed on the ID, DisposableEffect for the listener, rememberCoroutineScope, rememberUpdatedState and a consumed message.",
+    "expectedAr": "اكتشاف خمس مشكلات على الأقل وإصلاحها بـ LaunchedEffect بمفتاح المعرّف، وDisposableEffect للمستمع، وrememberCoroutineScope، وrememberUpdatedState، ورسالة تُستهلك بعد عرضها.",
+    "hintsEn": [
+      "Ask of each line: how many times will this run?",
+      "Who unregisters the sensor listener?"
+    ],
+    "hintsAr": [
+      "اسأل عن كل سطر: كم مرة سيعمل؟",
+      "من يلغي تسجيل مستمع الحساس؟"
+    ],
+    "solutionEn": "Problems: analytics logged during composition (every recomposition); LaunchedEffect(Unit) ignores orderId changes; a new CoroutineScope created on every recomposition and never cancelled; the sensor listener is registered in composition and never removed; the error snackbar shows again after rotation because the message stays in state; the timer effect captures a stale onTimeout. Fixes: LaunchedEffect(orderId) { analytics.log(...); vm.load(orderId) }, rememberCoroutineScope, DisposableEffect with onDispose { unregister }, LaunchedEffect(state.message) { show; vm.onMessageShown() }, rememberUpdatedState(onTimeout).",
+    "solutionAr": "المشكلات: تسجيل التحليلات أثناء التركيب (مع كل إعادة تركيب)، وLaunchedEffect(Unit) يتجاهل تغيّر orderId، وCoroutineScope جديد يُنشأ مع كل إعادة تركيب ولا يُلغى أبدًا، ومستمع الحساس يُسجّل أثناء التركيب ولا يُزال، وSnackbar الخطأ تظهر مرة أخرى بعد التدوير لأن الرسالة تبقى في الحالة، وتأثير المؤقت يلتقط onTimeout قديمة. والإصلاحات: LaunchedEffect(orderId) { analytics.log(...); vm.load(orderId) }، وrememberCoroutineScope، وDisposableEffect مع onDispose { unregister }، وLaunchedEffect(state.message) { show; vm.onMessageShown() }، وrememberUpdatedState(onTimeout).",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-compose-a11y-audit",
+    "type": "CodeReview",
+    "topic": "and-compose-adaptive-a11y",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "Accessibility and large-screen audit",
+    "titleAr": "تدقيق سهولة الوصول والشاشات الكبيرة",
+    "problemEn": "Run a screen of your own (or the provided product row) with TalkBack, the largest font size, Arabic and a tablet emulator. List every problem you find under four headings (labels, touch targets, text scaling, layout on large screens) and fix them.",
+    "problemAr": "شغّل شاشة من تطبيقك (أو صف المنتج المرفق) مع TalkBack وأكبر حجم خط والعربية ومحاكي جهاز لوحي. واكتب كل مشكلة تجدها تحت أربعة عناوين (الأوصاف ومناطق اللمس وتكبير النص والتصميم على الشاشات الكبيرة)، وأصلحها.",
+    "expectedEn": "Icons have descriptions or null, the row reads as one item with a click label, targets are 48dp, text wraps instead of clipping, and a wide window shows two columns.",
+    "expectedAr": "للأيقونات أوصاف أو null، والصف يُقرأ كعنصر واحد مع وصف للنقر، ومناطق اللمس 48dp، والنص يلتف بدل أن يُقص، والنافذة العريضة تعرض عمودين.",
+    "hintsEn": [
+      "Fixed heights such as height(40.dp) clip text at large font scales; use heightIn(min = ...).",
+      "Turn on TalkBack with the volume keys shortcut in Accessibility settings."
+    ],
+    "hintsAr": [
+      "الارتفاعات الثابتة مثل height(40.dp) تقص النص بمقاييس الخط الكبيرة، فاستخدم heightIn(min = ...).",
+      "فعّل TalkBack باختصار أزرار الصوت في إعدادات سهولة الوصول."
+    ],
+    "solutionEn": "Typical fixes for the sample: the favourite IconButton gets contentDescription and a stateDescription; the product image gets null (the name is already read); the row uses clickable(onClickLabel = \"Open product\") with mergeDescendants; height(40.dp) becomes heightIn(min = 48.dp); padding uses start/end; and the list switches to a two-column grid when the window width class is expanded.",
+    "solutionAr": "الإصلاحات المعتادة للنموذج: زر المفضلة IconButton يحصل على contentDescription وstateDescription، وصورة المنتج تحصل على null (لأن الاسم يُقرأ بالفعل)، والصف يستخدم clickable(onClickLabel = \"Open product\") مع mergeDescendants، وheight(40.dp) تصبح heightIn(min = 48.dp)، والهوامش تستخدم start وend، والقائمة تتحول إلى شبكة من عمودين عندما تكون فئة عرض النافذة expanded.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-compose-ui-tests",
+    "type": "Practical",
+    "topic": "and-compose-testing",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "UI tests for a list screen",
+    "titleAr": "اختبارات واجهة لشاشة قائمة",
+    "problemEn": "Write Compose UI tests for an OrdersContent(state, onRetry, onOpen) composable covering: loading shows a progress indicator; empty shows \"No orders yet\"; error shows the message and Retry calls onRetry once; a filled list shows the first order and clicking it calls onOpen with its ID. Use text and content descriptions to find nodes; add a testTag only for the progress indicator.",
+    "problemAr": "اكتب اختبارات واجهة Compose لدالة OrdersContent(state, onRetry, onOpen) تغطي: التحميل يعرض مؤشر تقدم، والفراغ يعرض «No orders yet»، والخطأ يعرض الرسالة وزر Retry يستدعي onRetry مرة واحدة، والقائمة الممتلئة تعرض أول طلب والنقر عليه يستدعي onOpen بمعرّفه. واستخدم النصوص وأوصاف المحتوى لإيجاد العناصر، وأضف testTag فقط لمؤشر التقدم.",
+    "expectedEn": "Four focused tests in src/androidTest, each setting one state, with no Thread.sleep and no ViewModel.",
+    "expectedAr": "أربعة اختبارات مركّزة في src/androidTest، كل منها يضبط حالة واحدة، دون Thread.sleep ودون ViewModel.",
+    "hintsEn": [
+      "Record callback calls in local variables or a list inside the test.",
+      "assertCountEquals checks how many nodes match."
+    ],
+    "hintsAr": [
+      "سجّل استدعاءات الدوال في متغيرات محلية أو قائمة داخل الاختبار.",
+      "الدالة assertCountEquals تتحقق من عدد العناصر المطابقة."
+    ],
+    "solutionEn": "Each test calls compose.setContent { OrdersContent(state = ..., onRetry = { retries++ }, onOpen = { opened = it }) }, then: onNodeWithTag(\"loading\").assertIsDisplayed(); onNodeWithText(\"No orders yet\").assertIsDisplayed(); onNodeWithText(\"Try again\").performClick() and assertEquals(1, retries); onNodeWithText(\"Order #42\").performClick() and assertEquals(42, opened).",
+    "solutionAr": "كل اختبار يستدعي compose.setContent { OrdersContent(state = ..., onRetry = { retries++ }, onOpen = { opened = it }) }، ثم: onNodeWithTag(\"loading\").assertIsDisplayed()، وonNodeWithText(\"No orders yet\").assertIsDisplayed()، وonNodeWithText(\"Try again\").performClick() مع assertEquals(1, retries)، وonNodeWithText(\"Order #42\").performClick() مع assertEquals(42, opened).",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-views-to-compose",
+    "type": "Practical",
+    "topic": "and-views-xml",
+    "difficulty": "Intermediate",
+    "minutes": 60,
+    "titleEn": "Migrate an XML list screen",
+    "titleAr": "انقل شاشة قائمة XML",
+    "problemEn": "Start from a Fragment with an XML layout, View Binding and a RecyclerView with ListAdapter and DiffUtil showing orders from a ViewModel. Step 1: replace the header TextView with a ComposeView showing a summary card. Step 2: replace the RecyclerView with a LazyColumn inside the ComposeView. Step 3: replace the Fragment's layout with setContent only. Keep the ViewModel unchanged and the app working after each step.",
+    "problemAr": "ابدأ من Fragment بتصميم XML وView Binding وRecyclerView مع ListAdapter وDiffUtil يعرض الطلبات من ViewModel. الخطوة 1: استبدل TextView العنوان بـ ComposeView تعرض بطاقة ملخص. الخطوة 2: استبدل RecyclerView بـ LazyColumn داخل ComposeView. الخطوة 3: استبدل تصميم Fragment بـ setContent فقط. وأبقِ ViewModel دون تغيير والتطبيق يعمل بعد كل خطوة.",
+    "expectedEn": "Three commits, one per step, each building and running; the final Fragment has no XML layout, and the ViewModel diff is empty.",
+    "expectedAr": "ثلاثة إيداعات (Commits)، واحد لكل خطوة، كل منها يُبنى ويعمل، وFragment النهائي بلا تصميم XML، وفرق ViewModel فارغ.",
+    "hintsEn": [
+      "Use ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed for ComposeView in Fragments.",
+      "collectAsStateWithLifecycle replaces the repeatOnLifecycle collection."
+    ],
+    "hintsAr": [
+      "استخدم ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed لـ ComposeView داخل Fragment.",
+      "الدالة collectAsStateWithLifecycle تحل محل الجمع بـ repeatOnLifecycle."
+    ],
+    "solutionEn": "Step 1 adds <androidx.compose.ui.platform.ComposeView android:id=\"@+id/header\"> and calls binding.header.setContent { OrdersSummary(...) }. Step 2 moves the list into the ComposeView with LazyColumn(items(orders, key = { it.id })), deleting the adapter. Step 3 overrides onCreateView to return ComposeView(requireContext()).apply { setViewCompositionStrategy(...); setContent { OrdersScreen(vm) } } and deletes the layout and binding.",
+    "solutionAr": "الخطوة 1 تضيف <androidx.compose.ui.platform.ComposeView android:id=\"@+id/header\"> وتستدعي binding.header.setContent { OrdersSummary(...) }. والخطوة 2 تنقل القائمة إلى ComposeView بـ LazyColumn(items(orders, key = { it.id }))، وتحذف الـ Adapter. والخطوة 3 تعيد تعريف onCreateView لتُرجع ComposeView(requireContext()).apply { setViewCompositionStrategy(...); setContent { OrdersScreen(vm) } }، وتحذف التصميم والـ binding.",
+    "runner": "None"
+  }
+]

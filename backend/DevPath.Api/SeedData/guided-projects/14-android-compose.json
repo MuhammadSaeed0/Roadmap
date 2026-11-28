@@ -1,0 +1,198 @@
+[
+  {
+    "key": "and-compose-tasks",
+    "skill": "Android",
+    "level": "Intermediate",
+    "hours": 10,
+    "titleEn": "Task manager in Jetpack Compose",
+    "titleAr": "مدير مهام بـ Jetpack Compose",
+    "summaryEn": "A task manager with lists, filters, a details screen, an add/edit form with validation, a bottom bar, dark mode, Arabic support, a tablet layout and UI tests. Data stays in memory for now; the next phases add Room and sync.",
+    "summaryAr": "مدير مهام فيه قوائم وفلاتر وشاشة تفاصيل ونموذج إضافة وتعديل مع التحقق وشريط سفلي ووضع داكن ودعم للعربية وتصميم للجهاز اللوحي واختبارات واجهة. والبيانات في الذاكرة حاليًا، والمراحل التالية تضيف Room والمزامنة.",
+    "techStack": "Kotlin · Jetpack Compose · Material 3 · Navigation Compose · ViewModel + StateFlow · Compose UI tests",
+    "goalsEn": [
+      "Build screens from small stateless composables",
+      "Hold screen state in ViewModels and follow unidirectional data flow",
+      "Navigate with type-safe routes and a bottom bar",
+      "Build a validated form",
+      "Support dark mode, Arabic, large fonts and tablets",
+      "Test the UI with Compose tests"
+    ],
+    "goalsAr": [
+      "بناء الشاشات من دوال صغيرة بلا حالة",
+      "حفظ حالة الشاشة في ViewModel واتباع تدفق البيانات أحادي الاتجاه",
+      "التنقل بمسارات آمنة بالأنواع وشريط سفلي",
+      "بناء نموذج مع التحقق",
+      "دعم الوضع الداكن والعربية والخطوط الكبيرة والأجهزة اللوحية",
+      "اختبار الواجهة باختبارات Compose"
+    ],
+    "requirementsEn": [
+      "Tasks have a title, notes, a due date, a priority and a done flag",
+      "Home lists tasks with filter chips (All, Today, Done) and swipe or button to complete",
+      "Tapping a task opens its details; an edit button opens the form",
+      "The add/edit form validates the title (required, max 80 characters) and the due date (not in the past)",
+      "Bottom bar: Tasks, Stats (count by priority), Settings (theme choice)",
+      "On wide windows, the list and the details are shown side by side"
+    ],
+    "requirementsAr": [
+      "لكل مهمة عنوان وملاحظات وتاريخ استحقاق وأولوية وحالة إنجاز",
+      "الشاشة الرئيسية تعرض المهام مع شرائح فلترة (All وToday وDone) وسحب أو زر لإنجازها",
+      "الضغط على مهمة يفتح تفاصيلها، وزر التعديل يفتح النموذج",
+      "نموذج الإضافة والتعديل يتحقق من العنوان (مطلوب و80 حرفًا على الأكثر) وتاريخ الاستحقاق (ليس في الماضي)",
+      "الشريط السفلي: Tasks وStats (العدد حسب الأولوية) وSettings (اختيار المظهر)",
+      "على النوافذ العريضة تُعرض القائمة والتفاصيل جنبًا إلى جنب"
+    ],
+    "acceptanceEn": [
+      "Rotating on any screen keeps the form input, the filter and the scroll position",
+      "Back from details returns to the list; tabs keep their state",
+      "TalkBack reads each task row as one item with its priority and due date",
+      "At least five Compose UI tests and five ViewModel unit tests pass"
+    ],
+    "acceptanceAr": [
+      "التدوير في أي شاشة يحفظ مدخلات النموذج والفلتر وموضع التمرير",
+      "زر Back من التفاصيل يرجع إلى القائمة، والتبويبات تحتفظ بحالتها",
+      "يقرأ TalkBack كل صف مهمة كعنصر واحد مع أولويتها وتاريخ استحقاقها",
+      "تنجح خمسة اختبارات واجهة Compose وخمسة اختبارات وحدات لـ ViewModel على الأقل"
+    ],
+    "stretchEn": [
+      "Animate completing and deleting tasks",
+      "Undo delete with a snackbar",
+      "Group tasks by date with sticky headers"
+    ],
+    "stretchAr": [
+      "حرّك إنجاز المهام وحذفها",
+      "تراجع عن الحذف بـ Snackbar",
+      "جمّع المهام حسب التاريخ بعناوين ثابتة"
+    ],
+    "steps": [
+      {
+        "key": "and-tasks-model",
+        "titleEn": "Model and fake repository",
+        "titleAr": "النموذج ومستودع وهمي",
+        "bodyEn": "Create data class Task and enum class Priority. Add a TaskRepository interface with observeTasks(): Flow<List<Task>>, add, update and delete, and an InMemoryTaskRepository backed by a MutableStateFlow with a few sample tasks.\n\nScreens will only know the interface, so swapping in Room later changes one class.",
+        "bodyAr": "أنشئ data class Task وenum class Priority. وأضف واجهة TaskRepository فيها observeTasks(): Flow<List<Task>> وadd وupdate وdelete، وتنفيذًا InMemoryTaskRepository مدعومًا بـ MutableStateFlow مع بعض المهام النموذجية.\n\nوالشاشات لن تعرف إلا الواجهة، فاستبدال Room لاحقًا يغيّر صنفًا واحدًا.",
+        "hintsEn": [
+          "Use java.time.LocalDate for due dates.",
+          "MutableStateFlow.update { it + task } keeps updates atomic."
+        ],
+        "hintsAr": [
+          "استخدم java.time.LocalDate لتواريخ الاستحقاق.",
+          "الدالة MutableStateFlow.update { it + task } تبقي التحديثات ذرية."
+        ],
+        "code": "data class Task(val id: Long, val title: String, val notes: String = \"\", val due: LocalDate? = null,\n                val priority: Priority = Priority.NORMAL, val done: Boolean = false)\nenum class Priority { LOW, NORMAL, HIGH }\n\ninterface TaskRepository {\n    fun observeTasks(): Flow<List<Task>>\n    suspend fun upsert(task: Task)\n    suspend fun delete(id: Long)\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "and-tasks-list",
+        "titleEn": "The task list and filters",
+        "titleAr": "قائمة المهام والفلاتر",
+        "bodyEn": "TasksViewModel combines the repository flow with a filter StateFlow into a TasksUiState(tasks, filter). TasksScreen collects it and passes it to a stateless TasksContent that shows FilterChips and a LazyColumn with keys.\n\nEach TaskRow shows a checkbox, the title, the due date and a priority dot, and is one accessible item.",
+        "bodyAr": "تجمع TasksViewModel تدفق المستودع مع StateFlow للفلتر في TasksUiState(tasks, filter). وتجمعها TasksScreen وتمررها إلى TasksContent بلا حالة تعرض FilterChip وLazyColumn بمفاتيح.\n\nوكل TaskRow يعرض مربع اختيار والعنوان وتاريخ الاستحقاق ونقطة الأولوية، وهو عنصر واحد سهل الوصول.",
+        "hintsEn": [
+          "combine(repo.observeTasks(), filter) { tasks, f -> ... }.stateIn(viewModelScope, WhileSubscribed(5_000), TasksUiState())",
+          "Keep the filter in SavedStateHandle so it survives process death."
+        ],
+        "hintsAr": [
+          "التعبير combine(repo.observeTasks(), filter) { tasks, f -> ... }.stateIn(viewModelScope, WhileSubscribed(5_000), TasksUiState())",
+          "احفظ الفلتر في SavedStateHandle حتى يبقى بعد موت العملية."
+        ]
+      },
+      {
+        "key": "and-tasks-navigation",
+        "titleEn": "Navigation and the bottom bar",
+        "titleAr": "التنقل والشريط السفلي",
+        "bodyEn": "Define @Serializable routes: Tasks, Stats, Settings, TaskDetails(id) and EditTask(id: Long?). Build the NavHost, a bottom bar for the three tabs with saveState/restoreState, and pass lambdas to screens.\n\nHide the bottom bar on details and edit screens.",
+        "bodyAr": "عرّف مسارات @Serializable: Tasks وStats وSettings وTaskDetails(id) وEditTask(id: Long?). وابنِ NavHost وشريطًا سفليًا للتبويبات الثلاثة مع saveState وrestoreState، ومرّر تعبيرات lambda إلى الشاشات.\n\nوأخفِ الشريط السفلي في شاشتي التفاصيل والتعديل.",
+        "hintsEn": [
+          "Nullable route arguments work for \"new task\" (id = null).",
+          "currentBackStackEntryAsState() tells you the current destination."
+        ],
+        "hintsAr": [
+          "وسائط المسار التي تقبل null تصلح لـ «مهمة جديدة» (id = null).",
+          "الدالة currentBackStackEntryAsState() تخبرك بالوجهة الحالية."
+        ]
+      },
+      {
+        "key": "and-tasks-form",
+        "titleEn": "The add and edit form",
+        "titleAr": "نموذج الإضافة والتعديل",
+        "bodyEn": "EditTaskViewModel loads the task when an ID is given, keeps a form state data class, validates with a pure TaskValidator, and saves through the repository. The form shows errors after a field loses focus or on Save, disables Save while saving, and navigates back on success through a one-off event.",
+        "bodyAr": "تحمّل EditTaskViewModel المهمة عند إعطاء معرّف، وتحتفظ بصنف data لحالة النموذج، وتتحقق بـ TaskValidator نقي، وتحفظ عبر المستودع. والنموذج يعرض الأخطاء بعد مغادرة الحقل أو عند Save، ويعطّل Save أثناء الحفظ، ويرجع عند النجاح عبر حدث لمرة واحدة.",
+        "hintsEn": [
+          "A DatePickerDialog from Material 3 picks the due date.",
+          "Unit test TaskValidator with today, yesterday and a 100-character title."
+        ],
+        "hintsAr": [
+          "النافذة DatePickerDialog من Material 3 تختار تاريخ الاستحقاق.",
+          "اختبر TaskValidator بتاريخ اليوم والأمس وعنوان من 100 حرف."
+        ]
+      },
+      {
+        "key": "and-tasks-theme",
+        "titleEn": "Theme, dark mode and Arabic",
+        "titleAr": "المظهر والوضع الداكن والعربية",
+        "bodyEn": "Create TasksTheme with light and dark schemes and let Settings choose System, Light or Dark (keep the choice in the ViewModel for now). Move every string into strings.xml with an Arabic translation, and check previews with @PreviewLightDark and locale = \"ar\".",
+        "bodyAr": "أنشئ TasksTheme بمخططين فاتح وداكن، ودع Settings تختار System أو Light أو Dark (احفظ الاختيار في ViewModel حاليًا). وانقل كل نص إلى strings.xml مع ترجمة عربية، وافحص المعاينات بـ @PreviewLightDark وlocale = \"ar\".",
+        "hintsEn": [
+          "Pass darkTheme to TasksTheme from the chosen setting.",
+          "Priority colors should come from the theme, not literals."
+        ],
+        "hintsAr": [
+          "مرّر darkTheme إلى TasksTheme من الإعداد المختار.",
+          "ألوان الأولوية يجب أن تأتي من المظهر لا من قيم مباشرة."
+        ]
+      },
+      {
+        "key": "and-tasks-adaptive",
+        "titleEn": "Tablet layout",
+        "titleAr": "تصميم الجهاز اللوحي",
+        "bodyEn": "Use ListDetailPaneScaffold (or your own Row based on the window width class) so that on wide windows the list stays on the start side and the selected task's details appear beside it. Test on a tablet emulator and a resizable emulator.",
+        "bodyAr": "استخدم ListDetailPaneScaffold (أو Row خاصًا بك حسب فئة عرض النافذة) حتى تبقى القائمة في جهة البداية على النوافذ العريضة وتظهر تفاصيل المهمة المختارة بجانبها. واختبر على محاكي جهاز لوحي ومحاكٍ متغير الحجم.",
+        "hintsEn": [
+          "Keep the selected task ID in the ViewModel so it survives resizing.",
+          "On compact width, keep the normal navigation to the details screen."
+        ],
+        "hintsAr": [
+          "احفظ معرّف المهمة المختارة في ViewModel حتى يبقى عند تغيير الحجم.",
+          "على العرض الضيق احتفظ بالتنقل العادي إلى شاشة التفاصيل."
+        ]
+      },
+      {
+        "key": "and-tasks-tests",
+        "titleEn": "Tests",
+        "titleAr": "الاختبارات",
+        "bodyEn": "Write ViewModel unit tests with the in-memory repository (filtering, completing, validation errors) and Compose UI tests for TasksContent (empty state, filter chips, completing a task) and the form (errors, disabled Save).\n\nRun the app with TalkBack and the largest font once and fix what you find.",
+        "bodyAr": "اكتب اختبارات وحدات لـ ViewModel مع المستودع في الذاكرة (الفلترة والإنجاز وأخطاء التحقق)، واختبارات واجهة Compose لـ TasksContent (الحالة الفارغة وشرائح الفلترة وإنجاز مهمة) وللنموذج (الأخطاء وتعطيل Save).\n\nوشغّل التطبيق مرة مع TalkBack وأكبر خط وأصلح ما تجده.",
+        "hintsEn": [
+          "Use kotlinx-coroutines-test and StandardTestDispatcher for ViewModel tests.",
+          "Put shared fake data in a test fixtures file."
+        ],
+        "hintsAr": [
+          "استخدم kotlinx-coroutines-test وStandardTestDispatcher لاختبارات ViewModel.",
+          "ضع البيانات الوهمية المشتركة في ملف مخصص للاختبارات."
+        ]
+      },
+      {
+        "key": "and-tasks-publish",
+        "titleEn": "Polish and publish to GitHub",
+        "titleAr": "اللمسات الأخيرة والنشر على GitHub",
+        "bodyEn": "Check every acceptance criterion, record a short screen video, and push to GitHub with a README listing the architecture (screens, ViewModels, repository), the tests and screenshots in light, dark and Arabic. You will reuse this project in the next phases to add Room, a backend and sync.",
+        "bodyAr": "تحقق من كل معيار قبول، وسجّل فيديو قصيرًا للشاشة، وارفع المشروع إلى GitHub مع README يسرد المعمارية (الشاشات وViewModel والمستودع) والاختبارات ولقطات بالوضع الفاتح والداكن والعربية. وستعيد استخدام هذا المشروع في المراحل التالية لإضافة Room وخادم ومزامنة.",
+        "hintsEn": [
+          "adb shell screenrecord records the demo video.",
+          "Keep the repository interface clean; Room will implement it next."
+        ],
+        "hintsAr": [
+          "الأمر adb shell screenrecord يسجّل فيديو العرض.",
+          "أبقِ واجهة المستودع نظيفة، فـ Room ستنفذها لاحقًا."
+        ]
+      }
+    ],
+    "topics": [
+      "and-compose-state",
+      "and-compose-lists",
+      "and-compose-navigation",
+      "and-compose-forms",
+      "and-compose-testing"
+    ]
+  }
+]

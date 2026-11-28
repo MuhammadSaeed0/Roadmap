@@ -1,0 +1,375 @@
+{
+  "slug": "android-compose",
+  "order": 21,
+  "titleEn": "Modern UI with Jetpack Compose",
+  "titleAr": "واجهات حديثة بـ Jetpack Compose",
+  "descriptionEn": "Build Android screens with Jetpack Compose: composables and modifiers, state and recomposition, lists, Material 3 theming, navigation, forms, side effects and animation, adaptive and accessible layouts, UI tests, and enough Views and XML to maintain older apps.",
+  "descriptionAr": "ابنِ شاشات Android بـ Jetpack Compose: الدوال القابلة للتركيب والمعدّلات، والحالة وإعادة التركيب، والقوائم، ومظهر Material 3، والتنقل، والنماذج، والآثار الجانبية والحركة، والتصميمات المتكيفة وسهلة الوصول، واختبارات الواجهة، وما يكفي من Views وXML لصيانة التطبيقات الأقدم.",
+  "topics": [
+    {
+      "slug": "and-compose-basics",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Beginner",
+      "titleEn": "Composables, modifiers and layouts",
+      "titleAr": "الدوال القابلة للتركيب والمعدّلات والتخطيطات",
+      "summaryEn": "A composable is a Kotlin function annotated with @Composable that describes part of the UI. Screens are built by calling composables inside each other: Column, Row and Box arrange children, Material components such as Text, Button, Card and Scaffold give the look, and Modifier chains set size, padding, background, click handling and more, applied in order. @Preview shows a composable in Android Studio without running the app.",
+      "summaryAr": "الدالة القابلة للتركيب (Composable) دالة Kotlin معلّمة بـ @Composable تصف جزءًا من الواجهة. وتُبنى الشاشات باستدعاء هذه الدوال داخل بعضها: Column وRow وBox ترتّب العناصر، ومكونات Material مثل Text وButton وCard وScaffold تعطي الشكل، وسلاسل Modifier تضبط الحجم والهوامش والخلفية والنقر وغيرها، وتُطبَّق بالترتيب. و@Preview تعرض الدالة في Android Studio دون تشغيل التطبيق.",
+      "whyEn": "Compose is Google's recommended UI toolkit and almost every new Android job uses it. Thinking in small composables with clear inputs makes screens easier to build, reuse and test than XML layouts plus view code.",
+      "whyAr": "مكتبة Compose هي أداة الواجهات التي توصي بها Google، وأغلب وظائف Android الجديدة تستخدمها. والتفكير بدوال صغيرة ذات مدخلات واضحة يجعل الشاشات أسهل في البناء وإعادة الاستخدام والاختبار من تصميمات XML مع كود العناصر.",
+      "howEn": "Start from the Empty Activity template. Write small composables that take data and lambdas as parameters, give every reusable composable a modifier: Modifier = Modifier parameter, and add @Preview functions with sample data. Remember that modifier order matters: padding before background differs from background before padding.",
+      "howAr": "ابدأ من قالب Empty Activity. واكتب دوالًا صغيرة تأخذ البيانات وتعبيرات lambda كوسائط، وأعطِ كل دالة قابلة لإعادة الاستخدام الوسيط modifier: Modifier = Modifier، وأضف دوال @Preview ببيانات نموذجية. وتذكّر أن ترتيب المعدّلات مهم: padding قبل background يختلف عن background قبل padding.",
+      "exampleEn": "A product card is ProductCard(product, onAddToCart, modifier): a Card holding a Row with an image and a Column of name and price, and a button that calls onAddToCart. The same card is used on the home screen, in search results and in a preview.",
+      "exampleAr": "بطاقة المنتج ProductCard(product, onAddToCart, modifier): بطاقة Card فيها Row بصورة وColumn بالاسم والسعر، وزر يستدعي onAddToCart. والبطاقة نفسها تُستخدم في الشاشة الرئيسية ونتائج البحث والمعاينة.",
+      "practiceEn": "1) Build a profile header with an avatar, name and a Follow button. 2) Swap the order of padding and background and compare. 3) Add two previews: light and dark, English and Arabic.",
+      "practiceAr": "1) ابنِ رأس ملف شخصي بصورة واسم وزر Follow. 2) بدّل ترتيب padding وbackground وقارن. 3) أضف معاينتين: فاتح وداكن، وإنجليزي وعربي.",
+      "challengeEn": "Recreate a screen from an app you use (for example a settings page) using only Column, Row, Box, Scaffold and Material components, with previews for each part.",
+      "challengeAr": "أعد بناء شاشة من تطبيق تستخدمه (مثل صفحة إعدادات) باستخدام Column وRow وBox وScaffold ومكونات Material فقط، مع معاينة لكل جزء.",
+      "objectivesEn": [
+        "Write composables with parameters and a modifier",
+        "Arrange UI with Column, Row, Box and Scaffold",
+        "Chain modifiers and understand their order",
+        "Use @Preview with sample data"
+      ],
+      "objectivesAr": [
+        "كتابة دوال قابلة للتركيب بوسائط ومعدّل",
+        "ترتيب الواجهة بـ Column وRow وBox وScaffold",
+        "سلسلة المعدّلات وفهم ترتيبها",
+        "استخدام @Preview ببيانات نموذجية"
+      ],
+      "prerequisites": [
+        "kt-functions",
+        "and-studio-gradle"
+      ]
+    },
+    {
+      "slug": "and-compose-state",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 70,
+      "difficulty": "Intermediate",
+      "titleEn": "State, recomposition and state hoisting",
+      "titleAr": "الحالة وإعادة التركيب ورفع الحالة",
+      "summaryEn": "Compose redraws (recomposes) a composable when the state it reads changes. State is held in observable holders such as mutableStateOf, remembered across recompositions with remember, and kept across configuration changes with rememberSaveable. State hoisting moves state up to the caller: a composable receives value and onValueChange instead of owning the state, which makes it stateless, reusable and testable. Data flows down and events flow up (unidirectional data flow).",
+      "summaryAr": "يعيد Compose رسم (إعادة تركيب) الدالة عندما تتغير الحالة التي تقرؤها. والحالة تُحفظ في حاويات قابلة للمراقبة مثل mutableStateOf، وتُتذكّر عبر إعادة التركيب بـ remember، وتبقى بعد تغييرات الإعدادات بـ rememberSaveable. ورفع الحالة (State hoisting) ينقل الحالة إلى المستدعي: تستقبل الدالة value وonValueChange بدل أن تملك الحالة، فتصبح بلا حالة وقابلة لإعادة الاستخدام والاختبار. والبيانات تتدفق إلى الأسفل والأحداث إلى الأعلى (تدفق البيانات أحادي الاتجاه).",
+      "whyEn": "Most Compose bugs are state bugs: a counter that resets, a text field that won't change, a screen that never updates or recomposes too often. Knowing where state lives and who changes it is the core skill of Compose and a favourite interview topic.",
+      "whyAr": "أغلب أخطاء Compose أخطاء حالة: عدّاد يعود إلى الصفر، وحقل نص لا يتغير، وشاشة لا تتحدث أبدًا أو يُعاد تركيبها كثيرًا. ومعرفة أين تعيش الحالة ومن يغيّرها هي المهارة الأساسية في Compose وموضوع مفضّل في المقابلات.",
+      "howEn": "Keep state as low as possible but as high as needed: local UI state such as an expanded flag in remember, screen state in a ViewModel exposed as StateFlow and collected with collectAsStateWithLifecycle. Make leaf composables stateless with value and onChange parameters. Never change state during composition, and use immutable data so Compose can skip unchanged parts.",
+      "howAr": "احفظ الحالة في أدنى مستوى ممكن وأعلى مستوى لازم: حالة الواجهة المحلية مثل علامة التوسيع في remember، وحالة الشاشة في ViewModel معروضة كـ StateFlow وتُجمع بـ collectAsStateWithLifecycle. واجعل الدوال الطرفية بلا حالة بوسائط value وonChange. ولا تغيّر الحالة أثناء التركيب أبدًا، واستخدم بيانات غير قابلة للتغيير حتى يستطيع Compose تخطي الأجزاء التي لم تتغير.",
+      "exampleEn": "A QuantityStepper(quantity, onQuantityChange) shows a number with minus and plus buttons but owns no state. The cart screen keeps the quantities in its ViewModel, so the stepper can be reused in the product page and tested with any value.",
+      "exampleAr": "المكون QuantityStepper(quantity, onQuantityChange) يعرض رقمًا بزري ناقص وزائد لكنه لا يملك أي حالة. وشاشة السلة تحفظ الكميات في ViewModel الخاصة بها، فيمكن إعادة استخدام المكون في صفحة المنتج واختباره بأي قيمة.",
+      "practiceEn": "1) Build a counter with remember, rotate, then fix it with rememberSaveable. 2) Hoist the state of a text field into its parent. 3) Move the state of a screen into a ViewModel with StateFlow.",
+      "practiceAr": "1) ابنِ عدّادًا بـ remember ودوّر الشاشة ثم أصلحه بـ rememberSaveable. 2) ارفع حالة حقل نص إلى الدالة الأم. 3) انقل حالة شاشة إلى ViewModel بـ StateFlow.",
+      "challengeEn": "Use Layout Inspector's recomposition counts to find a composable that recomposes on every keystroke when it shouldn't, and fix it with hoisting, stable parameters or derivedStateOf.",
+      "challengeAr": "استخدم عدّاد إعادة التركيب في Layout Inspector لإيجاد دالة يُعاد تركيبها مع كل ضغطة مفتاح دون داعٍ، وأصلحها برفع الحالة أو بوسائط مستقرة أو بـ derivedStateOf.",
+      "objectivesEn": [
+        "Explain composition and recomposition",
+        "Use mutableStateOf, remember and rememberSaveable",
+        "Hoist state and follow unidirectional data flow",
+        "Collect ViewModel state with collectAsStateWithLifecycle"
+      ],
+      "objectivesAr": [
+        "شرح التركيب وإعادة التركيب",
+        "استخدام mutableStateOf وremember وrememberSaveable",
+        "رفع الحالة واتباع تدفق البيانات أحادي الاتجاه",
+        "جمع حالة ViewModel بـ collectAsStateWithLifecycle"
+      ],
+      "prerequisites": [
+        "and-compose-basics",
+        "and-activity-lifecycle"
+      ]
+    },
+    {
+      "slug": "and-compose-lists",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Lists and lazy layouts",
+      "titleAr": "القوائم والتخطيطات الكسولة",
+      "summaryEn": "LazyColumn, LazyRow and LazyVerticalGrid compose only the items on screen, so lists of thousands stay smooth. Items are added with items(list, key = { it.id }), and stable keys let Compose keep each item's state and animate moves with Modifier.animateItem. Sticky headers, content padding, arrangement and a LazyListState for scrolling and \"scroll to top\" are part of the same API.",
+      "summaryAr": "المكونات LazyColumn وLazyRow وLazyVerticalGrid تركّب العناصر الظاهرة على الشاشة فقط، فتبقى القوائم ذات الآلاف سلسة. وتُضاف العناصر بـ items(list, key = { it.id })، والمفاتيح الثابتة تتيح لـ Compose الاحتفاظ بحالة كل عنصر وتحريك تغييرات أماكنها بـ Modifier.animateItem. والعناوين الثابتة (Sticky headers) والهوامش الداخلية والترتيب وLazyListState للتمرير و«العودة إلى الأعلى» جزء من الواجهة نفسها.",
+      "whyEn": "Feeds, chats, product catalogues, search results and settings are all lists. A list without keys or with heavy items is the most common source of jank and wrong item state in Compose apps.",
+      "whyAr": "الخلاصات والمحادثات وكتالوجات المنتجات ونتائج البحث والإعدادات كلها قوائم. والقائمة بلا مفاتيح أو بعناصر ثقيلة أشهر مصدر للتقطع وحالة العناصر الخاطئة في تطبيقات Compose.",
+      "howEn": "Always pass a stable unique key, keep item composables small and stateless, do no heavy work inside items (format data before it reaches the UI), and give each item type its own contentType in mixed lists. Use rememberLazyListState for scroll position and derivedStateOf for values computed from it.",
+      "howAr": "مرّر دائمًا مفتاحًا ثابتًا فريدًا، واجعل دوال العناصر صغيرة وبلا حالة، ولا تقم بعمل ثقيل داخل العناصر (جهّز البيانات قبل وصولها إلى الواجهة)، وأعطِ كل نوع عنصر contentType خاصًا في القوائم المختلطة. واستخدم rememberLazyListState لموضع التمرير وderivedStateOf للقيم المحسوبة منه.",
+      "exampleEn": "A chat screen uses LazyColumn(reverseLayout = true) with items(messages, key = { it.id }), date headers as stickyHeader, and a \"new messages\" button that appears when listState.firstVisibleItemIndex > 0 and scrolls back with animateScrollToItem(0).",
+      "exampleAr": "شاشة محادثة تستخدم LazyColumn(reverseLayout = true) مع items(messages, key = { it.id })، وعناوين التواريخ كـ stickyHeader، وزر «رسائل جديدة» يظهر عندما يكون listState.firstVisibleItemIndex > 0 ويعود بـ animateScrollToItem(0).",
+      "practiceEn": "1) Show 1,000 generated products in a LazyColumn with keys. 2) Turn it into a two-column grid. 3) Add a scroll-to-top button that appears only after scrolling.",
+      "practiceAr": "1) اعرض 1,000 منتج مولّد في LazyColumn بمفاتيح. 2) حوّلها إلى شبكة من عمودين. 3) أضف زر العودة إلى الأعلى يظهر فقط بعد التمرير.",
+      "challengeEn": "Build a list with section headers, swipe-to-delete with undo, and item animations, then check with Layout Inspector that scrolling doesn't recompose items unnecessarily.",
+      "challengeAr": "ابنِ قائمة بعناوين أقسام، وحذف بالسحب مع التراجع، وحركة للعناصر، ثم تحقق بـ Layout Inspector أن التمرير لا يعيد تركيب العناصر دون داعٍ.",
+      "objectivesEn": [
+        "Use LazyColumn, LazyRow and lazy grids",
+        "Give items stable keys and content types",
+        "Control scrolling with LazyListState",
+        "Keep list items light for smooth scrolling"
+      ],
+      "objectivesAr": [
+        "استخدام LazyColumn وLazyRow والشبكات الكسولة",
+        "إعطاء العناصر مفاتيح ثابتة وأنواع محتوى",
+        "التحكم في التمرير بـ LazyListState",
+        "إبقاء عناصر القائمة خفيفة لتمرير سلس"
+      ],
+      "prerequisites": [
+        "and-compose-state"
+      ]
+    },
+    {
+      "slug": "and-compose-theming",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Beginner",
+      "titleEn": "Material 3 theming and reusable components",
+      "titleAr": "مظهر Material 3 والمكونات القابلة لإعادة الاستخدام",
+      "summaryEn": "Material 3 is the design system behind Compose's material3 library. A MaterialTheme provides a colorScheme (light, dark and, on Android 12+, dynamic colors from the wallpaper), typography and shapes, and every component reads them. Your app's design system is a small set of reusable composables (buttons, cards, empty states) built on that theme, so colors and spacing are never hard-coded on screens.",
+      "summaryAr": "نظام Material 3 هو نظام التصميم وراء مكتبة material3 في Compose. والمكون MaterialTheme يوفر colorScheme (فاتح وداكن، وعلى Android 12 فأحدث ألوان ديناميكية من الخلفية) وtypography وshapes، وكل مكون يقرؤها. ونظام التصميم في تطبيقك مجموعة صغيرة من الدوال القابلة لإعادة الاستخدام (أزرار وبطاقات وحالات فارغة) مبنية على ذلك المظهر، فلا تُكتب الألوان والمسافات مباشرة في الشاشات.",
+      "whyEn": "A consistent look makes an app feel professional, dark mode is expected by users, and changing a brand color in one place instead of fifty saves real time. Teams also review UI faster when screens are made of shared components.",
+      "whyAr": "المظهر المتسق يجعل التطبيق يبدو احترافيًا، والوضع الداكن يتوقعه المستخدمون، وتغيير لون العلامة في مكان واحد بدل خمسين يوفر وقتًا حقيقيًا. والفرق تراجع الواجهات أسرع أيضًا عندما تُبنى الشاشات من مكونات مشتركة.",
+      "howEn": "Generate light and dark color schemes (for example with Material Theme Builder) and put them in Theme.kt. Read colors and text styles from MaterialTheme instead of literals, define spacing values once, and wrap common patterns into components such as PrimaryButton or EmptyState with previews in both themes.",
+      "howAr": "ولّد ألوان الوضعين الفاتح والداكن (مثلًا بأداة Material Theme Builder) وضعها في Theme.kt. واقرأ الألوان وأنماط النص من MaterialTheme بدل القيم المباشرة، وعرّف قيم المسافات مرة واحدة، وغلّف الأنماط المتكررة في مكونات مثل PrimaryButton أو EmptyState مع معاينات في المظهرين.",
+      "exampleEn": "A shop app defines ShopTheme with its green brand colors and a slightly rounded shape scale. All buttons are ShopButton and all empty screens use EmptyState(icon, title, action), so a redesign of the empty state changes every screen at once.",
+      "exampleAr": "تطبيق متجر يعرّف ShopTheme بألوان العلامة الخضراء ومقياس أشكال منحنٍ قليلًا. وكل الأزرار ShopButton، وكل الشاشات الفارغة تستخدم EmptyState(icon, title, action)، فإعادة تصميم الحالة الفارغة تغيّر كل الشاشات مرة واحدة.",
+      "practiceEn": "1) Create a custom color scheme and test it in light and dark mode. 2) Replace every hard-coded color in a screen with MaterialTheme values. 3) Build an EmptyState component with a preview.",
+      "practiceAr": "1) أنشئ مخطط ألوان مخصصًا واختبره في الوضعين الفاتح والداكن. 2) استبدل كل لون مكتوب مباشرة في شاشة بقيم MaterialTheme. 3) ابنِ مكون EmptyState مع معاينة.",
+      "challengeEn": "Build a small design-system module with tokens (colors, type, spacing) and five components, and use it in two different screens without any literal colors or sizes.",
+      "challengeAr": "ابنِ وحدة نظام تصميم صغيرة فيها قيم أساسية (ألوان وخطوط ومسافات) وخمسة مكونات، واستخدمها في شاشتين مختلفتين دون أي ألوان أو أحجام مباشرة.",
+      "objectivesEn": [
+        "Set up MaterialTheme with color schemes, typography and shapes",
+        "Support dark mode and dynamic color",
+        "Read theme values instead of hard-coding",
+        "Build reusable design-system components"
+      ],
+      "objectivesAr": [
+        "تهيئة MaterialTheme بمخططات الألوان والخطوط والأشكال",
+        "دعم الوضع الداكن والألوان الديناميكية",
+        "قراءة قيم المظهر بدل كتابتها مباشرة",
+        "بناء مكونات نظام تصميم قابلة لإعادة الاستخدام"
+      ],
+      "prerequisites": [
+        "and-compose-basics"
+      ]
+    },
+    {
+      "slug": "and-compose-navigation",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Intermediate",
+      "titleEn": "Navigation in Compose",
+      "titleAr": "التنقل في Compose",
+      "summaryEn": "Navigation Compose moves between screens inside a single Activity. A NavHost maps routes to composables, a NavController navigates and manages the back stack, and with type-safe navigation routes are Kotlin @Serializable classes or objects that carry arguments such as an ID. Bottom navigation bars, nested graphs for flows like sign-up, popUpTo to clear screens and deep links are built on the same pieces.",
+      "summaryAr": "مكتبة Navigation Compose تنقل بين الشاشات داخل Activity واحدة. والمكون NavHost يربط المسارات بالدوال، وNavController ينقل ويدير مكدس الرجوع، ومع التنقل الآمن بالأنواع تكون المسارات أصناف أو كائنات Kotlin معلّمة بـ @Serializable تحمل وسائط مثل المعرّف. وأشرطة التنقل السفلية، والمخططات المتداخلة لمسارات مثل التسجيل، وpopUpTo لمسح الشاشات، والروابط العميقة، كلها تُبنى بالقطع نفسها.",
+      "whyEn": "Every real app has many screens. Getting the back stack right (what Back does after sign-in, how tabs keep their state, how a details screen gets its ID) is what makes an app feel solid instead of confusing.",
+      "whyAr": "كل تطبيق حقيقي فيه شاشات كثيرة. وضبط مكدس الرجوع بشكل صحيح (ماذا يفعل Back بعد تسجيل الدخول، وكيف تحتفظ التبويبات بحالتها، وكيف تحصل شاشة التفاصيل على معرّفها) هو ما يجعل التطبيق متماسكًا بدل أن يكون مربكًا.",
+      "howEn": "Keep the NavController at the top (in the NavHost's parent) and pass screens lambdas such as onProductClick(id) instead of the controller. Use type-safe routes with small arguments (IDs), read them in the ViewModel with SavedStateHandle.toRoute(), clear the sign-in flow with popUpTo(inclusive = true), and use saveState and restoreState for bottom tabs.",
+      "howAr": "احتفظ بـ NavController في الأعلى (في الدالة الأم لـ NavHost)، ومرّر للشاشات تعبيرات lambda مثل onProductClick(id) بدل المتحكم. واستخدم المسارات الآمنة بالأنواع بوسائط صغيرة (معرّفات)، واقرأها في ViewModel بـ SavedStateHandle.toRoute()، وامسح مسار تسجيل الدخول بـ popUpTo(inclusive = true)، واستخدم saveState وrestoreState لتبويبات الشريط السفلي.",
+      "exampleEn": "A shop app has a bottom bar with Home, Search and Cart. Tapping a product navigates to ProductDetails(id = 42). After sign-in the app navigates to Home with popUpTo<SignIn> { inclusive = true }, so Back closes the app instead of returning to the sign-in form.",
+      "exampleAr": "تطبيق متجر فيه شريط سفلي بـ Home وSearch وCart. والضغط على منتج ينقل إلى ProductDetails(id = 42). وبعد تسجيل الدخول ينتقل التطبيق إلى Home مع popUpTo<SignIn> { inclusive = true }، فيغلق Back التطبيق بدل الرجوع إلى نموذج الدخول.",
+      "practiceEn": "1) Build a list and details flow with a type-safe route carrying an ID. 2) Add a bottom bar with three tabs that keep their scroll position. 3) Make Back after sign-in exit the app.",
+      "practiceAr": "1) ابنِ مسار قائمة وتفاصيل بمسار آمن بالأنواع يحمل معرّفًا. 2) أضف شريطًا سفليًا بثلاثة تبويبات تحتفظ بموضع التمرير. 3) اجعل Back بعد تسجيل الدخول يُغلق التطبيق.",
+      "challengeEn": "Add a deep link that opens a product details screen from a URL, with the correct back stack behind it, and test it with adb shell am start -d.",
+      "challengeAr": "أضف رابطًا عميقًا يفتح شاشة تفاصيل منتج من رابط، مع مكدس الرجوع الصحيح خلفها، واختبره بـ adb shell am start -d.",
+      "objectivesEn": [
+        "Set up NavHost, NavController and routes",
+        "Pass arguments with type-safe routes",
+        "Control the back stack with popUpTo and launchSingleTop",
+        "Build bottom navigation that keeps tab state"
+      ],
+      "objectivesAr": [
+        "تهيئة NavHost وNavController والمسارات",
+        "تمرير الوسائط بالمسارات الآمنة بالأنواع",
+        "التحكم في مكدس الرجوع بـ popUpTo وlaunchSingleTop",
+        "بناء تنقل سفلي يحتفظ بحالة التبويبات"
+      ],
+      "prerequisites": [
+        "and-compose-state",
+        "and-intents"
+      ]
+    },
+    {
+      "slug": "and-compose-forms",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Forms, input and validation",
+      "titleAr": "النماذج والإدخال والتحقق",
+      "summaryEn": "Forms are text fields, switches, checkboxes and dropdowns bound to state. OutlinedTextField shows a label, supporting text and an error state; KeyboardOptions sets the keyboard type and the IME action (Next, Done); focus moves between fields with FocusRequester or the focus manager. Validation rules live outside the UI (in a ViewModel or a validator), errors appear next to each field, and the submit button reflects whether the form is valid and whether it is sending.",
+      "summaryAr": "النماذج حقول نص ومفاتيح ومربعات اختيار وقوائم منسدلة مرتبطة بالحالة. والحقل OutlinedTextField يعرض عنوانًا ونصًا مساعدًا وحالة خطأ، وKeyboardOptions تضبط نوع لوحة المفاتيح وزر الإجراء (Next وDone)، والتركيز ينتقل بين الحقول بـ FocusRequester أو مدير التركيز. وقواعد التحقق تعيش خارج الواجهة (في ViewModel أو صنف تحقق)، والأخطاء تظهر بجانب كل حقل، وزر الإرسال يعكس هل النموذج صالح وهل يُرسل الآن.",
+      "whyEn": "Sign-up, checkout, profile and search screens are forms, and they decide whether users finish what they started. Clear errors, the right keyboard and no lost input on rotation make the difference between a completed order and an abandoned one.",
+      "whyAr": "شاشات التسجيل والدفع والملف الشخصي والبحث نماذج، وهي التي تقرر هل يُكمل المستخدمون ما بدؤوه. والأخطاء الواضحة ولوحة المفاتيح المناسبة وعدم فقدان المدخلات عند التدوير تصنع الفرق بين طلب مكتمل وطلب متروك.",
+      "howEn": "Keep form state in a data class in the ViewModel, validate with pure functions you can unit test, show an error only after the user leaves a field or presses submit, choose KeyboardType.Email, Number or Password with the matching ImeAction, disable the button while sending, and never block the UI thread during submit.",
+      "howAr": "احفظ حالة النموذج في صنف data داخل ViewModel، وتحقق بدوال نقية تستطيع اختبارها، واعرض الخطأ فقط بعد أن يغادر المستخدم الحقل أو يضغط إرسال، واختر KeyboardType.Email أو Number أو Password مع ImeAction المناسب، وعطّل الزر أثناء الإرسال، ولا تحجب خيط الواجهة أثناء الإرسال أبدًا.",
+      "exampleEn": "A sign-up form keeps SignUpState(email, password, emailError, isSubmitting). Pressing Next moves to the password field, Done submits, the email error appears when the field loses focus, and the button shows a spinner while the request runs.",
+      "exampleAr": "نموذج تسجيل يحفظ SignUpState(email, password, emailError, isSubmitting). والضغط على Next ينقل إلى حقل كلمة المرور، وDone يرسل، وخطأ البريد يظهر عندما يفقد الحقل التركيز، والزر يعرض مؤشر تحميل أثناء تنفيذ الطلب.",
+      "practiceEn": "1) Build a sign-up form with email, password and confirm password. 2) Move validation into a function and unit test it. 3) Add keyboard types, IME actions and a password visibility toggle.",
+      "practiceAr": "1) ابنِ نموذج تسجيل ببريد وكلمة مرور وتأكيدها. 2) انقل التحقق إلى دالة واختبرها. 3) أضف أنواع لوحة المفاتيح وأزرار الإجراء وزر إظهار كلمة المرور.",
+      "challengeEn": "Build a three-step checkout form (address, delivery, payment) that keeps every value across rotation and process death, validates each step before Next, and lets the user go back without losing data.",
+      "challengeAr": "ابنِ نموذج دفع من ثلاث خطوات (العنوان والتوصيل والدفع) يحتفظ بكل قيمة بعد التدوير وموت العملية، ويتحقق من كل خطوة قبل Next، ويتيح الرجوع دون فقدان البيانات.",
+      "objectivesEn": [
+        "Bind text fields and controls to state",
+        "Choose keyboard types, IME actions and focus order",
+        "Validate in testable code and show field errors",
+        "Handle submit, loading and errors"
+      ],
+      "objectivesAr": [
+        "ربط حقول النص وعناصر التحكم بالحالة",
+        "اختيار أنواع لوحة المفاتيح وأزرار الإجراء وترتيب التركيز",
+        "التحقق بكود قابل للاختبار وعرض أخطاء الحقول",
+        "التعامل مع الإرسال والتحميل والأخطاء"
+      ],
+      "prerequisites": [
+        "and-compose-state"
+      ]
+    },
+    {
+      "slug": "and-compose-side-effects",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 60,
+      "difficulty": "Advanced",
+      "titleEn": "Side effects and animation",
+      "titleAr": "الآثار الجانبية والحركة",
+      "summaryEn": "Composables should only describe UI; anything else is a side effect and needs an effect API. LaunchedEffect(key) runs a suspend block when it enters composition and restarts when the key changes; DisposableEffect cleans up listeners; rememberCoroutineScope launches work from click handlers; derivedStateOf computes a value only when its inputs change; snapshotFlow turns state into a Flow. Animations use the same state model: animate*AsState, AnimatedVisibility, AnimatedContent, Crossfade and updateTransition.",
+      "summaryAr": "يجب أن تصف الدوال القابلة للتركيب الواجهة فقط، وأي شيء آخر أثر جانبي يحتاج واجهة تأثيرات. فـ LaunchedEffect(key) تشغّل كتلة suspend عند دخول التركيب وتعيد التشغيل عند تغير المفتاح، وDisposableEffect تنظّف المستمعين، وrememberCoroutineScope تطلق العمل من معالجات النقر، وderivedStateOf تحسب قيمة فقط عند تغير مدخلاتها، وsnapshotFlow تحوّل الحالة إلى Flow. والحركة تستخدم نموذج الحالة نفسه: animate*AsState وAnimatedVisibility وAnimatedContent وCrossfade وupdateTransition.",
+      "whyEn": "Showing a snackbar after an error, logging a screen view, starting a timer or registering a sensor listener are side effects. Doing them directly in a composable runs them on every recomposition, which causes duplicated calls, leaks and battery drain. Subtle animation makes state changes understandable.",
+      "whyAr": "عرض Snackbar بعد خطأ، وتسجيل مشاهدة شاشة، وبدء مؤقت، وتسجيل مستمع لحساس، كلها آثار جانبية. وتنفيذها مباشرة في الدالة يشغّلها مع كل إعادة تركيب، فيسبب استدعاءات مكررة وتسربًا واستنزافًا للبطارية. والحركة الخفيفة تجعل تغييرات الحالة مفهومة.",
+      "howEn": "Pick the effect by lifetime: LaunchedEffect for work tied to a key, DisposableEffect when you must unregister, rememberCoroutineScope for user-triggered coroutines, rememberUpdatedState for lambdas used inside long effects. Send one-off events from the ViewModel through a Channel or SharedFlow collected in LaunchedEffect. Animate meaningful changes only, keep durations short, and respect the system \"remove animations\" setting.",
+      "howAr": "اختر التأثير حسب مدة حياته: LaunchedEffect لعمل مرتبط بمفتاح، وDisposableEffect عندما يجب إلغاء التسجيل، وrememberCoroutineScope للـ Coroutines التي يطلقها المستخدم، وrememberUpdatedState لتعبيرات lambda المستخدمة داخل تأثيرات طويلة. وأرسل الأحداث لمرة واحدة من ViewModel عبر Channel أو SharedFlow تُجمع في LaunchedEffect. وحرّك التغييرات ذات المعنى فقط، واجعل المدد قصيرة، واحترم إعداد النظام «إزالة الحركة».",
+      "exampleEn": "After a failed payment, the ViewModel sends a ShowError event through a Channel. The screen collects it in LaunchedEffect(Unit) and calls snackbarHostState.showSnackbar. The retry button fades in with AnimatedVisibility, and the total animates with animateFloatAsState.",
+      "exampleAr": "بعد فشل الدفع، ترسل ViewModel حدث ShowError عبر Channel. والشاشة تجمعه في LaunchedEffect(Unit) وتستدعي snackbarHostState.showSnackbar. وزر إعادة المحاولة يظهر تدريجيًا بـ AnimatedVisibility، والإجمالي يتحرك بـ animateFloatAsState.",
+      "practiceEn": "1) Show a snackbar from a ViewModel event without showing it twice on rotation. 2) Register and unregister a listener with DisposableEffect. 3) Animate an expanding card with animateContentSize.",
+      "practiceAr": "1) اعرض Snackbar من حدث في ViewModel دون عرضه مرتين عند التدوير. 2) سجّل مستمعًا وألغِ تسجيله بـ DisposableEffect. 3) حرّك بطاقة تتوسع بـ animateContentSize.",
+      "challengeEn": "Build a search field that queries only after the user stops typing for 300 ms, using snapshotFlow, debounce and LaunchedEffect, and animate the switch between loading, results and empty states with AnimatedContent.",
+      "challengeAr": "ابنِ حقل بحث يستعلم فقط بعد أن يتوقف المستخدم عن الكتابة 300 ملّي ثانية، باستخدام snapshotFlow وdebounce وLaunchedEffect، وحرّك التبديل بين حالات التحميل والنتائج والفراغ بـ AnimatedContent.",
+      "objectivesEn": [
+        "Choose between LaunchedEffect, DisposableEffect and rememberCoroutineScope",
+        "Handle one-off events from a ViewModel",
+        "Use derivedStateOf, rememberUpdatedState and snapshotFlow",
+        "Animate state changes with Compose animation APIs"
+      ],
+      "objectivesAr": [
+        "الاختيار بين LaunchedEffect وDisposableEffect وrememberCoroutineScope",
+        "التعامل مع الأحداث لمرة واحدة من ViewModel",
+        "استخدام derivedStateOf وrememberUpdatedState وsnapshotFlow",
+        "تحريك تغييرات الحالة بواجهات الحركة في Compose"
+      ],
+      "prerequisites": [
+        "and-compose-state",
+        "and-compose-lists"
+      ]
+    },
+    {
+      "slug": "and-compose-adaptive-a11y",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Adaptive layouts and accessibility",
+      "titleAr": "التصميمات المتكيفة وسهولة الوصول",
+      "summaryEn": "Android runs on phones, foldables, tablets and Chromebooks. Adaptive UI chooses a layout from the available window size (window size classes: compact, medium, expanded), for example a list and details side by side on a tablet, and survives resizing and multi-window. Accessibility means everyone can use the app: content descriptions for images, semantics for custom controls, touch targets of at least 48dp, enough contrast, support for large fonts, TalkBack and right-to-left languages.",
+      "summaryAr": "يعمل Android على الهواتف والأجهزة القابلة للطي والأجهزة اللوحية وأجهزة Chromebook. والواجهة المتكيفة تختار التصميم حسب حجم النافذة المتاح (فئات حجم النافذة: compact وmedium وexpanded)، مثل عرض القائمة والتفاصيل جنبًا إلى جنب على الجهاز اللوحي، وتنجو من تغيير الحجم وتعدد النوافذ. وسهولة الوصول تعني أن الجميع يستطيعون استخدام التطبيق: أوصاف المحتوى للصور، والدلالات (Semantics) للعناصر المخصصة، ومناطق لمس 48dp على الأقل، وتباين كافٍ، ودعم الخطوط الكبيرة وTalkBack واللغات من اليمين إلى اليسار.",
+      "whyEn": "Google Play features apps that work well on large screens, many users rely on bigger fonts or a screen reader, and some countries require accessible apps. Building it in from the start costs little; adding it later means redoing screens.",
+      "whyAr": "يبرز Google Play التطبيقات التي تعمل جيدًا على الشاشات الكبيرة، وكثير من المستخدمين يعتمدون على خطوط أكبر أو قارئ شاشة، وبعض الدول تشترط تطبيقات سهلة الوصول. وبناء ذلك من البداية قليل التكلفة، أما إضافته لاحقًا فتعني إعادة بناء الشاشات.",
+      "howEn": "Compute the window size class with currentWindowAdaptiveInfo() and switch layouts, or use the adaptive scaffolds (NavigationSuiteScaffold, ListDetailPaneScaffold). Avoid fixed sizes; use weights and max widths. Give every meaningful image a contentDescription and decorative ones null, merge semantics for rows, keep 48dp targets, test with TalkBack, the largest font size and Arabic.",
+      "howAr": "احسب فئة حجم النافذة بـ currentWindowAdaptiveInfo() وبدّل التصميمات، أو استخدم الهياكل المتكيفة (NavigationSuiteScaffold وListDetailPaneScaffold). وتجنب الأحجام الثابتة، واستخدم الأوزان والعرض الأقصى. وأعطِ كل صورة ذات معنى contentDescription والصور الزخرفية null، وادمج الدلالات للصفوف، وحافظ على مناطق لمس 48dp، واختبر مع TalkBack وأكبر حجم خط والعربية.",
+      "exampleEn": "An email app shows the inbox alone on a phone, and the inbox with the open message beside it on a tablet or unfolded foldable. Each message row is one TalkBack item that reads \"From Sara, Meeting moved, 2 hours ago, unread\".",
+      "exampleAr": "تطبيق بريد يعرض صندوق الوارد وحده على الهاتف، وصندوق الوارد مع الرسالة المفتوحة بجانبه على الجهاز اللوحي أو الجهاز القابل للطي المفتوح. وكل صف رسالة عنصر واحد في TalkBack يقرأ «From Sara, Meeting moved, 2 hours ago, unread».",
+      "practiceEn": "1) Show a list on compact width and list plus details on expanded width. 2) Run a screen with TalkBack and fix every unlabeled element. 3) Set the font scale to 200% and fix clipped text.",
+      "practiceAr": "1) اعرض قائمة على العرض الضيق وقائمة مع التفاصيل على العرض الواسع. 2) شغّل شاشة مع TalkBack وأصلح كل عنصر بلا وصف. 3) اضبط مقياس الخط على 200% وأصلح النصوص المقصوصة.",
+      "challengeEn": "Make a whole app pass Android Studio's accessibility checks and the Accessibility Scanner, and work on phone, tablet and a resizable emulator in Arabic and English.",
+      "challengeAr": "اجعل تطبيقًا كاملًا ينجح في فحوص سهولة الوصول في Android Studio وفي Accessibility Scanner، ويعمل على الهاتف والجهاز اللوحي ومحاكٍ متغير الحجم بالعربية والإنجليزية.",
+      "objectivesEn": [
+        "Choose layouts from window size classes",
+        "Use adaptive scaffolds for navigation and list-detail",
+        "Add content descriptions and semantics",
+        "Test with TalkBack, large fonts and RTL"
+      ],
+      "objectivesAr": [
+        "اختيار التصميمات من فئات حجم النافذة",
+        "استخدام الهياكل المتكيفة للتنقل والقائمة مع التفاصيل",
+        "إضافة أوصاف المحتوى والدلالات",
+        "الاختبار مع TalkBack والخطوط الكبيرة والاتجاه من اليمين إلى اليسار"
+      ],
+      "prerequisites": [
+        "and-compose-theming",
+        "and-compose-navigation"
+      ]
+    },
+    {
+      "slug": "and-compose-testing",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Testing Compose UI",
+      "titleAr": "اختبار واجهات Compose",
+      "summaryEn": "Compose UI tests use createComposeRule (or createAndroidComposeRule) to set content, then find nodes through the semantics tree with onNodeWithText, onNodeWithContentDescription or onNodeWithTag, perform actions such as performClick and performTextInput, and assert with assertIsDisplayed, assertIsEnabled or assertTextEquals. Stateless composables are tested in isolation with fake data, and screenshot tests catch visual regressions.",
+      "summaryAr": "اختبارات واجهات Compose تستخدم createComposeRule (أو createAndroidComposeRule) لوضع المحتوى، ثم تجد العناصر عبر شجرة الدلالات بـ onNodeWithText أو onNodeWithContentDescription أو onNodeWithTag، وتنفّذ أفعالًا مثل performClick وperformTextInput، وتتحقق بـ assertIsDisplayed أو assertIsEnabled أو assertTextEquals. والدوال بلا حالة تُختبر وحدها ببيانات وهمية، واختبارات لقطات الشاشة تلتقط التراجعات البصرية.",
+      "whyEn": "UI bugs reach users when nobody clicks through every state before release. A few focused UI tests on important screens (sign-in, checkout) catch broken buttons and missing errors automatically, and they double as accessibility checks because they use the same semantics as TalkBack.",
+      "whyAr": "أخطاء الواجهة تصل إلى المستخدمين عندما لا يمر أحد على كل حالة قبل الإصدار. وبعض اختبارات الواجهة المركّزة على الشاشات المهمة (الدخول والدفع) تلتقط الأزرار المعطلة والأخطاء الناقصة تلقائيًا، وتعمل أيضًا كفحوص لسهولة الوصول لأنها تستخدم الدلالات نفسها التي يستخدمها TalkBack.",
+      "howEn": "Test stateless screen content with state passed in, not the whole app. Prefer finding by text or content description like a user would; use testTag only when there's no good label. Cover the states that matter: empty, loading, error, filled, and the main interaction. Keep ViewModel logic in unit tests and UI tests for what the user sees.",
+      "howAr": "اختبر محتوى الشاشة بلا حالة مع تمرير الحالة، لا التطبيق كاملًا. وفضّل البحث بالنص أو وصف المحتوى كما يفعل المستخدم، واستخدم testTag فقط عندما لا يوجد عنوان مناسب. وغطِّ الحالات المهمة: الفارغة والتحميل والخطأ والممتلئة والتفاعل الأساسي. واترك منطق ViewModel لاختبارات الوحدات، واختبارات الواجهة لما يراه المستخدم.",
+      "exampleEn": "A test sets SignInContent(state = SignInState(emailError = \"Enter a valid email\")) and checks the error text is shown and the button is disabled; a second test types an email and password and checks onSubmit was called once.",
+      "exampleAr": "اختبار يضع SignInContent(state = SignInState(emailError = \"Enter a valid email\")) ويتحقق أن نص الخطأ معروض وأن الزر معطّل، واختبار ثانٍ يكتب بريدًا وكلمة مرور ويتحقق أن onSubmit استُدعيت مرة واحدة.",
+      "practiceEn": "1) Write a test that clicks a counter button three times and checks the text. 2) Test the error, loading and success states of a form. 3) Add a testTag only where text can't identify a node.",
+      "practiceAr": "1) اكتب اختبارًا يضغط زر عدّاد ثلاث مرات ويتحقق من النص. 2) اختبر حالات الخطأ والتحميل والنجاح لنموذج. 3) أضف testTag فقط حيث لا يستطيع النص تحديد العنصر.",
+      "challengeEn": "Write UI tests for a list screen that cover empty, loading, error with retry and a filled list where clicking an item navigates, using a fake navigation lambda.",
+      "challengeAr": "اكتب اختبارات واجهة لشاشة قائمة تغطي الحالات الفارغة والتحميل والخطأ مع إعادة المحاولة والقائمة الممتلئة حيث يؤدي النقر على عنصر إلى التنقل، باستخدام lambda تنقل وهمية.",
+      "objectivesEn": [
+        "Write tests with createComposeRule",
+        "Find nodes by text, content description and test tag",
+        "Perform actions and assert state",
+        "Design screens that are easy to test"
+      ],
+      "objectivesAr": [
+        "كتابة اختبارات بـ createComposeRule",
+        "إيجاد العناصر بالنص ووصف المحتوى ووسم الاختبار",
+        "تنفيذ الأفعال والتحقق من الحالة",
+        "تصميم شاشات سهلة الاختبار"
+      ],
+      "prerequisites": [
+        "and-compose-forms"
+      ]
+    },
+    {
+      "slug": "and-views-xml",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Views and XML for existing apps",
+      "titleAr": "عناصر Views وXML للتطبيقات القائمة",
+      "summaryEn": "Before Compose, Android UIs were XML layouts (ConstraintLayout, LinearLayout) inflated into View objects, with Activities and Fragments managing them, View Binding giving typed access to views, and RecyclerView with an Adapter and DiffUtil for lists. Many production apps still use them, and Compose interoperates both ways: ComposeView puts composables inside an XML screen, and AndroidView embeds a classic View (such as a map) inside Compose.",
+      "summaryAr": "قبل Compose كانت واجهات Android تصميمات XML (ConstraintLayout وLinearLayout) تُحوَّل إلى كائنات View، مع Activity وFragment لإدارتها، وView Binding للوصول الآمن بالأنواع إلى العناصر، وRecyclerView مع Adapter وDiffUtil للقوائم. وكثير من التطبيقات في الإنتاج ما زالت تستخدمها، وCompose يتكامل معها في الاتجاهين: ComposeView تضع دوال Compose داخل شاشة XML، وAndroidView تضمّن عنصر View تقليديًا (مثل خريطة) داخل Compose.",
+      "whyEn": "Most jobs involve an existing codebase, and many are partly or fully XML. Being able to read a layout, fix a RecyclerView bug and migrate one screen at a time to Compose is what lets you contribute in the first week.",
+      "whyAr": "أغلب الوظائف تتضمن قاعدة كود قائمة، وكثير منها XML جزئيًا أو كليًا. والقدرة على قراءة تصميم، وإصلاح خطأ في RecyclerView، ونقل شاشة واحدة في كل مرة إلى Compose، هي ما يتيح لك المساهمة من الأسبوع الأول.",
+      "howEn": "Learn to read ConstraintLayout constraints, use View Binding instead of findViewById, implement a ListAdapter with DiffUtil for lists, and understand the Fragment view lifecycle (use viewLifecycleOwner when observing). To migrate, start with leaf UI pieces inside ComposeView, keep the same ViewModel, and move whole screens once navigation allows.",
+      "howAr": "تعلّم قراءة قيود ConstraintLayout، واستخدم View Binding بدل findViewById، ونفّذ ListAdapter مع DiffUtil للقوائم، وافهم دورة حياة عناصر Fragment (استخدم viewLifecycleOwner عند المراقبة). وللنقل، ابدأ بأجزاء الواجهة الطرفية داخل ComposeView، واحتفظ بـ ViewModel نفسها، وانقل الشاشات كاملة عندما يسمح التنقل.",
+      "exampleEn": "A bank app's transfer screen is a Fragment with an XML layout. The team replaces only its confirmation card with a ComposeView, sharing the existing ViewModel; three releases later the whole screen is Compose without a big-bang rewrite.",
+      "exampleAr": "شاشة التحويل في تطبيق بنك عبارة عن Fragment بتصميم XML. ويستبدل الفريق بطاقة التأكيد فقط بـ ComposeView مع مشاركة ViewModel الموجودة، وبعد ثلاثة إصدارات تصبح الشاشة كلها Compose دون إعادة كتابة شاملة.",
+      "practiceEn": "1) Build one screen in XML with ConstraintLayout and View Binding. 2) Show a list with RecyclerView, ListAdapter and DiffUtil. 3) Put a Compose button inside the XML screen with ComposeView.",
+      "practiceAr": "1) ابنِ شاشة واحدة بـ XML مع ConstraintLayout وView Binding. 2) اعرض قائمة بـ RecyclerView وListAdapter وDiffUtil. 3) ضع زر Compose داخل شاشة XML بـ ComposeView.",
+      "challengeEn": "Migrate a small XML screen with a RecyclerView to Compose step by step, keeping the app working after each step, and write down what changed in state handling.",
+      "challengeAr": "انقل شاشة XML صغيرة فيها RecyclerView إلى Compose خطوة بخطوة، مع بقاء التطبيق يعمل بعد كل خطوة، واكتب ما الذي تغيّر في التعامل مع الحالة.",
+      "objectivesEn": [
+        "Read and edit XML layouts and ConstraintLayout",
+        "Use View Binding and the Fragment view lifecycle",
+        "Build lists with RecyclerView, ListAdapter and DiffUtil",
+        "Mix Compose and Views with ComposeView and AndroidView"
+      ],
+      "objectivesAr": [
+        "قراءة تصميمات XML وConstraintLayout وتعديلها",
+        "استخدام View Binding ودورة حياة عناصر Fragment",
+        "بناء القوائم بـ RecyclerView وListAdapter وDiffUtil",
+        "الدمج بين Compose وViews بـ ComposeView وAndroidView"
+      ],
+      "prerequisites": [
+        "and-compose-lists"
+      ]
+    }
+  ]
+}

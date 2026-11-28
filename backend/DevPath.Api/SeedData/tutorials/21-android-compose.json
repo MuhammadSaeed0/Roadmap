@@ -1,0 +1,232 @@
+[
+  {
+    "topic": "and-compose-basics",
+    "lessons": [
+      {
+        "key": "tut-and-compose-basics-1",
+        "titleEn": "Your first composables",
+        "titleAr": "أول دوالك القابلة للتركيب",
+        "bodyEn": "setContent in the Activity starts Compose. Inside, composables call other composables: Text shows text, Column stacks children vertically, Row places them side by side, and Box layers them. A composable has no return value; it emits UI.\n\nName composables like nouns (ProfileHeader, not drawHeader), give them the data they need as parameters, and add a @Preview so you can see them without running the app.",
+        "bodyAr": "الاستدعاء setContent في Activity يبدأ Compose. وبداخله تستدعي الدوال القابلة للتركيب دوالًا أخرى: Text تعرض نصًا، وColumn ترصّ العناصر عموديًا، وRow تضعها جنبًا إلى جنب، وBox تجعلها طبقات. والدالة القابلة للتركيب لا تُرجع قيمة، بل تُصدر واجهة.\n\nوسمِّ الدوال كأسماء (ProfileHeader لا drawHeader)، وأعطها البيانات التي تحتاجها كوسائط، وأضف @Preview لتراها دون تشغيل التطبيق.",
+        "code": "class MainActivity : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent { AppTheme { ProfileHeader(name = \"Sara Ali\", followers = 1200) } }\n    }\n}\n\n@Composable\nfun ProfileHeader(name: String, followers: Int, modifier: Modifier = Modifier) {\n    Row(modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {\n        Box(Modifier.size(56.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primaryContainer))\n        Column(Modifier.padding(start = 12.dp)) {\n            Text(name, style = MaterialTheme.typography.titleMedium)\n            Text(\"$followers followers\", style = MaterialTheme.typography.bodySmall)\n        }\n    }\n}\n\n@Preview(showBackground = true)\n@Composable\nprivate fun ProfileHeaderPreview() = AppTheme { ProfileHeader(\"Sara Ali\", 1200) }",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-compose-basics-2",
+        "titleEn": "Modifiers and their order",
+        "titleAr": "المعدّلات وترتيبها",
+        "bodyEn": "A Modifier is an ordered chain: each element wraps the ones after it. padding then background puts the color inside the padding; background then padding colors the whole area. clickable before padding makes the padding clickable too.\n\nEvery reusable composable should accept a modifier parameter and apply it to its outermost element, so callers can position it without changing it. Scaffold gives a screen its top bar, bottom bar, floating button and snackbar slots, and passes the content padding you must apply.",
+        "bodyAr": "الـ Modifier سلسلة مرتبة: كل عنصر يغلّف ما بعده. فـ padding ثم background يضع اللون داخل الهامش، وbackground ثم padding يلوّن المساحة كلها. وclickable قبل padding يجعل الهامش قابلًا للنقر أيضًا.\n\nويجب أن تقبل كل دالة قابلة لإعادة الاستخدام وسيط modifier وتطبّقه على العنصر الخارجي، حتى يستطيع المستدعي وضعها دون تغييرها. وScaffold تعطي الشاشة أماكن للشريط العلوي والسفلي والزر العائم والـ Snackbar، وتمرر هامش المحتوى الذي يجب أن تطبّقه.",
+        "code": "@Composable\nfun Badges() {\n    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {\n        Text(\"A\", Modifier.padding(12.dp).background(Color.Yellow))   // color only behind the text\n        Text(\"B\", Modifier.background(Color.Yellow).padding(12.dp))   // color fills the padding too\n    }\n}\n\n@OptIn(ExperimentalMaterial3Api::class)\n@Composable\nfun OrdersScreen(onNewOrder: () -> Unit) {\n    Scaffold(\n        topBar = { TopAppBar(title = { Text(\"Orders\") }) },\n        floatingActionButton = { FloatingActionButton(onClick = onNewOrder) { Icon(Icons.Default.Add, \"New order\") } },\n    ) { innerPadding ->\n        OrdersList(Modifier.padding(innerPadding))     // without this, content hides under the top bar\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-compose-state",
+    "lessons": [
+      {
+        "key": "tut-and-compose-state-1",
+        "titleEn": "remember, rememberSaveable and recomposition",
+        "titleAr": "remember وrememberSaveable وإعادة التركيب",
+        "bodyEn": "When a composable reads a State object and the value changes, Compose runs that composable again. mutableStateOf creates such a value; remember keeps it between recompositions, otherwise every recomposition would create a new one starting from zero. rememberSaveable also saves it in the Bundle, so it survives rotation.\n\nA plain var inside a composable never updates the screen: Compose doesn't know it changed.",
+        "bodyAr": "عندما تقرأ الدالة كائن State وتتغير قيمته، يشغّل Compose تلك الدالة من جديد. والدالة mutableStateOf تنشئ مثل هذه القيمة، وremember تحتفظ بها بين مرات إعادة التركيب، وإلا ستنشئ كل إعادة تركيب قيمة جديدة تبدأ من الصفر. وrememberSaveable تحفظها أيضًا في Bundle، فتبقى بعد التدوير.\n\nوالمتغير العادي var داخل الدالة لا يحدّث الشاشة أبدًا، لأن Compose لا يعرف أنه تغيّر.",
+        "code": "@Composable\nfun Counters() {\n    var broken = 0                                         // never redraws: Compose can't observe it\n    var lost by remember { mutableStateOf(0) }             // resets on rotation\n    var kept by rememberSaveable { mutableStateOf(0) }     // survives rotation and process death\n\n    Column {\n        Button(onClick = { broken++ }) { Text(\"Broken: $broken\") }\n        Button(onClick = { lost++ }) { Text(\"remember: $lost\") }\n        Button(onClick = { kept++ }) { Text(\"rememberSaveable: $kept\") }\n    }\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-compose-state-2",
+        "titleEn": "Hoisting state and unidirectional data flow",
+        "titleAr": "رفع الحالة وتدفق البيانات أحادي الاتجاه",
+        "bodyEn": "A stateful composable owns its state; a stateless one receives value and onValueChange. Hoisting means turning the first into the second and moving the state to the caller. The caller (often a screen backed by a ViewModel) is then the single source of truth: data goes down as parameters, events come up as lambdas, the ViewModel updates its StateFlow, and the UI recomposes with the new state.\n\nThis pattern makes components reusable and lets you preview and test them with any value.",
+        "bodyAr": "الدالة ذات الحالة تملك حالتها، والدالة بلا حالة تستقبل value وonValueChange. ورفع الحالة يعني تحويل الأولى إلى الثانية ونقل الحالة إلى المستدعي. فيصبح المستدعي (غالبًا شاشة مدعومة بـ ViewModel) المصدر الوحيد للحقيقة: البيانات تنزل كوسائط، والأحداث تصعد كتعبيرات lambda، وViewModel تحدّث StateFlow الخاصة بها، وتُعاد تركيب الواجهة بالحالة الجديدة.\n\nوهذا النمط يجعل المكونات قابلة لإعادة الاستخدام ويتيح معاينتها واختبارها بأي قيمة.",
+        "code": "// Before: the field owns its text, so the screen can't read, reset or validate it.\n@Composable\nfun SearchBoxStateful() {\n    var text by remember { mutableStateOf(\"\") }\n    TextField(value = text, onValueChange = { text = it })\n}\n\n// After: stateless, the screen decides.\n@Composable\nfun SearchBox(query: String, onQueryChange: (String) -> Unit, modifier: Modifier = Modifier) {\n    TextField(value = query, onValueChange = onQueryChange, modifier = modifier, placeholder = { Text(\"Search\") })\n}\n\nclass SearchViewModel : ViewModel() {\n    private val _query = MutableStateFlow(\"\")\n    val query = _query.asStateFlow()\n    fun onQueryChange(text: String) { _query.value = text.take(50) }       // the rule lives here\n}\n\n@Composable\nfun SearchScreen(vm: SearchViewModel = viewModel()) {\n    val query by vm.query.collectAsStateWithLifecycle()\n    SearchBox(query, vm::onQueryChange)\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-compose-lists",
+    "lessons": [
+      {
+        "key": "tut-and-compose-lists-1",
+        "titleEn": "LazyColumn with keys",
+        "titleAr": "LazyColumn مع المفاتيح",
+        "bodyEn": "A Column composes every child, even those off screen; LazyColumn composes only what is visible and recycles as you scroll. Add items with items(list, key = { it.id }). Without a key, Compose identifies items by position, so deleting the first item makes every other item think it changed, loses their remembered state and breaks animations.\n\ncontentPadding adds space around the list content, and verticalArrangement = Arrangement.spacedBy(8.dp) adds gaps between items.",
+        "bodyAr": "الـ Column تركّب كل عنصر حتى غير الظاهر، وLazyColumn تركّب الظاهر فقط وتعيد الاستخدام أثناء التمرير. وتُضاف العناصر بـ items(list, key = { it.id }). ودون مفتاح يحدد Compose العناصر بموضعها، فحذف العنصر الأول يجعل كل عنصر آخر يظن أنه تغيّر، ويُفقده حالته المتذكّرة، ويكسر الحركة.\n\nوcontentPadding تضيف مسافة حول محتوى القائمة، وverticalArrangement = Arrangement.spacedBy(8.dp) تضيف فراغات بين العناصر.",
+        "code": "@Composable\nfun ProductList(products: List<Product>, onClick: (Int) -> Unit, onRemove: (Int) -> Unit) {\n    LazyColumn(\n        contentPadding = PaddingValues(16.dp),\n        verticalArrangement = Arrangement.spacedBy(8.dp),\n    ) {\n        item { Text(\"${products.size} products\", style = MaterialTheme.typography.labelLarge) }\n        items(products, key = { it.id }) { product ->\n            ProductCard(\n                product = product,\n                onAddToCart = { onClick(product.id) },\n                modifier = Modifier.animateItem(),          // smooth moves when the list changes\n            )\n        }\n    }\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-compose-lists-2",
+        "titleEn": "Grids, scroll state and performance",
+        "titleAr": "الشبكات وحالة التمرير والأداء",
+        "bodyEn": "LazyVerticalGrid(GridCells.Adaptive(160.dp)) fits as many columns as the width allows, so the same code works on phones and tablets. rememberLazyListState (or rememberLazyGridState) exposes the scroll position and lets you scroll from code inside a coroutine.\n\nReading listState.firstVisibleItemIndex directly in a composable recomposes it on every scroll frame; wrap derived values in derivedStateOf so the UI updates only when the result changes.",
+        "bodyAr": "الشبكة LazyVerticalGrid(GridCells.Adaptive(160.dp)) تضع أكبر عدد من الأعمدة يسمح به العرض، فيعمل الكود نفسه على الهواتف والأجهزة اللوحية. وrememberLazyListState (أو rememberLazyGridState) تعرض موضع التمرير وتتيح التمرير من الكود داخل Coroutine.\n\nوقراءة listState.firstVisibleItemIndex مباشرة في دالة يعيد تركيبها مع كل إطار تمرير، فغلّف القيم المشتقة في derivedStateOf حتى تتحدث الواجهة فقط عندما تتغير النتيجة.",
+        "code": "@Composable\nfun Catalogue(products: List<Product>) {\n    val gridState = rememberLazyGridState()\n    val scope = rememberCoroutineScope()\n    val showTopButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 6 } }\n\n    Box {\n        LazyVerticalGrid(columns = GridCells.Adaptive(160.dp), state = gridState, contentPadding = PaddingValues(12.dp)) {\n            items(products, key = { it.id }) { ProductTile(it) }\n        }\n        AnimatedVisibility(showTopButton, Modifier.align(Alignment.BottomEnd).padding(16.dp)) {\n            FloatingActionButton(onClick = { scope.launch { gridState.animateScrollToItem(0) } }) {\n                Icon(Icons.Default.KeyboardArrowUp, contentDescription = \"Back to top\")\n            }\n        }\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-compose-theming",
+    "lessons": [
+      {
+        "key": "tut-and-compose-theming-1",
+        "titleEn": "Color schemes, typography and dark mode",
+        "titleAr": "مخططات الألوان والخطوط والوضع الداكن",
+        "bodyEn": "A Material 3 color scheme has roles, not just colors: primary, onPrimary, surface, onSurface, error and so on. Use the role that fits (a card's text is onSurface), and the same code looks right in light and dark mode. Typography has roles too: displayLarge down to labelSmall.\n\nOn Android 12+ dynamic color builds a scheme from the user's wallpaper; offer it as an option, keeping your brand colors as the fallback.",
+        "bodyAr": "مخطط ألوان Material 3 فيه أدوار لا ألوان فقط: primary وonPrimary وsurface وonSurface وerror وغيرها. فاستخدم الدور المناسب (نص البطاقة onSurface)، فيبدو الكود نفسه صحيحًا في الوضعين الفاتح والداكن. وللخطوط أدوار أيضًا: من displayLarge حتى labelSmall.\n\nوعلى Android 12 فأحدث تبني الألوان الديناميكية مخططًا من خلفية المستخدم، فقدّمها كخيار مع إبقاء ألوان علامتك كبديل.",
+        "code": "// Hard-coded: wrong in dark mode, impossible to rebrand.\nText(\"Paid\", color = Color(0xFF1B6B4A), fontSize = 14.sp)\n\n// Theme roles: correct in both modes, changed in one place.\nText(\n    \"Paid\",\n    color = MaterialTheme.colorScheme.primary,\n    style = MaterialTheme.typography.labelLarge,\n)\n\nSurface(color = MaterialTheme.colorScheme.errorContainer, shape = MaterialTheme.shapes.medium) {\n    Text(\"Card declined\", color = MaterialTheme.colorScheme.onErrorContainer, modifier = Modifier.padding(12.dp))\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-compose-theming-2",
+        "titleEn": "A small design system",
+        "titleAr": "نظام تصميم صغير",
+        "bodyEn": "Repeated UI patterns become components with a clear API: what they show, what they report, and a modifier. Keep spacing values in one object, wrap Material components when your app needs the same configuration everywhere, and preview each component in light, dark and a long-text or Arabic version.\n\nScreens then read like a description of the product, and design changes happen in one file.",
+        "bodyAr": "أنماط الواجهة المتكررة تصبح مكونات بواجهة واضحة: ما تعرضه، وما تبلّغ عنه، ومعدّل. واحفظ قيم المسافات في كائن واحد، وغلّف مكونات Material عندما يحتاج تطبيقك الإعداد نفسه في كل مكان، وعاين كل مكون في الوضع الفاتح والداكن ونسخة بنص طويل أو بالعربية.\n\nفتُقرأ الشاشات كوصف للمنتج، وتحدث تغييرات التصميم في ملف واحد.",
+        "code": "object Spacing { val s = 8.dp; val m = 16.dp; val l = 24.dp }\n\n@Composable\nfun PrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, loading: Boolean = false) {\n    Button(onClick = onClick, enabled = !loading, modifier = modifier.fillMaxWidth().heightIn(min = 48.dp)) {\n        if (loading) CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp) else Text(text)\n    }\n}\n\n@PreviewLightDark\n@Preview(name = \"Arabic\", locale = \"ar\")\n@Composable\nprivate fun PrimaryButtonPreview() = ShopTheme { PrimaryButton(\"Checkout\", onClick = {}) }",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-compose-navigation",
+    "lessons": [
+      {
+        "key": "tut-and-compose-navigation-1",
+        "titleEn": "Routes, arguments and the back stack",
+        "titleAr": "المسارات والوسائط ومكدس الرجوع",
+        "bodyEn": "With type-safe navigation each destination is a @Serializable object (no arguments) or data class (with arguments). navigate(ProductDetails(42)) pushes a screen; popBackStack() goes back. In the destination's ViewModel, savedStateHandle.toRoute<ProductDetails>() returns the arguments, which also survive process death.\n\nPass only small values such as IDs; the details screen loads the product from the repository itself.",
+        "bodyAr": "مع التنقل الآمن بالأنواع تكون كل وجهة كائنًا @Serializable (بلا وسائط) أو صنف data (بوسائط). والاستدعاء navigate(ProductDetails(42)) يضيف شاشة، وpopBackStack() يرجع. وفي ViewModel الخاصة بالوجهة، تُرجع savedStateHandle.toRoute<ProductDetails>() الوسائط، وهي تبقى أيضًا بعد موت العملية.\n\nومرّر القيم الصغيرة فقط مثل المعرّفات، وشاشة التفاصيل تحمّل المنتج من المستودع بنفسها.",
+        "code": "@Serializable data class ProductDetails(val id: Int)\n\nclass ProductDetailsViewModel(saved: SavedStateHandle, repo: ProductRepository) : ViewModel() {\n    private val args = saved.toRoute<ProductDetails>()\n    val product = repo.observe(args.id).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)\n}\n\n// Sign-in done: go home and remove sign-in from the back stack.\nnavController.navigate(Home) {\n    popUpTo<SignIn> { inclusive = true }\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-compose-navigation-2",
+        "titleEn": "Bottom navigation that keeps state",
+        "titleAr": "تنقل سفلي يحتفظ بالحالة",
+        "bodyEn": "Tabs should behave like separate stacks: switching away and back keeps the scroll position and any screen opened inside the tab. Navigate to a tab with popUpTo(start) { saveState = true }, launchSingleTop = true and restoreState = true.\n\nScreens should not know about NavController; give them lambdas. That keeps them previewable and testable, and lets the app change navigation later without touching every screen.",
+        "bodyAr": "يجب أن تتصرف التبويبات كمكدسات منفصلة: الانتقال عنها ثم العودة يحتفظ بموضع التمرير وبأي شاشة فُتحت داخل التبويب. فانتقل إلى التبويب بـ popUpTo(start) { saveState = true } وlaunchSingleTop = true وrestoreState = true.\n\nويجب ألا تعرف الشاشات NavController، فأعطها تعبيرات lambda. وهذا يبقيها قابلة للمعاينة والاختبار، ويتيح للتطبيق تغيير التنقل لاحقًا دون لمس كل شاشة.",
+        "code": "@Composable\nfun ShopApp() {\n    val nav = rememberNavController()\n    val current = nav.currentBackStackEntryAsState().value?.destination\n    Scaffold(bottomBar = {\n        NavigationBar {\n            listOf(Home to Icons.Default.Home, Cart to Icons.Default.ShoppingCart).forEach { (route, icon) ->\n                NavigationBarItem(\n                    selected = current?.hasRoute(route::class) == true,\n                    onClick = { nav.openTab(route) },\n                    icon = { Icon(icon, contentDescription = null) },\n                    label = { Text(if (route == Home) \"Home\" else \"Cart\") },\n                )\n            }\n        }\n    }) { padding -> ShopNavHost(nav, Modifier.padding(padding)) }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-compose-forms",
+    "lessons": [
+      {
+        "key": "tut-and-compose-forms-1",
+        "titleEn": "Text fields, keyboards and focus",
+        "titleAr": "حقول النص ولوحات المفاتيح والتركيز",
+        "bodyEn": "A TextField shows exactly the value you pass, so it must be backed by state. Choose the keyboard with KeyboardOptions(keyboardType = KeyboardType.Email) and the action key with imeAction = ImeAction.Next or Done, then react in keyboardActions. LocalFocusManager.current.moveFocus(FocusDirection.Down) moves to the next field.\n\nsupportingText shows hints and errors under the field, isError turns it red, and PasswordVisualTransformation hides passwords.",
+        "bodyAr": "حقل TextField يعرض بالضبط القيمة التي تمررها، فيجب أن تدعمه حالة. واختر لوحة المفاتيح بـ KeyboardOptions(keyboardType = KeyboardType.Email) وزر الإجراء بـ imeAction = ImeAction.Next أو Done، ثم استجب في keyboardActions. والاستدعاء LocalFocusManager.current.moveFocus(FocusDirection.Down) ينقل إلى الحقل التالي.\n\nوsupportingText تعرض التلميحات والأخطاء تحت الحقل، وisError تجعله أحمر، وPasswordVisualTransformation تخفي كلمات المرور.",
+        "code": "@Composable\nfun PhoneField(phone: String, onPhone: (String) -> Unit, error: String?, onDone: () -> Unit) {\n    OutlinedTextField(\n        value = phone,\n        onValueChange = { onPhone(it.filter(Char::isDigit).take(11)) },      // only digits, max 11\n        label = { Text(\"Mobile number\") },\n        prefix = { Text(\"+20 \") },\n        isError = error != null,\n        supportingText = { Text(error ?: \"We'll text you a code\") },\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone, imeAction = ImeAction.Done),\n        keyboardActions = KeyboardActions(onDone = { onDone() }),\n        singleLine = true,\n    )\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-compose-forms-2",
+        "titleEn": "Validation in the ViewModel",
+        "titleAr": "التحقق في ViewModel",
+        "bodyEn": "Keep the whole form in one data class in the ViewModel. Validation is a set of pure functions, so you can unit test them without Android. Show an error when the user leaves the field or taps submit, not while they are still typing the first character.\n\nOn submit: validate everything, stop if there are errors, set isSubmitting so the button disables and shows progress, call the repository in viewModelScope, then clear isSubmitting and report success or an error message.",
+        "bodyAr": "احفظ النموذج كله في صنف data واحد داخل ViewModel. والتحقق مجموعة دوال نقية، فتستطيع اختبارها دون Android. واعرض الخطأ عندما يغادر المستخدم الحقل أو يضغط إرسال، لا وهو ما زال يكتب أول حرف.\n\nوعند الإرسال: تحقق من كل شيء، وتوقف إن وُجدت أخطاء، واضبط isSubmitting حتى يتعطل الزر ويعرض التقدم، واستدعِ المستودع في viewModelScope، ثم أزل isSubmitting وبلّغ عن النجاح أو برسالة خطأ.",
+        "code": "class SignUpViewModel(private val auth: AuthRepository) : ViewModel() {\n    private val _state = MutableStateFlow(SignUpState())\n    val state = _state.asStateFlow()\n\n    fun onEmail(v: String) = _state.update { it.copy(email = v.trim(), emailError = null) }\n    fun onPassword(v: String) = _state.update { it.copy(password = v, passwordError = null) }\n\n    fun submit() {\n        val s = _state.value\n        val emailError = SignUpValidator.email(s.email)\n        val passwordError = SignUpValidator.password(s.password)\n        if (emailError != null || passwordError != null) {\n            _state.update { it.copy(emailError = emailError, passwordError = passwordError) }\n            return\n        }\n        _state.update { it.copy(isSubmitting = true) }\n        viewModelScope.launch {\n            val result = auth.signUp(s.email, s.password)\n            _state.update { it.copy(isSubmitting = false, emailError = result.exceptionOrNull()?.message) }\n        }\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-compose-side-effects",
+    "lessons": [
+      {
+        "key": "tut-and-compose-side-effects-1",
+        "titleEn": "Choosing the right effect",
+        "titleAr": "اختيار التأثير الصحيح",
+        "bodyEn": "A composable can run many times, in any order, and be skipped. Code that must run once, or be cleaned up, goes into an effect. LaunchedEffect(key) launches a coroutine tied to the composable and restarts it when key changes; DisposableEffect(key) gives you onDispose for cleanup; rememberCoroutineScope gives a scope for coroutines started from callbacks such as clicks.\n\nrememberUpdatedState lets a long-running effect call the latest version of a lambda without restarting.",
+        "bodyAr": "قد تعمل الدالة القابلة للتركيب مرات كثيرة، بأي ترتيب، وقد تُتخطى. والكود الذي يجب أن يعمل مرة واحدة أو أن يُنظَّف يوضع في تأثير. فـ LaunchedEffect(key) تطلق Coroutine مرتبطة بالدالة وتعيد تشغيلها عندما يتغير key، وDisposableEffect(key) تعطيك onDispose للتنظيف، وrememberCoroutineScope تعطي نطاقًا للـ Coroutines التي تبدأ من استدعاءات مثل النقر.\n\nوrememberUpdatedState تتيح لتأثير طويل استدعاء أحدث نسخة من lambda دون إعادة التشغيل.",
+        "code": "@Composable\nfun OrderTracking(orderId: Int, onDelivered: () -> Unit, vm: TrackingViewModel = viewModel()) {\n    val currentOnDelivered by rememberUpdatedState(onDelivered)\n\n    // Restarts only when the order changes, not on every recomposition.\n    LaunchedEffect(orderId) {\n        vm.track(orderId).collect { status -> if (status == Status.DELIVERED) currentOnDelivered() }\n    }\n\n    val scope = rememberCoroutineScope()\n    val sheet = rememberModalBottomSheetState()\n    Button(onClick = { scope.launch { sheet.show() } }) { Text(\"Contact courier\") }   // from a click\n\n    // Wrong: runs on every recomposition and logs dozens of times.\n    // analytics.log(\"tracking_opened\")\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-compose-side-effects-2",
+        "titleEn": "One-off events and animation",
+        "titleAr": "الأحداث لمرة واحدة والحركة",
+        "bodyEn": "A message like \"Payment failed\" should show once. If it is a field in UI state, it shows again after rotation unless you clear it. A common pattern sends such events through a Channel exposed as a Flow and collects them in LaunchedEffect(Unit), or keeps them in state and calls an onShown() function after displaying.\n\nAnimations follow state: animateDpAsState or animateColorAsState animate a single value, AnimatedVisibility animates appearing and disappearing, AnimatedContent switches between contents, and animateContentSize animates size changes.",
+        "bodyAr": "رسالة مثل «فشل الدفع» يجب أن تظهر مرة واحدة. فإذا كانت حقلًا في حالة الواجهة، تظهر مرة أخرى بعد التدوير ما لم تمسحها. ونمط شائع يرسل هذه الأحداث عبر Channel معروضة كـ Flow ويجمعها في LaunchedEffect(Unit)، أو يحفظها في الحالة ويستدعي دالة onShown() بعد العرض.\n\nوالحركة تتبع الحالة: animateDpAsState أو animateColorAsState تحرّك قيمة واحدة، وAnimatedVisibility تحرّك الظهور والاختفاء، وAnimatedContent تبدّل بين المحتويات، وanimateContentSize تحرّك تغيّر الحجم.",
+        "code": "class PaymentViewModel : ViewModel() {\n    private val _events = Channel<String>(Channel.BUFFERED)\n    val events = _events.receiveAsFlow()\n    fun pay() = viewModelScope.launch { _events.send(\"Payment failed. Try another card.\") }\n}\n\n@Composable\nfun ExpandableFaq(question: String, answer: String) {\n    var open by rememberSaveable { mutableStateOf(false) }\n    val rotation by animateFloatAsState(if (open) 180f else 0f, label = \"arrow\")\n    Column(Modifier.clickable { open = !open }.animateContentSize().padding(16.dp)) {\n        Row {\n            Text(question, Modifier.weight(1f))\n            Icon(Icons.Default.ExpandMore, contentDescription = null, modifier = Modifier.rotate(rotation))\n        }\n        if (open) Text(answer, Modifier.padding(top = 8.dp))\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-compose-adaptive-a11y",
+    "lessons": [
+      {
+        "key": "tut-and-compose-adaptive-a11y-1",
+        "titleEn": "Layouts for every screen size",
+        "titleAr": "تصميمات لكل حجم شاشة",
+        "bodyEn": "Don't check for \"tablet\"; check the window. currentWindowAdaptiveInfo().windowSizeClass reports compact (most phones in portrait), medium (small tablets, foldables) or expanded (tablets, desktop windows). Switch the navigation from a bottom bar to a rail or drawer, and show list and details together when there is room.\n\nNavigationSuiteScaffold picks the navigation style for you, and ListDetailPaneScaffold handles the list-details pattern including Back behaviour.",
+        "bodyAr": "لا تفحص «هل هو جهاز لوحي»، بل افحص النافذة. فـ currentWindowAdaptiveInfo().windowSizeClass تبلّغ عن compact (أغلب الهواتف بالوضع الطولي)، أو medium (الأجهزة اللوحية الصغيرة والقابلة للطي)، أو expanded (الأجهزة اللوحية ونوافذ سطح المكتب). وبدّل التنقل من شريط سفلي إلى شريط جانبي أو درج، واعرض القائمة والتفاصيل معًا عندما تتسع المساحة.\n\nوNavigationSuiteScaffold تختار نمط التنقل بدلًا منك، وListDetailPaneScaffold تتولى نمط القائمة والتفاصيل ومنه سلوك Back.",
+        "code": "@Composable\nfun AdaptiveShop(content: @Composable () -> Unit) {\n    var tab by rememberSaveable { mutableStateOf(0) }\n    NavigationSuiteScaffold(                        // bottom bar, rail or drawer depending on the window\n        navigationSuiteItems = {\n            listOf(\"Home\" to Icons.Default.Home, \"Cart\" to Icons.Default.ShoppingCart).forEachIndexed { i, (label, icon) ->\n                item(selected = tab == i, onClick = { tab = i }, icon = { Icon(icon, null) }, label = { Text(label) })\n            }\n        },\n    ) { content() }\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-compose-adaptive-a11y-2",
+        "titleEn": "Accessibility in Compose",
+        "titleAr": "سهولة الوصول في Compose",
+        "bodyEn": "Screen readers read the semantics tree. Text is read automatically; icons and images need contentDescription (null for decoration). A clickable row with several texts should be one item: Modifier.semantics(mergeDescendants = true) or clickable on the row. Custom controls need a role and state, for example Modifier.toggleable(value, role = Role.Switch).\n\nAlso: 48dp touch targets, sp text sizes that grow with the user's font settings, colors that pass contrast in both themes, and start/end instead of left/right so Arabic mirrors correctly.",
+        "bodyAr": "قارئات الشاشة تقرأ شجرة الدلالات. والنص يُقرأ تلقائيًا، أما الأيقونات والصور فتحتاج contentDescription (وnull للزخرفة). والصف القابل للنقر الذي فيه عدة نصوص يجب أن يكون عنصرًا واحدًا: Modifier.semantics(mergeDescendants = true) أو clickable على الصف. والعناصر المخصصة تحتاج دورًا وحالة، مثل Modifier.toggleable(value, role = Role.Switch).\n\nوأيضًا: مناطق لمس 48dp، وأحجام نص بوحدة sp تكبر مع إعدادات خط المستخدم، وألوان تنجح في التباين في المظهرين، وstart وend بدل left وright حتى تنعكس العربية بشكل صحيح.",
+        "code": "@Composable\nfun FavoriteToggle(isFavorite: Boolean, onToggle: (Boolean) -> Unit) {\n    Box(\n        Modifier\n            .size(48.dp)                                                 // minimum touch target\n            .toggleable(value = isFavorite, role = Role.Switch, onValueChange = onToggle)\n            .semantics { stateDescription = if (isFavorite) \"In favourites\" else \"Not in favourites\" },\n        contentAlignment = Alignment.Center,\n    ) {\n        Icon(\n            if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,\n            contentDescription = \"Favourite\",\n        )\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-compose-testing",
+    "lessons": [
+      {
+        "key": "tut-and-compose-testing-1",
+        "titleEn": "Finding nodes and asserting",
+        "titleAr": "إيجاد العناصر والتحقق منها",
+        "bodyEn": "UI tests live in src/androidTest and run on a device or emulator (or on the JVM with Robolectric). createComposeRule() gives you setContent, then finders such as onNodeWithText(\"Sign in\"), actions such as performClick() and assertions such as assertIsDisplayed().\n\nTest the stateless content composable with a state object, so each test sets up exactly the situation it checks: an error, an empty list, a loading spinner.",
+        "bodyAr": "اختبارات الواجهة تعيش في src/androidTest وتعمل على جهاز أو محاكٍ (أو على JVM بأداة Robolectric). والدالة createComposeRule() تعطيك setContent، ثم أدوات البحث مثل onNodeWithText(\"Sign in\")، والأفعال مثل performClick()، والتحققات مثل assertIsDisplayed().\n\nواختبر دالة المحتوى بلا حالة مع كائن حالة، حتى يضبط كل اختبار الموقف الذي يفحصه بالضبط: خطأ، أو قائمة فارغة، أو مؤشر تحميل.",
+        "code": "class OrdersContentTest {\n    @get:Rule val compose = createComposeRule()\n\n    @Test fun emptyStateOffersToBrowse() {\n        var browsed = false\n        compose.setContent { OrdersContent(state = OrdersState(orders = emptyList()), onBrowse = { browsed = true }) }\n        compose.onNodeWithText(\"No orders yet\").assertIsDisplayed()\n        compose.onNodeWithText(\"Browse products\").performClick()\n        assertTrue(browsed)\n    }\n\n    @Test fun errorShowsRetry() {\n        compose.setContent { OrdersContent(state = OrdersState(error = \"No connection\"), onBrowse = {}) }\n        compose.onNodeWithText(\"No connection\").assertIsDisplayed()\n        compose.onNodeWithText(\"Try again\").assertIsEnabled()\n    }\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-compose-testing-2",
+        "titleEn": "Semantics, test tags and what not to test",
+        "titleAr": "الدلالات ووسوم الاختبار وما لا يجب اختباره",
+        "bodyEn": "Finders use the same semantics as TalkBack, so a button that a test can't find by its text or content description is often also inaccessible. When there is no label (a chart, an image list), add Modifier.testTag(\"price_chart\") and use onNodeWithTag.\n\nKeep UI tests few and focused: important flows and states. Business rules belong in fast unit tests of the ViewModel and validators, and printToLog(\"TAG\") dumps the semantics tree when a finder doesn't match.",
+        "bodyAr": "أدوات البحث تستخدم الدلالات نفسها التي يستخدمها TalkBack، فالزر الذي لا يستطيع الاختبار إيجاده بنصه أو وصف محتواه غالبًا غير سهل الوصول أيضًا. وعندما لا يوجد عنوان (رسم بياني، قائمة صور)، أضف Modifier.testTag(\"price_chart\") واستخدم onNodeWithTag.\n\nواجعل اختبارات الواجهة قليلة ومركّزة: المسارات والحالات المهمة. وقواعد العمل مكانها اختبارات وحدات سريعة لـ ViewModel وأصناف التحقق، وprintToLog(\"TAG\") تطبع شجرة الدلالات عندما لا تطابق أداة البحث.",
+        "code": "@Test fun chartAndListAreShown() {\n    compose.setContent { PriceHistory(points = samplePoints) }\n    compose.onNodeWithTag(\"price_chart\").assertIsDisplayed()          // no text label, so a tag\n    compose.onAllNodesWithContentDescription(\"Price point\").assertCountEquals(samplePoints.size)\n}\n\n@Test fun debugWhenAFinderFails() {\n    compose.setContent { CheckoutContent(sampleState) }\n    compose.onRoot().printToLog(\"CHECKOUT\")                            // see what the tree really contains\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-views-xml",
+    "lessons": [
+      {
+        "key": "tut-and-views-xml-1",
+        "titleEn": "Layouts, View Binding and RecyclerView",
+        "titleAr": "التصميمات وView Binding وRecyclerView",
+        "bodyEn": "An XML layout declares views and their constraints; View Binding generates a class per layout with a typed property for every view with an id, replacing findViewById. Lists use RecyclerView with a ListAdapter: DiffUtil compares old and new lists in the background and animates only what changed.\n\nIn Fragments the view is destroyed before the Fragment (for example on the back stack), so clear the binding in onDestroyView and observe data with viewLifecycleOwner.",
+        "bodyAr": "تصميم XML يعرّف العناصر وقيودها، وView Binding يولّد صنفًا لكل تصميم فيه خاصية مكتوبة النوع لكل عنصر له id، بدل findViewById. والقوائم تستخدم RecyclerView مع ListAdapter: يقارن DiffUtil القائمة القديمة بالجديدة في الخلفية ويحرّك ما تغيّر فقط.\n\nوفي Fragment تُدمَّر العناصر قبل Fragment نفسه (مثلًا في مكدس الرجوع)، فامسح الـ binding في onDestroyView وراقب البيانات بـ viewLifecycleOwner.",
+        "code": "<androidx.constraintlayout.widget.ConstraintLayout\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    android:layout_width=\"match_parent\" android:layout_height=\"match_parent\">\n\n    <TextView android:id=\"@+id/title\"\n        android:layout_width=\"0dp\" android:layout_height=\"wrap_content\"\n        android:text=\"@string/orders_title\"\n        app:layout_constraintTop_toTopOf=\"parent\"\n        app:layout_constraintStart_toStartOf=\"parent\"\n        app:layout_constraintEnd_toEndOf=\"parent\" />\n\n    <androidx.recyclerview.widget.RecyclerView android:id=\"@+id/list\"\n        android:layout_width=\"0dp\" android:layout_height=\"0dp\"\n        app:layoutManager=\"androidx.recyclerview.widget.LinearLayoutManager\"\n        app:layout_constraintTop_toBottomOf=\"@id/title\"\n        app:layout_constraintBottom_toBottomOf=\"parent\"\n        app:layout_constraintStart_toStartOf=\"parent\"\n        app:layout_constraintEnd_toEndOf=\"parent\" />\n</androidx.constraintlayout.widget.ConstraintLayout>",
+        "language": "xml"
+      },
+      {
+        "key": "tut-and-views-xml-2",
+        "titleEn": "Mixing Compose and Views",
+        "titleAr": "الدمج بين Compose وViews",
+        "bodyEn": "To use Compose inside an XML screen, add a ComposeView to the layout and call setContent on it, with a ViewCompositionStrategy that matches the Fragment's view lifecycle. To use a classic View inside Compose, such as a MapView or an ad view, wrap it in AndroidView with a factory and an update block.\n\nMigrations usually go bottom-up: shared components first, then whole screens, keeping the same ViewModels the whole time.",
+        "bodyAr": "لاستخدام Compose داخل شاشة XML، أضف ComposeView إلى التصميم واستدعِ setContent عليه، مع ViewCompositionStrategy تطابق دورة حياة عناصر Fragment. ولاستخدام View تقليدي داخل Compose، مثل MapView أو عنصر إعلان، غلّفه في AndroidView بدالة إنشاء وكتلة تحديث.\n\nوالنقل يكون عادةً من الأسفل إلى الأعلى: المكونات المشتركة أولًا ثم الشاشات كاملة، مع إبقاء ViewModel نفسها طوال الوقت.",
+        "code": "// Compose inside XML\nbinding.summary.apply {\n    setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)\n    setContent { ShopTheme { OrderSummary(vm) } }\n}\n\n// A classic View inside Compose\n@Composable\nfun LegacyRatingBar(rating: Float, onRating: (Float) -> Unit) {\n    AndroidView(\n        factory = { context -> RatingBar(context).apply { numStars = 5; stepSize = 0.5f } },\n        update = { bar ->\n            bar.rating = rating\n            bar.setOnRatingBarChangeListener { _, value, fromUser -> if (fromUser) onRating(value) }\n        },\n    )\n}",
+        "language": "kotlin"
+      }
+    ]
+  }
+]

@@ -6913,5 +6913,277 @@
       "channel": "Mohsen Coder",
       "language": "en"
     }
+  ],
+  "and-compose-basics": [
+    {
+      "videoId": "6_wK_Ud8--0",
+      "title": "The Jetpack Compose Beginner Crash Course 💻  (Android Studio Tutorial)",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "xc8nAcVvpxY",
+      "title": "Fundamentals of Compose Layouts and Modifiers - MAD Skills",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "qvDo0SKR8-k",
+      "title": "Jetpack Compose basics | Workshop",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "Jy6EiYRkLFs",
+      "title": "(عمر التميمي ) Jetpack Compose أساسيات ال",
+      "channel": "المطورون في العالم العربي - DevMENA",
+      "language": "ar"
+    },
+    {
+      "videoId": "o5cX-PV51hk",
+      "title": "أساسيات واجهة الأندرويد بـ Jetpack Compose – Text, Column, Row, Box, Spacer (للمبتدئين)",
+      "channel": "كَوّدْ  مع يحيى",
+      "language": "ar"
+    }
+  ],
+  "and-compose-state": [
+    {
+      "videoId": "mymWGMy9pYI",
+      "title": "Jetpack Compose: State",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "hWwZ_AuSGfo",
+      "title": "Where to hoist that state in Compose?",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "C8IfGDrmwiE",
+      "title": "Stateful vs. Stateless Composables In Jetpack Compose? - Everything You Need to Know",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "FQOSdGaREo4",
+      "title": "State and Jetpack Compose (عمر التميمي)",
+      "channel": "المطورون في العالم العربي - DevMENA",
+      "language": "ar"
+    }
+  ],
+  "and-compose-lists": [
+    {
+      "videoId": "1ANt65eoNhQ",
+      "title": "Lazy layouts in Compose",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "s8h7GJTZa4E",
+      "title": "Top 3 Hacks to Remove LazyColumn Lag in Jetpack Compose - Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "O26qG67bh3w",
+      "title": "ازاي تعمل Lazy List في Jetpack Compose بسهولة! 📱",
+      "channel": "محمد صديق | Mohamed Sedyk",
+      "language": "ar"
+    }
+  ],
+  "and-compose-theming": [
+    {
+      "videoId": "S61mXlMQkLY",
+      "title": "Clean Theming in Compose (You're Doing It Wrong!)",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "lkU2Z1uzR4c",
+      "title": "Material 3 Theming & Dynamic Color in Jetpack Compose | Colors, Typography, Shapes (EP 8)",
+      "channel": "ComposeNCode",
+      "language": "en"
+    },
+    {
+      "videoId": "_WQ3Ocl1TJA",
+      "title": "Customizing Colors and Themes in Jetpack Compose application",
+      "channel": "Brandan Jones",
+      "language": "en"
+    },
+    {
+      "videoId": "nAjF1l9pMhs",
+      "title": "Android Theme with JetpackCompose by Arabic",
+      "channel": "Mohammed Altohamy",
+      "language": "ar"
+    },
+    {
+      "videoId": "LFMUTEByWKk",
+      "title": "Migrating Compose App to Material You! (Maryam Alhuthayfi)",
+      "channel": "المطورون في العالم العربي - DevMENA",
+      "language": "ar"
+    }
+  ],
+  "and-compose-navigation": [
+    {
+      "videoId": "AIC_OFQ1r3k",
+      "title": "Type-Safe Navigation with the OFFICIAL Compose Navigation Library",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "_wNpVMEkNeY",
+      "title": "Type Safe Navigation in Jetpack Compose - Android",
+      "channel": "Ahmed Guedmioui",
+      "language": "en"
+    },
+    {
+      "videoId": "5a3vPRdwC8I",
+      "title": "Type-Safe Navigation In Jetpack Compose",
+      "channel": "Daniel Atitienei",
+      "language": "en"
+    },
+    {
+      "videoId": "wcEtEMp_JxA",
+      "title": "Navigating with Compose and Adopting compose in existing apps (عمر التميمي)",
+      "channel": "المطورون في العالم العربي - DevMENA",
+      "language": "ar"
+    }
+  ],
+  "and-compose-forms": [
+    {
+      "videoId": "CHtso6Cwi94",
+      "title": "Keyboard & Focus Management In Jetpack Compose - Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "vCP8k_oJTkA",
+      "title": "Create a Registration Form with Field Validation in Jetpack Compose [Part 2]",
+      "channel": "Rotlin",
+      "language": "en"
+    },
+    {
+      "videoId": "aZe4SjEN4ik",
+      "title": "Jetpack Compose Login Screen | Kotlin Android Studio Tutorial",
+      "channel": "Developer Hans",
+      "language": "en"
+    },
+    {
+      "videoId": "cjPLx--KS2o",
+      "title": "11-Form validation with clean architecture (use case) in jetpack compose al3fret| العِفْرِيتُ",
+      "channel": "العِفْرِيتُ | al3fret",
+      "language": "ar"
+    },
+    {
+      "videoId": "DhaNAe6TVl0",
+      "title": "5-login(sign in) page jetpack compose العِفْرِيتُ | شركة الحجي",
+      "channel": "العِفْرِيتُ | al3fret",
+      "language": "ar"
+    }
+  ],
+  "and-compose-side-effects": [
+    {
+      "videoId": "gxWcfz3V2QE",
+      "title": "Full Guide to Jetpack Compose Effect Handlers",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "f_iIMscTNjQ",
+      "title": "Side Effects & Effect Handlers - Android Jetpack Compose - Part 10",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "bpH_qbYlJXY",
+      "title": "DisposableEffect - Jetpack Compose Side Effect + Effect Handlers Guide",
+      "channel": "K Apps",
+      "language": "en"
+    },
+    {
+      "videoId": "4OtC68a1jJE",
+      "title": "شرح جميع Side Effects في كوتلن كومبوس بالعربي مع أمثلة عملية | كورس Jetpack Compose بالعربي #8",
+      "channel": "GeeCoders - جي كودرس",
+      "language": "ar"
+    }
+  ],
+  "and-compose-adaptive-a11y": [
+    {
+      "videoId": "HmXgVBys7BU",
+      "title": "How to Support All Screen Sizes in Jetpack Compose",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "iV0h_6G3CYk",
+      "title": "Jetpack Compose: Accessibility",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "Sf1z_gRplDc",
+      "title": "Building accessibility support for Compose",
+      "channel": "Android Developers",
+      "language": "en"
+    }
+  ],
+  "and-compose-testing": [
+    {
+      "videoId": "JyUJZvJ-OV8",
+      "title": "Write your first Compose UI test",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "kxOwAIdTT9A",
+      "title": "How to Write your First Jetpack Compose Test (Step-By-Step)",
+      "channel": "Charfaoui Younes",
+      "language": "en"
+    },
+    {
+      "videoId": "svYgbT2nQw8",
+      "title": "5 ways Compose improves UI testing",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "-bSLLAYlGoE",
+      "title": "UI Testing in Jetpack Compose (عمر التميمي)",
+      "channel": "المطورون في العالم العربي - DevMENA",
+      "language": "ar"
+    }
+  ],
+  "and-views-xml": [
+    {
+      "videoId": "9WTCHY6j2dU",
+      "title": "#6 Using ListAdapter and DiffUtils to show data in RecyclerView",
+      "channel": "Android Casts",
+      "language": "en"
+    },
+    {
+      "videoId": "xSL_lSDVxnQ",
+      "title": "Kotlin RecyclerView Template (DiffUtil and AsyncListDiffer)",
+      "channel": "CodingWithMitch",
+      "language": "en"
+    },
+    {
+      "videoId": "j_2jt94CShU",
+      "title": "Android Tutorial 2019 #8: RecyclerView w/ DiffUtil, ListAdapter, Kotlin, MVVM, LiveData, OnClick",
+      "channel": "Ryan Michael Kay",
+      "language": "en"
+    },
+    {
+      "videoId": "YPQd91ax_7U",
+      "title": "09 - Android - Kotlin - RecyclerView - Part02 - Create RecyclerView - شرح",
+      "channel": "Ahmed Tawfik",
+      "language": "ar"
+    },
+    {
+      "videoId": "PWiiidwKdO0",
+      "title": "الدرس الاول: شرح مفصل وعملي لعمل الــ RecyclerView في الكوتلين، وهو اول شرح عربي للموضوع",
+      "channel": "Osama Al-atraqchi",
+      "language": "ar"
+    }
   ]
 }
