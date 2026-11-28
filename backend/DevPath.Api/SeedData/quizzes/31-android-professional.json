@@ -1,0 +1,1178 @@
+[
+  {
+    "key": "qz-and-pro-gradle-1",
+    "topic": "and-pro-gradle",
+    "questionEn": "Where does a version catalog live by default?",
+    "questionAr": "أين يوجد فهرس الإصدارات افتراضيًا؟",
+    "optionsEn": [
+      "gradle.properties",
+      "gradle/libs.versions.toml",
+      "app/build.gradle.kts",
+      "settings.gradle.kts"
+    ],
+    "optionsAr": [
+      "gradle.properties",
+      "gradle/libs.versions.toml",
+      "app/build.gradle.kts",
+      "settings.gradle.kts"
+    ],
+    "answer": 1,
+    "explanationEn": "Gradle generates libs.* accessors from it.",
+    "explanationAr": "يولّد Gradle منه الوصول libs.*."
+  },
+  {
+    "key": "qz-and-pro-gradle-2",
+    "topic": "and-pro-gradle",
+    "questionEn": "What do convention plugins remove?",
+    "questionAr": "ما الذي تزيله إضافات الأعراف؟",
+    "optionsEn": [
+      "Duplicated module setup",
+      "The need for Kotlin",
+      "All unit tests",
+      "The Android manifest"
+    ],
+    "optionsAr": [
+      "تكرار إعداد الوحدات",
+      "الحاجة إلى Kotlin",
+      "كل اختبارات الوحدة",
+      "ملف بيان Android"
+    ],
+    "answer": 0,
+    "explanationEn": "Shared compileSdk, minSdk and lint live in one place.",
+    "explanationAr": "تعيش قيم compileSdk وminSdk وlint المشتركة في مكان واحد."
+  },
+  {
+    "key": "qz-and-pro-gradle-3",
+    "topic": "and-pro-gradle",
+    "questionEn": "Where are convention plugins usually built?",
+    "questionAr": "أين تُبنى إضافات الأعراف عادة؟",
+    "optionsEn": [
+      "Inside the app module itself",
+      "On a page in the Play Console",
+      "Inside the gradle.properties file",
+      "An included build like build-logic"
+    ],
+    "optionsAr": [
+      "داخل وحدة التطبيق نفسها",
+      "في صفحة داخل Play Console",
+      "داخل ملف gradle.properties",
+      "بناء مضمّن مثل build-logic"
+    ],
+    "answer": 3,
+    "explanationEn": "It's added with includeBuild in pluginManagement.",
+    "explanationAr": "يُضاف بـ includeBuild في pluginManagement."
+  },
+  {
+    "key": "qz-and-pro-gradle-4",
+    "topic": "and-pro-gradle",
+    "questionEn": "Which Gradle phase runs every build script?",
+    "questionAr": "أي مرحلة في Gradle تشغّل كل نصوص البناء؟",
+    "optionsEn": [
+      "Initialisation only",
+      "Publishing",
+      "Configuration",
+      "Execution"
+    ],
+    "optionsAr": [
+      "التهيئة فقط",
+      "النشر",
+      "الإعداد",
+      "التنفيذ"
+    ],
+    "answer": 2,
+    "explanationEn": "Slow configuration slows every build.",
+    "explanationAr": "الإعداد البطيء يبطئ كل بناء."
+  },
+  {
+    "key": "qz-and-pro-gradle-5",
+    "topic": "and-pro-gradle",
+    "questionEn": "What does the configuration cache skip?",
+    "questionAr": "ما الذي تتخطاه ذاكرة الإعداد المؤقتة؟",
+    "optionsEn": [
+      "Downloading Gradle",
+      "Re-running configuration",
+      "Running unit tests",
+      "Signing the bundle"
+    ],
+    "optionsAr": [
+      "تنزيل Gradle",
+      "إعادة تشغيل الإعداد",
+      "تشغيل اختبارات الوحدة",
+      "توقيع الحزمة"
+    ],
+    "answer": 1,
+    "explanationEn": "It reuses the task graph when inputs haven't changed.",
+    "explanationAr": "يعيد استخدام مخطط المهام إذا لم تتغير المدخلات."
+  },
+  {
+    "key": "qz-and-pro-gradle-6",
+    "topic": "and-pro-gradle",
+    "questionEn": "Why prefer tasks.register over tasks.create?",
+    "questionAr": "لماذا نفضّل tasks.register على tasks.create؟",
+    "optionsEn": [
+      "It configures tasks lazily",
+      "It runs tasks in parallel",
+      "It signs the outputs",
+      "It's required for KSP"
+    ],
+    "optionsAr": [
+      "لأنه يعدّ المهام بكسل",
+      "لأنه يشغّل المهام بالتوازي",
+      "لأنه يوقّع المخرجات",
+      "لأن KSP تشترطه"
+    ],
+    "answer": 0,
+    "explanationEn": "Unused tasks are never configured.",
+    "explanationAr": "المهام غير المستخدمة لا تُعدّ أبدًا."
+  },
+  {
+    "key": "qz-and-pro-gradle-7",
+    "topic": "and-pro-gradle",
+    "questionEn": "Which choice usually speeds up annotation processing?",
+    "questionAr": "أي خيار يسرّع معالجة التعليقات التوضيحية عادة؟",
+    "optionsEn": [
+      "More build variants",
+      "Turning off caching",
+      "A larger APK",
+      "KSP instead of kapt"
+    ],
+    "optionsAr": [
+      "متغيرات بناء أكثر",
+      "إيقاف التخزين المؤقت",
+      "ملف APK أكبر",
+      "أداة KSP بدل kapt"
+    ],
+    "answer": 3,
+    "explanationEn": "KSP avoids generating Java stubs.",
+    "explanationAr": "تتجنب KSP توليد بذور Java."
+  },
+  {
+    "key": "qz-and-pro-gradle-8",
+    "topic": "and-pro-gradle",
+    "questionEn": "How do you find which tasks are slow?",
+    "questionAr": "كيف تعرف أي المهام بطيئة؟",
+    "optionsEn": [
+      "By raising the minSdk value",
+      "By deleting the .gradle folder",
+      "A build scan or Build Analyzer",
+      "By reading the app manifest"
+    ],
+    "optionsAr": [
+      "برفع قيمة minSdk للتطبيق",
+      "بحذف مجلد ‎.gradle كاملًا",
+      "فحص بناء أو Build Analyzer",
+      "بقراءة ملف بيان التطبيق"
+    ],
+    "answer": 2,
+    "explanationEn": "Measure before optimising.",
+    "explanationAr": "قِس قبل التحسين."
+  },
+  {
+    "key": "qz-and-pro-ci-1",
+    "topic": "and-pro-ci",
+    "questionEn": "Where do GitHub Actions workflows live?",
+    "questionAr": "أين توجد ملفات سير عمل GitHub Actions؟",
+    "optionsEn": [
+      "docs/ci",
+      ".github/workflows",
+      "app/src/main",
+      "gradle/wrapper"
+    ],
+    "optionsAr": [
+      "docs/ci",
+      ".github/workflows",
+      "app/src/main",
+      "gradle/wrapper"
+    ],
+    "answer": 1,
+    "explanationEn": "Each YAML file is one workflow.",
+    "explanationAr": "كل ملف YAML سير عمل واحد."
+  },
+  {
+    "key": "qz-and-pro-ci-2",
+    "topic": "and-pro-ci",
+    "questionEn": "What does gradle/actions/setup-gradle add?",
+    "questionAr": "ماذا يضيف الإجراء gradle/actions/setup-gradle؟",
+    "optionsEn": [
+      "Caching between runs",
+      "A signed keystore",
+      "An Android emulator",
+      "Play Console access"
+    ],
+    "optionsAr": [
+      "تخزينًا مؤقتًا بين التشغيلات",
+      "مخزن مفاتيح موقعًا",
+      "محاكي Android",
+      "وصولًا إلى Play Console"
+    ],
+    "answer": 0,
+    "explanationEn": "Dependencies and build outputs are reused.",
+    "explanationAr": "يُعاد استخدام الاعتماديات ومخرجات البناء."
+  },
+  {
+    "key": "qz-and-pro-ci-3",
+    "topic": "and-pro-ci",
+    "questionEn": "What does cancel-in-progress do?",
+    "questionAr": "ماذا يفعل الخيار cancel-in-progress؟",
+    "optionsEn": [
+      "Stops the whole repo",
+      "Skips every test",
+      "Deletes the branch",
+      "Cancels the older run"
+    ],
+    "optionsAr": [
+      "يوقف المستودع كله",
+      "يتخطى كل اختبار",
+      "يحذف الفرع",
+      "يلغي التشغيل الأقدم"
+    ],
+    "answer": 3,
+    "explanationEn": "A new push replaces the stale run.",
+    "explanationAr": "الدفع الجديد يحل محل التشغيل القديم."
+  },
+  {
+    "key": "qz-and-pro-ci-4",
+    "topic": "and-pro-ci",
+    "questionEn": "Why upload test reports with if: always()?",
+    "questionAr": "لماذا ترفع تقارير الاختبار مع if: always()؟",
+    "optionsEn": [
+      "To sign the reports",
+      "To hide failures",
+      "To see why a run failed",
+      "To make tests faster"
+    ],
+    "optionsAr": [
+      "لتوقيع التقارير",
+      "لإخفاء الفشل",
+      "لرؤية سبب فشل التشغيل",
+      "لجعل الاختبارات أسرع"
+    ],
+    "answer": 2,
+    "explanationEn": "Without it, failed runs skip the upload.",
+    "explanationAr": "بدونه تتخطى التشغيلات الفاشلة الرفع."
+  },
+  {
+    "key": "qz-and-pro-ci-5",
+    "topic": "and-pro-ci",
+    "questionEn": "What makes CI able to block a bad change?",
+    "questionAr": "ما الذي يجعل CI قادرًا على منع تغيير سيئ؟",
+    "optionsEn": [
+      "A status badge in the README",
+      "Required status checks on main",
+      "A faster hosted runner",
+      "Much more log output"
+    ],
+    "optionsAr": [
+      "شارة حالة في ملف README",
+      "فحوصات حالة مطلوبة على main",
+      "مشغّل مستضاف أسرع",
+      "سجلات أكثر بكثير"
+    ],
+    "answer": 1,
+    "explanationEn": "Branch protection makes checks mandatory.",
+    "explanationAr": "حماية الفرع تجعل الفحوصات إلزامية."
+  },
+  {
+    "key": "qz-and-pro-ci-6",
+    "topic": "and-pro-ci",
+    "questionEn": "How should the keystore reach a CI job?",
+    "questionAr": "كيف يجب أن يصل مخزن المفاتيح إلى مهمة CI؟",
+    "optionsEn": [
+      "As a base64 secret",
+      "Committed to the repo",
+      "In the workflow YAML",
+      "In the app's assets"
+    ],
+    "optionsAr": [
+      "كسر مرمّز بـ base64",
+      "مرفوعًا في المستودع",
+      "داخل ملف YAML",
+      "داخل أصول التطبيق"
+    ],
+    "answer": 0,
+    "explanationEn": "Decode it to a temp file at run time.",
+    "explanationAr": "فك ترميزه إلى ملف مؤقت وقت التشغيل."
+  },
+  {
+    "key": "qz-and-pro-ci-7",
+    "topic": "and-pro-ci",
+    "questionEn": "What does a protected environment add?",
+    "questionAr": "ماذا تضيف البيئة المحمية؟",
+    "optionsEn": [
+      "Faster builds",
+      "Free emulators",
+      "Automatic tagging",
+      "A required approval"
+    ],
+    "optionsAr": [
+      "بناءات أسرع",
+      "محاكيات مجانية",
+      "وسومًا تلقائية",
+      "موافقة مطلوبة"
+    ],
+    "answer": 3,
+    "explanationEn": "A person approves before production steps run.",
+    "explanationAr": "يوافق شخص قبل تشغيل خطوات الإنتاج."
+  },
+  {
+    "key": "qz-and-pro-ci-8",
+    "topic": "and-pro-ci",
+    "questionEn": "Where do slow emulator tests fit best?",
+    "questionAr": "أين تناسب اختبارات المحاكي البطيئة أكثر؟",
+    "optionsEn": [
+      "Only on release day",
+      "Never in CI",
+      "On main and nightly",
+      "On every keystroke"
+    ],
+    "optionsAr": [
+      "يوم الإصدار فقط",
+      "أبدًا في CI",
+      "على main وليلًا",
+      "مع كل ضغطة مفتاح"
+    ],
+    "answer": 2,
+    "explanationEn": "Keep the pull request suite fast.",
+    "explanationAr": "أبقِ مجموعة طلبات الدمج سريعة."
+  },
+  {
+    "key": "qz-and-pro-signing-1",
+    "topic": "and-pro-signing",
+    "questionEn": "With Play App Signing, who holds the app signing key?",
+    "questionAr": "مع Play App Signing من يحمل مفتاح توقيع التطبيق؟",
+    "optionsEn": [
+      "The CI runner",
+      "Each tester",
+      "شركة Google",
+      "The developer's laptop"
+    ],
+    "optionsAr": [
+      "مشغّل CI",
+      "كل مختبر",
+      "شركة Google",
+      "حاسوب المطور"
+    ],
+    "answer": 2,
+    "explanationEn": "It stays in Google's key management.",
+    "explanationAr": "يبقى في نظام إدارة المفاتيح لدى Google."
+  },
+  {
+    "key": "qz-and-pro-signing-2",
+    "topic": "and-pro-signing",
+    "questionEn": "What do you sign an AAB with before upload?",
+    "questionAr": "بماذا توقّع حزمة AAB قبل رفعها؟",
+    "optionsEn": [
+      "No key at all",
+      "The upload key",
+      "The debug key",
+      "The app signing key"
+    ],
+    "optionsAr": [
+      "دون أي مفتاح",
+      "مفتاح الرفع",
+      "مفتاح debug",
+      "مفتاح توقيع التطبيق"
+    ],
+    "answer": 1,
+    "explanationEn": "Google verifies it, then re-signs.",
+    "explanationAr": "تتحقق منه Google ثم تعيد التوقيع."
+  },
+  {
+    "key": "qz-and-pro-signing-3",
+    "topic": "and-pro-signing",
+    "questionEn": "If the upload key leaks, what do you do?",
+    "questionAr": "إذا تسرب مفتاح الرفع، ماذا تفعل؟",
+    "optionsEn": [
+      "Request an upload key reset",
+      "Publish a new app",
+      "Ask users to reinstall",
+      "Nothing can be done"
+    ],
+    "optionsAr": [
+      "تطلب إعادة ضبط مفتاح الرفع",
+      "تنشر تطبيقًا جديدًا",
+      "تطلب من المستخدمين إعادة التثبيت",
+      "لا يمكن فعل شيء"
+    ],
+    "answer": 0,
+    "explanationEn": "Users are unaffected.",
+    "explanationAr": "لا يتأثر المستخدمون."
+  },
+  {
+    "key": "qz-and-pro-signing-4",
+    "topic": "and-pro-signing",
+    "questionEn": "Which fingerprint do Play installs need registered?",
+    "questionAr": "أي بصمة تحتاج تثبيتات Play إلى تسجيلها؟",
+    "optionsEn": [
+      "The debug key's fingerprint",
+      "The emulator's own id",
+      "The CI runner's host key",
+      "The app signing key's"
+    ],
+    "optionsAr": [
+      "بصمة مفتاح debug المحلي",
+      "معرّف المحاكي نفسه",
+      "مفتاح مضيف مشغّل CI",
+      "بصمة مفتاح توقيع التطبيق"
+    ],
+    "answer": 3,
+    "explanationEn": "Find it under App integrity in Play Console.",
+    "explanationAr": "تجدها تحت App integrity في Play Console."
+  },
+  {
+    "key": "qz-and-pro-signing-5",
+    "topic": "and-pro-signing",
+    "questionEn": "Which Gradle task prints signing fingerprints?",
+    "questionAr": "أي مهمة Gradle تطبع بصمات التوقيع؟",
+    "optionsEn": [
+      "lintRelease",
+      "dependencies",
+      "signingReport",
+      "assembleDebug"
+    ],
+    "optionsAr": [
+      "lintRelease",
+      "dependencies",
+      "signingReport",
+      "assembleDebug"
+    ],
+    "answer": 2,
+    "explanationEn": "It lists every variant's key.",
+    "explanationAr": "تسرد مفتاح كل متغير."
+  },
+  {
+    "key": "qz-and-pro-signing-6",
+    "topic": "and-pro-signing",
+    "questionEn": "Can users install an .aab file directly?",
+    "questionAr": "هل يستطيع المستخدمون تثبيت ملف ‎.aab مباشرة؟",
+    "optionsEn": [
+      "Yes, but only on Android 15",
+      "No, Play builds APKs",
+      "Yes, on any phone at all",
+      "Only when it's on a tablet"
+    ],
+    "optionsAr": [
+      "نعم، لكن على Android 15 فقط",
+      "لا، فمتجر Play يبني منه APK",
+      "نعم، على أي هاتف كان",
+      "فقط إذا كان على جهاز لوحي"
+    ],
+    "answer": 1,
+    "explanationEn": "Play generates split APKs per device.",
+    "explanationAr": "تولّد Play ملفات APK مقسمة لكل جهاز."
+  },
+  {
+    "key": "qz-and-pro-signing-7",
+    "topic": "and-pro-signing",
+    "questionEn": "What does bundletool build-apks create?",
+    "questionAr": "ماذا تنشئ الأداة bundletool build-apks؟",
+    "optionsEn": [
+      "Split APKs from a bundle",
+      "A brand new upload keystore",
+      "A draft Play store listing",
+      "The R8 mapping file"
+    ],
+    "optionsAr": [
+      "ملفات APK مقسمة من حزمة",
+      "مخزن مفتاح رفع جديدًا تمامًا",
+      "مسودة صفحة في متجر Play",
+      "ملف التحويل الخاص بـ R8"
+    ],
+    "answer": 0,
+    "explanationEn": "Then install-apks installs the right ones.",
+    "explanationAr": "ثم تثبّت install-apks الملفات الصحيحة."
+  },
+  {
+    "key": "qz-and-pro-signing-8",
+    "topic": "and-pro-signing",
+    "questionEn": "Why keep the R8 mapping file?",
+    "questionAr": "لماذا تحتفظ بملف التحويل من R8؟",
+    "optionsEn": [
+      "To sign the next release",
+      "To speed up Gradle",
+      "To shrink images",
+      "To read obfuscated stack traces"
+    ],
+    "optionsAr": [
+      "لتوقيع الإصدار التالي",
+      "لتسريع Gradle",
+      "لتصغير الصور",
+      "لقراءة تتبعات المكدس المموهة"
+    ],
+    "answer": 3,
+    "explanationEn": "Crash reports need it to show real names.",
+    "explanationAr": "تحتاجه تقارير الانهيار لإظهار الأسماء الحقيقية."
+  },
+  {
+    "key": "qz-and-pro-play-release-1",
+    "topic": "and-pro-play-release",
+    "questionEn": "Which track reaches up to 100 listed testers fast?",
+    "questionAr": "أي مسار يصل سريعًا إلى 100 مختبر مسرودين؟",
+    "optionsEn": [
+      "Production",
+      "Open testing",
+      "Pre-registration",
+      "Internal testing"
+    ],
+    "optionsAr": [
+      "الإنتاج",
+      "الاختبار المفتوح",
+      "التسجيل المسبق",
+      "الاختبار الداخلي"
+    ],
+    "answer": 3,
+    "explanationEn": "Builds are usually ready within minutes.",
+    "explanationAr": "تكون البناءات جاهزة عادة خلال دقائق."
+  },
+  {
+    "key": "qz-and-pro-play-release-2",
+    "topic": "and-pro-play-release",
+    "questionEn": "Which track lets anyone join from the listing?",
+    "questionAr": "أي مسار يسمح لأي شخص بالانضمام من صفحة المتجر؟",
+    "optionsEn": [
+      "Closed testing",
+      "Internal app sharing",
+      "Open testing",
+      "Internal testing"
+    ],
+    "optionsAr": [
+      "الاختبار المغلق",
+      "مشاركة التطبيق الداخلية",
+      "الاختبار المفتوح",
+      "الاختبار الداخلي"
+    ],
+    "answer": 2,
+    "explanationEn": "It's public but marked as testing.",
+    "explanationAr": "عام لكنه مميز كاختبار."
+  },
+  {
+    "key": "qz-and-pro-play-release-3",
+    "topic": "and-pro-play-release",
+    "questionEn": "What must new personal accounts do before production?",
+    "questionAr": "ماذا يجب أن تفعل الحسابات الشخصية الجديدة قبل الإنتاج؟",
+    "optionsEn": [
+      "Collect 1,000 store reviews",
+      "Run a 14-day closed test",
+      "Pay an extra yearly fee",
+      "Publish a web version first"
+    ],
+    "optionsAr": [
+      "جمع 1000 تقييم في المتجر",
+      "إجراء اختبار مغلق لمدة 14 يومًا",
+      "دفع رسوم سنوية إضافية",
+      "نشر نسخة ويب أولًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Testers must stay opted in.",
+    "explanationAr": "يجب أن يبقى المختبرون مشتركين."
+  },
+  {
+    "key": "qz-and-pro-play-release-4",
+    "topic": "and-pro-play-release",
+    "questionEn": "A common cause of a policy rejection is:",
+    "questionAr": "من الأسباب الشائعة لرفض السياسة:",
+    "optionsEn": [
+      "Data safety not matching the app",
+      "Building the UI with Compose",
+      "Offering a dark colour theme",
+      "Shipping too many unit tests"
+    ],
+    "optionsAr": [
+      "نموذج Data safety لا يطابق السلوك",
+      "بناء الواجهة باستخدام Compose",
+      "تقديم سمة ألوان داكنة",
+      "شحن اختبارات وحدة كثيرة جدًا"
+    ],
+    "answer": 0,
+    "explanationEn": "The form must reflect what the app really does.",
+    "explanationAr": "يجب أن يعكس النموذج ما يفعله التطبيق فعلًا."
+  },
+  {
+    "key": "qz-and-pro-play-release-5",
+    "topic": "and-pro-play-release",
+    "questionEn": "What happens when you halt a staged rollout?",
+    "questionAr": "ماذا يحدث عندما توقف نشرًا مرحليًا؟",
+    "optionsEn": [
+      "It's removed from all phones",
+      "The app is unpublished",
+      "Reviews are deleted",
+      "New users stop getting it"
+    ],
+    "optionsAr": [
+      "يُحذف من كل الهواتف",
+      "يُلغى نشر التطبيق",
+      "تُحذف التقييمات",
+      "يتوقف وصوله لمستخدمين جدد"
+    ],
+    "answer": 3,
+    "explanationEn": "Users who updated keep that version.",
+    "explanationAr": "من حدّث يحتفظ بذلك الإصدار."
+  },
+  {
+    "key": "qz-and-pro-play-release-6",
+    "topic": "and-pro-play-release",
+    "questionEn": "What must a fix after a halt have?",
+    "questionAr": "ماذا يجب أن يملك الإصلاح بعد الإيقاف؟",
+    "optionsEn": [
+      "A new package name",
+      "A new signing key",
+      "A higher versionCode",
+      "The same versionCode"
+    ],
+    "optionsAr": [
+      "اسم حزمة جديدًا",
+      "مفتاح توقيع جديدًا",
+      "قيمة versionCode أعلى",
+      "قيمة versionCode نفسها"
+    ],
+    "answer": 2,
+    "explanationEn": "Play only accepts increasing codes.",
+    "explanationAr": "تقبل Play القيم المتزايدة فقط."
+  },
+  {
+    "key": "qz-and-pro-play-release-7",
+    "topic": "and-pro-play-release",
+    "questionEn": "Which two vitals have bad-behaviour thresholds?",
+    "questionAr": "أي مقياسين في vitals لهما عتبات سلوك سيئ؟",
+    "optionsEn": [
+      "APK size and minSdk",
+      "Crash rate and ANR rate",
+      "Installs and uninstalls",
+      "Ratings and reviews"
+    ],
+    "optionsAr": [
+      "حجم APK وقيمة minSdk",
+      "معدل الانهيار ومعدل ANR",
+      "التثبيت وإلغاء التثبيت",
+      "التقييمات والمراجعات"
+    ],
+    "answer": 1,
+    "explanationEn": "Apps above them can be shown less.",
+    "explanationAr": "التطبيقات التي تتجاوزها قد تظهر أقل."
+  },
+  {
+    "key": "qz-and-pro-play-release-8",
+    "topic": "and-pro-play-release",
+    "questionEn": "What does the target API level requirement mean?",
+    "questionAr": "ماذا يعني متطلب مستوى الواجهة المستهدف؟",
+    "optionsEn": [
+      "targetSdk must stay recent",
+      "minSdk must be 34",
+      "Apps must use Compose",
+      "Apps must be free"
+    ],
+    "optionsAr": [
+      "يجب أن تبقى targetSdk حديثة",
+      "يجب أن تكون minSdk هي 34",
+      "يجب أن تستخدم التطبيقات Compose",
+      "يجب أن تكون التطبيقات مجانية"
+    ],
+    "answer": 0,
+    "explanationEn": "About a year behind the latest Android release.",
+    "explanationAr": "في حدود سنة من أحدث إصدار Android."
+  },
+  {
+    "key": "qz-and-pro-automation-1",
+    "topic": "and-pro-automation",
+    "questionEn": "What must every new upload's versionCode be?",
+    "questionAr": "ماذا يجب أن تكون versionCode لكل رفع جديد؟",
+    "optionsEn": [
+      "Below 100",
+      "Higher than any before",
+      "Equal to versionName",
+      "A random number"
+    ],
+    "optionsAr": [
+      "أقل من 100",
+      "أعلى من أي قيمة سابقة",
+      "مساوية لـ versionName",
+      "رقمًا عشوائيًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Across all tracks of the app.",
+    "explanationAr": "عبر كل مسارات التطبيق."
+  },
+  {
+    "key": "qz-and-pro-automation-2",
+    "topic": "and-pro-automation",
+    "questionEn": "Using major*10000+minor*100+patch, 3.2.1 gives:",
+    "questionAr": "باستخدام major*10000+minor*100+patch يعطي 3.2.1:",
+    "optionsEn": [
+      "30201",
+      "321",
+      "3021",
+      "302010"
+    ],
+    "optionsAr": [
+      "30201",
+      "321",
+      "3021",
+      "302010"
+    ],
+    "answer": 0,
+    "explanationEn": "Minor and patch stay below 100.",
+    "explanationAr": "تبقى minor وpatch أقل من 100."
+  },
+  {
+    "key": "qz-and-pro-automation-3",
+    "topic": "and-pro-automation",
+    "questionEn": "Why fetch-depth: 0 in a release job?",
+    "questionAr": "لماذا fetch-depth: 0 في مهمة الإصدار؟",
+    "optionsEn": [
+      "To speed up checkout",
+      "To skip the cache",
+      "To sign commits",
+      "To read git tags"
+    ],
+    "optionsAr": [
+      "لتسريع الجلب",
+      "لتخطي الذاكرة المؤقتة",
+      "لتوقيع الالتزامات",
+      "لقراءة وسوم git"
+    ],
+    "answer": 3,
+    "explanationEn": "A shallow clone has no tags.",
+    "explanationAr": "النسخة السطحية لا تحتوي وسومًا."
+  },
+  {
+    "key": "qz-and-pro-automation-4",
+    "topic": "and-pro-automation",
+    "questionEn": "Who should see versionName?",
+    "questionAr": "من يجب أن يرى versionName؟",
+    "optionsEn": [
+      "Only the CI runner's logs",
+      "Nobody, it stays hidden",
+      "Users, in store and settings",
+      "Only Play's own servers"
+    ],
+    "optionsAr": [
+      "سجلات مشغّل CI فقط",
+      "لا أحد، فهو مخفي",
+      "المستخدمون في المتجر",
+      "خوادم Play نفسها فقط"
+    ],
+    "answer": 2,
+    "explanationEn": "versionCode is the internal ordering number.",
+    "explanationAr": "أما versionCode فرقم الترتيب الداخلي."
+  },
+  {
+    "key": "qz-and-pro-automation-5",
+    "topic": "and-pro-automation",
+    "questionEn": "What does CI use to call the Play Developer API?",
+    "questionAr": "ماذا يستخدم CI لاستدعاء Play Developer API؟",
+    "optionsEn": [
+      "A tester's account",
+      "A service account key",
+      "The owner's password",
+      "The upload keystore"
+    ],
+    "optionsAr": [
+      "حساب أحد المختبرين",
+      "مفتاح حساب خدمة",
+      "كلمة مرور المالك",
+      "مخزن مفتاح الرفع"
+    ],
+    "answer": 1,
+    "explanationEn": "Give it only the permissions it needs.",
+    "explanationAr": "أعطه الصلاحيات اللازمة فقط."
+  },
+  {
+    "key": "qz-and-pro-automation-6",
+    "topic": "and-pro-automation",
+    "questionEn": "What does promoteArtifact do?",
+    "questionAr": "ماذا تفعل المهمة promoteArtifact؟",
+    "optionsEn": [
+      "Moves a release to another track",
+      "Builds and signs a new bundle",
+      "Creates a fresh keystore",
+      "Writes the release notes"
+    ],
+    "optionsAr": [
+      "تنقل إصدارًا إلى مسار آخر",
+      "تبني حزمة جديدة وتوقّعها",
+      "تنشئ مخزن مفاتيح جديدًا",
+      "تكتب ملاحظات الإصدار"
+    ],
+    "answer": 0,
+    "explanationEn": "It can also set the user fraction.",
+    "explanationAr": "تستطيع أيضًا ضبط نسبة المستخدمين."
+  },
+  {
+    "key": "qz-and-pro-automation-7",
+    "topic": "and-pro-automation",
+    "questionEn": "Why promote rather than rebuild for production?",
+    "questionAr": "لماذا الترقية بدل إعادة البناء للإنتاج؟",
+    "optionsEn": [
+      "Rebuilding is forbidden",
+      "It changes the package name",
+      "It skips Play review",
+      "Production gets what was tested"
+    ],
+    "optionsAr": [
+      "لأن إعادة البناء ممنوعة",
+      "لأنه يغيّر اسم الحزمة",
+      "لأنه يتخطى مراجعة Play",
+      "يحصل الإنتاج على ما اختُبر"
+    ],
+    "answer": 3,
+    "explanationEn": "Same bytes, same versionCode.",
+    "explanationAr": "البايتات نفسها والقيمة versionCode نفسها."
+  },
+  {
+    "key": "qz-and-pro-automation-8",
+    "topic": "and-pro-automation",
+    "questionEn": "Where does Gradle Play Publisher read release notes?",
+    "questionAr": "من أين تقرأ Gradle Play Publisher ملاحظات الإصدار؟",
+    "optionsEn": [
+      "README.md",
+      "gradle.properties",
+      "src/main/play",
+      "res/values/strings.xml"
+    ],
+    "optionsAr": [
+      "README.md",
+      "gradle.properties",
+      "src/main/play",
+      "res/values/strings.xml"
+    ],
+    "answer": 2,
+    "explanationEn": "One folder per language.",
+    "explanationAr": "مجلد لكل لغة."
+  },
+  {
+    "key": "qz-and-pro-billing-1",
+    "topic": "and-pro-billing",
+    "questionEn": "Which product type fits \"remove ads\" forever?",
+    "questionAr": "أي نوع منتج يناسب «إزالة الإعلانات» للأبد؟",
+    "optionsEn": [
+      "Monthly subscription",
+      "Free trial offer",
+      "Non-consumable one-time",
+      "Consumable one-time"
+    ],
+    "optionsAr": [
+      "اشتراك شهري",
+      "عرض تجربة مجانية",
+      "منتج لمرة واحدة غير مستهلك",
+      "منتج لمرة واحدة مستهلك"
+    ],
+    "answer": 2,
+    "explanationEn": "It's bought once and kept.",
+    "explanationAr": "يُشترى مرة ويبقى."
+  },
+  {
+    "key": "qz-and-pro-billing-2",
+    "topic": "and-pro-billing",
+    "questionEn": "Where should a displayed price come from?",
+    "questionAr": "من أين يجب أن يأتي السعر المعروض؟",
+    "optionsEn": [
+      "The app's strings.xml",
+      "ProductDetails from Play",
+      "A constant in the code",
+      "Your own price table"
+    ],
+    "optionsAr": [
+      "ملف strings.xml للتطبيق",
+      "كائن ProductDetails من Play",
+      "ثابت في الكود",
+      "جدول أسعارك الخاص"
+    ],
+    "answer": 1,
+    "explanationEn": "Play localises prices per country.",
+    "explanationAr": "تضبط Play الأسعار لكل بلد."
+  },
+  {
+    "key": "qz-and-pro-billing-3",
+    "topic": "and-pro-billing",
+    "questionEn": "What happens if a purchase isn't acknowledged in 3 days?",
+    "questionAr": "ماذا يحدث إذا لم يُؤكد الشراء خلال 3 أيام؟",
+    "optionsEn": [
+      "Play refunds it",
+      "It's kept forever",
+      "The app is suspended",
+      "Nothing happens"
+    ],
+    "optionsAr": [
+      "تسترده Play",
+      "يبقى للأبد",
+      "يُعلّق التطبيق",
+      "لا يحدث شيء"
+    ],
+    "answer": 0,
+    "explanationEn": "Acknowledge or consume every purchase.",
+    "explanationAr": "أكّد أو استهلك كل شراء."
+  },
+  {
+    "key": "qz-and-pro-billing-4",
+    "topic": "and-pro-billing",
+    "questionEn": "How should a PENDING purchase be handled?",
+    "questionAr": "كيف يُعامل الشراء بحالة PENDING؟",
+    "optionsEn": [
+      "Grant it right away",
+      "Cancel it at once",
+      "Ask the user to pay again",
+      "Grant nothing until it completes"
+    ],
+    "optionsAr": [
+      "امنحه فورًا",
+      "ألغه فورًا",
+      "اطلب من المستخدم الدفع مجددًا",
+      "لا تمنح شيئًا حتى يكتمل"
+    ],
+    "answer": 3,
+    "explanationEn": "Some payment methods finish later.",
+    "explanationAr": "بعض طرق الدفع تكتمل لاحقًا."
+  },
+  {
+    "key": "qz-and-pro-billing-5",
+    "topic": "and-pro-billing",
+    "questionEn": "Why call queryPurchasesAsync on app start?",
+    "questionAr": "لماذا تستدعي queryPurchasesAsync عند بدء التطبيق؟",
+    "optionsEn": [
+      "To refresh every product price",
+      "To sign the user out quietly",
+      "To catch purchases made while closed",
+      "To reset all active subscriptions"
+    ],
+    "optionsAr": [
+      "لتحديث سعر كل منتج",
+      "لتسجيل خروج المستخدم بهدوء",
+      "لالتقاط مشتريات تمت والتطبيق مغلق",
+      "لإعادة ضبط كل الاشتراكات النشطة"
+    ],
+    "answer": 2,
+    "explanationEn": "The listener only sees live purchases.",
+    "explanationAr": "المستمع يرى المشتريات الحية فقط."
+  },
+  {
+    "key": "qz-and-pro-billing-6",
+    "topic": "and-pro-billing",
+    "questionEn": "Why verify purchases on your server?",
+    "questionAr": "لماذا تتحقق من المشتريات في خادمك؟",
+    "optionsEn": [
+      "It hides the price",
+      "A patched app can fake one",
+      "Play requires a server",
+      "It makes billing cheaper"
+    ],
+    "optionsAr": [
+      "لأنه يخفي السعر",
+      "التطبيق المعدّل قد يزيفها",
+      "لأن Play تشترط خادمًا",
+      "لأنه يجعل الفوترة أرخص"
+    ],
+    "answer": 1,
+    "explanationEn": "The server asks the Play Developer API.",
+    "explanationAr": "يسأل الخادم Play Developer API."
+  },
+  {
+    "key": "qz-and-pro-billing-7",
+    "topic": "and-pro-billing",
+    "questionEn": "How does your server learn of renewals and refunds?",
+    "questionAr": "كيف يعرف خادمك بالتجديد والاسترداد؟",
+    "optionsEn": [
+      "Real-time Developer Notifications",
+      "Polling the app every day",
+      "Support emails from users",
+      "Events in Firebase Analytics"
+    ],
+    "optionsAr": [
+      "إشعارات المطورين الفورية",
+      "سؤال التطبيق كل يوم",
+      "رسائل الدعم من المستخدمين",
+      "أحداث في تحليلات Firebase"
+    ],
+    "answer": 0,
+    "explanationEn": "They arrive on a Cloud Pub/Sub topic.",
+    "explanationAr": "تصل إلى موضوع في Cloud Pub/Sub."
+  },
+  {
+    "key": "qz-and-pro-billing-8",
+    "topic": "and-pro-billing",
+    "questionEn": "After a cancellation, access to a subscription:",
+    "questionAr": "بعد إلغاء الاشتراك، الوصول:",
+    "optionsEn": [
+      "Ends immediately",
+      "Lasts forever",
+      "Moves to another user",
+      "Lasts until the period ends"
+    ],
+    "optionsAr": [
+      "ينتهي فورًا",
+      "يستمر للأبد",
+      "ينتقل لمستخدم آخر",
+      "يستمر حتى نهاية الفترة"
+    ],
+    "answer": 3,
+    "explanationEn": "The user already paid for the period.",
+    "explanationAr": "دفع المستخدم بالفعل ثمن الفترة."
+  },
+  {
+    "key": "qz-and-pro-growth-1",
+    "topic": "and-pro-growth",
+    "questionEn": "What does a flexible in-app update do?",
+    "questionAr": "ماذا يفعل التحديث المرن داخل التطبيق؟",
+    "optionsEn": [
+      "Skips Play entirely",
+      "Downloads while the user works",
+      "Blocks the app fully",
+      "Reinstalls from scratch"
+    ],
+    "optionsAr": [
+      "يتخطى Play تمامًا",
+      "ينزّل بينما يعمل المستخدم",
+      "يحجب التطبيق كليًا",
+      "يعيد التثبيت من الصفر"
+    ],
+    "answer": 1,
+    "explanationEn": "Call completeUpdate when it's downloaded.",
+    "explanationAr": "استدعِ completeUpdate عند اكتمال التنزيل."
+  },
+  {
+    "key": "qz-and-pro-growth-2",
+    "topic": "and-pro-growth",
+    "questionEn": "When fits an immediate update?",
+    "questionAr": "متى يناسب التحديث الفوري؟",
+    "optionsEn": [
+      "A critical fix",
+      "A new colour theme",
+      "Every minor release",
+      "A store text change"
+    ],
+    "optionsAr": [
+      "إصلاح حرج",
+      "سمة ألوان جديدة",
+      "كل إصدار صغير",
+      "تغيير نص المتجر"
+    ],
+    "answer": 0,
+    "explanationEn": "The user must finish it to continue.",
+    "explanationAr": "يجب أن يكمله المستخدم ليتابع."
+  },
+  {
+    "key": "qz-and-pro-growth-3",
+    "topic": "and-pro-growth",
+    "questionEn": "What can set an update's priority from 0 to 5?",
+    "questionAr": "ما الذي يضبط أولوية التحديث من 0 إلى 5؟",
+    "optionsEn": [
+      "The app's manifest",
+      "A Firebase rule",
+      "The Play Store app",
+      "The Play Developer API"
+    ],
+    "optionsAr": [
+      "ملف بيان التطبيق نفسه",
+      "قاعدة أمان في Firebase",
+      "تطبيق متجر Play",
+      "واجهة Play Developer API"
+    ],
+    "answer": 3,
+    "explanationEn": "It's set per release as inAppUpdatePriority.",
+    "explanationAr": "تُضبط لكل إصدار كقيمة inAppUpdatePriority."
+  },
+  {
+    "key": "qz-and-pro-growth-4",
+    "topic": "and-pro-growth",
+    "questionEn": "Does the review API say whether the user rated?",
+    "questionAr": "هل تخبرك واجهة التقييم هل قيّم المستخدم؟",
+    "optionsEn": [
+      "Only for 5 stars",
+      "Only in debug",
+      "No, never",
+      "Yes, with stars"
+    ],
+    "optionsAr": [
+      "فقط عند 5 نجوم",
+      "فقط في debug",
+      "لا، أبدًا",
+      "نعم، مع النجوم"
+    ],
+    "answer": 2,
+    "explanationEn": "So never reward or block based on it.",
+    "explanationAr": "فلا تكافئ أو تحجب بناءً عليها."
+  },
+  {
+    "key": "qz-and-pro-growth-5",
+    "topic": "and-pro-growth",
+    "questionEn": "When is a good moment to ask for a review?",
+    "questionAr": "متى تكون اللحظة الجيدة لطلب تقييم؟",
+    "optionsEn": [
+      "Every time the app opens",
+      "After a positive experience",
+      "On the very first launch",
+      "Right after a crash"
+    ],
+    "optionsAr": [
+      "مع كل مرة يُفتح فيها التطبيق",
+      "بعد تجربة إيجابية",
+      "عند أول فتح للتطبيق",
+      "بعد انهيار مباشرة"
+    ],
+    "answer": 1,
+    "explanationEn": "Google also applies a quota.",
+    "explanationAr": "وتطبّق Google حصة أيضًا."
+  },
+  {
+    "key": "qz-and-pro-growth-6",
+    "topic": "and-pro-growth",
+    "questionEn": "How many characters can a Play app title have?",
+    "questionAr": "كم حرفًا يمكن أن يحمل عنوان التطبيق في Play؟",
+    "optionsEn": [
+      "30",
+      "80",
+      "50",
+      "4000"
+    ],
+    "optionsAr": [
+      "30",
+      "80",
+      "50",
+      "4000"
+    ],
+    "answer": 0,
+    "explanationEn": "The short description allows 80.",
+    "explanationAr": "يسمح الوصف القصير بـ 80."
+  },
+  {
+    "key": "qz-and-pro-growth-7",
+    "topic": "and-pro-growth",
+    "questionEn": "For Arabic screenshots, what should you capture?",
+    "questionAr": "ماذا تلتقط للقطات الشاشة العربية؟",
+    "optionsEn": [
+      "Mirrored English images",
+      "The same English ones",
+      "Text-only images",
+      "Real right-to-left screens"
+    ],
+    "optionsAr": [
+      "صور إنجليزية معكوسة",
+      "اللقطات الإنجليزية نفسها",
+      "صورًا نصية فقط",
+      "شاشات حقيقية من اليمين لليسار"
+    ],
+    "answer": 3,
+    "explanationEn": "Localisation goes beyond translation.",
+    "explanationAr": "التوطين أبعد من الترجمة."
+  },
+  {
+    "key": "qz-and-pro-growth-8",
+    "topic": "and-pro-growth",
+    "questionEn": "How should a listing experiment be run?",
+    "questionAr": "كيف تُجرى تجربة صفحة المتجر؟",
+    "optionsEn": [
+      "Stop after one hour",
+      "Show it to staff only",
+      "Change one element at a time",
+      "Change everything at once"
+    ],
+    "optionsAr": [
+      "أوقفها بعد ساعة",
+      "اعرضها على الفريق فقط",
+      "غيّر عنصرًا واحدًا في كل مرة",
+      "غيّر كل شيء دفعة واحدة"
+    ],
+    "answer": 2,
+    "explanationEn": "Run until the result is significant.",
+    "explanationAr": "شغّلها حتى تصبح النتيجة دالة."
+  }
+]

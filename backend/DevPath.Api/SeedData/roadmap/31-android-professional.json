@@ -1,0 +1,269 @@
+{
+  "slug": "android-professional",
+  "order": 31,
+  "titleEn": "Shipping professionally: CI/CD and Google Play",
+  "titleAr": "الشحن باحتراف: التكامل والنشر المستمر وGoogle Play",
+  "descriptionEn": "Take an app from a laptop to millions of phones: a fast, maintainable Gradle build with version catalogs and convention plugins, CI/CD pipelines on GitHub Actions, app signing and Play App Signing, Play Console tracks, reviews and staged rollouts, automated publishing and versioning, in-app purchases and subscriptions with Play Billing, and in-app updates, reviews and store listing work that keep users coming back.",
+  "descriptionAr": "انقل التطبيق من حاسوبك إلى ملايين الهواتف: بناء Gradle سريع وسهل الصيانة بفهارس الإصدارات وإضافات الأعراف، وخطوط CI/CD على GitHub Actions، وتوقيع التطبيق وPlay App Signing، ومسارات Play Console والمراجعات والنشر التدريجي، والنشر الآلي وترقيم الإصدارات، والمشتريات والاشتراكات داخل التطبيق بـ Play Billing، والتحديثات والتقييمات داخل التطبيق والعمل على صفحة المتجر التي تُبقي المستخدمين عائدين.",
+  "topics": [
+    {
+      "slug": "and-pro-gradle",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Gradle at scale: catalogs, convention plugins and speed",
+      "titleAr": "مكتبة Gradle على نطاق واسع: الفهارس وإضافات الأعراف والسرعة",
+      "summaryEn": "As projects grow into many modules, build scripts drift and builds slow down. A version catalog (gradle/libs.versions.toml) keeps every dependency and plugin version in one place, referenced as libs.androidx.room.runtime. Convention plugins in a build-logic included build hold shared setup (Android defaults, Kotlin options, Compose, testing), so each module's build file is a few lines. Build speed comes from the configuration cache, the build cache, parallel execution, non-transitive R classes, avoiding work at configuration time, and keeping modules small so changes rebuild less.",
+      "summaryAr": "عندما تكبر المشاريع إلى وحدات كثيرة، تنحرف نصوص البناء وتبطؤ البناءات. ففهرس الإصدارات (‏gradle/libs.versions.toml) يحفظ إصدار كل اعتمادية وإضافة في مكان واحد، ويُشار إليه كـ libs.androidx.room.runtime. وإضافات الأعراف في بناء مضمّن باسم build-logic تحمل الإعداد المشترك (افتراضات Android وخيارات Kotlin وCompose والاختبار)، فيصبح ملف بناء كل وحدة بضعة أسطر. وتأتي سرعة البناء من ذاكرة الإعداد المؤقتة، وذاكرة البناء المؤقتة، والتنفيذ المتوازي، وأصناف R غير المتعدية، وتجنب العمل وقت الإعداد، وإبقاء الوحدات صغيرة حتى تعيد التغييرات بناء أقل.",
+      "whyEn": "A slow, inconsistent build costs every developer minutes many times a day and makes CI expensive. Teams that keep builds fast and scripts consistent ship more often and spend less time fighting Gradle.",
+      "whyAr": "البناء البطيء وغير المتسق يكلف كل مطور دقائق مرات كثيرة يوميًا ويجعل CI مكلفًا. والفرق التي تُبقي البناءات سريعة والنصوص متسقة تشحن أكثر وتقضي وقتًا أقل في محاربة Gradle.",
+      "howEn": "Move versions into the catalog and update them with a tool such as Renovate or Dependabot. Extract repeated blocks into convention plugins (for example android-library, android-feature, compose). Enable org.gradle.configuration-cache, org.gradle.caching and parallel in gradle.properties, use KSP instead of kapt, measure with build scans or the Build Analyzer, and fix the slowest tasks first.",
+      "howAr": "انقل الإصدارات إلى الفهرس وحدّثها بأداة مثل Renovate أو Dependabot. واستخرج الكتل المتكررة إلى إضافات أعراف (مثل android-library وandroid-feature وcompose). وفعّل org.gradle.configuration-cache وorg.gradle.caching والتنفيذ المتوازي في gradle.properties، واستخدم KSP بدل kapt، وقِس بفحوصات البناء أو Build Analyzer، وأصلح أبطأ المهام أولًا.",
+      "exampleEn": "A 30-module app moved 140 hard-coded versions into libs.versions.toml, replaced copy-pasted android blocks with three convention plugins, enabled the configuration cache and replaced kapt with KSP. A clean CI build dropped from 14 to 7 minutes and an incremental change from 90 to 20 seconds.",
+      "exampleAr": "تطبيق من 30 وحدة نقل 140 إصدارًا مكتوبًا في الكود إلى libs.versions.toml، واستبدل كتل android المنسوخة بثلاث إضافات أعراف، وفعّل ذاكرة الإعداد المؤقتة، واستبدل kapt بـ KSP. فانخفض بناء CI النظيف من 14 إلى 7 دقائق، والتغيير التدريجي من 90 إلى 20 ثانية.",
+      "practiceEn": "1) Move dependencies into a version catalog. 2) Write one convention plugin and apply it to two modules. 3) Enable the configuration cache and fix any problems it reports.",
+      "practiceAr": "1) انقل الاعتماديات إلى فهرس إصدارات. 2) اكتب إضافة أعراف واحدة وطبّقها على وحدتين. 3) فعّل ذاكرة الإعداد المؤقتة وأصلح أي مشكلات تبلّغ عنها.",
+      "challengeEn": "Profile a multi-module build with a build scan, find the three slowest tasks or configuration costs, fix them, and report before-and-after times for clean and incremental builds.",
+      "challengeAr": "حلّل بناءً متعدد الوحدات بفحص بناء، وأوجد أبطأ ثلاث مهام أو تكاليف إعداد، وأصلحها، وأبلغ عن الأزمنة قبل وبعد للبناء النظيف والتدريجي.",
+      "objectivesEn": [
+        "Manage versions with a version catalog",
+        "Share setup with convention plugins",
+        "Speed up builds with caches",
+        "Measure and fix slow builds"
+      ],
+      "objectivesAr": [
+        "إدارة الإصدارات بفهرس الإصدارات",
+        "مشاركة الإعداد بإضافات الأعراف",
+        "تسريع البناءات بالذاكرة المؤقتة",
+        "قياس البناءات البطيئة وإصلاحها"
+      ],
+      "prerequisites": [
+        "and-arch-modularization",
+        "and-studio-gradle"
+      ]
+    },
+    {
+      "slug": "and-pro-ci",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "CI/CD with GitHub Actions",
+      "titleAr": "التكامل والنشر المستمر بـ GitHub Actions",
+      "summaryEn": "Continuous integration runs your checks on every pull request: compile, unit tests, lint, detekt, screenshot verification and maybe a few device tests on an emulator. Continuous delivery builds a signed release bundle on the main branch or a tag and uploads it to an internal track. In GitHub Actions a workflow YAML defines jobs on runners: check out the code, set up the JDK, use the Gradle action for caching, run tasks, and upload reports as artifacts. Secrets such as the upload keystore and Play service account are stored as encrypted repository secrets.",
+      "summaryAr": "يشغّل التكامل المستمر فحوصاتك مع كل طلب دمج: الترجمة، واختبارات الوحدة، وlint، وdetekt، والتحقق من اللقطات، وربما بضعة اختبارات على محاكٍ. ويبني النشر المستمر حزمة إصدار موقّعة على الفرع الرئيسي أو عند وسم، ويرفعها إلى المسار الداخلي. وفي GitHub Actions يعرّف ملف YAML لسير العمل مهامًا على مشغّلات: سحب الكود، وإعداد JDK، واستخدام إجراء Gradle للتخزين المؤقت، وتشغيل المهام، ورفع التقارير كملفات ناتجة. وتُحفظ الأسرار مثل مخزن مفتاح الرفع وحساب خدمة Play كأسرار مشفرة في المستودع.",
+      "whyEn": "Without CI, broken builds and failing tests reach main and are found days later. Without CD, releases depend on one person's laptop and memory. A pipeline makes every merge verified and every release repeatable.",
+      "whyAr": "دون CI تصل البناءات المكسورة والاختبارات الفاشلة إلى main ولا تُكتشف إلا بعد أيام. ودون CD تعتمد الإصدارات على حاسوب شخص واحد وذاكرته. والخط يجعل كل دمج متحققًا منه وكل إصدار قابلًا للتكرار.",
+      "howEn": "Keep pull request checks under about ten minutes: run fast checks first and in parallel, cache Gradle, and run device tests on main or nightly. Build release bundles only in CI, with signing material decoded from secrets at runtime and never committed. Protect the main branch with required checks, make the pipeline the only way to release, and keep the workflow in the repository so changes are reviewed.",
+      "howAr": "أبقِ فحوصات طلبات الدمج تحت عشر دقائق تقريبًا: شغّل الفحوصات السريعة أولًا وبالتوازي، وخزّن Gradle مؤقتًا، وشغّل اختبارات الجهاز على main أو ليلًا. وابنِ حزم الإصدار في CI فقط، مع فك مواد التوقيع من الأسرار وقت التشغيل دون إضافتها إلى المستودع أبدًا. واحمِ الفرع الرئيسي بفحوصات مطلوبة، واجعل الخط الطريق الوحيد للإصدار، واحتفظ بسير العمل في المستودع حتى تُراجع تغييراته.",
+      "exampleEn": "A team's pr.yml runs spotless, detekt, lint and unit tests in three parallel jobs in 7 minutes. release.yml runs on version tags: it decodes the upload keystore from a secret, builds the signed AAB, uploads mapping files, publishes to the internal track and attaches the bundle to a GitHub release.",
+      "exampleAr": "يشغّل ملف pr.yml لدى فريق spotless وdetekt وlint واختبارات الوحدة في ثلاث مهام متوازية خلال 7 دقائق. ويعمل release.yml عند وسوم الإصدار: يفك مخزن مفتاح الرفع من سر، ويبني AAB الموقّع، ويرفع ملفات التحويل، وينشر إلى المسار الداخلي، ويرفق الحزمة بإصدار في GitHub.",
+      "practiceEn": "1) Write a workflow that builds and runs unit tests on pull requests. 2) Add Gradle caching and upload test reports. 3) Make the check required on main.",
+      "practiceAr": "1) اكتب سير عمل يبني ويشغّل اختبارات الوحدة في طلبات الدمج. 2) أضف التخزين المؤقت لـ Gradle وارفع تقارير الاختبارات. 3) اجعل الفحص مطلوبًا على main.",
+      "challengeEn": "Build a full pipeline: parallel PR checks, an emulator test job on main with KVM, a tag-triggered signed release to the internal track, and a Slack or email notification with the version and changelog.",
+      "challengeAr": "ابنِ خطًا كاملًا: فحوصات متوازية لطلبات الدمج، ومهمة اختبار على محاكٍ في main مع KVM، وإصدار موقّع يحفزه وسم إلى المسار الداخلي، وإشعار عبر Slack أو البريد بالإصدار وسجل التغييرات.",
+      "objectivesEn": [
+        "Write GitHub Actions workflows for Android",
+        "Cache Gradle and parallelise checks",
+        "Handle signing secrets safely in CI",
+        "Release from CI only"
+      ],
+      "objectivesAr": [
+        "كتابة سير عمل GitHub Actions لـ Android",
+        "تخزين Gradle مؤقتًا وتوزيع الفحوصات بالتوازي",
+        "معالجة أسرار التوقيع بأمان في CI",
+        "الإصدار من CI فقط"
+      ],
+      "prerequisites": [
+        "and-pro-gradle",
+        "and-qa-static"
+      ]
+    },
+    {
+      "slug": "and-pro-signing",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 35,
+      "difficulty": "Intermediate",
+      "titleEn": "App signing and Play App Signing",
+      "titleAr": "توقيع التطبيق وPlay App Signing",
+      "summaryEn": "Every Android app is signed, and updates must be signed with the same key or Android refuses to install them. With Play App Signing, Google keeps your app signing key in its secure infrastructure and signs the APKs it generates from your Android App Bundle (AAB); you sign uploads with a separate upload key. If the upload key is lost or leaked, Google can reset it; the app signing key itself never leaves Google. New apps on Play must use Play App Signing and publish AABs, and the SHA-1 and SHA-256 of the app signing key are what you register with Firebase, Maps and App Links.",
+      "summaryAr": "كل تطبيق Android موقّع، ويجب توقيع التحديثات بالمفتاح نفسه وإلا يرفض Android تثبيتها. ومع Play App Signing تحتفظ Google بمفتاح توقيع تطبيقك في بنيتها الآمنة، وتوقّع ملفات APK التي تولّدها من حزمة Android App Bundle (‏AAB)، وتوقّع أنت المرفوعات بمفتاح رفع منفصل. وإذا ضاع مفتاح الرفع أو تسرب تستطيع Google إعادة ضبطه، أما مفتاح توقيع التطبيق نفسه فلا يغادر Google أبدًا. والتطبيقات الجديدة على Play يجب أن تستخدم Play App Signing وتنشر AAB، وبصمتا SHA-1 وSHA-256 لمفتاح توقيع التطبيق هما ما تسجله في Firebase والخرائط وروابط التطبيق.",
+      "whyEn": "Losing a signing key used to mean you could never update your app again; leaking it meant someone could ship malware as you. Understanding the two keys and where each lives prevents both disasters and explains many \"Google sign-in works in debug but not from Play\" bugs.",
+      "whyAr": "كان فقد مفتاح التوقيع يعني أنك لن تستطيع تحديث تطبيقك أبدًا، وتسريبه يعني أن شخصًا قد يشحن برمجيات خبيثة باسمك. وفهم المفتاحين ومكان كل منهما يمنع الكارثتين، ويفسر أخطاء كثيرة من نوع «تسجيل الدخول بـ Google يعمل في debug لكن لا يعمل من Play».",
+      "howEn": "Create the upload keystore once, store it and its passwords in a password manager and in CI secrets, never in the repository. Configure release signing in Gradle from environment variables, build AABs with bundleRelease, and enrol in Play App Signing. Register the debug, upload and app signing certificates' fingerprints wherever a service checks them, and keep a written recovery procedure.",
+      "howAr": "أنشئ مخزن مفتاح الرفع مرة واحدة، واحفظه مع كلمات مروره في مدير كلمات مرور وفي أسرار CI، ولا تضعه في المستودع أبدًا. واضبط توقيع الإصدار في Gradle من متغيرات البيئة، وابنِ AAB بـ bundleRelease، وسجّل في Play App Signing. وسجّل بصمات شهادات debug والرفع وتوقيع التطبيق حيث تفحصها أي خدمة، واحتفظ بإجراء استعادة مكتوب.",
+      "exampleEn": "After the first Play release, Google sign-in failed for every user who installed from Play. The Firebase project only had the developer's debug and upload SHA-1, not the app signing key's. Adding the fingerprint from Play Console > App integrity fixed it within minutes, with no new release.",
+      "exampleAr": "بعد أول إصدار على Play فشل تسجيل الدخول بـ Google لكل مستخدم ثبّت التطبيق من Play. فقد كان مشروع Firebase يحتوي بصمة SHA-1 لمفتاحي debug والرفع لدى المطور فقط، دون مفتاح توقيع التطبيق. وإضافة البصمة من Play Console ثم App integrity أصلحت المشكلة في دقائق، دون إصدار جديد.",
+      "practiceEn": "1) Create an upload keystore and configure release signing from environment variables. 2) Build an AAB and inspect it with bundletool. 3) Find all three certificate fingerprints for your app.",
+      "practiceAr": "1) أنشئ مخزن مفتاح رفع واضبط توقيع الإصدار من متغيرات البيئة. 2) ابنِ AAB وافحصه بـ bundletool. 3) أوجد بصمات الشهادات الثلاث لتطبيقك.",
+      "challengeEn": "Write and test a key-loss runbook: simulate a lost upload key, follow the Play Console reset process on a test app, update CI secrets and confirm the next upload is accepted.",
+      "challengeAr": "اكتب دليل فقد المفتاح واختبره: حاكِ فقد مفتاح الرفع، واتبع عملية إعادة الضبط في Play Console على تطبيق تجريبي، وحدّث أسرار CI، وتأكد أن الرفع التالي يُقبل.",
+      "objectivesEn": [
+        "Explain upload key versus app signing key",
+        "Configure release signing safely",
+        "Build and inspect Android App Bundles",
+        "Register the right certificate fingerprints"
+      ],
+      "objectivesAr": [
+        "شرح الفرق بين مفتاح الرفع ومفتاح توقيع التطبيق",
+        "ضبط توقيع الإصدار بأمان",
+        "بناء حزم Android App Bundle وفحصها",
+        "تسجيل بصمات الشهادات الصحيحة"
+      ],
+      "prerequisites": [
+        "and-build-release-basics",
+        "and-sec-code"
+      ]
+    },
+    {
+      "slug": "and-pro-play-release",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Releasing on Google Play",
+      "titleAr": "النشر على Google Play",
+      "summaryEn": "Play Console has testing tracks before production: internal testing (up to 100 testers, available in minutes), closed testing (invite lists or Google Groups) and open testing (anyone can join from the store). New personal developer accounts must run a closed test with enough testers for two weeks before they can publish to production. Every release goes through review against Play policies, must target a recent API level, needs an accurate Data safety section, content rating and store listing, and can be rolled out gradually with staged rollouts that you can halt.",
+      "summaryAr": "في Play Console مسارات اختبار قبل الإنتاج: الاختبار الداخلي (حتى 100 مختبر، ومتاح خلال دقائق)، والاختبار المغلق (قوائم دعوة أو مجموعات Google)، والاختبار المفتوح (يستطيع أي شخص الانضمام من المتجر). وحسابات المطورين الشخصية الجديدة يجب أن تجري اختبارًا مغلقًا بعدد كافٍ من المختبرين لمدة أسبوعين قبل أن تنشر إلى الإنتاج. ويمر كل إصدار بمراجعة وفق سياسات Play، ويجب أن يستهدف مستوى واجهة حديثًا، ويحتاج قسم Data safety دقيقًا وتصنيف محتوى وصفحة متجر، ويمكن نشره تدريجيًا بنشر مرحلي تستطيع إيقافه.",
+      "whyEn": "A great app that's rejected, removed for a policy violation or released with a crash to 100 percent of users at once can lose months of work. Knowing the tracks, policies and rollout controls makes releases boring, which is what you want.",
+      "whyAr": "التطبيق الرائع الذي يُرفض، أو يُزال لمخالفة سياسة، أو يُنشر مع انهيار لكل المستخدمين دفعة واحدة، قد يُضيع أشهرًا من العمل. ومعرفة المسارات والسياسات وأدوات التحكم في النشر تجعل الإصدارات مملة، وهذا ما تريده.",
+      "howEn": "Ship every build to internal testing first, promote to closed or open testing for wider feedback, and release to production with a staged rollout (for example 5, 20, 50, 100 percent) while watching Android vitals. Keep the Data safety form, permissions declarations and target SDK current, write release notes users understand, translate the store listing, and plan for review time, especially for new apps and sensitive permissions.",
+      "howAr": "اشحن كل بناء إلى الاختبار الداخلي أولًا، ورقّه إلى الاختبار المغلق أو المفتوح لملاحظات أوسع، وانشر إلى الإنتاج بنشر مرحلي (مثلًا 5 ثم 20 ثم 50 ثم 100 في المئة) مع مراقبة Android vitals. وأبقِ نموذج Data safety وتصريحات الأذونات وSDK المستهدفة محدّثة، واكتب ملاحظات إصدار يفهمها المستخدمون، وترجم صفحة المتجر، وخطط لوقت المراجعة، خاصة للتطبيقات الجديدة والأذونات الحساسة.",
+      "exampleEn": "A habit tracker's version 2.4 went to internal testing on Monday, to a closed group of 300 beta users on Tuesday, then to production at 10 percent on Thursday. On Friday a crash on Android 15 tablets appeared in vitals; the team halted the rollout, shipped 2.4.1 to the same track and resumed after the crash-free rate recovered.",
+      "exampleAr": "ذهب الإصدار 2.4 من متتبع عادات إلى الاختبار الداخلي يوم الاثنين، ثم إلى مجموعة مغلقة من 300 مستخدم تجريبي يوم الثلاثاء، ثم إلى الإنتاج بنسبة 10 في المئة يوم الخميس. ويوم الجمعة ظهر انهيار على الأجهزة اللوحية بـ Android 15 في vitals، فأوقف الفريق النشر، وشحن 2.4.1 إلى المسار نفسه، واستأنف بعد تعافي نسبة الخلو من الانهيار.",
+      "practiceEn": "1) Upload an AAB to internal testing and install it from the opt-in link. 2) Fill in Data safety and content rating for a sample app. 3) Plan a staged rollout with halt criteria.",
+      "practiceAr": "1) ارفع AAB إلى الاختبار الداخلي وثبّته من رابط الاشتراك. 2) املأ Data safety وتصنيف المحتوى لتطبيق نموذجي. 3) خطط لنشر مرحلي بمعايير إيقاف.",
+      "challengeEn": "Prepare a complete first release for a personal project: store listing in Arabic and English with screenshots, Data safety, privacy policy URL, a closed test with real testers for 14 days, and a launch checklist.",
+      "challengeAr": "جهّز إصدارًا أول كاملًا لمشروع شخصي: صفحة متجر بالعربية والإنجليزية مع لقطات شاشة، وData safety، ورابط سياسة الخصوصية، واختبارًا مغلقًا بمختبرين حقيقيين لمدة 14 يومًا، وقائمة فحص للإطلاق.",
+      "objectivesEn": [
+        "Use internal, closed and open testing tracks",
+        "Meet Play policy, target SDK and Data safety requirements",
+        "Roll out in stages and halt when needed",
+        "Prepare store listings and release notes"
+      ],
+      "objectivesAr": [
+        "استخدام مسارات الاختبار الداخلي والمغلق والمفتوح",
+        "تلبية متطلبات سياسات Play وSDK المستهدفة وData safety",
+        "النشر على مراحل والإيقاف عند الحاجة",
+        "تجهيز صفحات المتجر وملاحظات الإصدار"
+      ],
+      "prerequisites": [
+        "and-pro-signing",
+        "and-sec-privacy",
+        "and-qa-crashes"
+      ]
+    },
+    {
+      "slug": "and-pro-automation",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 40,
+      "difficulty": "Advanced",
+      "titleEn": "Automated publishing and versioning",
+      "titleAr": "النشر الآلي وترقيم الإصدارات",
+      "summaryEn": "Releasing by clicking through Play Console doesn't scale. The Google Play Developer API lets tools upload bundles, set release notes, assign tracks and control rollouts; Gradle Play Publisher (a Gradle plugin) and fastlane supply wrap it. A service account with release permissions, stored as a CI secret, authorises the upload. Versioning needs two numbers: versionCode, an integer that must increase with every upload, and versionName, the human-readable version. CI usually derives versionCode from the run number or tag and versionName from the git tag.",
+      "summaryAr": "النشر بالنقر في Play Console لا يتوسع. فتسمح Google Play Developer API للأدوات برفع الحزم، وضبط ملاحظات الإصدار، وتحديد المسارات، والتحكم في النشر، وتغلّفها Gradle Play Publisher (إضافة Gradle) وfastlane supply. ويخوّل حساب خدمة بصلاحيات الإصدار، محفوظ كسر في CI، الرفع. ويحتاج ترقيم الإصدارات رقمين: ‏versionCode عدد صحيح يجب أن يزيد مع كل رفع، وversionName الإصدار المقروء للبشر. وعادة يستخرج CI القيمة versionCode من رقم التشغيل أو الوسم، وversionName من وسم git.",
+      "whyEn": "Manual releases are slow and error-prone: wrong build uploaded, forgotten release notes, a versionCode clash that blocks the upload. Automation turns a release into tagging a commit, and makes hotfixes fast when they matter most.",
+      "whyAr": "الإصدارات اليدوية بطيئة وعرضة للأخطاء: رفع بناء خاطئ، ونسيان ملاحظات الإصدار، وتعارض versionCode يمنع الرفع. والأتمتة تحوّل الإصدار إلى وسم commit، وتجعل الإصلاحات العاجلة سريعة عندما تهم أكثر.",
+      "howEn": "Create a service account with only the release permissions it needs and store its JSON key as a secret. Compute versionCode and versionName from tags in Gradle, keep release notes per language in the repository, publish to the internal track automatically on every tag, and promote to production with a manual approval step and an initial rollout fraction. Never let two pipelines upload the same versionCode.",
+      "howAr": "أنشئ حساب خدمة بصلاحيات الإصدار اللازمة فقط، واحفظ مفتاح JSON الخاص به كسر. واحسب versionCode وversionName من الوسوم في Gradle، واحتفظ بملاحظات الإصدار لكل لغة في المستودع، وانشر إلى المسار الداخلي تلقائيًا مع كل وسم، ورقِّ إلى الإنتاج بخطوة موافقة يدوية ونسبة نشر أولية. ولا تدع خطين يرفعان قيمة versionCode نفسها أبدًا.",
+      "exampleEn": "Tagging v3.2.0 triggers release.yml: Gradle sets versionName 3.2.0 and versionCode 30200, builds and signs the AAB, and Gradle Play Publisher uploads it to internal with notes from play/release-notes/ar and en. A protected environment requires a lead's approval, then the same bundle is promoted to production at 10 percent.",
+      "exampleAr": "وسم v3.2.0 يحفز release.yml: يضبط Gradle القيمة versionName على 3.2.0 وversionCode على 30200، ويبني AAB ويوقّعه، ويرفعه Gradle Play Publisher إلى المسار الداخلي مع ملاحظات من play/release-notes/ar وen. وتشترط بيئة محمية موافقة القائد، ثم تُرقّى الحزمة نفسها إلى الإنتاج بنسبة 10 في المئة.",
+      "practiceEn": "1) Derive versionName and versionCode from git tags. 2) Configure Gradle Play Publisher with a service account and upload to internal. 3) Store release notes per language in the repo.",
+      "practiceAr": "1) استخرج versionName وversionCode من وسوم git. 2) اضبط Gradle Play Publisher بحساب خدمة وارفع إلى المسار الداخلي. 3) احفظ ملاحظات الإصدار لكل لغة في المستودع.",
+      "challengeEn": "Build a promotion flow: every tag goes to internal automatically, a manual workflow promotes a chosen versionCode to production at a fraction, and another raises or halts the rollout, all without opening Play Console.",
+      "challengeAr": "ابنِ مسار ترقية: كل وسم يذهب إلى المسار الداخلي تلقائيًا، وسير عمل يدوي يرقّي versionCode مختارًا إلى الإنتاج بنسبة، وآخر يرفع النشر أو يوقفه، كلها دون فتح Play Console.",
+      "objectivesEn": [
+        "Use the Play Developer API through tooling",
+        "Manage versionCode and versionName",
+        "Automate uploads and release notes",
+        "Promote and control rollouts from CI"
+      ],
+      "objectivesAr": [
+        "استخدام Play Developer API عبر الأدوات",
+        "إدارة versionCode وversionName",
+        "أتمتة الرفع وملاحظات الإصدار",
+        "الترقية والتحكم في النشر من CI"
+      ],
+      "prerequisites": [
+        "and-pro-ci",
+        "and-pro-play-release"
+      ]
+    },
+    {
+      "slug": "and-pro-billing",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Advanced",
+      "titleEn": "In-app purchases and subscriptions",
+      "titleAr": "المشتريات والاشتراكات داخل التطبيق",
+      "summaryEn": "Digital goods sold in Play apps use Google Play Billing. The Play Billing Library connects a BillingClient, queries product details (one-time products and subscriptions with base plans and offers), launches the purchase flow, and receives purchase updates. A purchase must be verified and acknowledged (or consumed for consumables) within three days or it is refunded. Real apps send the purchase token to their backend, which verifies it with the Play Developer API, grants the entitlement, and listens to Real-time Developer Notifications for renewals, cancellations, refunds and account holds.",
+      "summaryAr": "تستخدم السلع الرقمية المباعة في تطبيقات Play نظام Google Play Billing. فتتصل Play Billing Library بـ BillingClient، وتستعلم عن تفاصيل المنتجات (المنتجات لمرة واحدة والاشتراكات بخطط أساسية وعروض)، وتطلق مسار الشراء، وتستقبل تحديثات المشتريات. ويجب التحقق من الشراء وتأكيده (أو استهلاكه للمستهلكات) خلال ثلاثة أيام وإلا يُسترد المبلغ. والتطبيقات الحقيقية ترسل رمز الشراء إلى خادمها، الذي يتحقق منه بـ Play Developer API، ويمنح الاستحقاق، ويستمع إلى Real-time Developer Notifications للتجديد والإلغاء والاسترداد وتعليق الحساب.",
+      "whyEn": "Monetisation bugs cost real money: purchases that never unlock, unacknowledged purchases refunded automatically, subscriptions that keep working after cancellation, or fake purchases accepted from patched apps.",
+      "whyAr": "أخطاء تحقيق الدخل تكلف مالًا حقيقيًا: مشتريات لا تفتح شيئًا أبدًا، ومشتريات غير مؤكدة تُسترد تلقائيًا، واشتراكات تستمر في العمل بعد الإلغاء، أو مشتريات مزيفة تُقبل من تطبيقات معدّلة.",
+      "howEn": "Wrap Play Billing in a BillingRepository with connection retry. Show prices from ProductDetails, never hard-coded. On a PURCHASED update, send the token to your server, let the server verify, grant and acknowledge, then refresh entitlements. Query existing purchases on app start, handle pending purchases, keep entitlements on the server as the source of truth, and test with license testers and test cards.",
+      "howAr": "غلّف Play Billing في BillingRepository مع إعادة محاولة الاتصال. واعرض الأسعار من ProductDetails، ولا تكتبها في الكود أبدًا. وعند تحديث PURCHASED أرسل الرمز إلى خادمك، ودع الخادم يتحقق ويمنح ويؤكد، ثم حدّث الاستحقاقات. واستعلم عن المشتريات الموجودة عند بدء التطبيق، وعالج المشتريات المعلّقة، وأبقِ الاستحقاقات في الخادم كمصدر للحقيقة، واختبر بمختبري الترخيص وبطاقات الاختبار.",
+      "exampleEn": "A language app sells a monthly Pro subscription with a 7-day free trial offer. Tapping Upgrade launches the billing flow; on success the app posts the purchase token to /billing/verify, the server checks it with the Play API, records Pro until the expiry time, acknowledges it, and later receives an RTDN when the user cancels, so Pro ends at the period's end.",
+      "exampleAr": "تطبيق لغات يبيع اشتراك Pro شهريًا مع عرض تجربة مجانية لسبعة أيام. والضغط على Upgrade يطلق مسار الفوترة، وعند النجاح يرسل التطبيق رمز الشراء إلى /billing/verify، فيتحقق منه الخادم بواجهة Play، ويسجّل Pro حتى وقت الانتهاء، ويؤكده، ثم يستقبل لاحقًا إشعار RTDN عندما يلغي المستخدم، فينتهي Pro في نهاية الفترة.",
+      "practiceEn": "1) Connect a BillingClient and show product prices. 2) Launch a purchase with a license tester. 3) Send the token to a fake backend and acknowledge after verification.",
+      "practiceAr": "1) صِل BillingClient واعرض أسعار المنتجات. 2) أطلق شراءً بمختبر ترخيص. 3) أرسل الرمز إلى خادم وهمي وأكّد بعد التحقق.",
+      "challengeEn": "Implement a subscription end to end: base plan and trial offer, server verification with the Play Developer API, RTDN handling through Pub/Sub for renewal, cancel, grace period and refund, and an entitlement endpoint the app reads.",
+      "challengeAr": "نفّذ اشتراكًا من البداية إلى النهاية: خطة أساسية وعرض تجربة، وتحقق في الخادم بـ Play Developer API، ومعالجة RTDN عبر Pub/Sub للتجديد والإلغاء وفترة السماح والاسترداد، ونقطة استحقاقات يقرؤها التطبيق.",
+      "objectivesEn": [
+        "Use the Play Billing Library",
+        "Verify and acknowledge purchases on a server",
+        "Model subscriptions, base plans and offers",
+        "Handle real-time developer notifications"
+      ],
+      "objectivesAr": [
+        "استخدام Play Billing Library",
+        "التحقق من المشتريات وتأكيدها في خادم",
+        "نمذجة الاشتراكات والخطط الأساسية والعروض",
+        "معالجة إشعارات المطورين الفورية"
+      ],
+      "prerequisites": [
+        "and-pro-play-release",
+        "and-net-auth"
+      ]
+    },
+    {
+      "slug": "and-pro-growth",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 40,
+      "difficulty": "Intermediate",
+      "titleEn": "In-app updates, reviews and store presence",
+      "titleAr": "التحديثات والتقييمات داخل التطبيق والحضور في المتجر",
+      "summaryEn": "After launch, a few Play APIs keep users on good versions and help the app grow. The In-App Updates API prompts users to update, either flexibly in the background or immediately for critical fixes, and you can set an update priority per release. The In-App Review API shows the Play rating dialog inside the app at a moment you choose, with quotas Google controls. Store presence (app store optimisation) means a clear title and short description, localised screenshots that show real value, a feature graphic, and replying to reviews. Store listing experiments test icons, screenshots and text on real visitors.",
+      "summaryAr": "بعد الإطلاق تُبقي بضع واجهات من Play المستخدمين على إصدارات جيدة وتساعد التطبيق على النمو. فتطلب In-App Updates API من المستخدمين التحديث، إما بمرونة في الخلفية أو فورًا للإصلاحات الحرجة، وتستطيع ضبط أولوية التحديث لكل إصدار. وتعرض In-App Review API نافذة تقييم Play داخل التطبيق في لحظة تختارها، بحصص تتحكم فيها Google. والحضور في المتجر (تحسين صفحة المتجر) يعني عنوانًا ووصفًا قصيرًا واضحين، ولقطات شاشة مترجمة تُظهر قيمة حقيقية، ورسمًا للميزة، والرد على التقييمات. وتختبر تجارب صفحة المتجر الأيقونات واللقطات والنصوص على زوار حقيقيين.",
+      "whyEn": "Old versions keep bugs alive for months, and most happy users never leave a review unless asked at the right time. Small, well-timed prompts and a clear store page move ratings, installs and support load more than many features do.",
+      "whyAr": "الإصدارات القديمة تُبقي الأخطاء حية أشهرًا، ومعظم المستخدمين الراضين لا يتركون تقييمًا ما لم يُطلب منهم في الوقت المناسب. والطلبات الصغيرة حسنة التوقيت وصفحة المتجر الواضحة تحرّك التقييمات والتثبيتات وحجم الدعم أكثر مما تفعل ميزات كثيرة.",
+      "howEn": "Check for updates on app start; use flexible updates by default and immediate updates only for high-priority releases. Ask for a review after a success moment (finishing a lesson streak, completing an order), never after an error or on first launch, and don't gate anything on it. Localise the listing for each market, show real screens with short captions, reply to negative reviews with fixes, and run store listing experiments one change at a time.",
+      "howAr": "افحص التحديثات عند بدء التطبيق، واستخدم التحديثات المرنة افتراضيًا، والفورية فقط للإصدارات عالية الأولوية. واطلب التقييم بعد لحظة نجاح (إنهاء سلسلة دروس أو إتمام طلب)، وليس بعد خطأ أو عند أول فتح أبدًا، ولا تجعل أي شيء مشروطًا به. وترجم صفحة المتجر لكل سوق، واعرض شاشات حقيقية بتسميات قصيرة، ورد على التقييمات السلبية بالإصلاحات، ونفّذ تجارب صفحة المتجر بتغيير واحد في كل مرة.",
+      "exampleEn": "A fitness app sets update priority 5 on a release that fixes data loss, so users on older versions see an immediate update screen; normal releases use a flexible update with a snackbar to restart. After a user's third completed workout, the app requests the in-app review flow, and the rating rose from 3.9 to 4.5 in two months.",
+      "exampleAr": "تطبيق لياقة يضبط أولوية التحديث 5 على إصدار يصلح فقد البيانات، فيرى مستخدمو الإصدارات الأقدم شاشة تحديث فوري، أما الإصدارات العادية فتستخدم تحديثًا مرنًا مع رسالة snackbar لإعادة التشغيل. وبعد ثالث تمرين يكمله المستخدم يطلب التطبيق مسار التقييم داخل التطبيق، فارتفع التقييم من 3.9 إلى 4.5 خلال شهرين.",
+      "practiceEn": "1) Add a flexible in-app update with a restart prompt. 2) Request an in-app review after a success moment. 3) Write a store listing in Arabic and English with five screenshot captions.",
+      "practiceAr": "1) أضف تحديثًا مرنًا داخل التطبيق مع طلب إعادة التشغيل. 2) اطلب تقييمًا داخل التطبيق بعد لحظة نجاح. 3) اكتب صفحة متجر بالعربية والإنجليزية مع تسميات لخمس لقطات شاشة.",
+      "challengeEn": "Plan and run a store listing experiment on screenshots for one market, define the metric (first-time installers), wait for a result, and document what you learned and the next test.",
+      "challengeAr": "خطط لتجربة صفحة متجر على لقطات الشاشة لسوق واحد ونفّذها، وحدد المقياس (المثبتون لأول مرة)، وانتظر النتيجة، ووثّق ما تعلمته والاختبار التالي.",
+      "objectivesEn": [
+        "Prompt updates with the In-App Updates API",
+        "Ask for reviews at the right moment",
+        "Write and localise a store listing",
+        "Test listing changes with experiments"
+      ],
+      "objectivesAr": [
+        "طلب التحديثات بـ In-App Updates API",
+        "طلب التقييمات في اللحظة المناسبة",
+        "كتابة صفحة المتجر وترجمتها",
+        "اختبار تغييرات الصفحة بالتجارب"
+      ],
+      "prerequisites": [
+        "and-pro-play-release"
+      ]
+    }
+  ]
+}

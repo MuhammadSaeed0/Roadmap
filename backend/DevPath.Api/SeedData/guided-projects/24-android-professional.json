@@ -1,0 +1,183 @@
+[
+  {
+    "key": "and-ship-to-play",
+    "skill": "Android",
+    "level": "Advanced",
+    "hours": 14,
+    "titleEn": "Ship an app to Google Play",
+    "titleAr": "اشحن تطبيقًا إلى Google Play",
+    "summaryEn": "Take an app you built earlier from a laptop project to a real Play release: a clean multi-module build, CI on every pull request, signed bundles from tags, automated publishing to testing tracks, a staged production rollout, a subscription verified on a server, in-app updates and reviews, and a bilingual store listing.",
+    "summaryAr": "انقل تطبيقًا بنيته سابقًا من مشروع على الحاسوب إلى إصدار حقيقي في Play: بناء نظيف متعدد الوحدات، وCI مع كل طلب دمج، وحزم موقعة من الوسوم، ونشر آلي إلى مسارات الاختبار، ونشر مرحلي للإنتاج، واشتراك يُتحقق منه في خادم، وتحديثات وتقييمات داخل التطبيق، وصفحة متجر بلغتين.",
+    "techStack": "Gradle version catalogs · convention plugins · GitHub Actions · Play App Signing · bundletool · Gradle Play Publisher · Play Billing Library · Play Developer API · Play In-App Updates and Review",
+    "goalsEn": [
+      "Keep a multi-module build fast and consistent",
+      "Automate checks and releases with CI",
+      "Sign and publish safely",
+      "Roll out releases with data",
+      "Monetise and grow responsibly"
+    ],
+    "goalsAr": [
+      "إبقاء بناء متعدد الوحدات سريعًا ومتسقًا",
+      "أتمتة الفحوصات والإصدارات بـ CI",
+      "التوقيع والنشر بأمان",
+      "نشر الإصدارات بالاعتماد على البيانات",
+      "تحقيق الدخل والنمو بمسؤولية"
+    ],
+    "requirementsEn": [
+      "A version catalog and convention plugins; no module repeats android { } setup",
+      "PR checks (format, detekt, lint, unit tests) required on main",
+      "Tags produce a signed bundle with versionCode from the tag and publish to internal testing",
+      "Production promotion is a manual, approved workflow with a user fraction",
+      "A Pro subscription verified and acknowledged on a server, with entitlements read from the API",
+      "Flexible in-app updates and a review prompt after a success moment",
+      "A listing in English and Arabic with localised screenshots"
+    ],
+    "requirementsAr": [
+      "فهرس إصدارات وإضافات أعراف، ولا تكرر أي وحدة إعداد android { }",
+      "فحوصات طلبات الدمج (التنسيق وdetekt وlint واختبارات الوحدة) مطلوبة على main",
+      "تنتج الوسوم حزمة موقعة بقيمة versionCode من الوسم وتنشر إلى الاختبار الداخلي",
+      "الترقية إلى الإنتاج سير عمل يدوي بموافقة ونسبة مستخدمين",
+      "اشتراك Pro يُتحقق منه ويُؤكد في خادم، وتُقرأ الاستحقاقات من الواجهة",
+      "تحديثات مرنة داخل التطبيق وطلب تقييم بعد لحظة نجاح",
+      "صفحة متجر بالإنجليزية والعربية مع لقطات موطّنة"
+    ],
+    "acceptanceEn": [
+      "A clean build and a one-line change build both stay under the times you recorded at the start",
+      "No keystore, password or service account key exists in the repository or logs",
+      "Pushing a tag puts a new build on the internal track without manual steps",
+      "A license tester can subscribe, cancel and see Pro expire at the period end"
+    ],
+    "acceptanceAr": [
+      "يبقى البناء النظيف وبناء تغيير سطر واحد تحت الأزمنة التي سجلتها في البداية",
+      "لا يوجد مخزن مفاتيح أو كلمة مرور أو مفتاح حساب خدمة في المستودع أو السجلات",
+      "دفع وسم يضع بناءً جديدًا على المسار الداخلي دون خطوات يدوية",
+      "يستطيع مختبر الترخيص الاشتراك والإلغاء ورؤية انتهاء Pro في نهاية الفترة"
+    ],
+    "stretchEn": [
+      "Gate rollout increases on crash-free rate from the Play Developer Reporting API",
+      "Add a Baseline Profile and measure startup in CI",
+      "Ship a dynamic feature module delivered on demand"
+    ],
+    "stretchAr": [
+      "اشترط نسبة الخلو من الانهيار من Play Developer Reporting API قبل زيادة النشر",
+      "أضف Baseline Profile وقِس البدء في CI",
+      "اشحن وحدة ميزة ديناميكية تُنزّل عند الطلب"
+    ],
+    "steps": [
+      {
+        "key": "and-sp-build",
+        "titleEn": "Clean up the build",
+        "titleAr": "نظّف البناء",
+        "bodyEn": "Record clean and incremental build times with a build scan. Move dependencies into libs.versions.toml, extract convention plugins into build-logic, enable the configuration and build caches, and record the times again.",
+        "bodyAr": "سجّل زمني البناء النظيف والتزايدي بفحص بناء. وانقل الاعتماديات إلى libs.versions.toml، واستخرج إضافات الأعراف إلى build-logic، وفعّل ذاكرتي الإعداد والبناء المؤقتتين، وسجّل الأزمنة مرة أخرى.",
+        "hintsEn": [
+          "Keep the scans so you can compare them later.",
+          "Fix configuration-cache problems one plugin at a time."
+        ],
+        "hintsAr": [
+          "احتفظ بالفحوصات لتقارن بينها لاحقًا.",
+          "أصلح مشكلات ذاكرة الإعداد إضافة واحدة في كل مرة."
+        ]
+      },
+      {
+        "key": "and-sp-ci",
+        "titleEn": "Add pull request checks",
+        "titleAr": "أضف فحوصات طلبات الدمج",
+        "bodyEn": "Create a PR workflow with parallel static and test jobs, Gradle caching, cancel-in-progress and uploaded reports. Protect main so the checks and one review are required.",
+        "bodyAr": "أنشئ سير عمل لطلبات الدمج بمهمتين متوازيتين للفحص والاختبار، مع تخزين Gradle المؤقت وcancel-in-progress والتقارير المرفوعة. واحمِ main حتى تصبح الفحوصات ومراجعة واحدة مطلوبة.",
+        "hintsEn": [
+          "Open a pull request that breaks a test to prove the gate works.",
+          "Aim for a PR run under ten minutes."
+        ],
+        "hintsAr": [
+          "افتح طلب دمج يكسر اختبارًا لتثبت أن البوابة تعمل.",
+          "استهدف تشغيلًا لطلب الدمج في أقل من عشر دقائق."
+        ]
+      },
+      {
+        "key": "and-sp-sign",
+        "titleEn": "Set up signing and versioning",
+        "titleAr": "أعدّ التوقيع والترقيم",
+        "bodyEn": "Create the app in Play Console with Play App Signing, generate an upload key, store it in a password manager and as CI secrets, and derive versionCode and versionName from git tags in Gradle. Register the app signing, upload and debug fingerprints wherever sign-in or API keys need them.",
+        "bodyAr": "أنشئ التطبيق في Play Console مع Play App Signing، وولّد مفتاح رفع، واحفظه في مدير كلمات مرور وكأسرار في CI، واستخرج versionCode وversionName من وسوم git في Gradle. وسجّل بصمات مفاتيح توقيع التطبيق والرفع وdebug حيثما احتاجها تسجيل الدخول أو مفاتيح الواجهات.",
+        "hintsEn": [
+          "Test the bundle locally with bundletool before the first upload.",
+          "Two people should be able to reach the upload key."
+        ],
+        "hintsAr": [
+          "اختبر الحزمة محليًا بـ bundletool قبل أول رفع.",
+          "يجب أن يستطيع شخصان الوصول إلى مفتاح الرفع."
+        ]
+      },
+      {
+        "key": "and-sp-publish",
+        "titleEn": "Automate publishing",
+        "titleAr": "أتمت النشر",
+        "bodyEn": "Create a service account with limited Play Console permissions, add Gradle Play Publisher, keep release notes in src/main/play, and make tags publish to the internal track. Add a manual, approved workflow that promotes a versionCode to production with a user fraction.",
+        "bodyAr": "أنشئ حساب خدمة بصلاحيات محدودة في Play Console، وأضف Gradle Play Publisher، واحفظ ملاحظات الإصدار في src/main/play، واجعل الوسوم تنشر إلى المسار الداخلي. وأضف سير عمل يدويًا بموافقة يرقّي versionCode إلى الإنتاج بنسبة مستخدمين.",
+        "hintsEn": [
+          "The first upload of a new app must be done by hand in Play Console.",
+          "Upload the R8 mapping file with every release."
+        ],
+        "hintsAr": [
+          "يجب أن يتم أول رفع لتطبيق جديد يدويًا في Play Console.",
+          "ارفع ملف التحويل من R8 مع كل إصدار."
+        ]
+      },
+      {
+        "key": "and-sp-billing",
+        "titleEn": "Add a verified subscription",
+        "titleAr": "أضف اشتراكًا موثقًا",
+        "bodyEn": "Create a Pro subscription with monthly and yearly base plans, integrate the Billing Library with prices from ProductDetails, verify and acknowledge on a small backend with the Play Developer API, receive RTDN through Pub/Sub, and read entitlements from your API.",
+        "bodyAr": "أنشئ اشتراك Pro بخطتين أساسيتين شهرية وسنوية، وادمج Billing Library مع أسعار من ProductDetails، وتحقق وأكّد في خادم صغير عبر Play Developer API، واستقبل إشعارات RTDN عبر Pub/Sub، واقرأ الاستحقاقات من واجهتك.",
+        "hintsEn": [
+          "License testers' subscriptions renew every few minutes, which makes lifecycle testing fast.",
+          "Handle PENDING and restore purchases on start."
+        ],
+        "hintsAr": [
+          "تتجدد اشتراكات مختبري الترخيص كل بضع دقائق، فيصبح اختبار دورة الحياة سريعًا.",
+          "عالج PENDING واستعد المشتريات عند البدء."
+        ]
+      },
+      {
+        "key": "and-sp-growth",
+        "titleEn": "Updates, reviews and the listing",
+        "titleAr": "التحديثات والتقييمات وصفحة المتجر",
+        "bodyEn": "Add flexible in-app updates with a restart snackbar and immediate updates for high priority, a review prompt after a success moment at most every 90 days, and a store listing in English and Arabic with localised screenshots.",
+        "bodyAr": "أضف تحديثات مرنة داخل التطبيق مع رسالة snackbar لإعادة التشغيل وتحديثات فورية للأولوية العالية، وطلب تقييم بعد لحظة نجاح مرة كل 90 يومًا على الأكثر، وصفحة متجر بالإنجليزية والعربية مع لقطات موطّنة.",
+        "hintsEn": [
+          "Test updates and reviews through internal app sharing.",
+          "Capture Arabic screenshots on a device set to Arabic."
+        ],
+        "hintsAr": [
+          "اختبر التحديثات والتقييمات عبر مشاركة التطبيق الداخلية.",
+          "التقط اللقطات العربية على جهاز مضبوط على العربية."
+        ]
+      },
+      {
+        "key": "and-sp-launch",
+        "titleEn": "Launch with a staged rollout",
+        "titleAr": "أطلق بنشر مرحلي",
+        "bodyEn": "Complete App content and Data safety, run the closed test your account needs, then release to production at 5 percent. Write the thresholds that halt the rollout, watch vitals and crash reports, raise the fraction step by step, and write a short release report.",
+        "bodyAr": "أكمل App content وData safety، وأجرِ الاختبار المغلق الذي يحتاجه حسابك، ثم انشر في الإنتاج بنسبة 5 في المئة. واكتب العتبات التي توقف النشر، وراقب vitals وتقارير الانهيار، وارفع النسبة خطوة بخطوة، واكتب تقرير إصدار قصيرًا.",
+        "hintsEn": [
+          "Don't raise the rollout on a Friday.",
+          "Answer the first reviews within a day."
+        ],
+        "hintsAr": [
+          "لا ترفع النشر يوم الجمعة.",
+          "رد على التقييمات الأولى خلال يوم."
+        ]
+      }
+    ],
+    "topics": [
+      "and-pro-gradle",
+      "and-pro-ci",
+      "and-pro-signing",
+      "and-pro-play-release",
+      "and-pro-automation",
+      "and-pro-billing",
+      "and-pro-growth"
+    ]
+  }
+]

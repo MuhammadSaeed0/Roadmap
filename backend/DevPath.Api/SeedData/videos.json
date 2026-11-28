@@ -8609,5 +8609,157 @@
       "channel": "تيك سيكيورد",
       "language": "ar"
     }
+  ],
+  "and-pro-gradle": [
+    {
+      "videoId": "VHD926cHMuw",
+      "title": "Migrate to Gradle version catalog and convention plugins - Merab Tato Kutalia",
+      "channel": "Mobile Makers",
+      "language": "en"
+    },
+    {
+      "videoId": "WEOwFkf127E",
+      "title": "Using the Gradle Version Catalog in Android projects",
+      "channel": "Android Developer Tips",
+      "language": "en"
+    },
+    {
+      "videoId": "zvg5DiizskY",
+      "title": "شرح Gradle مع Android Studio - Build Lifecycle",
+      "channel": "Omar abu shanab",
+      "language": "ar"
+    }
+  ],
+  "and-pro-ci": [
+    {
+      "videoId": "WOAchfTm1t4",
+      "title": "Beginner's Guide to Continuous Integration (CI) for Android with GitHub Actions",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "K9w01h4-Wnc",
+      "title": "Setup CI For Android Apps Using GitHub Actions // Android CI Tutorial",
+      "channel": "goobar",
+      "language": "en"
+    },
+    {
+      "videoId": "iUrQWj-S2iE",
+      "title": "شرح GitHub Actions مع مشروع عملي (Demo)",
+      "channel": "Infra Inspector with Alaa",
+      "language": "ar"
+    },
+    {
+      "videoId": "QDlIo97ibxY",
+      "title": "Continuous Integration with Github Actions شرح",
+      "channel": "JohnyDev",
+      "language": "ar"
+    }
+  ],
+  "and-pro-signing": [
+    {
+      "videoId": "odv_1fxt9BI",
+      "title": "App Bundles: Everything to know about Play App Signing - MAD Skills",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "97cnQItr-aw",
+      "title": "How to Reset keystore in 2025 | How to Recover Keystore Password | Lost keystore file | Play Store",
+      "channel": "Jayant Ke Guides",
+      "language": "en"
+    },
+    {
+      "videoId": "25r606G3a6I",
+      "title": "تغيير مفتاح توقيع التطبيق على جوجل بلاي keystor أو SHA1- update keystores",
+      "channel": "nageh sarwet - ناجح ثروت",
+      "language": "ar"
+    },
+    {
+      "videoId": "GFRUvZe7FpY",
+      "title": "تعمل ايه لو فقدت مفتاح توقيع تطبيقك الاندرويد - lost your signed key for android app",
+      "channel": " محمد الشيخ | Toturials In Flow ",
+      "language": "ar"
+    }
+  ],
+  "and-pro-play-release": [
+    {
+      "videoId": "d8uEdeMgikU",
+      "title": "How to Publish an Android App to Google Play | Updated 2024",
+      "channel": "MJSD Coding",
+      "language": "en"
+    },
+    {
+      "videoId": "AqFocbUV810",
+      "title": "How to upload the Android app for Internal testing in Google Play Console. Setup Internal Testing.",
+      "channel": "iRekha Tech Solutions",
+      "language": "en"
+    },
+    {
+      "videoId": "4NVw2fN8UIA",
+      "title": "رفع تطبيق علي جوجل بلاي كونسل من الصفر بعد التحديثات - Google Play Console",
+      "channel": "أثرجي - Asargy",
+      "language": "ar"
+    },
+    {
+      "videoId": "jWX86uZ6mOk",
+      "title": "2- رفع تطبيق على جوجل بلاي كونسول Google Play Console",
+      "channel": "مصطفى صلاح -  Mostafa Salah",
+      "language": "ar"
+    }
+  ],
+  "and-pro-automation": [
+    {
+      "videoId": "dFHV5KsX6Xw",
+      "title": "Building Android Apps With GitHub Actions | Nate Ebel",
+      "channel": "AsyncAndroid",
+      "language": "en"
+    },
+    {
+      "videoId": "Fh4UyfqeB4Y",
+      "title": "How to Set Up CI CD for Android Using GitHub Actions",
+      "channel": "Jov Mit",
+      "language": "en"
+    },
+    {
+      "videoId": "bYDlgzhMSOQ",
+      "title": "Using Fastlane to deploy multiple Android apps",
+      "channel": "Daniel Persson",
+      "language": "en"
+    }
+  ],
+  "and-pro-billing": [
+    {
+      "videoId": "p2uIJTKkM6o",
+      "title": "Android In-App Purchases Part2 - Add Billing Library, Setup Google Payments Merchant Account",
+      "channel": "iRekha Tech Solutions",
+      "language": "en"
+    },
+    {
+      "videoId": "ak4WiPK6HwE",
+      "title": "Subscription setup in Google play console | android subscription setup | in app subscription Android",
+      "channel": "Code Micros",
+      "language": "en"
+    }
+  ],
+  "and-pro-growth": [
+    {
+      "videoId": "Z5VjmLhnoJU",
+      "title": "How to Use the Google Play In-App Update API | Android Studio Tutorial",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "lnZ5lnISyh0",
+      "title": "How to integrate and test the Google Play In-App Reviews API in android applications.",
+      "channel": "iRekha Tech Solutions",
+      "language": "en"
+    },
+    {
+      "videoId": "5Ulo671sYjg",
+      "title": "شرح ASO والفرق بينه وبين SEO وتحسين ظهور التطبيقات وزيادة التحميلات المجانية الجزء الأول",
+      "channel": "Ahmed Atia",
+      "language": "ar"
+    }
   ]
 }

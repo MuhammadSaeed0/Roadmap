@@ -1,0 +1,18 @@
+Release checklist (version 2.4.0)
+
+Before upload
+[ ] targetSdk meets the current Play requirement
+[ ] Data safety form matches what the app and SDKs collect
+[ ] Permissions declarations updated (none new / justified)
+[ ] Release notes written in Arabic and English (<= 500 characters each)
+[ ] Crash-free rate of the previous release >= 99.5%
+
+Tracks
+[ ] Internal testing: team installs and smoke-tests key journeys
+[ ] Closed testing: 300 beta users for 2 days, no new top crashes
+[ ] Production: staged rollout 5% -> 20% -> 50% -> 100%
+
+Halt the rollout if
+[ ] user-perceived crash rate > 1.09% or ANR rate > 0.47%
+[ ] a new crash cluster affects > 0.5% of users
+[ ] support tickets about the release double
