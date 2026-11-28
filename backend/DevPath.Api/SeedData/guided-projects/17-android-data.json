@@ -1,0 +1,196 @@
+[
+  {
+    "key": "and-offline-tasks",
+    "skill": "Android",
+    "level": "Advanced",
+    "hours": 14,
+    "titleEn": "Offline-first task manager with sync",
+    "titleAr": "مدير مهام يعمل دون اتصال مع المزامنة",
+    "summaryEn": "A task manager that works fully without a network: tasks and projects in Room with relations and a tested migration, settings in DataStore, attachments in private storage, and two-way sync with a fake server through WorkManager, an outbox and a clear conflict rule.",
+    "summaryAr": "مدير مهام يعمل كاملًا دون شبكة: المهام والمشاريع في Room مع العلاقات وترحيل مختبر، والإعدادات في DataStore، والمرفقات في التخزين الخاص، ومزامنة باتجاهين مع خادم وهمي عبر WorkManager وجدول صادر وقاعدة تعارض واضحة.",
+    "techStack": "Kotlin · Jetpack Compose · Room · DataStore · WorkManager · Hilt · Coroutines · Flow",
+    "goalsEn": [
+      "Design a relational Room schema",
+      "Ship a schema change with a tested migration",
+      "Store settings with DataStore",
+      "Queue offline writes and sync them reliably",
+      "Resolve conflicts without losing user work"
+    ],
+    "goalsAr": [
+      "تصميم مخطط Room مترابط",
+      "نشر تغيير في المخطط بترحيل مختبر",
+      "حفظ الإعدادات بـ DataStore",
+      "وضع الكتابات دون اتصال في طابور ومزامنتها بموثوقية",
+      "حل التعارضات دون فقد عمل المستخدم"
+    ],
+    "requirementsEn": [
+      "Projects contain tasks; deleting a project deletes its tasks",
+      "Every screen reads from Room and works in airplane mode",
+      "Creating, editing, completing and deleting tasks work offline and show a pending marker",
+      "A unique WorkManager job syncs when online, with backoff and idempotency keys",
+      "Settings (theme, default sort, sync on Wi-Fi only) live in DataStore",
+      "Version 2 of the schema adds due dates with a migration covered by tests"
+    ],
+    "requirementsAr": [
+      "المشاريع تحتوي مهامًا، وحذف مشروع يحذف مهامه",
+      "كل شاشة تقرأ من Room وتعمل في وضع الطيران",
+      "إنشاء المهام وتعديلها وإنهاؤها وحذفها يعمل دون اتصال مع علامة انتظار",
+      "عمل فريد في WorkManager يزامن عند الاتصال، مع انتظار متزايد ومفاتيح عدم تكرار",
+      "الإعدادات (السمة والترتيب الافتراضي والمزامنة على Wi-Fi فقط) في DataStore",
+      "الإصدار 2 من المخطط يضيف تواريخ الاستحقاق بترحيل تغطيه الاختبارات"
+    ],
+    "acceptanceEn": [
+      "With the network off, every action works and survives killing the app",
+      "Turning the network on syncs all pending changes exactly once",
+      "A task edited on both sides is resolved by the documented rule, never silently lost",
+      "DAO, migration, worker and repository tests pass in CI"
+    ],
+    "acceptanceAr": [
+      "مع إيقاف الشبكة يعمل كل إجراء وينجو من قتل التطبيق",
+      "تشغيل الشبكة يزامن كل التغييرات المعلّقة مرة واحدة بالضبط",
+      "المهمة المعدّلة على الطرفين تُحل بالقاعدة الموثقة ولا تضيع بصمت أبدًا",
+      "اختبارات DAO والترحيل والـ Worker والمستودع تنجح في CI"
+    ],
+    "stretchEn": [
+      "Replace the fake server with a small Ktor or ASP.NET Core API",
+      "Trigger sync with a push message instead of only on changes",
+      "Add full-text search with Room FTS4"
+    ],
+    "stretchAr": [
+      "استبدل الخادم الوهمي بواجهة برمجية صغيرة بـ Ktor أو ASP.NET Core",
+      "حفّز المزامنة برسالة دفع بدل الاعتماد على التغييرات فقط",
+      "أضف بحثًا نصيًا كاملًا بـ FTS4 في Room"
+    ],
+    "steps": [
+      {
+        "key": "and-ot-schema",
+        "titleEn": "Design the schema",
+        "titleAr": "صمّم المخطط",
+        "bodyEn": "Create ProjectEntity and TaskEntity with a client UUID primary key, a projectId foreign key with CASCADE and an index, updatedAt, version, deleted and syncStatus columns, plus an OutboxEntity and a SyncStateEntity for the server token. Add ProjectWithTasks with @Relation and export the schema.",
+        "bodyAr": "أنشئ ProjectEntity وTaskEntity بمفتاح أساسي UUID من العميل، ومفتاح أجنبي projectId مع CASCADE وفهرس، وأعمدة updatedAt وversion وdeleted وsyncStatus، مع OutboxEntity وSyncStateEntity لرمز الخادم. وأضف ProjectWithTasks بـ @Relation وصدّر المخطط.",
+        "hintsEn": [
+          "Client UUIDs let you create rows offline without asking the server.",
+          "syncStatus can be an enum stored with a converter."
+        ],
+        "hintsAr": [
+          "معرّفات UUID من العميل تسمح بإنشاء الصفوف دون اتصال دون سؤال الخادم.",
+          "يمكن أن يكون syncStatus تعدادًا يُحفظ بمحوّل."
+        ]
+      },
+      {
+        "key": "and-ot-dao",
+        "titleEn": "DAOs and tests",
+        "titleAr": "الـ DAO والاختبارات",
+        "bodyEn": "Write DAOs that return Flow for lists and suspend functions for writes, hide rows marked deleted, and save a task with its outbox entry in one transaction. Cover them with in-memory database tests before building any UI.",
+        "bodyAr": "اكتب DAO تُرجع Flow للقوائم ودوال suspend للكتابات، وتخفي الصفوف المعلّمة كمحذوفة، وتحفظ المهمة مع مدخل الصادر في معاملة واحدة. وغطّها باختبارات قاعدة بيانات في الذاكرة قبل بناء أي واجهة.",
+        "hintsEn": [
+          "Filter with WHERE deleted = 0 in every list query.",
+          "Test the transaction by forcing the second insert to fail."
+        ],
+        "hintsAr": [
+          "فلتر بـ WHERE deleted = 0 في كل استعلام قائمة.",
+          "اختبر المعاملة بفرض فشل الإدخال الثاني."
+        ]
+      },
+      {
+        "key": "and-ot-settings",
+        "titleEn": "Settings with DataStore",
+        "titleAr": "الإعدادات بـ DataStore",
+        "bodyEn": "Store theme, default sort and \"sync on Wi-Fi only\" in Preferences DataStore behind a SettingsRepository that exposes a typed Flow. The sync scheduler reads the Wi-Fi setting to choose UNMETERED or CONNECTED.",
+        "bodyAr": "احفظ السمة والترتيب الافتراضي و«المزامنة على Wi-Fi فقط» في Preferences DataStore خلف SettingsRepository يعرض Flow محدد النوع. ويقرأ مجدول المزامنة إعداد Wi-Fi ليختار UNMETERED أو CONNECTED.",
+        "hintsEn": [
+          "Use first() to read the current setting inside a suspend function.",
+          "Changing the setting should re-enqueue the sync work with REPLACE."
+        ],
+        "hintsAr": [
+          "استخدم first() لقراءة الإعداد الحالي داخل دالة suspend.",
+          "تغيير الإعداد يجب أن يعيد إضافة عمل المزامنة مع REPLACE."
+        ]
+      },
+      {
+        "key": "and-ot-repo",
+        "titleEn": "The offline-first repository",
+        "titleAr": "المستودع الذي يعمل دون اتصال",
+        "bodyEn": "TaskRepository exposes Flow from Room only. Writes update Room and the outbox in a transaction, set syncStatus = PENDING and enqueue unique sync work. Refresh pulls changes since the stored token and upserts them, applying tombstones.",
+        "bodyAr": "يعرض TaskRepository تدفقات Flow من Room فقط. والكتابات تحدّث Room والصادر في معاملة، وتضبط syncStatus = PENDING، وتضيف عمل مزامنة فريدًا. والتحديث يسحب التغييرات منذ الرمز المحفوظ وينفذ upsert لها مع تطبيق علامات الحذف.",
+        "code": "suspend fun complete(id: String) {\n    db.withTransaction {\n        tasks.update(id) { it.copy(done = true, updatedAt = clock.millis(), syncStatus = SyncStatus.PENDING) }\n        outbox.add(OutboxEntity(id = UUID.randomUUID().toString(), entityId = id, op = Op.UPDATE))\n    }\n    syncScheduler.requestSync()\n}",
+        "language": "kotlin",
+        "hintsEn": [
+          "Never call the API from the repository's write path.",
+          "requestSync() wraps enqueueUniqueWork so callers don't repeat the constraints."
+        ],
+        "hintsAr": [
+          "لا تستدعِ الواجهة البرمجية من مسار الكتابة في المستودع أبدًا.",
+          "تغلّف requestSync() الدالة enqueueUniqueWork حتى لا يكرر المستدعون القيود."
+        ]
+      },
+      {
+        "key": "and-ot-sync",
+        "titleEn": "The sync worker",
+        "titleAr": "عامل المزامنة في الخلفية",
+        "bodyEn": "SyncWorker pushes outbox entries oldest first with the entry id as an idempotency key, deletes them on success and marks the task FAILED on a permanent rejection. Then it pulls remote changes. Return retry() on IOException with exponential backoff.",
+        "bodyAr": "يدفع SyncWorker مدخلات الصادر من الأقدم مع معرّف المدخل كمفتاح عدم تكرار، ويحذفها عند النجاح، ويعلّم المهمة FAILED عند الرفض الدائم. ثم يسحب التغييرات البعيدة. وأرجع retry() عند IOException مع انتظار أُسّي.",
+        "hintsEn": [
+          "The fake server should remember idempotency keys it has seen.",
+          "Use HiltWorker to inject the database and API."
+        ],
+        "hintsAr": [
+          "يجب أن يتذكر الخادم الوهمي مفاتيح عدم التكرار التي رآها.",
+          "استخدم HiltWorker لحقن قاعدة البيانات والواجهة البرمجية."
+        ]
+      },
+      {
+        "key": "and-ot-conflicts",
+        "titleEn": "Conflict rule",
+        "titleAr": "قاعدة التعارض",
+        "bodyEn": "Write down the rule: done and due date are last-write-wins by server version; the title uses a three-way merge and, when both sides changed it, keeps the remote title and saves the local one in a note so nothing is lost. Implement it as a pure function and test every branch.",
+        "bodyAr": "دوّن القاعدة: حالة الإنهاء وتاريخ الاستحقاق تتبع آخر كتابة تفوز حسب إصدار الخادم، والعنوان يستخدم دمجًا ثلاثيًا، وعندما يغيّره الطرفان يحتفظ بعنوان الخادم ويحفظ العنوان المحلي في ملاحظة حتى لا يضيع شيء. ونفّذها كدالة نقية واختبر كل فرع.",
+        "hintsEn": [
+          "Keep the base version from the last successful sync.",
+          "Pure functions are the easiest code to test exhaustively."
+        ],
+        "hintsAr": [
+          "احتفظ بالإصدار الأصل من آخر مزامنة ناجحة.",
+          "الدوال النقية أسهل كود يمكن اختباره بالكامل."
+        ]
+      },
+      {
+        "key": "and-ot-migration",
+        "titleEn": "Ship version 2 with a migration",
+        "titleAr": "انشر الإصدار 2 بترحيل",
+        "bodyEn": "Add a nullable dueAt column and an index on it with an auto-migration, then a manual step that sets dueAt for tasks whose title starts with \"Today:\". Test 1→2 with MigrationTestHelper using rows inserted at version 1.",
+        "bodyAr": "أضف عمود dueAt يقبل الفراغ وفهرسًا عليه بترحيل تلقائي، ثم خطوة يدوية تضبط dueAt للمهام التي يبدأ عنوانها بـ «Today:». واختبر الانتقال من 1 إلى 2 بـ MigrationTestHelper مع صفوف أُدخلت في الإصدار 1.",
+        "hintsEn": [
+          "A manual Migration can follow an auto-migration in a later version.",
+          "Commit both schema JSON files."
+        ],
+        "hintsAr": [
+          "يمكن أن يلي Migration يدوي ترحيلًا تلقائيًا في إصدار لاحق.",
+          "أضف ملفي JSON للمخطط إلى المستودع."
+        ]
+      },
+      {
+        "key": "and-ot-ui",
+        "titleEn": "The UI and airplane-mode test",
+        "titleAr": "الواجهة واختبار وضع الطيران",
+        "bodyEn": "Build the project list and task list in Compose with a pending or failed icon per row and a small offline banner. Then turn on airplane mode, do ten actions, kill the app, reopen it, turn the network back on and confirm every change reached the server exactly once.",
+        "bodyAr": "ابنِ قائمة المشاريع وقائمة المهام في Compose مع أيقونة انتظار أو فشل لكل صف، وشريط صغير لعدم الاتصال. ثم فعّل وضع الطيران، ونفّذ عشرة إجراءات، واقتل التطبيق، وأعد فتحه، وأعد تشغيل الشبكة، وتأكد أن كل تغيير وصل إلى الخادم مرة واحدة بالضبط.",
+        "hintsEn": [
+          "Observe connectivity with ConnectivityManager.NetworkCallback wrapped in callbackFlow.",
+          "Log the server's received requests to check for duplicates."
+        ],
+        "hintsAr": [
+          "راقب الاتصال بـ ConnectivityManager.NetworkCallback مغلفًا بـ callbackFlow.",
+          "سجّل الطلبات التي استقبلها الخادم للتحقق من عدم التكرار."
+        ]
+      }
+    ],
+    "topics": [
+      "and-data-room-relations",
+      "and-data-room-migrations",
+      "and-data-datastore",
+      "and-data-workmanager",
+      "and-data-offline-first"
+    ]
+  }
+]

@@ -1,0 +1,268 @@
+{
+  "slug": "android-data",
+  "order": 24,
+  "titleEn": "Local data and offline-first apps",
+  "titleAr": "البيانات المحلية والتطبيقات التي تعمل دون اتصال",
+  "descriptionEn": "Store data on the device the right way: settings with DataStore, structured data with Room (entities, DAOs, relations, transactions and migrations), files and shared media under scoped storage, reliable background work with WorkManager, and offline-first apps where the local database is the single source of truth and changes sync when the network returns.",
+  "descriptionAr": "احفظ البيانات على الجهاز بالطريقة الصحيحة: الإعدادات بـ DataStore، والبيانات المنظمة بـ Room (الكيانات وDAO والعلاقات والمعاملات والترحيلات)، والملفات والوسائط المشتركة ضمن التخزين المحدد النطاق، والعمل الخلفي الموثوق بـ WorkManager، والتطبيقات التي تعمل دون اتصال حيث تكون قاعدة البيانات المحلية مصدر الحقيقة الوحيد وتُزامَن التغييرات عند عودة الشبكة.",
+  "topics": [
+    {
+      "slug": "and-data-datastore",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 45,
+      "difficulty": "Beginner",
+      "titleEn": "Settings with DataStore",
+      "titleAr": "الإعدادات بـ DataStore",
+      "summaryEn": "Jetpack DataStore stores small amounts of data asynchronously and safely. Preferences DataStore keeps key-value pairs (theme, last tab, onboarding done) and exposes them as a Flow; edit { } changes them in a transaction. Proto DataStore stores a typed object defined by a schema, so there are no string keys to mistype. DataStore replaces SharedPreferences, which reads on the main thread and can lose writes.",
+      "summaryAr": "مكتبة DataStore من Jetpack تحفظ كميات صغيرة من البيانات بشكل غير متزامن وآمن. ويحفظ Preferences DataStore أزواج مفتاح وقيمة (السمة وآخر تبويب وإنهاء التعريف) ويعرضها كـ Flow، وتغيّرها edit { } داخل معاملة. أما Proto DataStore فيحفظ كائنًا محدد النوع يعرّفه مخطط، فلا توجد مفاتيح نصية قد تُكتب خطأ. ويحل DataStore محل SharedPreferences التي تقرأ على الخيط الرئيسي وقد تفقد الكتابات.",
+      "whyEn": "Nearly every app remembers user choices. Doing it with SharedPreferences causes jank and occasional lost settings; DataStore fixes both and fits the coroutines and Flow code you already write.",
+      "whyAr": "كل تطبيق تقريبًا يتذكر اختيارات المستخدم. وفعل ذلك بـ SharedPreferences يسبب تقطعًا وضياع إعدادات أحيانًا، وDataStore يصلح الأمرين ويناسب كود الـ Coroutines وFlow الذي تكتبه أصلًا.",
+      "howEn": "Create one DataStore per file as a singleton (the preferencesDataStore delegate or a Hilt-provided instance). Wrap it in a small repository that exposes a Flow of a settings data class and suspend functions to change it. Handle IOException with catch { emit(emptyPreferences()) }. Never create two DataStores for the same file, and never store large or relational data in it.",
+      "howAr": "أنشئ DataStore واحدًا لكل ملف كنسخة وحيدة (مفوض preferencesDataStore أو نسخة توفرها Hilt). وغلّفه في مستودع صغير يعرض Flow لصنف data للإعدادات، ودوال suspend لتغييرها. وعالج IOException بـ catch { emit(emptyPreferences()) }. ولا تنشئ اثنين من DataStore للملف نفسه أبدًا، ولا تحفظ فيه بيانات كبيرة أو مترابطة.",
+      "exampleEn": "A reading app stores theme, font size and \"show images on mobile data\" in Preferences DataStore. SettingsRepository exposes Flow<ReaderSettings>; the ViewModel turns it into StateFlow with stateIn, and the whole UI updates the moment the user flips a switch.",
+      "exampleAr": "تطبيق قراءة يحفظ السمة وحجم الخط و«عرض الصور على بيانات الجوال» في Preferences DataStore. ويعرض SettingsRepository تدفقًا Flow<ReaderSettings>، وتحوّله ViewModel إلى StateFlow بـ stateIn، فتتحدث الواجهة كلها لحظة تبديل المستخدم لمفتاح.",
+      "practiceEn": "1) Store a dark-mode flag and read it as a Flow. 2) Map preferences into a data class with defaults. 3) Migrate an existing SharedPreferences file with SharedPreferencesMigration.",
+      "practiceAr": "1) احفظ علامة الوضع الداكن واقرأها كـ Flow. 2) حوّل التفضيلات إلى صنف data بقيم افتراضية. 3) رحّل ملف SharedPreferences موجودًا بـ SharedPreferencesMigration.",
+      "challengeEn": "Build a settings screen with three options backed by Proto DataStore, including a schema, a serializer with a default value, corruption handling and a test using a temporary file.",
+      "challengeAr": "ابنِ شاشة إعدادات بثلاثة خيارات يدعمها Proto DataStore، مع مخطط، ومُسلسِل بقيمة افتراضية، ومعالجة التلف، واختبار يستخدم ملفًا مؤقتًا.",
+      "objectivesEn": [
+        "Choose DataStore over SharedPreferences",
+        "Read and write Preferences DataStore",
+        "Expose settings as a typed Flow",
+        "Know when Proto DataStore fits"
+      ],
+      "objectivesAr": [
+        "اختيار DataStore بدل SharedPreferences",
+        "القراءة والكتابة في Preferences DataStore",
+        "عرض الإعدادات كتدفق محدد النوع",
+        "معرفة متى يناسب Proto DataStore"
+      ],
+      "prerequisites": [
+        "kt-flow-basics",
+        "and-arch-repository"
+      ]
+    },
+    {
+      "slug": "and-data-room-basics",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Intermediate",
+      "titleEn": "Room: entities, DAOs and queries",
+      "titleAr": "قاعدة Room: الكيانات وDAO والاستعلامات",
+      "summaryEn": "Room is the Jetpack layer over SQLite. An @Entity data class maps to a table, a @Dao interface declares queries with @Query, @Insert, @Update, @Upsert and @Delete, and a @Database class ties them together. Room checks SQL at compile time, maps rows to Kotlin objects, makes suspend DAO functions main-safe, and returns Flow from queries so the UI updates whenever the table changes.",
+      "summaryAr": "قاعدة Room هي طبقة Jetpack فوق SQLite. وصنف data عليه @Entity يقابل جدولًا، وواجهة @Dao تعرّف الاستعلامات بـ @Query و@Insert و@Update و@Upsert و@Delete، وصنف @Database يربطها معًا. وتتحقق Room من SQL وقت الترجمة، وتحوّل الصفوف إلى كائنات Kotlin، وتجعل دوال DAO من نوع suspend آمنة للخيط الرئيسي، وتُرجع Flow من الاستعلامات فتتحدث الواجهة كلما تغيّر الجدول.",
+      "whyEn": "Most real apps keep lists the user expects to see instantly and offline: notes, messages, orders, downloaded content. Room is the standard way to store and query that data on Android, and interviewers expect you to know it well.",
+      "whyAr": "معظم التطبيقات الحقيقية تحفظ قوائم يتوقع المستخدم رؤيتها فورًا ودون اتصال: الملاحظات والرسائل والطلبات والمحتوى المنزّل. وRoom هي الطريقة القياسية لحفظ هذه البيانات والاستعلام عنها في Android، ويتوقع المحاورون أن تعرفها جيدًا.",
+      "howEn": "Keep entities in the data layer and map them to domain models. Return Flow<List<T>> for lists the UI observes and use suspend functions for one-shot reads and writes. Build the database once (Hilt @Singleton). Add indices for columns you filter or sort on, and use @Upsert for refreshes from the network.",
+      "howAr": "أبقِ الكيانات في طبقة البيانات وحوّلها إلى نماذج المجال. وأرجع Flow<List<T>> للقوائم التي تراقبها الواجهة، واستخدم دوال suspend للقراءات والكتابات لمرة واحدة. وابنِ قاعدة البيانات مرة واحدة (‏@Singleton في Hilt). وأضف فهارس للأعمدة التي تفلتر أو ترتب بها، واستخدم @Upsert للتحديثات القادمة من الشبكة.",
+      "exampleEn": "A notes app: NoteEntity(id, title, body, updatedAt), NoteDao.observeAll() ordered by updatedAt returning Flow, upsert(note) and deleteById(id). Saving a note on the edit screen makes the list screen update on its own, because it is collecting the same query.",
+      "exampleAr": "تطبيق ملاحظات: ‏NoteEntity(id, title, body, updatedAt)، والدالة NoteDao.observeAll() مرتبة بـ updatedAt وتُرجع Flow، والدالتان upsert(note) وdeleteById(id). وحفظ ملاحظة في شاشة التعديل يجعل شاشة القائمة تتحدث وحدها، لأنها تجمع الاستعلام نفسه.",
+      "practiceEn": "1) Create an entity, a DAO and a database for tasks. 2) Show tasks with a Flow query in Compose. 3) Add a search query with LIKE and an index on the title column.",
+      "practiceAr": "1) أنشئ كيانًا وDAO وقاعدة بيانات للمهام. 2) اعرض المهام باستعلام Flow في Compose. 3) أضف استعلام بحث بـ LIKE وفهرسًا على عمود العنوان.",
+      "challengeEn": "Write DAO tests with an in-memory database: insert, upsert the same id, query by filter, and assert that a Flow emits a new list after an insert.",
+      "challengeAr": "اكتب اختبارات DAO بقاعدة بيانات في الذاكرة: أدخل، ثم upsert للمعرّف نفسه، ثم استعلم بفلتر، وتحقق أن Flow يُصدر قائمة جديدة بعد الإدخال.",
+      "objectivesEn": [
+        "Define entities, DAOs and a database",
+        "Write compile-time checked queries",
+        "Observe tables with Flow",
+        "Test DAOs with an in-memory database"
+      ],
+      "objectivesAr": [
+        "تعريف الكيانات وDAO وقاعدة البيانات",
+        "كتابة استعلامات يُتحقق منها وقت الترجمة",
+        "مراقبة الجداول بـ Flow",
+        "اختبار DAO بقاعدة بيانات في الذاكرة"
+      ],
+      "prerequisites": [
+        "kt-coroutines-basics",
+        "kt-flow-basics",
+        "and-arch-repository"
+      ]
+    },
+    {
+      "slug": "and-data-room-relations",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Room relations, transactions and converters",
+      "titleAr": "العلاقات والمعاملات والمحوّلات في Room",
+      "summaryEn": "Real data is related: an order has items, a playlist has songs. Room models one-to-many with @Relation in a POJO such as OrderWithItems, and many-to-many with a junction (cross-ref) entity. Foreign keys with onDelete = CASCADE keep data consistent. @Transaction makes multi-query reads consistent and groups several writes so they succeed or fail together. @TypeConverter stores types SQLite doesn't know, like Instant or enums.",
+      "summaryAr": "البيانات الحقيقية مترابطة: الطلب له عناصر، وقائمة التشغيل لها أغانٍ. وتمثّل Room علاقة واحد إلى كثير بـ @Relation في صنف مثل OrderWithItems، وعلاقة كثير إلى كثير بكيان وسيط. والمفاتيح الأجنبية مع onDelete = CASCADE تحافظ على اتساق البيانات. و@Transaction تجعل القراءات متعددة الاستعلامات متسقة، وتجمع عدة كتابات فتنجح أو تفشل معًا. و@TypeConverter تحفظ أنواعًا لا تعرفها SQLite مثل Instant أو التعدادات.",
+      "whyEn": "Flattening everything into one table, or loading related rows in a loop, leads to inconsistent data and slow screens. Relations and transactions keep data correct when the app crashes halfway through a save.",
+      "whyAr": "تسطيح كل شيء في جدول واحد، أو تحميل الصفوف المرتبطة في حلقة، يؤدي إلى بيانات غير متسقة وشاشات بطيئة. والعلاقات والمعاملات تحافظ على صحة البيانات عندما يتعطل التطبيق في منتصف الحفظ.",
+      "howEn": "Model each table as its own entity with a foreign key and an index on that key. Read related data with @Relation classes and @Transaction queries. Wrap multi-step writes in a @Transaction DAO method or database.withTransaction { }. Keep converters small and deterministic, and prefer storing time as epoch millis.",
+      "howAr": "مثّل كل جدول ككيان مستقل بمفتاح أجنبي وفهرس على ذلك المفتاح. واقرأ البيانات المرتبطة بأصناف @Relation واستعلامات @Transaction. وغلّف الكتابات متعددة الخطوات بدالة DAO عليها @Transaction أو بـ database.withTransaction { }. واجعل المحوّلات صغيرة وحتمية، وفضّل حفظ الوقت بالملّي ثانية منذ البداية.",
+      "exampleEn": "A shopping app saves an order and its five items in one @Transaction; if inserting item four fails, nothing is saved. The order screen observes Flow<OrderWithItems>, and deleting the order removes its items through CASCADE.",
+      "exampleAr": "تطبيق تسوق يحفظ طلبًا وعناصره الخمسة في @Transaction واحدة، وإذا فشل إدخال العنصر الرابع لا يُحفظ شيء. وتراقب شاشة الطلب Flow<OrderWithItems>، وحذف الطلب يحذف عناصره عبر CASCADE.",
+      "practiceEn": "1) Model playlists and songs as many-to-many. 2) Load PlaylistWithSongs with @Relation. 3) Store an enum and an Instant with type converters.",
+      "practiceAr": "1) مثّل قوائم التشغيل والأغاني كعلاقة كثير إلى كثير. 2) حمّل PlaylistWithSongs بـ @Relation. 3) احفظ تعدادًا وInstant بمحوّلات الأنواع.",
+      "challengeEn": "Write a transfer between two wallet rows in a transaction, then a test that forces the second update to fail and proves the first one was rolled back.",
+      "challengeAr": "اكتب تحويلًا بين صفّي محفظتين داخل معاملة، ثم اختبارًا يفرض فشل التحديث الثاني ويثبت أن الأول تراجع.",
+      "objectivesEn": [
+        "Model one-to-many and many-to-many",
+        "Use foreign keys and indices",
+        "Group writes with transactions",
+        "Store custom types with converters"
+      ],
+      "objectivesAr": [
+        "تمثيل علاقات واحد إلى كثير وكثير إلى كثير",
+        "استخدام المفاتيح الأجنبية والفهارس",
+        "جمع الكتابات في معاملات",
+        "حفظ الأنواع المخصصة بالمحوّلات"
+      ],
+      "prerequisites": [
+        "and-data-room-basics"
+      ]
+    },
+    {
+      "slug": "and-data-room-migrations",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 45,
+      "difficulty": "Advanced",
+      "titleEn": "Database migrations without data loss",
+      "titleAr": "ترحيل قاعدة البيانات دون فقد البيانات",
+      "summaryEn": "When you change the schema (add a column, split a table) the database version goes up and Room needs a migration from each old version. Auto-migrations handle simple changes, with an AutoMigrationSpec for renames and deletions; manual Migration objects run SQL for the rest. exportSchema = true saves each version's schema as JSON, which MigrationTestHelper uses to test that real old databases upgrade correctly. fallbackToDestructiveMigration deletes user data and is only for caches.",
+      "summaryAr": "عندما تغيّر المخطط (إضافة عمود أو تقسيم جدول) يرتفع إصدار قاعدة البيانات، وتحتاج Room إلى ترحيل من كل إصدار قديم. والترحيلات التلقائية تعالج التغييرات البسيطة، مع AutoMigrationSpec لإعادة التسمية والحذف، وكائنات Migration اليدوية تنفذ SQL للبقية. ويحفظ exportSchema = true مخطط كل إصدار كملف JSON، ويستخدمه MigrationTestHelper لاختبار أن قواعد البيانات القديمة الحقيقية تترقّى بشكل صحيح. أما fallbackToDestructiveMigration فتحذف بيانات المستخدم ولا تصلح إلا للذاكرة المؤقتة.",
+      "whyEn": "A missing or wrong migration crashes the app on update for every existing user, or silently wipes their data. It is one of the most damaging release bugs, and it is completely preventable with tests.",
+      "whyAr": "الترحيل المفقود أو الخاطئ يُسقط التطبيق عند التحديث لكل مستخدم حالي، أو يمسح بياناته بصمت. وهو من أكثر أخطاء الإصدار ضررًا، ويمكن منعه تمامًا بالاختبارات.",
+      "howEn": "Enable exportSchema and commit the schema JSON files. Prefer auto-migrations; write a manual Migration when data must be transformed. Test every path (1→2, 2→3 and 1→3) with MigrationTestHelper. Never edit a released schema version; add a new one. Keep destructive fallback for tables you can rebuild from the server.",
+      "howAr": "فعّل exportSchema وأضف ملفات JSON للمخطط إلى المستودع. وفضّل الترحيلات التلقائية، واكتب Migration يدويًا عندما يجب تحويل البيانات. واختبر كل مسار (من 1 إلى 2، ومن 2 إلى 3، ومن 1 إلى 3) بـ MigrationTestHelper. ولا تعدّل إصدار مخطط صدر أبدًا، بل أضف إصدارًا جديدًا. واحتفظ بالحذف الاحتياطي للجداول التي تستطيع إعادة بنائها من الخادم.",
+      "exampleEn": "Version 3 of a notes app adds a pinned column and splits tags into their own table. An auto-migration adds the column; a manual migration creates the tags table, copies the comma-separated tags into rows and drops the old column. A test creates a version 2 database with real rows and checks every tag survived.",
+      "exampleAr": "الإصدار 3 من تطبيق ملاحظات يضيف عمود pinned ويفصل الوسوم في جدول خاص بها. فيضيف ترحيل تلقائي العمود، وينشئ ترحيل يدوي جدول الوسوم وينسخ الوسوم المفصولة بفواصل إلى صفوف ويحذف العمود القديم. ويُنشئ اختبار قاعدة بيانات بالإصدار 2 بصفوف حقيقية ويتحقق أن كل وسم بقي.",
+      "practiceEn": "1) Add a column with an auto-migration. 2) Rename a column with an AutoMigrationSpec. 3) Write a migration test that inserts rows at the old version.",
+      "practiceAr": "1) أضف عمودًا بترحيل تلقائي. 2) أعد تسمية عمود بـ AutoMigrationSpec. 3) اكتب اختبار ترحيل يُدخل صفوفًا في الإصدار القديم.",
+      "challengeEn": "Change a column's type from TEXT to INTEGER with the create-copy-drop-rename pattern in a manual migration, and test it with data that includes a value that can't be converted.",
+      "challengeAr": "غيّر نوع عمود من TEXT إلى INTEGER بنمط الإنشاء ثم النسخ ثم الحذف ثم إعادة التسمية في ترحيل يدوي، واختبره ببيانات تتضمن قيمة لا يمكن تحويلها.",
+      "objectivesEn": [
+        "Version a schema and export it",
+        "Write auto and manual migrations",
+        "Test migrations with MigrationTestHelper",
+        "Know when destructive fallback is acceptable"
+      ],
+      "objectivesAr": [
+        "ترقيم إصدارات المخطط وتصديره",
+        "كتابة ترحيلات تلقائية ويدوية",
+        "اختبار الترحيلات بـ MigrationTestHelper",
+        "معرفة متى يُقبل الحذف الاحتياطي"
+      ],
+      "prerequisites": [
+        "and-data-room-basics"
+      ]
+    },
+    {
+      "slug": "and-data-files",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 40,
+      "difficulty": "Intermediate",
+      "titleEn": "Files, caches and shared storage",
+      "titleAr": "الملفات والذاكرة المؤقتة والتخزين المشترك",
+      "summaryEn": "Each app has private storage that needs no permission: filesDir for files you keep and cacheDir for files the system may delete. Shared media (photos, videos, audio) goes through MediaStore, and documents the user picks go through the Storage Access Framework (OpenDocument, CreateDocument). Scoped storage means apps can no longer read the whole disk; the photo picker gives access to chosen images without any permission. FileProvider shares a private file with another app through a content:// URI.",
+      "summaryAr": "لكل تطبيق تخزين خاص لا يحتاج إذنًا: ‏filesDir للملفات التي تحتفظ بها، وcacheDir للملفات التي قد يحذفها النظام. وتمر الوسائط المشتركة (الصور والفيديو والصوت) عبر MediaStore، والمستندات التي يختارها المستخدم عبر Storage Access Framework (‏OpenDocument وCreateDocument). والتخزين المحدد النطاق يعني أن التطبيقات لم تعد تستطيع قراءة القرص كله، ومنتقي الصور يعطي وصولًا إلى الصور المختارة دون أي إذن. ويشارك FileProvider ملفًا خاصًا مع تطبيق آخر عبر رابط content://.",
+      "whyEn": "Asking for broad storage permissions gets apps rejected on Google Play and scares users. Knowing where each kind of file belongs keeps the app private by default, small on disk and compliant with the store's policies.",
+      "whyAr": "طلب أذونات تخزين واسعة يتسبب في رفض التطبيقات على Google Play ويخيف المستخدمين. ومعرفة مكان كل نوع من الملفات تُبقي التطبيق خاصًا افتراضيًا، وصغيرًا على القرص، ومتوافقًا مع سياسات المتجر.",
+      "howEn": "Use filesDir for user data, cacheDir for anything re-downloadable (and cap its size), the photo picker for choosing images, MediaStore to save to the gallery, and SAF for import and export. Do file IO in withContext(Dispatchers.IO) and stream large files instead of reading them into memory. Never store secrets in plain files.",
+      "howAr": "استخدم filesDir لبيانات المستخدم، وcacheDir لأي شيء يمكن تنزيله مجددًا (مع تحديد حجمه)، ومنتقي الصور لاختيار الصور، وMediaStore للحفظ في المعرض، وSAF للاستيراد والتصدير. ونفّذ عمليات الملفات داخل withContext(Dispatchers.IO)، وادفق الملفات الكبيرة بدل قراءتها في الذاكرة. ولا تحفظ الأسرار في ملفات عادية أبدًا.",
+      "exampleEn": "A receipt scanner lets the user pick a photo with the photo picker (no permission), saves a compressed copy in filesDir, keeps thumbnails in cacheDir, exports a monthly CSV with CreateDocument, and shares a PDF to email through FileProvider.",
+      "exampleAr": "تطبيق مسح إيصالات يسمح للمستخدم باختيار صورة بمنتقي الصور (دون إذن)، ويحفظ نسخة مضغوطة في filesDir، ويحتفظ بالصور المصغرة في cacheDir، ويصدّر ملف CSV شهريًا بـ CreateDocument، ويشارك ملف PDF إلى البريد عبر FileProvider.",
+      "practiceEn": "1) Save and read a JSON file in filesDir. 2) Pick an image with the photo picker. 3) Save a generated image to the gallery with MediaStore.",
+      "practiceAr": "1) احفظ ملف JSON في filesDir واقرأه. 2) اختر صورة بمنتقي الصور. 3) احفظ صورة مولّدة في المعرض بـ MediaStore.",
+      "challengeEn": "Build export and import of the app's data to a user-chosen file with SAF, streaming the content, validating the file on import and showing progress for large files.",
+      "challengeAr": "ابنِ تصدير بيانات التطبيق واستيرادها إلى ملف يختاره المستخدم بـ SAF، مع دفق المحتوى، والتحقق من الملف عند الاستيراد، وعرض التقدم للملفات الكبيرة.",
+      "objectivesEn": [
+        "Choose between filesDir, cacheDir and shared storage",
+        "Use the photo picker and MediaStore",
+        "Import and export with SAF",
+        "Share files with FileProvider"
+      ],
+      "objectivesAr": [
+        "الاختيار بين filesDir وcacheDir والتخزين المشترك",
+        "استخدام منتقي الصور وMediaStore",
+        "الاستيراد والتصدير بـ SAF",
+        "مشاركة الملفات بـ FileProvider"
+      ],
+      "prerequisites": [
+        "and-permissions",
+        "kt-coroutines-dispatchers"
+      ]
+    },
+    {
+      "slug": "and-data-workmanager",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Background work with WorkManager",
+      "titleAr": "العمل الخلفي بـ WorkManager",
+      "summaryEn": "WorkManager runs deferrable work that must finish even if the user leaves the app or the device restarts: uploading photos, syncing data, cleaning caches. You write a CoroutineWorker, set constraints (network, charging, battery not low), choose one-time or periodic work (at least 15 minutes apart), and enqueue it with a unique name and an ExistingWorkPolicy. Work can be chained, retried with backoff, given input and output data, and observed as a Flow of WorkInfo. Long user-visible tasks can run as expedited or foreground work.",
+      "summaryAr": "تشغّل WorkManager العمل القابل للتأجيل الذي يجب أن ينتهي حتى لو غادر المستخدم التطبيق أو أُعيد تشغيل الجهاز: رفع الصور، ومزامنة البيانات، وتنظيف الذاكرة المؤقتة. فتكتب CoroutineWorker، وتضبط القيود (الشبكة والشحن وعدم انخفاض البطارية)، وتختار عملًا لمرة واحدة أو دوريًا (بفاصل 15 دقيقة على الأقل)، وتضعه في الطابور باسم فريد وExistingWorkPolicy. ويمكن ربط الأعمال بسلسلة، وإعادة محاولتها بانتظار متزايد، وإعطاؤها بيانات إدخال وإخراج، ومراقبتها كتدفق WorkInfo. والمهام الطويلة التي يراها المستخدم تعمل كعمل مستعجل أو في المقدمة.",
+      "whyEn": "Android aggressively limits background execution to save battery. Threads or coroutines launched from an Activity die with the process; WorkManager is the supported way to guarantee that a sync or upload actually happens.",
+      "whyAr": "يحد Android من التنفيذ في الخلفية بشدة لتوفير البطارية. والخيوط أو الـ Coroutines التي تُطلق من Activity تموت مع العملية، وWorkManager هي الطريقة المدعومة لضمان أن المزامنة أو الرفع يحدث فعلًا.",
+      "howEn": "Use WorkManager for guaranteed background work and keep UI-scoped work in viewModelScope. Make workers idempotent, because they can run more than once. Return Result.retry() for temporary failures and Result.failure() for permanent ones. Use unique work names to avoid duplicates, inject dependencies with HiltWorker, and test workers with TestListenableWorkerBuilder.",
+      "howAr": "استخدم WorkManager للعمل الخلفي المضمون، وأبقِ العمل المرتبط بالواجهة في viewModelScope. واجعل الـ Workers متساوية الأثر لأنها قد تعمل أكثر من مرة. وأرجع Result.retry() للأعطال المؤقتة وResult.failure() للدائمة. واستخدم أسماء أعمال فريدة لتجنب التكرار، واحقن الاعتماديات بـ HiltWorker، واختبر الـ Workers بـ TestListenableWorkerBuilder.",
+      "exampleEn": "A field-inspection app enqueues a unique UploadReportsWorker with a CONNECTED network constraint and exponential backoff whenever a report is saved. Inspectors work all day without signal; the reports upload on their own when the phone reconnects, even if the app was closed.",
+      "exampleAr": "تطبيق تفتيش ميداني يضع UploadReportsWorker فريدًا في الطابور بقيد شبكة CONNECTED وانتظار متزايد أُسّي كلما حُفظ تقرير. ويعمل المفتشون طوال اليوم دون إشارة، وتُرفع التقارير وحدها عند عودة الاتصال، حتى لو كان التطبيق مغلقًا.",
+      "practiceEn": "1) Write a CoroutineWorker that logs and returns success. 2) Add a network constraint and observe its WorkInfo in the UI. 3) Schedule a daily periodic cleanup.",
+      "practiceAr": "1) اكتب CoroutineWorker يسجّل ويُرجع النجاح. 2) أضف قيد شبكة وراقب WorkInfo الخاص به في الواجهة. 3) جدول تنظيفًا دوريًا يوميًا.",
+      "challengeEn": "Build a chain: compress images in parallel, then upload them, then clean up, with progress reported through setProgress and a unique name so tapping \"Upload\" twice doesn't duplicate the work.",
+      "challengeAr": "ابنِ سلسلة: ضغط الصور بالتوازي، ثم رفعها، ثم التنظيف، مع الإبلاغ عن التقدم عبر setProgress واسم فريد حتى لا يكرر الضغط مرتين على «Upload» العمل.",
+      "objectivesEn": [
+        "Choose WorkManager versus coroutines in a scope",
+        "Write workers with constraints and backoff",
+        "Use unique, periodic and chained work",
+        "Observe and test workers"
+      ],
+      "objectivesAr": [
+        "الاختيار بين WorkManager والـ Coroutines في نطاق",
+        "كتابة Workers بقيود وانتظار متزايد",
+        "استخدام الأعمال الفريدة والدورية والمتسلسلة",
+        "مراقبة الـ Workers واختبارها"
+      ],
+      "prerequisites": [
+        "kt-coroutines-cancellation",
+        "and-arch-di-hilt"
+      ]
+    },
+    {
+      "slug": "and-data-offline-first",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Advanced",
+      "titleEn": "Offline-first architecture and sync",
+      "titleAr": "معمارية العمل دون اتصال والمزامنة",
+      "summaryEn": "In an offline-first app the local database is the single source of truth: the UI always reads from Room, and the network only updates the database. Reads show cached data immediately and refresh in the background. Writes are saved locally first, marked as pending (or stored in an outbox table), and a WorkManager sync pushes them when the network is available. Sync needs a conflict strategy (last write wins, server wins, or merge by field), change tracking with timestamps or versions, and handling for deletes (tombstones).",
+      "summaryAr": "في التطبيق الذي يعمل دون اتصال تكون قاعدة البيانات المحلية مصدر الحقيقة الوحيد: تقرأ الواجهة دائمًا من Room، والشبكة تحدّث قاعدة البيانات فقط. فتعرض القراءات البيانات المخزنة فورًا وتحدّثها في الخلفية. وتُحفظ الكتابات محليًا أولًا وتُعلَّم كمعلّقة (أو تُحفظ في جدول صادر)، وتدفعها مزامنة WorkManager عند توفر الشبكة. وتحتاج المزامنة إلى استراتيجية تعارض (آخر كتابة تفوز، أو الخادم يفوز، أو الدمج حسب الحقل)، وتتبع التغييرات بالطوابع الزمنية أو الإصدارات، ومعالجة الحذف (علامات الحذف).",
+      "whyEn": "Mobile networks are slow, flaky and sometimes absent. Apps that show a spinner or an error whenever the network hiccups feel broken; offline-first apps feel instant and never lose the user's work. It is also a common senior interview and system-design topic.",
+      "whyAr": "شبكات الجوال بطيئة وغير مستقرة وأحيانًا غائبة. والتطبيقات التي تعرض مؤشر تحميل أو خطأ كلما تعثرت الشبكة تبدو معطلة، أما التطبيقات التي تعمل دون اتصال فتبدو فورية ولا تفقد عمل المستخدم أبدًا. وهو أيضًا موضوع شائع في مقابلات المستوى الأول وتصميم الأنظمة.",
+      "howEn": "Expose Flow from the repository backed by Room; refresh with a suspend function that fetches and upserts. For writes, update Room and an outbox in one transaction, then enqueue a unique sync worker. Make server calls idempotent with client-generated IDs. Decide the conflict rule per entity and show sync status (pending, failed) in the UI instead of hiding it.",
+      "howAr": "اعرض Flow من المستودع مدعومًا بـ Room، وحدّث بدالة suspend تجلب البيانات وتنفذ upsert. وللكتابات حدّث Room وجدول الصادر في معاملة واحدة، ثم ضع Worker مزامنة فريدًا في الطابور. واجعل استدعاءات الخادم متساوية الأثر بمعرّفات يولدها العميل. وحدد قاعدة التعارض لكل كيان، واعرض حالة المزامنة (معلّقة أو فاشلة) في الواجهة بدل إخفائها.",
+      "exampleEn": "A to-do app on the subway: the user adds three tasks and completes one with no signal. Each change goes into Room and an outbox in one transaction, and the list updates instantly with a small \"waiting to sync\" icon. Above ground, the SyncWorker sends the outbox with client UUIDs, pulls changes since the last sync token, and resolves an edit made on the web as last-write-wins by updatedAt.",
+      "exampleAr": "تطبيق مهام في المترو: يضيف المستخدم ثلاث مهام ويُنهي واحدة دون إشارة. فيدخل كل تغيير إلى Room وجدول الصادر في معاملة واحدة، وتتحدث القائمة فورًا مع أيقونة صغيرة «بانتظار المزامنة». وعند الخروج يرسل SyncWorker جدول الصادر بمعرّفات UUID من العميل، ويسحب التغييرات منذ آخر رمز مزامنة، ويحل تعديلًا من الويب بقاعدة آخر كتابة تفوز حسب updatedAt.",
+      "practiceEn": "1) Make a list screen read only from Room and refresh from a fake API. 2) Save edits offline with a pending flag. 3) Sync pending rows with a WorkManager worker when online.",
+      "practiceAr": "1) اجعل شاشة قائمة تقرأ من Room فقط وتحدّث من واجهة وهمية. 2) احفظ التعديلات دون اتصال بعلامة معلّقة. 3) زامن الصفوف المعلّقة بـ Worker من WorkManager عند الاتصال.",
+      "challengeEn": "Design and implement two-way sync for notes with an outbox, tombstones for deletes, a sync token for incremental pulls and a field-level merge for conflicting edits, with tests for each conflict case.",
+      "challengeAr": "صمّم ونفّذ مزامنة باتجاهين للملاحظات بجدول صادر، وعلامات حذف، ورمز مزامنة للسحب التدريجي، ودمج على مستوى الحقل للتعديلات المتعارضة، مع اختبارات لكل حالة تعارض.",
+      "objectivesEn": [
+        "Make the local database the single source of truth",
+        "Queue offline writes in an outbox",
+        "Sync with WorkManager and idempotent APIs",
+        "Choose and test a conflict strategy"
+      ],
+      "objectivesAr": [
+        "جعل قاعدة البيانات المحلية مصدر الحقيقة الوحيد",
+        "وضع الكتابات دون اتصال في جدول صادر",
+        "المزامنة بـ WorkManager وواجهات متساوية الأثر",
+        "اختيار استراتيجية تعارض واختبارها"
+      ],
+      "prerequisites": [
+        "and-data-room-relations",
+        "and-data-workmanager"
+      ]
+    }
+  ]
+}

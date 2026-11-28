@@ -7519,5 +7519,163 @@
       "channel": "Sarah Brenner",
       "language": "en"
     }
+  ],
+  "and-data-datastore": [
+    {
+      "videoId": "kp53qL_O5gk",
+      "title": "Preferences DataStore - MAD Skills",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "McnVx7l5awk",
+      "title": "Preferences DataStore in 10min (SharedPreferences deprecated)",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "W7ua0qCmH1g",
+      "title": "How To Use Android’s Preferences DataStore | Android Jetpack Tutorial",
+      "channel": "Yanneck Reiß",
+      "language": "en"
+    },
+    {
+      "videoId": "FI7H6-JlaCw",
+      "title": "Preferences DataStore with Da﻿ta Encryption in Arabic.",
+      "channel": "Azmi Radi - عزمي راضي",
+      "language": "ar"
+    },
+    {
+      "videoId": "6GeURc-Q-Hw",
+      "title": "Proto DataStore with Da﻿ta Encryption in Arabic (with JSON, not Protocol Buffers)",
+      "channel": "Azmi Radi - عزمي راضي",
+      "language": "ar"
+    }
+  ],
+  "and-data-room-basics": [
+    {
+      "videoId": "bOd3wO0uFr8",
+      "title": "The FULL Beginner Guide for Room in Android | Local Database Tutorial for Android",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "KoUefCnvsPk",
+      "title": "Android Development #12 — Room Database Made Simple: Entity, DAO, Coroutines & Flow in Compose",
+      "channel": "Fahim Khan",
+      "language": "en"
+    },
+    {
+      "videoId": "CcaCpRCACzU",
+      "title": "Android Tutorial 2019 #10: Room Database w/ Kotlin Coroutines | Entity, DAO, Query, Insert",
+      "channel": "Ryan Michael Kay",
+      "language": "en"
+    },
+    {
+      "videoId": "upaMbT2ZJzw",
+      "title": "فيديو #334 | Room database - الجزء الأول",
+      "channel": "م.جعفر محمد الأغا",
+      "language": "ar"
+    },
+    {
+      "videoId": "nGBVX_zKYOE",
+      "title": "17 - Android - Kotlin - Room Database - Coroutines - Part 01 - شرح",
+      "channel": "Ahmed Tawfik",
+      "language": "ar"
+    }
+  ],
+  "and-data-room-relations": [
+    {
+      "videoId": "K8yKH5Ak84E",
+      "title": "One-to-N Relationships - Android Room Database With Multiple Tables",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "2K_eFam0qBg",
+      "title": "One-to-One Relationships with Room - Android Room Database With Multiple Tables",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    }
+  ],
+  "and-data-room-migrations": [
+    {
+      "videoId": "RgCs2LPx3l4",
+      "title": "Practical room migrations",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "_txeUgyv_Rg",
+      "title": "Room Migrations Everything with Auto Migrations and Manual Migrations in Android app Room Library",
+      "channel": "AshishMobileDev",
+      "language": "en"
+    },
+    {
+      "videoId": "7SluM9HML6k",
+      "title": "Mastering Room Database Migration in Android | Step by Step Guide | CodingWithPuneet",
+      "channel": "CodingWithPuneet",
+      "language": "en"
+    }
+  ],
+  "and-data-files": [
+    {
+      "videoId": "uRzl07a5VZk",
+      "title": "Scoped Storage Android 13 Kotlin example | How to save image in Android 13 using MediaStore kotlin?",
+      "channel": "Generic Apps",
+      "language": "en"
+    },
+    {
+      "videoId": "tYQ8AO58Aj0",
+      "title": "Scoped Storage Android 33 java example | How to save image in Android using MediaStore? Tutorial",
+      "channel": "Generic Apps",
+      "language": "en"
+    },
+    {
+      "videoId": "x3F3YUy-QGY",
+      "title": "How to Make Photo Picker in Android Studio (Kotlin)",
+      "channel": "sweetPro",
+      "language": "en"
+    }
+  ],
+  "and-data-workmanager": [
+    {
+      "videoId": "A2JetouoNSc",
+      "title": "WorkManager - Android Basics 2023",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "WAQAphmy9Bw",
+      "title": "Master Android Background Tasks with Kotlin Coroutines WorkManager & StateFlow  - Jetpack Compose",
+      "channel": "The Programming Professor",
+      "language": "en"
+    },
+    {
+      "videoId": "XsTN5bPkKzg",
+      "title": "Ep. 9 WorkManager (in Kotlin)",
+      "channel": "Andy Al",
+      "language": "en"
+    }
+  ],
+  "and-data-offline-first": [
+    {
+      "videoId": "jaZ2gLMGUsM",
+      "title": "Create offline-first apps",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "4FOw6a8Rrwc",
+      "title": "The 4 Types of Offline Caches On Android - Mobile System Design Basics",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "mxUA3gY1HCk",
+      "title": "Android Offline First Architecture Explained",
+      "channel": "DroidPrep",
+      "language": "en"
+    }
   ]
 }

@@ -1,0 +1,1178 @@
+[
+  {
+    "key": "qz-and-data-datastore-1",
+    "topic": "and-data-datastore",
+    "questionEn": "Why prefer DataStore over SharedPreferences?",
+    "questionAr": "لماذا تفضّل DataStore على SharedPreferences؟",
+    "optionsEn": [
+      "It needs no dependency",
+      "Async, transactional writes",
+      "It stores unlimited data",
+      "It encrypts by default"
+    ],
+    "optionsAr": [
+      "لأنه لا يحتاج اعتمادية",
+      "كتابات غير متزامنة ومعاملاتية",
+      "لأنه يحفظ بيانات بلا حدود",
+      "لأنه يشفّر افتراضيًا"
+    ],
+    "answer": 1,
+    "explanationEn": "DataStore uses coroutines and Flow and writes atomically.",
+    "explanationAr": "يستخدم DataStore الـ Coroutines وFlow ويكتب بشكل ذري."
+  },
+  {
+    "key": "qz-and-data-datastore-2",
+    "topic": "and-data-datastore",
+    "questionEn": "How do you read values from Preferences DataStore?",
+    "questionAr": "كيف تقرأ القيم من Preferences DataStore؟",
+    "optionsEn": [
+      "Collect store.data as a Flow",
+      "Call store.getBoolean()",
+      "Query it with SQL",
+      "Read a static field"
+    ],
+    "optionsAr": [
+      "اجمع store.data كـ Flow",
+      "استدعِ store.getBoolean()",
+      "استعلم عنه بـ SQL",
+      "اقرأ حقلًا ثابتًا"
+    ],
+    "answer": 0,
+    "explanationEn": "data emits current values and every change.",
+    "explanationAr": "الخاصية data تُصدر القيم الحالية وكل تغيير."
+  },
+  {
+    "key": "qz-and-data-datastore-3",
+    "topic": "and-data-datastore",
+    "questionEn": "What does store.edit { } guarantee?",
+    "questionAr": "ماذا تضمن store.edit { }؟",
+    "optionsEn": [
+      "A write on the main thread",
+      "A backup to the cloud",
+      "An encrypted file on disk",
+      "An atomic read-modify-write"
+    ],
+    "optionsAr": [
+      "كتابة على الخيط الرئيسي",
+      "نسخة احتياطية سحابية",
+      "ملفًا مشفرًا على القرص",
+      "قراءة وتعديل وكتابة ذرية"
+    ],
+    "answer": 3,
+    "explanationEn": "Concurrent edits never overwrite each other.",
+    "explanationAr": "التعديلات المتزامنة لا يكتب أحدها فوق الآخر."
+  },
+  {
+    "key": "qz-and-data-datastore-4",
+    "topic": "and-data-datastore",
+    "questionEn": "What happens with two DataStore instances on one file?",
+    "questionAr": "ماذا يحدث مع نسختين من DataStore على ملف واحد؟",
+    "optionsEn": [
+      "They merge automatically",
+      "Nothing different at all",
+      "The data can be corrupted",
+      "Writes become faster"
+    ],
+    "optionsAr": [
+      "تندمجان تلقائيًا",
+      "لا شيء مختلف إطلاقًا",
+      "قد تتلف البيانات",
+      "تصبح الكتابات أسرع"
+    ],
+    "answer": 2,
+    "explanationEn": "Keep exactly one instance per file, as a singleton.",
+    "explanationAr": "احتفظ بنسخة واحدة لكل ملف كنسخة وحيدة."
+  },
+  {
+    "key": "qz-and-data-datastore-5",
+    "topic": "and-data-datastore",
+    "questionEn": "When is Proto DataStore a better fit?",
+    "questionAr": "متى يكون Proto DataStore أنسب؟",
+    "optionsEn": [
+      "Relational order data",
+      "A typed settings object",
+      "A list of 10,000 rows",
+      "Large image files"
+    ],
+    "optionsAr": [
+      "بيانات طلبات مترابطة",
+      "كائن إعدادات محدد النوع",
+      "قائمة من 10,000 صف",
+      "ملفات صور كبيرة"
+    ],
+    "answer": 1,
+    "explanationEn": "It stores one schema-defined object with type safety.",
+    "explanationAr": "يحفظ كائنًا واحدًا يعرّفه مخطط مع أمان الأنواع."
+  },
+  {
+    "key": "qz-and-data-datastore-6",
+    "topic": "and-data-datastore",
+    "questionEn": "How should a read handle an IOException?",
+    "questionAr": "كيف تعالج القراءة IOException؟",
+    "optionsEn": [
+      "catch and emit emptyPreferences()",
+      "Ignore it and let the app crash",
+      "Retry the read in a tight loop",
+      "Delete all of the app's data"
+    ],
+    "optionsAr": [
+      "التقطه وأصدر emptyPreferences()",
+      "تجاهله ودع التطبيق ينهار تمامًا",
+      "أعد القراءة في حلقة ضيقة بلا توقف",
+      "احذف كل بيانات التطبيق فورًا"
+    ],
+    "answer": 0,
+    "explanationEn": "The app then shows defaults instead of failing.",
+    "explanationAr": "فيعرض التطبيق القيم الافتراضية بدل الفشل."
+  },
+  {
+    "key": "qz-and-data-datastore-7",
+    "topic": "and-data-datastore",
+    "questionEn": "How do you move existing SharedPreferences into DataStore?",
+    "questionAr": "كيف تنقل SharedPreferences الموجودة إلى DataStore؟",
+    "optionsEn": [
+      "Copy the XML file by hand",
+      "fallbackToDestructive()",
+      "A WorkManager chain",
+      "SharedPreferencesMigration"
+    ],
+    "optionsAr": [
+      "انسخ ملف XML يدويًا",
+      "الدالة fallbackToDestructive()",
+      "سلسلة WorkManager",
+      "الكائن SharedPreferencesMigration"
+    ],
+    "answer": 3,
+    "explanationEn": "Pass it in produceMigrations; it runs once on first access.",
+    "explanationAr": "مرّره في produceMigrations، فيعمل مرة واحدة عند أول وصول."
+  },
+  {
+    "key": "qz-and-data-datastore-8",
+    "topic": "and-data-datastore",
+    "questionEn": "Where should a growing list of notes be stored?",
+    "questionAr": "أين تُحفظ قائمة ملاحظات تكبر باستمرار؟",
+    "optionsEn": [
+      "In a static list",
+      "In the Intent extras",
+      "In Room",
+      "In Preferences DataStore"
+    ],
+    "optionsAr": [
+      "في قائمة ثابتة",
+      "في إضافات Intent",
+      "في Room",
+      "في Preferences DataStore"
+    ],
+    "answer": 2,
+    "explanationEn": "DataStore is for small data; use a database for lists you query.",
+    "explanationAr": "مكتبة DataStore للبيانات الصغيرة، واستخدم قاعدة بيانات للقوائم التي تستعلم عنها."
+  },
+  {
+    "key": "qz-and-data-room-basics-1",
+    "topic": "and-data-room-basics",
+    "questionEn": "What does @Entity mark?",
+    "questionAr": "ماذا يعلّم @Entity؟",
+    "optionsEn": [
+      "A screen in navigation",
+      "A Hilt module",
+      "A background worker",
+      "A class mapped to a table"
+    ],
+    "optionsAr": [
+      "شاشة في التنقل",
+      "وحدة Hilt",
+      "Worker في الخلفية",
+      "صنفًا يقابل جدولًا"
+    ],
+    "answer": 3,
+    "explanationEn": "Each property becomes a column.",
+    "explanationAr": "كل خاصية تصبح عمودًا."
+  },
+  {
+    "key": "qz-and-data-room-basics-2",
+    "topic": "and-data-room-basics",
+    "questionEn": "When does Room check your SQL?",
+    "questionAr": "متى تتحقق Room من SQL الخاص بك؟",
+    "optionsEn": [
+      "Only in release builds",
+      "Never, it trusts you",
+      "At compile time",
+      "Only at runtime"
+    ],
+    "optionsAr": [
+      "في بناءات الإصدار فقط",
+      "أبدًا، فهي تثق بك",
+      "وقت الترجمة",
+      "وقت التشغيل فقط"
+    ],
+    "answer": 2,
+    "explanationEn": "A wrong column name fails the build.",
+    "explanationAr": "اسم عمود خاطئ يُفشل البناء."
+  },
+  {
+    "key": "qz-and-data-room-basics-3",
+    "topic": "and-data-room-basics",
+    "questionEn": "What does a DAO query returning Flow do?",
+    "questionAr": "ماذا يفعل استعلام DAO يُرجع Flow؟",
+    "optionsEn": [
+      "Caches the results forever",
+      "Emits again when the table changes",
+      "Runs once and then completes",
+      "Blocks the main thread until done"
+    ],
+    "optionsAr": [
+      "يخزن النتائج إلى الأبد دون تغيير",
+      "يُصدر مجددًا عند تغيّر الجدول",
+      "يعمل مرة واحدة ثم يكتمل",
+      "يحجب الخيط الرئيسي حتى ينتهي"
+    ],
+    "answer": 1,
+    "explanationEn": "Room re-runs it after writes to tables it reads.",
+    "explanationAr": "تعيد Room تشغيله بعد الكتابة في الجداول التي يقرأ منها."
+  },
+  {
+    "key": "qz-and-data-room-basics-4",
+    "topic": "and-data-room-basics",
+    "questionEn": "Are suspend DAO functions main-safe?",
+    "questionAr": "هل دوال DAO من نوع suspend آمنة للخيط الرئيسي؟",
+    "optionsEn": [
+      "Yes, Room moves them off Main",
+      "No, wrap them in runBlocking",
+      "Only with allowMainThread",
+      "Only on Dispatchers.Main"
+    ],
+    "optionsAr": [
+      "نعم، تنقلها Room خارج Main",
+      "لا، غلّفها بـ runBlocking",
+      "فقط مع allowMainThread",
+      "فقط على Dispatchers.Main"
+    ],
+    "answer": 0,
+    "explanationEn": "Call them from viewModelScope directly.",
+    "explanationAr": "استدعِها من viewModelScope مباشرة."
+  },
+  {
+    "key": "qz-and-data-room-basics-5",
+    "topic": "and-data-room-basics",
+    "questionEn": "What does @Upsert do?",
+    "questionAr": "ماذا تفعل @Upsert؟",
+    "optionsEn": [
+      "Deletes then inserts all rows",
+      "Creates the table if it's missing",
+      "Upgrades the schema version",
+      "Insert or update by primary key"
+    ],
+    "optionsAr": [
+      "يحذف ثم يُدخل كل الصفوف من جديد",
+      "ينشئ الجدول إذا لم يكن موجودًا",
+      "يرقّي إصدار المخطط تلقائيًا",
+      "إدخال أو تحديث حسب المفتاح الأساسي"
+    ],
+    "answer": 3,
+    "explanationEn": "Ideal for saving data refreshed from the network.",
+    "explanationAr": "مثالية لحفظ البيانات المحدّثة من الشبكة."
+  },
+  {
+    "key": "qz-and-data-room-basics-6",
+    "topic": "and-data-room-basics",
+    "questionEn": "How many database instances should the app build?",
+    "questionAr": "كم نسخة من قاعدة البيانات يجب أن يبني التطبيق؟",
+    "optionsEn": [
+      "One per DAO call",
+      "One per coroutine",
+      "One shared instance",
+      "One per screen"
+    ],
+    "optionsAr": [
+      "نسخة لكل استدعاء DAO",
+      "نسخة لكل Coroutine",
+      "نسخة واحدة مشتركة",
+      "نسخة لكل شاشة"
+    ],
+    "answer": 2,
+    "explanationEn": "Building it is expensive, and separate instances don't share invalidation.",
+    "explanationAr": "بناؤها مكلف، والنسخ المنفصلة لا تتشارك الإبطال."
+  },
+  {
+    "key": "qz-and-data-room-basics-7",
+    "topic": "and-data-room-basics",
+    "questionEn": "What speeds up a query that filters by title?",
+    "questionAr": "ما الذي يسرّع استعلامًا يفلتر بالعنوان؟",
+    "optionsEn": [
+      "Calling it twice",
+      "An index on the title column",
+      "A bigger thread pool",
+      "Using LiveData instead"
+    ],
+    "optionsAr": [
+      "استدعاؤه مرتين",
+      "فهرس على عمود العنوان",
+      "مجموعة خيوط أكبر",
+      "استخدام LiveData بدلًا منه"
+    ],
+    "answer": 1,
+    "explanationEn": "Add it with indices = [Index(\"title\")].",
+    "explanationAr": "أضفه بـ indices = [Index(\"title\")]."
+  },
+  {
+    "key": "qz-and-data-room-basics-8",
+    "topic": "and-data-room-basics",
+    "questionEn": "How do you test a DAO quickly?",
+    "questionAr": "كيف تختبر DAO بسرعة؟",
+    "optionsEn": [
+      "Room.inMemoryDatabaseBuilder",
+      "Against the production database",
+      "With Thread.sleep between steps",
+      "Only by tapping through the app"
+    ],
+    "optionsAr": [
+      "الدالة Room.inMemoryDatabaseBuilder",
+      "مقابل قاعدة بيانات الإنتاج الحقيقية",
+      "بانتظار Thread.sleep بين الخطوات",
+      "بالضغط اليدوي داخل التطبيق فقط"
+    ],
+    "answer": 0,
+    "explanationEn": "It starts empty and disappears when closed.",
+    "explanationAr": "تبدأ فارغة وتختفي عند الإغلاق."
+  },
+  {
+    "key": "qz-and-data-room-relations-1",
+    "topic": "and-data-room-relations",
+    "questionEn": "How does Room load an order with its items?",
+    "questionAr": "كيف تحمّل Room طلبًا مع عناصره؟",
+    "optionsEn": [
+      "A JSON column of items",
+      "Two separate databases",
+      "@Embedded plus @Relation",
+      "A List field on the entity"
+    ],
+    "optionsAr": [
+      "عمود JSON للعناصر",
+      "قاعدتا بيانات منفصلتان",
+      "@Embedded مع @Relation",
+      "حقل List على الكيان"
+    ],
+    "answer": 2,
+    "explanationEn": "A result class holds the parent and its children.",
+    "explanationAr": "صنف نتيجة يحمل الأب وأبناءه."
+  },
+  {
+    "key": "qz-and-data-room-relations-2",
+    "topic": "and-data-room-relations",
+    "questionEn": "Why mark a @Relation query with @Transaction?",
+    "questionAr": "لماذا تعلّم استعلام @Relation بـ @Transaction؟",
+    "optionsEn": [
+      "It's needed for Flow only",
+      "Its queries stay consistent",
+      "It makes the query async",
+      "It enables encryption"
+    ],
+    "optionsAr": [
+      "لأنه مطلوب لـ Flow فقط",
+      "لتبقى استعلاماته متسقة",
+      "لجعل الاستعلام غير متزامن",
+      "لتفعيل التشفير"
+    ],
+    "answer": 1,
+    "explanationEn": "Room runs several queries for one result.",
+    "explanationAr": "تنفذ Room عدة استعلامات لنتيجة واحدة."
+  },
+  {
+    "key": "qz-and-data-room-relations-3",
+    "topic": "and-data-room-relations",
+    "questionEn": "What models a many-to-many relation?",
+    "questionAr": "ما الذي يمثّل علاقة كثير إلى كثير؟",
+    "optionsEn": [
+      "A junction cross-ref entity",
+      "Two foreign keys on one row",
+      "A nullable list column",
+      "A type converter"
+    ],
+    "optionsAr": [
+      "كيان وسيط للربط",
+      "مفتاحان أجنبيان على صف واحد",
+      "عمود قائمة يقبل الفراغ",
+      "محوّل أنواع"
+    ],
+    "answer": 0,
+    "explanationEn": "Use associateBy = Junction(...).",
+    "explanationAr": "استخدم associateBy = Junction(...)."
+  },
+  {
+    "key": "qz-and-data-room-relations-4",
+    "topic": "and-data-room-relations",
+    "questionEn": "What does onDelete = CASCADE do?",
+    "questionAr": "ماذا تفعل onDelete = CASCADE؟",
+    "optionsEn": [
+      "Blocks deleting the parent",
+      "Archives deleted rows",
+      "Deletes the whole table",
+      "Deletes children with the parent"
+    ],
+    "optionsAr": [
+      "تمنع حذف الأب",
+      "تؤرشف الصفوف المحذوفة",
+      "تحذف الجدول كله",
+      "تحذف الأبناء مع الأب"
+    ],
+    "answer": 3,
+    "explanationEn": "It keeps foreign keys valid.",
+    "explanationAr": "تُبقي المفاتيح الأجنبية صالحة."
+  },
+  {
+    "key": "qz-and-data-room-relations-5",
+    "topic": "and-data-room-relations",
+    "questionEn": "A save writes an order and five items. What protects it?",
+    "questionAr": "حفظ يكتب طلبًا وخمسة عناصر. ما الذي يحميه؟",
+    "optionsEn": [
+      "A retry loop on each insert",
+      "Running it on Dispatchers.IO",
+      "A transaction around all writes",
+      "Writing items before the order"
+    ],
+    "optionsAr": [
+      "حلقة إعادة محاولة لكل إدخال",
+      "تشغيله على Dispatchers.IO",
+      "معاملة حول كل الكتابات",
+      "كتابة العناصر قبل الطلب"
+    ],
+    "answer": 2,
+    "explanationEn": "Either all rows are saved or none.",
+    "explanationAr": "إما أن تُحفظ كل الصفوف أو لا شيء."
+  },
+  {
+    "key": "qz-and-data-room-relations-6",
+    "topic": "and-data-room-relations",
+    "questionEn": "Which works across several DAOs?",
+    "questionAr": "أيها يعمل عبر عدة DAO؟",
+    "optionsEn": [
+      "A static synchronized block",
+      "db.withTransaction { }",
+      "@Insert on each DAO",
+      "runBlocking { }"
+    ],
+    "optionsAr": [
+      "كتلة synchronized ثابتة",
+      "الدالة db.withTransaction { }",
+      "@Insert على كل DAO",
+      "الكتلة runBlocking { }"
+    ],
+    "answer": 1,
+    "explanationEn": "It comes from room-ktx and supports suspend calls.",
+    "explanationAr": "تأتي من room-ktx وتدعم استدعاءات suspend."
+  },
+  {
+    "key": "qz-and-data-room-relations-7",
+    "topic": "and-data-room-relations",
+    "questionEn": "Why do you need a @TypeConverter for Instant?",
+    "questionAr": "لماذا تحتاج @TypeConverter لـ Instant؟",
+    "optionsEn": [
+      "SQLite has no Instant type",
+      "Instant is not serializable",
+      "Room bans java.time",
+      "It makes queries faster"
+    ],
+    "optionsAr": [
+      "لأن SQLite لا تعرف نوع Instant",
+      "لأن Instant غير قابل للتسلسل",
+      "لأن Room تمنع java.time",
+      "لأنه يسرّع الاستعلامات"
+    ],
+    "answer": 0,
+    "explanationEn": "Store it as epoch millis and convert back.",
+    "explanationAr": "احفظه بالملّي ثانية وحوّله عند القراءة."
+  },
+  {
+    "key": "qz-and-data-room-relations-8",
+    "topic": "and-data-room-relations",
+    "questionEn": "What should you index on a child table?",
+    "questionAr": "ما الذي يجب فهرسته في جدول الابن؟",
+    "optionsEn": [
+      "Every text column",
+      "Nothing, Room does it",
+      "Only the primary key",
+      "The foreign-key column"
+    ],
+    "optionsAr": [
+      "كل عمود نصي",
+      "لا شيء، فـ Room تفعله",
+      "المفتاح الأساسي فقط",
+      "عمود المفتاح الأجنبي"
+    ],
+    "answer": 3,
+    "explanationEn": "Without it, joins and cascades scan the table.",
+    "explanationAr": "بدونه تفحص الربطات والحذف المتتالي الجدول كله."
+  },
+  {
+    "key": "qz-and-data-room-migrations-1",
+    "topic": "and-data-room-migrations",
+    "questionEn": "You add a column. What else must change?",
+    "questionAr": "أضفت عمودًا. ما الذي يجب أن يتغير أيضًا؟",
+    "optionsEn": [
+      "The package name",
+      "The minSdk value",
+      "The app's icon",
+      "The database version"
+    ],
+    "optionsAr": [
+      "اسم الحزمة",
+      "قيمة minSdk",
+      "أيقونة التطبيق",
+      "إصدار قاعدة البيانات"
+    ],
+    "answer": 3,
+    "explanationEn": "Then provide a migration from the old version.",
+    "explanationAr": "ثم وفّر ترحيلًا من الإصدار القديم."
+  },
+  {
+    "key": "qz-and-data-room-migrations-2",
+    "topic": "and-data-room-migrations",
+    "questionEn": "What happens if a needed migration is missing?",
+    "questionAr": "ماذا يحدث إذا نقص ترحيل لازم؟",
+    "optionsEn": [
+      "Only new rows are lost",
+      "Nothing, it's optional",
+      "The app crashes on open",
+      "Room guesses the change"
+    ],
+    "optionsAr": [
+      "تضيع الصفوف الجديدة فقط",
+      "لا شيء، فهو اختياري",
+      "ينهار التطبيق عند الفتح",
+      "تخمّن Room التغيير"
+    ],
+    "answer": 2,
+    "explanationEn": "Unless destructive fallback is on, which wipes data.",
+    "explanationAr": "ما لم يكن الحذف الاحتياطي مفعّلًا، وهو يمسح البيانات."
+  },
+  {
+    "key": "qz-and-data-room-migrations-3",
+    "topic": "and-data-room-migrations",
+    "questionEn": "What does exportSchema = true give you?",
+    "questionAr": "ماذا يعطيك exportSchema = true؟",
+    "optionsEn": [
+      "A backup of user data",
+      "A JSON schema per version",
+      "A faster database",
+      "An encrypted database"
+    ],
+    "optionsAr": [
+      "نسخة احتياطية للبيانات",
+      "ملف JSON للمخطط لكل إصدار",
+      "قاعدة بيانات أسرع",
+      "قاعدة بيانات مشفرة"
+    ],
+    "answer": 1,
+    "explanationEn": "Auto-migrations and migration tests read these files.",
+    "explanationAr": "الترحيلات التلقائية واختبارات الترحيل تقرأ هذه الملفات."
+  },
+  {
+    "key": "qz-and-data-room-migrations-4",
+    "topic": "and-data-room-migrations",
+    "questionEn": "Which change needs an AutoMigrationSpec?",
+    "questionAr": "أي تغيير يحتاج AutoMigrationSpec؟",
+    "optionsEn": [
+      "Renaming a column",
+      "Adding a new table",
+      "Adding a nullable column",
+      "Adding an index"
+    ],
+    "optionsAr": [
+      "إعادة تسمية عمود",
+      "إضافة جدول جديد",
+      "إضافة عمود يقبل الفراغ",
+      "إضافة فهرس"
+    ],
+    "answer": 0,
+    "explanationEn": "Renames and deletes are ambiguous without it.",
+    "explanationAr": "إعادة التسمية والحذف ملتبسة بدونه."
+  },
+  {
+    "key": "qz-and-data-room-migrations-5",
+    "topic": "and-data-room-migrations",
+    "questionEn": "Splitting one column into a table needs...",
+    "questionAr": "تقسيم عمود إلى جدول يحتاج...",
+    "optionsEn": [
+      "An auto-migration only",
+      "fallbackToDestructive",
+      "A new app package",
+      "A manual Migration with SQL"
+    ],
+    "optionsAr": [
+      "ترحيلًا تلقائيًا فقط",
+      "الحذف الاحتياطي",
+      "حزمة تطبيق جديدة",
+      "ترحيلًا يدويًا بـ SQL"
+    ],
+    "answer": 3,
+    "explanationEn": "Data must be transformed, so you write the SQL.",
+    "explanationAr": "يجب تحويل البيانات، فتكتب SQL بنفسك."
+  },
+  {
+    "key": "qz-and-data-room-migrations-6",
+    "topic": "and-data-room-migrations",
+    "questionEn": "When is destructive fallback acceptable?",
+    "questionAr": "متى يُقبل الحذف الاحتياطي؟",
+    "optionsEn": [
+      "For payment history",
+      "Whenever tests fail",
+      "For a rebuildable cache",
+      "For the user's notes"
+    ],
+    "optionsAr": [
+      "لسجل المدفوعات",
+      "كلما فشلت الاختبارات",
+      "لذاكرة مؤقتة يُعاد بناؤها",
+      "لملاحظات المستخدم"
+    ],
+    "answer": 2,
+    "explanationEn": "Only for data you can fetch again from the server.",
+    "explanationAr": "فقط لبيانات تستطيع جلبها من الخادم مجددًا."
+  },
+  {
+    "key": "qz-and-data-room-migrations-7",
+    "topic": "and-data-room-migrations",
+    "questionEn": "What does MigrationTestHelper validate?",
+    "questionAr": "ماذا يتحقق منه MigrationTestHelper؟",
+    "optionsEn": [
+      "The size of the APK file",
+      "The result matches the new schema",
+      "How the UI looks after migrating",
+      "How long the app takes to start"
+    ],
+    "optionsAr": [
+      "حجم ملف APK بعد البناء",
+      "أن النتيجة تطابق المخطط الجديد",
+      "شكل الواجهة بعد الترحيل",
+      "الوقت الذي يستغرقه بدء التطبيق"
+    ],
+    "answer": 1,
+    "explanationEn": "It catches wrong defaults, nullability and missing indices.",
+    "explanationAr": "يكشف القيم الافتراضية والفراغ والفهارس المفقودة الخاطئة."
+  },
+  {
+    "key": "qz-and-data-room-migrations-8",
+    "topic": "and-data-room-migrations",
+    "questionEn": "Which migration paths should tests cover?",
+    "questionAr": "أي مسارات ترحيل يجب أن تغطيها الاختبارات؟",
+    "optionsEn": [
+      "Each step and old-to-latest",
+      "Only the newest step",
+      "Only version 1 to 2",
+      "None if it compiles"
+    ],
+    "optionsAr": [
+      "كل خطوة ومن القديم إلى الأحدث",
+      "أحدث خطوة فقط",
+      "من الإصدار 1 إلى 2 فقط",
+      "لا شيء إذا تُرجم"
+    ],
+    "answer": 0,
+    "explanationEn": "Users can skip versions between updates.",
+    "explanationAr": "قد يتخطى المستخدمون إصدارات بين التحديثات."
+  },
+  {
+    "key": "qz-and-data-files-1",
+    "topic": "and-data-files",
+    "questionEn": "Which location needs no permission and is private?",
+    "questionAr": "أي مكان لا يحتاج إذنًا وخاص بالتطبيق؟",
+    "optionsEn": [
+      "The root of the SD card",
+      "context.filesDir",
+      "The shared Downloads folder",
+      "The camera's DCIM folder"
+    ],
+    "optionsAr": [
+      "جذر بطاقة SD الخارجية",
+      "المجلد context.filesDir",
+      "مجلد Downloads المشترك",
+      "مجلد DCIM الخاص بالكاميرا"
+    ],
+    "answer": 1,
+    "explanationEn": "It is removed when the app is uninstalled.",
+    "explanationAr": "يُحذف عند إلغاء تثبيت التطبيق."
+  },
+  {
+    "key": "qz-and-data-files-2",
+    "topic": "and-data-files",
+    "questionEn": "What may the system delete when space is low?",
+    "questionAr": "ما الذي قد يحذفه النظام عند نقص المساحة؟",
+    "optionsEn": [
+      "Files in cacheDir",
+      "Files in filesDir",
+      "Room databases",
+      "DataStore files"
+    ],
+    "optionsAr": [
+      "الملفات في cacheDir",
+      "الملفات في filesDir",
+      "قواعد بيانات Room",
+      "ملفات DataStore"
+    ],
+    "answer": 0,
+    "explanationEn": "Keep only re-creatable files there.",
+    "explanationAr": "احفظ هناك الملفات القابلة لإعادة الإنشاء فقط."
+  },
+  {
+    "key": "qz-and-data-files-3",
+    "topic": "and-data-files",
+    "questionEn": "How do you let the user choose a photo without a permission?",
+    "questionAr": "كيف تسمح للمستخدم باختيار صورة دون إذن؟",
+    "optionsEn": [
+      "READ_EXTERNAL_STORAGE",
+      "A file:// path",
+      "Scanning the disk",
+      "The photo picker"
+    ],
+    "optionsAr": [
+      "الإذن READ_EXTERNAL_STORAGE",
+      "مسار file://",
+      "فحص القرص كله",
+      "منتقي الصور"
+    ],
+    "answer": 3,
+    "explanationEn": "Only the chosen items are shared with the app.",
+    "explanationAr": "لا يُشارك مع التطبيق إلا العناصر المختارة."
+  },
+  {
+    "key": "qz-and-data-files-4",
+    "topic": "and-data-files",
+    "questionEn": "How do you save an image to the gallery?",
+    "questionAr": "كيف تحفظ صورة في المعرض؟",
+    "optionsEn": [
+      "Put it in cacheDir",
+      "Store it in DataStore",
+      "Insert it through MediaStore",
+      "Write to /sdcard/DCIM"
+    ],
+    "optionsAr": [
+      "ضعها في cacheDir",
+      "احفظها في DataStore",
+      "أدخلها عبر MediaStore",
+      "اكتبها في /sdcard/DCIM"
+    ],
+    "answer": 2,
+    "explanationEn": "No permission is needed for your own files.",
+    "explanationAr": "لا تحتاج إذنًا لملفاتك الخاصة."
+  },
+  {
+    "key": "qz-and-data-files-5",
+    "topic": "and-data-files",
+    "questionEn": "Which contract lets the user pick where to save an export?",
+    "questionAr": "أي عقد يسمح للمستخدم باختيار مكان حفظ التصدير؟",
+    "optionsEn": [
+      "TakePicture",
+      "CreateDocument",
+      "PickVisualMedia",
+      "RequestPermission"
+    ],
+    "optionsAr": [
+      "العقد TakePicture",
+      "العقد CreateDocument",
+      "العقد PickVisualMedia",
+      "العقد RequestPermission"
+    ],
+    "answer": 1,
+    "explanationEn": "It returns a content:// URI to write to.",
+    "explanationAr": "يُرجع رابط content:// للكتابة فيه."
+  },
+  {
+    "key": "qz-and-data-files-6",
+    "topic": "and-data-files",
+    "questionEn": "How do you share a private file with an email app?",
+    "questionAr": "كيف تشارك ملفًا خاصًا مع تطبيق بريد؟",
+    "optionsEn": [
+      "A FileProvider content URI",
+      "A raw file:// URI to the file",
+      "Copy it into the Downloads folder",
+      "Send the file's path as plain text"
+    ],
+    "optionsAr": [
+      "رابط content من FileProvider",
+      "رابط file:// خام إلى الملف",
+      "انسخه إلى مجلد Downloads أولًا",
+      "أرسل مسار الملف كنص عادي"
+    ],
+    "answer": 0,
+    "explanationEn": "Grant read permission on the share intent.",
+    "explanationAr": "امنح إذن القراءة في نية المشاركة."
+  },
+  {
+    "key": "qz-and-data-files-7",
+    "topic": "and-data-files",
+    "questionEn": "Where should file IO run?",
+    "questionAr": "أين يجب أن تعمل عمليات الملفات؟",
+    "optionsEn": [
+      "Directly on the main thread",
+      "Inside a view's onDraw method",
+      "In the body of a composable",
+      "withContext(Dispatchers.IO)"
+    ],
+    "optionsAr": [
+      "على الخيط الرئيسي مباشرة دائمًا",
+      "داخل الدالة onDraw لعنصر العرض",
+      "في جسم دالة composable نفسها",
+      "داخل withContext(Dispatchers.IO)"
+    ],
+    "answer": 3,
+    "explanationEn": "File access blocks the thread.",
+    "explanationAr": "الوصول إلى الملفات يحجب الخيط."
+  },
+  {
+    "key": "qz-and-data-files-8",
+    "topic": "and-data-files",
+    "questionEn": "How should a 500 MB export be written?",
+    "questionAr": "كيف يُكتب تصدير حجمه 500 ميجابايت؟",
+    "optionsEn": [
+      "Kept in a ViewModel",
+      "Sent through an Intent",
+      "Streamed in chunks",
+      "Built as one String"
+    ],
+    "optionsAr": [
+      "محفوظًا في ViewModel",
+      "مرسلًا عبر Intent",
+      "بالدفق على أجزاء",
+      "كنص واحد يُبنى كاملًا"
+    ],
+    "answer": 2,
+    "explanationEn": "Streaming keeps memory use flat.",
+    "explanationAr": "الدفق يُبقي استهلاك الذاكرة ثابتًا."
+  },
+  {
+    "key": "qz-and-data-workmanager-1",
+    "topic": "and-data-workmanager",
+    "questionEn": "When should you use WorkManager?",
+    "questionAr": "متى تستخدم WorkManager؟",
+    "optionsEn": [
+      "Animating a button",
+      "Reading a value for the UI",
+      "Formatting a date string",
+      "Work that must finish later"
+    ],
+    "optionsAr": [
+      "تحريك زر",
+      "قراءة قيمة للواجهة",
+      "تنسيق نص تاريخ",
+      "عمل يجب أن ينتهي لاحقًا"
+    ],
+    "answer": 3,
+    "explanationEn": "It survives process death and reboots.",
+    "explanationAr": "ينجو من موت العملية وإعادة التشغيل."
+  },
+  {
+    "key": "qz-and-data-workmanager-2",
+    "topic": "and-data-workmanager",
+    "questionEn": "Which base class runs suspend code?",
+    "questionAr": "أي صنف أساسي يشغّل كود suspend؟",
+    "optionsEn": [
+      "IntentService",
+      "Thread",
+      "CoroutineWorker",
+      "AsyncTask"
+    ],
+    "optionsAr": [
+      "الصنف IntentService",
+      "الصنف Thread",
+      "الصنف CoroutineWorker",
+      "الصنف AsyncTask"
+    ],
+    "answer": 2,
+    "explanationEn": "Override suspend fun doWork().",
+    "explanationAr": "تجاوز suspend fun doWork()."
+  },
+  {
+    "key": "qz-and-data-workmanager-3",
+    "topic": "and-data-workmanager",
+    "questionEn": "What should doWork return for a temporary network error?",
+    "questionAr": "ماذا يُرجع doWork عند خطأ شبكة مؤقت؟",
+    "optionsEn": [
+      "Result.failure() always",
+      "Result.retry()",
+      "Result.success()",
+      "Throw the exception"
+    ],
+    "optionsAr": [
+      "دائمًا Result.failure()",
+      "القيمة Result.retry()",
+      "القيمة Result.success()",
+      "ارمِ الاستثناء"
+    ],
+    "answer": 1,
+    "explanationEn": "WorkManager retries with the backoff policy.",
+    "explanationAr": "تعيد WorkManager المحاولة بسياسة الانتظار."
+  },
+  {
+    "key": "qz-and-data-workmanager-4",
+    "topic": "and-data-workmanager",
+    "questionEn": "How do you run work only when online?",
+    "questionAr": "كيف تشغّل العمل عند الاتصال فقط؟",
+    "optionsEn": [
+      "A CONNECTED network constraint",
+      "Check the network in a loop",
+      "Run it on Dispatchers.IO",
+      "Use a periodic request"
+    ],
+    "optionsAr": [
+      "قيد شبكة CONNECTED",
+      "افحص الشبكة في حلقة",
+      "شغّله على Dispatchers.IO",
+      "استخدم طلبًا دوريًا"
+    ],
+    "answer": 0,
+    "explanationEn": "The request waits until the constraint holds.",
+    "explanationAr": "ينتظر الطلب حتى يتحقق القيد."
+  },
+  {
+    "key": "qz-and-data-workmanager-5",
+    "topic": "and-data-workmanager",
+    "questionEn": "What is the minimum interval for periodic work?",
+    "questionAr": "ما أقل فاصل للعمل الدوري؟",
+    "optionsEn": [
+      "1 second",
+      "1 minute",
+      "24 hours",
+      "15 minutes"
+    ],
+    "optionsAr": [
+      "ثانية واحدة",
+      "دقيقة واحدة",
+      "24 ساعة",
+      "15 دقيقة"
+    ],
+    "answer": 3,
+    "explanationEn": "Shorter intervals are raised to 15 minutes.",
+    "explanationAr": "الفواصل الأقصر تُرفع إلى 15 دقيقة."
+  },
+  {
+    "key": "qz-and-data-workmanager-6",
+    "topic": "and-data-workmanager",
+    "questionEn": "How do you stop a double tap from enqueuing work twice?",
+    "questionAr": "كيف تمنع الضغط المزدوج من إضافة العمل مرتين؟",
+    "optionsEn": [
+      "A bigger input Data",
+      "Calling cancelAllWork()",
+      "Unique work with KEEP",
+      "A longer backoff delay"
+    ],
+    "optionsAr": [
+      "بيانات إدخال أكبر",
+      "استدعاء cancelAllWork()",
+      "عمل فريد مع KEEP",
+      "انتظار أطول قبل الإعادة"
+    ],
+    "answer": 2,
+    "explanationEn": "KEEP ignores new requests while one is pending.",
+    "explanationAr": "تتجاهل KEEP الطلبات الجديدة ما دام هناك طلب معلّق."
+  },
+  {
+    "key": "qz-and-data-workmanager-7",
+    "topic": "and-data-workmanager",
+    "questionEn": "Why must workers be idempotent?",
+    "questionAr": "لماذا يجب أن تكون الـ Workers متساوية الأثر؟",
+    "optionsEn": [
+      "They can't use Room",
+      "They may run more than once",
+      "They always run on Main",
+      "Hilt requires it"
+    ],
+    "optionsAr": [
+      "لأنها لا تستطيع استخدام Room",
+      "لأنها قد تعمل أكثر من مرة",
+      "لأنها تعمل دائمًا على Main",
+      "لأن Hilt تشترطه"
+    ],
+    "answer": 1,
+    "explanationEn": "A worker can be stopped and restarted.",
+    "explanationAr": "قد يُوقف الـ Worker ثم يُعاد تشغيله."
+  },
+  {
+    "key": "qz-and-data-workmanager-8",
+    "topic": "and-data-workmanager",
+    "questionEn": "How do you test a worker's logic?",
+    "questionAr": "كيف تختبر منطق Worker؟",
+    "optionsEn": [
+      "TestListenableWorkerBuilder",
+      "Wait 15 minutes and check",
+      "Reboot the device and watch",
+      "Only by testing in production"
+    ],
+    "optionsAr": [
+      "الأداة TestListenableWorkerBuilder",
+      "الانتظار 15 دقيقة ثم التحقق",
+      "إعادة تشغيل الجهاز والمراقبة",
+      "الاختبار في الإنتاج فقط دائمًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Build the worker and call doWork() directly.",
+    "explanationAr": "ابنِ الـ Worker واستدعِ doWork() مباشرة."
+  },
+  {
+    "key": "qz-and-data-offline-first-1",
+    "topic": "and-data-offline-first",
+    "questionEn": "In offline-first, where does the UI read from?",
+    "questionAr": "في العمل دون اتصال، من أين تقرأ الواجهة؟",
+    "optionsEn": [
+      "The last Intent it received",
+      "The local database",
+      "The network, directly",
+      "A map kept in memory"
+    ],
+    "optionsAr": [
+      "آخر Intent وصل إلى الشاشة",
+      "قاعدة البيانات المحلية",
+      "الشبكة مباشرة في كل مرة",
+      "خريطة محفوظة في الذاكرة"
+    ],
+    "answer": 1,
+    "explanationEn": "The network only updates the database.",
+    "explanationAr": "الشبكة تحدّث قاعدة البيانات فقط."
+  },
+  {
+    "key": "qz-and-data-offline-first-2",
+    "topic": "and-data-offline-first",
+    "questionEn": "What should the screen show when refresh fails?",
+    "questionAr": "ماذا تعرض الشاشة عند فشل التحديث؟",
+    "optionsEn": [
+      "Cached data plus a hint",
+      "A blank error screen",
+      "An endless spinner",
+      "A crash dialog"
+    ],
+    "optionsAr": [
+      "البيانات المخزنة مع تلميح",
+      "شاشة خطأ فارغة",
+      "مؤشر تحميل لا ينتهي",
+      "نافذة انهيار"
+    ],
+    "answer": 0,
+    "explanationEn": "The last good data stays usable.",
+    "explanationAr": "تبقى آخر بيانات سليمة قابلة للاستخدام."
+  },
+  {
+    "key": "qz-and-data-offline-first-3",
+    "topic": "and-data-offline-first",
+    "questionEn": "What is an outbox table for?",
+    "questionAr": "لماذا يُستخدم جدول الصادر؟",
+    "optionsEn": [
+      "Storing email drafts for later",
+      "Caching downloaded images",
+      "Logging crashes for reports",
+      "Queuing offline writes"
+    ],
+    "optionsAr": [
+      "حفظ مسودات البريد لوقت لاحق",
+      "تخزين الصور المنزّلة مؤقتًا",
+      "تسجيل الانهيارات لإرسال التقارير",
+      "وضع الكتابات دون اتصال في طابور"
+    ],
+    "answer": 3,
+    "explanationEn": "Sync sends its entries when online.",
+    "explanationAr": "ترسل المزامنة مدخلاته عند الاتصال."
+  },
+  {
+    "key": "qz-and-data-offline-first-4",
+    "topic": "and-data-offline-first",
+    "questionEn": "Why write the change and the outbox entry together?",
+    "questionAr": "لماذا تكتب التغيير ومدخل الصادر معًا؟",
+    "optionsEn": [
+      "To use fewer threads",
+      "To skip the network",
+      "So neither is lost alone",
+      "So the UI updates later"
+    ],
+    "optionsAr": [
+      "لاستخدام خيوط أقل",
+      "لتخطي الشبكة",
+      "حتى لا يضيع أحدهما وحده",
+      "حتى تتحدث الواجهة لاحقًا"
+    ],
+    "answer": 2,
+    "explanationEn": "One transaction keeps them consistent.",
+    "explanationAr": "معاملة واحدة تُبقيهما متسقين."
+  },
+  {
+    "key": "qz-and-data-offline-first-5",
+    "topic": "and-data-offline-first",
+    "questionEn": "How do client IDs help sync?",
+    "questionAr": "كيف تساعد معرّفات العميل المزامنة؟",
+    "optionsEn": [
+      "They replace authentication",
+      "Retries don't duplicate rows",
+      "They make IDs shorter",
+      "They hide data from servers"
+    ],
+    "optionsAr": [
+      "تحل محل المصادقة",
+      "إعادة المحاولة لا تكرر الصفوف",
+      "تجعل المعرّفات أقصر",
+      "تخفي البيانات عن الخادم"
+    ],
+    "answer": 1,
+    "explanationEn": "The server treats a repeated ID as the same record.",
+    "explanationAr": "يعامل الخادم المعرّف المكرر كسجل واحد."
+  },
+  {
+    "key": "qz-and-data-offline-first-6",
+    "topic": "and-data-offline-first",
+    "questionEn": "What is a tombstone?",
+    "questionAr": "ما هي علامة الحذف؟",
+    "optionsEn": [
+      "A record that marks a delete",
+      "A crashed worker",
+      "An expired auth token",
+      "A corrupted database"
+    ],
+    "optionsAr": [
+      "سجل يدل على حذف",
+      "Worker منهار",
+      "رمز مصادقة منتهٍ",
+      "قاعدة بيانات تالفة"
+    ],
+    "answer": 0,
+    "explanationEn": "Other devices learn the row was deleted.",
+    "explanationAr": "تعرف الأجهزة الأخرى أن الصف حُذف."
+  },
+  {
+    "key": "qz-and-data-offline-first-7",
+    "topic": "and-data-offline-first",
+    "questionEn": "What does a sync token enable?",
+    "questionAr": "ماذا يتيح رمز المزامنة؟",
+    "optionsEn": [
+      "Signing the user in faster",
+      "Encrypting the outbox table",
+      "Skipping conflicts completely",
+      "Pulling only new changes"
+    ],
+    "optionsAr": [
+      "تسجيل دخول المستخدم بسرعة أكبر",
+      "تشفير جدول الصادر بالكامل",
+      "تخطي التعارضات تمامًا",
+      "سحب التغييرات الجديدة فقط"
+    ],
+    "answer": 3,
+    "explanationEn": "Incremental pulls save data and time.",
+    "explanationAr": "السحب التدريجي يوفر البيانات والوقت."
+  },
+  {
+    "key": "qz-and-data-offline-first-8",
+    "topic": "and-data-offline-first",
+    "questionEn": "Which conflict rule is never acceptable?",
+    "questionAr": "أي قاعدة تعارض غير مقبولة أبدًا؟",
+    "optionsEn": [
+      "Server wins for prices",
+      "Merging by field",
+      "Dropping edits silently",
+      "Last write wins"
+    ],
+    "optionsAr": [
+      "الخادم يفوز للأسعار",
+      "الدمج حسب الحقل",
+      "إسقاط التعديلات بصمت",
+      "آخر كتابة تفوز"
+    ],
+    "answer": 2,
+    "explanationEn": "Whatever the rule, the user's work must not vanish unnoticed.",
+    "explanationAr": "مهما كانت القاعدة، يجب ألا يختفي عمل المستخدم دون علمه."
+  }
+]

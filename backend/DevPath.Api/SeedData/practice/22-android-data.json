@@ -1,0 +1,170 @@
+[
+  {
+    "key": "and-ex-data-datastore",
+    "type": "Practical",
+    "topic": "and-data-datastore",
+    "difficulty": "Beginner",
+    "minutes": 30,
+    "titleEn": "Move settings to DataStore",
+    "titleAr": "انقل الإعدادات إلى DataStore",
+    "problemEn": "The app reads theme and font size from SharedPreferences inside a composable, which causes jank on start and lost changes. Write a SettingsRepository backed by Preferences DataStore that exposes Flow<UiSettings>, migrates the old \"prefs\" file once, survives a corrupted file, and is collected by the ViewModel as a StateFlow.",
+    "problemAr": "يقرأ التطبيق السمة وحجم الخط من SharedPreferences داخل دالة composable، فيسبب تقطعًا عند البدء وضياع التغييرات. اكتب SettingsRepository مدعومًا بـ Preferences DataStore يعرض Flow<UiSettings>، ويرحّل ملف «prefs» القديم مرة واحدة، وينجو من الملف التالف، وتجمعه ViewModel كـ StateFlow.",
+    "expectedEn": "One DataStore instance with SharedPreferencesMigration, typed keys, catch for IOException, suspend setters using edit, and stateIn in the ViewModel.",
+    "expectedAr": "نسخة DataStore واحدة مع SharedPreferencesMigration، ومفاتيح محددة النوع، وcatch لـ IOException، ودوال ضبط suspend تستخدم edit، وstateIn في ViewModel.",
+    "hintsEn": [
+      "produceMigrations runs before the first read.",
+      "Map missing keys to defaults in the repository."
+    ],
+    "hintsAr": [
+      "الوسيط produceMigrations يعمل قبل أول قراءة.",
+      "حوّل المفاتيح المفقودة إلى قيم افتراضية داخل المستودع."
+    ],
+    "solutionEn": "val Context.settings by preferencesDataStore(\"settings\", produceMigrations = { listOf(SharedPreferencesMigration(it, \"prefs\")) }). Repository: data.catch { if (it is IOException) emit(emptyPreferences()) else throw it }.map { UiSettings(it[DARK] ?: false, it[FONT] ?: 1f) }; suspend fun setDark(v) = store.edit { it[DARK] = v }. ViewModel: repo.settings.stateIn(viewModelScope, WhileSubscribed(5_000), UiSettings()).",
+    "solutionAr": "الحل: val Context.settings by preferencesDataStore(\"settings\", produceMigrations = { listOf(SharedPreferencesMigration(it, \"prefs\")) }). والمستودع: data.catch { if (it is IOException) emit(emptyPreferences()) else throw it }.map { UiSettings(it[DARK] ?: false, it[FONT] ?: 1f) }، وsuspend fun setDark(v) = store.edit { it[DARK] = v }. وViewModel: repo.settings.stateIn(viewModelScope, WhileSubscribed(5_000), UiSettings()).",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-data-room-dao",
+    "type": "Practical",
+    "topic": "and-data-room-basics",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "A tested Room DAO for tasks",
+    "titleAr": "كائن DAO مختبر في Room للمهام",
+    "problemEn": "Create TaskEntity, TaskDao and AppDatabase for a to-do app: observe open and done tasks as Flow ordered by creation time, search by title, upsert, toggle done and delete. Then write DAO tests with an in-memory database proving upsert replaces the same id, the open count Flow updates after an insert, and search is case-insensitive.",
+    "problemAr": "أنشئ TaskEntity وTaskDao وAppDatabase لتطبيق مهام: راقب المهام المفتوحة والمنتهية كـ Flow مرتبة بوقت الإنشاء، وابحث بالعنوان، ونفّذ upsert، وبدّل حالة الإنهاء، واحذف. ثم اكتب اختبارات DAO بقاعدة بيانات في الذاكرة تثبت أن upsert تستبدل المعرّف نفسه، وأن تدفق عدد المهام المفتوحة يتحدث بعد الإدخال، وأن البحث لا يميز حالة الأحرف.",
+    "expectedEn": "Entities with indices on done and title, Flow and suspend DAO methods, and three passing tests using Room.inMemoryDatabaseBuilder and Turbine.",
+    "expectedAr": "كيانات بفهارس على done وtitle، ودوال DAO من نوع Flow وsuspend، وثلاثة اختبارات ناجحة تستخدم Room.inMemoryDatabaseBuilder وTurbine.",
+    "hintsEn": [
+      "SQLite LIKE is case-insensitive for ASCII by default.",
+      "Use @Query(\"UPDATE tasks SET done = NOT done WHERE id = :id\") for the toggle."
+    ],
+    "hintsAr": [
+      "المعامل LIKE في SQLite لا يميز حالة الأحرف لـ ASCII افتراضيًا.",
+      "استخدم @Query(\"UPDATE tasks SET done = NOT done WHERE id = :id\") للتبديل."
+    ],
+    "solutionEn": "Entity: @Entity(indices = [Index(\"done\"), Index(\"title\")]) data class TaskEntity(@PrimaryKey val id: String, val title: String, val done: Boolean, val createdAt: Long). DAO: observe(done) Flow, openCount() Flow<Int>, search(q) with LIKE '%' || :q || '%', @Upsert, toggle and delete. Tests build an in-memory database in @Before, close it in @After, and use first() or Turbine for Flow assertions.",
+    "solutionAr": "الكيان: @Entity(indices = [Index(\"done\"), Index(\"title\")]) data class TaskEntity(@PrimaryKey val id: String, val title: String, val done: Boolean, val createdAt: Long). والـ DAO: ‏observe(done) من نوع Flow، وopenCount() من نوع Flow<Int>، وsearch(q) بـ LIKE '%' || :q || '%'، و@Upsert، والتبديل والحذف. والاختبارات تبني قاعدة بيانات في الذاكرة في @Before، وتغلقها في @After، وتستخدم first() أو Turbine للتحقق من Flow.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-data-relations",
+    "type": "Debugging",
+    "topic": "and-data-room-relations",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "The order that half-saved",
+    "titleAr": "الطلب الذي حُفظ نصفه",
+    "problemEn": "Customers sometimes see orders with missing items after the app crashed during checkout, and deleting an order leaves orphan items. The order screen also flickers between old and new items. Find the three problems in the code below and fix them.",
+    "problemAr": "يرى العملاء أحيانًا طلبات تنقصها عناصر بعد انهيار التطبيق أثناء الدفع، وحذف الطلب يترك عناصر يتيمة. وشاشة الطلب ترمش بين العناصر القديمة والجديدة. أوجد المشكلات الثلاث في الكود أدناه وأصلحها.",
+    "expectedEn": "save() runs in one transaction, the item entity has a CASCADE foreign key with an index, and the relation query is annotated @Transaction.",
+    "expectedAr": "الدالة save() تعمل في معاملة واحدة، وكيان العنصر له مفتاح أجنبي مع CASCADE وفهرس، واستعلام العلاقة عليه @Transaction.",
+    "hintsEn": [
+      "What happens if the process dies between insertOrder and insertItems?",
+      "How many queries does Room run for OrderWithItems?"
+    ],
+    "hintsAr": [
+      "ماذا يحدث إذا ماتت العملية بين insertOrder وinsertItems؟",
+      "كم استعلامًا تنفذ Room لـ OrderWithItems؟"
+    ],
+    "solutionEn": "1) Wrap the inserts in @Transaction (or db.withTransaction) so a crash saves nothing instead of half an order. 2) Add ForeignKey(OrderEntity::class, [\"id\"], [\"orderId\"], onDelete = CASCADE) and Index(\"orderId\") to OrderItemEntity. 3) Add @Transaction to observe(id), because the @Relation result is built from two queries that can otherwise see different states.",
+    "solutionAr": "1) غلّف الإدخالات بـ @Transaction (أو db.withTransaction) حتى لا يُحفظ شيء عند الانهيار بدل نصف طلب. 2) أضف ForeignKey(OrderEntity::class, [\"id\"], [\"orderId\"], onDelete = CASCADE) وIndex(\"orderId\") إلى OrderItemEntity. 3) أضف @Transaction إلى observe(id)، لأن نتيجة @Relation تُبنى من استعلامين قد يريان حالتين مختلفتين بدونها.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-data-migration",
+    "type": "Practical",
+    "topic": "and-data-room-migrations",
+    "difficulty": "Advanced",
+    "minutes": 50,
+    "titleEn": "Migrate tags into their own table",
+    "titleAr": "انقل الوسوم إلى جدول خاص بها",
+    "problemEn": "Version 2 of the notes database stores tags as a comma-separated string column. Version 3 must move them to a tags table (noteId, name) and drop the old column without losing a single tag, including notes with empty tags or extra spaces. Write MIGRATION_2_3 and a MigrationTestHelper test that inserts realistic rows at version 2 and checks every tag afterwards.",
+    "problemAr": "يحفظ الإصدار 2 من قاعدة بيانات الملاحظات الوسوم كعمود نصي مفصول بفواصل. ويجب أن ينقلها الإصدار 3 إلى جدول tags (‏noteId وname) ويحذف العمود القديم دون فقد وسم واحد، بما في ذلك الملاحظات ذات الوسوم الفارغة أو المسافات الزائدة. اكتب MIGRATION_2_3 واختبار MigrationTestHelper يُدخل صفوفًا واقعية في الإصدار 2 ويتحقق من كل وسم بعد ذلك.",
+    "expectedEn": "A manual migration creating the table, copying trimmed non-empty tags with INSERT OR IGNORE, dropping the column, plus a test that passes runMigrationsAndValidate.",
+    "expectedAr": "ترحيل يدوي ينشئ الجدول، وينسخ الوسوم غير الفارغة بعد إزالة المسافات بـ INSERT OR IGNORE، ويحذف العمود، مع اختبار ينجح في runMigrationsAndValidate.",
+    "hintsEn": [
+      "Read the old column with db.query and a cursor.",
+      "ALTER TABLE ... DROP COLUMN needs SQLite 3.35; otherwise use create-copy-drop-rename."
+    ],
+    "hintsAr": [
+      "اقرأ العمود القديم بـ db.query ومؤشر.",
+      "العبارة ALTER TABLE ... DROP COLUMN تحتاج SQLite 3.35، وإلا فاستخدم نمط الإنشاء ثم النسخ ثم الحذف ثم إعادة التسمية."
+    ],
+    "solutionEn": "Create tags with a composite primary key, iterate notes with a cursor, split on commas, trim, skip blanks and insert with INSERT OR IGNORE. Rebuild notes without the column (create notes_new, copy, drop, rename) for older SQLite. The test inserts a note with \"work, home\", one with \"\" and one with \" work ,work\", migrates and asserts 3 distinct rows.",
+    "solutionAr": "أنشئ tags بمفتاح أساسي مركب، ومرّ على الملاحظات بمؤشر، وقسّم على الفواصل، وأزل المسافات، وتخطَّ الفارغ، وأدخل بـ INSERT OR IGNORE. وأعد بناء notes دون العمود (أنشئ notes_new ثم انسخ ثم احذف ثم أعد التسمية) لإصدارات SQLite الأقدم. ويُدخل الاختبار ملاحظة فيها «work, home»، وأخرى فيها «»، وثالثة فيها « work ,work»، ثم يرحّل ويتحقق من 3 صفوف مميزة.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-data-files",
+    "type": "CodeReview",
+    "topic": "and-data-files",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Review a photo export feature",
+    "titleAr": "راجع ميزة تصدير الصور",
+    "problemEn": "Review this code from a pull request that lets users export receipts and attach a photo. It asks for broad storage permission, writes on the main thread, reads entire files into memory and shares a file:// URI. List every problem and rewrite it with the right storage APIs.",
+    "problemAr": "راجع هذا الكود من طلب دمج يسمح للمستخدمين بتصدير الإيصالات وإرفاق صورة. يطلب إذن تخزين واسعًا، ويكتب على الخيط الرئيسي، ويقرأ الملفات كاملة في الذاكرة، ويشارك رابط file://. اذكر كل مشكلة وأعد كتابته بواجهات التخزين الصحيحة.",
+    "expectedEn": "The photo picker instead of the permission, CreateDocument for the export, streaming in withContext(Dispatchers.IO), and FileProvider for sharing.",
+    "expectedAr": "منتقي الصور بدل الإذن، وCreateDocument للتصدير، والدفق داخل withContext(Dispatchers.IO)، وFileProvider للمشاركة.",
+    "hintsEn": [
+      "Which of these needs any permission at all on Android 13+?",
+      "What exception does a file:// share throw?"
+    ],
+    "hintsAr": [
+      "أي من هذه يحتاج أي إذن أصلًا في Android 13 فأحدث؟",
+      "أي استثناء ترميه مشاركة file://؟"
+    ],
+    "solutionEn": "Problems: MANAGE_EXTERNAL_STORAGE is unjustified and rejected by Play; writing to a hard-coded /sdcard path breaks under scoped storage; readBytes() on a large file can run out of memory; work runs on Main; file:// throws FileUriExposedException. Fix: PickVisualMedia for photos, CreateDocument(\"text/csv\") plus contentResolver.openOutputStream streamed on Dispatchers.IO for the export, and FileProvider.getUriForFile with FLAG_GRANT_READ_URI_PERMISSION for sharing.",
+    "solutionAr": "المشكلات: ‏MANAGE_EXTERNAL_STORAGE غير مبرر وترفضه Play، والكتابة في مسار /sdcard ثابت تنكسر مع التخزين المحدد النطاق، وreadBytes() على ملف كبير قد تستنفد الذاكرة، والعمل يجري على Main، وfile:// ترمي FileUriExposedException. والإصلاح: ‏PickVisualMedia للصور، وCreateDocument(\"text/csv\") مع contentResolver.openOutputStream بالدفق على Dispatchers.IO للتصدير، وFileProvider.getUriForFile مع FLAG_GRANT_READ_URI_PERMISSION للمشاركة.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-data-worker",
+    "type": "Practical",
+    "topic": "and-data-workmanager",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "A reliable upload worker",
+    "titleAr": "عامل رفع موثوق في الخلفية",
+    "problemEn": "Write UploadReportsWorker that uploads every pending report from Room, only on an unmetered network and when the battery isn't low, retries with exponential backoff up to 5 attempts, never uploads a report twice even if stopped halfway, and reports progress. Enqueue it as unique work when a report is saved, observe its state in the ViewModel, and test it with TestListenableWorkerBuilder.",
+    "problemAr": "اكتب UploadReportsWorker يرفع كل تقرير معلّق من Room، فقط على شبكة غير محدودة وعندما لا تكون البطارية منخفضة، ويعيد المحاولة بانتظار أُسّي حتى 5 محاولات، ولا يرفع تقريرًا مرتين أبدًا حتى لو أُوقف في المنتصف، ويبلّغ عن التقدم. وأضفه كعمل فريد عند حفظ تقرير، وراقب حالته في ViewModel، واختبره بـ TestListenableWorkerBuilder.",
+    "expectedEn": "A CoroutineWorker with constraints and backoff, per-report upload with a client id and markUploaded after each success, setProgress, unique enqueue with KEEP, and two tests (success and retry).",
+    "expectedAr": "صنف CoroutineWorker بقيود وانتظار متزايد، ورفع لكل تقرير بمعرّف من العميل وmarkUploaded بعد كل نجاح، وsetProgress، وإضافة فريدة مع KEEP، واختباران (النجاح وإعادة المحاولة).",
+    "hintsEn": [
+      "Mark each report uploaded right after its own request succeeds.",
+      "runAttemptCount starts at 0."
+    ],
+    "hintsAr": [
+      "علّم كل تقرير كمرفوع مباشرة بعد نجاح طلبه.",
+      "العدّاد runAttemptCount يبدأ من 0."
+    ],
+    "solutionEn": "doWork: val pending = dao.pending(); pending.forEachIndexed { i, r -> api.upload(r.id, r.body); dao.markUploaded(r.id); setProgress(workDataOf(\"done\" to i + 1, \"total\" to pending.size)) }; return success, or retry on IOException while runAttemptCount < 4. Request: Constraints(requiredNetworkType = UNMETERED, requiresBatteryNotLow = true), BackoffPolicy.EXPONENTIAL, enqueueUniqueWork(\"upload-reports\", KEEP). The server ignores a repeated id.",
+    "solutionAr": "الدالة doWork: ‏val pending = dao.pending(); pending.forEachIndexed { i, r -> api.upload(r.id, r.body); dao.markUploaded(r.id); setProgress(workDataOf(\"done\" to i + 1, \"total\" to pending.size)) }، ثم أرجع النجاح، أو أعد المحاولة عند IOException ما دام runAttemptCount < 4. والطلب: ‏Constraints(requiredNetworkType = UNMETERED, requiresBatteryNotLow = true) وBackoffPolicy.EXPONENTIAL وenqueueUniqueWork(\"upload-reports\", KEEP). والخادم يتجاهل المعرّف المكرر.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-data-offline",
+    "type": "Practical",
+    "topic": "and-data-offline-first",
+    "difficulty": "Advanced",
+    "minutes": 60,
+    "titleEn": "Make a screen work offline",
+    "titleAr": "اجعل شاشة تعمل دون اتصال",
+    "problemEn": "The tasks screen calls the API directly and shows an error with no signal. Rewrite it offline-first: the UI reads only from Room, refresh pulls from the API with a staleness check, completing a task works offline through an outbox written in the same transaction, a unique SyncWorker pushes the outbox when online, and rows show a pending icon until synced. Write tests for an offline completion followed by a successful sync, and for a server rejection.",
+    "problemAr": "تستدعي شاشة المهام الواجهة البرمجية مباشرة وتعرض خطأ عند غياب الإشارة. أعد كتابتها لتعمل دون اتصال: الواجهة تقرأ من Room فقط، والتحديث يسحب من الواجهة البرمجية مع فحص القِدم، وإنهاء مهمة يعمل دون اتصال عبر جدول صادر يُكتب في المعاملة نفسها، وWorker مزامنة فريد يدفع الصادر عند الاتصال، والصفوف تعرض أيقونة انتظار حتى تُزامَن. واكتب اختبارات لإنهاء مهمة دون اتصال تليه مزامنة ناجحة، ولرفض الخادم.",
+    "expectedEn": "A repository exposing Flow from Room, an outbox table, a SyncWorker with idempotency keys, a pending/failed status in the UI, and passing tests with a fake API.",
+    "expectedAr": "مستودع يعرض Flow من Room، وجدول صادر، وWorker مزامنة بمفاتيح عدم التكرار، وحالة معلّقة أو فاشلة في الواجهة، واختبارات ناجحة بواجهة برمجية وهمية.",
+    "hintsEn": [
+      "Start from the UI: what should it show with no network?",
+      "Write the outbox entry and the change in one withTransaction."
+    ],
+    "hintsAr": [
+      "ابدأ من الواجهة: ماذا يجب أن تعرض دون شبكة؟",
+      "اكتب مدخل الصادر والتغيير في withTransaction واحدة."
+    ],
+    "solutionEn": "Repository.observe() = dao.observeAll(); refreshIfStale() fetches and upserts in a transaction; complete(id) = db.withTransaction { dao.markDone(id, pending = true); outbox.add(...) } then enqueueUniqueWork(\"sync\", REPLACE, worker with CONNECTED). SyncWorker sends entries oldest first with entry.id as the idempotency key, deletes them on success, marks rows failed on a 4xx, and clears pending. Tests use a fake API that can be offline, succeed or reject.",
+    "solutionAr": "الدالة Repository.observe() = dao.observeAll()، وrefreshIfStale() تجلب البيانات وتنفذ upsert في معاملة، وcomplete(id) = db.withTransaction { dao.markDone(id, pending = true); outbox.add(...) } ثم enqueueUniqueWork(\"sync\", REPLACE, worker with CONNECTED). ويرسل SyncWorker المدخلات من الأقدم مع entry.id كمفتاح عدم تكرار، ويحذفها عند النجاح، ويعلّم الصفوف كفاشلة عند خطأ 4xx، ويزيل علامة الانتظار. والاختبارات تستخدم واجهة برمجية وهمية يمكن أن تكون دون اتصال أو تنجح أو ترفض.",
+    "runner": "None"
+  }
+]
