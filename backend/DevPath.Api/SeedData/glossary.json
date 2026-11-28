@@ -1601,5 +1601,75 @@
     "shortEn": "Simulated time in coroutine tests, where delays are skipped instantly and controlled by the test.",
     "shortAr": "زمن محاكى في اختبارات الـ Coroutines تُتخطى فيه التأخيرات فورًا ويتحكم فيه الاختبار.",
     "topicSlug": "kt-coroutines-testing"
+  },
+  {
+    "term": "Room",
+    "arabic": "مكتبة Room",
+    "shortEn": "The Jetpack library over SQLite that checks queries at compile time and returns Flow from queries.",
+    "shortAr": "مكتبة Jetpack فوق SQLite تتحقق من الاستعلامات وقت الترجمة وتُرجع Flow من الاستعلامات.",
+    "topicSlug": "and-data-room-basics"
+  },
+  {
+    "term": "DAO",
+    "arabic": "كائن الوصول إلى البيانات",
+    "shortEn": "Data access object: an interface whose annotated methods define the database queries and writes.",
+    "shortAr": "واجهة تعرّف دوالها المعلّمة استعلامات قاعدة البيانات وكتاباتها.",
+    "topicSlug": "and-data-room-basics"
+  },
+  {
+    "term": "DataStore",
+    "arabic": "مكتبة DataStore",
+    "shortEn": "The Jetpack library for small key-value or typed data, read as a Flow and written in atomic transactions.",
+    "shortAr": "مكتبة Jetpack للبيانات الصغيرة بصيغة مفتاح وقيمة أو محددة النوع، تُقرأ كـ Flow وتُكتب بمعاملات ذرية.",
+    "topicSlug": "and-data-datastore"
+  },
+  {
+    "term": "scoped storage",
+    "arabic": "التخزين المحدد النطاق",
+    "shortEn": "The Android model where apps see their own files and chosen media, not the whole shared storage.",
+    "shortAr": "نموذج Android الذي ترى فيه التطبيقات ملفاتها والوسائط المختارة فقط، لا التخزين المشترك كله.",
+    "topicSlug": "and-data-files"
+  },
+  {
+    "term": "FileProvider",
+    "arabic": "مزوّد الملفات FileProvider",
+    "shortEn": "A component that shares a private file with other apps through a temporary content:// URI.",
+    "shortAr": "مكوّن يشارك ملفًا خاصًا مع تطبيقات أخرى عبر رابط content:// مؤقت.",
+    "topicSlug": "and-data-files"
+  },
+  {
+    "term": "WorkManager",
+    "arabic": "مكتبة WorkManager",
+    "shortEn": "The Jetpack library for guaranteed background work that survives app restarts and reboots.",
+    "shortAr": "مكتبة Jetpack للعمل الخلفي المضمون الذي ينجو من إعادة تشغيل التطبيق والجهاز.",
+    "topicSlug": "and-data-workmanager"
+  },
+  {
+    "term": "exponential backoff",
+    "arabic": "الانتظار الأُسّي",
+    "shortEn": "A retry strategy where the wait doubles after each failure.",
+    "shortAr": "استراتيجية إعادة محاولة يتضاعف فيها الانتظار بعد كل فشل.",
+    "topicSlug": "and-data-workmanager"
+  },
+  {
+    "term": "offline-first",
+    "arabic": "العمل دون اتصال أولًا",
+    "shortEn": "An app design where the local database is the source of truth and the network only syncs it.",
+    "shortAr": "تصميم تطبيق تكون فيه قاعدة البيانات المحلية مصدر الحقيقة والشبكة تزامنها فقط.",
+    "topicSlug": "and-data-offline-first"
+  },
+  {
+    "term": "outbox",
+    "arabic": "جدول الصادر",
+    "shortEn": "A local table of pending changes that a sync job sends to the server when it can.",
+    "shortAr": "جدول محلي للتغييرات المعلّقة ترسلها مهمة المزامنة إلى الخادم عندما تستطيع.",
+    "topicSlug": "and-data-offline-first"
+  },
+  {
+    "term": "tombstone",
+    "arabic": "علامة الحذف",
+    "shortEn": "A record that marks an item as deleted so other devices learn about the delete during sync.",
+    "shortAr": "سجل يعلّم عنصرًا كمحذوف لتعرف الأجهزة الأخرى بالحذف أثناء المزامنة.",
+    "topicSlug": "and-data-offline-first"
   }
 ]
