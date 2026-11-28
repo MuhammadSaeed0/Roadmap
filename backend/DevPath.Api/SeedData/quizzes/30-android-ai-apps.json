@@ -1,0 +1,1178 @@
+[
+  {
+    "key": "qz-and-ai-backend-1",
+    "topic": "and-ai-backend",
+    "questionEn": "Where should an LLM provider's API key live?",
+    "questionAr": "أين يجب أن يعيش مفتاح واجهة مزوّد النموذج؟",
+    "optionsEn": [
+      "In a native library",
+      "On your backend",
+      "In BuildConfig",
+      "In strings.xml"
+    ],
+    "optionsAr": [
+      "في مكتبة أصلية",
+      "في خادمك",
+      "في BuildConfig",
+      "في strings.xml"
+    ],
+    "answer": 1,
+    "explanationEn": "Anything in the APK can be extracted.",
+    "explanationAr": "كل ما في APK يمكن استخراجه."
+  },
+  {
+    "key": "qz-and-ai-backend-2",
+    "topic": "and-ai-backend",
+    "questionEn": "What does the app send to your AI endpoint?",
+    "questionAr": "ماذا يرسل التطبيق إلى نقطة الذكاء الاصطناعي في خادمك؟",
+    "optionsEn": [
+      "The user's auth token and input",
+      "The provider's secret API key",
+      "The full system prompt text",
+      "The model's billing account id"
+    ],
+    "optionsAr": [
+      "رمز مصادقة المستخدم والمدخلات",
+      "المفتاح السري لمزوّد النموذج",
+      "نص تعليمات النظام كاملًا",
+      "معرّف حساب فوترة النموذج"
+    ],
+    "answer": 0,
+    "explanationEn": "The server adds the prompt and key.",
+    "explanationAr": "يضيف الخادم التعليمات والمفتاح."
+  },
+  {
+    "key": "qz-and-ai-backend-3",
+    "topic": "and-ai-backend",
+    "questionEn": "Why one endpoint per feature instead of a generic proxy?",
+    "questionAr": "لماذا نقطة لكل ميزة بدل وكيل عام؟",
+    "optionsEn": [
+      "Retrofit can't call a generic proxy",
+      "It makes every response shorter",
+      "Model providers forbid proxies",
+      "The server controls prompts and models"
+    ],
+    "optionsAr": [
+      "لأن Retrofit لا تستدعي وكيلًا عامًا",
+      "لأنه يجعل كل رد أقصر",
+      "لأن مزوّدي النماذج يمنعون الوكلاء",
+      "يتحكم الخادم في التعليمات والنماذج"
+    ],
+    "answer": 3,
+    "explanationEn": "A generic proxy lets clients send any prompt.",
+    "explanationAr": "الوكيل العام يسمح للعملاء بإرسال أي تعليمات."
+  },
+  {
+    "key": "qz-and-ai-backend-4",
+    "topic": "and-ai-backend",
+    "questionEn": "Which status code fits \"daily AI limit reached\"?",
+    "questionAr": "أي رمز حالة يناسب «وصلت إلى الحد اليومي»؟",
+    "optionsEn": [
+      "301",
+      "404",
+      "429",
+      "200"
+    ],
+    "optionsAr": [
+      "301",
+      "404",
+      "429",
+      "200"
+    ],
+    "answer": 2,
+    "explanationEn": "Include when the quota resets.",
+    "explanationAr": "ضمّن موعد تجدد الحصة."
+  },
+  {
+    "key": "qz-and-ai-backend-5",
+    "topic": "and-ai-backend",
+    "questionEn": "What keeps a single request's cost bounded?",
+    "questionAr": "ما الذي يحد كلفة طلب واحد؟",
+    "optionsEn": [
+      "A much longer read timeout",
+      "Output token and input limits",
+      "A bigger pool of threads",
+      "Retrying until it succeeds"
+    ],
+    "optionsAr": [
+      "مهلة قراءة أطول بكثير",
+      "حد رموز الإخراج وحدود المدخلات",
+      "مجموعة خيوط أكبر حجمًا",
+      "إعادة المحاولة حتى ينجح الطلب"
+    ],
+    "answer": 1,
+    "explanationEn": "Set them on the server.",
+    "explanationAr": "اضبطها في الخادم."
+  },
+  {
+    "key": "qz-and-ai-backend-6",
+    "topic": "and-ai-backend",
+    "questionEn": "Why track tokens per user and feature?",
+    "questionAr": "لماذا تتبع الرموز لكل مستخدم وميزة؟",
+    "optionsEn": [
+      "To find costly features and abuse",
+      "To show ads to users",
+      "Because Android requires it",
+      "To speed up the model"
+    ],
+    "optionsAr": [
+      "لإيجاد الميزات المكلفة والإساءة",
+      "لعرض الإعلانات للمستخدمين",
+      "لأن Android تشترطه",
+      "لتسريع النموذج"
+    ],
+    "answer": 0,
+    "explanationEn": "Cost surprises show up in this data first.",
+    "explanationAr": "مفاجآت الكلفة تظهر في هذه البيانات أولًا."
+  },
+  {
+    "key": "qz-and-ai-backend-7",
+    "topic": "and-ai-backend",
+    "questionEn": "What does a backend let you change without an app update?",
+    "questionAr": "ماذا يسمح لك الخادم بتغييره دون تحديث التطبيق؟",
+    "optionsEn": [
+      "The launcher icon of the app",
+      "The minSdk version of the app",
+      "The key used to sign it",
+      "The model, prompt and provider"
+    ],
+    "optionsAr": [
+      "أيقونة المشغل للتطبيق",
+      "إصدار minSdk للتطبيق",
+      "المفتاح المستخدم لتوقيعه",
+      "النموذج والتعليمات والمزوّد"
+    ],
+    "answer": 3,
+    "explanationEn": "Old app versions benefit too.",
+    "explanationAr": "تستفيد الإصدارات القديمة أيضًا."
+  },
+  {
+    "key": "qz-and-ai-backend-8",
+    "topic": "and-ai-backend",
+    "questionEn": "Does obfuscation protect a key shipped in the app?",
+    "questionAr": "هل يحمي التمويه مفتاحًا مشحونًا في التطبيق؟",
+    "optionsEn": [
+      "Yes, if it's written in C++",
+      "Only on Android 14 and newer",
+      "No, it's sent in plain form",
+      "Yes, R8 encrypts every key"
+    ],
+    "optionsAr": [
+      "نعم، إذا كُتب بلغة C++",
+      "فقط في Android 14 فأحدث",
+      "لا، فهو يُرسل بصيغته الصريحة",
+      "نعم، فـ R8 تشفّر كل مفتاح"
+    ],
+    "answer": 2,
+    "explanationEn": "Network inspection reveals it anyway.",
+    "explanationAr": "فحص الشبكة يكشفه على أي حال."
+  },
+  {
+    "key": "qz-and-ai-streaming-1",
+    "topic": "and-ai-streaming",
+    "questionEn": "Why stream model responses?",
+    "questionAr": "لماذا تدفق ردود النموذج؟",
+    "optionsEn": [
+      "The answer becomes shorter",
+      "It costs no tokens",
+      "It removes the need for auth",
+      "First words appear much sooner"
+    ],
+    "optionsAr": [
+      "يصبح الرد أقصر",
+      "لا يكلف رموزًا",
+      "يلغي الحاجة إلى المصادقة",
+      "تظهر الكلمات الأولى أسرع بكثير"
+    ],
+    "answer": 3,
+    "explanationEn": "Perceived speed matters most.",
+    "explanationAr": "السرعة المحسوسة هي الأهم."
+  },
+  {
+    "key": "qz-and-ai-streaming-2",
+    "topic": "and-ai-streaming",
+    "questionEn": "Which format is common for streamed answers?",
+    "questionAr": "أي صيغة شائعة للردود المتدفقة؟",
+    "optionsEn": [
+      "Excel spreadsheets",
+      "XML layouts",
+      "Server-sent events",
+      "Protocol Buffers files"
+    ],
+    "optionsAr": [
+      "جداول Excel",
+      "تخطيطات XML",
+      "أحداث الخادم SSE",
+      "ملفات Protocol Buffers"
+    ],
+    "answer": 2,
+    "explanationEn": "Lines starting with data: carry each delta.",
+    "explanationAr": "الأسطر التي تبدأ بـ data: تحمل كل جزء."
+  },
+  {
+    "key": "qz-and-ai-streaming-3",
+    "topic": "and-ai-streaming",
+    "questionEn": "What should happen when the user taps Stop?",
+    "questionAr": "ماذا يجب أن يحدث عندما يضغط المستخدم Stop؟",
+    "optionsEn": [
+      "Close the app",
+      "Cancel the coroutine and the call",
+      "Hide the text but keep reading",
+      "Restart the request"
+    ],
+    "optionsAr": [
+      "أغلق التطبيق",
+      "ألغِ الـ Coroutine والاستدعاء",
+      "أخفِ النص واستمر في القراءة",
+      "أعد تشغيل الطلب"
+    ],
+    "answer": 1,
+    "explanationEn": "The server then stops generating tokens.",
+    "explanationAr": "فيتوقف الخادم عن توليد الرموز."
+  },
+  {
+    "key": "qz-and-ai-streaming-4",
+    "topic": "and-ai-streaming",
+    "questionEn": "Why batch UI updates while streaming?",
+    "questionAr": "لماذا تجمع تحديثات الواجهة أثناء البث؟",
+    "optionsEn": [
+      "Fewer recompositions, smoother UI",
+      "Tokens then arrive in order",
+      "It lowers the price per token",
+      "Compose only accepts batches"
+    ],
+    "optionsAr": [
+      "إعادات تركيب أقل وواجهة أسلس",
+      "لأن الرموز تصل بالترتيب حينها",
+      "لأنه يخفض سعر كل رمز",
+      "لأن Compose لا تقبل إلا الدفعات"
+    ],
+    "answer": 0,
+    "explanationEn": "Updating every 50 to 100 ms still looks live.",
+    "explanationAr": "التحديث كل 50 إلى 100 ملّي ثانية ما زال يبدو حيًا."
+  },
+  {
+    "key": "qz-and-ai-streaming-5",
+    "topic": "and-ai-streaming",
+    "questionEn": "Which timeout setup suits a streaming client?",
+    "questionAr": "أي إعداد مهلات يناسب عميل البث؟",
+    "optionsEn": [
+      "A one-second read timeout",
+      "No timeouts of any kind",
+      "Only a short connect timeout",
+      "No read timeout, a call timeout"
+    ],
+    "optionsAr": [
+      "مهلة قراءة مدتها ثانية واحدة",
+      "دون أي نوع من المهلات",
+      "مهلة اتصال قصيرة فقط",
+      "دون مهلة قراءة مع مهلة استدعاء"
+    ],
+    "answer": 3,
+    "explanationEn": "Gaps between tokens shouldn't fail the call.",
+    "explanationAr": "الفجوات بين الرموز يجب ألا تُفشل الاستدعاء."
+  },
+  {
+    "key": "qz-and-ai-streaming-6",
+    "topic": "and-ai-streaming",
+    "questionEn": "What should you do with partial text after a mid-stream error?",
+    "questionAr": "ماذا تفعل بالنص الجزئي بعد خطأ أثناء البث؟",
+    "optionsEn": [
+      "Show the raw exception",
+      "Crash with a log",
+      "Keep it and offer Retry",
+      "Delete it silently"
+    ],
+    "optionsAr": [
+      "اعرض الاستثناء الخام",
+      "أسقط التطبيق مع سجل",
+      "أبقِه واعرض إعادة المحاولة",
+      "احذفه بصمت"
+    ],
+    "answer": 2,
+    "explanationEn": "Users shouldn't lose what they already read.",
+    "explanationAr": "يجب ألا يفقد المستخدمون ما قرؤوه."
+  },
+  {
+    "key": "qz-and-ai-streaming-7",
+    "topic": "and-ai-streaming",
+    "questionEn": "When should the list auto-scroll to new text?",
+    "questionAr": "متى يجب أن تمرر القائمة تلقائيًا إلى النص الجديد؟",
+    "optionsEn": [
+      "Only when running on tablets",
+      "Only if the user is at the bottom",
+      "Always, after every token",
+      "Never while it's streaming"
+    ],
+    "optionsAr": [
+      "فقط عند العمل على الأجهزة اللوحية",
+      "فقط إذا كان المستخدم في الأسفل",
+      "دائمًا بعد كل رمز",
+      "أبدًا ما دام البث جاريًا"
+    ],
+    "answer": 1,
+    "explanationEn": "Otherwise reading earlier text is interrupted.",
+    "explanationAr": "وإلا تُقاطع قراءة النص السابق."
+  },
+  {
+    "key": "qz-and-ai-streaming-8",
+    "topic": "and-ai-streaming",
+    "questionEn": "How can you test streaming code?",
+    "questionAr": "كيف تختبر كود البث؟",
+    "optionsEn": [
+      "MockWebServer with a chunked body",
+      "Only by hand on a real phone",
+      "With a screenshot test of it",
+      "By calling the production API"
+    ],
+    "optionsAr": [
+      "MockWebServer بجسم مقسم",
+      "يدويًا فقط على هاتف حقيقي",
+      "باختبار لقطة شاشة له",
+      "باستدعاء واجهة الإنتاج"
+    ],
+    "answer": 0,
+    "explanationEn": "Feed SSE lines and assert the Flow.",
+    "explanationAr": "غذِّه بأسطر SSE وتحقق من Flow."
+  },
+  {
+    "key": "qz-and-ai-chat-ux-1",
+    "topic": "and-ai-chat-ux",
+    "questionEn": "Where should chat history live?",
+    "questionAr": "أين يجب أن يعيش سجل المحادثة؟",
+    "optionsEn": [
+      "In the URL",
+      "In Room",
+      "Only in memory",
+      "In Remote Config"
+    ],
+    "optionsAr": [
+      "في العنوان",
+      "في Room",
+      "في الذاكرة فقط",
+      "في Remote Config"
+    ],
+    "answer": 1,
+    "explanationEn": "It survives restarts and works offline.",
+    "explanationAr": "ينجو من إعادة التشغيل ويعمل دون اتصال."
+  },
+  {
+    "key": "qz-and-ai-chat-ux-2",
+    "topic": "and-ai-chat-ux",
+    "questionEn": "Why store a state on each message?",
+    "questionAr": "لماذا تحفظ حالة لكل رسالة؟",
+    "optionsEn": [
+      "To show streaming, failed or stopped",
+      "To sort messages by their size",
+      "Room requires a state column",
+      "To encrypt each message's text"
+    ],
+    "optionsAr": [
+      "لعرض البث أو الفشل أو الإيقاف",
+      "لترتيب الرسائل حسب حجمها",
+      "لأن Room تشترط عمود حالة",
+      "لتشفير نص كل رسالة"
+    ],
+    "answer": 0,
+    "explanationEn": "Each state has its own UI.",
+    "explanationAr": "لكل حالة واجهتها."
+  },
+  {
+    "key": "qz-and-ai-chat-ux-3",
+    "topic": "and-ai-chat-ux",
+    "questionEn": "Why not send the whole history every time?",
+    "questionAr": "لماذا لا ترسل السجل كاملًا في كل مرة؟",
+    "optionsEn": [
+      "Models forget old turns",
+      "Room can't read old rows",
+      "It breaks streaming",
+      "Context limits and token cost"
+    ],
+    "optionsAr": [
+      "لأن النماذج تنسى الأدوار القديمة",
+      "لأن Room لا تقرأ الصفوف القديمة",
+      "لأنه يكسر البث",
+      "حدود السياق وكلفة الرموز"
+    ],
+    "answer": 3,
+    "explanationEn": "Send recent turns plus a summary.",
+    "explanationAr": "أرسل الأدوار الأخيرة مع ملخص."
+  },
+  {
+    "key": "qz-and-ai-chat-ux-4",
+    "topic": "and-ai-chat-ux",
+    "questionEn": "What helps users start an empty chat?",
+    "questionAr": "ما الذي يساعد المستخدمين على بدء محادثة فارغة؟",
+    "optionsEn": [
+      "A long tutorial video",
+      "A sign-up wall",
+      "Suggested prompts",
+      "A blank screen"
+    ],
+    "optionsAr": [
+      "فيديو تعليمي طويل",
+      "جدار تسجيل",
+      "اقتراحات للتعليمات",
+      "شاشة فارغة"
+    ],
+    "answer": 2,
+    "explanationEn": "One tap sends a good first question.",
+    "explanationAr": "ضغطة واحدة ترسل سؤالًا أول جيدًا."
+  },
+  {
+    "key": "qz-and-ai-chat-ux-5",
+    "topic": "and-ai-chat-ux",
+    "questionEn": "What should happen to a user message that failed to send?",
+    "questionAr": "ماذا يحدث لرسالة مستخدم فشل إرسالها؟",
+    "optionsEn": [
+      "Hide the whole conversation",
+      "Keep it with a Retry action",
+      "Delete it from the database",
+      "Send it again in a tight loop"
+    ],
+    "optionsAr": [
+      "أخفِ المحادثة كلها",
+      "أبقِها مع إجراء إعادة المحاولة",
+      "احذفها من قاعدة البيانات",
+      "أعد إرسالها في حلقة ضيقة"
+    ],
+    "answer": 1,
+    "explanationEn": "Never lose what the user typed.",
+    "explanationAr": "لا تُضِع ما كتبه المستخدم أبدًا."
+  },
+  {
+    "key": "qz-and-ai-chat-ux-6",
+    "topic": "and-ai-chat-ux",
+    "questionEn": "Why send feedback with the prompt version?",
+    "questionAr": "لماذا ترسل التقييم مع إصدار التعليمات؟",
+    "optionsEn": [
+      "To compare prompt versions",
+      "To bill the user for it",
+      "To unlock premium features",
+      "To clear the model's cache"
+    ],
+    "optionsAr": [
+      "لمقارنة إصدارات التعليمات",
+      "لفوترة المستخدم عليه",
+      "لفتح الميزات المميزة",
+      "لمسح ذاكرة النموذج المؤقتة"
+    ],
+    "answer": 0,
+    "explanationEn": "Bad ratings become evaluation cases.",
+    "explanationAr": "التقييمات السيئة تصبح حالات تقييم."
+  },
+  {
+    "key": "qz-and-ai-chat-ux-7",
+    "topic": "and-ai-chat-ux",
+    "questionEn": "How should AI answers be presented?",
+    "questionAr": "كيف تُعرض ردود الذكاء الاصطناعي؟",
+    "optionsEn": [
+      "As verified, final facts",
+      "With no marking at all",
+      "As the developer's own opinion",
+      "Labelled as AI-generated"
+    ],
+    "optionsAr": [
+      "كحقائق نهائية مؤكدة",
+      "دون أي تمييز على الإطلاق",
+      "كرأي المطور الشخصي",
+      "مميزة كمحتوى مولّد"
+    ],
+    "answer": 3,
+    "explanationEn": "Answers can be wrong.",
+    "explanationAr": "قد تكون الردود خاطئة."
+  },
+  {
+    "key": "qz-and-ai-chat-ux-8",
+    "topic": "and-ai-chat-ux",
+    "questionEn": "What should screen readers get in an AI chat?",
+    "questionAr": "ماذا يجب أن تحصل عليه قارئات الشاشة في محادثة ذكاء اصطناعي؟",
+    "optionsEn": [
+      "The raw JSON of each reply",
+      "Every single token spoken",
+      "Announcing new messages",
+      "Nothing at all, stay silent"
+    ],
+    "optionsAr": [
+      "نص JSON الخام لكل رد",
+      "نطق كل رمز على حدة",
+      "إعلانات عن الرسائل الجديدة",
+      "لا شيء، فالصمت أفضل"
+    ],
+    "answer": 2,
+    "explanationEn": "Announce complete answers, not each token.",
+    "explanationAr": "أعلن الردود المكتملة لا كل رمز."
+  },
+  {
+    "key": "qz-and-ai-multimodal-1",
+    "topic": "and-ai-multimodal",
+    "questionEn": "Why resize photos before sending them to a model?",
+    "questionAr": "لماذا تغيّر حجم الصور قبل إرسالها إلى نموذج؟",
+    "optionsEn": [
+      "Lower cost and latency",
+      "Models reject color",
+      "To add a watermark",
+      "Android requires it"
+    ],
+    "optionsAr": [
+      "كلفة وزمن استجابة أقل",
+      "لأن النماذج ترفض الألوان",
+      "لإضافة علامة مائية",
+      "لأن Android تشترطه"
+    ],
+    "answer": 0,
+    "explanationEn": "About 1,000 to 1,500 px is usually enough.",
+    "explanationAr": "نحو 1,000 إلى 1,500 بكسل يكفي عادة."
+  },
+  {
+    "key": "qz-and-ai-multimodal-2",
+    "topic": "and-ai-multimodal",
+    "questionEn": "What does re-encoding a JPEG remove?",
+    "questionAr": "ماذا تحذف إعادة ترميز صورة JPEG؟",
+    "optionsEn": [
+      "All the colors",
+      "The image itself",
+      "Nothing at all",
+      "EXIF data such as GPS"
+    ],
+    "optionsAr": [
+      "كل الألوان",
+      "الصورة نفسها",
+      "لا شيء إطلاقًا",
+      "بيانات EXIF مثل GPS"
+    ],
+    "answer": 3,
+    "explanationEn": "Location shouldn't be sent without reason.",
+    "explanationAr": "يجب ألا يُرسل الموقع دون سبب."
+  },
+  {
+    "key": "qz-and-ai-multimodal-3",
+    "topic": "and-ai-multimodal",
+    "questionEn": "Which picker needs no storage permission?",
+    "questionAr": "أي منتقٍ لا يحتاج إذن التخزين؟",
+    "optionsEn": [
+      "MANAGE_EXTERNAL_STORAGE",
+      "A custom gallery",
+      "The photo picker",
+      "A file:// browser"
+    ],
+    "optionsAr": [
+      "MANAGE_EXTERNAL_STORAGE",
+      "معرض مخصص",
+      "منتقي الصور",
+      "متصفح file://"
+    ],
+    "answer": 2,
+    "explanationEn": "Only the chosen photo is shared.",
+    "explanationAr": "لا تُشارك إلا الصورة المختارة."
+  },
+  {
+    "key": "qz-and-ai-multimodal-4",
+    "topic": "and-ai-multimodal",
+    "questionEn": "When should the app request RECORD_AUDIO?",
+    "questionAr": "متى يطلب التطبيق RECORD_AUDIO؟",
+    "optionsEn": [
+      "Every time a chat is opened",
+      "When the user taps the mic",
+      "On the very first launch",
+      "During the installation"
+    ],
+    "optionsAr": [
+      "في كل مرة تُفتح فيها محادثة",
+      "عند الضغط على الميكروفون",
+      "عند أول فتح للتطبيق",
+      "أثناء تثبيت التطبيق"
+    ],
+    "answer": 1,
+    "explanationEn": "Context explains the request.",
+    "explanationAr": "السياق يشرح الطلب."
+  },
+  {
+    "key": "qz-and-ai-multimodal-5",
+    "topic": "and-ai-multimodal",
+    "questionEn": "Which class turns speech into text on Android?",
+    "questionAr": "أي صنف يحوّل الكلام إلى نص في Android؟",
+    "optionsEn": [
+      "SpeechRecognizer",
+      "TextToSpeech",
+      "MediaRecorder only",
+      "AudioTrack"
+    ],
+    "optionsAr": [
+      "SpeechRecognizer",
+      "TextToSpeech",
+      "MediaRecorder فقط",
+      "AudioTrack"
+    ],
+    "answer": 0,
+    "explanationEn": "Use the on-device recognizer when available.",
+    "explanationAr": "استخدم المتعرف على الجهاز عند توفره."
+  },
+  {
+    "key": "qz-and-ai-multimodal-6",
+    "topic": "and-ai-multimodal",
+    "questionEn": "What should you strip before reading an answer aloud?",
+    "questionAr": "ماذا تحذف قبل قراءة الرد بصوت عالٍ؟",
+    "optionsEn": [
+      "All punctuation",
+      "The first sentence",
+      "Numbers",
+      "Markdown symbols"
+    ],
+    "optionsAr": [
+      "كل علامات الترقيم",
+      "الجملة الأولى",
+      "الأرقام",
+      "رموز Markdown"
+    ],
+    "answer": 3,
+    "explanationEn": "Otherwise TTS reads asterisks and hashes.",
+    "explanationAr": "وإلا تقرأ TTS النجوم وعلامات #."
+  },
+  {
+    "key": "qz-and-ai-multimodal-7",
+    "topic": "and-ai-multimodal",
+    "questionEn": "How should you send a large file to an AI endpoint?",
+    "questionAr": "كيف ترسل ملفًا كبيرًا إلى نقطة ذكاء اصطناعي؟",
+    "optionsEn": [
+      "Split it into SMS messages",
+      "Email it to the server",
+      "Upload it and send a reference",
+      "Embed megabytes of base64"
+    ],
+    "optionsAr": [
+      "قسّمه إلى رسائل SMS",
+      "أرسله بالبريد إلى الخادم",
+      "ارفعه وأرسل مرجعًا",
+      "ضمّن ميجابايتات من base64"
+    ],
+    "answer": 2,
+    "explanationEn": "Short-lived URLs keep requests small.",
+    "explanationAr": "الروابط قصيرة العمر تُبقي الطلبات صغيرة."
+  },
+  {
+    "key": "qz-and-ai-multimodal-8",
+    "topic": "and-ai-multimodal",
+    "questionEn": "What should the app do with JSON the model returns?",
+    "questionAr": "ماذا يفعل التطبيق مع JSON الذي يُرجعه النموذج؟",
+    "optionsEn": [
+      "Show it raw to users",
+      "Validate it before using it",
+      "Trust it fully",
+      "Run it as code"
+    ],
+    "optionsAr": [
+      "اعرضه خامًا للمستخدمين",
+      "تحقق منه قبل استخدامه",
+      "ثق به تمامًا",
+      "شغّله ككود"
+    ],
+    "answer": 1,
+    "explanationEn": "Let users correct extracted fields.",
+    "explanationAr": "دع المستخدمين يصححون الحقول المستخرجة."
+  },
+  {
+    "key": "qz-and-ai-on-device-1",
+    "topic": "and-ai-on-device",
+    "questionEn": "What is a main benefit of on-device AI?",
+    "questionAr": "ما الفائدة الرئيسية للذكاء الاصطناعي على الجهاز؟",
+    "optionsEn": [
+      "Bigger, smarter models",
+      "Unlimited memory",
+      "No need for testing",
+      "Privacy and offline use"
+    ],
+    "optionsAr": [
+      "نماذج أكبر وأذكى",
+      "ذاكرة غير محدودة",
+      "لا حاجة إلى الاختبار",
+      "الخصوصية والعمل دون اتصال"
+    ],
+    "answer": 3,
+    "explanationEn": "Data stays on the phone.",
+    "explanationAr": "تبقى البيانات على الهاتف."
+  },
+  {
+    "key": "qz-and-ai-on-device-2",
+    "topic": "and-ai-on-device",
+    "questionEn": "Which system service hosts Gemini Nano on Android?",
+    "questionAr": "أي خدمة نظام تستضيف Gemini Nano في Android؟",
+    "optionsEn": [
+      "MediaStore",
+      "AccountManager",
+      "AICore",
+      "WorkManager"
+    ],
+    "optionsAr": [
+      "MediaStore",
+      "AccountManager",
+      "AICore",
+      "WorkManager"
+    ],
+    "answer": 2,
+    "explanationEn": "ML Kit GenAI APIs use it on supported devices.",
+    "explanationAr": "تستخدمها واجهات GenAI في ML Kit على الأجهزة المدعومة."
+  },
+  {
+    "key": "qz-and-ai-on-device-3",
+    "topic": "and-ai-on-device",
+    "questionEn": "What must you do before using an on-device GenAI feature?",
+    "questionAr": "ماذا يجب أن تفعل قبل استخدام ميزة GenAI على الجهاز؟",
+    "optionsEn": [
+      "Ask for CAMERA",
+      "Check availability",
+      "Root the device",
+      "Disable the network"
+    ],
+    "optionsAr": [
+      "اطلب إذن CAMERA",
+      "افحص التوفر",
+      "اكسر حماية الجهاز",
+      "عطّل الشبكة"
+    ],
+    "answer": 1,
+    "explanationEn": "Fall back or hide the feature when unavailable.",
+    "explanationAr": "ارجع إلى بديل أو أخفِ الميزة عند عدم التوفر."
+  },
+  {
+    "key": "qz-and-ai-on-device-4",
+    "topic": "and-ai-on-device",
+    "questionEn": "How should large model files reach users?",
+    "questionAr": "كيف يجب أن تصل ملفات النماذج الكبيرة إلى المستخدمين؟",
+    "optionsEn": [
+      "Downloaded on demand",
+      "Bundled in every APK",
+      "Sent by email",
+      "Copied from SD cards"
+    ],
+    "optionsAr": [
+      "تُنزّل عند الطلب",
+      "مضمنة في كل APK",
+      "مرسلة بالبريد",
+      "منسوخة من بطاقات SD"
+    ],
+    "answer": 0,
+    "explanationEn": "Verify a checksum after download.",
+    "explanationAr": "تحقق من البصمة بعد التنزيل."
+  },
+  {
+    "key": "qz-and-ai-on-device-5",
+    "topic": "and-ai-on-device",
+    "questionEn": "What is LiteRT?",
+    "questionAr": "ما هي LiteRT؟",
+    "optionsEn": [
+      "A database in Firebase",
+      "A layout in Jetpack Compose",
+      "A compressed image format",
+      "The new name of TensorFlow Lite"
+    ],
+    "optionsAr": [
+      "قاعدة بيانات في Firebase",
+      "تخطيط في Jetpack Compose",
+      "صيغة صور مضغوطة",
+      "الاسم الجديد لـ TensorFlow Lite"
+    ],
+    "answer": 3,
+    "explanationEn": "It runs .tflite models on the device.",
+    "explanationAr": "تشغّل نماذج .tflite على الجهاز."
+  },
+  {
+    "key": "qz-and-ai-on-device-6",
+    "topic": "and-ai-on-device",
+    "questionEn": "Where should inference run?",
+    "questionAr": "أين يجب أن يعمل الاستدلال؟",
+    "optionsEn": [
+      "In a composable body",
+      "In a BroadcastReceiver",
+      "Off the main thread",
+      "Inside onDraw"
+    ],
+    "optionsAr": [
+      "في جسم دالة composable",
+      "في BroadcastReceiver",
+      "خارج الخيط الرئيسي",
+      "داخل onDraw"
+    ],
+    "answer": 2,
+    "explanationEn": "Use Dispatchers.Default.",
+    "explanationAr": "استخدم Dispatchers.Default."
+  },
+  {
+    "key": "qz-and-ai-on-device-7",
+    "topic": "and-ai-on-device",
+    "questionEn": "Why measure on low-end devices?",
+    "questionAr": "لماذا تقيس على الأجهزة الضعيفة؟",
+    "optionsEn": [
+      "To test dark mode",
+      "Memory and speed vary widely",
+      "Low-end phones lack Kotlin",
+      "Play requires it"
+    ],
+    "optionsAr": [
+      "لاختبار الوضع الداكن",
+      "الذاكرة والسرعة تتفاوت كثيرًا",
+      "لأن الهواتف الضعيفة بلا Kotlin",
+      "لأن Play تشترطه"
+    ],
+    "answer": 1,
+    "explanationEn": "A flagship hides real problems.",
+    "explanationAr": "الهاتف الرائد يخفي المشكلات الحقيقية."
+  },
+  {
+    "key": "qz-and-ai-on-device-8",
+    "topic": "and-ai-on-device",
+    "questionEn": "Which ML Kit API translates text offline?",
+    "questionAr": "أي واجهة في ML Kit تترجم النص دون اتصال؟",
+    "optionsEn": [
+      "On-device translation",
+      "Barcode scanning",
+      "Face detection",
+      "Pose detection"
+    ],
+    "optionsAr": [
+      "الترجمة على الجهاز",
+      "مسح الرموز الشريطية",
+      "اكتشاف الوجوه",
+      "اكتشاف الوضعيات"
+    ],
+    "answer": 0,
+    "explanationEn": "Download each language model once.",
+    "explanationAr": "نزّل كل نموذج لغة مرة واحدة."
+  },
+  {
+    "key": "qz-and-ai-firebase-1",
+    "topic": "and-ai-firebase",
+    "questionEn": "What does Firebase AI Logic remove the need for?",
+    "questionAr": "ما الذي تغني عنه Firebase AI Logic؟",
+    "optionsEn": [
+      "The App Check service",
+      "Writing any tests",
+      "Your own proxy server",
+      "Signing users in"
+    ],
+    "optionsAr": [
+      "خدمة App Check",
+      "كتابة أي اختبارات",
+      "خادم وسيط خاص بك",
+      "تسجيل دخول المستخدمين"
+    ],
+    "answer": 2,
+    "explanationEn": "Firebase holds the provider credentials.",
+    "explanationAr": "تحفظ Firebase بيانات اعتماد المزوّد."
+  },
+  {
+    "key": "qz-and-ai-firebase-2",
+    "topic": "and-ai-firebase",
+    "questionEn": "What must be enforced before launching it?",
+    "questionAr": "ما الذي يجب فرضه قبل إطلاقها؟",
+    "optionsEn": [
+      "Analytics consent",
+      "App Check",
+      "Dark mode",
+      "R8 shrinking"
+    ],
+    "optionsAr": [
+      "موافقة التحليلات",
+      "App Check",
+      "الوضع الداكن",
+      "تقليص R8"
+    ],
+    "answer": 1,
+    "explanationEn": "Otherwise anyone can use your quota.",
+    "explanationAr": "وإلا يستطيع أي شخص استخدام حصتك."
+  },
+  {
+    "key": "qz-and-ai-firebase-3",
+    "topic": "and-ai-firebase",
+    "questionEn": "Which function streams the response?",
+    "questionAr": "أي دالة تدفق الرد؟",
+    "optionsEn": [
+      "generateContentStream",
+      "generateContent",
+      "startChat only",
+      "countTokens"
+    ],
+    "optionsAr": [
+      "generateContentStream",
+      "generateContent",
+      "startChat فقط",
+      "countTokens"
+    ],
+    "answer": 0,
+    "explanationEn": "It returns a Flow of partial responses.",
+    "explanationAr": "تُرجع Flow من الردود الجزئية."
+  },
+  {
+    "key": "qz-and-ai-firebase-4",
+    "topic": "and-ai-firebase",
+    "questionEn": "How do you get JSON you can parse?",
+    "questionAr": "كيف تحصل على JSON تستطيع تحليله؟",
+    "optionsEn": [
+      "A longer prompt",
+      "Higher temperature",
+      "A bigger model only",
+      "A response schema"
+    ],
+    "optionsAr": [
+      "تعليمات أطول",
+      "حرارة أعلى",
+      "نموذج أكبر فقط",
+      "مخطط للرد"
+    ],
+    "answer": 3,
+    "explanationEn": "Set responseMimeType to application/json.",
+    "explanationAr": "اضبط responseMimeType على application/json."
+  },
+  {
+    "key": "qz-and-ai-firebase-5",
+    "topic": "and-ai-firebase",
+    "questionEn": "Where should the model name live?",
+    "questionAr": "أين يجب أن يعيش اسم النموذج؟",
+    "optionsEn": [
+      "In the user's profile",
+      "In the app icon",
+      "In Remote Config",
+      "Hard-coded forever"
+    ],
+    "optionsAr": [
+      "في ملف المستخدم الشخصي",
+      "في أيقونة التطبيق",
+      "في Remote Config",
+      "مكتوبًا في الكود للأبد"
+    ],
+    "answer": 2,
+    "explanationEn": "So you can switch models without a release.",
+    "explanationAr": "حتى تبدّل النماذج دون إصدار."
+  },
+  {
+    "key": "qz-and-ai-firebase-6",
+    "topic": "and-ai-firebase",
+    "questionEn": "What does function calling let the model do?",
+    "questionAr": "ماذا يسمح استدعاء الدوال للنموذج بفعله؟",
+    "optionsEn": [
+      "Change the phone's OS",
+      "Ask your app to run a function",
+      "Write to your database alone",
+      "Install other apps"
+    ],
+    "optionsAr": [
+      "تغيير نظام تشغيل الهاتف",
+      "أن يطلب من تطبيقك تشغيل دالة",
+      "الكتابة في قاعدة بياناتك وحده",
+      "تثبيت تطبيقات أخرى"
+    ],
+    "answer": 1,
+    "explanationEn": "Your code decides whether to run it.",
+    "explanationAr": "كودك يقرر هل يشغّلها."
+  },
+  {
+    "key": "qz-and-ai-firebase-7",
+    "topic": "and-ai-firebase",
+    "questionEn": "Which work still belongs in a Cloud Function?",
+    "questionAr": "أي عمل ما زال مكانه Cloud Function؟",
+    "optionsEn": [
+      "Charging credits",
+      "Showing the answer",
+      "Rendering Markdown",
+      "Scrolling the chat"
+    ],
+    "optionsAr": [
+      "خصم الرصيد",
+      "عرض الرد",
+      "عرض Markdown",
+      "تمرير المحادثة"
+    ],
+    "answer": 0,
+    "explanationEn": "Trusted logic can't run only on the client.",
+    "explanationAr": "المنطق الموثوق لا يعمل في العميل وحده."
+  },
+  {
+    "key": "qz-and-ai-firebase-8",
+    "topic": "and-ai-firebase",
+    "questionEn": "What should happen on a safety block?",
+    "questionAr": "ماذا يجب أن يحدث عند حظر لأسباب السلامة؟",
+    "optionsEn": [
+      "Crash the app",
+      "Retry the same prompt",
+      "Hide the error",
+      "Show a clear, kind message"
+    ],
+    "optionsAr": [
+      "أسقط التطبيق",
+      "أعد التعليمات نفسها",
+      "أخفِ الخطأ",
+      "اعرض رسالة واضحة ولطيفة"
+    ],
+    "answer": 3,
+    "explanationEn": "Explain that the request can't be answered.",
+    "explanationAr": "اشرح أن الطلب لا يمكن الرد عليه."
+  },
+  {
+    "key": "qz-and-ai-responsible-1",
+    "topic": "and-ai-responsible",
+    "questionEn": "What is prompt injection?",
+    "questionAr": "ما هو حقن التعليمات؟",
+    "optionsEn": [
+      "A bug in a Gradle plugin",
+      "Instructions hidden in content",
+      "A slow network request",
+      "A crash inside Compose"
+    ],
+    "optionsAr": [
+      "خطأ في إضافة Gradle",
+      "تعليمات مخفية في المحتوى",
+      "طلب شبكة بطيء جدًا",
+      "انهيار داخل Compose"
+    ],
+    "answer": 1,
+    "explanationEn": "Content the model reads tries to override you.",
+    "explanationAr": "يحاول المحتوى الذي يقرؤه النموذج تجاوزك."
+  },
+  {
+    "key": "qz-and-ai-responsible-2",
+    "topic": "and-ai-responsible",
+    "questionEn": "Can prompt wording fully prevent injection?",
+    "questionAr": "هل تمنع صياغة التعليمات الحقن تمامًا؟",
+    "optionsEn": [
+      "No, design for safety",
+      "Yes, with capital letters",
+      "Yes, with longer prompts",
+      "Only in English"
+    ],
+    "optionsAr": [
+      "لا، صمّم للسلامة",
+      "نعم، بالأحرف الكبيرة",
+      "نعم، بتعليمات أطول",
+      "بالإنجليزية فقط"
+    ],
+    "answer": 0,
+    "explanationEn": "Limit what the output can do.",
+    "explanationAr": "قيّد ما يستطيع الإخراج فعله."
+  },
+  {
+    "key": "qz-and-ai-responsible-3",
+    "topic": "and-ai-responsible",
+    "questionEn": "How should model output be treated?",
+    "questionAr": "كيف يُعامل إخراج النموذج؟",
+    "optionsEn": [
+      "As trusted code",
+      "As a system command",
+      "As user consent",
+      "As untrusted input"
+    ],
+    "optionsAr": [
+      "ككود موثوق",
+      "كأمر نظام",
+      "كموافقة من المستخدم",
+      "كمدخل غير موثوق"
+    ],
+    "answer": 3,
+    "explanationEn": "Validate, escape and confirm before acting.",
+    "explanationAr": "تحقق وأفلت وأكّد قبل التصرف."
+  },
+  {
+    "key": "qz-and-ai-responsible-4",
+    "topic": "and-ai-responsible",
+    "questionEn": "What must happen before an AI-suggested payment?",
+    "questionAr": "ماذا يجب أن يحدث قبل دفع يقترحه الذكاء الاصطناعي؟",
+    "optionsEn": [
+      "A random delay",
+      "A retry",
+      "User confirmation",
+      "Nothing, run it"
+    ],
+    "optionsAr": [
+      "تأخير عشوائي",
+      "إعادة محاولة",
+      "تأكيد المستخدم",
+      "لا شيء، نفّذه"
+    ],
+    "answer": 2,
+    "explanationEn": "Show exactly what will happen.",
+    "explanationAr": "اعرض بالضبط ما سيحدث."
+  },
+  {
+    "key": "qz-and-ai-responsible-5",
+    "topic": "and-ai-responsible",
+    "questionEn": "What does Google Play require for generative AI apps?",
+    "questionAr": "ماذا تشترط Google Play لتطبيقات الذكاء الاصطناعي التوليدي؟",
+    "optionsEn": [
+      "A version for the web",
+      "A way to report output",
+      "A paid subscription plan",
+      "A dark theme for the app"
+    ],
+    "optionsAr": [
+      "نسخة كاملة تعمل على الويب",
+      "طريقة للإبلاغ عن الإخراج",
+      "خطة اشتراك مدفوعة",
+      "سمة داكنة للتطبيق"
+    ],
+    "answer": 1,
+    "explanationEn": "Plus preventing restricted content.",
+    "explanationAr": "مع منع المحتوى المقيد."
+  },
+  {
+    "key": "qz-and-ai-responsible-6",
+    "topic": "and-ai-responsible",
+    "questionEn": "What should you send to the model?",
+    "questionAr": "ماذا يجب أن ترسل إلى النموذج؟",
+    "optionsEn": [
+      "Only what the feature needs",
+      "Everything the app has",
+      "The user's whole contact list",
+      "Identifiers of the device"
+    ],
+    "optionsAr": [
+      "فقط ما تحتاجه الميزة",
+      "كل ما يملكه التطبيق",
+      "قائمة جهات اتصال المستخدم كلها",
+      "معرّفات الجهاز"
+    ],
+    "answer": 0,
+    "explanationEn": "Remove personal data you don't need.",
+    "explanationAr": "احذف البيانات الشخصية التي لا تحتاجها."
+  },
+  {
+    "key": "qz-and-ai-responsible-7",
+    "topic": "and-ai-responsible",
+    "questionEn": "What is an evaluation set?",
+    "questionAr": "ما هي مجموعة التقييم؟",
+    "optionsEn": [
+      "A list of the model prices",
+      "A set of the app screenshots",
+      "The team's test phones",
+      "Real inputs and expected traits"
+    ],
+    "optionsAr": [
+      "قائمة بأسعار النماذج المختلفة",
+      "مجموعة من لقطات شاشة التطبيق",
+      "هواتف الاختبار لدى الفريق",
+      "مدخلات حقيقية مع صفات متوقعة"
+    ],
+    "answer": 3,
+    "explanationEn": "Run it on every prompt or model change.",
+    "explanationAr": "شغّلها مع كل تغيير في التعليمات أو النموذج."
+  },
+  {
+    "key": "qz-and-ai-responsible-8",
+    "topic": "and-ai-responsible",
+    "questionEn": "Where should system prompts be built?",
+    "questionAr": "أين يجب أن تُبنى تعليمات النظام؟",
+    "optionsEn": [
+      "In the APK strings",
+      "In the chat history",
+      "On the server or remote config",
+      "From user-editable text"
+    ],
+    "optionsAr": [
+      "في نصوص APK",
+      "في سجل المحادثة",
+      "في الخادم أو الإعداد البعيد",
+      "من نص يعدّله المستخدم"
+    ],
+    "answer": 2,
+    "explanationEn": "Clients must not change them.",
+    "explanationAr": "يجب ألا يغيّرها العملاء."
+  }
+]
