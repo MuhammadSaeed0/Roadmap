@@ -80,7 +80,7 @@ Write-Host "Loaded $($appSettings.Count) app settings (values not shown)."
 # ---------- 2. Tests ----------
 if (-not $SkipTests) {
     Step 'Running backend tests'
-    Invoke-Checked 'Backend tests' { dotnet test (Join-Path $root 'backend\DevPath.Api.Tests') --nologo --verbosity quiet }
+    Invoke-Checked 'Backend tests' { dotnet test (Join-Path $root 'backend\DevPath.Api.Tests') --nologo --verbosity minimal --blame-hang-timeout 5m --blame-hang-dump-type none }
     Step 'Running frontend tests'
     Push-Location $frontend
     try {

@@ -1426,5 +1426,82 @@
     "shortEn": "A publishing format from which Google Play builds optimised APKs for each device.",
     "shortAr": "صيغة نشر يبني منها Google Play ملفات APK محسّنة لكل جهاز.",
     "topicSlug": "and-build-release-basics"
+  },
+  {
+    "term": "composable",
+    "arabic": "الدالة القابلة للتركيب (Composable)",
+    "shortEn": "A Kotlin function annotated with @Composable that describes part of the UI.",
+    "shortAr": "دالة Kotlin معلّمة بـ @Composable تصف جزءًا من الواجهة.",
+    "topicSlug": "and-compose-basics"
+  },
+  {
+    "term": "modifier",
+    "arabic": "المعدّل (Modifier)",
+    "shortEn": "An ordered chain that decorates a composable with size, padding, background, clicks and more.",
+    "shortAr": "سلسلة مرتبة تزيّن الدالة القابلة للتركيب بالحجم والهوامش والخلفية والنقر وغيرها.",
+    "topicSlug": "and-compose-basics"
+  },
+  {
+    "term": "recomposition",
+    "arabic": "إعادة التركيب",
+    "shortEn": "Running composables again when the state they read changes.",
+    "shortAr": "تشغيل الدوال القابلة للتركيب مرة أخرى عندما تتغير الحالة التي تقرؤها.",
+    "topicSlug": "and-compose-state"
+  },
+  {
+    "term": "state hoisting",
+    "arabic": "رفع الحالة",
+    "shortEn": "Moving state up to the caller so a composable receives a value and a change callback.",
+    "shortAr": "نقل الحالة إلى المستدعي فتستقبل الدالة قيمة ودالة لتغييرها.",
+    "topicSlug": "and-compose-state"
+  },
+  {
+    "term": "LazyColumn",
+    "arabic": "القائمة الكسولة LazyColumn",
+    "shortEn": "A vertical list that composes only the items visible on screen.",
+    "shortAr": "قائمة عمودية تركّب فقط العناصر الظاهرة على الشاشة.",
+    "topicSlug": "and-compose-lists"
+  },
+  {
+    "term": "color scheme",
+    "arabic": "مخطط الألوان",
+    "shortEn": "The set of Material color roles, such as primary and onSurface, used by every component.",
+    "shortAr": "مجموعة أدوار ألوان Material مثل primary وonSurface التي يستخدمها كل مكون.",
+    "topicSlug": "and-compose-theming"
+  },
+  {
+    "term": "NavHost",
+    "arabic": "مضيف التنقل NavHost",
+    "shortEn": "The Compose container that maps routes to screens and shows the current destination.",
+    "shortAr": "حاوية Compose التي تربط المسارات بالشاشات وتعرض الوجهة الحالية.",
+    "topicSlug": "and-compose-navigation"
+  },
+  {
+    "term": "LaunchedEffect",
+    "arabic": "التأثير LaunchedEffect",
+    "shortEn": "A Compose effect that runs a coroutine tied to the composable and restarts when its key changes.",
+    "shortAr": "تأثير في Compose يشغّل Coroutine مرتبطة بالدالة ويُعاد تشغيله عند تغير مفتاحه.",
+    "topicSlug": "and-compose-side-effects"
+  },
+  {
+    "term": "window size class",
+    "arabic": "فئة حجم النافذة",
+    "shortEn": "A breakpoint (compact, medium, expanded) used to choose a layout for the available width.",
+    "shortAr": "نقطة فاصلة (compact وmedium وexpanded) تُستخدم لاختيار التصميم حسب العرض المتاح.",
+    "topicSlug": "and-compose-adaptive-a11y"
+  },
+  {
+    "term": "semantics",
+    "arabic": "الدلالات (Semantics)",
+    "shortEn": "The accessibility tree of a Compose UI, read by TalkBack and by UI tests.",
+    "shortAr": "شجرة سهولة الوصول في واجهة Compose التي يقرؤها TalkBack واختبارات الواجهة.",
+    "topicSlug": "and-compose-testing"
+  },
+  {
+    "term": "RecyclerView",
+    "arabic": "القائمة RecyclerView",
+    "shortEn": "The View-system list that recycles item views as the user scrolls.",
+    "shortAr": "قائمة نظام Views التي تعيد استخدام عناصرها أثناء التمرير.",
+    "topicSlug": "and-views-xml"
   }
 ]

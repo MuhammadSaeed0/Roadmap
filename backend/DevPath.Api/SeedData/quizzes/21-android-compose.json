@@ -1,0 +1,1682 @@
+[
+  {
+    "key": "qz-and-compose-basics-1",
+    "topic": "and-compose-basics",
+    "questionEn": "What marks a function as UI in Compose?",
+    "questionAr": "ما الذي يجعل الدالة واجهة في Compose؟",
+    "optionsEn": [
+      "@UiThread",
+      "@Inject",
+      "@Serializable",
+      "@Composable"
+    ],
+    "optionsAr": [
+      "@UiThread",
+      "@Inject",
+      "@Serializable",
+      "@Composable"
+    ],
+    "answer": 3,
+    "explanationEn": "Composables describe UI and can call other composables.",
+    "explanationAr": "الدوال القابلة للتركيب تصف الواجهة وتستدعي دوالًا مثلها."
+  },
+  {
+    "key": "qz-and-compose-basics-2",
+    "topic": "and-compose-basics",
+    "questionEn": "Which layout stacks children vertically?",
+    "questionAr": "أي تخطيط يرصّ العناصر عموديًا؟",
+    "optionsEn": [
+      "Row",
+      "Column",
+      "Box",
+      "Spacer"
+    ],
+    "optionsAr": [
+      "Row",
+      "Column",
+      "Box",
+      "Spacer"
+    ],
+    "answer": 1,
+    "explanationEn": "Row is horizontal and Box layers children.",
+    "explanationAr": "التخطيط Row أفقي وBox يجعل العناصر طبقات."
+  },
+  {
+    "key": "qz-and-compose-basics-3",
+    "topic": "and-compose-basics",
+    "questionEn": "Does modifier order matter?",
+    "questionAr": "هل ترتيب المعدّلات مهم؟",
+    "optionsEn": [
+      "Only inside preview functions",
+      "No, Compose sorts them",
+      "Yes, each wraps the next",
+      "Only for color modifiers"
+    ],
+    "optionsAr": [
+      "في دوال المعاينة فقط",
+      "لا، Compose يرتّبها بنفسه",
+      "نعم، كل معدّل يغلّف ما بعده",
+      "لمعدّلات الألوان فقط"
+    ],
+    "answer": 2,
+    "explanationEn": "padding then background differs from background then padding.",
+    "explanationAr": "الترتيب padding ثم background يختلف عن العكس."
+  },
+  {
+    "key": "qz-and-compose-basics-4",
+    "topic": "and-compose-basics",
+    "questionEn": "Why give a composable a modifier parameter?",
+    "questionAr": "لماذا تعطي الدالة وسيط modifier؟",
+    "optionsEn": [
+      "Compose refuses to compile without it",
+      "So the composable can keep state",
+      "So it renders on the GPU",
+      "So callers can size and place it"
+    ],
+    "optionsAr": [
+      "لأن Compose لا يُترجم دونه",
+      "حتى تحتفظ الدالة بحالتها",
+      "حتى تُرسم على معالج الرسوميات",
+      "ليضبط المستدعي حجمها ومكانها"
+    ],
+    "answer": 3,
+    "explanationEn": "Apply it to the outermost element.",
+    "explanationAr": "طبّقه على العنصر الخارجي."
+  },
+  {
+    "key": "qz-and-compose-basics-5",
+    "topic": "and-compose-basics",
+    "questionEn": "What does @Preview do?",
+    "questionAr": "ماذا تفعل @Preview؟",
+    "optionsEn": [
+      "Shows the UI in Android Studio",
+      "Publishes a test build to Play",
+      "Turns the device to dark mode",
+      "Runs all unit tests on save"
+    ],
+    "optionsAr": [
+      "تعرض الواجهة في Android Studio",
+      "تنشر نسخة اختبار",
+      "تفعّل الوضع الداكن للجهاز",
+      "تشغّل كل اختبارات الوحدات"
+    ],
+    "answer": 0,
+    "explanationEn": "No need to run the app on a device.",
+    "explanationAr": "دون الحاجة لتشغيل التطبيق على جهاز."
+  },
+  {
+    "key": "qz-and-compose-basics-6",
+    "topic": "and-compose-basics",
+    "questionEn": "Which gives a screen a top bar and FAB slots?",
+    "questionAr": "أيها يعطي الشاشة مكانًا لشريط علوي وزر عائم؟",
+    "optionsEn": [
+      "Scaffold",
+      "Surface",
+      "Card",
+      "LazyColumn"
+    ],
+    "optionsAr": [
+      "Scaffold",
+      "Surface",
+      "Card",
+      "LazyColumn"
+    ],
+    "answer": 0,
+    "explanationEn": "Apply the innerPadding it passes to your content.",
+    "explanationAr": "طبّق innerPadding التي يمررها على محتواك."
+  },
+  {
+    "key": "qz-and-compose-basics-7",
+    "topic": "and-compose-basics",
+    "questionEn": "What does Modifier.weight(1f) do in a Row?",
+    "questionAr": "ماذا يفعل Modifier.weight(1f) داخل Row؟",
+    "optionsEn": [
+      "Hides the item from view",
+      "Takes the remaining space",
+      "Sets the text font weight",
+      "Makes the item heavier"
+    ],
+    "optionsAr": [
+      "يخفي العنصر من العرض",
+      "يأخذ المساحة المتبقية",
+      "يضبط سُمك خط النص",
+      "يجعل العنصر أثقل في الذاكرة"
+    ],
+    "answer": 1,
+    "explanationEn": "Weights share free space between children.",
+    "explanationAr": "الأوزان تقسّم المساحة الحرة بين العناصر."
+  },
+  {
+    "key": "qz-and-compose-basics-8",
+    "topic": "and-compose-basics",
+    "questionEn": "A composable returns...",
+    "questionAr": "الدالة القابلة للتركيب تُرجع...",
+    "optionsEn": [
+      "An inflated XML layout",
+      "A Bitmap of the screen",
+      "A new View object",
+      "Nothing; it emits UI"
+    ],
+    "optionsAr": [
+      "تصميم XML بعد تحويله",
+      "صورة Bitmap للشاشة",
+      "كائن View جديد",
+      "لا شيء، فهي تُصدر واجهة"
+    ],
+    "answer": 3,
+    "explanationEn": "It describes UI; Compose builds the tree.",
+    "explanationAr": "تصف الواجهة وCompose يبني الشجرة."
+  },
+  {
+    "key": "qz-and-compose-state-1",
+    "topic": "and-compose-state",
+    "questionEn": "Why doesn't a plain var update the screen?",
+    "questionAr": "لماذا لا يحدّث المتغير العادي var الشاشة؟",
+    "optionsEn": [
+      "Vars are banned in composables",
+      "It needs a stable item key",
+      "Plain vars are too slow",
+      "Compose can't observe it"
+    ],
+    "optionsAr": [
+      "لأن var ممنوع داخل الدوال",
+      "لأنه يحتاج مفتاحًا ثابتًا",
+      "لأن المتغيرات العادية بطيئة جدًا",
+      "لأن Compose لا يستطيع مراقبته"
+    ],
+    "answer": 3,
+    "explanationEn": "Use mutableStateOf so changes trigger recomposition.",
+    "explanationAr": "استخدم mutableStateOf حتى تسبب التغييرات إعادة التركيب."
+  },
+  {
+    "key": "qz-and-compose-state-2",
+    "topic": "and-compose-state",
+    "questionEn": "What does remember keep?",
+    "questionAr": "ماذا تحفظ remember؟",
+    "optionsEn": [
+      "A value across app restarts",
+      "Data in a database",
+      "The scroll position on disk",
+      "A value across recompositions"
+    ],
+    "optionsAr": [
+      "قيمة عبر إعادة تشغيل التطبيق",
+      "بيانات في قاعدة بيانات",
+      "موضع التمرير على القرص",
+      "قيمة عبر إعادة التركيب"
+    ],
+    "answer": 3,
+    "explanationEn": "It is lost on rotation unless saveable.",
+    "explanationAr": "تضيع عند التدوير ما لم تكن saveable."
+  },
+  {
+    "key": "qz-and-compose-state-3",
+    "topic": "and-compose-state",
+    "questionEn": "Which survives rotation?",
+    "questionAr": "أيها يبقى بعد التدوير؟",
+    "optionsEn": [
+      "remember",
+      "rememberSaveable",
+      "A local var",
+      "derivedStateOf"
+    ],
+    "optionsAr": [
+      "remember",
+      "rememberSaveable",
+      "متغير محلي",
+      "derivedStateOf"
+    ],
+    "answer": 1,
+    "explanationEn": "It stores the value in the saved state Bundle.",
+    "explanationAr": "تحفظ القيمة في Bundle الحالة المحفوظة."
+  },
+  {
+    "key": "qz-and-compose-state-4",
+    "topic": "and-compose-state",
+    "questionEn": "What is state hoisting?",
+    "questionAr": "ما هو رفع الحالة؟",
+    "optionsEn": [
+      "Deleting old state",
+      "Moving state to the caller",
+      "Saving state to disk",
+      "Caching images"
+    ],
+    "optionsAr": [
+      "حذف الحالة القديمة",
+      "نقل الحالة إلى المستدعي",
+      "حفظ الحالة على القرص",
+      "تخزين الصور مؤقتًا"
+    ],
+    "answer": 1,
+    "explanationEn": "The composable gets value and onValueChange.",
+    "explanationAr": "الدالة تستقبل value وonValueChange."
+  },
+  {
+    "key": "qz-and-compose-state-5",
+    "topic": "and-compose-state",
+    "questionEn": "In unidirectional data flow...",
+    "questionAr": "في تدفق البيانات أحادي الاتجاه...",
+    "optionsEn": [
+      "Both go sideways",
+      "UI writes to the database",
+      "State goes down, events go up",
+      "Events go down, state goes up"
+    ],
+    "optionsAr": [
+      "كلاهما يتحرك جانبيًا",
+      "الواجهة تكتب في قاعدة البيانات",
+      "الحالة تنزل والأحداث تصعد",
+      "الأحداث تنزل والحالة تصعد"
+    ],
+    "answer": 2,
+    "explanationEn": "One source of truth owns and changes the state.",
+    "explanationAr": "مصدر حقيقة واحد يملك الحالة ويغيّرها."
+  },
+  {
+    "key": "qz-and-compose-state-6",
+    "topic": "and-compose-state",
+    "questionEn": "How do you read a StateFlow in Compose?",
+    "questionAr": "كيف تقرأ StateFlow في Compose؟",
+    "optionsEn": [
+      "flow.value only once",
+      "runBlocking { first() }",
+      "LiveData.observe",
+      "collectAsStateWithLifecycle()"
+    ],
+    "optionsAr": [
+      "flow.value مرة واحدة فقط",
+      "runBlocking { first() }",
+      "LiveData.observe",
+      "collectAsStateWithLifecycle()"
+    ],
+    "answer": 3,
+    "explanationEn": "It stops collecting when the app is in the background.",
+    "explanationAr": "تتوقف عن الجمع عندما يكون التطبيق في الخلفية."
+  },
+  {
+    "key": "qz-and-compose-state-7",
+    "topic": "and-compose-state",
+    "questionEn": "Where should screen data and logic live?",
+    "questionAr": "أين يجب أن تعيش بيانات الشاشة ومنطقها؟",
+    "optionsEn": [
+      "In the composable",
+      "In a ViewModel",
+      "In the Activity",
+      "In a global object"
+    ],
+    "optionsAr": [
+      "في الدالة القابلة للتركيب",
+      "في ViewModel",
+      "في Activity",
+      "في كائن عام"
+    ],
+    "answer": 1,
+    "explanationEn": "It survives configuration changes and is testable.",
+    "explanationAr": "تبقى بعد تغييرات الإعدادات وقابلة للاختبار."
+  },
+  {
+    "key": "qz-and-compose-state-8",
+    "topic": "and-compose-state",
+    "questionEn": "What must you never do during composition?",
+    "questionAr": "ما الذي يجب ألا تفعله أبدًا أثناء التركيب؟",
+    "optionsEn": [
+      "Use modifiers",
+      "Read state",
+      "Change state",
+      "Call other composables"
+    ],
+    "optionsAr": [
+      "استخدام المعدّلات",
+      "قراءة الحالة",
+      "تغيير الحالة",
+      "استدعاء دوال أخرى"
+    ],
+    "answer": 2,
+    "explanationEn": "It can cause infinite recomposition loops.",
+    "explanationAr": "قد يسبب حلقات إعادة تركيب لا تنتهي."
+  },
+  {
+    "key": "qz-and-compose-lists-1",
+    "topic": "and-compose-lists",
+    "questionEn": "Why use LazyColumn for long lists?",
+    "questionAr": "لماذا تستخدم LazyColumn للقوائم الطويلة؟",
+    "optionsEn": [
+      "It sorts items automatically",
+      "It caches images on disk",
+      "It composes only visible items",
+      "It adds Material styling"
+    ],
+    "optionsAr": [
+      "ترتّب العناصر تلقائيًا",
+      "تخزّن الصور على القرص",
+      "تركّب العناصر الظاهرة فقط",
+      "تضيف تنسيق Material للعناصر"
+    ],
+    "answer": 2,
+    "explanationEn": "A Column composes every child.",
+    "explanationAr": "الـ Column تركّب كل العناصر."
+  },
+  {
+    "key": "qz-and-compose-lists-2",
+    "topic": "and-compose-lists",
+    "questionEn": "What do stable item keys give you?",
+    "questionAr": "ماذا تعطيك المفاتيح الثابتة للعناصر؟",
+    "optionsEn": [
+      "Faster network requests",
+      "A smaller APK download",
+      "Built-in dark mode support",
+      "Correct state and animations"
+    ],
+    "optionsAr": [
+      "طلبات شبكة أسرع",
+      "تحميل APK أصغر حجمًا",
+      "دعم مدمج للوضع الداكن",
+      "حالة وحركة صحيحتين"
+    ],
+    "answer": 3,
+    "explanationEn": "Without keys items are tracked by position.",
+    "explanationAr": "دون مفاتيح تُتتبع العناصر بموضعها."
+  },
+  {
+    "key": "qz-and-compose-lists-3",
+    "topic": "and-compose-lists",
+    "questionEn": "Which gives a grid that adapts to width?",
+    "questionAr": "أيها يعطي شبكة تتكيف مع العرض؟",
+    "optionsEn": [
+      "GridCells.Adaptive(160.dp)",
+      "GridCells.Fixed(count = 1)",
+      "Row(Modifier.weight(1f))",
+      "Column(Modifier.fillMaxWidth())"
+    ],
+    "optionsAr": [
+      "GridCells.Adaptive(160.dp)",
+      "GridCells.Fixed(count = 1)",
+      "Row(Modifier.weight(1f))",
+      "Column(Modifier.fillMaxWidth())"
+    ],
+    "answer": 0,
+    "explanationEn": "As many columns as fit the width.",
+    "explanationAr": "أكبر عدد من الأعمدة يتسع له العرض."
+  },
+  {
+    "key": "qz-and-compose-lists-4",
+    "topic": "and-compose-lists",
+    "questionEn": "How do you scroll a list from code?",
+    "questionAr": "كيف تمرّر قائمة من الكود؟",
+    "optionsEn": [
+      "Set a new scroll modifier on the list",
+      "listState.animateScrollToItem in a coroutine",
+      "Change the key of every list item",
+      "Recreate the Activity that hosts it"
+    ],
+    "optionsAr": [
+      "ضبط معدّل تمرير جديد على القائمة",
+      "listState.animateScrollToItem داخل Coroutine",
+      "تغيير مفتاح كل عنصر في القائمة",
+      "إعادة إنشاء Activity التي تستضيف القائمة"
+    ],
+    "answer": 1,
+    "explanationEn": "Use rememberCoroutineScope from a click.",
+    "explanationAr": "استخدم rememberCoroutineScope من نقرة."
+  },
+  {
+    "key": "qz-and-compose-lists-5",
+    "topic": "and-compose-lists",
+    "questionEn": "Why wrap firstVisibleItemIndex checks in derivedStateOf?",
+    "questionAr": "لماذا تغلّف فحص firstVisibleItemIndex بـ derivedStateOf؟",
+    "optionsEn": [
+      "To sort the items that are visible",
+      "To load the item images faster",
+      "To recompose only when the result changes",
+      "To save the scroll position to disk"
+    ],
+    "optionsAr": [
+      "لترتيب العناصر الظاهرة على الشاشة",
+      "لتحميل صور العناصر بسرعة أكبر",
+      "لإعادة التركيب فقط عند تغيّر النتيجة",
+      "لحفظ موضع التمرير على القرص دائمًا"
+    ],
+    "answer": 2,
+    "explanationEn": "Otherwise every scroll frame recomposes.",
+    "explanationAr": "وإلا يُعاد التركيب مع كل إطار تمرير."
+  },
+  {
+    "key": "qz-and-compose-lists-6",
+    "topic": "and-compose-lists",
+    "questionEn": "What should list items avoid?",
+    "questionAr": "ما الذي يجب أن تتجنبه عناصر القائمة؟",
+    "optionsEn": [
+      "Showing any text at all",
+      "Using more than one modifier",
+      "Displaying images from URLs",
+      "Heavy work while composing"
+    ],
+    "optionsAr": [
+      "عرض أي نص إطلاقًا",
+      "استخدام أكثر من معدّل واحد",
+      "عرض الصور من الروابط",
+      "العمل الثقيل أثناء التركيب"
+    ],
+    "answer": 3,
+    "explanationEn": "Prepare data before it reaches the UI.",
+    "explanationAr": "جهّز البيانات قبل وصولها إلى الواجهة."
+  },
+  {
+    "key": "qz-and-compose-lists-7",
+    "topic": "and-compose-lists",
+    "questionEn": "What is contentType for?",
+    "questionAr": "فيمَ يُستخدم contentType؟",
+    "optionsEn": [
+      "Reusing compositions of the same item type",
+      "Setting the MIME type of each item",
+      "Choosing a font for each item type",
+      "Caching network responses per item"
+    ],
+    "optionsAr": [
+      "إعادة استخدام تركيب نوع العنصر نفسه",
+      "ضبط نوع MIME لبيانات كل عنصر",
+      "اختيار خط مختلف لكل نوع عنصر",
+      "تخزين استجابات الشبكة لكل عنصر"
+    ],
+    "answer": 0,
+    "explanationEn": "It helps mixed lists scroll smoothly.",
+    "explanationAr": "يساعد القوائم المختلطة على التمرير بسلاسة."
+  },
+  {
+    "key": "qz-and-compose-lists-8",
+    "topic": "and-compose-lists",
+    "questionEn": "Which shows a chat with the newest message at the bottom?",
+    "questionAr": "أيها يعرض محادثة وأحدث رسالة في الأسفل؟",
+    "optionsEn": [
+      "stickyHeader",
+      "reverseLayout = true",
+      "Modifier.rotate(180f)",
+      "A sorted Column"
+    ],
+    "optionsAr": [
+      "stickyHeader",
+      "reverseLayout = true",
+      "Modifier.rotate(180f)",
+      "Column مرتبة"
+    ],
+    "answer": 1,
+    "explanationEn": "Index 0 is drawn at the bottom.",
+    "explanationAr": "العنصر رقم 0 يُرسم في الأسفل."
+  },
+  {
+    "key": "qz-and-compose-theming-1",
+    "topic": "and-compose-theming",
+    "questionEn": "Where do components get their colors?",
+    "questionAr": "من أين تأخذ المكونات ألوانها؟",
+    "optionsEn": [
+      "MaterialTheme.colorScheme",
+      "res/values/strings.xml",
+      "The AndroidManifest.xml",
+      "The Gradle build file"
+    ],
+    "optionsAr": [
+      "MaterialTheme.colorScheme",
+      "الملف res/values/strings.xml",
+      "الملف AndroidManifest.xml",
+      "ملف بناء Gradle"
+    ],
+    "answer": 0,
+    "explanationEn": "Use roles like primary and onSurface.",
+    "explanationAr": "استخدم أدوارًا مثل primary وonSurface."
+  },
+  {
+    "key": "qz-and-compose-theming-2",
+    "topic": "and-compose-theming",
+    "questionEn": "Why avoid Color(0xFF...) in screens?",
+    "questionAr": "لماذا تتجنب Color(0xFF...) في الشاشات؟",
+    "optionsEn": [
+      "It needs a special permission",
+      "It breaks dark mode and rebranding",
+      "It is much slower to draw",
+      "It was removed in Material 3"
+    ],
+    "optionsAr": [
+      "لأنه يحتاج إذنًا خاصًا من النظام",
+      "يكسر الوضع الداكن وتغيير العلامة",
+      "لأن رسمه أبطأ بكثير من غيره",
+      "لأنه أُزيل في Material 3 الجديد"
+    ],
+    "answer": 1,
+    "explanationEn": "Theme roles change in one place.",
+    "explanationAr": "أدوار المظهر تتغير في مكان واحد."
+  },
+  {
+    "key": "qz-and-compose-theming-3",
+    "topic": "and-compose-theming",
+    "questionEn": "What is dynamic color?",
+    "questionAr": "ما هي الألوان الديناميكية؟",
+    "optionsEn": [
+      "Colors that animate over time",
+      "Colors sent from your server",
+      "Colors from the user's wallpaper",
+      "Random colors on each launch"
+    ],
+    "optionsAr": [
+      "ألوان تتحرك مع الوقت",
+      "ألوان يرسلها خادمك",
+      "ألوان من خلفية المستخدم",
+      "ألوان عشوائية عند كل تشغيل"
+    ],
+    "answer": 2,
+    "explanationEn": "Available on Android 12 and newer.",
+    "explanationAr": "متاحة على Android 12 فأحدث."
+  },
+  {
+    "key": "qz-and-compose-theming-4",
+    "topic": "and-compose-theming",
+    "questionEn": "Text on a primary-colored button should use...",
+    "questionAr": "النص على زر بلون primary يجب أن يستخدم...",
+    "optionsEn": [
+      "primary",
+      "surface",
+      "error",
+      "onPrimary"
+    ],
+    "optionsAr": [
+      "primary",
+      "surface",
+      "error",
+      "onPrimary"
+    ],
+    "answer": 3,
+    "explanationEn": "\"on\" roles contrast with their container.",
+    "explanationAr": "أدوار on تتباين مع حاويتها."
+  },
+  {
+    "key": "qz-and-compose-theming-5",
+    "topic": "and-compose-theming",
+    "questionEn": "What does a design system give a team?",
+    "questionAr": "ماذا يعطي نظام التصميم الفريق؟",
+    "optionsEn": [
+      "Consistent, reusable components",
+      "Faster Gradle builds for all",
+      "Smaller local databases",
+      "Fewer runtime permissions"
+    ],
+    "optionsAr": [
+      "مكونات متسقة وقابلة لإعادة الاستخدام",
+      "بناء Gradle أسرع لكل الوحدات",
+      "قواعد بيانات محلية أصغر حجمًا",
+      "أذونات وقت تشغيل أقل عددًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Change a component once, every screen follows.",
+    "explanationAr": "غيّر المكون مرة فتتبعه كل الشاشات."
+  },
+  {
+    "key": "qz-and-compose-theming-6",
+    "topic": "and-compose-theming",
+    "questionEn": "How do you check a component in both themes?",
+    "questionAr": "كيف تفحص مكونًا في المظهرين؟",
+    "optionsEn": [
+      "R8",
+      "@PreviewLightDark",
+      "A unit test",
+      "Logcat"
+    ],
+    "optionsAr": [
+      "R8",
+      "@PreviewLightDark",
+      "اختبار وحدة",
+      "Logcat"
+    ],
+    "answer": 1,
+    "explanationEn": "It renders light and dark previews.",
+    "explanationAr": "تعرض معاينة فاتحة وأخرى داكنة."
+  },
+  {
+    "key": "qz-and-compose-theming-7",
+    "topic": "and-compose-theming",
+    "questionEn": "Typography roles include...",
+    "questionAr": "أدوار الخطوط تشمل...",
+    "optionsEn": [
+      "dp, sp and px units",
+      "start and end sides",
+      "titleMedium and bodySmall",
+      "red, green and blue"
+    ],
+    "optionsAr": [
+      "الوحدات dp وsp وpx",
+      "الجانبان start وend",
+      "titleMedium وbodySmall",
+      "الألوان الأحمر والأخضر والأزرق"
+    ],
+    "answer": 2,
+    "explanationEn": "From display down to label sizes.",
+    "explanationAr": "من أحجام display حتى label."
+  },
+  {
+    "key": "qz-and-compose-theming-8",
+    "topic": "and-compose-theming",
+    "questionEn": "What does isSystemInDarkTheme() return?",
+    "questionAr": "ماذا تُرجع isSystemInDarkTheme()؟",
+    "optionsEn": [
+      "The current primary theme color",
+      "The version of the installed app",
+      "The user's current font scale",
+      "Whether the device uses dark mode"
+    ],
+    "optionsAr": [
+      "اللون primary الحالي في المظهر",
+      "إصدار التطبيق المثبت على الجهاز",
+      "مقياس الخط الحالي للمستخدم",
+      "هل الجهاز في الوضع الداكن"
+    ],
+    "answer": 3,
+    "explanationEn": "Pass it to your theme to pick a scheme.",
+    "explanationAr": "مرّرها إلى المظهر لاختيار المخطط."
+  },
+  {
+    "key": "qz-and-compose-navigation-1",
+    "topic": "and-compose-navigation",
+    "questionEn": "What maps routes to screens?",
+    "questionAr": "ما الذي يربط المسارات بالشاشات؟",
+    "optionsEn": [
+      "Scaffold",
+      "Intent",
+      "Fragment",
+      "NavHost"
+    ],
+    "optionsAr": [
+      "Scaffold",
+      "Intent",
+      "Fragment",
+      "NavHost"
+    ],
+    "answer": 3,
+    "explanationEn": "Each composable<Route> declares a destination.",
+    "explanationAr": "كل composable<Route> تعرّف وجهة."
+  },
+  {
+    "key": "qz-and-compose-navigation-2",
+    "topic": "and-compose-navigation",
+    "questionEn": "A type-safe route with an argument is...",
+    "questionAr": "المسار الآمن بالأنواع ذو الوسيط هو...",
+    "optionsEn": [
+      "A @Serializable data class",
+      "A string such as \"product/42\"",
+      "An extra inside an Intent",
+      "A Bundle passed by hand"
+    ],
+    "optionsAr": [
+      "صنف data معلّم بـ @Serializable",
+      "نص مثل \"product/42\"",
+      "إضافة داخل Intent",
+      "كائن Bundle يُمرَّر يدويًا"
+    ],
+    "answer": 0,
+    "explanationEn": "ProductDetails(id = 42).",
+    "explanationAr": "مثل ProductDetails(id = 42)."
+  },
+  {
+    "key": "qz-and-compose-navigation-3",
+    "topic": "and-compose-navigation",
+    "questionEn": "What should screens receive instead of NavController?",
+    "questionAr": "ماذا تستقبل الشاشات بدل NavController؟",
+    "optionsEn": [
+      "The NavHost object itself",
+      "Lambdas like onProductClick",
+      "The Activity that hosts them",
+      "A global router singleton"
+    ],
+    "optionsAr": [
+      "المكون NavHost نفسه كاملًا",
+      "تعبيرات lambda مثل onProductClick",
+      "شاشة Activity التي تستضيفها",
+      "كائن توجيه عام وحيد"
+    ],
+    "answer": 1,
+    "explanationEn": "Keeps screens previewable and testable.",
+    "explanationAr": "يبقي الشاشات قابلة للمعاينة والاختبار."
+  },
+  {
+    "key": "qz-and-compose-navigation-4",
+    "topic": "and-compose-navigation",
+    "questionEn": "After sign-in, how do you stop Back returning to it?",
+    "questionAr": "بعد الدخول، كيف تمنع Back من الرجوع إليه؟",
+    "optionsEn": [
+      "Disable the Back key",
+      "Clear the cache",
+      "popUpTo(SignIn) inclusive",
+      "finish() the app"
+    ],
+    "optionsAr": [
+      "تعطيل زر Back",
+      "مسح الذاكرة المؤقتة",
+      "popUpTo(SignIn) مع inclusive",
+      "إنهاء التطبيق بـ finish()"
+    ],
+    "answer": 2,
+    "explanationEn": "It removes sign-in from the back stack.",
+    "explanationAr": "يحذف شاشة الدخول من مكدس الرجوع."
+  },
+  {
+    "key": "qz-and-compose-navigation-5",
+    "topic": "and-compose-navigation",
+    "questionEn": "How does a ViewModel read route arguments?",
+    "questionAr": "كيف تقرأ ViewModel وسائط المسار؟",
+    "optionsEn": [
+      "From a static field",
+      "From the Intent",
+      "From SharedPreferences",
+      "savedStateHandle.toRoute()"
+    ],
+    "optionsAr": [
+      "من حقل static",
+      "من Intent",
+      "من SharedPreferences",
+      "savedStateHandle.toRoute()"
+    ],
+    "answer": 3,
+    "explanationEn": "They also survive process death.",
+    "explanationAr": "وتبقى بعد موت العملية أيضًا."
+  },
+  {
+    "key": "qz-and-compose-navigation-6",
+    "topic": "and-compose-navigation",
+    "questionEn": "What keeps bottom tabs' state?",
+    "questionAr": "ما الذي يحفظ حالة التبويبات السفلية؟",
+    "optionsEn": [
+      "saveState and restoreState",
+      "A new NavHost per tab",
+      "rememberSaveable only",
+      "Recreating screens"
+    ],
+    "optionsAr": [
+      "saveState وrestoreState",
+      "NavHost جديد لكل تبويب",
+      "rememberSaveable فقط",
+      "إعادة إنشاء الشاشات"
+    ],
+    "answer": 0,
+    "explanationEn": "Combine with popUpTo(start) and launchSingleTop.",
+    "explanationAr": "مع popUpTo(start) وlaunchSingleTop."
+  },
+  {
+    "key": "qz-and-compose-navigation-7",
+    "topic": "and-compose-navigation",
+    "questionEn": "What does launchSingleTop prevent?",
+    "questionAr": "ماذا يمنع launchSingleTop؟",
+    "optionsEn": [
+      "Going back with Back",
+      "Duplicate copies of a screen",
+      "Opening deep links",
+      "Screen transition animations"
+    ],
+    "optionsAr": [
+      "الرجوع بزر Back",
+      "نسخ مكررة من الشاشة",
+      "فتح الروابط العميقة",
+      "حركة الانتقال بين الشاشات"
+    ],
+    "answer": 1,
+    "explanationEn": "Tapping a tab twice doesn't stack it.",
+    "explanationAr": "الضغط على التبويب مرتين لا يكدّسه."
+  },
+  {
+    "key": "qz-and-compose-navigation-8",
+    "topic": "and-compose-navigation",
+    "questionEn": "What should navigation arguments be?",
+    "questionAr": "ماذا يجب أن تكون وسائط التنقل؟",
+    "optionsEn": [
+      "Bitmaps of product images",
+      "The screen's ViewModels",
+      "Small values like IDs",
+      "Whole lists of products"
+    ],
+    "optionsAr": [
+      "صور Bitmap للمنتجات",
+      "كائنات ViewModel للشاشة",
+      "قيمًا صغيرة مثل المعرّفات",
+      "قوائم منتجات كاملة"
+    ],
+    "answer": 2,
+    "explanationEn": "Load full data from the repository.",
+    "explanationAr": "حمّل البيانات الكاملة من المستودع."
+  },
+  {
+    "key": "qz-and-compose-forms-1",
+    "topic": "and-compose-forms",
+    "questionEn": "Why must a TextField be backed by state?",
+    "questionAr": "لماذا يجب أن تدعم الحالة حقل TextField؟",
+    "optionsEn": [
+      "To save battery",
+      "Compose requires a ViewModel",
+      "It shows only the value you pass",
+      "It is faster"
+    ],
+    "optionsAr": [
+      "لتوفير البطارية",
+      "Compose يشترط ViewModel",
+      "يعرض فقط القيمة التي تمررها",
+      "لأنه أسرع"
+    ],
+    "answer": 2,
+    "explanationEn": "Update the value in onValueChange.",
+    "explanationAr": "حدّث القيمة في onValueChange."
+  },
+  {
+    "key": "qz-and-compose-forms-2",
+    "topic": "and-compose-forms",
+    "questionEn": "How do you show an email keyboard?",
+    "questionAr": "كيف تعرض لوحة مفاتيح البريد؟",
+    "optionsEn": [
+      "Build a custom keyboard view",
+      "Send an Intent to the keyboard",
+      "Request a keyboard permission",
+      "KeyboardOptions(keyboardType = Email)"
+    ],
+    "optionsAr": [
+      "بناء لوحة مفاتيح مخصصة",
+      "إرسال Intent إلى لوحة المفاتيح",
+      "طلب إذن للوحة المفاتيح",
+      "KeyboardOptions(keyboardType = Email)"
+    ],
+    "answer": 3,
+    "explanationEn": "The keyboard shows @ and .com keys.",
+    "explanationAr": "تعرض لوحة المفاتيح زري @ و‎.com."
+  },
+  {
+    "key": "qz-and-compose-forms-3",
+    "topic": "and-compose-forms",
+    "questionEn": "What does ImeAction.Next do?",
+    "questionAr": "ماذا يفعل ImeAction.Next؟",
+    "optionsEn": [
+      "Shows a Next key",
+      "Submits the form",
+      "Closes the app",
+      "Clears the field"
+    ],
+    "optionsAr": [
+      "يعرض زر Next",
+      "يرسل النموذج",
+      "يُغلق التطبيق",
+      "يمسح الحقل"
+    ],
+    "answer": 0,
+    "explanationEn": "Handle it to move focus.",
+    "explanationAr": "عالجه لنقل التركيز."
+  },
+  {
+    "key": "qz-and-compose-forms-4",
+    "topic": "and-compose-forms",
+    "questionEn": "Where should validation rules live?",
+    "questionAr": "أين يجب أن تعيش قواعد التحقق؟",
+    "optionsEn": [
+      "In the Gradle build script",
+      "In testable functions or the ViewModel",
+      "Inside each TextField's own lambda",
+      "In the XML string resources"
+    ],
+    "optionsAr": [
+      "في سكربت بناء Gradle للتطبيق",
+      "في دوال قابلة للاختبار أو في ViewModel",
+      "داخل lambda الخاصة بكل TextField",
+      "في موارد النصوص بصيغة XML"
+    ],
+    "answer": 1,
+    "explanationEn": "Pure functions are easy to unit test.",
+    "explanationAr": "الدوال النقية سهلة الاختبار."
+  },
+  {
+    "key": "qz-and-compose-forms-5",
+    "topic": "and-compose-forms",
+    "questionEn": "When should a field error appear?",
+    "questionAr": "متى يجب أن يظهر خطأ الحقل؟",
+    "optionsEn": [
+      "Never, only on the server",
+      "Before the user types anything",
+      "After leaving the field or on submit",
+      "On the very first keystroke"
+    ],
+    "optionsAr": [
+      "أبدًا، على الخادم فقط",
+      "قبل أن يكتب المستخدم أي شيء",
+      "بعد مغادرة الحقل أو عند الإرسال",
+      "مع أول ضغطة مفتاح مباشرة"
+    ],
+    "answer": 2,
+    "explanationEn": "Early errors annoy users.",
+    "explanationAr": "الأخطاء المبكرة تزعج المستخدمين."
+  },
+  {
+    "key": "qz-and-compose-forms-6",
+    "topic": "and-compose-forms",
+    "questionEn": "While submitting, the button should...",
+    "questionAr": "أثناء الإرسال يجب أن يكون الزر...",
+    "optionsEn": [
+      "Stay clickable for retries",
+      "Disappear from the screen",
+      "Restart the whole form",
+      "Be disabled and show progress"
+    ],
+    "optionsAr": [
+      "يبقى قابلًا للنقر للإعادة",
+      "يختفي من الشاشة",
+      "يعيد تشغيل النموذج كله",
+      "معطّلًا ويعرض التقدم"
+    ],
+    "answer": 3,
+    "explanationEn": "It prevents double submissions.",
+    "explanationAr": "يمنع الإرسال المزدوج."
+  },
+  {
+    "key": "qz-and-compose-forms-7",
+    "topic": "and-compose-forms",
+    "questionEn": "What hides password characters?",
+    "questionAr": "ما الذي يخفي حروف كلمة المرور؟",
+    "optionsEn": [
+      "PasswordVisualTransformation",
+      "isError = true on the field",
+      "singleLine = true on the field",
+      "KeyboardType.Number options"
+    ],
+    "optionsAr": [
+      "PasswordVisualTransformation",
+      "isError = true على الحقل",
+      "singleLine = true على الحقل",
+      "خيارات KeyboardType.Number"
+    ],
+    "answer": 0,
+    "explanationEn": "Add a toggle to let users check what they typed.",
+    "explanationAr": "أضف زرًا ليتحقق المستخدم مما كتبه."
+  },
+  {
+    "key": "qz-and-compose-forms-8",
+    "topic": "and-compose-forms",
+    "questionEn": "supportingText is used for...",
+    "questionAr": "يُستخدم supportingText لـ...",
+    "optionsEn": [
+      "Choosing the keyboard type",
+      "Hints and errors under the field",
+      "The label inside the field",
+      "Placeholder images in fields"
+    ],
+    "optionsAr": [
+      "اختيار نوع لوحة المفاتيح",
+      "التلميحات والأخطاء تحت الحقل",
+      "العنوان داخل الحقل",
+      "صور مؤقتة داخل الحقول"
+    ],
+    "answer": 1,
+    "explanationEn": "Combine it with isError.",
+    "explanationAr": "استخدمه مع isError."
+  },
+  {
+    "key": "qz-and-compose-side-effects-1",
+    "topic": "and-compose-side-effects",
+    "questionEn": "Why not call analytics directly in a composable?",
+    "questionAr": "لماذا لا تستدعي التحليلات مباشرة في دالة قابلة للتركيب؟",
+    "optionsEn": [
+      "It slows down the Gradle build",
+      "It runs on every recomposition",
+      "Composables can't call functions",
+      "It needs a runtime permission"
+    ],
+    "optionsAr": [
+      "لأنه يبطئ بناء Gradle",
+      "لأنه يعمل مع كل إعادة تركيب",
+      "لأن الدوال لا تستدعي دوالًا",
+      "لأنه يحتاج إذن وقت تشغيل"
+    ],
+    "answer": 1,
+    "explanationEn": "Use an effect such as LaunchedEffect.",
+    "explanationAr": "استخدم تأثيرًا مثل LaunchedEffect."
+  },
+  {
+    "key": "qz-and-compose-side-effects-2",
+    "topic": "and-compose-side-effects",
+    "questionEn": "When does LaunchedEffect(key) restart?",
+    "questionAr": "متى يُعاد تشغيل LaunchedEffect(key)؟",
+    "optionsEn": [
+      "Every second",
+      "Never",
+      "When key changes",
+      "On every recomposition"
+    ],
+    "optionsAr": [
+      "كل ثانية",
+      "أبدًا",
+      "عندما يتغير key",
+      "مع كل إعادة تركيب"
+    ],
+    "answer": 2,
+    "explanationEn": "It is cancelled when it leaves composition.",
+    "explanationAr": "يُلغى عندما يغادر التركيب."
+  },
+  {
+    "key": "qz-and-compose-side-effects-3",
+    "topic": "and-compose-side-effects",
+    "questionEn": "Which effect gives you onDispose?",
+    "questionAr": "أي تأثير يعطيك onDispose؟",
+    "optionsEn": [
+      "LaunchedEffect",
+      "SideEffect",
+      "derivedStateOf",
+      "DisposableEffect"
+    ],
+    "optionsAr": [
+      "LaunchedEffect",
+      "SideEffect",
+      "derivedStateOf",
+      "DisposableEffect"
+    ],
+    "answer": 3,
+    "explanationEn": "Unregister listeners there.",
+    "explanationAr": "ألغِ تسجيل المستمعين هناك."
+  },
+  {
+    "key": "qz-and-compose-side-effects-4",
+    "topic": "and-compose-side-effects",
+    "questionEn": "How do you launch a coroutine from a click?",
+    "questionAr": "كيف تطلق Coroutine من نقرة؟",
+    "optionsEn": [
+      "rememberCoroutineScope",
+      "GlobalScope",
+      "runBlocking",
+      "LaunchedEffect in onClick"
+    ],
+    "optionsAr": [
+      "rememberCoroutineScope",
+      "GlobalScope",
+      "runBlocking",
+      "LaunchedEffect داخل onClick"
+    ],
+    "answer": 0,
+    "explanationEn": "The scope is cancelled with the composable.",
+    "explanationAr": "النطاق يُلغى مع الدالة."
+  },
+  {
+    "key": "qz-and-compose-side-effects-5",
+    "topic": "and-compose-side-effects",
+    "questionEn": "What does rememberUpdatedState solve?",
+    "questionAr": "ماذا تحل rememberUpdatedState؟",
+    "optionsEn": [
+      "Colors that break in dark mode",
+      "Stale lambdas in long effects",
+      "Lists that scroll far too slowly",
+      "List items without stable keys"
+    ],
+    "optionsAr": [
+      "ألوان تنكسر عند تفعيل الوضع الداكن",
+      "تعبيرات lambda القديمة في التأثيرات الطويلة",
+      "قوائم تتمرر ببطء شديد على الأجهزة",
+      "عناصر قوائم بلا مفاتيح ثابتة"
+    ],
+    "answer": 1,
+    "explanationEn": "The effect keeps running with the latest value.",
+    "explanationAr": "يستمر التأثير بأحدث قيمة."
+  },
+  {
+    "key": "qz-and-compose-side-effects-6",
+    "topic": "and-compose-side-effects",
+    "questionEn": "A snackbar shows twice after rotation. Likely cause?",
+    "questionAr": "رسالة Snackbar تظهر مرتين بعد التدوير. ما السبب المحتمل؟",
+    "optionsEn": [
+      "A missing @Preview function",
+      "The wrong font in the theme",
+      "The event is kept in state",
+      "Too many modifiers on it"
+    ],
+    "optionsAr": [
+      "غياب دالة @Preview",
+      "خط خاطئ في المظهر",
+      "الحدث محفوظ في الحالة",
+      "معدّلات كثيرة جدًا عليها"
+    ],
+    "answer": 2,
+    "explanationEn": "Consume it or send it through a Channel.",
+    "explanationAr": "استهلكه أو أرسله عبر Channel."
+  },
+  {
+    "key": "qz-and-compose-side-effects-7",
+    "topic": "and-compose-side-effects",
+    "questionEn": "Which animates showing and hiding?",
+    "questionAr": "أيها يحرّك الظهور والاختفاء؟",
+    "optionsEn": [
+      "animateContentSize",
+      "Crossfade only",
+      "LazyColumn",
+      "AnimatedVisibility"
+    ],
+    "optionsAr": [
+      "animateContentSize",
+      "Crossfade فقط",
+      "LazyColumn",
+      "AnimatedVisibility"
+    ],
+    "answer": 3,
+    "explanationEn": "It fades and expands by default.",
+    "explanationAr": "يتلاشى ويتمدد افتراضيًا."
+  },
+  {
+    "key": "qz-and-compose-side-effects-8",
+    "topic": "and-compose-side-effects",
+    "questionEn": "What turns Compose state into a Flow?",
+    "questionAr": "ما الذي يحوّل حالة Compose إلى Flow؟",
+    "optionsEn": [
+      "snapshotFlow",
+      "stateIn",
+      "asLiveData",
+      "toList"
+    ],
+    "optionsAr": [
+      "snapshotFlow",
+      "stateIn",
+      "asLiveData",
+      "toList"
+    ],
+    "answer": 0,
+    "explanationEn": "Useful for debounce on a text field.",
+    "explanationAr": "مفيد لتأخير الاستجابة في حقل نص."
+  },
+  {
+    "key": "qz-and-compose-adaptive-a11y-1",
+    "topic": "and-compose-adaptive-a11y",
+    "questionEn": "What should layouts depend on?",
+    "questionAr": "على ماذا يجب أن تعتمد التصميمات؟",
+    "optionsEn": [
+      "The Android version",
+      "The country",
+      "The window size class",
+      "The device model name"
+    ],
+    "optionsAr": [
+      "إصدار Android",
+      "الدولة",
+      "فئة حجم النافذة",
+      "اسم طراز الجهاز"
+    ],
+    "answer": 2,
+    "explanationEn": "Windows can be resized or split.",
+    "explanationAr": "النوافذ قد يتغير حجمها أو تُقسم."
+  },
+  {
+    "key": "qz-and-compose-adaptive-a11y-2",
+    "topic": "and-compose-adaptive-a11y",
+    "questionEn": "On expanded width, a list app can...",
+    "questionAr": "على العرض الواسع، يستطيع تطبيق القوائم...",
+    "optionsEn": [
+      "Hide the list completely there",
+      "Lock the screen in portrait",
+      "Use smaller text everywhere",
+      "Show list and details side by side"
+    ],
+    "optionsAr": [
+      "إخفاء القائمة بالكامل هناك",
+      "قفل الشاشة على الوضع الطولي",
+      "استخدام نص أصغر في كل مكان",
+      "عرض القائمة والتفاصيل جنبًا إلى جنب"
+    ],
+    "answer": 3,
+    "explanationEn": "ListDetailPaneScaffold helps.",
+    "explanationAr": "المكون ListDetailPaneScaffold يساعد في ذلك."
+  },
+  {
+    "key": "qz-and-compose-adaptive-a11y-3",
+    "topic": "and-compose-adaptive-a11y",
+    "questionEn": "What contentDescription should a decorative image have?",
+    "questionAr": "أي contentDescription تأخذها صورة زخرفية؟",
+    "optionsEn": [
+      "null",
+      "\"image\"",
+      "The file name",
+      "An emoji"
+    ],
+    "optionsAr": [
+      "null",
+      "\"image\"",
+      "اسم الملف",
+      "رمز تعبيري"
+    ],
+    "answer": 0,
+    "explanationEn": "Screen readers then skip it.",
+    "explanationAr": "فتتخطاها قارئات الشاشة."
+  },
+  {
+    "key": "qz-and-compose-adaptive-a11y-4",
+    "topic": "and-compose-adaptive-a11y",
+    "questionEn": "What is the minimum touch target?",
+    "questionAr": "ما أقل منطقة لمس؟",
+    "optionsEn": [
+      "100dp",
+      "48dp",
+      "12dp",
+      "24dp"
+    ],
+    "optionsAr": [
+      "100dp",
+      "48dp",
+      "12dp",
+      "24dp"
+    ],
+    "answer": 1,
+    "explanationEn": "Small targets are hard to tap.",
+    "explanationAr": "المناطق الصغيرة صعبة اللمس."
+  },
+  {
+    "key": "qz-and-compose-adaptive-a11y-5",
+    "topic": "and-compose-adaptive-a11y",
+    "questionEn": "Why use sp for text size?",
+    "questionAr": "لماذا تستخدم sp لحجم النص؟",
+    "optionsEn": [
+      "It renders text faster",
+      "It turns on RTL support",
+      "It follows the user's font setting",
+      "It is always smaller than dp"
+    ],
+    "optionsAr": [
+      "لأنه يرسم النص أسرع",
+      "لأنه يفعّل دعم RTL",
+      "يتبع إعداد خط المستخدم",
+      "لأنه دائمًا أصغر من dp"
+    ],
+    "answer": 2,
+    "explanationEn": "Test at the largest font scale.",
+    "explanationAr": "اختبر بأكبر مقياس للخط."
+  },
+  {
+    "key": "qz-and-compose-adaptive-a11y-6",
+    "topic": "and-compose-adaptive-a11y",
+    "questionEn": "mergeDescendants on a row makes TalkBack...",
+    "questionAr": "الخاصية mergeDescendants على صف تجعل TalkBack...",
+    "optionsEn": [
+      "Skip it",
+      "Read it twice",
+      "Vibrate",
+      "Read it as one item"
+    ],
+    "optionsAr": [
+      "يتخطاه",
+      "يقرؤه مرتين",
+      "يهتز",
+      "يقرؤه كعنصر واحد"
+    ],
+    "answer": 3,
+    "explanationEn": "Users hear the whole message at once.",
+    "explanationAr": "يسمع المستخدم الرسالة كاملة مرة واحدة."
+  },
+  {
+    "key": "qz-and-compose-adaptive-a11y-7",
+    "topic": "and-compose-adaptive-a11y",
+    "questionEn": "Why use start and end instead of left and right?",
+    "questionAr": "لماذا تستخدم start وend بدل left وright؟",
+    "optionsEn": [
+      "They mirror for RTL languages",
+      "They are shorter to type",
+      "They render faster on GPUs",
+      "Compose rejects left and right"
+    ],
+    "optionsAr": [
+      "تنعكس للغات من اليمين إلى اليسار",
+      "لأنها أقصر في الكتابة",
+      "لأنها تُرسم أسرع على المعالج",
+      "لأن Compose يرفض left وright"
+    ],
+    "answer": 0,
+    "explanationEn": "Arabic layouts flip automatically.",
+    "explanationAr": "التصميمات العربية تنعكس تلقائيًا."
+  },
+  {
+    "key": "qz-and-compose-adaptive-a11y-8",
+    "topic": "and-compose-adaptive-a11y",
+    "questionEn": "Which tool checks a running app for accessibility issues?",
+    "questionAr": "أي أداة تفحص تطبيقًا يعمل بحثًا عن مشكلات الوصول؟",
+    "optionsEn": [
+      "The bundletool command",
+      "Accessibility Scanner",
+      "The R8 code shrinker",
+      "Filters in Logcat"
+    ],
+    "optionsAr": [
+      "الأداة bundletool",
+      "Accessibility Scanner",
+      "مُصغّر الكود R8",
+      "المرشحات في Logcat"
+    ],
+    "answer": 1,
+    "explanationEn": "It flags contrast, labels and target sizes.",
+    "explanationAr": "تكشف التباين والأوصاف وأحجام المناطق."
+  },
+  {
+    "key": "qz-and-compose-testing-1",
+    "topic": "and-compose-testing",
+    "questionEn": "Which rule sets Compose content in a test?",
+    "questionAr": "أي قاعدة تضع محتوى Compose في اختبار؟",
+    "optionsEn": [
+      "createComposeRule()",
+      "ActivityScenario only",
+      "MockK",
+      "JUnit's @Before"
+    ],
+    "optionsAr": [
+      "createComposeRule()",
+      "ActivityScenario فقط",
+      "MockK",
+      "@Before في JUnit"
+    ],
+    "answer": 0,
+    "explanationEn": "Then call compose.setContent { }.",
+    "explanationAr": "ثم استدعِ compose.setContent { }."
+  },
+  {
+    "key": "qz-and-compose-testing-2",
+    "topic": "and-compose-testing",
+    "questionEn": "How should tests find nodes first?",
+    "questionAr": "كيف يجب أن تجد الاختبارات العناصر أولًا؟",
+    "optionsEn": [
+      "By the composable's class name",
+      "By text or content description",
+      "By pixel position on screen",
+      "By a testTag on every node"
+    ],
+    "optionsAr": [
+      "باسم صنف الدالة",
+      "بالنص أو وصف المحتوى",
+      "بموضع البكسل على الشاشة",
+      "بوسم testTag على كل عنصر"
+    ],
+    "answer": 1,
+    "explanationEn": "Like a user or TalkBack would.",
+    "explanationAr": "كما يفعل المستخدم أو TalkBack."
+  },
+  {
+    "key": "qz-and-compose-testing-3",
+    "topic": "and-compose-testing",
+    "questionEn": "When is testTag appropriate?",
+    "questionAr": "متى يكون testTag مناسبًا؟",
+    "optionsEn": [
+      "Never, tags are not allowed",
+      "Only for Button composables",
+      "When there is no good label",
+      "On every node in the tree"
+    ],
+    "optionsAr": [
+      "أبدًا، الوسوم غير مسموحة",
+      "لدوال Button فقط",
+      "عندما لا يوجد عنوان مناسب",
+      "على كل عنصر في الشجرة"
+    ],
+    "answer": 2,
+    "explanationEn": "Charts and image grids are examples.",
+    "explanationAr": "الرسوم البيانية وشبكات الصور أمثلة."
+  },
+  {
+    "key": "qz-and-compose-testing-4",
+    "topic": "and-compose-testing",
+    "questionEn": "Which checks a button can't be pressed?",
+    "questionAr": "أي فحص يتحقق أن الزر لا يمكن ضغطه؟",
+    "optionsEn": [
+      "assertExists()",
+      "performClick()",
+      "printToLog()",
+      "assertIsNotEnabled()"
+    ],
+    "optionsAr": [
+      "assertExists()",
+      "performClick()",
+      "printToLog()",
+      "assertIsNotEnabled()"
+    ],
+    "answer": 3,
+    "explanationEn": "Useful for invalid forms.",
+    "explanationAr": "مفيد للنماذج غير الصالحة."
+  },
+  {
+    "key": "qz-and-compose-testing-5",
+    "topic": "and-compose-testing",
+    "questionEn": "What should UI tests mostly cover?",
+    "questionAr": "ماذا يجب أن تغطي اختبارات الواجهة غالبًا؟",
+    "optionsEn": [
+      "Key flows and visible states",
+      "Every single business rule",
+      "The Gradle build settings",
+      "Room database queries"
+    ],
+    "optionsAr": [
+      "المسارات المهمة والحالات المرئية",
+      "كل قاعدة عمل بلا استثناء",
+      "إعدادات بناء Gradle",
+      "استعلامات قاعدة بيانات Room"
+    ],
+    "answer": 0,
+    "explanationEn": "Rules belong in fast unit tests.",
+    "explanationAr": "القواعد مكانها اختبارات الوحدات السريعة."
+  },
+  {
+    "key": "qz-and-compose-testing-6",
+    "topic": "and-compose-testing",
+    "questionEn": "Why test the stateless content composable?",
+    "questionAr": "لماذا تختبر دالة المحتوى بلا حالة؟",
+    "optionsEn": [
+      "It is faster to write XML",
+      "You can set any state directly",
+      "It runs without a device",
+      "It needs no assertions"
+    ],
+    "optionsAr": [
+      "لأن كتابة XML أسرع",
+      "لأنك تضبط أي حالة مباشرة",
+      "لأنها تعمل دون جهاز",
+      "لأنها لا تحتاج تحققات"
+    ],
+    "answer": 1,
+    "explanationEn": "Each test builds exactly its situation.",
+    "explanationAr": "كل اختبار يبني موقفه بالضبط."
+  },
+  {
+    "key": "qz-and-compose-testing-7",
+    "topic": "and-compose-testing",
+    "questionEn": "A finder matches nothing. What helps?",
+    "questionAr": "أداة بحث لا تطابق شيئًا. ما الذي يساعد؟",
+    "optionsEn": [
+      "Deleting the test",
+      "Raising minSdk",
+      "printToLog on the root",
+      "Adding Thread.sleep"
+    ],
+    "optionsAr": [
+      "حذف الاختبار",
+      "رفع minSdk",
+      "printToLog على الجذر",
+      "إضافة Thread.sleep"
+    ],
+    "answer": 2,
+    "explanationEn": "It shows the real semantics tree.",
+    "explanationAr": "تعرض شجرة الدلالات الحقيقية."
+  },
+  {
+    "key": "qz-and-compose-testing-8",
+    "topic": "and-compose-testing",
+    "questionEn": "Where do instrumented Compose tests live?",
+    "questionAr": "أين تعيش اختبارات Compose على الجهاز؟",
+    "optionsEn": [
+      "src/main",
+      "res/raw",
+      "gradle/",
+      "src/androidTest"
+    ],
+    "optionsAr": [
+      "src/main",
+      "res/raw",
+      "gradle/",
+      "src/androidTest"
+    ],
+    "answer": 3,
+    "explanationEn": "They run on a device or emulator.",
+    "explanationAr": "تعمل على جهاز أو محاكٍ."
+  },
+  {
+    "key": "qz-and-views-xml-1",
+    "topic": "and-views-xml",
+    "questionEn": "What replaces findViewById?",
+    "questionAr": "ما الذي يحل محل findViewById؟",
+    "optionsEn": [
+      "Reflection",
+      "R8",
+      "View Binding",
+      "Data Binding only"
+    ],
+    "optionsAr": [
+      "الانعكاس",
+      "R8",
+      "View Binding",
+      "Data Binding فقط"
+    ],
+    "answer": 2,
+    "explanationEn": "Typed properties for views with ids.",
+    "explanationAr": "خصائص مكتوبة النوع للعناصر ذات id."
+  },
+  {
+    "key": "qz-and-views-xml-2",
+    "topic": "and-views-xml",
+    "questionEn": "What does DiffUtil do?",
+    "questionAr": "ماذا يفعل DiffUtil؟",
+    "optionsEn": [
+      "Downloads images for the list",
+      "Sorts the items by their name",
+      "Validates each item's data",
+      "Finds what changed between lists"
+    ],
+    "optionsAr": [
+      "يحمّل الصور الخاصة بالقائمة",
+      "يرتّب العناصر حسب أسمائها",
+      "يتحقق من بيانات كل عنصر",
+      "يجد ما تغيّر بين القائمتين"
+    ],
+    "answer": 3,
+    "explanationEn": "RecyclerView then animates only changes.",
+    "explanationAr": "فتحرّك RecyclerView التغييرات فقط."
+  },
+  {
+    "key": "qz-and-views-xml-3",
+    "topic": "and-views-xml",
+    "questionEn": "Why clear the binding in onDestroyView?",
+    "questionAr": "لماذا تمسح الـ binding في onDestroyView؟",
+    "optionsEn": [
+      "The view dies before the Fragment",
+      "To save battery while idle",
+      "Gradle requires it for binding",
+      "To reset the shared ViewModel"
+    ],
+    "optionsAr": [
+      "لأن العناصر تموت قبل Fragment",
+      "لتوفير البطارية أثناء الخمول",
+      "لأن Gradle يشترطه للربط",
+      "لإعادة ضبط ViewModel المشتركة"
+    ],
+    "answer": 0,
+    "explanationEn": "Keeping it leaks the old view tree.",
+    "explanationAr": "إبقاؤه يسرّب شجرة العناصر القديمة."
+  },
+  {
+    "key": "qz-and-views-xml-4",
+    "topic": "and-views-xml",
+    "questionEn": "In a Fragment, observe data with...",
+    "questionAr": "في Fragment، راقب البيانات بـ...",
+    "optionsEn": [
+      "A static field",
+      "viewLifecycleOwner",
+      "The Activity",
+      "GlobalScope"
+    ],
+    "optionsAr": [
+      "حقل static",
+      "viewLifecycleOwner",
+      "Activity",
+      "GlobalScope"
+    ],
+    "answer": 1,
+    "explanationEn": "It matches the view's lifetime.",
+    "explanationAr": "يطابق مدة حياة العناصر."
+  },
+  {
+    "key": "qz-and-views-xml-5",
+    "topic": "and-views-xml",
+    "questionEn": "How do you put Compose in an XML screen?",
+    "questionAr": "كيف تضع Compose في شاشة XML؟",
+    "optionsEn": [
+      "A WebView",
+      "A new Activity",
+      "A ComposeView",
+      "An AndroidView"
+    ],
+    "optionsAr": [
+      "WebView",
+      "Activity جديدة",
+      "ComposeView",
+      "AndroidView"
+    ],
+    "answer": 2,
+    "explanationEn": "Call setContent on it.",
+    "explanationAr": "استدعِ setContent عليه."
+  },
+  {
+    "key": "qz-and-views-xml-6",
+    "topic": "and-views-xml",
+    "questionEn": "How do you use a classic View in Compose?",
+    "questionAr": "كيف تستخدم View تقليديًا في Compose؟",
+    "optionsEn": [
+      "ComposeView",
+      "LazyColumn",
+      "Scaffold",
+      "AndroidView"
+    ],
+    "optionsAr": [
+      "ComposeView",
+      "LazyColumn",
+      "Scaffold",
+      "AndroidView"
+    ],
+    "answer": 3,
+    "explanationEn": "With a factory and an update block.",
+    "explanationAr": "بدالة إنشاء وكتلة تحديث."
+  },
+  {
+    "key": "qz-and-views-xml-7",
+    "topic": "and-views-xml",
+    "questionEn": "Which layout positions views by constraints?",
+    "questionAr": "أي تخطيط يضع العناصر بالقيود؟",
+    "optionsEn": [
+      "ConstraintLayout",
+      "FrameLayout",
+      "ScrollView",
+      "TableLayout"
+    ],
+    "optionsAr": [
+      "ConstraintLayout",
+      "FrameLayout",
+      "ScrollView",
+      "TableLayout"
+    ],
+    "answer": 0,
+    "explanationEn": "Views are tied to parents or each other.",
+    "explanationAr": "العناصر مرتبطة بالأم أو ببعضها."
+  },
+  {
+    "key": "qz-and-views-xml-8",
+    "topic": "and-views-xml",
+    "questionEn": "Best way to migrate a big XML app?",
+    "questionAr": "ما أفضل طريقة لنقل تطبيق XML كبير؟",
+    "optionsEn": [
+      "Delete XML first",
+      "Step by step, sharing ViewModels",
+      "Rewrite everything at once",
+      "Never migrate"
+    ],
+    "optionsAr": [
+      "حذف XML أولًا",
+      "خطوة بخطوة مع مشاركة ViewModel",
+      "إعادة كتابة كل شيء مرة واحدة",
+      "عدم النقل أبدًا"
+    ],
+    "answer": 1,
+    "explanationEn": "The app keeps working after each step.",
+    "explanationAr": "يبقى التطبيق يعمل بعد كل خطوة."
+  }
+]
