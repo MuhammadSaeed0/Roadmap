@@ -1,0 +1,170 @@
+[
+  {
+    "key": "and-ex-fb-setup",
+    "type": "Practical",
+    "topic": "and-fb-setup",
+    "difficulty": "Beginner",
+    "minutes": 35,
+    "titleEn": "Two environments and App Check",
+    "titleAr": "بيئتان وApp Check",
+    "problemEn": "Set up an app with dev and prod Firebase projects: the debug build (applicationIdSuffix .debug) uses the dev project and the Local Emulator Suite, release uses prod, both through the Firebase BoM. Install App Check with the debug provider in debug and Play Integrity in release, and hide Firebase behind a repository interface so a ViewModel test runs without Firebase.",
+    "problemAr": "اضبط تطبيقًا بمشروعي Firebase للتطوير والإنتاج: يستخدم بناء debug (مع applicationIdSuffix .debug) مشروع التطوير وLocal Emulator Suite، ويستخدم الإصدار مشروع الإنتاج، وكلاهما عبر Firebase BoM. وثبّت App Check مع مزوّد debug في debug وPlay Integrity في الإصدار، وأخفِ Firebase خلف واجهة مستودع حتى يعمل اختبار ViewModel دون Firebase.",
+    "expectedEn": "Two google-services.json files in src/debug and src/release, emulator wiring behind a build flag, App Check providers by build type, and a passing ViewModel unit test with a fake repository.",
+    "expectedAr": "ملفا google-services.json في src/debug وsrc/release، وتوصيل المحاكي خلف علامة بناء، ومزوّدا App Check حسب نوع البناء، واختبار وحدة ناجح لـ ViewModel مع مستودع وهمي.",
+    "hintsEn": [
+      "Register com.example.app.debug as a separate Android app in the dev project.",
+      "10.0.2.2 reaches your computer from the Android emulator."
+    ],
+    "hintsAr": [
+      "سجّل com.example.app.debug كتطبيق Android منفصل في مشروع التطوير.",
+      "العنوان 10.0.2.2 يصل إلى حاسوبك من محاكي Android."
+    ],
+    "solutionEn": "Add the BoM and google-services plugin; place dev JSON in src/debug and prod JSON in src/release. In debug, buildConfigField USE_EMULATORS = true and call useEmulator for Auth and Firestore in Application. Install DebugAppCheckProviderFactory when BuildConfig.DEBUG, otherwise PlayIntegrityAppCheckProviderFactory. Define NotesRepository with FirestoreNotesRepository bound in Hilt, and test NotesViewModel with FakeNotesRepository.",
+    "solutionAr": "أضف BoM وإضافة google-services، وضع ملف التطوير في src/debug وملف الإنتاج في src/release. وفي debug اضبط buildConfigField باسم USE_EMULATORS = true واستدعِ useEmulator لـ Auth وFirestore في Application. وثبّت DebugAppCheckProviderFactory عندما يكون BuildConfig.DEBUG، وإلا PlayIntegrityAppCheckProviderFactory. وعرّف NotesRepository مع FirestoreNotesRepository مربوطًا في Hilt، واختبر NotesViewModel مع FakeNotesRepository.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-fb-auth",
+    "type": "Practical",
+    "topic": "and-fb-auth",
+    "difficulty": "Intermediate",
+    "minutes": 50,
+    "titleEn": "Sign-in with Google and anonymous upgrade",
+    "titleAr": "تسجيل الدخول بـ Google وترقية الحساب المجهول",
+    "problemEn": "Build sign-in for a notes app: users start anonymously and can write notes immediately; a \"Save your notes\" button links the anonymous account to Google through Credential Manager without losing notes; if that Google account already exists, sign in to it and offer to merge. Route the app from a currentUser Flow, show clear error messages, and clear local data and the FCM token on sign-out.",
+    "problemAr": "ابنِ تسجيل الدخول لتطبيق ملاحظات: يبدأ المستخدمون مجهولين ويستطيعون كتابة الملاحظات فورًا، وزر «احفظ ملاحظاتك» يربط الحساب المجهول بـ Google عبر Credential Manager دون فقد الملاحظات، وإذا كان حساب Google ذلك موجودًا مسبقًا فسجّل الدخول إليه واعرض الدمج. ووجّه التطبيق من تدفق currentUser، واعرض رسائل خطأ واضحة، وامسح البيانات المحلية ورمز FCM عند تسجيل الخروج.",
+    "expectedEn": "An AuthRepository with currentUser Flow, signInAnonymously, linkWithCredential and collision handling, a RootViewModel that routes, mapped error messages and a sign-out that clears state.",
+    "expectedAr": "مستودع AuthRepository مع تدفق currentUser وsignInAnonymously وlinkWithCredential ومعالجة التعارض، وRootViewModel يوجّه، ورسائل أخطاء محوّلة، وتسجيل خروج يمسح الحالة.",
+    "hintsEn": [
+      "Store notes under users/{uid} so linking keeps them automatically.",
+      "Catch FirebaseAuthUserCollisionException around linkWithCredential."
+    ],
+    "hintsAr": [
+      "احفظ الملاحظات تحت users/{uid} حتى يحتفظ بها الربط تلقائيًا.",
+      "التقط FirebaseAuthUserCollisionException حول linkWithCredential."
+    ],
+    "solutionEn": "On first launch, signInAnonymously if currentUser is null. Notes live at users/{uid}/notes. upgradeToGoogle gets a GoogleIdTokenCredential via Credential Manager, builds GoogleAuthProvider.getCredential(idToken, null) and calls linkWithCredential; uid and notes stay. On collision, export local notes, signInWithCredential, then show a dialog to copy them. Sign-out: unregister the FCM token, auth.signOut(), clearCredentialState, clear Room and DataStore.",
+    "solutionAr": "عند أول فتح استدعِ signInAnonymously إذا كان currentUser فارغًا. وتعيش الملاحظات في users/{uid}/notes. وتحصل upgradeToGoogle على GoogleIdTokenCredential عبر Credential Manager، وتبني GoogleAuthProvider.getCredential(idToken, null) وتستدعي linkWithCredential، فيبقى uid والملاحظات. وعند التعارض صدّر الملاحظات المحلية، ثم signInWithCredential، ثم اعرض نافذة لنسخها. وتسجيل الخروج: ألغِ تسجيل رمز FCM، ثم auth.signOut()، ثم clearCredentialState، ثم امسح Room وDataStore.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-fb-rules",
+    "type": "Debugging",
+    "topic": "and-fb-firestore",
+    "difficulty": "Advanced",
+    "minutes": 45,
+    "titleEn": "Fix leaky Firestore rules",
+    "titleAr": "أصلح قواعد Firestore المسرّبة",
+    "problemEn": "A shared task-board app shipped the rules below. A security researcher showed that any signed-in user can read every board, change other users' tasks, and make themselves an admin. Explain each hole, rewrite the rules so only board members can read and write tasks, users can't change their own role, and task titles are limited to 200 characters, and write Emulator Suite tests that prove each fix.",
+    "problemAr": "شحن تطبيق لوحات مهام مشتركة القواعد أدناه. وأظهر باحث أمان أن أي مستخدم مسجّل يستطيع قراءة كل لوحة، وتغيير مهام مستخدمين آخرين، وجعل نفسه مشرفًا. اشرح كل ثغرة، وأعد كتابة القواعد بحيث لا يقرأ المهام ويكتبها إلا أعضاء اللوحة، ولا يستطيع المستخدمون تغيير دورهم، وتُحدّ عناوين المهام بـ 200 حرف، واكتب اختبارات Emulator Suite تثبت كل إصلاح.",
+    "expectedEn": "Rules with deny-by-default, membership checks via get() on the board, an immutable role field, field validation, and tests for allowed and denied cases.",
+    "expectedAr": "قواعد بالمنع افتراضيًا، وفحوصات عضوية عبر get() على اللوحة، وحقل دور ثابت، وتحقق من الحقول، واختبارات للحالات المسموحة والممنوعة.",
+    "hintsEn": [
+      "request.resource.data.diff(resource.data).affectedKeys() lists changed fields.",
+      "Use assertFails and assertSucceeds from @firebase/rules-unit-testing."
+    ],
+    "hintsAr": [
+      "تسرد request.resource.data.diff(resource.data).affectedKeys() الحقول المتغيرة.",
+      "استخدم assertFails وassertSucceeds من @firebase/rules-unit-testing."
+    ],
+    "solutionEn": "Holes: request.auth != null lets any user read and write everything; users/{uid} allows writing role; no validation. Fix: default deny; boards/{boardId} readable when request.auth.uid in resource.data.members; tasks read and write when the caller is in get(/databases/$(database)/documents/boards/$(boardId)).data.members and title is a string of at most 200 characters; users/{uid} writable only by the owner and only if 'role' is not in affectedKeys. Tests: a member reads tasks (succeeds), a non-member reads (fails), a user sets role admin (fails), a 201-character title (fails).",
+    "solutionAr": "الثغرات: ‏request.auth != null تسمح لأي مستخدم بقراءة كل شيء والكتابة فيه، وusers/{uid} تسمح بكتابة role، ولا تحقق. والإصلاح: منع افتراضي، وboards/{boardId} مقروءة عندما يكون request.auth.uid ضمن resource.data.members، والمهام قراءة وكتابة عندما يكون المستدعي ضمن get(/databases/$(database)/documents/boards/$(boardId)).data.members والعنوان نص لا يتجاوز 200 حرف، وusers/{uid} قابلة للكتابة من المالك فقط وبشرط ألا يكون 'role' ضمن affectedKeys. والاختبارات: عضو يقرأ المهام (ينجح)، وغير عضو يقرأ (يفشل)، ومستخدم يضبط role على admin (يفشل)، وعنوان من 201 حرف (يفشل).",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-fb-fcm",
+    "type": "Practical",
+    "topic": "and-fb-messaging",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "Reliable push for order updates",
+    "titleAr": "دفع موثوق لتحديثات الطلبات",
+    "problemEn": "Implement push for order status changes: the app stores its FCM token per device under users/{uid}/devices on sign-in and onNewToken (with retries), removes it on sign-out, handles a data message by syncing the order and showing a notification that opens the order screen, and a Cloud Function sends the message to all of a user's devices when an order document changes status, deleting invalid tokens.",
+    "problemAr": "نفّذ الدفع لتغيّرات حالة الطلبات: يحفظ التطبيق رمز FCM لكل جهاز تحت users/{uid}/devices عند تسجيل الدخول وعند onNewToken (مع إعادة المحاولة)، ويحذفه عند تسجيل الخروج، ويعالج رسالة البيانات بمزامنة الطلب وعرض إشعار يفتح شاشة الطلب، وترسل Cloud Function الرسالة إلى كل أجهزة المستخدم عندما يتغير حقل الحالة في مستند الطلب، مع حذف الرموز غير الصالحة.",
+    "expectedEn": "A TokenSyncWorker, a FirebaseMessagingService that handles data messages, a notification with an immutable PendingIntent, and an onDocumentUpdated function using sendEachForMulticast with token cleanup.",
+    "expectedAr": "العامل TokenSyncWorker، وFirebaseMessagingService تعالج رسائل البيانات، وإشعار مع PendingIntent غير قابل للتغيير، ودالة onDocumentUpdated تستخدم sendEachForMulticast مع تنظيف الرموز.",
+    "hintsEn": [
+      "Use the token itself as the device document id to avoid duplicates.",
+      "Compare before.status and after.status so other edits don't send pushes."
+    ],
+    "hintsAr": [
+      "استخدم الرمز نفسه كمعرّف مستند الجهاز لتجنب التكرار.",
+      "قارن before.status وafter.status حتى لا ترسل التعديلات الأخرى رسائل دفع."
+    ],
+    "solutionEn": "App: TokenSyncWorker upserts users/{uid}/devices/{token} with platform and lastSeen; sign-out deletes that doc and calls deleteToken(). PushService.onMessageReceived for type == order_status enqueues OrderSyncWorker and posts a notification whose PendingIntent opens OrderActivity with the order id. Function: onDocumentUpdated(\"orders/{id}\") returns early if status didn't change, reads the owner's devices, calls sendEachForMulticast with data { type, orderId } and high priority, then deletes docs whose response error is registration-token-not-registered.",
+    "solutionAr": "التطبيق: ينفّذ TokenSyncWorker عملية upsert على users/{uid}/devices/{token} مع المنصة وlastSeen، وتسجيل الخروج يحذف ذلك المستند ويستدعي deleteToken(). وتضيف PushService.onMessageReceived عند type == order_status العامل OrderSyncWorker إلى الطابور وتنشر إشعارًا يفتح PendingIntent الخاص به OrderActivity مع معرّف الطلب. والدالة: ‏onDocumentUpdated(\"orders/{id}\") تعود مبكرًا إذا لم تتغير الحالة، وتقرأ أجهزة المالك، وتستدعي sendEachForMulticast مع data { type, orderId } وأولوية عالية، ثم تحذف المستندات التي خطأ استجابتها registration-token-not-registered.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-fb-flags",
+    "type": "Practical",
+    "topic": "and-fb-remote-config",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "A typed feature flag with a kill switch",
+    "titleAr": "علامة ميزة محددة النوع مع مفتاح إيقاف",
+    "problemEn": "Put a new checkout behind Remote Config: a FeatureFlags interface with typed properties and in-app defaults, values activated at app start and fetched in the background for next time, a real-time kill switch that hides checkout within seconds, and tests for both checkout paths using a FakeFlags implementation. Write the rollout plan as console conditions.",
+    "problemAr": "ضع دفعًا جديدًا خلف Remote Config: واجهة FeatureFlags بخصائص محددة النوع وقيم افتراضية داخل التطبيق، وقيم تُفعّل عند بدء التطبيق وتُجلب في الخلفية للمرة التالية، ومفتاح إيقاف فوري يخفي الدفع خلال ثوانٍ، واختبارات لمساري الدفع باستخدام FakeFlags. واكتب خطة النشر كشروط في اللوحة.",
+    "expectedEn": "RemoteFeatureFlags with setDefaultsAsync, activate-then-fetch at startup, a callbackFlow on addOnConfigUpdateListener for the kill switch, a composable that switches paths, and two UI tests with FakeFlags.",
+    "expectedAr": "الصنف RemoteFeatureFlags مع setDefaultsAsync، والتفعيل ثم الجلب عند البدء، وcallbackFlow على addOnConfigUpdateListener لمفتاح الإيقاف، ودالة composable تبدّل المسارات، واختباران للواجهة مع FakeFlags.",
+    "hintsEn": [
+      "Activate only the updated kill-switch key in the real-time listener.",
+      "Target the flag with app version >= the release that contains the code."
+    ],
+    "hintsAr": [
+      "فعّل مفتاح الإيقاف المحدّث فقط في المستمع الفوري.",
+      "استهدف العلامة بإصدار التطبيق الذي يساوي الإصدار المحتوي على الكود أو يزيد عليه."
+    ],
+    "solutionEn": "interface FeatureFlags { val newCheckout: Boolean; val checkoutKillSwitch: Flow<Boolean> }. RemoteFeatureFlags sets defaults (false, false), activate() in Application, fetch() in a background coroutine. The kill switch flow emits the current value and re-emits after activate() when the listener reports the key. CheckoutEntry shows unavailable text when killed, else new or legacy checkout by newCheckout. Rollout: version >= 4.2 and percentile <= 5 → true; then 25, then 100; default false; then delete the flag.",
+    "solutionAr": "الواجهة: interface FeatureFlags { val newCheckout: Boolean; val checkoutKillSwitch: Flow<Boolean> }. ويضبط RemoteFeatureFlags القيم الافتراضية (false وfalse)، ويستدعي activate() في Application، وfetch() في Coroutine خلفية. ويُصدر تدفق مفتاح الإيقاف القيمة الحالية ويعيد الإصدار بعد activate() عندما يبلّغ المستمع عن المفتاح. وتعرض CheckoutEntry نص عدم التوفر عند الإيقاف، وإلا الدفع الجديد أو القديم حسب newCheckout. والنشر: الإصدار 4.2 فأحدث مع نسبة لا تتجاوز 5 تعطي true، ثم 25، ثم 100، والافتراضي false، ثم احذف العلامة.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-fb-analytics",
+    "type": "Scenario",
+    "topic": "and-fb-analytics",
+    "difficulty": "Beginner",
+    "minutes": 30,
+    "titleEn": "A tracking plan for a learning app",
+    "titleAr": "خطة تتبع لتطبيق تعليمي",
+    "problemEn": "The team wants to know why learners stop after the first week. Write a tracking plan with at most 10 events (names, parameters, when they fire and which question each answers), decide which user properties to set, list what you will never send, describe the consent flow, and implement two events through an AnalyticsTracker interface with a unit test.",
+    "problemAr": "يريد الفريق معرفة لماذا يتوقف المتعلمون بعد الأسبوع الأول. اكتب خطة تتبع بعشرة أحداث على الأكثر (الأسماء والمعاملات ومتى تُطلق وأي سؤال يجيب عنه كل منها)، وحدد خصائص المستخدم التي ستضبطها، واسرد ما لن ترسله أبدًا، وصِف مسار الموافقة، ونفّذ حدثين عبر واجهة AnalyticsTracker مع اختبار وحدة.",
+    "expectedEn": "A tracking plan table, user properties such as level and plan, a never-send list (names, emails, free text), a consent design with collection disabled by default, and a tested tracker implementation.",
+    "expectedAr": "جدول خطة تتبع، وخصائص مستخدم مثل المستوى والخطة، وقائمة بما لا يُرسل أبدًا (الأسماء والبريد والنص الحر)، وتصميم موافقة مع تعطيل الجمع افتراضيًا، وتنفيذ متتبع مختبر.",
+    "hintsEn": [
+      "Map each question to the funnel step it measures.",
+      "Prefer recommended events like tutorial_complete where they fit."
+    ],
+    "hintsAr": [
+      "اربط كل سؤال بخطوة مسار التحويل التي يقيسها.",
+      "فضّل الأحداث الموصى بها مثل tutorial_complete حيث تناسب."
+    ],
+    "solutionEn": "Events: tutorial_complete, lesson_started(lesson_id, level), lesson_completed(lesson_id, duration_s, score), lesson_abandoned(lesson_id, step), streak_lost(days), reminder_opened(source), paywall_viewed(source), purchase. Properties: level, plan, reminder_enabled. Never: names, emails, typed answers, locations. Consent: collection disabled in the manifest, a first-run choice stored in DataStore and wired to setAnalyticsCollectionEnabled and Consent Mode. Test: FakeTracker records lesson_completed with the computed duration.",
+    "solutionAr": "الأحداث: ‏tutorial_complete، وlesson_started(lesson_id, level)، وlesson_completed(lesson_id, duration_s, score)، وlesson_abandoned(lesson_id, step)، وstreak_lost(days)، وreminder_opened(source)، وpaywall_viewed(source)، وpurchase. والخصائص: ‏level وplan وreminder_enabled. وما لا يُرسل أبدًا: الأسماء والبريد والإجابات المكتوبة والمواقع. والموافقة: الجمع معطل في الـ manifest، واختيار عند أول تشغيل يُحفظ في DataStore ويُربط بـ setAnalyticsCollectionEnabled وConsent Mode. والاختبار: يسجّل FakeTracker الحدث lesson_completed بالمدة المحسوبة.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-fb-functions",
+    "type": "Challenge",
+    "topic": "and-fb-storage-functions",
+    "difficulty": "Advanced",
+    "minutes": 60,
+    "titleEn": "Move quiz scoring to the server",
+    "titleAr": "انقل تصحيح الاختبارات إلى الخادم",
+    "problemEn": "A quiz app downloads the correct answers to the phone and writes the score to Firestore itself, so cheaters post perfect scores. Move scoring into a callable Cloud Function with App Check enforced: the client sends only its answers, the function reads the hidden answers, computes the score, writes it with a server timestamp, and rejects a second submission. Lock the scores collection in rules so clients can't write it, and test it all with the Emulator Suite.",
+    "problemAr": "تطبيق اختبارات ينزّل الإجابات الصحيحة إلى الهاتف ويكتب الدرجة في Firestore بنفسه، فينشر الغشاشون درجات كاملة. انقل التصحيح إلى دالة Cloud Function قابلة للاستدعاء مع فرض App Check: يرسل العميل إجاباته فقط، وتقرأ الدالة الإجابات المخفية، وتحسب الدرجة، وتكتبها مع طابع زمني من الخادم، وترفض التقديم الثاني. واقفل مجموعة الدرجات في القواعد حتى لا يكتب فيها العملاء، واختبر كل ذلك بـ Emulator Suite.",
+    "expectedEn": "A submitQuiz onCall function with auth and App Check checks, a transaction that rejects resubmission, rules making answers unreadable and scores client-read-only, and emulator tests for a valid submission, a resubmission and a direct client write.",
+    "expectedAr": "دالة submitQuiz من نوع onCall مع فحوصات المصادقة وApp Check، ومعاملة ترفض إعادة التقديم، وقواعد تجعل الإجابات غير مقروءة والدرجات للقراءة فقط من العميل، واختبارات محاكٍ لتقديم صالح وإعادة تقديم وكتابة مباشرة من العميل.",
+    "hintsEn": [
+      "Keep answers in a separate collection that rules never allow clients to read.",
+      "Map HttpsError codes to messages in the app."
+    ],
+    "hintsAr": [
+      "احفظ الإجابات في مجموعة منفصلة لا تسمح القواعد للعملاء بقراءتها أبدًا.",
+      "حوّل رموز HttpsError إلى رسائل في التطبيق."
+    ],
+    "solutionEn": "Data: quizzes/{id} (public questions) and quizAnswers/{id} (correct answers, rules: allow read, write: if false). Function: onCall({ enforceAppCheck: true }) checks req.auth, validates answers is an array of the right length, runs a transaction that fails with already-exists if users/{uid}/scores/{quizId} exists, otherwise writes { score, total, at: serverTimestamp }. Rules: scores allow read for the owner, write: if false. App: functions.getHttpsCallable(\"submitQuiz\").call(...) and map already-exists to \"You already submitted\". Emulator tests cover all three cases.",
+    "solutionAr": "البيانات: ‏quizzes/{id} (أسئلة عامة) وquizAnswers/{id} (الإجابات الصحيحة، والقواعد: allow read, write: if false). والدالة: ‏onCall({ enforceAppCheck: true }) تفحص req.auth، وتتحقق أن answers مصفوفة بالطول الصحيح، وتنفّذ معاملة تفشل بـ already-exists إذا وُجد users/{uid}/scores/{quizId}، وإلا تكتب { score, total, at: serverTimestamp }. والقواعد: الدرجات allow read للمالك وwrite: if false. والتطبيق: ‏functions.getHttpsCallable(\"submitQuiz\").call(...) مع تحويل already-exists إلى «قدّمت بالفعل». واختبارات المحاكي تغطي الحالات الثلاث.",
+    "runner": "None"
+  }
+]

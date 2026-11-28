@@ -8275,5 +8275,175 @@
       "channel": "Codes Easy",
       "language": "en"
     }
+  ],
+  "and-fb-setup": [
+    {
+      "videoId": "h6fHnFHFgyI",
+      "title": "Firebase App Check Tutorial for Android | Protect Your App from Reverse Engineering| Android Studio",
+      "channel": "Nifty Nods",
+      "language": "en"
+    },
+    {
+      "videoId": "2HUpASA5WHY",
+      "title": "How to Setup Firebase App Check (Web & Android)",
+      "channel": "Error Farm",
+      "language": "en"
+    },
+    {
+      "videoId": "SPTZ8SCDMqY",
+      "title": "ما هي الفايربيز وكيف يتم ربطها بالاندرويد | Firebase and Android",
+      "channel": "SAF1",
+      "language": "ar"
+    }
+  ],
+  "and-fb-auth": [
+    {
+      "videoId": "P-3GmvmIdRo",
+      "title": "Sign in with Google flows with Credential Manager and Firebase Auth",
+      "channel": "Firebase",
+      "language": "en"
+    },
+    {
+      "videoId": "evpg85ViPdg",
+      "title": "Effortless Google Sign-In with Credential Manager in Android | Full Tutorial",
+      "channel": "Himanshu Gaur",
+      "language": "en"
+    },
+    {
+      "videoId": "yMd42rcZ1kE",
+      "title": "🔥 Google Sign-In with Firebase & Credential Manager in Jetpack Compose | Step-by-Step Guide",
+      "channel": "Mawuli Azameti",
+      "language": "en"
+    },
+    {
+      "videoId": "9W6w1-R9NC0",
+      "title": "Firebase auth with Jetpack Compose (Maryam Alhuthayfi)",
+      "channel": "المطورون في العالم العربي - DevMENA",
+      "language": "ar"
+    },
+    {
+      "videoId": "vh2EjZnfXts",
+      "title": "02) Firebase Authentication part I - اضافة عمليات تسجيل الدخول الى تطبيق الاندرويد",
+      "channel": "Lazy programmers",
+      "language": "ar"
+    }
+  ],
+  "and-fb-firestore": [
+    {
+      "videoId": "mf6Wq8jNkus",
+      "title": "Add Firebase Firestore — Kotlin Android Studio Tutorial — Part 1",
+      "channel": "Angga Risky",
+      "language": "en"
+    },
+    {
+      "videoId": "Ul8hn8Nh6-c",
+      "title": "Creating and Deploying Firebase Cloud Functions and Firestore Rules",
+      "channel": "Aurity.co",
+      "language": "en"
+    },
+    {
+      "videoId": "cZfHcqZb4cQ",
+      "title": "Use @Exclude to Prevent a Field from Storing to Firebase Firestore in Android with Kotlin data class",
+      "channel": "Brandan Jones",
+      "language": "en"
+    },
+    {
+      "videoId": "h4iH1i-lGJA",
+      "title": "انشاء قاعدة بيانات في firestore وانشاء الجداول في داخلها وكيفية التعامل معها",
+      "channel": "Thaer Ahmad Abu Hamza",
+      "language": "ar"
+    }
+  ],
+  "and-fb-messaging": [
+    {
+      "videoId": "2xoJi-ZHmNI",
+      "title": "Android Push Notification Using Firebase Cloud Messaging in Kotlin | GeeksforGeeks",
+      "channel": "GeeksforGeeks",
+      "language": "en"
+    },
+    {
+      "videoId": "QH4k6RboLMA",
+      "title": "Let's Build Push Notifications in Jetpack Compose – Firebase Cloud Messaging Made Easy!",
+      "channel": "Mawuli Azameti",
+      "language": "en"
+    },
+    {
+      "videoId": "M7z2MFoI6MQ",
+      "title": "Send Android Push Notifications Using Firebase Cloud Messaging | Android Studio (With Source Code)",
+      "channel": "BoostMyTool",
+      "language": "en"
+    },
+    {
+      "videoId": "NXMAzMRpoGk",
+      "title": "firebase cloud messaging Android Studio ارسال الاشعارات الى تطبيقك",
+      "channel": "Mohammed Albasha محمد الباشا",
+      "language": "ar"
+    }
+  ],
+  "and-fb-remote-config": [
+    {
+      "videoId": "pcnnbjAAIkI",
+      "title": "Getting started with Remote Config (Android)",
+      "channel": "Firebase",
+      "language": "en"
+    },
+    {
+      "videoId": "ph-gNsKX2oA",
+      "title": "A/B Test Like a Pro #1: Preparing for A/B Testing",
+      "channel": "Firebase",
+      "language": "en"
+    },
+    {
+      "videoId": "1fjyW2PHnJw",
+      "title": "Iterate your way to a delightful app experience using Firebase Remote Config and A/B Testing",
+      "channel": "Firebase",
+      "language": "en"
+    }
+  ],
+  "and-fb-analytics": [
+    {
+      "videoId": "7JankM1LG50",
+      "title": "Beginner's Guide to Analytics Logging on Android With Firebase Analytics",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "uyCZIN_gDIw",
+      "title": "Firebase Analytics Tutorial - How to track Mobile Apps",
+      "channel": "MeasureSchool",
+      "language": "en"
+    },
+    {
+      "videoId": "gfJL8jVzIEk",
+      "title": "How to Test GA4 on Android (No Dev Needed): Firebase DebugView",
+      "channel": "Michal Novacek - Mobile Apps",
+      "language": "en"
+    },
+    {
+      "videoId": "fnAX2QqdM0o",
+      "title": "شرح إضافة  Firebase Analytics الى التطبيق Android Studio",
+      "channel": "Alpha Web",
+      "language": "ar"
+    }
+  ],
+  "and-fb-storage-functions": [
+    {
+      "videoId": "DYfP-UIKxH0",
+      "title": "Getting Started with Cloud Functions for Firebase using TypeScript - Firecasts",
+      "channel": "Firebase",
+      "language": "en"
+    },
+    {
+      "videoId": "2u6Zb36OQjM",
+      "title": "Getting started with Cloud Functions",
+      "channel": "Firebase",
+      "language": "en"
+    },
+    {
+      "videoId": "uxcgNttbdZs",
+      "title": "How to Store API Keys Securely in Firebase Cloud Functions | Hide Secret Key",
+      "channel": "WTF Code",
+      "language": "en"
+    }
   ]
 }

@@ -1,0 +1,1178 @@
+[
+  {
+    "key": "qz-and-fb-setup-1",
+    "topic": "and-fb-setup",
+    "questionEn": "What does the Firebase BoM do?",
+    "questionAr": "ماذا يفعل Firebase BoM؟",
+    "optionsEn": [
+      "Encrypts google-services.json",
+      "Hosts your backend code",
+      "Signs the release APK",
+      "Keeps library versions compatible"
+    ],
+    "optionsAr": [
+      "يشفّر google-services.json",
+      "يستضيف كود خادمك",
+      "يوقّع ملف APK",
+      "يُبقي إصدارات المكتبات متوافقة"
+    ],
+    "answer": 3,
+    "explanationEn": "You import Firebase libraries without versions.",
+    "explanationAr": "تستورد مكتبات Firebase دون إصدارات."
+  },
+  {
+    "key": "qz-and-fb-setup-2",
+    "topic": "and-fb-setup",
+    "questionEn": "Is google-services.json a secret?",
+    "questionAr": "هل ملف google-services.json سر؟",
+    "optionsEn": [
+      "Yes, it holds user passwords",
+      "Only in debug builds",
+      "No, rules and App Check protect data",
+      "Yes, never commit it anywhere"
+    ],
+    "optionsAr": [
+      "نعم، فيه كلمات مرور المستخدمين",
+      "في بناءات debug فقط",
+      "لا، فالقواعد وApp Check تحمي البيانات",
+      "نعم، لا تضعه في أي مكان"
+    ],
+    "answer": 2,
+    "explanationEn": "It identifies the project; restrict the API key too.",
+    "explanationAr": "يعرّف المشروع، وقيّد مفتاح الواجهة أيضًا."
+  },
+  {
+    "key": "qz-and-fb-setup-3",
+    "topic": "and-fb-setup",
+    "questionEn": "Why use separate dev and prod projects?",
+    "questionAr": "لماذا تستخدم مشروعين منفصلين للتطوير والإنتاج؟",
+    "optionsEn": [
+      "Analytics stops working in one",
+      "Tests never touch real data",
+      "Firebase requires exactly two",
+      "Each build becomes much smaller"
+    ],
+    "optionsAr": [
+      "تتوقف التحليلات في أحدهما",
+      "لا تلمس الاختبارات البيانات الحقيقية",
+      "لأن Firebase تشترط مشروعين بالضبط",
+      "يصبح كل بناء أصغر بكثير"
+    ],
+    "answer": 1,
+    "explanationEn": "Each build type or flavor points to its project.",
+    "explanationAr": "يشير كل نوع بناء أو نكهة إلى مشروعه."
+  },
+  {
+    "key": "qz-and-fb-setup-4",
+    "topic": "and-fb-setup",
+    "questionEn": "What does App Check verify?",
+    "questionAr": "بماذا يتحقق App Check؟",
+    "optionsEn": [
+      "Requests come from your genuine app",
+      "The user's password strength",
+      "The device's battery level",
+      "The app's translations"
+    ],
+    "optionsAr": [
+      "أن الطلبات من تطبيقك الأصلي",
+      "قوة كلمة مرور المستخدم",
+      "مستوى بطارية الجهاز",
+      "ترجمات التطبيق"
+    ],
+    "answer": 0,
+    "explanationEn": "Play Integrity provides the attestation on Android.",
+    "explanationAr": "توفر Play Integrity الإثبات على Android."
+  },
+  {
+    "key": "qz-and-fb-setup-5",
+    "topic": "and-fb-setup",
+    "questionEn": "Which App Check provider do debug builds use?",
+    "questionAr": "أي مزوّد App Check تستخدمه بناءات debug؟",
+    "optionsEn": [
+      "Play Integrity",
+      "No provider at all",
+      "SafetyNet only",
+      "The debug provider"
+    ],
+    "optionsAr": [
+      "Play Integrity",
+      "دون مزوّد",
+      "SafetyNet فقط",
+      "مزوّد debug"
+    ],
+    "answer": 3,
+    "explanationEn": "Register its debug token in the console.",
+    "explanationAr": "سجّل رمز debug الخاص به في اللوحة."
+  },
+  {
+    "key": "qz-and-fb-setup-6",
+    "topic": "and-fb-setup",
+    "questionEn": "When should you enforce App Check?",
+    "questionAr": "متى تفرض App Check؟",
+    "optionsEn": [
+      "Never, it only writes logs",
+      "On the first day, without checks",
+      "After metrics show real traffic passes",
+      "Before installing the SDK at all"
+    ],
+    "optionsAr": [
+      "أبدًا، فهو يكتب السجلات فقط",
+      "في اليوم الأول دون أي فحص",
+      "بعد أن تُظهر المقاييس مرور الحركة",
+      "قبل تثبيت SDK أصلًا"
+    ],
+    "answer": 2,
+    "explanationEn": "Otherwise old app versions get blocked.",
+    "explanationAr": "وإلا تُحجب إصدارات التطبيق القديمة."
+  },
+  {
+    "key": "qz-and-fb-setup-7",
+    "topic": "and-fb-setup",
+    "questionEn": "What does the Local Emulator Suite give you?",
+    "questionAr": "ماذا تعطيك Local Emulator Suite؟",
+    "optionsEn": [
+      "A listing in the Play Store",
+      "Local Firebase services for testing",
+      "An image for a phone emulator",
+      "Free quota on production"
+    ],
+    "optionsAr": [
+      "صفحة للتطبيق في متجر Play",
+      "خدمات Firebase محلية للاختبار",
+      "صورة لمحاكي هاتف",
+      "حصة مجانية في الإنتاج"
+    ],
+    "answer": 1,
+    "explanationEn": "Point debug builds at it with useEmulator.",
+    "explanationAr": "وجّه بناءات debug إليها بـ useEmulator."
+  },
+  {
+    "key": "qz-and-fb-setup-8",
+    "topic": "and-fb-setup",
+    "questionEn": "Where should Firebase calls live?",
+    "questionAr": "أين يجب أن تعيش استدعاءات Firebase؟",
+    "optionsEn": [
+      "Behind data-layer interfaces",
+      "Directly in composables",
+      "In the Activity only",
+      "In BuildConfig"
+    ],
+    "optionsAr": [
+      "خلف واجهات طبقة البيانات",
+      "مباشرة في دوال composable",
+      "في Activity فقط",
+      "في BuildConfig"
+    ],
+    "answer": 0,
+    "explanationEn": "Screens depend on repositories, tests use fakes.",
+    "explanationAr": "تعتمد الشاشات على المستودعات، والاختبارات على البدائل."
+  },
+  {
+    "key": "qz-and-fb-auth-1",
+    "topic": "and-fb-auth",
+    "questionEn": "How should an app observe the signed-in user?",
+    "questionAr": "كيف يراقب التطبيق المستخدم المسجّل؟",
+    "optionsEn": [
+      "Poll every second",
+      "Check SharedPreferences",
+      "AuthStateListener as a Flow",
+      "Read currentUser once"
+    ],
+    "optionsAr": [
+      "استطلع كل ثانية",
+      "افحص SharedPreferences",
+      "AuthStateListener كـ Flow",
+      "اقرأ currentUser مرة واحدة"
+    ],
+    "answer": 2,
+    "explanationEn": "Sessions can end at any time.",
+    "explanationAr": "قد تنتهي الجلسات في أي وقت."
+  },
+  {
+    "key": "qz-and-fb-auth-2",
+    "topic": "and-fb-auth",
+    "questionEn": "How does Sign in with Google work with Firebase on Android?",
+    "questionAr": "كيف يعمل تسجيل الدخول بـ Google مع Firebase في Android؟",
+    "optionsEn": [
+      "Reading the Google accounts directly",
+      "Credential Manager, then signInWithCredential",
+      "A WebView that shows Google's page",
+      "Sending the password to Firebase"
+    ],
+    "optionsAr": [
+      "قراءة حسابات Google على الجهاز مباشرة",
+      "Credential Manager ثم signInWithCredential",
+      "‏WebView يعرض صفحة Google",
+      "إرسال كلمة المرور إلى Firebase"
+    ],
+    "answer": 1,
+    "explanationEn": "The Google ID token becomes a Firebase credential.",
+    "explanationAr": "يتحول رمز Google ID إلى بيانات اعتماد Firebase."
+  },
+  {
+    "key": "qz-and-fb-auth-3",
+    "topic": "and-fb-auth",
+    "questionEn": "What does FirebaseAuthUserCollisionException mean?",
+    "questionAr": "ماذا يعني FirebaseAuthUserCollisionException؟",
+    "optionsEn": [
+      "The email already has an account",
+      "The network is offline",
+      "The password is too short",
+      "The app is unsigned"
+    ],
+    "optionsAr": [
+      "للبريد حساب مسبقًا",
+      "الشبكة غير متصلة",
+      "كلمة المرور قصيرة جدًا",
+      "التطبيق غير موقّع"
+    ],
+    "answer": 0,
+    "explanationEn": "Offer sign-in or account linking instead.",
+    "explanationAr": "اعرض تسجيل الدخول أو ربط الحساب بدلًا من ذلك."
+  },
+  {
+    "key": "qz-and-fb-auth-4",
+    "topic": "and-fb-auth",
+    "questionEn": "What keeps an anonymous user's data when they sign up?",
+    "questionAr": "ما الذي يحفظ بيانات المستخدم المجهول عند تسجيله؟",
+    "optionsEn": [
+      "signOut then signIn",
+      "Deleting the user",
+      "A new Firebase project",
+      "linkWithCredential"
+    ],
+    "optionsAr": [
+      "signOut ثم signIn",
+      "حذف المستخدم",
+      "مشروع Firebase جديد",
+      "linkWithCredential"
+    ],
+    "answer": 3,
+    "explanationEn": "The uid stays the same.",
+    "explanationAr": "يبقى uid نفسه."
+  },
+  {
+    "key": "qz-and-fb-auth-5",
+    "topic": "and-fb-auth",
+    "questionEn": "What should your own server receive to identify the user?",
+    "questionAr": "ماذا يجب أن يستقبل خادمك لتعريف المستخدم؟",
+    "optionsEn": [
+      "The user's password",
+      "The device name",
+      "The Firebase ID token",
+      "The uid alone"
+    ],
+    "optionsAr": [
+      "كلمة مرور المستخدم",
+      "اسم الجهاز",
+      "رمز Firebase ID",
+      "uid وحده"
+    ],
+    "answer": 2,
+    "explanationEn": "The server verifies it with the Admin SDK.",
+    "explanationAr": "يتحقق منه الخادم بـ Admin SDK."
+  },
+  {
+    "key": "qz-and-fb-auth-6",
+    "topic": "and-fb-auth",
+    "questionEn": "What does getIdToken(false) return?",
+    "questionAr": "ماذا تُرجع getIdToken(false)؟",
+    "optionsEn": [
+      "A secret from Google OAuth",
+      "A cached token, refreshed if expired",
+      "A brand-new token every time",
+      "A hash of the user's password"
+    ],
+    "optionsAr": [
+      "سرًا من Google OAuth",
+      "رمزًا مخزنًا يُحدّث عند انتهائه",
+      "رمزًا جديدًا تمامًا كل مرة",
+      "بصمة لكلمة مرور المستخدم"
+    ],
+    "answer": 1,
+    "explanationEn": "Pass true to force a refresh.",
+    "explanationAr": "مرّر true لفرض التحديث."
+  },
+  {
+    "key": "qz-and-fb-auth-7",
+    "topic": "and-fb-auth",
+    "questionEn": "Where should screens get auth state from?",
+    "questionAr": "من أين تأخذ الشاشات حالة المصادقة؟",
+    "optionsEn": [
+      "An AuthRepository",
+      "FirebaseAuth directly",
+      "A static global",
+      "The Activity intent"
+    ],
+    "optionsAr": [
+      "مستودع AuthRepository",
+      "FirebaseAuth مباشرة",
+      "متغير عام ثابت",
+      "نية Activity"
+    ],
+    "answer": 0,
+    "explanationEn": "It keeps screens testable with fakes.",
+    "explanationAr": "يُبقي الشاشات قابلة للاختبار ببدائل وهمية."
+  },
+  {
+    "key": "qz-and-fb-auth-8",
+    "topic": "and-fb-auth",
+    "questionEn": "What should sign-out also clear?",
+    "questionAr": "ماذا يجب أن يمسح تسجيل الخروج أيضًا؟",
+    "optionsEn": [
+      "The app's icon",
+      "The Firebase project",
+      "Other users' accounts",
+      "Local data and the FCM token"
+    ],
+    "optionsAr": [
+      "أيقونة التطبيق",
+      "مشروع Firebase",
+      "حسابات المستخدمين الآخرين",
+      "البيانات المحلية ورمز FCM"
+    ],
+    "answer": 3,
+    "explanationEn": "A shared phone shouldn't keep the old user's data.",
+    "explanationAr": "يجب ألا يحتفظ هاتف مشترك ببيانات المستخدم السابق."
+  },
+  {
+    "key": "qz-and-fb-firestore-1",
+    "topic": "and-fb-firestore",
+    "questionEn": "What is Firestore's data model?",
+    "questionAr": "ما نموذج البيانات في Firestore؟",
+    "optionsEn": [
+      "Tables with joins",
+      "A single JSON file",
+      "Key-value only, no queries",
+      "Collections of documents"
+    ],
+    "optionsAr": [
+      "جداول مع ربط",
+      "ملف JSON واحد",
+      "مفتاح وقيمة فقط دون استعلامات",
+      "مجموعات من المستندات"
+    ],
+    "answer": 3,
+    "explanationEn": "Documents can have subcollections.",
+    "explanationAr": "يمكن أن يكون للمستندات مجموعات فرعية."
+  },
+  {
+    "key": "qz-and-fb-firestore-2",
+    "topic": "and-fb-firestore",
+    "questionEn": "How should you design Firestore data?",
+    "questionAr": "كيف تصمم بيانات Firestore؟",
+    "optionsEn": [
+      "One huge document",
+      "Randomly, then index",
+      "Around the screens' queries",
+      "Exactly like SQL tables"
+    ],
+    "optionsAr": [
+      "مستند واحد ضخم",
+      "عشوائيًا ثم الفهرسة",
+      "حول استعلامات الشاشات",
+      "تمامًا كجداول SQL"
+    ],
+    "answer": 2,
+    "explanationEn": "Some duplication saves reads.",
+    "explanationAr": "بعض التكرار يوفر القراءات."
+  },
+  {
+    "key": "qz-and-fb-firestore-3",
+    "topic": "and-fb-firestore",
+    "questionEn": "What do snapshot listeners provide?",
+    "questionAr": "ماذا يوفر مستمعو اللقطات؟",
+    "optionsEn": [
+      "User sign-in",
+      "Real-time updates",
+      "File uploads",
+      "Push notifications"
+    ],
+    "optionsAr": [
+      "تسجيل دخول المستخدم",
+      "تحديثات فورية",
+      "رفع الملفات",
+      "إشعارات الدفع"
+    ],
+    "answer": 1,
+    "explanationEn": "Wrap them as Flow with snapshots().",
+    "explanationAr": "غلّفها كـ Flow بـ snapshots()."
+  },
+  {
+    "key": "qz-and-fb-firestore-4",
+    "topic": "and-fb-firestore",
+    "questionEn": "What happens to writes while offline?",
+    "questionAr": "ماذا يحدث للكتابات أثناء عدم الاتصال؟",
+    "optionsEn": [
+      "Applied locally, synced later",
+      "They are lost for good",
+      "The app crashes right away",
+      "They need a manual retry button"
+    ],
+    "optionsAr": [
+      "تُطبّق محليًا وتُزامن لاحقًا",
+      "تضيع نهائيًا",
+      "ينهار التطبيق فورًا",
+      "تحتاج زر إعادة يدويًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Offline persistence is on by default.",
+    "explanationAr": "التخزين دون اتصال مفعّل افتراضيًا."
+  },
+  {
+    "key": "qz-and-fb-firestore-5",
+    "topic": "and-fb-firestore",
+    "questionEn": "What is the real access control in Firestore?",
+    "questionAr": "ما التحكم الحقيقي في الوصول في Firestore؟",
+    "optionsEn": [
+      "Hiding buttons in the UI",
+      "R8 obfuscation",
+      "The google-services file",
+      "Security rules on the server"
+    ],
+    "optionsAr": [
+      "إخفاء الأزرار في الواجهة",
+      "تمويه R8",
+      "ملف google-services",
+      "قواعد الأمان على الخادم"
+    ],
+    "answer": 3,
+    "explanationEn": "The client is never trusted.",
+    "explanationAr": "العميل غير موثوق أبدًا."
+  },
+  {
+    "key": "qz-and-fb-firestore-6",
+    "topic": "and-fb-firestore",
+    "questionEn": "When do you need a transaction?",
+    "questionAr": "متى تحتاج معاملة؟",
+    "optionsEn": [
+      "Listening to a live query",
+      "Uploading a photo file",
+      "Consistent read-modify-write",
+      "Reading a single document"
+    ],
+    "optionsAr": [
+      "الاستماع إلى استعلام حي",
+      "رفع ملف صورة",
+      "قراءة وتعديل وكتابة متسقة",
+      "قراءة مستند واحد فقط"
+    ],
+    "answer": 2,
+    "explanationEn": "For example claiming an item once.",
+    "explanationAr": "مثل حجز عنصر مرة واحدة."
+  },
+  {
+    "key": "qz-and-fb-firestore-7",
+    "topic": "and-fb-firestore",
+    "questionEn": "Why detach listeners with the lifecycle?",
+    "questionAr": "لماذا تفصل المستمعين مع دورة الحياة؟",
+    "optionsEn": [
+      "To clear the cache",
+      "To stop paying for unseen reads",
+      "Listeners crash in background",
+      "Rules require it"
+    ],
+    "optionsAr": [
+      "لمسح الذاكرة المؤقتة",
+      "للتوقف عن دفع قراءات غير مرئية",
+      "لأن المستمعين ينهارون في الخلفية",
+      "لأن القواعد تشترطه"
+    ],
+    "answer": 1,
+    "explanationEn": "stateIn(WhileSubscribed) does it for you.",
+    "explanationAr": "تفعل stateIn(WhileSubscribed) ذلك عنك."
+  },
+  {
+    "key": "qz-and-fb-firestore-8",
+    "topic": "and-fb-firestore",
+    "questionEn": "How should you test security rules?",
+    "questionAr": "كيف تختبر قواعد الأمان؟",
+    "optionsEn": [
+      "With the Emulator Suite",
+      "In production with users",
+      "By reading them twice",
+      "With a UI screenshot"
+    ],
+    "optionsAr": [
+      "باستخدام Emulator Suite",
+      "في الإنتاج مع المستخدمين",
+      "بقراءتها مرتين",
+      "بلقطة شاشة للواجهة"
+    ],
+    "answer": 0,
+    "explanationEn": "Run rules tests before every deploy.",
+    "explanationAr": "شغّل اختبارات القواعد قبل كل نشر."
+  },
+  {
+    "key": "qz-and-fb-messaging-1",
+    "topic": "and-fb-messaging",
+    "questionEn": "When should the app send its FCM token to the server?",
+    "questionAr": "متى يرسل التطبيق رمز FCM إلى الخادم؟",
+    "optionsEn": [
+      "Only right after the first install",
+      "Every time any screen opens",
+      "Never, FCM does it by itself",
+      "On onNewToken and after sign-in"
+    ],
+    "optionsAr": [
+      "مباشرة بعد التثبيت الأول فقط",
+      "في كل مرة تُفتح فيها أي شاشة",
+      "أبدًا، فـ FCM تفعل ذلك وحدها",
+      "عند onNewToken وبعد تسجيل الدخول"
+    ],
+    "answer": 3,
+    "explanationEn": "Tokens change, and users switch devices.",
+    "explanationAr": "الرموز تتغير، والمستخدمون يبدّلون الأجهزة."
+  },
+  {
+    "key": "qz-and-fb-messaging-2",
+    "topic": "and-fb-messaging",
+    "questionEn": "Which message always reaches onMessageReceived?",
+    "questionAr": "أي رسالة تصل دائمًا إلى onMessageReceived؟",
+    "optionsEn": [
+      "A topic broadcast",
+      "An email",
+      "A data message",
+      "A notification message"
+    ],
+    "optionsAr": [
+      "بث موضوع",
+      "بريد إلكتروني",
+      "رسالة بيانات",
+      "رسالة إشعار"
+    ],
+    "answer": 2,
+    "explanationEn": "Notification messages are shown by the system in background.",
+    "explanationAr": "يعرض النظام رسائل الإشعار في الخلفية."
+  },
+  {
+    "key": "qz-and-fb-messaging-3",
+    "topic": "and-fb-messaging",
+    "questionEn": "What should happen to a user's token on sign-out?",
+    "questionAr": "ماذا يحدث لرمز المستخدم عند تسجيل الخروج؟",
+    "optionsEn": [
+      "Store it in the debug logs",
+      "Remove it on the server and delete it",
+      "Keep it around for later use",
+      "Share it with the user's friends"
+    ],
+    "optionsAr": [
+      "احفظه في سجلات debug",
+      "احذفه من الخادم واحذف الرمز",
+      "احتفظ به لاستخدام لاحق",
+      "شاركه مع أصدقاء المستخدم"
+    ],
+    "answer": 1,
+    "explanationEn": "Otherwise the next user gets private messages.",
+    "explanationAr": "وإلا يستقبل المستخدم التالي رسائل خاصة."
+  },
+  {
+    "key": "qz-and-fb-messaging-4",
+    "topic": "and-fb-messaging",
+    "questionEn": "When is high priority appropriate?",
+    "questionAr": "متى تكون الأولوية العالية مناسبة؟",
+    "optionsEn": [
+      "Time-sensitive messages users see",
+      "Every marketing message sent",
+      "Silent pings for analytics",
+      "The weekly email-style digest"
+    ],
+    "optionsAr": [
+      "رسائل حساسة للوقت يراها المستخدم",
+      "كل رسالة تسويقية تُرسل",
+      "إشارات صامتة للتحليلات",
+      "الملخص الأسبوعي بأسلوب البريد"
+    ],
+    "answer": 0,
+    "explanationEn": "Android may deprioritise misuse.",
+    "explanationAr": "قد يخفض Android أولوية سوء الاستخدام."
+  },
+  {
+    "key": "qz-and-fb-messaging-5",
+    "topic": "and-fb-messaging",
+    "questionEn": "What are FCM topics for?",
+    "questionAr": "فيمَ تُستخدم مواضيع FCM؟",
+    "optionsEn": [
+      "Private data for one user",
+      "Codes for two-factor sign-in",
+      "Receipts for payments made",
+      "Broadcast content users opt into"
+    ],
+    "optionsAr": [
+      "البيانات الخاصة بمستخدم واحد",
+      "رموز تسجيل الدخول الثنائي",
+      "إيصالات المدفوعات المنفذة",
+      "محتوى عام يشترك فيه المستخدمون"
+    ],
+    "answer": 3,
+    "explanationEn": "Anyone subscribed gets the message.",
+    "explanationAr": "يستقبل الرسالة كل مشترك."
+  },
+  {
+    "key": "qz-and-fb-messaging-6",
+    "topic": "and-fb-messaging",
+    "questionEn": "Which API do servers use to send messages?",
+    "questionAr": "أي واجهة تستخدمها الخوادم لإرسال الرسائل؟",
+    "optionsEn": [
+      "SMTP",
+      "Google Sheets",
+      "FCM HTTP v1",
+      "The legacy server key"
+    ],
+    "optionsAr": [
+      "SMTP",
+      "Google Sheets",
+      "FCM HTTP v1",
+      "مفتاح الخادم القديم"
+    ],
+    "answer": 2,
+    "explanationEn": "It authenticates with a service account.",
+    "explanationAr": "تصادق بحساب خدمة."
+  },
+  {
+    "key": "qz-and-fb-messaging-7",
+    "topic": "and-fb-messaging",
+    "questionEn": "What should a server do with an UNREGISTERED response?",
+    "questionAr": "ماذا يفعل الخادم مع استجابة UNREGISTERED؟",
+    "optionsEn": [
+      "Ignore every error",
+      "Delete that token",
+      "Retry forever",
+      "Email the user"
+    ],
+    "optionsAr": [
+      "تجاهل كل خطأ",
+      "احذف ذلك الرمز",
+      "أعد المحاولة للأبد",
+      "راسل المستخدم"
+    ],
+    "answer": 1,
+    "explanationEn": "Dead tokens waste sends.",
+    "explanationAr": "الرموز الميتة تهدر الإرسال."
+  },
+  {
+    "key": "qz-and-fb-messaging-8",
+    "topic": "and-fb-messaging",
+    "questionEn": "What does a collapse key do?",
+    "questionAr": "ماذا يفعل مفتاح الطي؟",
+    "optionsEn": [
+      "Keeps only the latest message",
+      "Encrypts the whole payload",
+      "Raises the message priority",
+      "Adds a large image to it"
+    ],
+    "optionsAr": [
+      "يُبقي أحدث رسالة فقط",
+      "يشفّر الحمولة كاملة",
+      "يرفع أولوية الرسالة",
+      "يضيف صورة كبيرة إليها"
+    ],
+    "answer": 0,
+    "explanationEn": "Useful for live scores or status updates.",
+    "explanationAr": "مفيد للنتائج المباشرة أو تحديثات الحالة."
+  },
+  {
+    "key": "qz-and-fb-remote-config-1",
+    "topic": "and-fb-remote-config",
+    "questionEn": "Why set in-app defaults for every key?",
+    "questionAr": "لماذا تضبط قيمًا افتراضية داخل التطبيق لكل مفتاح؟",
+    "optionsEn": [
+      "Fetching becomes faster",
+      "The console requires it",
+      "To hide the keys",
+      "The app works before any fetch"
+    ],
+    "optionsAr": [
+      "يصبح الجلب أسرع",
+      "لأن اللوحة تشترطه",
+      "لإخفاء المفاتيح",
+      "يعمل التطبيق قبل أي جلب"
+    ],
+    "answer": 3,
+    "explanationEn": "First launches and offline starts use defaults.",
+    "explanationAr": "يستخدم أول فتح والبدء دون اتصال القيم الافتراضية."
+  },
+  {
+    "key": "qz-and-fb-remote-config-2",
+    "topic": "and-fb-remote-config",
+    "questionEn": "Why activate fetched values on the next start?",
+    "questionAr": "لماذا تفعّل القيم المجلوبة عند البدء التالي؟",
+    "optionsEn": [
+      "It saves a lot of battery",
+      "Fetched values expire at once",
+      "The UI doesn't change under the user",
+      "Activating takes many seconds"
+    ],
+    "optionsAr": [
+      "لأنه يوفر الكثير من البطارية",
+      "لأن القيم المجلوبة تنتهي فورًا",
+      "لا تتغير الواجهة تحت يد المستخدم",
+      "لأن التفعيل يستغرق ثوانيَ كثيرة"
+    ],
+    "answer": 2,
+    "explanationEn": "Fetch in the background for next time.",
+    "explanationAr": "اجلب في الخلفية للمرة التالية."
+  },
+  {
+    "key": "qz-and-fb-remote-config-3",
+    "topic": "and-fb-remote-config",
+    "questionEn": "What is a kill switch?",
+    "questionAr": "ما هو مفتاح الإيقاف؟",
+    "optionsEn": [
+      "A task in the Gradle build",
+      "A flag to disable a feature fast",
+      "A way to uninstall the app",
+      "A tool for crash reports"
+    ],
+    "optionsAr": [
+      "مهمة في بناء Gradle",
+      "علامة لتعطيل ميزة بسرعة",
+      "طريقة لإلغاء تثبيت التطبيق",
+      "أداة لتقارير الانهيار"
+    ],
+    "answer": 1,
+    "explanationEn": "Real-time updates push it within seconds.",
+    "explanationAr": "تدفعه التحديثات الفورية خلال ثوانٍ."
+  },
+  {
+    "key": "qz-and-fb-remote-config-4",
+    "topic": "and-fb-remote-config",
+    "questionEn": "How do you roll a feature out gradually?",
+    "questionAr": "كيف تنشر ميزة تدريجيًا؟",
+    "optionsEn": [
+      "A random percentile condition",
+      "Ship it to everyone at once",
+      "A new app for each group",
+      "A hidden settings menu"
+    ],
+    "optionsAr": [
+      "شرط نسبة عشوائية",
+      "اشحنها للجميع دفعة واحدة",
+      "تطبيق جديد لكل مجموعة",
+      "قائمة إعدادات مخفية"
+    ],
+    "answer": 0,
+    "explanationEn": "Raise the percentage while metrics stay healthy.",
+    "explanationAr": "ارفع النسبة ما دامت المقاييس سليمة."
+  },
+  {
+    "key": "qz-and-fb-remote-config-5",
+    "topic": "and-fb-remote-config",
+    "questionEn": "Why target flags by app version?",
+    "questionAr": "لماذا تستهدف العلامات حسب إصدار التطبيق؟",
+    "optionsEn": [
+      "Each version changes colors",
+      "Google Play requires it",
+      "To make the APK smaller",
+      "Old builds lack the new code"
+    ],
+    "optionsAr": [
+      "لأن كل إصدار يغيّر الألوان",
+      "لأن Google Play تشترطه",
+      "لجعل ملف APK أصغر",
+      "القديمة لا تحتوي الكود الجديد"
+    ],
+    "answer": 3,
+    "explanationEn": "Only builds with the feature should enable it.",
+    "explanationAr": "يجب أن تفعّلها فقط البناءات التي فيها الميزة."
+  },
+  {
+    "key": "qz-and-fb-remote-config-6",
+    "topic": "and-fb-remote-config",
+    "questionEn": "What should never go into Remote Config?",
+    "questionAr": "ما الذي يجب ألا يدخل Remote Config أبدًا؟",
+    "optionsEn": [
+      "Banner text",
+      "Thresholds",
+      "Secrets",
+      "Feature flags"
+    ],
+    "optionsAr": [
+      "نص اللافتات",
+      "العتبات",
+      "الأسرار",
+      "علامات الميزات"
+    ],
+    "answer": 2,
+    "explanationEn": "Values are readable by any client.",
+    "explanationAr": "القيم مقروءة من أي عميل."
+  },
+  {
+    "key": "qz-and-fb-remote-config-7",
+    "topic": "and-fb-remote-config",
+    "questionEn": "What does an A/B test need first?",
+    "questionAr": "ماذا يحتاج اختبار A/B أولًا؟",
+    "optionsEn": [
+      "A dark theme",
+      "A goal metric",
+      "A new Firebase project",
+      "A bigger server"
+    ],
+    "optionsAr": [
+      "سمة داكنة",
+      "مقياس هدف",
+      "مشروع Firebase جديد",
+      "خادم أكبر"
+    ],
+    "answer": 1,
+    "explanationEn": "It decides which variant wins.",
+    "explanationAr": "يقرر أي متغير يفوز."
+  },
+  {
+    "key": "qz-and-fb-remote-config-8",
+    "topic": "and-fb-remote-config",
+    "questionEn": "What happens after a rollout is complete?",
+    "questionAr": "ماذا يحدث بعد اكتمال النشر؟",
+    "optionsEn": [
+      "Remove the flag and old code",
+      "Keep both code paths forever",
+      "Add another flag on top",
+      "Reset the rollout to 0%"
+    ],
+    "optionsAr": [
+      "احذف العلامة والكود القديم",
+      "أبقِ مساري الكود للأبد",
+      "أضف علامة أخرى فوقها",
+      "أعد النشر إلى 0%"
+    ],
+    "answer": 0,
+    "explanationEn": "Stale flags add complexity and bugs.",
+    "explanationAr": "العلامات القديمة تضيف تعقيدًا وأخطاء."
+  },
+  {
+    "key": "qz-and-fb-analytics-1",
+    "topic": "and-fb-analytics",
+    "questionEn": "What should come before adding events?",
+    "questionAr": "ما الذي يجب أن يسبق إضافة الأحداث؟",
+    "optionsEn": [
+      "A brand-new app logo",
+      "A much bigger database server",
+      "A release straight to production",
+      "Questions and a tracking plan"
+    ],
+    "optionsAr": [
+      "شعار جديد للتطبيق",
+      "خادم قاعدة بيانات أكبر",
+      "إصدار إلى الإنتاج",
+      "الأسئلة وخطة التتبع"
+    ],
+    "answer": 3,
+    "explanationEn": "Events should answer real questions.",
+    "explanationAr": "يجب أن تجيب الأحداث عن أسئلة حقيقية."
+  },
+  {
+    "key": "qz-and-fb-analytics-2",
+    "topic": "and-fb-analytics",
+    "questionEn": "Which values are fine as event parameters?",
+    "questionAr": "أي القيم مناسبة كمعاملات للأحداث؟",
+    "optionsEn": [
+      "Free-text chat messages",
+      "Passwords and PIN codes",
+      "Ids, enums and numbers",
+      "Emails and full names"
+    ],
+    "optionsAr": [
+      "رسائل محادثة بنص حر",
+      "كلمات المرور ورموز PIN",
+      "معرّفات وتعدادات وأرقام",
+      "البريد والأسماء الكاملة"
+    ],
+    "answer": 2,
+    "explanationEn": "Never send personal data.",
+    "explanationAr": "لا ترسل بيانات شخصية أبدًا."
+  },
+  {
+    "key": "qz-and-fb-analytics-3",
+    "topic": "and-fb-analytics",
+    "questionEn": "Why log events through an interface?",
+    "questionAr": "لماذا تسجّل الأحداث عبر واجهة؟",
+    "optionsEn": [
+      "It hides them from users",
+      "Tests can verify them",
+      "It makes events faster",
+      "Firebase requires it"
+    ],
+    "optionsAr": [
+      "لأنها تخفيها عن المستخدمين",
+      "تستطيع الاختبارات التحقق منها",
+      "لأنها تجعل الأحداث أسرع",
+      "لأن Firebase تشترطه"
+    ],
+    "answer": 1,
+    "explanationEn": "And you can switch providers.",
+    "explanationAr": "وتستطيع تبديل المزوّد."
+  },
+  {
+    "key": "qz-and-fb-analytics-4",
+    "topic": "and-fb-analytics",
+    "questionEn": "How do you log screens in a single-activity Compose app?",
+    "questionAr": "كيف تسجّل الشاشات في تطبيق Compose بنشاط واحد؟",
+    "optionsEn": [
+      "screen_view on destination change",
+      "It's automatic per composable",
+      "One event at app start",
+      "Through Remote Config"
+    ],
+    "optionsAr": [
+      "screen_view عند تغيّر الوجهة",
+      "تلقائيًا لكل دالة composable",
+      "حدث واحد عند البدء",
+      "عبر Remote Config"
+    ],
+    "answer": 0,
+    "explanationEn": "Use a NavController listener.",
+    "explanationAr": "استخدم مستمعًا على NavController."
+  },
+  {
+    "key": "qz-and-fb-analytics-5",
+    "topic": "and-fb-analytics",
+    "questionEn": "What does Consent Mode control?",
+    "questionAr": "بماذا يتحكم Consent Mode؟",
+    "optionsEn": [
+      "The app's notification channels",
+      "Migrations of the Room database",
+      "How images are cached",
+      "Analytics and ad storage use"
+    ],
+    "optionsAr": [
+      "قنوات الإشعارات في التطبيق",
+      "ترحيلات قاعدة بيانات Room",
+      "طريقة تخزين الصور مؤقتًا",
+      "تخزين التحليلات والإعلانات"
+    ],
+    "answer": 3,
+    "explanationEn": "Wire it to the user's choice.",
+    "explanationAr": "اربطه باختيار المستخدم."
+  },
+  {
+    "key": "qz-and-fb-analytics-6",
+    "topic": "and-fb-analytics",
+    "questionEn": "What may setUserId contain?",
+    "questionAr": "ماذا يمكن أن تحتوي setUserId؟",
+    "optionsEn": [
+      "The phone number",
+      "The full name",
+      "A pseudonymous id",
+      "The user's email"
+    ],
+    "optionsAr": [
+      "رقم الهاتف",
+      "الاسم الكامل",
+      "معرّفًا مستعارًا",
+      "بريد المستخدم"
+    ],
+    "answer": 2,
+    "explanationEn": "Personal identifiers don't belong in analytics.",
+    "explanationAr": "المعرّفات الشخصية لا مكان لها في التحليلات."
+  },
+  {
+    "key": "qz-and-fb-analytics-7",
+    "topic": "and-fb-analytics",
+    "questionEn": "What does Performance Monitoring trace automatically?",
+    "questionAr": "ماذا تتتبع Performance Monitoring تلقائيًا؟",
+    "optionsEn": [
+      "Gradle builds",
+      "App start and HTTP requests",
+      "Every composable draw",
+      "Database migrations"
+    ],
+    "optionsAr": [
+      "بناءات Gradle",
+      "بدء التطبيق وطلبات HTTP",
+      "كل رسم لدالة composable",
+      "ترحيلات قاعدة البيانات"
+    ],
+    "answer": 1,
+    "explanationEn": "Add custom traces for key operations.",
+    "explanationAr": "أضف تتبعات مخصصة للعمليات الأساسية."
+  },
+  {
+    "key": "qz-and-fb-analytics-8",
+    "topic": "and-fb-analytics",
+    "questionEn": "Where must analytics collection be declared?",
+    "questionAr": "أين يجب التصريح بجمع التحليلات؟",
+    "optionsEn": [
+      "In the Play Data safety form",
+      "In the name of the app itself",
+      "In the launcher icon file",
+      "Nowhere, it's optional"
+    ],
+    "optionsAr": [
+      "في نموذج Data safety في Play",
+      "في اسم التطبيق نفسه",
+      "في ملف أيقونة المشغل",
+      "لا مكان، فالتصريح اختياري تمامًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Include what each SDK collects.",
+    "explanationAr": "ضمّن ما تجمعه كل مكتبة SDK."
+  },
+  {
+    "key": "qz-and-fb-storage-functions-1",
+    "topic": "and-fb-storage-functions",
+    "questionEn": "Where should uploaded user photos go?",
+    "questionAr": "أين تذهب صور المستخدمين المرفوعة؟",
+    "optionsEn": [
+      "A Firestore field",
+      "Remote Config",
+      "Analytics events",
+      "Cloud Storage"
+    ],
+    "optionsAr": [
+      "حقل في Firestore",
+      "Remote Config",
+      "أحداث التحليلات",
+      "Cloud Storage"
+    ],
+    "answer": 3,
+    "explanationEn": "Store only the path in Firestore.",
+    "explanationAr": "احفظ المسار فقط في Firestore."
+  },
+  {
+    "key": "qz-and-fb-storage-functions-2",
+    "topic": "and-fb-storage-functions",
+    "questionEn": "Why compress images before upload?",
+    "questionAr": "لماذا تضغط الصور قبل الرفع؟",
+    "optionsEn": [
+      "To add a watermark",
+      "Rules require it",
+      "Less data, time and cost",
+      "Storage rejects JPEG"
+    ],
+    "optionsAr": [
+      "لإضافة علامة مائية",
+      "لأن القواعد تشترطه",
+      "بيانات ووقت وكلفة أقل",
+      "لأن Storage ترفض JPEG"
+    ],
+    "answer": 2,
+    "explanationEn": "Camera photos are often 10 MB or more.",
+    "explanationAr": "صور الكاميرا غالبًا 10 ميجابايت أو أكثر."
+  },
+  {
+    "key": "qz-and-fb-storage-functions-3",
+    "topic": "and-fb-storage-functions",
+    "questionEn": "Why run uploads in WorkManager?",
+    "questionAr": "لماذا تنفذ الرفع في WorkManager؟",
+    "optionsEn": [
+      "Uploads become much faster",
+      "They finish after the app closes",
+      "Files become encrypted",
+      "Uploads skip security rules"
+    ],
+    "optionsAr": [
+      "يصبح الرفع أسرع بكثير",
+      "تنتهي بعد إغلاق التطبيق",
+      "تصبح الملفات مشفرة",
+      "يتخطى الرفع قواعد الأمان"
+    ],
+    "answer": 1,
+    "explanationEn": "Retries handle flaky networks too.",
+    "explanationAr": "وتعالج إعادة المحاولة الشبكات المتقطعة أيضًا."
+  },
+  {
+    "key": "qz-and-fb-storage-functions-4",
+    "topic": "and-fb-storage-functions",
+    "questionEn": "What should Storage rules check?",
+    "questionAr": "ماذا يجب أن تفحص قواعد Storage؟",
+    "optionsEn": [
+      "Owner, size and content type",
+      "The version name of the app",
+      "The model of the device",
+      "The country of the user"
+    ],
+    "optionsAr": [
+      "المالك والحجم ونوع المحتوى",
+      "اسم إصدار التطبيق",
+      "طراز الجهاز المستخدم",
+      "بلد المستخدم الحالي"
+    ],
+    "answer": 0,
+    "explanationEn": "So nobody fills your bucket with huge files.",
+    "explanationAr": "حتى لا يملأ أحد حاويتك بملفات ضخمة."
+  },
+  {
+    "key": "qz-and-fb-storage-functions-5",
+    "topic": "and-fb-storage-functions",
+    "questionEn": "Which logic belongs in Cloud Functions?",
+    "questionAr": "أي منطق مكانه Cloud Functions؟",
+    "optionsEn": [
+      "Drawing the app's UI",
+      "Storing user settings locally",
+      "Animating buttons on screen",
+      "Awarding points and using secrets"
+    ],
+    "optionsAr": [
+      "رسم واجهة التطبيق",
+      "حفظ إعدادات المستخدم محليًا",
+      "تحريك الأزرار على الشاشة",
+      "منح النقاط واستخدام الأسرار"
+    ],
+    "answer": 3,
+    "explanationEn": "The client can't be trusted with it.",
+    "explanationAr": "لا يمكن الوثوق بالعميل فيه."
+  },
+  {
+    "key": "qz-and-fb-storage-functions-6",
+    "topic": "and-fb-storage-functions",
+    "questionEn": "Why must background functions be idempotent?",
+    "questionAr": "لماذا يجب أن تكون الدوال الخلفية متساوية الأثر؟",
+    "optionsEn": [
+      "Firestore forbids repeated writes",
+      "It speeds up their cold starts",
+      "Triggers can fire more than once",
+      "Functions run on the client"
+    ],
+    "optionsAr": [
+      "لأن Firestore تمنع الكتابات المتكررة",
+      "لأن ذلك يسرّع بدءها البارد",
+      "قد تُطلق المحفزات أكثر من مرة",
+      "لأن الدوال تعمل في العميل"
+    ],
+    "answer": 2,
+    "explanationEn": "Use the event id or a transaction.",
+    "explanationAr": "استخدم معرّف الحدث أو معاملة."
+  },
+  {
+    "key": "qz-and-fb-storage-functions-7",
+    "topic": "and-fb-storage-functions",
+    "questionEn": "Where should function secrets live?",
+    "questionAr": "أين يجب أن تعيش أسرار الدوال؟",
+    "optionsEn": [
+      "A public Firestore doc",
+      "Secret Manager",
+      "The Android app",
+      "Remote Config"
+    ],
+    "optionsAr": [
+      "مستند Firestore عام",
+      "Secret Manager",
+      "تطبيق Android",
+      "Remote Config"
+    ],
+    "answer": 1,
+    "explanationEn": "Use defineSecret in the function.",
+    "explanationAr": "استخدم defineSecret في الدالة."
+  },
+  {
+    "key": "qz-and-fb-storage-functions-8",
+    "topic": "and-fb-storage-functions",
+    "questionEn": "What does enforceAppCheck on a callable do?",
+    "questionAr": "ماذا تفعل enforceAppCheck على دالة قابلة للاستدعاء؟",
+    "optionsEn": [
+      "Rejects calls from unverified apps",
+      "Makes every single call free of charge",
+      "Skips the authentication step",
+      "Caches the result for an hour"
+    ],
+    "optionsAr": [
+      "ترفض التطبيقات غير الموثقة",
+      "تجعل كل استدعاء مجانيًا",
+      "تتخطى خطوة المصادقة",
+      "تخزن النتيجة لمدة ساعة"
+    ],
+    "answer": 0,
+    "explanationEn": "Combine it with auth checks.",
+    "explanationAr": "اجمعها مع فحوصات المصادقة."
+  }
+]

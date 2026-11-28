@@ -73,7 +73,7 @@ public class SeederTests : IAsyncLifetime
             English = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.English),
             Arabic = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.Arabic),
         }).ToListAsync();
-        Assert.True(draftVideos.Count(n => n.English > 0) >= 97, "the first four AI phases and the first ten Android phases have their videos");
+        Assert.True(draftVideos.Count(n => n.English > 0) >= 104, "the first four AI phases and the first eleven Android phases have their videos");
         Assert.All(draftVideos.Where(n => n.English + n.Arabic > 0), n => { Assert.InRange(n.English, 2, 4); Assert.InRange(n.Arabic, 0, 2); });
         // Removing the channels the owner did not want (2026-11-20) left 82 of 166 topics with an Arabic video; Arabic videos
         // for phases 1-5 (2026-11-23) raised that to 105. Each later batch should raise this floor again.

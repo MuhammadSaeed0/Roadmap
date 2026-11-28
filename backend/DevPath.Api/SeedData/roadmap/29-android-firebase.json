@@ -1,0 +1,270 @@
+{
+  "slug": "android-firebase",
+  "order": 29,
+  "titleEn": "Firebase for Android apps",
+  "titleAr": "خدمات Firebase لتطبيقات Android",
+  "descriptionEn": "Use Firebase as a backend without losing control: projects per environment and App Check, Firebase Authentication with Credential Manager, Cloud Firestore data modelling, real-time listeners, offline cache and security rules, Cloud Messaging with token management, Remote Config for feature flags and experiments, Analytics with consent, and Cloud Storage with Cloud Functions for files and trusted server logic.",
+  "descriptionAr": "استخدم Firebase كخادم خلفي دون أن تفقد السيطرة: مشروع لكل بيئة وApp Check، ومصادقة Firebase مع Credential Manager، ونمذجة بيانات Cloud Firestore والمستمعين الفوريين والتخزين دون اتصال وقواعد الأمان، وCloud Messaging مع إدارة الرموز، وRemote Config لعلامات الميزات والتجارب، والتحليلات مع الموافقة، وCloud Storage مع Cloud Functions للملفات ومنطق الخادم الموثوق.",
+  "topics": [
+    {
+      "slug": "and-fb-setup",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 35,
+      "difficulty": "Beginner",
+      "titleEn": "Firebase setup, environments and App Check",
+      "titleAr": "إعداد Firebase والبيئات وApp Check",
+      "summaryEn": "Firebase is a set of Google-hosted services you add through the Firebase Android BoM (one version for all Firebase libraries) and the google-services Gradle plugin, which reads google-services.json for your app's package. Real projects use separate Firebase projects for development and production, selected by build type or flavor, so testing never touches real users' data. App Check adds an attestation token (Play Integrity on Android, a debug provider during development) to requests, so Firebase backends can reject traffic that doesn't come from your genuine app.",
+      "summaryAr": "منصة Firebase مجموعة خدمات تستضيفها Google تضيفها عبر Firebase Android BoM (إصدار واحد لكل مكتبات Firebase) وإضافة google-services في Gradle، التي تقرأ ملف google-services.json لحزمة تطبيقك. والمشاريع الحقيقية تستخدم مشاريع Firebase منفصلة للتطوير والإنتاج، تُختار حسب نوع البناء أو النكهة، فلا يلمس الاختبار بيانات المستخدمين الحقيقيين أبدًا. ويضيف App Check رمز إثبات (‏Play Integrity على Android، ومزوّد debug أثناء التطوير) إلى الطلبات، فتستطيع خوادم Firebase رفض الحركة التي لا تأتي من تطبيقك الأصلي.",
+      "whyEn": "Firebase lets a small team ship sign-in, a database, push and analytics in days. Set up carelessly, the same project mixes test and real data, and anyone who copies your config can hit your backend; App Check and separate environments prevent both.",
+      "whyAr": "تسمح Firebase لفريق صغير بشحن تسجيل الدخول وقاعدة البيانات والدفع والتحليلات في أيام. وإذا أُعدّت بإهمال، يخلط المشروع الواحد بيانات الاختبار والبيانات الحقيقية، ويستطيع أي شخص ينسخ إعداداتك الوصول إلى خادمك، ويمنع App Check والبيئات المنفصلة الأمرين.",
+      "howEn": "Create dev and prod Firebase projects, register the debug and release application ids (or flavors), and place each google-services.json in its source set. Use the BoM so versions stay compatible. google-services.json isn't a secret, but restrict the API key and enforce App Check on Firestore, Storage and Functions once monitoring shows legitimate traffic passes. Wrap Firebase behind your own repository interfaces so the app isn't locked to it.",
+      "howAr": "أنشئ مشروعي Firebase للتطوير والإنتاج، وسجّل معرّفات التطبيق لـ debug والإصدار (أو النكهات)، وضع كل google-services.json في مجموعة مصادره. واستخدم BoM حتى تبقى الإصدارات متوافقة. وملف google-services.json ليس سرًا، لكن قيّد مفتاح الواجهة وافرض App Check على Firestore وStorage وFunctions بعد أن تُظهر المراقبة أن الحركة الشرعية تمر. وغلّف Firebase خلف واجهات مستودعاتك حتى لا يرتبط التطبيق بها.",
+      "exampleEn": "A recipe app has recipes-dev and recipes-prod projects. The debug build (applicationIdSuffix .debug) reads src/debug/google-services.json and uses the App Check debug provider; release uses Play Integrity. After a week of monitoring, App Check enforcement is switched on for Firestore, and scripted requests from a copied config start failing.",
+      "exampleAr": "تطبيق وصفات له مشروعا recipes-dev وrecipes-prod. ويقرأ بناء debug (مع applicationIdSuffix .debug) الملف src/debug/google-services.json ويستخدم مزوّد debug في App Check، ويستخدم الإصدار Play Integrity. وبعد أسبوع من المراقبة يُفعّل فرض App Check على Firestore، فتبدأ الطلبات المكتوبة ببرامج من إعدادات منسوخة في الفشل.",
+      "practiceEn": "1) Add Firebase to an app with the BoM. 2) Create dev and prod projects for debug and release. 3) Install App Check with the debug provider and see the token in requests.",
+      "practiceAr": "1) أضف Firebase إلى تطبيق باستخدام BoM. 2) أنشئ مشروعين للتطوير والإنتاج لـ debug والإصدار. 3) ثبّت App Check مع مزوّد debug ولاحظ الرمز في الطلبات.",
+      "challengeEn": "Set up three environments (dev, staging, prod) with product flavors, a CI build for each, App Check enforced in staging, and a short README on which project each build talks to.",
+      "challengeAr": "اضبط ثلاث بيئات (التطوير والتجهيز والإنتاج) بنكهات المنتج، مع بناء CI لكل منها، وفرض App Check في التجهيز، وملف README قصير يوضح أي مشروع يتحدث إليه كل بناء.",
+      "objectivesEn": [
+        "Add Firebase with the BoM and plugin",
+        "Separate dev and prod projects",
+        "Protect backends with App Check",
+        "Keep Firebase behind your own interfaces"
+      ],
+      "objectivesAr": [
+        "إضافة Firebase بـ BoM والإضافة",
+        "فصل مشروعي التطوير والإنتاج",
+        "حماية الخوادم بـ App Check",
+        "إبقاء Firebase خلف واجهاتك"
+      ],
+      "prerequisites": [
+        "and-build-release-basics",
+        "and-sec-code"
+      ]
+    },
+    {
+      "slug": "and-fb-auth",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Firebase Authentication",
+      "titleAr": "مصادقة Firebase",
+      "summaryEn": "Firebase Authentication manages user accounts and sessions: email and password, email links, phone numbers, and federated providers such as Google, Apple and GitHub. On Android, Sign in with Google goes through Credential Manager, which returns a Google ID token that you exchange with GoogleAuthProvider.getCredential and signInWithCredential. The SDK persists the session and refreshes ID tokens automatically; you observe the current user through an AuthStateListener wrapped as a Flow. A user's ID token can be sent to your own backend, which verifies it with the Admin SDK.",
+      "summaryAr": "تدير مصادقة Firebase حسابات المستخدمين وجلساتهم: البريد وكلمة المرور، وروابط البريد، وأرقام الهواتف، والمزوّدين الخارجيين مثل Google وApple وGitHub. وفي Android يمر تسجيل الدخول بـ Google عبر Credential Manager، الذي يُرجع رمز Google ID تستبدله بـ GoogleAuthProvider.getCredential ثم signInWithCredential. ويحفظ SDK الجلسة ويحدّث رموز ID تلقائيًا، وتراقب المستخدم الحالي عبر AuthStateListener مغلفًا كـ Flow. ويمكن إرسال رمز ID الخاص بالمستخدم إلى خادمك، فيتحقق منه بـ Admin SDK.",
+      "whyEn": "Authentication is hard to build safely: password storage, reset flows, token refresh, brute-force protection and third-party providers. Firebase handles them, so you can focus on the experience: a fast one-tap sign-in, clear errors, and linking accounts when users sign in a second way.",
+      "whyAr": "بناء المصادقة بأمان صعب: حفظ كلمات المرور، ومسارات إعادة التعيين، وتحديث الرموز، والحماية من التخمين، والمزوّدون الخارجيون. وتتولاها Firebase، فتركز على التجربة: تسجيل دخول سريع بضغطة واحدة، وأخطاء واضحة، وربط الحسابات عندما يسجّل المستخدمون الدخول بطريقة ثانية.",
+      "howEn": "Expose an AuthRepository with a currentUser Flow and suspend sign-in and sign-out functions, so screens never call FirebaseAuth directly. Use Credential Manager for Google sign-in and passkeys, show specific messages for wrong password, existing account and network errors, verify email when it matters, and link credentials instead of creating duplicate accounts. Never trust the client's uid on your server; verify the ID token.",
+      "howAr": "اعرض AuthRepository فيه Flow للمستخدم الحالي ودوال suspend لتسجيل الدخول والخروج، حتى لا تستدعي الشاشات FirebaseAuth مباشرة أبدًا. واستخدم Credential Manager لتسجيل الدخول بـ Google ومفاتيح المرور، واعرض رسائل محددة لكلمة المرور الخاطئة والحساب الموجود وأخطاء الشبكة، وتحقق من البريد عندما يهم ذلك، واربط بيانات الاعتماد بدل إنشاء حسابات مكررة. ولا تثق بمعرّف uid القادم من العميل في خادمك، بل تحقق من رمز ID.",
+      "exampleEn": "A study app offers Google sign-in through Credential Manager and email links as a fallback. The splash screen collects authRepository.currentUser and routes to onboarding or home; signing out clears local data. Calls to the app's own API include user.getIdToken(false), which the server verifies before returning progress.",
+      "exampleAr": "تطبيق دراسة يقدّم تسجيل الدخول بـ Google عبر Credential Manager وروابط البريد كبديل. وتجمع شاشة البداية authRepository.currentUser وتوجّه إلى التعريف أو الصفحة الرئيسية، وتسجيل الخروج يمسح البيانات المحلية. واستدعاءات الواجهة البرمجية الخاصة بالتطبيق تتضمن user.getIdToken(false)، ويتحقق منه الخادم قبل إرجاع التقدم.",
+      "practiceEn": "1) Add email and password sign-up with clear error messages. 2) Add Sign in with Google through Credential Manager. 3) Expose the current user as a Flow and route on it.",
+      "practiceAr": "1) أضف التسجيل بالبريد وكلمة المرور مع رسائل خطأ واضحة. 2) أضف تسجيل الدخول بـ Google عبر Credential Manager. 3) اعرض المستخدم الحالي كـ Flow ووجّه بناءً عليه.",
+      "challengeEn": "Support anonymous use first, then upgrade the anonymous account to Google or email without losing the user's data, and handle the case where that Google account already exists.",
+      "challengeAr": "ادعم الاستخدام المجهول أولًا، ثم رقِّ الحساب المجهول إلى Google أو البريد دون فقد بيانات المستخدم، وعالج حالة وجود حساب Google ذلك مسبقًا.",
+      "objectivesEn": [
+        "Sign users in with Firebase Authentication",
+        "Use Credential Manager for Google sign-in",
+        "Observe auth state as a Flow",
+        "Verify ID tokens on your own backend"
+      ],
+      "objectivesAr": [
+        "تسجيل دخول المستخدمين بمصادقة Firebase",
+        "استخدام Credential Manager لتسجيل الدخول بـ Google",
+        "مراقبة حالة المصادقة كـ Flow",
+        "التحقق من رموز ID في خادمك"
+      ],
+      "prerequisites": [
+        "and-fb-setup",
+        "and-net-auth"
+      ]
+    },
+    {
+      "slug": "and-fb-firestore",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Advanced",
+      "titleEn": "Cloud Firestore: modelling, offline and security rules",
+      "titleAr": "قاعدة Cloud Firestore: النمذجة والعمل دون اتصال وقواعد الأمان",
+      "summaryEn": "Cloud Firestore is a NoSQL document database: collections of documents, each a map of fields, with subcollections. Queries filter and order on indexed fields; snapshot listeners stream real-time updates, which you wrap with callbackFlow or the KTX snapshots() Flow. The Android SDK caches data locally and queues writes offline, syncing when the network returns. Security rules on the server decide who can read and write each document, and they are your real access control because the client is never trusted. Pricing is per document read, write and delete, so data modelling affects cost.",
+      "summaryAr": "قاعدة Cloud Firestore قاعدة بيانات مستندات من نوع NoSQL: مجموعات من المستندات، كل منها خريطة حقول، مع مجموعات فرعية. وتفلتر الاستعلامات وترتب على حقول مفهرسة، ويبث مستمعو اللقطات التحديثات الفورية، وتغلّفها بـ callbackFlow أو بتدفق snapshots() من KTX. ويخزّن SDK في Android البيانات محليًا ويضع الكتابات دون اتصال في طابور، ويزامن عند عودة الشبكة. وتقرر قواعد الأمان على الخادم من يستطيع قراءة كل مستند والكتابة فيه، وهي التحكم الحقيقي في الوصول لأن العميل غير موثوق أبدًا. والتسعير لكل قراءة وكتابة وحذف للمستندات، فتؤثر نمذجة البيانات في الكلفة.",
+      "whyEn": "Firestore gives you real-time sync and offline support almost for free, which is why many apps start with it. The common failures are an open database because rules were left in test mode, slow screens from unindexed queries, and surprise bills from listeners that read thousands of documents.",
+      "whyAr": "تعطيك Firestore المزامنة الفورية ودعم العمل دون اتصال تقريبًا مجانًا، ولهذا تبدأ بها تطبيقات كثيرة. والأعطال الشائعة قاعدة بيانات مفتوحة لأن القواعد تُركت في وضع الاختبار، وشاشات بطيئة من استعلامات غير مفهرسة، وفواتير مفاجئة من مستمعين يقرؤون آلاف المستندات.",
+      "howEn": "Model data around the screens' queries: denormalise what a screen shows together, keep documents small, and use subcollections for unbounded lists such as messages. Map documents to data classes with default values, page large lists with limit and startAfter, detach listeners with the lifecycle, and write security rules that check request.auth and validate fields. Test rules with the Firebase Emulator Suite before deploying.",
+      "howAr": "نمذج البيانات حول استعلامات الشاشات: كرّر ما تعرضه الشاشة معًا، واجعل المستندات صغيرة، واستخدم المجموعات الفرعية للقوائم غير المحدودة مثل الرسائل. وحوّل المستندات إلى أصناف data بقيم افتراضية، وقسّم القوائم الكبيرة إلى صفحات بـ limit وstartAfter، وافصل المستمعين مع دورة الحياة، واكتب قواعد أمان تفحص request.auth وتتحقق من الحقول. واختبر القواعد بـ Firebase Emulator Suite قبل النشر.",
+      "exampleEn": "A team task board stores boards/{boardId} with members and title, and boards/{boardId}/tasks/{taskId} for tasks. The board screen listens to tasks ordered by position with a limit of 100, the app works offline on the subway and syncs later, and rules allow reading and writing tasks only when request.auth.uid is in the board's members list.",
+      "exampleAr": "لوحة مهام لفريق تحفظ boards/{boardId} مع الأعضاء والعنوان، وboards/{boardId}/tasks/{taskId} للمهام. وتستمع شاشة اللوحة إلى المهام مرتبة حسب الموضع بحد 100، ويعمل التطبيق دون اتصال في المترو ويزامن لاحقًا، وتسمح القواعد بقراءة المهام والكتابة فيها فقط عندما يكون request.auth.uid ضمن قائمة أعضاء اللوحة.",
+      "practiceEn": "1) Model a notes app in collections and documents. 2) Show a live query as a Flow in Compose. 3) Write rules so users can only read and write their own notes.",
+      "practiceAr": "1) نمذج تطبيق ملاحظات في مجموعات ومستندات. 2) اعرض استعلامًا حيًا كـ Flow في Compose. 3) اكتب قواعد بحيث لا يقرأ المستخدمون ولا يكتبون إلا ملاحظاتهم.",
+      "challengeEn": "Build a shared shopping list with real-time updates for several users, offline edits, a transaction for \"claim this item\", paging, and security rules covered by Emulator Suite tests.",
+      "challengeAr": "ابنِ قائمة تسوق مشتركة بتحديثات فورية لعدة مستخدمين، وتعديلات دون اتصال، ومعاملة لـ «احجز هذا العنصر»، وتقسيم إلى صفحات، وقواعد أمان تغطيها اختبارات Emulator Suite.",
+      "objectivesEn": [
+        "Model data for Firestore queries",
+        "Stream real-time updates as Flow",
+        "Use the offline cache and transactions",
+        "Write and test security rules"
+      ],
+      "objectivesAr": [
+        "نمذجة البيانات لاستعلامات Firestore",
+        "بث التحديثات الفورية كـ Flow",
+        "استخدام التخزين دون اتصال والمعاملات",
+        "كتابة قواعد الأمان واختبارها"
+      ],
+      "prerequisites": [
+        "and-fb-auth",
+        "kt-flow-basics",
+        "and-data-offline-first"
+      ]
+    },
+    {
+      "slug": "and-fb-messaging",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Cloud Messaging end to end",
+      "titleAr": "خدمة Cloud Messaging من البداية إلى النهاية",
+      "summaryEn": "Firebase Cloud Messaging delivers messages from your server to devices. Each install gets a registration token, delivered in onNewToken and readable with FirebaseMessaging.getInstance().token; your app sends it to your backend with the user id, and the server sends messages through the FCM HTTP v1 API using a service account. Notification messages are shown by the system when the app is in the background; data messages always reach onMessageReceived. Topics let users subscribe to groups such as \"breaking-news\", and message priority and collapse keys control delivery.",
+      "summaryAr": "توصل Firebase Cloud Messaging الرسائل من خادمك إلى الأجهزة. ويحصل كل تثبيت على رمز تسجيل يصل في onNewToken ويُقرأ بـ FirebaseMessaging.getInstance().token، فيرسله تطبيقك إلى خادمك مع معرّف المستخدم، ويرسل الخادم الرسائل عبر واجهة FCM HTTP v1 باستخدام حساب خدمة. ويعرض النظام رسائل الإشعار عندما يكون التطبيق في الخلفية، وتصل رسائل البيانات دائمًا إلى onMessageReceived. وتسمح المواضيع للمستخدمين بالاشتراك في مجموعات مثل «breaking-news»، وتتحكم أولوية الرسالة ومفاتيح الطي في التسليم.",
+      "whyEn": "Push is how apps re-engage users and trigger background sync. Lost tokens, messages sent to signed-out users, and high-priority marketing pushes that Android starts deprioritising are common, avoidable problems.",
+      "whyAr": "الدفع هو طريقة التطبيقات لإعادة إشراك المستخدمين وتحفيز المزامنة في الخلفية. والرموز المفقودة، والرسائل المرسلة لمستخدمين سجّلوا الخروج، ورسائل التسويق عالية الأولوية التي يبدأ Android في خفض أولويتها، مشكلات شائعة يمكن تجنبها.",
+      "howEn": "Send the token to your server on onNewToken and after sign-in, and delete it on sign-out. Store several tokens per user (one per device) and remove tokens the API reports as unregistered. Use data messages for anything the app must handle, keep payloads small and fetch the real content, use high priority only for time-sensitive user-visible messages, and respect the notification permission and channels.",
+      "howAr": "أرسل الرمز إلى خادمك في onNewToken وبعد تسجيل الدخول، واحذفه عند تسجيل الخروج. واحفظ عدة رموز لكل مستخدم (واحدًا لكل جهاز)، واحذف الرموز التي تبلّغ الواجهة أنها غير مسجلة. واستخدم رسائل البيانات لكل ما يجب أن يعالجه التطبيق، واجعل الحمولات صغيرة واجلب المحتوى الحقيقي، واستخدم الأولوية العالية فقط للرسائل الحساسة للوقت التي يراها المستخدم، واحترم إذن الإشعارات والقنوات.",
+      "exampleEn": "A marketplace sends \"Your item sold\" as a high-priority data message to all the seller's tokens. The app's FirebaseMessagingService shows a notification in the orders channel and enqueues a sync; a weekly digest goes as a normal-priority notification message to the \"weekly-digest\" topic, which users can opt out of in settings.",
+      "exampleAr": "سوق إلكتروني يرسل «بيع منتجك» كرسالة بيانات عالية الأولوية إلى كل رموز البائع. فتعرض FirebaseMessagingService في التطبيق إشعارًا في قناة الطلبات وتضيف مزامنة إلى الطابور، ويُرسل ملخص أسبوعي كرسالة إشعار بأولوية عادية إلى موضوع «weekly-digest» يستطيع المستخدمون إلغاء الاشتراك فيه من الإعدادات.",
+      "practiceEn": "1) Receive a test notification from the console. 2) Send the token to a fake backend on onNewToken and sign-in. 3) Handle a data message that opens a specific screen.",
+      "practiceAr": "1) استقبل إشعارًا تجريبيًا من لوحة التحكم. 2) أرسل الرمز إلى خادم وهمي في onNewToken وعند تسجيل الدخول. 3) عالج رسالة بيانات تفتح شاشة محددة.",
+      "challengeEn": "Write a small server endpoint (Cloud Function or Ktor) that sends a message through the HTTP v1 API to all of a user's devices, removes invalid tokens, and is called when an order changes status.",
+      "challengeAr": "اكتب نقطة خادم صغيرة (‏Cloud Function أو Ktor) ترسل رسالة عبر واجهة HTTP v1 إلى كل أجهزة المستخدم، وتحذف الرموز غير الصالحة، وتُستدعى عندما تتغير حالة طلب.",
+      "objectivesEn": [
+        "Manage registration tokens per user and device",
+        "Choose notification or data messages",
+        "Use topics and priorities correctly",
+        "Send messages from a server with HTTP v1"
+      ],
+      "objectivesAr": [
+        "إدارة رموز التسجيل لكل مستخدم وجهاز",
+        "الاختيار بين رسائل الإشعار والبيانات",
+        "استخدام المواضيع والأولويات بشكل صحيح",
+        "إرسال الرسائل من خادم عبر HTTP v1"
+      ],
+      "prerequisites": [
+        "and-net-realtime",
+        "and-dev-notifications"
+      ]
+    },
+    {
+      "slug": "and-fb-remote-config",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 40,
+      "difficulty": "Intermediate",
+      "titleEn": "Remote Config, feature flags and A/B tests",
+      "titleAr": "الإعداد البعيد وعلامات الميزات واختبارات A/B",
+      "summaryEn": "Remote Config stores key-value parameters on the server that the app fetches and activates, so you can change behaviour without releasing an update: turn a feature on for 10 percent of users, change a banner's text, or kill a broken feature. Conditions target values by app version, country, language, user property or random percentile. A/B Testing builds experiments on Remote Config and Analytics: variants get different values and Firebase compares a goal metric. In-app defaults keep the app working when values haven't been fetched yet.",
+      "summaryAr": "يحفظ Remote Config معاملات مفتاح وقيمة على الخادم يجلبها التطبيق ويفعّلها، فتستطيع تغيير السلوك دون إصدار تحديث: تشغيل ميزة لـ 10 في المئة من المستخدمين، أو تغيير نص لافتة، أو إيقاف ميزة معطوبة. وتستهدف الشروط القيم حسب إصدار التطبيق أو البلد أو اللغة أو خاصية المستخدم أو نسبة عشوائية. وتبني A/B Testing التجارب على Remote Config والتحليلات: تحصل المتغيرات على قيم مختلفة وتقارن Firebase مقياس هدف. والقيم الافتراضية داخل التطبيق تُبقيه يعمل عندما لم تُجلب القيم بعد.",
+      "whyEn": "Mobile releases take days to reach users, and old versions stay installed for months. Remote flags let you roll out gradually, react to incidents in minutes and test ideas with data instead of opinions.",
+      "whyAr": "تستغرق إصدارات الجوال أيامًا للوصول إلى المستخدمين، وتبقى الإصدارات القديمة مثبتة أشهرًا. والعلامات البعيدة تسمح لك بالنشر التدريجي، والاستجابة للحوادث في دقائق، واختبار الأفكار بالبيانات بدل الآراء.",
+      "howEn": "Set in-app defaults for every key, fetch in the background and activate at a safe moment (usually the next app start) so the UI doesn't change under the user, and wrap Remote Config in a FeatureFlags interface with typed properties. Name keys clearly, remove flags once a rollout is complete, never put secrets in Remote Config, and use real-time updates only for flags that must change mid-session, like a kill switch.",
+      "howAr": "اضبط قيمًا افتراضية داخل التطبيق لكل مفتاح، واجلب في الخلفية وفعّل في لحظة آمنة (عادة عند بدء التطبيق التالي) حتى لا تتغير الواجهة تحت يد المستخدم، وغلّف Remote Config في واجهة FeatureFlags بخصائص محددة النوع. وسمِّ المفاتيح بوضوح، واحذف العلامات بعد اكتمال النشر، ولا تضع أسرارًا في Remote Config أبدًا، واستخدم التحديثات الفورية فقط للعلامات التي يجب أن تتغير أثناء الجلسة، مثل مفتاح الإيقاف.",
+      "exampleEn": "A shopping app ships a new checkout behind new_checkout_enabled = false. Remote Config turns it on for 5 percent of Android users on version 4.2 or later, then 25 and 100 percent as crash-free rates hold. An A/B test of free-shipping banner text measures purchases per user; the winning text becomes the default.",
+      "exampleAr": "تطبيق تسوق يشحن دفعًا جديدًا خلف new_checkout_enabled = false. ويفعّله Remote Config لـ 5 في المئة من مستخدمي Android على الإصدار 4.2 فأحدث، ثم 25 ثم 100 في المئة ما دامت نسب الخلو من الانهيار ثابتة. واختبار A/B لنص لافتة الشحن المجاني يقيس المشتريات لكل مستخدم، ويصبح النص الفائز هو الافتراضي.",
+      "practiceEn": "1) Add Remote Config with defaults and a feature flag. 2) Target the flag by app version. 3) Add a kill switch that updates in real time.",
+      "practiceAr": "1) أضف Remote Config بقيم افتراضية وعلامة ميزة. 2) استهدف العلامة حسب إصدار التطبيق. 3) أضف مفتاح إيقاف يتحدث فورًا.",
+      "challengeEn": "Run an A/B test on an onboarding change: define the goal metric, create two variants, roll out to 20 percent, read the results after enough users, and clean up the losing variant's code.",
+      "challengeAr": "نفّذ اختبار A/B على تغيير في التعريف بالتطبيق: حدد مقياس الهدف، وأنشئ متغيرين، وانشر إلى 20 في المئة، واقرأ النتائج بعد عدد كافٍ من المستخدمين، ونظّف كود المتغير الخاسر.",
+      "objectivesEn": [
+        "Use Remote Config with safe defaults",
+        "Roll out features with flags and conditions",
+        "Run A/B tests with a goal metric",
+        "Keep flags typed and cleaned up"
+      ],
+      "objectivesAr": [
+        "استخدام Remote Config بقيم افتراضية آمنة",
+        "نشر الميزات بالعلامات والشروط",
+        "تنفيذ اختبارات A/B بمقياس هدف",
+        "إبقاء العلامات محددة النوع ونظيفة"
+      ],
+      "prerequisites": [
+        "and-fb-setup",
+        "and-qa-crashes"
+      ]
+    },
+    {
+      "slug": "and-fb-analytics",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 40,
+      "difficulty": "Intermediate",
+      "titleEn": "Analytics, consent and performance monitoring",
+      "titleAr": "التحليلات والموافقة ومراقبة الأداء",
+      "summaryEn": "Google Analytics for Firebase records events (screen_view, sign_up, purchase and your own custom events) with parameters and user properties, and powers funnels, retention, audiences for Remote Config and A/B test metrics. Events should be named consistently and planned in a tracking plan, not added ad hoc. Consent Mode and setAnalyticsCollectionEnabled let you respect user choices and regional laws. Firebase Performance Monitoring adds automatic traces for app start and network requests and custom traces for key operations.",
+      "summaryAr": "تسجّل Google Analytics for Firebase الأحداث (‏screen_view وsign_up وpurchase وأحداثك المخصصة) مع معاملات وخصائص للمستخدم، وتشغّل مسارات التحويل والاحتفاظ والجماهير لـ Remote Config ومقاييس اختبارات A/B. ويجب تسمية الأحداث باتساق وتخطيطها في خطة تتبع، لا إضافتها عشوائيًا. ويسمح Consent Mode وsetAnalyticsCollectionEnabled باحترام اختيارات المستخدمين وقوانين المناطق. وتضيف Firebase Performance Monitoring تتبعات تلقائية لبدء التطبيق وطلبات الشبكة، وتتبعات مخصصة للعمليات الأساسية.",
+      "whyEn": "Without data, teams guess which features matter and where users drop off. With careless data, apps leak personal information, break privacy laws and fill dashboards with events nobody trusts.",
+      "whyAr": "دون بيانات تخمّن الفرق أي الميزات تهم وأين يتوقف المستخدمون. ومع البيانات المهملة تسرّب التطبيقات معلومات شخصية، وتخالف قوانين الخصوصية، وتملأ لوحات المتابعة بأحداث لا يثق بها أحد.",
+      "howEn": "Write a tracking plan: each event's name, parameters, when it fires and which question it answers. Wrap analytics in an AnalyticsTracker interface with typed event functions so tests can verify events and you can switch providers. Never send emails, names or free text, ask for consent where required and wire it to collection flags, and reflect analytics in the Play Data safety form.",
+      "howAr": "اكتب خطة تتبع: اسم كل حدث، ومعاملاته، ومتى يُطلق، وأي سؤال يجيب عنه. وغلّف التحليلات في واجهة AnalyticsTracker بدوال أحداث محددة النوع حتى تتحقق الاختبارات من الأحداث وتستطيع تبديل المزوّد. ولا ترسل البريد الإلكتروني أو الأسماء أو النص الحر أبدًا، واطلب الموافقة حيث يلزم واربطها بعلامات الجمع، وانعكس التحليلات في نموذج Data safety في Play.",
+      "exampleEn": "A language-learning app's tracking plan has 12 events, including lesson_started(lesson_id, level), lesson_completed(duration_s, score) and paywall_viewed(source). A funnel shows 40 percent of users drop between lesson 2 and 3, and a custom trace finds that lesson 3's audio download takes 6 seconds on slow networks.",
+      "exampleAr": "خطة تتبع لتطبيق تعلم لغات فيها 12 حدثًا، منها lesson_started(lesson_id, level) وlesson_completed(duration_s, score) وpaywall_viewed(source). ويُظهر مسار تحويل أن 40 في المئة من المستخدمين يتوقفون بين الدرسين 2 و3، ويكشف تتبع مخصص أن تنزيل صوت الدرس 3 يستغرق 6 ثوانٍ على الشبكات البطيئة.",
+      "practiceEn": "1) Write a tracking plan for three key journeys. 2) Log typed events through a tracker interface. 3) Add a consent screen that controls collection.",
+      "practiceAr": "1) اكتب خطة تتبع لثلاثة مسارات أساسية. 2) سجّل أحداثًا محددة النوع عبر واجهة متتبع. 3) أضف شاشة موافقة تتحكم في الجمع.",
+      "challengeEn": "Build a funnel from install to first purchase with your events, find the biggest drop, add a Performance Monitoring custom trace around the suspected slow step, and propose a fix with numbers.",
+      "challengeAr": "ابنِ مسار تحويل من التثبيت إلى أول شراء بأحداثك، وأوجد أكبر نقطة توقف، وأضف تتبعًا مخصصًا من Performance Monitoring حول الخطوة المشتبه في بطئها، واقترح إصلاحًا بالأرقام.",
+      "objectivesEn": [
+        "Plan and name analytics events",
+        "Log events behind a testable interface",
+        "Respect consent and privacy",
+        "Use Performance Monitoring traces"
+      ],
+      "objectivesAr": [
+        "تخطيط أحداث التحليلات وتسميتها",
+        "تسجيل الأحداث خلف واجهة قابلة للاختبار",
+        "احترام الموافقة والخصوصية",
+        "استخدام تتبعات Performance Monitoring"
+      ],
+      "prerequisites": [
+        "and-fb-setup",
+        "and-sec-privacy"
+      ]
+    },
+    {
+      "slug": "and-fb-storage-functions",
+      "skill": "Android",
+      "priority": "Optional",
+      "minutes": 45,
+      "difficulty": "Advanced",
+      "titleEn": "Cloud Storage and Cloud Functions",
+      "titleAr": "خدمتا Cloud Storage وCloud Functions",
+      "summaryEn": "Cloud Storage for Firebase stores user files such as photos, voice notes and documents in Google Cloud Storage buckets, with resumable uploads from the SDK and security rules similar to Firestore's. Cloud Functions run your server code on triggers: an HTTPS or callable request, a Firestore write, a new user, a file upload or a schedule. Functions are where trusted logic belongs: validating purchases, sending FCM messages, resizing images, counting likes and calling third-party APIs with secrets kept in Secret Manager.",
+      "summaryAr": "تحفظ Cloud Storage for Firebase ملفات المستخدمين مثل الصور والملاحظات الصوتية والمستندات في حاويات Google Cloud Storage، مع رفع قابل للاستئناف من SDK وقواعد أمان تشبه قواعد Firestore. وتشغّل Cloud Functions كود خادمك عند المحفزات: طلب HTTPS أو قابل للاستدعاء، أو كتابة في Firestore، أو مستخدم جديد، أو رفع ملف، أو جدول زمني. والدوال هي مكان المنطق الموثوق: التحقق من المشتريات، وإرسال رسائل FCM، وتغيير حجم الصور، وعدّ الإعجابات، واستدعاء الواجهات الخارجية بأسرار محفوظة في Secret Manager.",
+      "whyEn": "A Firebase app still needs a server for anything the client can't be trusted with. Functions give you that server without managing machines, and Storage handles large files that don't belong in Firestore documents.",
+      "whyAr": "تطبيق Firebase ما زال يحتاج خادمًا لكل ما لا يمكن الوثوق بالعميل فيه. وتعطيك الدوال ذلك الخادم دون إدارة الأجهزة، وتعالج Storage الملفات الكبيرة التي لا مكان لها في مستندات Firestore.",
+      "howEn": "Upload files to paths that include the user id (users/{uid}/avatars/...), compress images before upload, run uploads through WorkManager so they survive the app closing, and save the download path in Firestore. Protect paths with Storage rules that check auth and file size and type. Put logic that needs secrets or must not be faked in callable or Firestore-triggered functions, make them idempotent, and test them with the Emulator Suite.",
+      "howAr": "ارفع الملفات إلى مسارات تتضمن معرّف المستخدم (‏users/{uid}/avatars/...)، واضغط الصور قبل الرفع، ونفّذ الرفع عبر WorkManager حتى ينجو من إغلاق التطبيق، واحفظ مسار التنزيل في Firestore. واحمِ المسارات بقواعد Storage تفحص المصادقة وحجم الملف ونوعه. وضع المنطق الذي يحتاج أسرارًا أو يجب ألا يُزيّف في دوال قابلة للاستدعاء أو تحفزها Firestore، واجعلها متساوية الأثر، واختبرها بـ Emulator Suite.",
+      "exampleEn": "A social app uploads a compressed photo to users/{uid}/posts/{postId}.jpg through a WorkManager job with a progress notification. A Storage-triggered function creates a 400-pixel thumbnail and writes its path to the post document; a Firestore-triggered function increments the author's post count and sends FCM to followers.",
+      "exampleAr": "تطبيق اجتماعي يرفع صورة مضغوطة إلى users/{uid}/posts/{postId}.jpg عبر مهمة WorkManager مع إشعار تقدم. وتنشئ دالة تحفزها Storage صورة مصغرة بعرض 400 بكسل وتكتب مسارها في مستند المنشور، وتزيد دالة تحفزها Firestore عدد منشورات الكاتب وترسل FCM إلى المتابعين.",
+      "practiceEn": "1) Upload a profile photo with progress. 2) Write Storage rules limiting size and type. 3) Write a callable function and call it from the app.",
+      "practiceAr": "1) ارفع صورة ملف شخصي مع التقدم. 2) اكتب قواعد Storage تحد الحجم والنوع. 3) اكتب دالة قابلة للاستدعاء واستدعها من التطبيق.",
+      "challengeEn": "Move a client-side calculation that users could fake (for example a quiz score or a referral reward) into a callable function with validation and App Check, and prove with the emulator that a modified client can't award itself points.",
+      "challengeAr": "انقل حسابًا في جهة العميل يستطيع المستخدمون تزييفه (مثل درجة اختبار أو مكافأة إحالة) إلى دالة قابلة للاستدعاء مع التحقق وApp Check، وأثبت بالمحاكي أن عميلًا معدّلًا لا يستطيع منح نفسه نقاطًا.",
+      "objectivesEn": [
+        "Upload and download files with Cloud Storage",
+        "Protect files with Storage rules",
+        "Write trusted logic in Cloud Functions",
+        "Test with the Firebase Emulator Suite"
+      ],
+      "objectivesAr": [
+        "رفع الملفات وتنزيلها بـ Cloud Storage",
+        "حماية الملفات بقواعد Storage",
+        "كتابة المنطق الموثوق في Cloud Functions",
+        "الاختبار بـ Firebase Emulator Suite"
+      ],
+      "prerequisites": [
+        "and-fb-firestore",
+        "and-data-workmanager"
+      ]
+    }
+  ]
+}

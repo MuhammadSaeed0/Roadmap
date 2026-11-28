@@ -1979,5 +1979,89 @@
     "shortEn": "Releasing an update to a growing percentage of users so problems can be stopped early.",
     "shortAr": "إصدار تحديث لنسبة متزايدة من المستخدمين حتى يمكن إيقاف المشكلات مبكرًا.",
     "topicSlug": "and-qa-crashes"
+  },
+  {
+    "term": "Firebase",
+    "arabic": "منصة Firebase",
+    "shortEn": "Google's app platform with hosted auth, databases, messaging, analytics and more.",
+    "shortAr": "منصة Google للتطبيقات مع مصادقة وقواعد بيانات ومراسلة وتحليلات مستضافة وغيرها.",
+    "topicSlug": "and-fb-setup"
+  },
+  {
+    "term": "App Check",
+    "arabic": "خدمة App Check",
+    "shortEn": "A Firebase service that attests requests come from your genuine app before backends accept them.",
+    "shortAr": "خدمة في Firebase تثبت أن الطلبات تأتي من تطبيقك الأصلي قبل أن تقبلها الخوادم.",
+    "topicSlug": "and-fb-setup"
+  },
+  {
+    "term": "Emulator Suite",
+    "arabic": "مجموعة المحاكيات Emulator Suite",
+    "shortEn": "Local emulators of Firebase services for development and testing.",
+    "shortAr": "محاكيات محلية لخدمات Firebase للتطوير والاختبار.",
+    "topicSlug": "and-fb-setup"
+  },
+  {
+    "term": "ID token",
+    "arabic": "رمز الهوية ID token",
+    "shortEn": "A signed, short-lived token that proves a user's identity to your backend.",
+    "shortAr": "رمز موقّع قصير العمر يثبت هوية المستخدم أمام خادمك.",
+    "topicSlug": "and-fb-auth"
+  },
+  {
+    "term": "Cloud Firestore",
+    "arabic": "قاعدة Cloud Firestore",
+    "shortEn": "Firebase's NoSQL document database with real-time listeners and offline sync.",
+    "shortAr": "قاعدة بيانات المستندات من نوع NoSQL في Firebase مع مستمعين فوريين ومزامنة دون اتصال.",
+    "topicSlug": "and-fb-firestore"
+  },
+  {
+    "term": "security rules",
+    "arabic": "قواعد الأمان",
+    "shortEn": "Server-side rules that decide who can read and write each Firestore document or Storage file.",
+    "shortAr": "قواعد في الخادم تقرر من يستطيع قراءة كل مستند في Firestore أو ملف في Storage والكتابة فيه.",
+    "topicSlug": "and-fb-firestore"
+  },
+  {
+    "term": "registration token",
+    "arabic": "رمز التسجيل",
+    "shortEn": "The FCM identifier of one app install, used to send it push messages.",
+    "shortAr": "معرّف FCM لتثبيت واحد للتطبيق، يُستخدم لإرسال رسائل الدفع إليه.",
+    "topicSlug": "and-fb-messaging"
+  },
+  {
+    "term": "Remote Config",
+    "arabic": "الإعداد البعيد Remote Config",
+    "shortEn": "A Firebase service for changing app parameters and feature flags without a release.",
+    "shortAr": "خدمة في Firebase لتغيير معاملات التطبيق وعلامات الميزات دون إصدار.",
+    "topicSlug": "and-fb-remote-config"
+  },
+  {
+    "term": "feature flag",
+    "arabic": "علامة الميزة",
+    "shortEn": "A switch that turns a feature on or off for some or all users without shipping new code.",
+    "shortAr": "مفتاح يشغّل ميزة أو يطفئها لبعض المستخدمين أو كلهم دون شحن كود جديد.",
+    "topicSlug": "and-fb-remote-config"
+  },
+  {
+    "term": "A/B test",
+    "arabic": "اختبار A/B",
+    "shortEn": "An experiment that shows different variants to random user groups and compares a goal metric.",
+    "shortAr": "تجربة تعرض متغيرات مختلفة لمجموعات عشوائية من المستخدمين وتقارن مقياس هدف.",
+    "topicSlug": "and-fb-remote-config"
+  },
+  {
+    "term": "tracking plan",
+    "arabic": "خطة التتبع",
+    "shortEn": "A document listing analytics events, their parameters and the questions they answer.",
+    "shortAr": "وثيقة تسرد أحداث التحليلات ومعاملاتها والأسئلة التي تجيب عنها.",
+    "topicSlug": "and-fb-analytics"
+  },
+  {
+    "term": "Cloud Functions",
+    "arabic": "خدمة Cloud Functions",
+    "shortEn": "Server code that runs on Google's infrastructure in response to requests or events.",
+    "shortAr": "كود خادم يعمل على بنية Google استجابة للطلبات أو الأحداث.",
+    "topicSlug": "and-fb-storage-functions"
   }
 ]
