@@ -1,0 +1,163 @@
+[
+  {
+    "topic": "and-arch-layers",
+    "lessons": [
+      {
+        "key": "tut-and-arch-layers-1",
+        "titleEn": "The three layers",
+        "titleAr": "الطبقات الثلاث",
+        "bodyEn": "The UI layer shows data and reacts to the user; the data layer owns data and decides where it comes from; the domain layer, when present, holds business rules between them. Dependencies point down: UI knows data, data knows nothing about UI.\n\nData flows up as Flows (the UI observes), and events flow down as function calls (the UI asks the ViewModel, the ViewModel asks the repository). This is unidirectional data flow at app scale.",
+        "bodyAr": "طبقة الواجهة تعرض البيانات وتستجيب للمستخدم، وطبقة البيانات تملك البيانات وتقرر مصدرها، وطبقة المجال، عند وجودها، تحمل قواعد العمل بينهما. والاعتماديات تتجه إلى الأسفل: الواجهة تعرف البيانات، والبيانات لا تعرف شيئًا عن الواجهة.\n\nوالبيانات تصعد كتدفقات Flow (الواجهة تراقب)، والأحداث تنزل كاستدعاءات دوال (الواجهة تطلب من ViewModel، وViewModel تطلب من المستودع). وهذا تدفق البيانات أحادي الاتجاه على مستوى التطبيق.",
+        "code": "        ┌─────────────────────────────┐\nUI      │ Composables  ←state─  ViewModel │\n        └───────────────events─→─────┘\n                       │ calls        ▲ Flow<Data>\nDomain  │       Use cases (optional)    │\n                       │              │\nData    │ Repositories → Room / Retrofit / DataStore │",
+        "language": "text"
+      },
+      {
+        "key": "tut-and-arch-layers-2",
+        "titleEn": "Moving logic out of the UI",
+        "titleAr": "إخراج المنطق من الواجهة",
+        "bodyEn": "A common first refactor: a screen that calls Retrofit in LaunchedEffect, parses the result and decides what to show. Move the call into a repository, the decisions into a ViewModel, and leave the composable with rendering only.\n\nAfter the move, the logic can be unit tested with a fake repository, and the screen can be previewed with any state.",
+        "bodyAr": "إعادة هيكلة شائعة أولى: شاشة تستدعي Retrofit داخل LaunchedEffect، وتحلل النتيجة، وتقرر ما تعرضه. انقل الاستدعاء إلى مستودع، والقرارات إلى ViewModel، واترك للدالة القابلة للتركيب الرسم فقط.\n\nوبعد النقل يمكن اختبار المنطق بمستودع وهمي، ومعاينة الشاشة بأي حالة.",
+        "code": "// Before: the UI does everything.\n@Composable\nfun WeatherScreen(api: WeatherApi) {\n    var text by remember { mutableStateOf(\"Loading...\") }\n    LaunchedEffect(Unit) {\n        text = try { \"${api.today(\"Cairo\").tempC}°C\" } catch (e: Exception) { \"Error\" }\n    }\n    Text(text)\n}\n\n// After: each layer does one job.\nclass WeatherRepository @Inject constructor(private val api: WeatherApi) {\n    suspend fun today(city: String): Result<Weather> = runCatching { api.today(city).toDomain() }\n}\n\n@HiltViewModel\nclass WeatherViewModel @Inject constructor(private val repo: WeatherRepository) : ViewModel() {\n    private val _state = MutableStateFlow<WeatherUiState>(WeatherUiState.Loading)\n    val state = _state.asStateFlow()\n    init { load() }\n    fun load() = viewModelScope.launch {\n        _state.value = repo.today(\"Cairo\").fold({ WeatherUiState.Ready(it) }, { WeatherUiState.Error })\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-arch-mvvm",
+    "lessons": [
+      {
+        "key": "tut-and-arch-mvvm-1",
+        "titleEn": "One state, one flow",
+        "titleAr": "حالة واحدة وتدفق واحد",
+        "bodyEn": "Expose a single StateFlow<UiState> per screen. Separate flows for loading, data and error let the UI see impossible combinations, such as loading and an error at the same time, and make tests longer.\n\nWhen state is derived from repository flows, use combine and stateIn: the flow starts when the UI subscribes and stops five seconds after it leaves, which survives rotation without restarting work.",
+        "bodyAr": "اعرض StateFlow<UiState> واحدة لكل شاشة. فالتدفقات المنفصلة للتحميل والبيانات والخطأ تجعل الواجهة ترى تركيبات مستحيلة، مثل التحميل والخطأ في الوقت نفسه، وتطيل الاختبارات.\n\nوعندما تُشتق الحالة من تدفقات المستودعات، استخدم combine وstateIn: يبدأ التدفق عندما تشترك الواجهة ويتوقف بعد خمس ثوانٍ من مغادرتها، فينجو من التدوير دون إعادة العمل.",
+        "code": "// Avoid: three flows the UI must reconcile.\n// val isLoading = MutableStateFlow(false); val items = MutableStateFlow(emptyList<Item>()); val error = MutableStateFlow<String?>(null)\n\nsealed interface CatalogueUiState {\n    data object Loading : CatalogueUiState\n    data class Ready(val items: List<Item>, val query: String) : CatalogueUiState\n    data class Failed(val message: String) : CatalogueUiState\n}\n\n@HiltViewModel\nclass CatalogueViewModel @Inject constructor(repo: CatalogueRepository, saved: SavedStateHandle) : ViewModel() {\n    private val query = saved.getStateFlow(\"query\", \"\")\n\n    val state: StateFlow<CatalogueUiState> = combine(repo.observeItems(), query) { items, q ->\n        CatalogueUiState.Ready(items.filter { it.name.contains(q, ignoreCase = true) }, q) as CatalogueUiState\n    }\n        .catch { emit(CatalogueUiState.Failed(\"Couldn't load the catalogue\")) }\n        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), CatalogueUiState.Loading)\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-arch-mvvm-2",
+        "titleEn": "Testing a ViewModel",
+        "titleAr": "اختبار ViewModel",
+        "bodyEn": "Because a ViewModel only depends on interfaces, a test gives it a fake repository and checks the state. Replace Dispatchers.Main with a test dispatcher (a JUnit rule), collect the state, call an event function, and assert the new state.\n\nTurbine makes collecting flows in tests easier; plain backgroundScope collection works too.",
+        "bodyAr": "لأن ViewModel تعتمد على واجهات فقط، يعطيها الاختبار مستودعًا وهميًا ويتحقق من الحالة. فاستبدل Dispatchers.Main بـ Dispatcher للاختبار (قاعدة JUnit)، واجمع الحالة، واستدعِ دالة حدث، وتحقق من الحالة الجديدة.\n\nومكتبة Turbine تسهّل جمع التدفقات في الاختبارات، والجمع العادي في backgroundScope يعمل أيضًا.",
+        "code": "class MainDispatcherRule(private val dispatcher: TestDispatcher = UnconfinedTestDispatcher()) : TestWatcher() {\n    override fun starting(description: Description) = Dispatchers.setMain(dispatcher)\n    override fun finished(description: Description) = Dispatchers.resetMain()\n}\n\nclass OrdersViewModelTest {\n    @get:Rule val main = MainDispatcherRule()\n    private val repo = FakeOrdersRepository(listOf(order(1, paid = true), order(2, paid = false)))\n\n    @Test fun filterShowsOnlyPaidOrders() = runTest {\n        val vm = OrdersViewModel(repo)\n        backgroundScope.launch { vm.state.collect {} }       // keep stateIn active\n        vm.onFilterChange(OrderFilter.PAID)\n        assertEquals(listOf(1), vm.state.value.orders.map { it.id })\n    }\n\n    @Test fun refreshFailureShowsMessage() = runTest {\n        repo.failNextRefresh = true\n        val vm = OrdersViewModel(repo)\n        backgroundScope.launch { vm.state.collect {} }\n        vm.onRefresh()\n        assertNotNull(vm.state.value.errorMessage)\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-arch-repository",
+    "lessons": [
+      {
+        "key": "tut-and-arch-repository-1",
+        "titleEn": "A repository and its data sources",
+        "titleAr": "المستودع ومصادر بياناته",
+        "bodyEn": "A data source talks to exactly one thing: ShopApi to the server, ProductDao to Room. The repository combines them and is the only class the rest of the app uses. Its API speaks in domain models, so a change in the JSON or the table schema stops at the repository.\n\nWith the database as the single source of truth, reads come from Room as a Flow, and refreshes write to Room; the UI never reads the network response directly.",
+        "bodyAr": "مصدر البيانات يتحدث مع شيء واحد بالضبط: ShopApi مع الخادم، وProductDao مع Room. والمستودع يجمعهما وهو الصنف الوحيد الذي يستخدمه باقي التطبيق. وواجهته تتحدث بنماذج المجال، فأي تغيير في JSON أو بنية الجدول يتوقف عند المستودع.\n\nومع قاعدة البيانات كمصدر وحيد للحقيقة، تأتي القراءات من Room كـ Flow، والتحديثات تكتب في Room، ولا تقرأ الواجهة استجابة الشبكة مباشرة أبدًا.",
+        "code": "interface OrdersRepository {\n    fun observeOrders(): Flow<List<Order>>\n    suspend fun refresh(): Result<Unit>\n}\n\nclass DefaultOrdersRepository @Inject constructor(\n    private val dao: OrderDao,\n    private val api: OrdersApi,\n) : OrdersRepository {\n    override fun observeOrders() = dao.observeAll().map { rows -> rows.map(OrderEntity::toDomain) }\n\n    override suspend fun refresh() = runCatching {\n        val remote = api.orders()                       // List<OrderDto>\n        dao.replaceAll(remote.map(OrderDto::toEntity))   // one transaction\n    }\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-arch-repository-2",
+        "titleEn": "Fakes for tests",
+        "titleAr": "النسخ الوهمية للاختبارات",
+        "bodyEn": "A fake is a small working implementation used in tests, usually backed by a MutableStateFlow. It is simpler and more realistic than a mock: you can add data, trigger failures and observe changes.\n\nKeep fakes in a shared test module so ViewModel tests and UI tests use the same one.",
+        "bodyAr": "النسخة الوهمية (Fake) تنفيذ صغير يعمل يُستخدم في الاختبارات، وغالبًا تدعمه MutableStateFlow. وهي أبسط وأقرب إلى الواقع من المحاكاة (Mock): تستطيع إضافة بيانات وإطلاق أعطال ومراقبة التغييرات.\n\nواحفظ النسخ الوهمية في وحدة اختبار مشتركة حتى تستخدم اختبارات ViewModel واختبارات الواجهة النسخة نفسها.",
+        "code": "class FakeOrdersRepository(initial: List<Order> = emptyList()) : OrdersRepository {\n    private val orders = MutableStateFlow(initial)\n    var failNextRefresh = false\n    var refreshCalls = 0\n\n    override fun observeOrders(): Flow<List<Order>> = orders\n\n    override suspend fun refresh(): Result<Unit> {\n        refreshCalls++\n        if (failNextRefresh) { failNextRefresh = false; return Result.failure(IOException(\"offline\")) }\n        return Result.success(Unit)\n    }\n\n    fun emit(list: List<Order>) { orders.value = list }       // simulate new data from the database\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-arch-di-hilt",
+    "lessons": [
+      {
+        "key": "tut-and-arch-di-hilt-1",
+        "titleEn": "Manual DI first",
+        "titleAr": "الحقن اليدوي أولًا",
+        "bodyEn": "Dependency injection is a simple idea: classes get their dependencies from outside. In a small app, one AppContainer created in Application builds the objects once and hands them out. This shows exactly what Hilt automates: creating objects in the right order, sharing singletons, and creating ViewModels with their dependencies.\n\nWhen the container grows (many screens, scopes, tests swapping parts), a framework like Hilt saves code and mistakes.",
+        "bodyAr": "حقن الاعتماديات فكرة بسيطة: الأصناف تأخذ اعتمادياتها من الخارج. وفي التطبيق الصغير، يبني AppContainer واحد يُنشأ في Application الكائنات مرة واحدة ويوزعها. وهذا يوضح بالضبط ما تؤتمته Hilt: إنشاء الكائنات بالترتيب الصحيح، ومشاركة الكائنات الوحيدة، وإنشاء ViewModel مع اعتمادياتها.\n\nوعندما يكبر الحاوي (شاشات كثيرة ونطاقات واختبارات تستبدل أجزاء)، يوفر إطار مثل Hilt الكود والأخطاء.",
+        "code": "class AppContainer(context: Context) {\n    private val retrofit = Retrofit.Builder().baseUrl(BuildConfig.API_URL)\n        .addConverterFactory(Json.asConverterFactory(\"application/json\".toMediaType())).build()\n    private val db = Room.databaseBuilder(context, ShopDatabase::class.java, \"shop.db\").build()\n    val ordersRepository: OrdersRepository = DefaultOrdersRepository(db.orderDao(), retrofit.create(OrdersApi::class.java))\n}\n\nclass ShopApp : Application() {\n    lateinit var container: AppContainer\n    override fun onCreate() { super.onCreate(); container = AppContainer(this) }\n}\n\n// A ViewModel factory: what @HiltViewModel generates for you.\nval OrdersViewModelFactory = viewModelFactory {\n    initializer { OrdersViewModel((this[APPLICATION_KEY] as ShopApp).container.ordersRepository) }\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-arch-di-hilt-2",
+        "titleEn": "Hilt modules, scopes and tests",
+        "titleAr": "وحدات Hilt والنطاقات والاختبارات",
+        "bodyEn": "Classes you own get @Inject on their constructor and need no module. Interfaces need @Binds to say which implementation to use. Third-party objects (Retrofit, Room, OkHttp) need @Provides because you can't annotate their constructors.\n\nScopes decide sharing: @Singleton in SingletonComponent lives as long as the app, @ViewModelScoped as long as one ViewModel. In tests, @TestInstallIn replaces a module everywhere, for example a fake repository for all UI tests.",
+        "bodyAr": "الأصناف التي تملكها تأخذ @Inject على مُنشئها ولا تحتاج وحدة. والواجهات تحتاج @Binds لتحديد التنفيذ المستخدم. والكائنات الخارجية (Retrofit وRoom وOkHttp) تحتاج @Provides لأنك لا تستطيع وضع تعليقات على مُنشئاتها.\n\nوالنطاقات تحدد المشاركة: @Singleton في SingletonComponent تعيش ما دام التطبيق يعمل، و@ViewModelScoped ما دامت ViewModel واحدة. وفي الاختبارات تستبدل @TestInstallIn وحدة في كل مكان، مثل مستودع وهمي لكل اختبارات الواجهة.",
+        "code": "@Module\n@InstallIn(SingletonComponent::class)\nobject DatabaseModule {\n    @Provides @Singleton\n    fun database(@ApplicationContext context: Context): ShopDatabase =\n        Room.databaseBuilder(context, ShopDatabase::class.java, \"shop.db\").build()\n\n    @Provides fun orderDao(db: ShopDatabase): OrderDao = db.orderDao()\n}\n\n// androidTest: every test in this module uses the fake instead of the real repository.\n@Module\n@TestInstallIn(components = [SingletonComponent::class], replaces = [DataModule::class])\nabstract class FakeDataModule {\n    @Binds abstract fun orders(fake: FakeOrdersRepository): OrdersRepository\n}\n\n@HiltAndroidTest\nclass OrdersScreenTest {\n    @get:Rule(order = 0) val hilt = HiltAndroidRule(this)\n    @get:Rule(order = 1) val compose = createAndroidComposeRule<MainActivity>()\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-arch-clean-solid",
+    "lessons": [
+      {
+        "key": "tut-and-arch-clean-solid-1",
+        "titleEn": "SOLID in Kotlin",
+        "titleAr": "مبادئ SOLID في Kotlin",
+        "bodyEn": "S, single responsibility: a class has one reason to change. O, open/closed: add behaviour by adding code (a new strategy) rather than editing working code. L, Liskov: any implementation can replace its interface without surprises. I, interface segregation: small, focused interfaces. D, dependency inversion: high-level code depends on abstractions, and the details implement them.\n\nIn Android the D shows up as repositories behind interfaces, and the S as ViewModels that don't parse JSON.",
+        "bodyAr": "المبدأ S، مسؤولية واحدة: للصنف سبب واحد للتغيير. وO، مفتوح ومغلق: أضف السلوك بإضافة كود (استراتيجية جديدة) لا بتعديل كود يعمل. وL، استبدال ليسكوف: أي تنفيذ يحل محل واجهته دون مفاجآت. وI، فصل الواجهات: واجهات صغيرة مركّزة. وD، عكس الاعتماد: الكود عالي المستوى يعتمد على التجريدات، والتفاصيل تنفذها.\n\nوفي Android يظهر D في المستودعات خلف الواجهات، وS في ViewModel التي لا تحلل JSON.",
+        "code": "// S and D violated: the ViewModel builds its own HTTP client and formats money.\n// class PayViewModel { val client = OkHttpClient(); fun total() = \"%.2f EGP\".format(...) }\n\n// I: callers that only read don't see write methods.\ninterface ProductReader { fun observe(id: Int): Flow<Product?> }\ninterface ProductWriter { suspend fun save(product: Product) }\nclass ProductRepositoryImpl @Inject constructor(private val dao: ProductDao) : ProductReader, ProductWriter {\n    override fun observe(id: Int) = dao.observe(id).map { it?.toDomain() }\n    override suspend fun save(product: Product) = dao.upsert(product.toEntity())\n}\n\n// O: new formats are new classes.\nfun interface PriceFormatter { fun format(cents: Int): String }\nval egp = PriceFormatter { \"%.2f EGP\".format(it / 100.0) }\nval usd = PriceFormatter { \"$%.2f\".format(it / 100.0) }",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-arch-clean-solid-2",
+        "titleEn": "When to add a use case",
+        "titleAr": "متى تضيف حالة استخدام",
+        "bodyEn": "Add a use case when it earns its place: it combines several repositories, it is used by more than one ViewModel, or it is a business rule you want to test without the UI. Name it with a verb (PlaceOrderUseCase), give it one public operator fun invoke, and keep Android out of it.\n\nDon't add a use case that only forwards a repository call; it doubles the files without adding behaviour. Being able to explain this trade-off matters more in interviews than reciting the layers.",
+        "bodyAr": "أضف حالة استخدام عندما تستحق مكانها: تجمع عدة مستودعات، أو تستخدمها أكثر من ViewModel، أو هي قاعدة عمل تريد اختبارها دون الواجهة. وسمّها بفعل (PlaceOrderUseCase)، وأعطها دالة عامة واحدة operator fun invoke، وأبعد Android عنها.\n\nولا تضف حالة استخدام لا تفعل إلا تمرير استدعاء المستودع، فهي تضاعف الملفات دون إضافة سلوك. والقدرة على شرح هذه المقايضة أهم في المقابلات من سرد الطبقات.",
+        "code": "class PlaceOrderUseCase @Inject constructor(\n    private val cart: CartRepository,\n    private val orders: OrdersRepository,\n    private val calculateTotal: CalculateTotalUseCase,\n) {\n    suspend operator fun invoke(addressId: Int, coupon: Coupon?): Result<OrderId> {\n        val items = cart.current()\n        if (items.isEmpty()) return Result.failure(EmptyCartException())\n        val total = calculateTotal(items, coupon)\n        return orders.place(items, addressId, total).onSuccess { cart.clear() }\n    }\n}\n\nclass PlaceOrderUseCaseTest {\n    @Test fun emptyCartFailsWithoutCallingTheServer() = runTest {\n        val orders = FakeOrdersRepository()\n        val result = PlaceOrderUseCase(FakeCartRepository(emptyList()), orders, CalculateTotalUseCase { 0 })(1, null)\n        assertTrue(result.exceptionOrNull() is EmptyCartException)\n        assertEquals(0, orders.placeCalls)\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-arch-errors",
+    "lessons": [
+      {
+        "key": "tut-and-arch-errors-1",
+        "titleEn": "Mapping exceptions at the boundary",
+        "titleAr": "تحويل الاستثناءات عند الحدود",
+        "bodyEn": "Retrofit throws IOException when there is no connection and HttpException for 4xx and 5xx; serialization throws its own exception for bad JSON. The repository catches these, keeps CancellationException going, and maps the rest to a small sealed DataError so the layers above never import Retrofit types.\n\nThe ViewModel then decides what each error means for this screen.",
+        "bodyAr": "مكتبة Retrofit ترمي IOException عندما لا يوجد اتصال، وHttpException لأخطاء 4xx و5xx، والتحويل يرمي استثناءه الخاص لـ JSON الخاطئ. والمستودع يلتقط هذه الاستثناءات، ويترك CancellationException تمر، ويحوّل الباقي إلى DataError صغيرة من نوع sealed حتى لا تستورد الطبقات العليا أنواع Retrofit أبدًا.\n\nثم تقرر ViewModel ما يعنيه كل خطأ لهذه الشاشة.",
+        "code": "class ProfileRepository @Inject constructor(private val api: ProfileApi, private val dao: ProfileDao) {\n    suspend fun refresh(): Result<Unit> = safeCall {\n        dao.upsert(api.me().toEntity())\n    }\n}\n\n@HiltViewModel\nclass ProfileViewModel @Inject constructor(private val repo: ProfileRepository) : ViewModel() {\n    private val _message = MutableStateFlow<String?>(null)\n    val message = _message.asStateFlow()\n\n    fun refresh() = viewModelScope.launch {\n        repo.refresh().onFailure { e ->\n            val error = (e as? DataException)?.error ?: DataError.Unknown(e)\n            if (error is DataError.Unknown) Firebase.crashlytics.recordException(e)\n            _message.value = error.userMessage()\n        }\n    }\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-and-arch-errors-2",
+        "titleEn": "Errors in the UI",
+        "titleAr": "الأخطاء في الواجهة",
+        "bodyEn": "Show errors in proportion: a failed refresh with cached data on screen is a small banner or snackbar, not a full-screen error. A first load with nothing to show deserves a full-screen state with a Retry button. Unauthorized means sign-in again; validation errors belong next to the field.\n\nNever show raw exception messages: they confuse users and can leak internal details.",
+        "bodyAr": "اعرض الأخطاء بقدرها: التحديث الفاشل مع وجود بيانات مخزنة على الشاشة يستحق شريطًا صغيرًا أو Snackbar لا شاشة خطأ كاملة. والتحميل الأول الذي لا شيء فيه للعرض يستحق حالة بملء الشاشة مع زر Retry. وUnauthorized تعني تسجيل الدخول مرة أخرى، وأخطاء التحقق مكانها بجانب الحقل.\n\nولا تعرض رسائل الاستثناءات الخام أبدًا، فهي تربك المستخدمين وقد تسرّب تفاصيل داخلية.",
+        "code": "@Composable\nfun FeedContent(state: FeedUiState, onRetry: () -> Unit) {\n    when {\n        state.items.isEmpty() && state.error != null ->              // nothing to show: full-screen error\n            ErrorState(message = state.error, actionLabel = \"Try again\", onAction = onRetry)\n        state.items.isEmpty() && state.loading -> FullScreenLoading()\n        else -> Column {\n            if (state.error != null) OfflineBanner(state.error, onRetry)   // keep showing saved items\n            FeedList(state.items)\n        }\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "and-arch-modularization",
+    "lessons": [
+      {
+        "key": "tut-and-arch-modularization-1",
+        "titleEn": "Feature and core modules",
+        "titleAr": "وحدات الميزات والوحدات الأساسية",
+        "bodyEn": "Core modules hold shared building blocks: models, networking, database, data repositories, the design system. Feature modules hold screens and their ViewModels and depend only on core modules. The app module depends on every feature and connects their navigation.\n\nBecause features can't see each other, a change in one can't break another, and Gradle rebuilds only what changed.",
+        "bodyAr": "الوحدات الأساسية تحمل اللبنات المشتركة: النماذج والشبكة وقاعدة البيانات ومستودعات البيانات ونظام التصميم. ووحدات الميزات تحمل الشاشات وViewModel الخاصة بها وتعتمد على الوحدات الأساسية فقط. ووحدة التطبيق تعتمد على كل الميزات وتربط تنقلها.\n\nولأن الميزات لا ترى بعضها، لا يستطيع تغيير في إحداها كسر أخرى، ويعيد Gradle بناء ما تغيّر فقط.",
+        "code": ":app ──────────┬─────────────┬──────────────┐\n               ▼             ▼              ▼\n      :feature:orders  :feature:tracking  :feature:account\n               │             │              │\n               └──────┬──────┴──────┬───────┘\n                      ▼             ▼\n                 :core:data   :core:designsystem\n                 │       │\n                 ▼       ▼\n       :core:network  :core:database ──▶ :core:model",
+        "language": "text"
+      },
+      {
+        "key": "tut-and-arch-modularization-2",
+        "titleEn": "Convention plugins",
+        "titleAr": "الإضافات الاصطلاحية",
+        "bodyEn": "With ten modules, copying the same android {} and dependency blocks into every build file becomes error-prone. Convention plugins in an included build-logic build define that setup once: shop.android.library, shop.android.feature (adds Compose, Hilt and common dependencies) and so on.\n\nEach module's build file then shrinks to a plugin id, a namespace and its own dependencies.",
+        "bodyAr": "مع عشر وحدات، يصبح نسخ كتل android {} والاعتماديات نفسها في كل ملف بناء عرضة للأخطاء. والإضافات الاصطلاحية في بناء build-logic مضمّن تعرّف ذلك الإعداد مرة واحدة: shop.android.library وshop.android.feature (تضيف Compose وHilt والاعتماديات المشتركة) وغيرها.\n\nفيتقلص ملف بناء كل وحدة إلى معرّف إضافة وnamespace واعتمادياتها الخاصة.",
+        "code": "// build-logic/convention/src/main/kotlin/AndroidFeatureConventionPlugin.kt\nclass AndroidFeatureConventionPlugin : Plugin<Project> {\n    override fun apply(target: Project) = with(target) {\n        pluginManager.apply(\"com.android.library\")\n        pluginManager.apply(\"org.jetbrains.kotlin.android\")\n        pluginManager.apply(\"org.jetbrains.kotlin.plugin.compose\")\n        pluginManager.apply(\"com.google.dagger.hilt.android\")\n        extensions.configure<LibraryExtension> {\n            compileSdk = 35\n            defaultConfig { minSdk = 24 }\n        }\n        dependencies {\n            add(\"implementation\", project(\":core:designsystem\"))\n            add(\"implementation\", project(\":core:data\"))\n        }\n    }\n}\n\n// build-logic/convention/build.gradle.kts\ngradlePlugin {\n    plugins.register(\"androidFeature\") {\n        id = \"shop.android.feature\"\n        implementationClass = \"AndroidFeatureConventionPlugin\"\n    }\n}",
+        "language": "kotlin"
+      }
+    ]
+  }
+]

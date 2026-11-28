@@ -1,0 +1,265 @@
+{
+  "slug": "android-architecture",
+  "order": 22,
+  "titleEn": "Android architecture and engineering practices",
+  "titleAr": "معمارية Android والممارسات الهندسية",
+  "descriptionEn": "Structure apps that stay easy to change: UI, domain and data layers, MVVM with a single UI state, repositories as the source of truth, dependency injection with Hilt, clean architecture and SOLID without over-engineering, errors that flow cleanly between layers, and modularization for larger apps.",
+  "descriptionAr": "نظّم تطبيقات تبقى سهلة التغيير: طبقات الواجهة والمجال والبيانات، وMVVM بحالة واجهة واحدة، والمستودعات كمصدر للحقيقة، وحقن الاعتماديات بـ Hilt، والمعمارية النظيفة وSOLID دون تعقيد زائد، وأخطاء تنتقل بوضوح بين الطبقات، وتقسيم التطبيقات الكبيرة إلى وحدات.",
+  "topics": [
+    {
+      "slug": "and-arch-layers",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "App layers and separation of concerns",
+      "titleAr": "طبقات التطبيق وفصل المسؤوليات",
+      "summaryEn": "Google's recommended architecture splits an app into a UI layer (composables and ViewModels that turn data into screen state), a data layer (repositories and data sources for network, database and files) and an optional domain layer (use cases with business rules shared by several screens). Each layer depends only on the one below it, and data flows up as streams while events flow down as function calls.",
+      "summaryAr": "المعمارية التي توصي بها Google تقسم التطبيق إلى طبقة الواجهة (الدوال القابلة للتركيب وViewModel التي تحوّل البيانات إلى حالة شاشة)، وطبقة البيانات (المستودعات ومصادر البيانات للشبكة وقاعدة البيانات والملفات)، وطبقة مجال اختيارية (حالات استخدام فيها قواعد العمل المشتركة بين عدة شاشات). وكل طبقة تعتمد فقط على التي تحتها، والبيانات تصعد كتدفقات بينما الأحداث تنزل كاستدعاءات دوال.",
+      "whyEn": "When everything lives in an Activity, one change breaks three features and nothing can be tested. Clear layers let you change the backend, the database or a screen independently, test logic on the JVM, and let a team work in parallel.",
+      "whyAr": "عندما يعيش كل شيء في Activity، يكسر تغيير واحد ثلاث ميزات ولا يمكن اختبار أي شيء. والطبقات الواضحة تتيح تغيير الخادم أو قاعدة البيانات أو شاشة بشكل مستقل، واختبار المنطق على JVM، وعمل الفريق بالتوازي.",
+      "howEn": "Start with UI and data layers: composables render state, a ViewModel per screen exposes StateFlow<UiState> and handles events, repositories hide where data comes from. Add a domain layer only when logic is reused across ViewModels or is complex enough to deserve its own tests. Keep Android types (Context, Views) out of ViewModels and repositories where you can.",
+      "howAr": "ابدأ بطبقتي الواجهة والبيانات: الدوال ترسم الحالة، وViewModel لكل شاشة تعرض StateFlow<UiState> وتعالج الأحداث، والمستودعات تخفي مصدر البيانات. وأضف طبقة المجال فقط عندما يُعاد استخدام المنطق بين عدة ViewModel أو يكون معقدًا بما يكفي ليستحق اختبارات خاصة. وأبعد أنواع Android (Context والعناصر) عن ViewModel والمستودعات قدر ما تستطيع.",
+      "exampleEn": "A news app: ArticlesScreen renders ArticlesUiState; ArticlesViewModel calls GetFeedUseCase, which combines ArticlesRepository and BookmarksRepository; the repositories read from Room and refresh from the API. Swapping the API client touches only the data layer.",
+      "exampleAr": "تطبيق أخبار: ArticlesScreen ترسم ArticlesUiState، وArticlesViewModel تستدعي GetFeedUseCase التي تجمع ArticlesRepository وBookmarksRepository، والمستودعات تقرأ من Room وتحدّث من الـ API. وتبديل عميل الـ API لا يلمس إلا طبقة البيانات.",
+      "practiceEn": "1) Draw the layers of an app you built and list what lives where. 2) Move network code out of a ViewModel into a repository. 3) Identify one rule used by two screens and move it into a use case.",
+      "practiceAr": "1) ارسم طبقات تطبيق بنيته واكتب ما يعيش في كل طبقة. 2) انقل كود الشبكة من ViewModel إلى مستودع. 3) حدد قاعدة تستخدمها شاشتان وانقلها إلى حالة استخدام.",
+      "challengeEn": "Refactor a one-Activity app into UI, domain and data layers without changing behaviour, adding unit tests for each layer as you go.",
+      "challengeAr": "أعد هيكلة تطبيق من Activity واحدة إلى طبقات الواجهة والمجال والبيانات دون تغيير السلوك، مع إضافة اختبارات وحدات لكل طبقة أثناء العمل.",
+      "objectivesEn": [
+        "Describe the UI, domain and data layers",
+        "Keep dependencies pointing one way",
+        "Decide when a domain layer is worth it",
+        "Keep Android framework types out of logic"
+      ],
+      "objectivesAr": [
+        "وصف طبقات الواجهة والمجال والبيانات",
+        "إبقاء الاعتماديات في اتجاه واحد",
+        "تقرير متى تستحق طبقة المجال",
+        "إبعاد أنواع إطار Android عن المنطق"
+      ],
+      "prerequisites": [
+        "and-compose-state"
+      ]
+    },
+    {
+      "slug": "and-arch-mvvm",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Intermediate",
+      "titleEn": "MVVM and UI state",
+      "titleAr": "نمط MVVM وحالة الواجهة",
+      "summaryEn": "In MVVM the View (composables) observes a ViewModel, and the ViewModel holds UI state and logic and talks to repositories. A screen exposes one immutable UiState (a data class or sealed interface) through StateFlow, produced with stateIn or by updating a MutableStateFlow, and the UI sends events by calling ViewModel functions. ViewModels survive configuration changes, use viewModelScope for coroutines, and get arguments from SavedStateHandle.",
+      "summaryAr": "في MVVM تراقب الواجهة (الدوال القابلة للتركيب) ViewModel، وتحمل ViewModel حالة الواجهة ومنطقها وتتحدث مع المستودعات. والشاشة تعرض UiState واحدة غير قابلة للتغيير (صنف data أو واجهة sealed) عبر StateFlow، تُنتج بـ stateIn أو بتحديث MutableStateFlow، والواجهة ترسل الأحداث باستدعاء دوال ViewModel. وViewModel تبقى بعد تغييرات الإعدادات، وتستخدم viewModelScope للـ Coroutines، وتأخذ الوسائط من SavedStateHandle.",
+      "whyEn": "MVVM with a single UI state is the default architecture in Android job descriptions and codebases. It makes screens predictable: the UI is a function of one value, every change goes through one place, and the logic is unit-testable without a device.",
+      "whyAr": "نمط MVVM مع حالة واجهة واحدة هو المعمارية الافتراضية في إعلانات وظائف Android وقواعد الكود. وهو يجعل الشاشات قابلة للتوقع: الواجهة دالة لقيمة واحدة، وكل تغيير يمر بمكان واحد، والمنطق قابل للاختبار دون جهاز.",
+      "howEn": "Model everything a screen shows in one UiState, derive it from repository flows with combine and stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), initial), expose functions named after user intents (onRefresh, onQueryChange), and keep the ViewModel free of Context and composables. Collect with collectAsStateWithLifecycle.",
+      "howAr": "مثّل كل ما تعرضه الشاشة في UiState واحدة، واشتقها من تدفقات المستودعات بـ combine وstateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), initial)، واعرض دوالًا مسماة بنوايا المستخدم (onRefresh وonQueryChange)، وأبقِ ViewModel خالية من Context والدوال القابلة للتركيب. واجمع بـ collectAsStateWithLifecycle.",
+      "exampleEn": "OrdersViewModel combines the orders flow, the selected filter and a refreshing flag into OrdersUiState(orders, filter, isRefreshing, error). The screen has no logic: it renders the state and calls onFilterChange and onRefresh.",
+      "exampleAr": "تجمع OrdersViewModel تدفق الطلبات والفلتر المختار وعلامة التحديث في OrdersUiState(orders, filter, isRefreshing, error). والشاشة بلا منطق: ترسم الحالة وتستدعي onFilterChange وonRefresh.",
+      "practiceEn": "1) Replace three separate StateFlows in a ViewModel with one UiState. 2) Build a state with combine and stateIn. 3) Write two unit tests for the ViewModel with a fake repository.",
+      "practiceAr": "1) استبدل ثلاث StateFlow منفصلة في ViewModel بـ UiState واحدة. 2) ابنِ حالة بـ combine وstateIn. 3) اكتب اختباري وحدات لـ ViewModel مع مستودع وهمي.",
+      "challengeEn": "Design the UiState and events of a checkout screen (cart, address, payment method, placing the order, errors) so that impossible combinations can't be represented.",
+      "challengeAr": "صمّم UiState وأحداث شاشة دفع (السلة والعنوان وطريقة الدفع وتنفيذ الطلب والأخطاء) بحيث لا يمكن تمثيل التركيبات المستحيلة.",
+      "objectivesEn": [
+        "Explain the roles of View, ViewModel and Model",
+        "Expose a single immutable UiState with StateFlow",
+        "Build state with combine and stateIn",
+        "Test a ViewModel with fakes"
+      ],
+      "objectivesAr": [
+        "شرح أدوار الواجهة وViewModel والنموذج",
+        "عرض UiState واحدة غير قابلة للتغيير بـ StateFlow",
+        "بناء الحالة بـ combine وstateIn",
+        "اختبار ViewModel بنسخ وهمية"
+      ],
+      "prerequisites": [
+        "and-arch-layers"
+      ]
+    },
+    {
+      "slug": "and-arch-repository",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "The repository pattern",
+      "titleAr": "نمط المستودع (Repository)",
+      "summaryEn": "A repository is the single entry point for one type of data. It hides data sources (a Retrofit API, a Room DAO, DataStore, an in-memory cache), decides which one to trust, and exposes clean models and Flows to the rest of the app. Usually the local database is the single source of truth: the UI observes it, and network refreshes write into it.",
+      "summaryAr": "المستودع هو نقطة الدخول الوحيدة لنوع واحد من البيانات. يخفي مصادر البيانات (API بـ Retrofit، وDAO في Room، وDataStore، وذاكرة مؤقتة)، ويقرر أيها يثق به، ويعرض نماذج نظيفة وتدفقات Flow لبقية التطبيق. وعادةً تكون قاعدة البيانات المحلية هي المصدر الوحيد للحقيقة: الواجهة تراقبها، وتحديثات الشبكة تكتب فيها.",
+      "whyEn": "Without repositories every screen talks to the network directly, data is duplicated and out of sync, and offline support is impossible. With them, caching, offline-first and changing an API become local changes, and ViewModels are tested with a simple fake.",
+      "whyAr": "دون مستودعات تتحدث كل شاشة مع الشبكة مباشرة، وتتكرر البيانات وتفقد التزامن، ويستحيل دعم العمل دون اتصال. ومعها يصبح التخزين المؤقت والعمل دون اتصال أولًا وتغيير الـ API تغييرات محلية، وتُختبر ViewModel بنسخة وهمية بسيطة.",
+      "howEn": "Define the repository as an interface in terms of your domain models; implement it with data sources injected through the constructor. Map network DTOs and database entities to domain models at the boundary. Expose Flow for data that changes and suspend functions for one-shot actions, and run blocking work on the right dispatcher inside the data layer.",
+      "howAr": "عرّف المستودع كواجهة بنماذج المجال الخاصة بك، ونفّذه بمصادر بيانات تُحقن عبر المُنشئ. وحوّل كائنات الشبكة (DTO) وكيانات قاعدة البيانات إلى نماذج المجال عند الحدود. واعرض Flow للبيانات التي تتغير ودوال suspend للأفعال لمرة واحدة، ونفّذ العمل المعطِّل على الـ Dispatcher المناسب داخل طبقة البيانات.",
+      "exampleEn": "ProductRepository.observeProduct(id) returns the Room row as a Flow<Product>, while refreshProduct(id) fetches from the API and upserts. The details screen shows cached data instantly and updates when the refresh lands.",
+      "exampleAr": "الدالة ProductRepository.observeProduct(id) تُرجع صف Room كـ Flow<Product>، بينما refreshProduct(id) تجلب من الـ API وتحدّث أو تُدرج. فتعرض شاشة التفاصيل البيانات المخزنة فورًا وتتحدث عندما يصل التحديث.",
+      "practiceEn": "1) Write a repository interface and an in-memory fake for tests. 2) Map an API DTO to a domain model. 3) Make the UI read only from the local source and refresh through the repository.",
+      "practiceAr": "1) اكتب واجهة مستودع ونسخة وهمية في الذاكرة للاختبارات. 2) حوّل DTO من الـ API إلى نموذج مجال. 3) اجعل الواجهة تقرأ من المصدر المحلي فقط وتحدّث عبر المستودع.",
+      "challengeEn": "Implement a repository that merges a remote and a local source with a time-based cache policy (refresh if older than 10 minutes) and test every branch with fakes.",
+      "challengeAr": "نفّذ مستودعًا يدمج مصدرًا بعيدًا ومصدرًا محليًا بسياسة تخزين زمنية (التحديث إذا كانت أقدم من 10 دقائق)، واختبر كل فرع بنسخ وهمية.",
+      "objectivesEn": [
+        "Design repositories as the entry point to data",
+        "Pick a single source of truth",
+        "Map DTOs and entities to domain models",
+        "Expose Flow and suspend APIs"
+      ],
+      "objectivesAr": [
+        "تصميم المستودعات كنقطة دخول للبيانات",
+        "اختيار مصدر وحيد للحقيقة",
+        "تحويل DTO والكيانات إلى نماذج المجال",
+        "عرض واجهات Flow وsuspend"
+      ],
+      "prerequisites": [
+        "and-arch-layers"
+      ]
+    },
+    {
+      "slug": "and-arch-di-hilt",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Intermediate",
+      "titleEn": "Dependency injection with Hilt",
+      "titleAr": "حقن الاعتماديات بـ Hilt",
+      "summaryEn": "Dependency injection means a class receives what it needs (repositories, API clients, dispatchers) instead of creating it, usually through its constructor. Hilt, built on Dagger, generates the wiring: @HiltAndroidApp on the Application, @AndroidEntryPoint on Activities, @HiltViewModel with @Inject constructors, and @Module classes with @Provides or @Binds for interfaces and third-party objects, installed in components that set their lifetime (SingletonComponent, ViewModelComponent).",
+      "summaryAr": "حقن الاعتماديات يعني أن يستقبل الصنف ما يحتاجه (المستودعات وعملاء الـ API والـ Dispatchers) بدل أن ينشئه، عادةً عبر المُنشئ. وHilt المبنية على Dagger تولّد الربط: @HiltAndroidApp على Application، و@AndroidEntryPoint على Activity، و@HiltViewModel مع مُنشئات @Inject، وأصناف @Module فيها @Provides أو @Binds للواجهات والكائنات الخارجية، وتُثبَّت في مكونات تحدد مدة حياتها (SingletonComponent وViewModelComponent).",
+      "whyEn": "DI makes classes testable (pass a fake), keeps object creation in one place, and controls lifetimes so there is one database and one HTTP client. Hilt is the most common DI choice in Android job postings, though Koin and manual DI are also used.",
+      "whyAr": "حقن الاعتماديات يجعل الأصناف قابلة للاختبار (مرّر نسخة وهمية)، ويبقي إنشاء الكائنات في مكان واحد، ويتحكم في مدد الحياة فتكون هناك قاعدة بيانات واحدة وعميل HTTP واحد. وHilt أشهر اختيار لحقن الاعتماديات في إعلانات وظائف Android، مع استخدام Koin والحقن اليدوي أيضًا.",
+      "howEn": "Prefer constructor injection with @Inject. Bind interfaces to implementations with @Binds in an abstract module, provide third-party objects (Retrofit, Room) with @Provides, scope only what must be shared (@Singleton for the database), inject dispatchers so tests can replace them, and use @TestInstallIn or @UninstallModules in tests. Start with manual DI in tiny apps to understand what Hilt automates.",
+      "howAr": "فضّل الحقن عبر المُنشئ بـ @Inject. واربط الواجهات بتنفيذاتها بـ @Binds في وحدة abstract، ووفّر الكائنات الخارجية (Retrofit وRoom) بـ @Provides، واحصر النطاق على ما يجب مشاركته فقط (@Singleton لقاعدة البيانات)، واحقن الـ Dispatchers حتى تستبدلها الاختبارات، واستخدم @TestInstallIn أو @UninstallModules في الاختبارات. وابدأ بالحقن اليدوي في التطبيقات الصغيرة جدًا لتفهم ما تؤتمته Hilt.",
+      "exampleEn": "@HiltViewModel class CartViewModel @Inject constructor(private val cart: CartRepository) : ViewModel(). A DataModule @Binds CartRepository to OfflineFirstCartRepository, and a NetworkModule @Provides a single Retrofit instance. In UI tests, a fake CartRepository replaces the real one with @TestInstallIn.",
+      "exampleAr": "الصنف @HiltViewModel class CartViewModel @Inject constructor(private val cart: CartRepository) : ViewModel(). ووحدة DataModule تربط CartRepository بـ OfflineFirstCartRepository بـ @Binds، ووحدة NetworkModule توفر نسخة Retrofit واحدة بـ @Provides. وفي اختبارات الواجهة تحل نسخة وهمية من CartRepository محل الحقيقية بـ @TestInstallIn.",
+      "practiceEn": "1) Wire a small app manually with an AppContainer. 2) Replace it with Hilt. 3) Inject a CoroutineDispatcher and swap it in a test.",
+      "practiceAr": "1) اربط تطبيقًا صغيرًا يدويًا بـ AppContainer. 2) استبدله بـ Hilt. 3) احقن CoroutineDispatcher واستبدله في اختبار.",
+      "challengeEn": "Add Hilt to a multi-screen app with a network module, a database module and repository bindings, then write an instrumented test that replaces the network module with a fake server.",
+      "challengeAr": "أضف Hilt إلى تطبيق متعدد الشاشات بوحدة للشبكة ووحدة لقاعدة البيانات وربط للمستودعات، ثم اكتب اختبارًا على الجهاز يستبدل وحدة الشبكة بخادم وهمي.",
+      "objectivesEn": [
+        "Explain dependency injection and constructor injection",
+        "Set up Hilt in an app and ViewModels",
+        "Use modules with @Binds and @Provides and scopes",
+        "Replace bindings in tests"
+      ],
+      "objectivesAr": [
+        "شرح حقن الاعتماديات والحقن عبر المُنشئ",
+        "تهيئة Hilt في التطبيق وViewModel",
+        "استخدام الوحدات مع @Binds و@Provides والنطاقات",
+        "استبدال الربط في الاختبارات"
+      ],
+      "prerequisites": [
+        "and-arch-repository"
+      ]
+    },
+    {
+      "slug": "and-arch-clean-solid",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 60,
+      "difficulty": "Advanced",
+      "titleEn": "Clean architecture, SOLID and trade-offs",
+      "titleAr": "المعمارية النظيفة وSOLID والمقايضات",
+      "summaryEn": "Clean architecture puts business rules at the centre, independent of frameworks: use cases depend on repository interfaces, and the data and UI layers depend inward. SOLID gives guidelines: one reason to change per class, open for extension, substitutable implementations, small interfaces, and depending on abstractions. In Android this mostly means use cases for shared logic, interfaces at layer boundaries, and pure Kotlin modules for the domain.",
+      "summaryAr": "المعمارية النظيفة تضع قواعد العمل في المركز، مستقلة عن الأطر: حالات الاستخدام تعتمد على واجهات المستودعات، وطبقتا البيانات والواجهة تعتمدان إلى الداخل. وتعطي مبادئ SOLID إرشادات: سبب واحد للتغيير لكل صنف، ومفتوح للتوسيع، وتنفيذات قابلة للاستبدال، وواجهات صغيرة، والاعتماد على التجريدات. وفي Android يعني هذا غالبًا حالات استخدام للمنطق المشترك، وواجهات عند حدود الطبقات، ووحدات Kotlin نقية للمجال.",
+      "whyEn": "Architecture is about making the next change cheap. Interviewers ask about clean architecture and SOLID to see whether you can justify structure, and also whether you avoid the opposite failure: three layers of mappers and use cases that just forward a call.",
+      "whyAr": "المعمارية تهدف إلى جعل التغيير القادم رخيصًا. ومن يجري المقابلات يسأل عن المعمارية النظيفة وSOLID ليرى هل تستطيع تبرير البنية، وهل تتجنب الفشل المعاكس: ثلاث طبقات من المحوّلات وحالات استخدام لا تفعل شيئًا سوى تمرير الاستدعاء.",
+      "howEn": "Introduce a use case when logic combines repositories, is reused, or is a business rule worth testing alone; otherwise let the ViewModel call the repository. Depend on interfaces where you need to swap implementations or fakes. Apply SOLID to real pain (a class doing five things, a giant interface) rather than up front, and write down architecture decisions and their trade-offs.",
+      "howAr": "أضف حالة استخدام عندما يجمع المنطق عدة مستودعات، أو يُعاد استخدامه، أو يكون قاعدة عمل تستحق الاختبار وحدها، وإلا فدع ViewModel تستدعي المستودع. واعتمد على الواجهات حيث تحتاج إلى تبديل التنفيذات أو النسخ الوهمية. وطبّق SOLID على ألم حقيقي (صنف يفعل خمسة أشياء، أو واجهة ضخمة) لا مقدمًا، واكتب قرارات المعمارية ومقايضاتها.",
+      "exampleEn": "CalculateCheckoutTotalUseCase combines cart items, delivery fees and coupon rules used by the cart, checkout and order summary screens. It has 15 unit tests and no Android imports. The profile screen, with no shared logic, calls ProfileRepository directly.",
+      "exampleAr": "الحالة CalculateCheckoutTotalUseCase تجمع عناصر السلة ورسوم التوصيل وقواعد الكوبونات التي تستخدمها شاشات السلة والدفع وملخص الطلب. وفيها 15 اختبار وحدة ولا تستورد أي شيء من Android. أما شاشة الملف الشخصي، التي لا منطق مشترك فيها، فتستدعي ProfileRepository مباشرة.",
+      "practiceEn": "1) Find a class with several responsibilities and split it. 2) Write a use case with an operator fun invoke and test it. 3) Remove a use case that only forwards a call and explain why.",
+      "practiceAr": "1) أوجد صنفًا بعدة مسؤوليات وقسّمه. 2) اكتب حالة استخدام بـ operator fun invoke واختبرها. 3) احذف حالة استخدام لا تفعل إلا تمرير الاستدعاء واشرح السبب.",
+      "challengeEn": "Write a short architecture decision record for an app: the layers, when use cases are required, how errors cross layers, and what you deliberately chose not to do.",
+      "challengeAr": "اكتب سجل قرار معماري قصيرًا لتطبيق: الطبقات، ومتى تكون حالات الاستخدام مطلوبة، وكيف تعبر الأخطاء الطبقات، وما الذي اخترت عمدًا ألا تفعله.",
+      "objectivesEn": [
+        "Explain clean architecture and the dependency rule",
+        "Apply the five SOLID principles to Kotlin code",
+        "Decide when to add use cases and interfaces",
+        "Discuss architecture trade-offs"
+      ],
+      "objectivesAr": [
+        "شرح المعمارية النظيفة وقاعدة الاعتماد",
+        "تطبيق مبادئ SOLID الخمسة على كود Kotlin",
+        "تقرير متى تضيف حالات الاستخدام والواجهات",
+        "مناقشة مقايضات المعمارية"
+      ],
+      "prerequisites": [
+        "and-arch-di-hilt",
+        "kt-oop"
+      ]
+    },
+    {
+      "slug": "and-arch-errors",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Intermediate",
+      "titleEn": "Error handling across layers",
+      "titleAr": "معالجة الأخطاء عبر الطبقات",
+      "summaryEn": "Errors start in the data layer (no network, HTTP 401 or 500, a broken JSON body, a full disk) and must reach the user as something understandable. A common design maps low-level exceptions to a small set of domain errors in the repository, returns them through Result or a sealed type, lets the ViewModel turn them into UI state (an error message, a retry button, a sign-in prompt), and logs unexpected ones for crash reporting.",
+      "summaryAr": "تبدأ الأخطاء في طبقة البيانات (لا شبكة، أو HTTP 401 أو 500، أو جسم JSON مكسور، أو قرص ممتلئ)، ويجب أن تصل إلى المستخدم كشيء مفهوم. وتصميم شائع يحوّل الاستثناءات منخفضة المستوى إلى مجموعة صغيرة من أخطاء المجال داخل المستودع، ويُرجعها عبر Result أو نوع sealed، ويترك ViewModel تحوّلها إلى حالة واجهة (رسالة خطأ، أو زر إعادة محاولة، أو طلب تسجيل الدخول)، ويسجّل غير المتوقع منها لتقارير الانهيار.",
+      "whyEn": "Users forgive failures that are explained and recoverable, and abandon apps that crash or show \"Something went wrong\" forever. Clean error handling also stops one screen's network failure from killing the whole app.",
+      "whyAr": "يسامح المستخدمون الأعطال المشروحة القابلة للتعافي، ويتركون التطبيقات التي تنهار أو تعرض «حدث خطأ ما» إلى الأبد. ومعالجة الأخطاء النظيفة تمنع أيضًا عطل الشبكة في شاشة واحدة من إسقاط التطبيق كله.",
+      "howEn": "Catch exceptions at the data boundary, map them to a sealed DataError (Network, Unauthorized, NotFound, Server, Unknown), never swallow CancellationException, keep cached data visible when a refresh fails, show retry for transient errors, redirect to sign-in on 401, and report unknown errors to Crashlytics with context.",
+      "howAr": "التقط الاستثناءات عند حدود البيانات، وحوّلها إلى DataError من نوع sealed (Network وUnauthorized وNotFound وServer وUnknown)، ولا تبتلع CancellationException أبدًا، وأبقِ البيانات المخزنة ظاهرة عندما يفشل التحديث، واعرض إعادة المحاولة للأخطاء المؤقتة، ووجّه إلى تسجيل الدخول عند 401، وأبلغ عن الأخطاء غير المعروفة إلى Crashlytics مع السياق.",
+      "exampleEn": "When the feed refresh fails offline, the cached articles stay on screen and a small banner says \"You're offline. Showing saved articles\" with a Retry button. A 401 clears the session and opens sign-in.",
+      "exampleAr": "عندما يفشل تحديث الخلاصة دون اتصال، تبقى المقالات المخزنة على الشاشة ويقول شريط صغير «You're offline. Showing saved articles» مع زر Retry. وخطأ 401 يمسح الجلسة ويفتح تسجيل الدخول.",
+      "practiceEn": "1) Define a sealed error type and map IOException and HttpException to it. 2) Show a retry button for network errors only. 3) Keep old data visible when a refresh fails.",
+      "practiceAr": "1) عرّف نوع خطأ sealed وحوّل إليه IOException وHttpException. 2) اعرض زر إعادة المحاولة لأخطاء الشبكة فقط. 3) أبقِ البيانات القديمة ظاهرة عندما يفشل التحديث.",
+      "challengeEn": "Build a small Result-like type with map, flatMap and fold, use it from repository to ViewModel, and write tests for each error path.",
+      "challengeAr": "ابنِ نوعًا صغيرًا شبيهًا بـ Result فيه map وflatMap وfold، واستخدمه من المستودع حتى ViewModel، واكتب اختبارات لكل مسار خطأ.",
+      "objectivesEn": [
+        "Map low-level exceptions to domain errors",
+        "Pass errors with Result or sealed types",
+        "Turn errors into recoverable UI states",
+        "Report unexpected errors without leaking data"
+      ],
+      "objectivesAr": [
+        "تحويل الاستثناءات منخفضة المستوى إلى أخطاء المجال",
+        "تمرير الأخطاء بـ Result أو بأنواع sealed",
+        "تحويل الأخطاء إلى حالات واجهة قابلة للتعافي",
+        "الإبلاغ عن الأخطاء غير المتوقعة دون تسريب البيانات"
+      ],
+      "prerequisites": [
+        "and-arch-repository",
+        "kt-errors-idioms"
+      ]
+    },
+    {
+      "slug": "and-arch-modularization",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Advanced",
+      "titleEn": "Modularization",
+      "titleAr": "تقسيم التطبيق إلى وحدات",
+      "summaryEn": "Large apps split code into Gradle modules: an app module, feature modules (feature:cart, feature:profile) that don't depend on each other, and core modules (core:data, core:network, core:designsystem, core:model). Modules enforce boundaries, build in parallel and incrementally, and let teams own areas. Convention plugins in build-logic share Gradle setup, and navigation between features goes through the app module or small API modules.",
+      "summaryAr": "التطبيقات الكبيرة تقسم الكود إلى وحدات Gradle: وحدة التطبيق، ووحدات الميزات (feature:cart وfeature:profile) التي لا تعتمد على بعضها، ووحدات أساسية (core:data وcore:network وcore:designsystem وcore:model). والوحدات تفرض الحدود، وتُبنى بالتوازي وتدريجيًا، وتتيح للفرق امتلاك مناطق. والإضافات الاصطلاحية في build-logic تشارك إعداد Gradle، والتنقل بين الميزات يمر عبر وحدة التطبيق أو وحدات API صغيرة.",
+      "whyEn": "In a single module everything can depend on everything, builds get slow, and teams step on each other. Modularization is a common senior-level topic and a requirement in large codebases, but it has a cost and is not needed for small apps.",
+      "whyAr": "في وحدة واحدة يستطيع كل شيء الاعتماد على كل شيء، ويصبح البناء بطيئًا، وتتداخل الفرق. وتقسيم الوحدات موضوع شائع في المستوى المتقدم وشرط في قواعد الكود الكبيرة، لكن له تكلفة وليس ضروريًا للتطبيقات الصغيرة.",
+      "howEn": "Split when build times, team size or boundaries hurt. Start with core:designsystem and core:model, then extract features one by one. Features depend on core modules only, use implementation (not api) to hide internals, and expose navigation entry points. Look at Google's Now in Android sample for a reference structure.",
+      "howAr": "قسّم عندما يؤلمك زمن البناء أو حجم الفريق أو الحدود. ابدأ بـ core:designsystem وcore:model، ثم استخرج الميزات واحدة تلو الأخرى. والميزات تعتمد على الوحدات الأساسية فقط، وتستخدم implementation (لا api) لإخفاء التفاصيل الداخلية، وتعرض نقاط دخول التنقل. وانظر إلى نموذج Now in Android من Google كبنية مرجعية.",
+      "exampleEn": "A delivery app has :app, :feature:orders, :feature:tracking, :feature:account, :core:network, :core:database, :core:designsystem and :core:model. Changing a screen in :feature:tracking rebuilds only that module and :app, cutting incremental builds from 90 to 20 seconds.",
+      "exampleAr": "تطبيق توصيل فيه :app و:feature:orders و:feature:tracking و:feature:account و:core:network و:core:database و:core:designsystem و:core:model. وتغيير شاشة في :feature:tracking يعيد بناء تلك الوحدة و:app فقط، فينخفض البناء التدريجي من 90 إلى 20 ثانية.",
+      "practiceEn": "1) Extract the design system of an app into a :core:designsystem module. 2) Create a :feature module and move one screen into it. 3) Write a convention plugin for Android library modules.",
+      "practiceAr": "1) استخرج نظام التصميم في تطبيق إلى وحدة :core:designsystem. 2) أنشئ وحدة :feature وانقل إليها شاشة. 3) اكتب إضافة اصطلاحية لوحدات مكتبات Android.",
+      "challengeEn": "Draw a module graph for an app with five features, then check with a dependency report that no feature depends on another and explain how navigation between them works.",
+      "challengeAr": "ارسم مخطط وحدات لتطبيق فيه خمس ميزات، ثم تحقق بتقرير الاعتماديات أن أي ميزة لا تعتمد على أخرى، واشرح كيف يعمل التنقل بينها.",
+      "objectivesEn": [
+        "Explain feature and core modules",
+        "Choose between implementation and api",
+        "Share build setup with convention plugins",
+        "Decide when modularization pays off"
+      ],
+      "objectivesAr": [
+        "شرح وحدات الميزات والوحدات الأساسية",
+        "الاختيار بين implementation وapi",
+        "مشاركة إعداد البناء بالإضافات الاصطلاحية",
+        "تقرير متى يستحق التقسيم إلى وحدات"
+      ],
+      "prerequisites": [
+        "and-arch-clean-solid",
+        "and-studio-gradle"
+      ]
+    }
+  ]
+}

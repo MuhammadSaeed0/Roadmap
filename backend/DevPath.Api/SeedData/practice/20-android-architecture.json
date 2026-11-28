@@ -1,0 +1,170 @@
+[
+  {
+    "key": "and-ex-arch-layer-sort",
+    "type": "Conceptual",
+    "topic": "and-arch-layers",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Which layer does it belong to?",
+    "titleAr": "إلى أي طبقة ينتمي؟",
+    "problemEn": "For each item, say which layer it belongs to (UI, domain or data) and why: 1) a composable showing a product card; 2) the rule that orders over 500 EGP get free delivery, used by cart and checkout; 3) a Retrofit interface; 4) a Room DAO; 5) a ViewModel combining the cart and the delivery address; 6) mapping a ProductDto to Product; 7) formatting a price for display; 8) deciding whether to read from cache or the network.",
+    "problemAr": "حدّد لكل عنصر الطبقة التي ينتمي إليها (الواجهة أو المجال أو البيانات) ولماذا: 1) دالة قابلة للتركيب تعرض بطاقة منتج. 2) قاعدة أن الطلبات فوق 500 جنيه توصيلها مجاني، وتستخدمها السلة والدفع. 3) واجهة Retrofit. 4) كائن DAO من Room. 5) ViewModel تجمع السلة وعنوان التوصيل. 6) تحويل ProductDto إلى Product. 7) تنسيق السعر للعرض. 8) تقرير القراءة من الذاكرة المؤقتة أو الشبكة.",
+    "expectedEn": "UI: 1, 5, 7. Domain: 2. Data: 3, 4, 6, 8, each with a one-line reason.",
+    "expectedAr": "الواجهة: 1 و5 و7. والمجال: 2. والبيانات: 3 و4 و6 و8، مع سبب من سطر واحد لكل منها.",
+    "hintsEn": [
+      "Who needs to know about the rule in item 2?",
+      "Formatting is about how something looks, not what it is."
+    ],
+    "hintsAr": [
+      "من يحتاج إلى معرفة القاعدة في العنصر 2؟",
+      "التنسيق يتعلق بشكل العرض لا بماهية الشيء."
+    ],
+    "solutionEn": "The card, the ViewModel and display formatting are UI concerns. The free-delivery rule is shared business logic, so it is a use case in the domain layer. Retrofit and Room interfaces are data sources; mapping DTOs and choosing cache or network are repository decisions in the data layer.",
+    "solutionAr": "البطاقة وViewModel وتنسيق العرض من مسؤوليات الواجهة. وقاعدة التوصيل المجاني منطق عمل مشترك، فهي حالة استخدام في طبقة المجال. وواجهتا Retrofit وRoom مصادر بيانات، وتحويل DTO واختيار الذاكرة المؤقتة أو الشبكة قرارات المستودع في طبقة البيانات.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-arch-viewmodel-state",
+    "type": "Practical",
+    "topic": "and-arch-mvvm",
+    "difficulty": "Intermediate",
+    "minutes": 50,
+    "titleEn": "Refactor to a single UI state",
+    "titleAr": "أعد الهيكلة إلى حالة واجهة واحدة",
+    "problemEn": "The ViewModel below exposes four separate LiveData/StateFlow objects and the screen combines them with if statements. Refactor it to one StateFlow<SearchUiState> built with combine and stateIn, expose intent functions, keep the query in SavedStateHandle, and write two unit tests with a fake repository.",
+    "problemAr": "تعرض ViewModel أدناه أربعة كائنات LiveData وStateFlow منفصلة، والشاشة تجمعها بجمل if. أعد هيكلتها إلى StateFlow<SearchUiState> واحدة مبنية بـ combine وstateIn، واعرض دوال النوايا، واحفظ نص البحث في SavedStateHandle، واكتب اختباري وحدات بمستودع وهمي.",
+    "expectedEn": "One public StateFlow, no public mutable state, the query restored after process death, and passing tests for filtering and error.",
+    "expectedAr": "تدفق StateFlow عام واحد، ولا حالة قابلة للتغيير عامة، ونص البحث يُستعاد بعد موت العملية، واختبارات ناجحة للفلترة والخطأ.",
+    "hintsEn": [
+      "combine takes up to five flows directly.",
+      "Use backgroundScope.launch { vm.state.collect {} } in tests to activate stateIn."
+    ],
+    "hintsAr": [
+      "الدالة combine تأخذ حتى خمسة تدفقات مباشرة.",
+      "استخدم backgroundScope.launch { vm.state.collect {} } في الاختبارات لتفعيل stateIn."
+    ],
+    "solutionEn": "query = saved.getStateFlow(\"query\", \"\"); results come from query.debounce(300).flatMapLatest { repo.search(it) }; loading and error are private MutableStateFlows. state = combine(query, results, loading, error) { ... SearchUiState(...) }.stateIn(viewModelScope, WhileSubscribed(5_000), SearchUiState()). onQueryChange sets saved[\"query\"].",
+    "solutionAr": "القيمة query = saved.getStateFlow(\"query\", \"\")، والنتائج تأتي من query.debounce(300).flatMapLatest { repo.search(it) }، والتحميل والخطأ MutableStateFlow خاصة. وstate = combine(query, results, loading, error) { ... SearchUiState(...) }.stateIn(viewModelScope, WhileSubscribed(5_000), SearchUiState()). والدالة onQueryChange تضبط saved[\"query\"].",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-arch-offline-repo",
+    "type": "Practical",
+    "topic": "and-arch-repository",
+    "difficulty": "Intermediate",
+    "minutes": 60,
+    "titleEn": "An offline-first repository",
+    "titleAr": "مستودع يعمل دون اتصال أولًا",
+    "problemEn": "Implement NewsRepository with observeArticles(): Flow<List<Article>> that reads from a local source, and refresh(): Result<Unit> that fetches from a remote source and writes to the local one. Use interfaces for both sources and test with fakes: articles appear from the local source immediately, a refresh updates them, and a failed refresh keeps the old articles and returns a failure.",
+    "problemAr": "نفّذ NewsRepository فيه observeArticles(): Flow<List<Article>> يقرأ من مصدر محلي، وrefresh(): Result<Unit> يجلب من مصدر بعيد ويكتب في المحلي. واستخدم واجهات للمصدرين واختبر بنسخ وهمية: تظهر المقالات من المصدر المحلي فورًا، والتحديث يحدّثها، والتحديث الفاشل يُبقي المقالات القديمة ويُرجع فشلًا.",
+    "expectedEn": "The UI path only reads the local Flow; three passing tests with fake sources; CancellationException is rethrown.",
+    "expectedAr": "مسار الواجهة يقرأ تدفق المصدر المحلي فقط، وثلاثة اختبارات ناجحة بمصادر وهمية، وCancellationException يُعاد رميها.",
+    "hintsEn": [
+      "A FakeLocalSource can be a MutableStateFlow with a save function.",
+      "Map DTOs to Article inside refresh before saving."
+    ],
+    "hintsAr": [
+      "يمكن أن يكون FakeLocalSource مجرد MutableStateFlow مع دالة save.",
+      "حوّل DTO إلى Article داخل refresh قبل الحفظ."
+    ],
+    "solutionEn": "interface LocalNews { fun observe(): Flow<List<Article>>; suspend fun replaceAll(items: List<Article>) } and interface RemoteNews { suspend fun latest(): List<ArticleDto> }. observeArticles() = local.observe(); refresh() = try { local.replaceAll(remote.latest().map { it.toDomain() }); Result.success(Unit) } catch (e: CancellationException) { throw e } catch (e: Exception) { Result.failure(e) }.",
+    "solutionAr": "الواجهتان interface LocalNews { fun observe(): Flow<List<Article>>; suspend fun replaceAll(items: List<Article>) } وinterface RemoteNews { suspend fun latest(): List<ArticleDto> }. والدالة observeArticles() = local.observe()، والدالة refresh() = try { local.replaceAll(remote.latest().map { it.toDomain() }); Result.success(Unit) } catch (e: CancellationException) { throw e } catch (e: Exception) { Result.failure(e) }.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-arch-hilt-setup",
+    "type": "Practical",
+    "topic": "and-arch-di-hilt",
+    "difficulty": "Intermediate",
+    "minutes": 60,
+    "titleEn": "Wire an app with Hilt",
+    "titleAr": "اربط تطبيقًا بـ Hilt",
+    "problemEn": "Take an app that creates its repository and Retrofit inside the ViewModel. Add Hilt: @HiltAndroidApp, @AndroidEntryPoint, a NetworkModule providing Retrofit and the API, a DataModule binding the repository interface, an injected IO dispatcher with a qualifier, and @HiltViewModel. Then add one instrumented test that replaces DataModule with a fake.",
+    "problemAr": "خذ تطبيقًا ينشئ مستودعه وRetrofit داخل ViewModel. وأضف Hilt: ‏@HiltAndroidApp، و@AndroidEntryPoint، ووحدة NetworkModule توفر Retrofit والـ API، ووحدة DataModule تربط واجهة المستودع، وDispatcher للإدخال والإخراج محقونًا بمؤهل، و@HiltViewModel. ثم أضف اختبارًا على الجهاز يستبدل DataModule بنسخة وهمية.",
+    "expectedEn": "No class creates its own dependencies, the app builds and runs, and the test shows fake data on screen.",
+    "expectedAr": "لا صنف ينشئ اعتمادياته بنفسه، والتطبيق يُبنى ويعمل، والاختبار يعرض بيانات وهمية على الشاشة.",
+    "hintsEn": [
+      "The Hilt Gradle plugin and KSP are both needed.",
+      "@TestInstallIn(replaces = [DataModule::class]) swaps the binding."
+    ],
+    "hintsAr": [
+      "تحتاج إضافة Hilt لـ Gradle وKSP معًا.",
+      "الوسم @TestInstallIn(replaces = [DataModule::class]) يستبدل الربط."
+    ],
+    "solutionEn": "Add the plugins and hilt-android with ksp(hilt-compiler). Annotate the Application and MainActivity. NetworkModule (object, SingletonComponent) has @Provides @Singleton retrofit() and @Provides api(retrofit). DataModule (abstract) has @Binds repository(impl). The ViewModel becomes @HiltViewModel class X @Inject constructor(repo: Repo); screens use hiltViewModel(). In androidTest, FakeDataModule with @TestInstallIn binds a fake, and the test uses HiltAndroidRule with a custom HiltTestRunner.",
+    "solutionAr": "أضف الإضافات وhilt-android مع ksp(hilt-compiler). ووسّم Application وMainActivity. ووحدة NetworkModule (object في SingletonComponent) فيها @Provides @Singleton retrofit() و@Provides api(retrofit). ووحدة DataModule (abstract) فيها @Binds repository(impl). وتصبح ViewModel على الشكل @HiltViewModel class X @Inject constructor(repo: Repo)، والشاشات تستخدم hiltViewModel(). وفي androidTest تربط FakeDataModule مع @TestInstallIn نسخة وهمية، ويستخدم الاختبار HiltAndroidRule مع HiltTestRunner مخصص.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-arch-solid-review",
+    "type": "CodeReview",
+    "topic": "and-arch-clean-solid",
+    "difficulty": "Advanced",
+    "minutes": 40,
+    "titleEn": "Review a god ViewModel",
+    "titleAr": "راجع ViewModel تفعل كل شيء",
+    "problemEn": "This CheckoutViewModel builds its own OkHttp client, parses JSON, applies coupon rules, calculates delivery fees with a growing when, formats prices, and writes analytics. Identify which SOLID principles it breaks, propose the target structure (classes, interfaces, use cases) and explain which pieces you would NOT extract and why.",
+    "problemAr": "هذه CheckoutViewModel تبني عميل OkHttp خاصًا بها، وتحلل JSON، وتطبّق قواعد الكوبونات، وتحسب رسوم التوصيل بـ when يكبر، وتنسّق الأسعار، وتكتب التحليلات. حدد مبادئ SOLID التي تنتهكها، واقترح البنية المستهدفة (الأصناف والواجهات وحالات الاستخدام)، واشرح أي الأجزاء لن تستخرجها ولماذا.",
+    "expectedEn": "SRP and DIP violations named with lines, a target with CheckoutRepository, CalculateTotalUseCase, DeliveryFeePolicy implementations and an injected analytics interface, plus at least one justified decision to keep something simple.",
+    "expectedAr": "تسمية انتهاكات SRP وDIP مع الأسطر، وبنية مستهدفة فيها CheckoutRepository وCalculateTotalUseCase وتنفيذات DeliveryFeePolicy وواجهة تحليلات محقونة، مع قرار مبرر واحد على الأقل لإبقاء شيء بسيطًا.",
+    "hintsEn": [
+      "Count the reasons this class would change.",
+      "Is a price formatter worth an interface if there is one currency?"
+    ],
+    "hintsAr": [
+      "عُدّ الأسباب التي قد تجعل هذا الصنف يتغير.",
+      "هل يستحق منسّق السعر واجهة إذا كانت هناك عملة واحدة؟"
+    ],
+    "solutionEn": "Broken: S (networking, parsing, rules, formatting, analytics in one class), O (the when over delivery zones must be edited for every zone), D (it creates OkHttp itself, so it can't be tested). Target: CheckoutRepository (Retrofit + kotlinx.serialization) injected by Hilt; CalculateTotalUseCase with a DeliveryFeePolicy interface and one implementation per policy; an Analytics interface; the ViewModel only maps results to UiState. Keep price formatting as a simple extension function rather than an interface while there is one currency.",
+    "solutionAr": "الانتهاكات: S (الشبكة والتحليل والقواعد والتنسيق والتحليلات في صنف واحد)، وO (يجب تعديل when الخاصة بمناطق التوصيل مع كل منطقة)، وD (تنشئ OkHttp بنفسها فلا يمكن اختبارها). والبنية المستهدفة: CheckoutRepository (‏Retrofit مع kotlinx.serialization) تحقنها Hilt، وCalculateTotalUseCase مع واجهة DeliveryFeePolicy وتنفيذ لكل سياسة، وواجهة Analytics، وViewModel تحوّل النتائج إلى UiState فقط. وأبقِ تنسيق السعر دالة امتداد بسيطة لا واجهة ما دامت هناك عملة واحدة.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-arch-error-mapping",
+    "type": "Practical",
+    "topic": "and-arch-errors",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "Map errors from network to UI",
+    "titleAr": "حوّل الأخطاء من الشبكة إلى الواجهة",
+    "problemEn": "Write a sealed DataError, a safeCall helper that rethrows CancellationException, and a mapping from IOException and HttpException (401, 404, 5xx). In a ViewModel, turn each error into UI state: keep cached data with a banner for Network, navigate to sign-in for Unauthorized, show \"not available\" for NotFound, and a retry message for Server. Unit test the mapping and the ViewModel for each case.",
+    "problemAr": "اكتب DataError من نوع sealed، ودالة مساعدة safeCall تعيد رمي CancellationException، وتحويلًا من IOException وHttpException (‏401 و404 و5xx). وفي ViewModel حوّل كل خطأ إلى حالة واجهة: أبقِ البيانات المخزنة مع شريط لـ Network، وانتقل إلى تسجيل الدخول لـ Unauthorized، واعرض «غير متاح» لـ NotFound، ورسالة إعادة محاولة لـ Server. واختبر التحويل وViewModel لكل حالة.",
+    "expectedEn": "Four error kinds each produce a different UI outcome, tests cover all of them, and no Retrofit type appears above the data layer.",
+    "expectedAr": "أربعة أنواع أخطاء ينتج كل منها نتيجة مختلفة في الواجهة، والاختبارات تغطيها كلها، ولا يظهر أي نوع من Retrofit فوق طبقة البيانات.",
+    "hintsEn": [
+      "HttpException(Response.error<Any>(404, \"\".toResponseBody())) creates a test exception.",
+      "Navigation to sign-in can be a one-off event or a state flag."
+    ],
+    "hintsAr": [
+      "التعبير HttpException(Response.error<Any>(404, \"\".toResponseBody())) تنشئ استثناء للاختبار.",
+      "التنقل إلى تسجيل الدخول يمكن أن يكون حدثًا لمرة واحدة أو علامة في الحالة."
+    ],
+    "solutionEn": "safeCall wraps the block, rethrows CancellationException and maps others with toDataError(). The repository returns Result<T> whose failure carries a DataException(error). The ViewModel's onFailure does when (error) { Network -> state.copy(banner = ...); Unauthorized -> events.send(GoToSignIn); NotFound -> state.copy(notFound = true); is Server, is Unknown -> state.copy(retryMessage = ...) }, recording Unknown to crash reporting.",
+    "solutionAr": "الدالة safeCall تغلّف الكتلة، وتعيد رمي CancellationException، وتحوّل غيرها بـ toDataError(). والمستودع يُرجع Result<T> يحمل فشلها DataException(error). وonFailure في ViewModel تنفّذ when (error) { Network -> state.copy(banner = ...); Unauthorized -> events.send(GoToSignIn); NotFound -> state.copy(notFound = true); is Server, is Unknown -> state.copy(retryMessage = ...) }، مع تسجيل Unknown في تقارير الانهيار.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-arch-modules",
+    "type": "Scenario",
+    "topic": "and-arch-modularization",
+    "difficulty": "Advanced",
+    "minutes": 40,
+    "titleEn": "Plan the modules of a delivery app",
+    "titleAr": "خطط وحدات تطبيق توصيل",
+    "problemEn": "A food delivery app has: restaurants list and search, restaurant menu, cart, checkout and payment, order tracking with a live map, account and addresses, and a shared design system. Three teams will work on it. Propose the module graph, say which team owns which module, how the cart is shared between menu and checkout, how features navigate to each other, and what you would NOT split yet.",
+    "problemAr": "تطبيق توصيل طعام فيه: قائمة المطاعم والبحث، وقائمة طعام المطعم، والسلة، والدفع، وتتبع الطلب بخريطة حية، والحساب والعناوين، ونظام تصميم مشترك. وسيعمل عليه ثلاثة فرق. اقترح مخطط الوحدات، وأي فريق يملك أي وحدة، وكيف تُشارك السلة بين القائمة والدفع، وكيف تتنقل الميزات إلى بعضها، وما الذي لن تقسّمه بعد.",
+    "expectedEn": "A graph with feature and core modules, no feature-to-feature edges, the cart in a core data module, navigation through app or API modules, and a reasoned \"not yet\" list.",
+    "expectedAr": "مخطط بوحدات ميزات ووحدات أساسية، ولا روابط بين الميزات، والسلة في وحدة بيانات أساسية، والتنقل عبر التطبيق أو وحدات API، وقائمة «ليس الآن» مبررة.",
+    "hintsEn": [
+      "Shared state (the cart) belongs to a core data module, not to one feature.",
+      "Which features change together and could stay together for now?"
+    ],
+    "hintsAr": [
+      "الحالة المشتركة (السلة) مكانها وحدة بيانات أساسية لا ميزة واحدة.",
+      "أي الميزات تتغير معًا ويمكن أن تبقى معًا حاليًا؟"
+    ],
+    "solutionEn": "Modules: :app; :feature:discover (list and search), :feature:restaurant (menu), :feature:checkout (cart screen and payment), :feature:tracking, :feature:account; :core:data:cart, :core:data (restaurants, orders), :core:network, :core:database, :core:designsystem, :core:model, :core:maps. Team A owns discover and restaurant, team B checkout and data:cart, team C tracking and account; the design system is shared with an owner. Navigation: each feature exposes a NavGraphBuilder extension and :app connects them with lambdas. Not yet: separate modules for search vs list, or for payment providers, until they grow.",
+    "solutionAr": "الوحدات: ‏:app، و:feature:discover (القائمة والبحث)، و:feature:restaurant (قائمة الطعام)، و:feature:checkout (شاشة السلة والدفع)، و:feature:tracking، و:feature:account، و:core:data:cart، و:core:data (المطاعم والطلبات)، و:core:network، و:core:database، و:core:designsystem، و:core:model، و:core:maps. والفريق A يملك discover وrestaurant، والفريق B يملك checkout وdata:cart، والفريق C يملك tracking وaccount، ونظام التصميم مشترك وله مالك. والتنقل: كل ميزة تعرض امتداد NavGraphBuilder، و:app تربطها بتعبيرات lambda. وليس الآن: وحدات منفصلة للبحث والقائمة أو لمزودي الدفع حتى تكبر.",
+    "runner": "None"
+  }
+]

@@ -1,0 +1,1178 @@
+[
+  {
+    "key": "qz-and-arch-layers-1",
+    "topic": "and-arch-layers",
+    "questionEn": "Which layer decides where data comes from?",
+    "questionAr": "أي طبقة تقرر من أين تأتي البيانات؟",
+    "optionsEn": [
+      "The Activity class",
+      "The Gradle build files",
+      "The data layer",
+      "The UI layer itself"
+    ],
+    "optionsAr": [
+      "صنف Activity",
+      "ملفات بناء Gradle",
+      "طبقة البيانات",
+      "طبقة الواجهة نفسها"
+    ],
+    "answer": 2,
+    "explanationEn": "Repositories hide the sources.",
+    "explanationAr": "المستودعات تخفي المصادر."
+  },
+  {
+    "key": "qz-and-arch-layers-2",
+    "topic": "and-arch-layers",
+    "questionEn": "Which direction do dependencies point?",
+    "questionAr": "في أي اتجاه تشير الاعتماديات؟",
+    "optionsEn": [
+      "From Gradle to Kotlin",
+      "From UI down to data",
+      "From data up to the UI",
+      "Both ways equally"
+    ],
+    "optionsAr": [
+      "من Gradle إلى Kotlin",
+      "من الواجهة إلى البيانات",
+      "من البيانات إلى الواجهة",
+      "في الاتجاهين بالتساوي"
+    ],
+    "answer": 1,
+    "explanationEn": "The data layer knows nothing about screens.",
+    "explanationAr": "طبقة البيانات لا تعرف شيئًا عن الشاشات."
+  },
+  {
+    "key": "qz-and-arch-layers-3",
+    "topic": "and-arch-layers",
+    "questionEn": "When is a domain layer worth adding?",
+    "questionAr": "متى تستحق طبقة المجال الإضافة؟",
+    "optionsEn": [
+      "When logic is reused or complex",
+      "Always, in every app we build",
+      "Only in apps that still use Views",
+      "Never, it is outdated by now"
+    ],
+    "optionsAr": [
+      "عندما يُعاد استخدام المنطق أو يكون معقدًا",
+      "دائمًا في كل تطبيق نبنيه",
+      "في التطبيقات المبنية بـ Views فقط",
+      "أبدًا، فقد أصبحت قديمة الآن"
+    ],
+    "answer": 0,
+    "explanationEn": "It is optional in Google's guide.",
+    "explanationAr": "هي اختيارية في دليل Google."
+  },
+  {
+    "key": "qz-and-arch-layers-4",
+    "topic": "and-arch-layers",
+    "questionEn": "How does data reach the UI?",
+    "questionAr": "كيف تصل البيانات إلى الواجهة؟",
+    "optionsEn": [
+      "The UI polls every single second",
+      "Through shared global variables",
+      "By editing view objects directly",
+      "As observable streams like Flow"
+    ],
+    "optionsAr": [
+      "الواجهة تفحص البيانات كل ثانية",
+      "عبر متغيرات عامة مشتركة",
+      "بتعديل كائنات العناصر مباشرة",
+      "كتدفقات قابلة للمراقبة مثل Flow"
+    ],
+    "answer": 3,
+    "explanationEn": "Events go down as function calls.",
+    "explanationAr": "الأحداث تنزل كاستدعاءات دوال."
+  },
+  {
+    "key": "qz-and-arch-layers-5",
+    "topic": "and-arch-layers",
+    "questionEn": "What should a ViewModel avoid holding?",
+    "questionAr": "ما الذي يجب ألا تحمله ViewModel؟",
+    "optionsEn": [
+      "A repository reference",
+      "A SavedStateHandle object",
+      "An Activity Context or views",
+      "A StateFlow of UI state"
+    ],
+    "optionsAr": [
+      "مرجعًا لمستودع",
+      "كائن SavedStateHandle",
+      "سياق Activity أو العناصر",
+      "StateFlow لحالة الواجهة"
+    ],
+    "answer": 2,
+    "explanationEn": "It outlives the Activity and would leak it.",
+    "explanationAr": "تعيش أطول من Activity فتسرّبها."
+  },
+  {
+    "key": "qz-and-arch-layers-6",
+    "topic": "and-arch-layers",
+    "questionEn": "Where does network code belong?",
+    "questionAr": "أين مكان كود الشبكة؟",
+    "optionsEn": [
+      "In MainActivity's onCreate",
+      "In the data layer",
+      "Inside composables",
+      "In the ViewModel's init"
+    ],
+    "optionsAr": [
+      "في onCreate الخاصة بـ MainActivity",
+      "في طبقة البيانات",
+      "داخل الدوال القابلة للتركيب",
+      "في init الخاصة بـ ViewModel"
+    ],
+    "answer": 1,
+    "explanationEn": "Behind a repository and a data source.",
+    "explanationAr": "خلف مستودع ومصدر بيانات."
+  },
+  {
+    "key": "qz-and-arch-layers-7",
+    "topic": "and-arch-layers",
+    "questionEn": "What do clear layers make easier?",
+    "questionAr": "ما الذي تسهّله الطبقات الواضحة؟",
+    "optionsEn": [
+      "Testing and changing parts alone",
+      "Writing much longer Activities",
+      "Skipping the code review step",
+      "Shipping releases without tests"
+    ],
+    "optionsAr": [
+      "اختبار الأجزاء وتغييرها منفردة",
+      "كتابة Activity أطول بكثير",
+      "تخطي خطوة مراجعة الكود",
+      "إصدار النسخ دون اختبارات"
+    ],
+    "answer": 0,
+    "explanationEn": "Each layer can be tested with fakes below it.",
+    "explanationAr": "كل طبقة تُختبر بنسخ وهمية تحتها."
+  },
+  {
+    "key": "qz-and-arch-layers-8",
+    "topic": "and-arch-layers",
+    "questionEn": "A use case usually lives in...",
+    "questionAr": "حالة الاستخدام تعيش عادةً في...",
+    "optionsEn": [
+      "The res folder",
+      "The manifest file",
+      "The UI theme file",
+      "The domain layer"
+    ],
+    "optionsAr": [
+      "مجلد res",
+      "ملف Manifest",
+      "ملف مظهر الواجهة",
+      "طبقة المجال"
+    ],
+    "answer": 3,
+    "explanationEn": "Between the UI and data layers.",
+    "explanationAr": "بين طبقتي الواجهة والبيانات."
+  },
+  {
+    "key": "qz-and-arch-mvvm-1",
+    "topic": "and-arch-mvvm",
+    "questionEn": "What does a ViewModel survive?",
+    "questionAr": "ماذا تنجو منه ViewModel؟",
+    "optionsEn": [
+      "Configuration changes like rotation",
+      "Uninstalling the app entirely",
+      "A full device restart",
+      "Clearing the app's data"
+    ],
+    "optionsAr": [
+      "تغييرات الإعدادات مثل التدوير",
+      "إلغاء تثبيت التطبيق كليًا",
+      "إعادة تشغيل الجهاز كاملة",
+      "مسح بيانات التطبيق"
+    ],
+    "answer": 0,
+    "explanationEn": "Not process death without saved state.",
+    "explanationAr": "ولا تنجو من موت العملية دون حالة محفوظة."
+  },
+  {
+    "key": "qz-and-arch-mvvm-2",
+    "topic": "and-arch-mvvm",
+    "questionEn": "Why expose one UiState instead of several flows?",
+    "questionAr": "لماذا تعرض UiState واحدة بدل عدة تدفقات؟",
+    "optionsEn": [
+      "It uses less battery power",
+      "Compose can't read many flows",
+      "Gradle needs a single flow",
+      "Impossible combinations can't occur"
+    ],
+    "optionsAr": [
+      "لأنها تستهلك بطارية أقل",
+      "لأن Compose لا يقرأ عدة تدفقات",
+      "لأن Gradle يحتاج تدفقًا واحدًا",
+      "لا يمكن حدوث تركيبات مستحيلة"
+    ],
+    "answer": 3,
+    "explanationEn": "One value describes the whole screen.",
+    "explanationAr": "قيمة واحدة تصف الشاشة كلها."
+  },
+  {
+    "key": "qz-and-arch-mvvm-3",
+    "topic": "and-arch-mvvm",
+    "questionEn": "What does stateIn(..., WhileSubscribed(5_000), ...) do?",
+    "questionAr": "ماذا تفعل stateIn(..., WhileSubscribed(5_000), ...)؟",
+    "optionsEn": [
+      "Delays the first value by five seconds",
+      "Caches the data on disk for five seconds",
+      "Keeps work alive briefly after the UI leaves",
+      "Refreshes the data every five seconds"
+    ],
+    "optionsAr": [
+      "تؤخر القيمة الأولى خمس ثوانٍ كاملة",
+      "تخزّن البيانات على القرص خمس ثوانٍ",
+      "تبقي العمل قليلًا بعد مغادرة الواجهة",
+      "تحدّث البيانات كل خمس ثوانٍ تلقائيًا"
+    ],
+    "answer": 2,
+    "explanationEn": "Rotation doesn't restart the upstream.",
+    "explanationAr": "التدوير لا يعيد تشغيل المصدر."
+  },
+  {
+    "key": "qz-and-arch-mvvm-4",
+    "topic": "and-arch-mvvm",
+    "questionEn": "Which scope should ViewModel coroutines use?",
+    "questionAr": "أي نطاق تستخدمه Coroutines في ViewModel؟",
+    "optionsEn": [
+      "A new CoroutineScope each call",
+      "viewModelScope",
+      "GlobalScope",
+      "runBlocking"
+    ],
+    "optionsAr": [
+      "CoroutineScope جديد في كل استدعاء",
+      "viewModelScope",
+      "GlobalScope",
+      "runBlocking"
+    ],
+    "answer": 1,
+    "explanationEn": "It is cancelled when the ViewModel is cleared.",
+    "explanationAr": "يُلغى عند مسح ViewModel."
+  },
+  {
+    "key": "qz-and-arch-mvvm-5",
+    "topic": "and-arch-mvvm",
+    "questionEn": "How should UI events reach the ViewModel?",
+    "questionAr": "كيف تصل أحداث الواجهة إلى ViewModel؟",
+    "optionsEn": [
+      "By calling its functions",
+      "By editing its StateFlow",
+      "Through a static field",
+      "By broadcasting an Intent"
+    ],
+    "optionsAr": [
+      "باستدعاء دوالها",
+      "بتعديل StateFlow الخاصة بها",
+      "عبر حقل static",
+      "ببث Intent"
+    ],
+    "answer": 0,
+    "explanationEn": "Name them after user intent: onRefresh.",
+    "explanationAr": "سمّها بنية المستخدم: onRefresh."
+  },
+  {
+    "key": "qz-and-arch-mvvm-6",
+    "topic": "and-arch-mvvm",
+    "questionEn": "What replaces Dispatchers.Main in ViewModel tests?",
+    "questionAr": "ما الذي يحل محل Dispatchers.Main في اختبارات ViewModel؟",
+    "optionsEn": [
+      "Dispatchers.IO directly",
+      "Thread.sleep calls",
+      "A real Android device",
+      "A test dispatcher via a rule"
+    ],
+    "optionsAr": [
+      "Dispatchers.IO مباشرة",
+      "استدعاءات Thread.sleep",
+      "جهاز Android حقيقي",
+      "Dispatcher اختبار عبر قاعدة"
+    ],
+    "answer": 3,
+    "explanationEn": "Dispatchers.setMain in a JUnit rule.",
+    "explanationAr": "الدالة Dispatchers.setMain داخل قاعدة JUnit."
+  },
+  {
+    "key": "qz-and-arch-mvvm-7",
+    "topic": "and-arch-mvvm",
+    "questionEn": "Where do navigation arguments come from in a ViewModel?",
+    "questionAr": "من أين تأتي وسائط التنقل في ViewModel؟",
+    "optionsEn": [
+      "A companion object",
+      "SharedPreferences",
+      "SavedStateHandle",
+      "The Application class"
+    ],
+    "optionsAr": [
+      "companion object",
+      "SharedPreferences",
+      "SavedStateHandle",
+      "صنف Application"
+    ],
+    "answer": 2,
+    "explanationEn": "They also survive process death.",
+    "explanationAr": "وتبقى بعد موت العملية أيضًا."
+  },
+  {
+    "key": "qz-and-arch-mvvm-8",
+    "topic": "and-arch-mvvm",
+    "questionEn": "In MVVM, the View...",
+    "questionAr": "في MVVM، الواجهة...",
+    "optionsEn": [
+      "Decides business rules",
+      "Renders state and forwards events",
+      "Calls the API and parses JSON",
+      "Owns the database connection"
+    ],
+    "optionsAr": [
+      "تقرر قواعد العمل",
+      "ترسم الحالة وتمرر الأحداث",
+      "تستدعي الـ API وتحلل JSON",
+      "تملك اتصال قاعدة البيانات"
+    ],
+    "answer": 1,
+    "explanationEn": "Logic lives in the ViewModel and below.",
+    "explanationAr": "المنطق يعيش في ViewModel وما تحتها."
+  },
+  {
+    "key": "qz-and-arch-repository-1",
+    "topic": "and-arch-repository",
+    "questionEn": "What is a repository for?",
+    "questionAr": "فيمَ يُستخدم المستودع؟",
+    "optionsEn": [
+      "Storing the Gradle library versions",
+      "Holding the app's navigation graph",
+      "A single entry point to a data type",
+      "Drawing all the screens of the app"
+    ],
+    "optionsAr": [
+      "حفظ إصدارات مكتبات Gradle",
+      "حمل مخطط التنقل في التطبيق",
+      "نقطة دخول وحيدة لنوع من البيانات",
+      "رسم كل شاشات التطبيق"
+    ],
+    "answer": 2,
+    "explanationEn": "It hides and coordinates data sources.",
+    "explanationAr": "يخفي مصادر البيانات وينسّقها."
+  },
+  {
+    "key": "qz-and-arch-repository-2",
+    "topic": "and-arch-repository",
+    "questionEn": "In offline-first, the single source of truth is usually...",
+    "questionAr": "في العمل دون اتصال أولًا، المصدر الوحيد للحقيقة عادةً...",
+    "optionsEn": [
+      "The Compose state",
+      "The local database",
+      "The latest network reply",
+      "The ViewModel's memory"
+    ],
+    "optionsAr": [
+      "حالة Compose",
+      "قاعدة البيانات المحلية",
+      "آخر رد من الشبكة",
+      "ذاكرة ViewModel"
+    ],
+    "answer": 1,
+    "explanationEn": "The UI observes it; refreshes write to it.",
+    "explanationAr": "الواجهة تراقبها والتحديثات تكتب فيها."
+  },
+  {
+    "key": "qz-and-arch-repository-3",
+    "topic": "and-arch-repository",
+    "questionEn": "Where should DTOs be mapped to domain models?",
+    "questionAr": "أين تُحوَّل DTO إلى نماذج المجال؟",
+    "optionsEn": [
+      "At the data layer boundary",
+      "Inside each composable",
+      "In the theme file",
+      "In the Gradle catalog"
+    ],
+    "optionsAr": [
+      "عند حدود طبقة البيانات",
+      "داخل كل دالة قابلة للتركيب",
+      "في ملف المظهر",
+      "في كتالوج Gradle"
+    ],
+    "answer": 0,
+    "explanationEn": "JSON changes then stop at the repository.",
+    "explanationAr": "فتتوقف تغييرات JSON عند المستودع."
+  },
+  {
+    "key": "qz-and-arch-repository-4",
+    "topic": "and-arch-repository",
+    "questionEn": "Data that changes over time is best exposed as...",
+    "questionAr": "البيانات التي تتغير مع الوقت تُعرض أفضل كـ...",
+    "optionsEn": [
+      "A suspend function",
+      "A global var",
+      "An Intent extra",
+      "A Flow"
+    ],
+    "optionsAr": [
+      "دالة suspend",
+      "متغير عام",
+      "إضافة Intent",
+      "Flow"
+    ],
+    "answer": 3,
+    "explanationEn": "Collectors get every update.",
+    "explanationAr": "الجامعون يحصلون على كل تحديث."
+  },
+  {
+    "key": "qz-and-arch-repository-5",
+    "topic": "and-arch-repository",
+    "questionEn": "A one-shot action like refresh is best exposed as...",
+    "questionAr": "الفعل لمرة واحدة مثل التحديث يُعرض أفضل كـ...",
+    "optionsEn": [
+      "A LiveData object",
+      "A broadcast receiver",
+      "A suspend function",
+      "A StateFlow"
+    ],
+    "optionsAr": [
+      "كائن LiveData",
+      "مستقبل بث",
+      "دالة suspend",
+      "StateFlow"
+    ],
+    "answer": 2,
+    "explanationEn": "It returns when the work is done.",
+    "explanationAr": "تُرجع عندما ينتهي العمل."
+  },
+  {
+    "key": "qz-and-arch-repository-6",
+    "topic": "and-arch-repository",
+    "questionEn": "Why define the repository as an interface?",
+    "questionAr": "لماذا تعرّف المستودع كواجهة؟",
+    "optionsEn": [
+      "To make it a singleton automatically",
+      "To swap in fakes and other implementations",
+      "Because interfaces compile much faster",
+      "Because Kotlin forbids classes there"
+    ],
+    "optionsAr": [
+      "لجعله كائنًا وحيدًا تلقائيًا",
+      "لتبديل النسخ الوهمية والتنفيذات الأخرى",
+      "لأن الواجهات تُترجم أسرع بكثير",
+      "لأن Kotlin تمنع الأصناف في ذلك المكان"
+    ],
+    "answer": 1,
+    "explanationEn": "ViewModels depend on the abstraction.",
+    "explanationAr": "كائنات ViewModel تعتمد على التجريد."
+  },
+  {
+    "key": "qz-and-arch-repository-7",
+    "topic": "and-arch-repository",
+    "questionEn": "What is a fake?",
+    "questionAr": "ما هي النسخة الوهمية (Fake)؟",
+    "optionsEn": [
+      "A small working test implementation",
+      "A crash that happens in production",
+      "An interface with no methods",
+      "A library for mocking classes"
+    ],
+    "optionsAr": [
+      "تنفيذ اختبار صغير يعمل",
+      "انهيار يحدث في الإنتاج",
+      "واجهة بلا أي دوال",
+      "مكتبة لمحاكاة الأصناف"
+    ],
+    "answer": 0,
+    "explanationEn": "Often backed by a MutableStateFlow.",
+    "explanationAr": "غالبًا تدعمها MutableStateFlow."
+  },
+  {
+    "key": "qz-and-arch-repository-8",
+    "topic": "and-arch-repository",
+    "questionEn": "Who should run blocking IO on the right dispatcher?",
+    "questionAr": "من يجب أن ينفذ الإدخال والإخراج المعطِّل على الـ Dispatcher الصحيح؟",
+    "optionsEn": [
+      "Each composable",
+      "The Activity",
+      "The test code",
+      "The data layer"
+    ],
+    "optionsAr": [
+      "كل دالة قابلة للتركيب",
+      "Activity",
+      "كود الاختبار",
+      "طبقة البيانات"
+    ],
+    "answer": 3,
+    "explanationEn": "Callers can then call it from the main thread.",
+    "explanationAr": "فيستطيع المستدعي استدعاءها من الخيط الرئيسي."
+  },
+  {
+    "key": "qz-and-arch-di-hilt-1",
+    "topic": "and-arch-di-hilt",
+    "questionEn": "What is dependency injection?",
+    "questionAr": "ما هو حقن الاعتماديات؟",
+    "optionsEn": [
+      "Downloading libraries with Gradle",
+      "Injecting JavaScript into views",
+      "Adding permissions at runtime",
+      "Giving a class what it needs from outside"
+    ],
+    "optionsAr": [
+      "تحميل المكتبات بـ Gradle",
+      "حقن JavaScript في العناصر",
+      "إضافة الأذونات وقت التشغيل",
+      "إعطاء الصنف ما يحتاجه من الخارج"
+    ],
+    "answer": 3,
+    "explanationEn": "Usually through the constructor.",
+    "explanationAr": "عادةً عبر المُنشئ."
+  },
+  {
+    "key": "qz-and-arch-di-hilt-2",
+    "topic": "and-arch-di-hilt",
+    "questionEn": "Which annotation goes on the Application class?",
+    "questionAr": "أي تعليق يوضع على صنف Application؟",
+    "optionsEn": [
+      "@HiltViewModel",
+      "@Module",
+      "@HiltAndroidApp",
+      "@AndroidEntryPoint"
+    ],
+    "optionsAr": [
+      "@HiltViewModel",
+      "@Module",
+      "@HiltAndroidApp",
+      "@AndroidEntryPoint"
+    ],
+    "answer": 2,
+    "explanationEn": "It starts Hilt's code generation.",
+    "explanationAr": "يبدأ توليد الكود في Hilt."
+  },
+  {
+    "key": "qz-and-arch-di-hilt-3",
+    "topic": "and-arch-di-hilt",
+    "questionEn": "How do you bind an interface to its implementation?",
+    "questionAr": "كيف تربط واجهة بتنفيذها؟",
+    "optionsEn": [
+      "@Singleton on the module",
+      "@Binds in an abstract module",
+      "@Provides on the interface",
+      "@Inject on the interface"
+    ],
+    "optionsAr": [
+      "@Singleton على الوحدة",
+      "@Binds في وحدة abstract",
+      "@Provides على الواجهة",
+      "@Inject على الواجهة"
+    ],
+    "answer": 1,
+    "explanationEn": "@Provides is for objects you build yourself.",
+    "explanationAr": "التعليق @Provides للكائنات التي تبنيها بنفسك."
+  },
+  {
+    "key": "qz-and-arch-di-hilt-4",
+    "topic": "and-arch-di-hilt",
+    "questionEn": "Why use @Provides for Retrofit?",
+    "questionAr": "لماذا تستخدم @Provides لـ Retrofit؟",
+    "optionsEn": [
+      "You can't annotate its constructor",
+      "It runs faster than @Binds",
+      "Retrofit only works with Hilt",
+      "To turn it into a ViewModel"
+    ],
+    "optionsAr": [
+      "لا تستطيع وضع تعليق على مُنشئه",
+      "لأنه يعمل أسرع من @Binds",
+      "لأن Retrofit تعمل مع Hilt فقط",
+      "لتحويله إلى ViewModel"
+    ],
+    "answer": 0,
+    "explanationEn": "Third-party types are built in a function.",
+    "explanationAr": "الأنواع الخارجية تُبنى داخل دالة."
+  },
+  {
+    "key": "qz-and-arch-di-hilt-5",
+    "topic": "and-arch-di-hilt",
+    "questionEn": "What does @Singleton in SingletonComponent mean?",
+    "questionAr": "ماذا تعني @Singleton في SingletonComponent؟",
+    "optionsEn": [
+      "One instance for each screen",
+      "A brand-new instance per call",
+      "One instance for every test",
+      "One instance for the app's lifetime"
+    ],
+    "optionsAr": [
+      "نسخة واحدة لكل شاشة",
+      "نسخة جديدة تمامًا لكل استدعاء",
+      "نسخة واحدة لكل اختبار",
+      "نسخة واحدة طوال عمر التطبيق"
+    ],
+    "answer": 3,
+    "explanationEn": "Use it for the database and HTTP client.",
+    "explanationAr": "استخدمه لقاعدة البيانات وعميل HTTP."
+  },
+  {
+    "key": "qz-and-arch-di-hilt-6",
+    "topic": "and-arch-di-hilt",
+    "questionEn": "Why inject a CoroutineDispatcher?",
+    "questionAr": "لماذا تحقن CoroutineDispatcher؟",
+    "optionsEn": [
+      "Hilt can't create threads",
+      "To avoid using Flow",
+      "Tests can replace it",
+      "It speeds up Gradle"
+    ],
+    "optionsAr": [
+      "لأن Hilt لا تنشئ خيوطًا",
+      "لتجنب استخدام Flow",
+      "لتستبدله الاختبارات",
+      "لتسريع Gradle"
+    ],
+    "answer": 2,
+    "explanationEn": "A test dispatcher makes tests deterministic.",
+    "explanationAr": "الـ Dispatcher الخاص بالاختبار يجعل الاختبارات حتمية."
+  },
+  {
+    "key": "qz-and-arch-di-hilt-7",
+    "topic": "and-arch-di-hilt",
+    "questionEn": "Which annotation lets a ViewModel get @Inject dependencies?",
+    "questionAr": "أي تعليق يتيح لـ ViewModel أخذ اعتماديات @Inject؟",
+    "optionsEn": [
+      "@InstallIn",
+      "@HiltViewModel",
+      "@AndroidEntryPoint",
+      "@HiltAndroidApp"
+    ],
+    "optionsAr": [
+      "@InstallIn",
+      "@HiltViewModel",
+      "@AndroidEntryPoint",
+      "@HiltAndroidApp"
+    ],
+    "answer": 1,
+    "explanationEn": "Get it in Compose with hiltViewModel().",
+    "explanationAr": "احصل عليها في Compose بـ hiltViewModel()."
+  },
+  {
+    "key": "qz-and-arch-di-hilt-8",
+    "topic": "and-arch-di-hilt",
+    "questionEn": "How do UI tests replace a whole module?",
+    "questionAr": "كيف تستبدل اختبارات الواجهة وحدة كاملة؟",
+    "optionsEn": [
+      "@TestInstallIn",
+      "Editing the real module",
+      "Reflection at runtime",
+      "A second Application"
+    ],
+    "optionsAr": [
+      "@TestInstallIn",
+      "تعديل الوحدة الحقيقية",
+      "الانعكاس وقت التشغيل",
+      "Application ثانية"
+    ],
+    "answer": 0,
+    "explanationEn": "It swaps bindings for every test.",
+    "explanationAr": "تستبدل الربط في كل الاختبارات."
+  },
+  {
+    "key": "qz-and-arch-clean-solid-1",
+    "topic": "and-arch-clean-solid",
+    "questionEn": "What does the single responsibility principle say?",
+    "questionAr": "ماذا يقول مبدأ المسؤولية الواحدة؟",
+    "optionsEn": [
+      "An app has a single screen",
+      "Each module has one class",
+      "A function has one line",
+      "A class has one reason to change"
+    ],
+    "optionsAr": [
+      "للتطبيق شاشة واحدة",
+      "لكل وحدة صنف واحد",
+      "للدالة سطر واحد",
+      "للصنف سبب واحد للتغيير"
+    ],
+    "answer": 3,
+    "explanationEn": "Split classes that do several jobs.",
+    "explanationAr": "قسّم الأصناف التي تقوم بعدة أعمال."
+  },
+  {
+    "key": "qz-and-arch-clean-solid-2",
+    "topic": "and-arch-clean-solid",
+    "questionEn": "Dependency inversion means high-level code depends on...",
+    "questionAr": "عكس الاعتماد يعني أن الكود عالي المستوى يعتمد على...",
+    "optionsEn": [
+      "The Android SDK",
+      "Global singletons",
+      "Abstractions",
+      "Concrete classes"
+    ],
+    "optionsAr": [
+      "Android SDK",
+      "الكائنات الوحيدة العامة",
+      "التجريدات",
+      "الأصناف الملموسة"
+    ],
+    "answer": 2,
+    "explanationEn": "Details implement the interfaces.",
+    "explanationAr": "التفاصيل تنفذ الواجهات."
+  },
+  {
+    "key": "qz-and-arch-clean-solid-3",
+    "topic": "and-arch-clean-solid",
+    "questionEn": "In clean architecture, business rules depend on...",
+    "questionAr": "في المعمارية النظيفة، قواعد العمل تعتمد على...",
+    "optionsEn": [
+      "The Activity lifecycle",
+      "Nothing in the frameworks",
+      "Retrofit and Room",
+      "Jetpack Compose"
+    ],
+    "optionsAr": [
+      "دورة حياة Activity",
+      "لا شيء من الأطر",
+      "Retrofit وRoom",
+      "Jetpack Compose"
+    ],
+    "answer": 1,
+    "explanationEn": "Dependencies point inward.",
+    "explanationAr": "الاعتماديات تتجه إلى الداخل."
+  },
+  {
+    "key": "qz-and-arch-clean-solid-4",
+    "topic": "and-arch-clean-solid",
+    "questionEn": "Which use case adds no value?",
+    "questionAr": "أي حالة استخدام لا تضيف قيمة؟",
+    "optionsEn": [
+      "One that only forwards a call",
+      "One combining two repositories",
+      "One shared by three screens",
+      "One holding a pricing rule"
+    ],
+    "optionsAr": [
+      "واحدة تمرر الاستدعاء فقط",
+      "واحدة تجمع مستودعين",
+      "واحدة تشترك فيها ثلاث شاشات",
+      "واحدة فيها قاعدة تسعير"
+    ],
+    "answer": 0,
+    "explanationEn": "It adds files without behaviour.",
+    "explanationAr": "تضيف ملفات دون سلوك."
+  },
+  {
+    "key": "qz-and-arch-clean-solid-5",
+    "topic": "and-arch-clean-solid",
+    "questionEn": "Open/closed means...",
+    "questionAr": "مبدأ مفتوح ومغلق يعني...",
+    "optionsEn": [
+      "Kotlin classes must all be declared open",
+      "Every source file must be closed for edits",
+      "Only sealed classes may be used for logic",
+      "Add behaviour without editing working code"
+    ],
+    "optionsAr": [
+      "يجب أن تكون كل أصناف Kotlin مفتوحة",
+      "يجب إغلاق كل ملف مصدر",
+      "لا يُسمح إلا بأصناف sealed",
+      "أضف السلوك دون تعديل كود يعمل"
+    ],
+    "answer": 3,
+    "explanationEn": "A new strategy is a new class.",
+    "explanationAr": "الاستراتيجية الجديدة صنف جديد."
+  },
+  {
+    "key": "qz-and-arch-clean-solid-6",
+    "topic": "and-arch-clean-solid",
+    "questionEn": "Interface segregation suggests...",
+    "questionAr": "مبدأ فصل الواجهات يقترح...",
+    "optionsEn": [
+      "No interfaces at all",
+      "Interfaces only in tests",
+      "Small, focused interfaces",
+      "One interface for the whole app"
+    ],
+    "optionsAr": [
+      "لا واجهات إطلاقًا",
+      "واجهات في الاختبارات فقط",
+      "واجهات صغيرة مركّزة",
+      "واجهة واحدة للتطبيق كله"
+    ],
+    "answer": 2,
+    "explanationEn": "Clients see only what they use.",
+    "explanationAr": "العملاء يرون ما يستخدمونه فقط."
+  },
+  {
+    "key": "qz-and-arch-clean-solid-7",
+    "topic": "and-arch-clean-solid",
+    "questionEn": "A good use case usually exposes...",
+    "questionAr": "حالة الاستخدام الجيدة تعرض عادةً...",
+    "optionsEn": [
+      "A Room DAO for the data",
+      "One operator fun invoke",
+      "Many public helper functions",
+      "A Compose screen to show"
+    ],
+    "optionsAr": [
+      "كائن DAO من Room للبيانات",
+      "دالة operator fun invoke واحدة",
+      "دوال مساعدة عامة كثيرة",
+      "شاشة Compose لعرضها"
+    ],
+    "answer": 1,
+    "explanationEn": "Name it with a verb.",
+    "explanationAr": "سمّها بفعل."
+  },
+  {
+    "key": "qz-and-arch-clean-solid-8",
+    "topic": "and-arch-clean-solid",
+    "questionEn": "What do interviewers look for on architecture?",
+    "questionAr": "ما الذي يبحث عنه من يجري المقابلات في المعمارية؟",
+    "optionsEn": [
+      "Justified trade-offs",
+      "The most layers possible",
+      "Memorised acronyms only",
+      "No tests at all"
+    ],
+    "optionsAr": [
+      "مقايضات مبررة",
+      "أكبر عدد ممكن من الطبقات",
+      "اختصارات محفوظة فقط",
+      "لا اختبارات إطلاقًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Structure should solve a real problem.",
+    "explanationAr": "البنية يجب أن تحل مشكلة حقيقية."
+  },
+  {
+    "key": "qz-and-arch-errors-1",
+    "topic": "and-arch-errors",
+    "questionEn": "Where should low-level exceptions be mapped?",
+    "questionAr": "أين يجب تحويل الاستثناءات منخفضة المستوى؟",
+    "optionsEn": [
+      "In the AndroidManifest file",
+      "In the Gradle build scripts",
+      "At the data layer boundary",
+      "Inside every composable"
+    ],
+    "optionsAr": [
+      "في ملف AndroidManifest",
+      "في سكربتات بناء Gradle",
+      "عند حدود طبقة البيانات",
+      "داخل كل دالة قابلة للتركيب"
+    ],
+    "answer": 2,
+    "explanationEn": "Upper layers see domain errors only.",
+    "explanationAr": "الطبقات العليا ترى أخطاء المجال فقط."
+  },
+  {
+    "key": "qz-and-arch-errors-2",
+    "topic": "and-arch-errors",
+    "questionEn": "Which exception must never be swallowed in coroutines?",
+    "questionAr": "أي استثناء يجب ألا يُبتلع أبدًا في Coroutines؟",
+    "optionsEn": [
+      "NumberFormatException",
+      "CancellationException",
+      "IOException",
+      "HttpException"
+    ],
+    "optionsAr": [
+      "NumberFormatException",
+      "CancellationException",
+      "IOException",
+      "HttpException"
+    ],
+    "answer": 1,
+    "explanationEn": "Swallowing it breaks structured concurrency.",
+    "explanationAr": "ابتلاعه يكسر التزامن المنظم."
+  },
+  {
+    "key": "qz-and-arch-errors-3",
+    "topic": "and-arch-errors",
+    "questionEn": "A refresh fails but cached data exists. Show...",
+    "questionAr": "فشل التحديث مع وجود بيانات مخزنة. اعرض...",
+    "optionsEn": [
+      "The cached data with a small banner",
+      "A full-screen error and nothing else",
+      "Nothing at all, let the app crash",
+      "An empty list with no message"
+    ],
+    "optionsAr": [
+      "البيانات المخزنة مع شريط صغير",
+      "شاشة خطأ كاملة ولا شيء غيرها",
+      "لا شيء أبدًا، ودع التطبيق ينهار",
+      "قائمة فارغة دون أي رسالة"
+    ],
+    "answer": 0,
+    "explanationEn": "Keep the user productive.",
+    "explanationAr": "أبقِ المستخدم قادرًا على العمل."
+  },
+  {
+    "key": "qz-and-arch-errors-4",
+    "topic": "and-arch-errors",
+    "questionEn": "What does HTTP 401 usually mean for the app?",
+    "questionAr": "ماذا يعني HTTP 401 للتطبيق عادةً؟",
+    "optionsEn": [
+      "The server is down for maintenance",
+      "The requested item was deleted",
+      "The user has no internet connection",
+      "The session expired: sign in again"
+    ],
+    "optionsAr": [
+      "الخادم متوقف للصيانة",
+      "العنصر المطلوب حُذف",
+      "المستخدم بلا اتصال بالإنترنت",
+      "انتهت الجلسة: سجّل الدخول مرة أخرى"
+    ],
+    "answer": 3,
+    "explanationEn": "Try a token refresh first if you have one.",
+    "explanationAr": "جرّب تحديث الرمز أولًا إن وُجد."
+  },
+  {
+    "key": "qz-and-arch-errors-5",
+    "topic": "and-arch-errors",
+    "questionEn": "Why not show raw exception messages?",
+    "questionAr": "لماذا لا تعرض رسائل الاستثناءات الخام؟",
+    "optionsEn": [
+      "Compose is unable to display them",
+      "They are always completely empty",
+      "They confuse and may leak details",
+      "They are far too short to help"
+    ],
+    "optionsAr": [
+      "لأن Compose لا يستطيع عرضها",
+      "لأنها فارغة تمامًا دائمًا",
+      "تربك المستخدم وقد تسرّب تفاصيل",
+      "لأنها أقصر من أن تفيد"
+    ],
+    "answer": 2,
+    "explanationEn": "Map them to friendly messages.",
+    "explanationAr": "حوّلها إلى رسائل لطيفة."
+  },
+  {
+    "key": "qz-and-arch-errors-6",
+    "topic": "and-arch-errors",
+    "questionEn": "IOException from Retrofit usually means...",
+    "questionAr": "الاستثناء IOException من Retrofit يعني عادةً...",
+    "optionsEn": [
+      "A missing permission",
+      "A network problem",
+      "A JSON typo in code",
+      "A 500 server error"
+    ],
+    "optionsAr": [
+      "إذن ناقص",
+      "مشكلة في الشبكة",
+      "خطأ إملائي في JSON بالكود",
+      "خطأ خادم 500"
+    ],
+    "answer": 1,
+    "explanationEn": "HTTP errors arrive as HttpException.",
+    "explanationAr": "أخطاء HTTP تصل كـ HttpException."
+  },
+  {
+    "key": "qz-and-arch-errors-7",
+    "topic": "and-arch-errors",
+    "questionEn": "Which errors deserve a Retry button?",
+    "questionAr": "أي الأخطاء تستحق زر Retry؟",
+    "optionsEn": [
+      "Transient ones like network or 503",
+      "Validation errors in a form",
+      "A deleted account",
+      "A wrong password"
+    ],
+    "optionsAr": [
+      "المؤقتة مثل الشبكة أو 503",
+      "أخطاء التحقق في نموذج",
+      "حساب محذوف",
+      "كلمة مرور خاطئة"
+    ],
+    "answer": 0,
+    "explanationEn": "Retrying won't fix permanent errors.",
+    "explanationAr": "إعادة المحاولة لا تصلح الأخطاء الدائمة."
+  },
+  {
+    "key": "qz-and-arch-errors-8",
+    "topic": "and-arch-errors",
+    "questionEn": "What should happen to unexpected errors?",
+    "questionAr": "ماذا يجب أن يحدث للأخطاء غير المتوقعة؟",
+    "optionsEn": [
+      "Silently ignored by the app",
+      "Shown to users as stack traces",
+      "Written into strings.xml",
+      "Reported to crash tools with context"
+    ],
+    "optionsAr": [
+      "يتجاهلها التطبيق بصمت",
+      "تُعرض للمستخدمين كتتبع مكدس",
+      "تُكتب داخل ملف strings.xml",
+      "تُرسل إلى أدوات الانهيار مع السياق"
+    ],
+    "answer": 3,
+    "explanationEn": "Without leaking personal data.",
+    "explanationAr": "دون تسريب بيانات شخصية."
+  },
+  {
+    "key": "qz-and-arch-modularization-1",
+    "topic": "and-arch-modularization",
+    "questionEn": "What may a feature module depend on?",
+    "questionAr": "على ماذا قد تعتمد وحدة الميزة؟",
+    "optionsEn": [
+      "The app module",
+      "Nothing at all",
+      "Core modules only",
+      "Any other feature"
+    ],
+    "optionsAr": [
+      "وحدة التطبيق",
+      "لا شيء إطلاقًا",
+      "الوحدات الأساسية فقط",
+      "أي ميزة أخرى"
+    ],
+    "answer": 2,
+    "explanationEn": "Features never see each other.",
+    "explanationAr": "الميزات لا ترى بعضها أبدًا."
+  },
+  {
+    "key": "qz-and-arch-modularization-2",
+    "topic": "and-arch-modularization",
+    "questionEn": "Who connects features' navigation?",
+    "questionAr": "من يربط تنقل الميزات؟",
+    "optionsEn": [
+      "The design system",
+      "The app module",
+      "Each feature directly",
+      "The core:model module"
+    ],
+    "optionsAr": [
+      "نظام التصميم",
+      "وحدة التطبيق",
+      "كل ميزة مباشرة",
+      "وحدة core:model"
+    ],
+    "answer": 1,
+    "explanationEn": "It depends on all features.",
+    "explanationAr": "تعتمد على كل الميزات."
+  },
+  {
+    "key": "qz-and-arch-modularization-3",
+    "topic": "and-arch-modularization",
+    "questionEn": "Why prefer implementation over api?",
+    "questionAr": "لماذا تفضّل implementation على api؟",
+    "optionsEn": [
+      "It hides internals and speeds builds",
+      "It is required for Compose modules",
+      "The api configuration is deprecated",
+      "It adds more transitive dependencies"
+    ],
+    "optionsAr": [
+      "تخفي التفاصيل الداخلية وتسرّع البناء",
+      "لأنها مطلوبة لوحدات Compose",
+      "لأن إعداد api أصبح قديمًا",
+      "لأنها تضيف اعتماديات منقولة أكثر"
+    ],
+    "answer": 0,
+    "explanationEn": "Consumers don't see transitive types.",
+    "explanationAr": "المستهلكون لا يرون الأنواع المنقولة."
+  },
+  {
+    "key": "qz-and-arch-modularization-4",
+    "topic": "and-arch-modularization",
+    "questionEn": "What do convention plugins share?",
+    "questionAr": "ماذا تشارك الإضافات الاصطلاحية؟",
+    "optionsEn": [
+      "The app's runtime permissions",
+      "Data entered by the user",
+      "The Compose color themes",
+      "Common Gradle setup across modules"
+    ],
+    "optionsAr": [
+      "أذونات وقت التشغيل للتطبيق",
+      "البيانات التي يدخلها المستخدم",
+      "مظاهر الألوان في Compose",
+      "إعداد Gradle المشترك بين الوحدات"
+    ],
+    "answer": 3,
+    "explanationEn": "Module build files become tiny.",
+    "explanationAr": "تصبح ملفات بناء الوحدات صغيرة."
+  },
+  {
+    "key": "qz-and-arch-modularization-5",
+    "topic": "and-arch-modularization",
+    "questionEn": "When is modularization worth it?",
+    "questionAr": "متى يستحق التقسيم إلى وحدات؟",
+    "optionsEn": [
+      "Only for apps still built with Views",
+      "Never, because it slows every build",
+      "When builds, teams or boundaries hurt",
+      "For every tiny demo or sample app"
+    ],
+    "optionsAr": [
+      "فقط للتطبيقات المبنية بـ Views",
+      "أبدًا، لأنه يبطئ كل عملية بناء",
+      "عندما يؤلم البناء أو الفريق أو الحدود",
+      "لكل تطبيق تجريبي أو نموذج صغير"
+    ],
+    "answer": 2,
+    "explanationEn": "It has a real cost in setup.",
+    "explanationAr": "له تكلفة حقيقية في الإعداد."
+  },
+  {
+    "key": "qz-and-arch-modularization-6",
+    "topic": "and-arch-modularization",
+    "questionEn": "Which module typically holds the design system?",
+    "questionAr": "أي وحدة تحمل نظام التصميم عادةً؟",
+    "optionsEn": [
+      "core:network",
+      "core:designsystem",
+      "feature:orders",
+      "app"
+    ],
+    "optionsAr": [
+      "core:network",
+      "core:designsystem",
+      "feature:orders",
+      "app"
+    ],
+    "answer": 1,
+    "explanationEn": "Every feature uses the same components.",
+    "explanationAr": "كل الميزات تستخدم المكونات نفسها."
+  },
+  {
+    "key": "qz-and-arch-modularization-7",
+    "topic": "and-arch-modularization",
+    "questionEn": "What does modularization improve in builds?",
+    "questionAr": "ماذا يحسّن التقسيم إلى وحدات في البناء؟",
+    "optionsEn": [
+      "Incremental and parallel builds",
+      "The speed of signing the APK",
+      "The rules that R8 applies",
+      "How fast the emulator starts"
+    ],
+    "optionsAr": [
+      "البناء التدريجي والمتوازي",
+      "سرعة توقيع ملف APK",
+      "القواعد التي يطبقها R8",
+      "سرعة تشغيل المحاكي"
+    ],
+    "answer": 0,
+    "explanationEn": "Only changed modules rebuild.",
+    "explanationAr": "تُعاد بناء الوحدات المتغيرة فقط."
+  },
+  {
+    "key": "qz-and-arch-modularization-8",
+    "topic": "and-arch-modularization",
+    "questionEn": "Which Google sample shows a modular app?",
+    "questionAr": "أي نموذج من Google يعرض تطبيقًا مقسّمًا إلى وحدات؟",
+    "optionsEn": [
+      "Hello World",
+      "Sunflower XML",
+      "Jetsnack only",
+      "Now in Android"
+    ],
+    "optionsAr": [
+      "Hello World",
+      "Sunflower XML",
+      "Jetsnack فقط",
+      "Now in Android"
+    ],
+    "answer": 3,
+    "explanationEn": "It uses feature, core and build-logic modules.",
+    "explanationAr": "يستخدم وحدات الميزات والأساس وbuild-logic."
+  }
+]
