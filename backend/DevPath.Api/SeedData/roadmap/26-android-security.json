@@ -1,0 +1,232 @@
+{
+  "slug": "android-security",
+  "order": 26,
+  "titleEn": "Android app security",
+  "titleAr": "أمان تطبيقات Android",
+  "descriptionEn": "Build apps that protect users and their data: think in threats with OWASP MASVS, encrypt with keys in the Android Keystore and gate them with biometrics, secure network traffic with TLS and network security configuration, lock down exported components, intents, deep links and WebViews, keep secrets out of the APK and verify app integrity, and respect privacy with minimal permissions, safe logging and backup rules.",
+  "descriptionAr": "ابنِ تطبيقات تحمي المستخدمين وبياناتهم: فكّر بالتهديدات باستخدام OWASP MASVS، وشفّر بمفاتيح في Android Keystore واحمها بالقياسات الحيوية، وأمّن حركة الشبكة بـ TLS وإعدادات أمان الشبكة، وأغلق المكونات المكشوفة والنوايا والروابط العميقة وWebView، وأبعد الأسرار عن ملف APK وتحقق من سلامة التطبيق، واحترم الخصوصية بأقل الأذونات والتسجيل الآمن وقواعد النسخ الاحتياطي.",
+  "topics": [
+    {
+      "slug": "and-sec-threats",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 40,
+      "difficulty": "Intermediate",
+      "titleEn": "Threat modeling with OWASP MASVS",
+      "titleAr": "نمذجة التهديدات باستخدام OWASP MASVS",
+      "summaryEn": "Security starts with asking what you protect, from whom, and how it could fail. The OWASP Mobile Application Security Verification Standard (MASVS) groups controls into storage, crypto, authentication, network, platform interaction, code quality, resilience and privacy, and the Mobile Application Security Testing Guide (MASTG) explains how to test each one. A simple threat model lists assets (tokens, health data, payments), attackers (a thief with the phone, malware on the device, a network attacker, someone reversing the APK) and the controls for each.",
+      "summaryAr": "يبدأ الأمان بسؤال: ماذا تحمي، ومِمّن، وكيف قد يفشل. ويجمع معيار التحقق من أمان تطبيقات الجوال من OWASP (‏MASVS) الضوابط في التخزين والتشفير والمصادقة والشبكة والتفاعل مع النظام وجودة الكود والصمود والخصوصية، ويشرح دليل اختبار أمان تطبيقات الجوال (‏MASTG) كيف يُختبر كل منها. ونموذج التهديد البسيط يسرد الأصول (الرموز والبيانات الصحية والمدفوعات)، والمهاجمين (سارق يملك الهاتف، أو برمجية خبيثة على الجهاز، أو مهاجم على الشبكة، أو شخص يفكك ملف APK)، والضوابط لكل منها.",
+      "whyEn": "Without a threat model, teams either ignore security or add random protections that cost time and stop nothing. A short model points effort where the real risk is and gives you clear answers in security reviews and interviews.",
+      "whyAr": "دون نموذج تهديد، إما أن تتجاهل الفرق الأمان أو تضيف حمايات عشوائية تكلف الوقت ولا توقف شيئًا. والنموذج القصير يوجه الجهد إلى حيث الخطر الحقيقي، ويعطيك إجابات واضحة في مراجعات الأمان والمقابلات.",
+      "howEn": "Write a one-page model per app: data flow from UI to storage to server, the sensitive data at each step, and the attacker types. Pick the MASVS controls that apply, add them to the definition of done, and check them in code review. Assume the device and the APK are in the attacker's hands: real secrets and real decisions belong on the server.",
+      "howAr": "اكتب نموذجًا من صفحة واحدة لكل تطبيق: تدفق البيانات من الواجهة إلى التخزين إلى الخادم، والبيانات الحساسة في كل خطوة، وأنواع المهاجمين. واختر ضوابط MASVS التي تنطبق، وأضفها إلى تعريف الإنجاز، وافحصها في مراجعة الكود. وافترض أن الجهاز وملف APK في يد المهاجم: فالأسرار الحقيقية والقرارات الحقيقية مكانها الخادم.",
+      "exampleEn": "A telemedicine app's model: assets are session tokens, appointment notes and photos; threats are a lost phone, a malicious app reading shared storage, public Wi-Fi interception and a repackaged APK. Controls: encrypted local storage with a Keystore key, biometric unlock, TLS only, no data in shared storage or logs, server-side authorization for every record.",
+      "exampleAr": "نموذج تطبيق طب عن بُعد: الأصول هي رموز الجلسات وملاحظات المواعيد والصور، والتهديدات هي هاتف مفقود، وتطبيق خبيث يقرأ التخزين المشترك، واعتراض على شبكة Wi-Fi عامة، وملف APK أُعيد تجميعه. والضوابط: تخزين محلي مشفر بمفتاح Keystore، وفتح بالقياسات الحيوية، وTLS فقط، ولا بيانات في التخزين المشترك أو السجلات، وتفويض من الخادم لكل سجل.",
+      "practiceEn": "1) List the sensitive data in an app you built. 2) Map each item to a MASVS category. 3) Write one control and one test for the riskiest item.",
+      "practiceAr": "1) اسرد البيانات الحساسة في تطبيق بنيته. 2) اربط كل عنصر بفئة من MASVS. 3) اكتب ضابطًا واحدًا واختبارًا واحدًا لأخطر عنصر.",
+      "challengeEn": "Run a mini security review of an open-source Android app: decompile its APK with jadx, look for hard-coded keys, exported components and logging, and write up three findings with fixes.",
+      "challengeAr": "نفّذ مراجعة أمان مصغرة لتطبيق Android مفتوح المصدر: فكك ملف APK الخاص به بـ jadx، وابحث عن المفاتيح المكتوبة في الكود والمكونات المكشوفة والتسجيل، واكتب ثلاث نتائج مع إصلاحاتها.",
+      "objectivesEn": [
+        "Describe attackers relevant to mobile apps",
+        "Use MASVS categories to plan controls",
+        "Write a short threat model",
+        "Decide what must stay on the server"
+      ],
+      "objectivesAr": [
+        "وصف المهاجمين المرتبطين بتطبيقات الجوال",
+        "استخدام فئات MASVS لتخطيط الضوابط",
+        "كتابة نموذج تهديد قصير",
+        "تحديد ما يجب أن يبقى على الخادم"
+      ],
+      "prerequisites": [
+        "and-arch-layers",
+        "and-net-auth"
+      ]
+    },
+    {
+      "slug": "and-sec-keystore",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 55,
+      "difficulty": "Advanced",
+      "titleEn": "Encryption with the Keystore and biometrics",
+      "titleAr": "التشفير بـ Keystore والقياسات الحيوية",
+      "summaryEn": "The Android Keystore stores cryptographic keys so their material never enters the app's memory; on most devices keys live in a trusted execution environment or a StrongBox secure chip. You generate a key with KeyGenParameterSpec (purpose, AES-GCM, key size) and use it through Cipher, or let Tink manage keysets wrapped by a Keystore master key. Keys can require user authentication: setUserAuthenticationParameters makes a key usable only after a recent biometric or device-credential check, which BiometricPrompt performs with a CryptoObject.",
+      "summaryAr": "يحفظ Android Keystore مفاتيح التشفير بحيث لا تدخل مادتها ذاكرة التطبيق أبدًا، وفي معظم الأجهزة تعيش المفاتيح في بيئة تنفيذ موثوقة أو شريحة StrongBox آمنة. وتولّد مفتاحًا بـ KeyGenParameterSpec (الغرض وAES-GCM وحجم المفتاح) وتستخدمه عبر Cipher، أو تترك Tink تدير مجموعات المفاتيح مغلفة بمفتاح رئيسي من Keystore. ويمكن أن تشترط المفاتيح مصادقة المستخدم: فتجعل setUserAuthenticationParameters المفتاح قابلًا للاستخدام فقط بعد فحص حيوي أو بيانات الجهاز حديثًا، وينفذه BiometricPrompt مع CryptoObject.",
+      "whyEn": "Files in app storage can be copied from rooted or compromised devices and backups. Encrypting with a hardware-backed key means stolen files are unreadable, and binding a key to biometrics protects data even when someone holds the unlocked app.",
+      "whyAr": "يمكن نسخ الملفات في تخزين التطبيق من الأجهزة المكسورة الحماية أو المخترقة ومن النسخ الاحتياطية. والتشفير بمفتاح مدعوم بالعتاد يعني أن الملفات المسروقة غير مقروءة، وربط المفتاح بالقياسات الحيوية يحمي البيانات حتى عندما يمسك شخص التطبيق مفتوحًا.",
+      "howEn": "Don't invent cryptography: use AES-GCM through Tink or the platform Cipher, with a fresh IV per message stored next to the ciphertext. Keep one key per purpose with a clear alias. Gate high-value actions (showing a card number, approving a payment) with BiometricPrompt and a CryptoObject, not just a callback. Handle KeyPermanentlyInvalidatedException when the user changes biometrics, and plan how to recover data.",
+      "howAr": "لا تخترع تشفيرًا: استخدم AES-GCM عبر Tink أو Cipher من النظام، مع IV جديد لكل رسالة يُحفظ بجوار النص المشفر. واحتفظ بمفتاح واحد لكل غرض باسم مستعار واضح. واحمِ الإجراءات عالية القيمة (عرض رقم بطاقة أو الموافقة على دفع) بـ BiometricPrompt مع CryptoObject، لا باستدعاء راجع فقط. وعالج KeyPermanentlyInvalidatedException عندما يغيّر المستخدم قياساته الحيوية، وخطط لاستعادة البيانات.",
+      "exampleEn": "A password manager encrypts the vault with a Tink AEAD keyset wrapped by a Keystore key. Opening the vault shows BiometricPrompt with a CryptoObject for a second key that unwraps the vault key, so without the user's fingerprint the data can't be decrypted even by code running inside the app.",
+      "exampleAr": "مدير كلمات مرور يشفّر الخزنة بمجموعة مفاتيح AEAD من Tink مغلفة بمفتاح Keystore. وفتح الخزنة يعرض BiometricPrompt مع CryptoObject لمفتاح ثانٍ يفك تغليف مفتاح الخزنة، فلا يمكن فك تشفير البيانات دون بصمة المستخدم حتى بكود يعمل داخل التطبيق.",
+      "practiceEn": "1) Generate an AES-GCM key in the Keystore and encrypt a string. 2) Encrypt DataStore values with Tink. 3) Show BiometricPrompt before revealing a secret.",
+      "practiceAr": "1) ولّد مفتاح AES-GCM في Keystore وشفّر نصًا. 2) شفّر قيم DataStore بـ Tink. 3) اعرض BiometricPrompt قبل كشف سر.",
+      "challengeEn": "Bind decryption to biometrics with a CryptoObject, handle a key invalidated by a new fingerprint by re-enrolling, and write instrumented tests for the encryption round trip.",
+      "challengeAr": "اربط فك التشفير بالقياسات الحيوية عبر CryptoObject، وعالج مفتاحًا أُبطل ببصمة جديدة بإعادة التسجيل، واكتب اختبارات على الجهاز لدورة التشفير وفكه.",
+      "objectivesEn": [
+        "Generate and use Keystore keys",
+        "Encrypt data with AES-GCM or Tink",
+        "Gate keys with BiometricPrompt",
+        "Handle invalidated keys"
+      ],
+      "objectivesAr": [
+        "توليد مفاتيح Keystore واستخدامها",
+        "تشفير البيانات بـ AES-GCM أو Tink",
+        "حماية المفاتيح بـ BiometricPrompt",
+        "معالجة المفاتيح المُبطلة"
+      ],
+      "prerequisites": [
+        "and-data-datastore",
+        "and-sec-threats"
+      ]
+    },
+    {
+      "slug": "and-sec-network",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 40,
+      "difficulty": "Intermediate",
+      "titleEn": "Network security: TLS, configuration and pinning",
+      "titleAr": "أمان الشبكة: TLS والإعدادات والتثبيت",
+      "summaryEn": "All traffic should use HTTPS with TLS 1.2 or later. Android blocks cleartext HTTP by default, and the network security configuration file (res/xml/network_security_config.xml) controls it per domain: allow cleartext only for a local debug server, trust a custom CA only in debug builds, and optionally pin certificates. Pinning ties a domain to the public key hashes you expect, which blocks interception by a rogue CA, but needs backup pins and an expiry date so a certificate rotation doesn't break the app.",
+      "summaryAr": "يجب أن تستخدم كل الحركة HTTPS مع TLS 1.2 فأحدث. ويمنع Android اتصال HTTP غير المشفر افتراضيًا، ويتحكم فيه ملف إعدادات أمان الشبكة (res/xml/network_security_config.xml) لكل نطاق: السماح بغير المشفر فقط لخادم debug محلي، والوثوق بشهادة جذر مخصصة في بناءات debug فقط، والتثبيت الاختياري للشهادات. ويربط التثبيت النطاق ببصمات المفاتيح العامة التي تتوقعها، فيمنع الاعتراض عبر جهة إصدار مارقة، لكنه يحتاج بصمات احتياطية وتاريخ انتهاء حتى لا يكسر تدوير الشهادة التطبيق.",
+      "whyEn": "Public Wi-Fi, compromised routers and corporate proxies can read or change unprotected traffic. Proper TLS settings are cheap, and getting pinning wrong can lock every user out until they update.",
+      "whyAr": "شبكات Wi-Fi العامة والموجهات المخترقة والوكلاء في الشركات يمكنها قراءة الحركة غير المحمية أو تغييرها. وإعدادات TLS الصحيحة رخيصة، والخطأ في التثبيت قد يمنع كل المستخدمين حتى يحدّثوا التطبيق.",
+      "howEn": "Keep cleartextTrafficPermitted false, use debug-overrides for local proxies like mitmproxy or Charles instead of trusting user CAs in release, and never write a TrustManager that accepts everything. Pin only when the risk justifies it (banking, health), pin public keys of the intermediate or leaf plus a backup, set an expiration, and monitor failures.",
+      "howAr": "أبقِ cleartextTrafficPermitted خطأ، واستخدم debug-overrides للوكلاء المحليين مثل mitmproxy أو Charles بدل الوثوق بشهادات المستخدم في الإصدار، ولا تكتب TrustManager يقبل كل شيء أبدًا. وثبّت فقط عندما يبرر الخطر ذلك (المصارف والصحة)، وثبّت المفاتيح العامة للشهادة الوسيطة أو الطرفية مع احتياطي، واضبط تاريخ انتهاء، وراقب الأعطال.",
+      "exampleEn": "A banking app ships a network security config that forbids cleartext, pins api.bank.example to two public-key hashes with an expiration a year out, and in debug builds trusts the developer's mitmproxy CA. A rogue certificate on hotel Wi-Fi now fails the connection instead of exposing the session.",
+      "exampleAr": "تطبيق مصرفي يشحن إعدادات أمان شبكة تمنع غير المشفر، وتثبّت api.bank.example على بصمتي مفتاحين عامين مع تاريخ انتهاء بعد سنة، وفي بناءات debug تثق بشهادة mitmproxy الخاصة بالمطور. فتفشل الآن شهادة مارقة على شبكة فندق في الاتصال بدل كشف الجلسة.",
+      "practiceEn": "1) Add a network security config that blocks cleartext. 2) Inspect your app's traffic with a proxy using debug-overrides. 3) Add OkHttp CertificatePinner for one domain.",
+      "practiceAr": "1) أضف إعدادات أمان شبكة تمنع غير المشفر. 2) افحص حركة تطبيقك بوكيل باستخدام debug-overrides. 3) أضف CertificatePinner من OkHttp لنطاق واحد.",
+      "challengeEn": "Design a pin rotation plan: compute pins for the current and next keys, ship them before rotating, add an expiry, and simulate a mismatch to confirm the app shows a clear error instead of crashing.",
+      "challengeAr": "صمّم خطة لتدوير التثبيت: احسب بصمات المفتاحين الحالي والتالي، واشحنها قبل التدوير، وأضف تاريخ انتهاء، وحاكِ عدم تطابق للتأكد أن التطبيق يعرض خطأ واضحًا بدل الانهيار.",
+      "objectivesEn": [
+        "Enforce HTTPS and block cleartext",
+        "Write a network security configuration",
+        "Debug traffic safely with a proxy",
+        "Pin certificates with a rotation plan"
+      ],
+      "objectivesAr": [
+        "فرض HTTPS ومنع غير المشفر",
+        "كتابة إعدادات أمان الشبكة",
+        "تصحيح الحركة بأمان عبر وكيل",
+        "تثبيت الشهادات مع خطة تدوير"
+      ],
+      "prerequisites": [
+        "and-net-okhttp"
+      ]
+    },
+    {
+      "slug": "and-sec-components",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 50,
+      "difficulty": "Advanced",
+      "titleEn": "Securing components, intents, deep links and WebViews",
+      "titleAr": "تأمين المكونات والنوايا والروابط العميقة وWebView",
+      "summaryEn": "Every Activity, Service, BroadcastReceiver and ContentProvider with android:exported=\"true\" or an intent filter can be started by any app on the device. Export only what must be public, protect the rest with exported=\"false\" or a signature permission, and treat every incoming Intent, extra and deep-link parameter as untrusted input. Use explicit intents for your own components, FLAG_IMMUTABLE for PendingIntents, and verified App Links for links that open sensitive screens. WebViews should load only your own content, keep JavaScript off unless needed, and never expose a JavaScript interface to untrusted pages.",
+      "summaryAr": "كل Activity وService وBroadcastReceiver وContentProvider عليه android:exported=\"true\" أو مرشح نوايا يمكن لأي تطبيق على الجهاز تشغيله. فاكشف فقط ما يجب أن يكون عامًا، واحمِ الباقي بـ exported=\"false\" أو بإذن توقيع، وعامل كل Intent وارد وكل إضافة ومعامل رابط عميق كمدخل غير موثوق. واستخدم النوايا الصريحة لمكوناتك، وFLAG_IMMUTABLE لـ PendingIntent، وروابط التطبيق المتحقق منها للروابط التي تفتح شاشات حساسة. ويجب ألا يحمّل WebView إلا محتواك، وأن يبقى JavaScript معطلًا ما لم يُحتج إليه، وألا يكشف واجهة JavaScript لصفحات غير موثوقة أبدًا.",
+      "whyEn": "Platform bugs in apps (intent redirection, exported providers leaking files, deep links that skip sign-in, WebViews running attacker scripts) are some of the most common findings in Google Play security reports and bug bounties.",
+      "whyAr": "أخطاء التفاعل مع النظام في التطبيقات (إعادة توجيه النوايا، والمزوّدات المكشوفة التي تسرّب الملفات، والروابط العميقة التي تتخطى تسجيل الدخول، وWebView التي تشغّل نصوص المهاجم) من أكثر النتائج شيوعًا في تقارير أمان Google Play وبرامج مكافآت الثغرات.",
+      "howEn": "Audit the merged manifest for exported components. Validate deep-link paths and IDs, require an authenticated session before showing private data, and never forward an Intent you received into startActivity. Use FileProvider instead of exported providers, set PendingIntent.FLAG_IMMUTABLE, and in WebViews restrict navigation to your host with shouldOverrideUrlLoading and disable file access.",
+      "howAr": "دقق الـ manifest المدمج بحثًا عن المكونات المكشوفة. وتحقق من مسارات الروابط العميقة ومعرّفاتها، واشترط جلسة مصادقة قبل عرض البيانات الخاصة، ولا تمرر Intent استقبلته إلى startActivity أبدًا. واستخدم FileProvider بدل المزوّدات المكشوفة، واضبط PendingIntent.FLAG_IMMUTABLE، وفي WebView قيّد التنقل بنطاقك عبر shouldOverrideUrlLoading وعطّل الوصول إلى الملفات.",
+      "exampleEn": "A shop app's deep link shop://orders/{id} opened an order screen without checking the session or the id format. The fix: verified https App Links, an id that must match the signed-in user's orders on the server, a redirect to sign-in when there's no session, and a WebView for help pages limited to help.shop.example with JavaScript bridges removed.",
+      "exampleAr": "رابط عميق في تطبيق متجر shop://orders/{id} كان يفتح شاشة الطلب دون فحص الجلسة أو صيغة المعرّف. والإصلاح: روابط تطبيق https متحقق منها، ومعرّف يجب أن يطابق طلبات المستخدم المسجل على الخادم، وإعادة توجيه إلى تسجيل الدخول عند غياب الجلسة، وWebView لصفحات المساعدة مقيد بـ help.shop.example مع إزالة جسور JavaScript.",
+      "practiceEn": "1) List exported components with the merged manifest view. 2) Validate a deep link's parameters. 3) Lock a WebView to one host.",
+      "practiceAr": "1) اسرد المكونات المكشوفة من عرض الـ manifest المدمج. 2) تحقق من معاملات رابط عميق. 3) قيّد WebView بنطاق واحد.",
+      "challengeEn": "Use adb shell am start to attack your own app with crafted intents and deep links (unexpected extras, other users' ids, javascript: URLs) and fix every screen that misbehaves.",
+      "challengeAr": "استخدم adb shell am start لمهاجمة تطبيقك بنوايا وروابط عميقة مصاغة (إضافات غير متوقعة، ومعرّفات مستخدمين آخرين، وعناوين javascript:) وأصلح كل شاشة تسيء التصرف.",
+      "objectivesEn": [
+        "Minimize exported components",
+        "Validate intents and deep links",
+        "Use immutable PendingIntents and FileProvider",
+        "Configure WebViews safely"
+      ],
+      "objectivesAr": [
+        "تقليل المكونات المكشوفة",
+        "التحقق من النوايا والروابط العميقة",
+        "استخدام PendingIntent غير قابل للتغيير وFileProvider",
+        "ضبط WebView بأمان"
+      ],
+      "prerequisites": [
+        "and-intents",
+        "and-app-components",
+        "and-sec-threats"
+      ]
+    },
+    {
+      "slug": "and-sec-code",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Secrets, R8 and app integrity",
+      "titleAr": "الأسرار وR8 وسلامة التطبيق",
+      "summaryEn": "Anything in the APK can be read: strings, BuildConfig fields, native libraries and resources. So real secrets (payment keys, admin tokens, third-party API secrets) must stay on your server, and the app should call your backend, which calls the third party. R8 shrinks and obfuscates code for release, which reduces size and makes reverse engineering slower but not impossible. The Play Integrity API lets your server check that requests come from your genuine app on a real, certified device, which is far more reliable than client-side root checks.",
+      "summaryAr": "كل ما في ملف APK يمكن قراءته: النصوص وحقول BuildConfig والمكتبات الأصلية والموارد. لذلك يجب أن تبقى الأسرار الحقيقية (مفاتيح الدفع ورموز الإدارة وأسرار الواجهات البرمجية الخارجية) على خادمك، ويستدعي التطبيق خادمك الذي يستدعي الطرف الخارجي. وتقلّص R8 الكود وتموّهه للإصدار، فتقلل الحجم وتبطئ الهندسة العكسية دون أن تجعلها مستحيلة. وتسمح Play Integrity API لخادمك بالتحقق أن الطلبات تأتي من تطبيقك الأصلي على جهاز حقيقي معتمد، وهذا أوثق بكثير من فحوصات كسر الحماية في جهة العميل.",
+      "whyEn": "Leaked keys in APKs are routinely scraped by bots within hours of release and abused for fraud or huge cloud bills. Integrity checks protect competitive features, rewards and payments from modified clients.",
+      "whyAr": "تُجمع المفاتيح المسربة في ملفات APK بانتظام بواسطة برامج آلية خلال ساعات من الإصدار، وتُستغل للاحتيال أو لفواتير سحابية ضخمة. وفحوصات السلامة تحمي الميزات التنافسية والمكافآت والمدفوعات من العملاء المعدَّلين.",
+      "howEn": "Classify every key: public identifiers (a Maps key restricted by package and certificate) can ship; secrets cannot. Restrict shippable keys in the provider console. Enable R8 with minifyEnabled and shrinkResources, keep rules only where reflection needs them, and upload the mapping file for crash deobfuscation. Request Play Integrity tokens for sensitive calls and verify them on the server.",
+      "howAr": "صنّف كل مفتاح: المعرّفات العامة (مفتاح خرائط مقيد بالحزمة والشهادة) يمكن شحنها، والأسرار لا يمكن. وقيّد المفاتيح القابلة للشحن في لوحة المزوّد. وفعّل R8 بـ minifyEnabled وshrinkResources، واكتب قواعد الإبقاء فقط حيث يحتاجها الانعكاس، وارفع ملف التحويل لفك تمويه الانهيارات. واطلب رموز Play Integrity للاستدعاءات الحساسة وتحقق منها على الخادم.",
+      "exampleEn": "A fitness app called a nutrition API with a secret key in BuildConfig; the key was scraped and the bill jumped. The fix moved the call behind the app's backend, which authenticates the user, rate-limits and attaches the secret, and added a Play Integrity check before awarding premium points.",
+      "exampleAr": "تطبيق لياقة كان يستدعي واجهة تغذية بمفتاح سري في BuildConfig، فجُمع المفتاح وقفزت الفاتورة. ونقل الإصلاح الاستدعاء خلف خادم التطبيق، الذي يصادق المستخدم ويحد المعدل ويرفق السر، وأضاف فحص Play Integrity قبل منح النقاط المميزة.",
+      "practiceEn": "1) Decompile your release APK with jadx and search for keys. 2) Enable R8 and fix any keep-rule issues. 3) Move one secret call behind a backend endpoint.",
+      "practiceAr": "1) فكك ملف APK الإصداري بـ jadx وابحث عن المفاتيح. 2) فعّل R8 وأصلح أي مشكلات في قواعد الإبقاء. 3) انقل استدعاءً سريًا واحدًا خلف نقطة في الخادم.",
+      "challengeEn": "Integrate the Play Integrity API: request a token with a nonce bound to the action, send it to a small backend, verify the verdict and reject requests from modified apps or uncertified devices.",
+      "challengeAr": "ادمج Play Integrity API: اطلب رمزًا مع nonce مرتبط بالإجراء، وأرسله إلى خادم صغير، وتحقق من الحكم، وارفض الطلبات من التطبيقات المعدّلة أو الأجهزة غير المعتمدة.",
+      "objectivesEn": [
+        "Keep secrets out of the APK",
+        "Enable and tune R8",
+        "Restrict public API keys",
+        "Verify integrity on the server"
+      ],
+      "objectivesAr": [
+        "إبعاد الأسرار عن ملف APK",
+        "تفعيل R8 وضبطها",
+        "تقييد مفاتيح الواجهات العامة",
+        "التحقق من السلامة على الخادم"
+      ],
+      "prerequisites": [
+        "and-build-release-basics",
+        "and-sec-threats"
+      ]
+    },
+    {
+      "slug": "and-sec-privacy",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 40,
+      "difficulty": "Intermediate",
+      "titleEn": "Privacy: permissions, logging and backups",
+      "titleAr": "الخصوصية: الأذونات والتسجيل والنسخ الاحتياطي",
+      "summaryEn": "Privacy is a security property users can see. Ask for the fewest permissions, as late as possible and with a clear reason; prefer privacy-preserving APIs such as the photo picker, approximate location and the system share sheet. Never log personal data, tokens or full request bodies in release builds, and scrub them from crash reports and analytics. Control what Android backs up with dataExtractionRules so tokens and keys aren't copied to the cloud or a new device. Declare data collection honestly in the Play Console Data safety section.",
+      "summaryAr": "الخصوصية خاصية أمان يراها المستخدمون. فاطلب أقل الأذونات، في أقرب لحظة للحاجة إليها ومع سبب واضح، وفضّل الواجهات التي تحافظ على الخصوصية مثل منتقي الصور والموقع التقريبي ونافذة المشاركة في النظام. ولا تسجّل البيانات الشخصية أو الرموز أو أجسام الطلبات الكاملة في بناءات الإصدار أبدًا، وامسحها من تقارير الانهيار والتحليلات. وتحكّم فيما ينسخه Android احتياطيًا بـ dataExtractionRules حتى لا تُنسخ الرموز والمفاتيح إلى السحابة أو إلى جهاز جديد. وصرّح بجمع البيانات بأمانة في قسم Data safety في Play Console.",
+      "whyEn": "Privacy failures cost trust, Play Store rejections and fines under laws like GDPR. Most of them are accidental: a debug log left in, a crash report with an email, a backup restoring someone's session on another phone.",
+      "whyAr": "أعطال الخصوصية تكلف الثقة ورفض المتجر والغرامات بموجب قوانين مثل GDPR. ومعظمها غير مقصود: سجل debug منسي، أو تقرير انهيار فيه بريد إلكتروني، أو نسخة احتياطية تستعيد جلسة شخص على هاتف آخر.",
+      "howEn": "Review every permission and remove what you can replace. Use a logging wrapper that is a no-op in release, or a Timber tree that drops sensitive tags. Exclude token, key and cache files from backup and device transfer. Offer account and data deletion inside the app. Keep a data inventory that matches the Data safety form and update it with every new SDK.",
+      "howAr": "راجع كل إذن واحذف ما تستطيع استبداله. واستخدم غلافًا للتسجيل لا يفعل شيئًا في الإصدار، أو شجرة Timber تُسقط الوسوم الحساسة. واستثنِ ملفات الرموز والمفاتيح والذاكرة المؤقتة من النسخ الاحتياطي ونقل الجهاز. ووفّر حذف الحساب والبيانات داخل التطبيق. واحتفظ بجرد للبيانات يطابق نموذج Data safety وحدّثه مع كل SDK جديدة.",
+      "exampleEn": "A dating app replaced READ_EXTERNAL_STORAGE with the photo picker, switched from precise to approximate location, removed a logging interceptor from release, excluded the encrypted token store from backup, added in-app account deletion and updated its Data safety form, cutting its permission prompts from four to one.",
+      "exampleAr": "تطبيق تعارف استبدل READ_EXTERNAL_STORAGE بمنتقي الصور، وانتقل من الموقع الدقيق إلى التقريبي، وأزال معترض التسجيل من الإصدار، واستثنى مخزن الرموز المشفر من النسخ الاحتياطي، وأضاف حذف الحساب داخل التطبيق، وحدّث نموذج Data safety، فقلّص طلبات الأذونات من أربعة إلى واحد.",
+      "practiceEn": "1) Audit your app's permissions and remove one. 2) Make logging a no-op in release. 3) Write dataExtractionRules that exclude the token store.",
+      "practiceAr": "1) دقق أذونات تطبيقك واحذف واحدًا منها. 2) اجعل التسجيل بلا أثر في الإصدار. 3) اكتب dataExtractionRules تستثني مخزن الرموز.",
+      "challengeEn": "Build a privacy checklist for releases (permissions, logs, crash reports, analytics events, backups, third-party SDKs, Data safety) and run it on a real app, fixing every finding.",
+      "challengeAr": "ابنِ قائمة فحص للخصوصية في الإصدارات (الأذونات والسجلات وتقارير الانهيار وأحداث التحليلات والنسخ الاحتياطي ومكتبات SDK الخارجية وData safety) وطبّقها على تطبيق حقيقي مع إصلاح كل نتيجة.",
+      "objectivesEn": [
+        "Minimize and time permission requests",
+        "Keep personal data out of logs and reports",
+        "Configure backup and transfer rules",
+        "Fill in Data safety honestly"
+      ],
+      "objectivesAr": [
+        "تقليل طلبات الأذونات وتوقيتها",
+        "إبعاد البيانات الشخصية عن السجلات والتقارير",
+        "ضبط قواعد النسخ الاحتياطي والنقل",
+        "تعبئة Data safety بأمانة"
+      ],
+      "prerequisites": [
+        "and-permissions",
+        "and-data-files"
+      ]
+    }
+  ]
+}

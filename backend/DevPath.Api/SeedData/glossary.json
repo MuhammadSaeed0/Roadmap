@@ -1741,5 +1741,82 @@
     "shortEn": "Google's service for delivering push messages to apps, even when they aren't running.",
     "shortAr": "خدمة Google لإيصال رسائل الدفع إلى التطبيقات حتى عندما لا تعمل.",
     "topicSlug": "and-net-realtime"
+  },
+  {
+    "term": "OWASP MASVS",
+    "arabic": "معيار OWASP MASVS",
+    "shortEn": "The OWASP standard that lists security controls for mobile apps, grouped by area.",
+    "shortAr": "معيار OWASP الذي يسرد ضوابط الأمان لتطبيقات الجوال مجمعة حسب المجال.",
+    "topicSlug": "and-sec-threats"
+  },
+  {
+    "term": "threat model",
+    "arabic": "نموذج التهديد",
+    "shortEn": "A short description of what you protect, who might attack it, and the controls against each risk.",
+    "shortAr": "وصف قصير لما تحميه، ومن قد يهاجمه، والضوابط ضد كل خطر.",
+    "topicSlug": "and-sec-threats"
+  },
+  {
+    "term": "Android Keystore",
+    "arabic": "نظام Android Keystore",
+    "shortEn": "The system service that keeps cryptographic keys in secure hardware, out of the app's memory.",
+    "shortAr": "خدمة النظام التي تحفظ مفاتيح التشفير في عتاد آمن بعيدًا عن ذاكرة التطبيق.",
+    "topicSlug": "and-sec-keystore"
+  },
+  {
+    "term": "AES-GCM",
+    "arabic": "التشفير AES-GCM",
+    "shortEn": "An encryption mode that both encrypts data and detects tampering.",
+    "shortAr": "وضع تشفير يشفّر البيانات ويكشف التلاعب بها معًا.",
+    "topicSlug": "and-sec-keystore"
+  },
+  {
+    "term": "certificate pinning",
+    "arabic": "تثبيت الشهادات",
+    "shortEn": "Accepting a server only if its key matches a hash shipped in the app.",
+    "shortAr": "قبول الخادم فقط إذا طابق مفتاحه بصمة مشحونة في التطبيق.",
+    "topicSlug": "and-sec-network"
+  },
+  {
+    "term": "network security configuration",
+    "arabic": "إعدادات أمان الشبكة",
+    "shortEn": "An Android XML file that controls cleartext, trusted CAs and pins per domain.",
+    "shortAr": "ملف XML في Android يتحكم في غير المشفر وجهات الإصدار الموثوقة والبصمات لكل نطاق.",
+    "topicSlug": "and-sec-network"
+  },
+  {
+    "term": "intent redirection",
+    "arabic": "إعادة توجيه النوايا",
+    "shortEn": "A bug where an app launches an Intent received from another app, exposing its private components.",
+    "shortAr": "خطأ يشغّل فيه التطبيق Intent استقبله من تطبيق آخر، فيكشف مكوناته الخاصة.",
+    "topicSlug": "and-sec-components"
+  },
+  {
+    "term": "App Links",
+    "arabic": "روابط التطبيق",
+    "shortEn": "Verified https deep links that only your app can open, proven by a file on your domain.",
+    "shortAr": "روابط عميقة https متحقق منها لا يفتحها إلا تطبيقك، ويثبتها ملف على نطاقك.",
+    "topicSlug": "and-sec-components"
+  },
+  {
+    "term": "R8",
+    "arabic": "أداة R8",
+    "shortEn": "The Android build tool that shrinks, optimises and obfuscates release code.",
+    "shortAr": "أداة البناء في Android التي تقلّص كود الإصدار وتحسّنه وتموّهه.",
+    "topicSlug": "and-sec-code"
+  },
+  {
+    "term": "Play Integrity API",
+    "arabic": "واجهة Play Integrity",
+    "shortEn": "A Google Play service that lets your server check the app and device are genuine.",
+    "shortAr": "خدمة من Google Play تسمح لخادمك بالتحقق أن التطبيق والجهاز أصليان.",
+    "topicSlug": "and-sec-code"
+  },
+  {
+    "term": "Data safety",
+    "arabic": "قسم Data safety",
+    "shortEn": "The Google Play listing section where apps declare what data they collect and share.",
+    "shortAr": "قسم في صفحة التطبيق على Google Play تصرّح فيه التطبيقات بالبيانات التي تجمعها وتشاركها.",
+    "topicSlug": "and-sec-privacy"
   }
 ]

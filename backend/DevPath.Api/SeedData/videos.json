@@ -7829,5 +7829,137 @@
       "channel": "Burak Selcuk",
       "language": "en"
     }
+  ],
+  "and-sec-threats": [
+    {
+      "videoId": "0Em-9h2BCKg",
+      "title": "Fast Forwarding Mobile Security With The OWASP Mobile Security Testing Guide - Jeroen Willemsen",
+      "channel": "OWASP Foundation",
+      "language": "en"
+    },
+    {
+      "videoId": "dmZ4MqyaYYw",
+      "title": "Mobile App Testing MASVS",
+      "channel": "Xploit Cyber Security",
+      "language": "en"
+    },
+    {
+      "videoId": "l4GtDZZFcA8",
+      "title": "Instant Threat Modeling - #15 Mobile Apps",
+      "channel": "SecuRingPL",
+      "language": "en"
+    }
+  ],
+  "and-sec-keystore": [
+    {
+      "videoId": "_dCRQ9wta-I",
+      "title": "How to Implement Biometric Auth in Your Android App",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "1VrqUFlW1yA",
+      "title": "How to use Biometric Authentication in Kotlin",
+      "channel": "Android Geek",
+      "language": "en"
+    },
+    {
+      "videoId": "VeUhQvCObJY",
+      "title": "Android Save Password in Keystore",
+      "channel": "Android Tutorial",
+      "language": "en"
+    }
+  ],
+  "and-sec-network": [
+    {
+      "videoId": "hGdI7aKtVxI",
+      "title": "Certificate Pinning - The MOST Important Security Measure for Network Traffic In Your App",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "f-tmMoq6xdo",
+      "title": "Certificate Pinning on Android",
+      "channel": "Matthew Dolan",
+      "language": "en"
+    },
+    {
+      "videoId": "3coPpYJgFro",
+      "title": "TLS/SSL Certificate Pinning Explained",
+      "channel": "Hussein Nasser",
+      "language": "en"
+    },
+    {
+      "videoId": "9EOdDUmAErQ",
+      "title": "كل ما تحتاج معرفته عن الـ SSL || تأمين المواقع على الإنترنت",
+      "channel": "غريب الشيخ || Ghareeb Elshaikh",
+      "language": "ar"
+    }
+  ],
+  "and-sec-components": [
+    {
+      "videoId": "lGbYrtQndZM",
+      "title": "Deep Link Exploitation: Why Your Android App Isn't Safe",
+      "channel": "infophreak",
+      "language": "en"
+    },
+    {
+      "videoId": "OJkxsOeIuTU",
+      "title": "#Eko2020 Mobile Hacking | Kyle Benac: Exploting Android deep links and exported components",
+      "channel": "Ekoparty Security Conference",
+      "language": "en"
+    },
+    {
+      "videoId": "e72TszRr1LA",
+      "title": "Android WebView Security Testing with Frida: Debugging and JavaScript Interfaces",
+      "channel": "NowSecure",
+      "language": "en"
+    }
+  ],
+  "and-sec-code": [
+    {
+      "videoId": "bgpyuuzMlo0",
+      "title": "Shrink, Optimize and Secure Your App With R8 & ProGuard - Full Guide",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "DZHn17qg5_Y",
+      "title": "3 Ways How Attackers Can Reverse Engineer Your Android App (+ How You Protect It!)",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "QqO2jZ-NZko",
+      "title": "Boost Android app performance with the R8 optimizer  | Spotlight Week",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "elu-FPgyk8o",
+      "title": "Shrinking, Optimization and Obfuscation the Android Code Via Enable ProGuard - R8 In Arabic (1)",
+      "channel": "Azmi Radi - عزمي راضي",
+      "language": "ar"
+    }
+  ],
+  "and-sec-privacy": [
+    {
+      "videoId": "VQvfvXD3ec4",
+      "title": "Top 4 Security Best Practices for Your Android App",
+      "channel": "Philipp Lackner",
+      "language": "en"
+    },
+    {
+      "videoId": "RccJYep2v5I",
+      "title": "Safeguarding user security on Android",
+      "channel": "Android Developers",
+      "language": "en"
+    },
+    {
+      "videoId": "gTUt9mwfPS8",
+      "title": "What’s new in Android privacy | Session",
+      "channel": "Android Developers",
+      "language": "en"
+    }
   ]
 }

@@ -82,7 +82,8 @@
       "android-architecture": "architecture",
       "android-coroutines": "fundamentals",
       "android-data": "database",
-      "android-networking": "apis"
+      "android-networking": "apis",
+      "android-security": "security"
     }
   },
 
@@ -101,7 +102,8 @@
     "android-architecture": "Intermediate",
     "android-coroutines": "Intermediate",
     "android-data": "Intermediate",
-    "android-networking": "Intermediate"
+    "android-networking": "Intermediate",
+    "android-security": "Advanced"
   },
 
   "exerciseExtraCategories": {

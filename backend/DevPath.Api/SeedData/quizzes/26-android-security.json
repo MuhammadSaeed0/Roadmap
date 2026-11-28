@@ -1,0 +1,1010 @@
+[
+  {
+    "key": "qz-and-sec-threats-1",
+    "topic": "and-sec-threats",
+    "questionEn": "What is OWASP MASVS?",
+    "questionAr": "ما هو OWASP MASVS؟",
+    "optionsEn": [
+      "A Google Play review checklist",
+      "An Android Studio plugin",
+      "A standard of mobile security controls",
+      "A Kotlin library for encryption"
+    ],
+    "optionsAr": [
+      "قائمة مراجعة في Google Play",
+      "إضافة في Android Studio",
+      "معيار لضوابط أمان الجوال",
+      "مكتبة Kotlin للتشفير"
+    ],
+    "answer": 2,
+    "explanationEn": "MASTG explains how to test each control.",
+    "explanationAr": "ويشرح MASTG كيف يُختبر كل ضابط."
+  },
+  {
+    "key": "qz-and-sec-threats-2",
+    "topic": "and-sec-threats",
+    "questionEn": "Which statement about the APK is true?",
+    "questionAr": "أي عبارة عن ملف APK صحيحة؟",
+    "optionsEn": [
+      "Strings are encrypted by default",
+      "Anyone can decompile and read it",
+      "R8 makes it impossible to read",
+      "Only Google can open it"
+    ],
+    "optionsAr": [
+      "النصوص مشفرة افتراضيًا",
+      "أي شخص يستطيع تفكيكه وقراءته",
+      "R8 تجعل قراءته مستحيلة",
+      "Google وحدها تستطيع فتحه"
+    ],
+    "answer": 1,
+    "explanationEn": "Design as if the attacker has your code.",
+    "explanationAr": "صمّم كأن المهاجم يملك كودك."
+  },
+  {
+    "key": "qz-and-sec-threats-3",
+    "topic": "and-sec-threats",
+    "questionEn": "Where must a \"is this user premium?\" check be enforced?",
+    "questionAr": "أين يجب فرض فحص «هل هذا المستخدم مميز؟»؟",
+    "optionsEn": [
+      "On the server",
+      "In a Compose screen",
+      "In SharedPreferences",
+      "In the app's resources"
+    ],
+    "optionsAr": [
+      "على الخادم",
+      "في شاشة Compose",
+      "في SharedPreferences",
+      "في موارد التطبيق"
+    ],
+    "answer": 0,
+    "explanationEn": "Client checks can be patched out.",
+    "explanationAr": "يمكن إزالة فحوصات العميل بالتعديل."
+  },
+  {
+    "key": "qz-and-sec-threats-4",
+    "topic": "and-sec-threats",
+    "questionEn": "Which attacker can read your app's public Wi-Fi traffic?",
+    "questionAr": "أي مهاجم يستطيع قراءة حركة تطبيقك على Wi-Fi عامة؟",
+    "optionsEn": [
+      "A thief with the phone",
+      "An APK reverse engineer",
+      "A Play Store reviewer",
+      "A network attacker"
+    ],
+    "optionsAr": [
+      "سارق يملك الهاتف",
+      "من يفكك ملف APK",
+      "مراجع متجر Play",
+      "مهاجم الشبكة"
+    ],
+    "answer": 3,
+    "explanationEn": "TLS defends against this attacker.",
+    "explanationAr": "بروتوكول TLS يحمي من هذا المهاجم."
+  },
+  {
+    "key": "qz-and-sec-threats-5",
+    "topic": "and-sec-threats",
+    "questionEn": "What does a threat model list?",
+    "questionAr": "ماذا يسرد نموذج التهديد؟",
+    "optionsEn": [
+      "The team's holiday schedule",
+      "Every Gradle dependency used",
+      "Assets, attackers and controls",
+      "Only the screens of the app"
+    ],
+    "optionsAr": [
+      "جدول إجازات الفريق كاملًا",
+      "كل اعتماديات Gradle المستخدمة",
+      "الأصول والمهاجمين والضوابط",
+      "شاشات التطبيق فقط دون غيرها"
+    ],
+    "answer": 2,
+    "explanationEn": "Plus how each control is checked.",
+    "explanationAr": "مع طريقة التحقق من كل ضابط."
+  },
+  {
+    "key": "qz-and-sec-threats-6",
+    "topic": "and-sec-threats",
+    "questionEn": "What is an IDOR bug?",
+    "questionAr": "ما هو خطأ IDOR؟",
+    "optionsEn": [
+      "A missing string in a translation",
+      "Accessing others' data by changing an id",
+      "A crash when rotating the screen",
+      "A memory leak inside a ViewModel"
+    ],
+    "optionsAr": [
+      "نص مفقود في إحدى الترجمات",
+      "الوصول إلى بيانات الآخرين بتغيير معرّف",
+      "انهيار التطبيق عند تدوير الشاشة",
+      "تسرب ذاكرة داخل ViewModel"
+    ],
+    "answer": 1,
+    "explanationEn": "The server must check ownership on every request.",
+    "explanationAr": "يجب أن يتحقق الخادم من الملكية مع كل طلب."
+  },
+  {
+    "key": "qz-and-sec-threats-7",
+    "topic": "and-sec-threats",
+    "questionEn": "Which tool shows what an attacker sees in your APK?",
+    "questionAr": "أي أداة تُظهر ما يراه المهاجم في APK الخاص بك؟",
+    "optionsEn": [
+      "jadx",
+      "Gradle sync",
+      "Layout Inspector",
+      "Logcat filters"
+    ],
+    "optionsAr": [
+      "الأداة jadx",
+      "مزامنة Gradle",
+      "الأداة Layout Inspector",
+      "مرشحات Logcat"
+    ],
+    "answer": 0,
+    "explanationEn": "It decompiles DEX code back to Java-like source.",
+    "explanationAr": "تفكك كود DEX إلى مصدر يشبه Java."
+  },
+  {
+    "key": "qz-and-sec-threats-8",
+    "topic": "and-sec-threats",
+    "questionEn": "When should the threat model be updated?",
+    "questionAr": "متى يجب تحديث نموذج التهديد؟",
+    "optionsEn": [
+      "Only once before the first release",
+      "Never, it stays fixed forever",
+      "Only after a breach has happened",
+      "When features add new data or SDKs"
+    ],
+    "optionsAr": [
+      "مرة واحدة فقط قبل الإصدار الأول",
+      "أبدًا، فهو يبقى ثابتًا للأبد",
+      "فقط بعد أن يقع اختراق فعلًا",
+      "عند إضافة بيانات أو مكتبات جديدة"
+    ],
+    "answer": 3,
+    "explanationEn": "A short, current model beats a long stale one.",
+    "explanationAr": "النموذج القصير المحدّث أفضل من الطويل القديم."
+  },
+  {
+    "key": "qz-and-sec-keystore-1",
+    "topic": "and-sec-keystore",
+    "questionEn": "Where does a Keystore key's material live?",
+    "questionAr": "أين تعيش مادة مفتاح Keystore؟",
+    "optionsEn": [
+      "In the app's SharedPreferences",
+      "In the APK's resources",
+      "In a file in cacheDir",
+      "In secure hardware, outside the app"
+    ],
+    "optionsAr": [
+      "في SharedPreferences الخاصة بالتطبيق",
+      "في موارد ملف APK",
+      "في ملف داخل cacheDir",
+      "في عتاد آمن خارج التطبيق"
+    ],
+    "answer": 3,
+    "explanationEn": "The app only holds a handle.",
+    "explanationAr": "التطبيق يحمل مقبضًا فقط."
+  },
+  {
+    "key": "qz-and-sec-keystore-2",
+    "topic": "and-sec-keystore",
+    "questionEn": "Which mode should you use for AES data encryption?",
+    "questionAr": "أي وضع تستخدم لتشفير البيانات بـ AES؟",
+    "optionsEn": [
+      "CBC without a MAC",
+      "No mode, raw AES",
+      "GCM",
+      "ECB"
+    ],
+    "optionsAr": [
+      "CBC دون MAC",
+      "دون وضع، AES خام",
+      "GCM",
+      "ECB"
+    ],
+    "answer": 2,
+    "explanationEn": "GCM also detects tampering.",
+    "explanationAr": "الوضع GCM يكشف التعديل أيضًا."
+  },
+  {
+    "key": "qz-and-sec-keystore-3",
+    "topic": "and-sec-keystore",
+    "questionEn": "What must never repeat with the same AES-GCM key?",
+    "questionAr": "ما الذي يجب ألا يتكرر أبدًا مع مفتاح AES-GCM نفسه؟",
+    "optionsEn": [
+      "The file name",
+      "The IV",
+      "The plaintext length",
+      "The key alias"
+    ],
+    "optionsAr": [
+      "اسم الملف",
+      "قيمة IV",
+      "طول النص الأصلي",
+      "الاسم المستعار للمفتاح"
+    ],
+    "answer": 1,
+    "explanationEn": "Reusing an IV breaks GCM's security.",
+    "explanationAr": "إعادة استخدام IV تكسر أمان GCM."
+  },
+  {
+    "key": "qz-and-sec-keystore-4",
+    "topic": "and-sec-keystore",
+    "questionEn": "Why pass a CryptoObject to BiometricPrompt?",
+    "questionAr": "لماذا تمرر CryptoObject إلى BiometricPrompt؟",
+    "optionsEn": [
+      "The key works only after a real match",
+      "It makes the prompt look nicer",
+      "It skips the fingerprint step",
+      "Android requires it for every app"
+    ],
+    "optionsAr": [
+      "لأن المفتاح يعمل فقط بعد تطابق حقيقي",
+      "لأنه يجعل النافذة أجمل",
+      "لأنه يتخطى خطوة البصمة",
+      "لأن Android تشترطه لكل تطبيق"
+    ],
+    "answer": 0,
+    "explanationEn": "A bare success callback can be faked on compromised devices.",
+    "explanationAr": "استدعاء النجاح المجرد يمكن تزييفه على الأجهزة المخترقة."
+  },
+  {
+    "key": "qz-and-sec-keystore-5",
+    "topic": "and-sec-keystore",
+    "questionEn": "What does KeyPermanentlyInvalidatedException mean?",
+    "questionAr": "ماذا يعني KeyPermanentlyInvalidatedException؟",
+    "optionsEn": [
+      "The device's network is offline",
+      "The APK's signature has changed",
+      "The local database is corrupted",
+      "Biometrics changed and the key is gone"
+    ],
+    "optionsAr": [
+      "شبكة الجهاز غير متصلة الآن",
+      "توقيع ملف APK قد تغيّر",
+      "قاعدة البيانات المحلية تالفة",
+      "تغيّرت القياسات الحيوية وزال المفتاح"
+    ],
+    "answer": 3,
+    "explanationEn": "Delete the key, sign in again and re-encrypt.",
+    "explanationAr": "احذف المفتاح وسجّل الدخول مجددًا وأعد التشفير."
+  },
+  {
+    "key": "qz-and-sec-keystore-6",
+    "topic": "and-sec-keystore",
+    "questionEn": "Which library simplifies safe encryption on Android?",
+    "questionAr": "أي مكتبة تبسّط التشفير الآمن في Android؟",
+    "optionsEn": [
+      "Glide",
+      "Timber",
+      "Tink",
+      "Gson"
+    ],
+    "optionsAr": [
+      "Glide",
+      "Timber",
+      "Tink",
+      "Gson"
+    ],
+    "answer": 2,
+    "explanationEn": "It gives an Aead object backed by a Keystore master key.",
+    "explanationAr": "تعطي كائن Aead مدعومًا بمفتاح رئيسي من Keystore."
+  },
+  {
+    "key": "qz-and-sec-keystore-7",
+    "topic": "and-sec-keystore",
+    "questionEn": "What should you check before showing BiometricPrompt?",
+    "questionAr": "ماذا تفحص قبل عرض BiometricPrompt؟",
+    "optionsEn": [
+      "The version code of the app",
+      "canAuthenticate(BIOMETRIC_STRONG)",
+      "The battery's current temperature",
+      "The brightness of the screen"
+    ],
+    "optionsAr": [
+      "رمز إصدار التطبيق الحالي",
+      "canAuthenticate(BIOMETRIC_STRONG)",
+      "حرارة البطارية في تلك اللحظة",
+      "مستوى سطوع الشاشة"
+    ],
+    "answer": 1,
+    "explanationEn": "Offer a fallback when it isn't available.",
+    "explanationAr": "وفّر بديلًا عندما لا يكون متاحًا."
+  },
+  {
+    "key": "qz-and-sec-keystore-8",
+    "topic": "and-sec-keystore",
+    "questionEn": "Are Keystore keys included in cloud backups?",
+    "questionAr": "هل تُضمّن مفاتيح Keystore في النسخ الاحتياطية السحابية؟",
+    "optionsEn": [
+      "No, they stay on the device",
+      "Yes, always, with app data",
+      "Only while on a Wi-Fi network",
+      "Only for apps that are paid"
+    ],
+    "optionsAr": [
+      "لا، تبقى على الجهاز",
+      "نعم، دائمًا مع بيانات التطبيق",
+      "فقط أثناء الاتصال بشبكة Wi-Fi",
+      "فقط للتطبيقات المدفوعة"
+    ],
+    "answer": 0,
+    "explanationEn": "So restored ciphertext can't be decrypted elsewhere.",
+    "explanationAr": "فلا يمكن فك النص المشفر المستعاد في مكان آخر."
+  },
+  {
+    "key": "qz-and-sec-network-1",
+    "topic": "and-sec-network",
+    "questionEn": "Is cleartext HTTP allowed by default since Android 9?",
+    "questionAr": "هل يُسمح بـ HTTP غير المشفر افتراضيًا منذ Android 9؟",
+    "optionsEn": [
+      "Only on Wi-Fi",
+      "Only for images",
+      "No, it is blocked",
+      "Yes, for every domain"
+    ],
+    "optionsAr": [
+      "على Wi-Fi فقط",
+      "للصور فقط",
+      "لا، فهو ممنوع",
+      "نعم، لكل النطاقات"
+    ],
+    "answer": 2,
+    "explanationEn": "Keep it blocked in release.",
+    "explanationAr": "أبقه ممنوعًا في الإصدار."
+  },
+  {
+    "key": "qz-and-sec-network-2",
+    "topic": "and-sec-network",
+    "questionEn": "Where do you trust a proxy's CA for debugging?",
+    "questionAr": "أين تثق بشهادة جذر الوكيل للتصحيح؟",
+    "optionsEn": [
+      "In a custom TrustManager",
+      "In debug-overrides",
+      "In base-config",
+      "In the release manifest"
+    ],
+    "optionsAr": [
+      "في TrustManager مخصص",
+      "في debug-overrides",
+      "في base-config",
+      "في manifest الإصدار"
+    ],
+    "answer": 1,
+    "explanationEn": "debug-overrides apply only to debuggable builds.",
+    "explanationAr": "تُطبق debug-overrides على البناءات القابلة للتصحيح فقط."
+  },
+  {
+    "key": "qz-and-sec-network-3",
+    "topic": "and-sec-network",
+    "questionEn": "What is wrong with a TrustManager that accepts all certificates?",
+    "questionAr": "ما المشكلة في TrustManager يقبل كل الشهادات؟",
+    "optionsEn": [
+      "Anyone can intercept the traffic",
+      "It makes requests slower",
+      "It breaks Compose previews",
+      "It uses too much battery"
+    ],
+    "optionsAr": [
+      "أي شخص يستطيع اعتراض الحركة",
+      "يجعل الطلبات أبطأ",
+      "يكسر معاينات Compose",
+      "يستهلك بطارية كثيرة"
+    ],
+    "answer": 0,
+    "explanationEn": "It disables TLS's protection completely.",
+    "explanationAr": "يعطّل حماية TLS تمامًا."
+  },
+  {
+    "key": "qz-and-sec-network-4",
+    "topic": "and-sec-network",
+    "questionEn": "What does certificate pinning check?",
+    "questionAr": "ماذا يفحص تثبيت الشهادات؟",
+    "optionsEn": [
+      "The user's account password",
+      "The version name of the app",
+      "The IP address of the device",
+      "The server's public key hash"
+    ],
+    "optionsAr": [
+      "كلمة مرور حساب المستخدم",
+      "اسم إصدار التطبيق الحالي",
+      "عنوان IP الخاص بالجهاز",
+      "بصمة المفتاح العام للخادم"
+    ],
+    "answer": 3,
+    "explanationEn": "It must match one of the pins you shipped.",
+    "explanationAr": "يجب أن تطابق إحدى البصمات التي شحنتها."
+  },
+  {
+    "key": "qz-and-sec-network-5",
+    "topic": "and-sec-network",
+    "questionEn": "Why include a backup pin?",
+    "questionAr": "لماذا تضمّن بصمة احتياطية؟",
+    "optionsEn": [
+      "To allow cleartext on that host",
+      "To skip the hostname check",
+      "So a key rotation doesn't break the app",
+      "To make the TLS handshake faster"
+    ],
+    "optionsAr": [
+      "للسماح بغير المشفر على ذلك المضيف",
+      "لتخطي فحص اسم المضيف تمامًا",
+      "حتى لا يكسر تدوير المفتاح التطبيق",
+      "لجعل مصافحة TLS أسرع"
+    ],
+    "answer": 2,
+    "explanationEn": "Ship the next key's pin before rotating.",
+    "explanationAr": "اشحن بصمة المفتاح التالي قبل التدوير."
+  },
+  {
+    "key": "qz-and-sec-network-6",
+    "topic": "and-sec-network",
+    "questionEn": "Why set an expiration on a pin-set?",
+    "questionAr": "لماذا تضبط تاريخ انتهاء لمجموعة البصمات؟",
+    "optionsEn": [
+      "Because TLS itself requires it",
+      "Old app versions don't fail forever",
+      "To renew the server certificate",
+      "To encrypt the config file"
+    ],
+    "optionsAr": [
+      "لأن TLS نفسها تشترط ذلك",
+      "حتى لا تفشل الإصدارات القديمة للأبد",
+      "لتجديد شهادة الخادم تلقائيًا",
+      "لتشفير ملف الإعدادات"
+    ],
+    "answer": 1,
+    "explanationEn": "After it, normal validation applies.",
+    "explanationAr": "بعده يُطبق التحقق العادي."
+  },
+  {
+    "key": "qz-and-sec-network-7",
+    "topic": "and-sec-network",
+    "questionEn": "Which OkHttp class pins certificates?",
+    "questionAr": "أي صنف في OkHttp يثبّت الشهادات؟",
+    "optionsEn": [
+      "CertificatePinner",
+      "Authenticator",
+      "Interceptor",
+      "ConnectionPool"
+    ],
+    "optionsAr": [
+      "CertificatePinner",
+      "Authenticator",
+      "Interceptor",
+      "ConnectionPool"
+    ],
+    "answer": 0,
+    "explanationEn": "Add pins per host with sha256/ prefixes.",
+    "explanationAr": "أضف البصمات لكل مضيف بالبادئة sha256/."
+  },
+  {
+    "key": "qz-and-sec-network-8",
+    "topic": "and-sec-network",
+    "questionEn": "When is pinning worth its cost?",
+    "questionAr": "متى يستحق التثبيت كلفته؟",
+    "optionsEn": [
+      "Every small hobby app",
+      "Apps that have no backend",
+      "Only games with leaderboards",
+      "High-risk apps like banking"
+    ],
+    "optionsAr": [
+      "كل تطبيق هواية صغير",
+      "التطبيقات التي ليس لها خادم",
+      "الألعاب ذات لوحات الصدارة فقط",
+      "التطبيقات عالية الخطورة مثل المصارف"
+    ],
+    "answer": 3,
+    "explanationEn": "A bad rotation can lock out every user.",
+    "explanationAr": "التدوير الخاطئ قد يمنع كل المستخدمين."
+  },
+  {
+    "key": "qz-and-sec-components-1",
+    "topic": "and-sec-components",
+    "questionEn": "What does android:exported=\"true\" mean?",
+    "questionAr": "ماذا يعني android:exported=\"true\"؟",
+    "optionsEn": [
+      "It's removed in release",
+      "Any app can start the component",
+      "Only your app can see it",
+      "It runs in the background"
+    ],
+    "optionsAr": [
+      "يُحذف في الإصدار",
+      "أي تطبيق يستطيع تشغيل المكوّن",
+      "تطبيقك وحده يستطيع رؤيته",
+      "يعمل في الخلفية"
+    ],
+    "answer": 1,
+    "explanationEn": "Export only what must be public.",
+    "explanationAr": "اكشف فقط ما يجب أن يكون عامًا."
+  },
+  {
+    "key": "qz-and-sec-components-2",
+    "topic": "and-sec-components",
+    "questionEn": "How do you share a service only with your own apps?",
+    "questionAr": "كيف تشارك خدمة مع تطبيقاتك فقط؟",
+    "optionsEn": [
+      "A signature-level permission",
+      "A secret string extra",
+      "Hiding the class name",
+      "Disabling R8"
+    ],
+    "optionsAr": [
+      "إذن بمستوى signature",
+      "إضافة نصية سرية",
+      "إخفاء اسم الصنف",
+      "تعطيل R8"
+    ],
+    "answer": 0,
+    "explanationEn": "Only apps signed with your key pass.",
+    "explanationAr": "تمر التطبيقات الموقعة بمفتاحك فقط."
+  },
+  {
+    "key": "qz-and-sec-components-3",
+    "topic": "and-sec-components",
+    "questionEn": "What is intent redirection?",
+    "questionAr": "ما هي إعادة توجيه النوايا؟",
+    "optionsEn": [
+      "Opening a link in Custom Tabs",
+      "Using an explicit Intent",
+      "Sending a broadcast to yourself",
+      "Launching an Intent taken from an extra"
+    ],
+    "optionsAr": [
+      "فتح رابط في Custom Tabs",
+      "استخدام Intent صريح",
+      "إرسال بث إلى نفسك",
+      "تشغيل Intent مأخوذ من إضافة"
+    ],
+    "answer": 3,
+    "explanationEn": "It lets other apps reach your private components.",
+    "explanationAr": "تسمح لتطبيقات أخرى بالوصول إلى مكوناتك الخاصة."
+  },
+  {
+    "key": "qz-and-sec-components-4",
+    "topic": "and-sec-components",
+    "questionEn": "Why prefer verified App Links over custom schemes?",
+    "questionAr": "لماذا تفضّل روابط التطبيق المتحقق منها على المخططات المخصصة؟",
+    "optionsEn": [
+      "They work without internet",
+      "They need no manifest entry",
+      "Other apps can't claim them",
+      "They load pages faster"
+    ],
+    "optionsAr": [
+      "تعمل دون إنترنت",
+      "لا تحتاج مدخلًا في الـ manifest",
+      "لا تستطيع تطبيقات أخرى المطالبة بها",
+      "تحمّل الصفحات أسرع"
+    ],
+    "answer": 2,
+    "explanationEn": "Android verifies assetlinks.json on your domain.",
+    "explanationAr": "يتحقق Android من assetlinks.json على نطاقك."
+  },
+  {
+    "key": "qz-and-sec-components-5",
+    "topic": "and-sec-components",
+    "questionEn": "Which flag should most PendingIntents use?",
+    "questionAr": "أي علامة يجب أن تستخدمها معظم PendingIntent؟",
+    "optionsEn": [
+      "FLAG_CANCEL_CURRENT only",
+      "FLAG_IMMUTABLE",
+      "FLAG_MUTABLE",
+      "FLAG_ACTIVITY_NEW_TASK"
+    ],
+    "optionsAr": [
+      "FLAG_CANCEL_CURRENT فقط",
+      "FLAG_IMMUTABLE",
+      "FLAG_MUTABLE",
+      "FLAG_ACTIVITY_NEW_TASK"
+    ],
+    "answer": 1,
+    "explanationEn": "Other apps then can't change its target.",
+    "explanationAr": "فلا تستطيع التطبيقات الأخرى تغيير وجهته."
+  },
+  {
+    "key": "qz-and-sec-components-6",
+    "topic": "and-sec-components",
+    "questionEn": "How should a deep link to an order be handled?",
+    "questionAr": "كيف يُعالج رابط عميق إلى طلب؟",
+    "optionsEn": [
+      "Validate, check session and server",
+      "Open the order screen directly",
+      "Trust the id that's in the link",
+      "Show the order inside a WebView"
+    ],
+    "optionsAr": [
+      "تحقق، واشترط جلسة، وافحص على الخادم",
+      "افتح شاشة الطلب مباشرة",
+      "ثق بالمعرّف الموجود في الرابط",
+      "اعرض الطلب داخل WebView"
+    ],
+    "answer": 0,
+    "explanationEn": "Link parameters are untrusted input.",
+    "explanationAr": "معاملات الرابط مدخلات غير موثوقة."
+  },
+  {
+    "key": "qz-and-sec-components-7",
+    "topic": "and-sec-components",
+    "questionEn": "Which WebView setting is risky with untrusted pages?",
+    "questionAr": "أي إعداد في WebView خطير مع الصفحات غير الموثوقة؟",
+    "optionsEn": [
+      "setSupportZoom(false)",
+      "setTextZoom(100)",
+      "loadUrl with https",
+      "addJavascriptInterface"
+    ],
+    "optionsAr": [
+      "setSupportZoom(false)",
+      "setTextZoom(100)",
+      "loadUrl مع https",
+      "addJavascriptInterface"
+    ],
+    "answer": 3,
+    "explanationEn": "Pages could call your Kotlin methods.",
+    "explanationAr": "قد تستدعي الصفحات دوال Kotlin الخاصة بك."
+  },
+  {
+    "key": "qz-and-sec-components-8",
+    "topic": "and-sec-components",
+    "questionEn": "Where should external links from a WebView open?",
+    "questionAr": "أين يجب أن تُفتح الروابط الخارجية من WebView؟",
+    "optionsEn": [
+      "In a hidden WebView",
+      "In a new exported activity",
+      "In Custom Tabs",
+      "In the same WebView"
+    ],
+    "optionsAr": [
+      "في WebView مخفي",
+      "في نشاط مكشوف جديد",
+      "في Custom Tabs",
+      "في WebView نفسه"
+    ],
+    "answer": 2,
+    "explanationEn": "Keep your WebView limited to your own host.",
+    "explanationAr": "أبقِ WebView مقيدًا بنطاقك."
+  },
+  {
+    "key": "qz-and-sec-code-1",
+    "topic": "and-sec-code",
+    "questionEn": "Can a secret in BuildConfig be extracted?",
+    "questionAr": "هل يمكن استخراج سر موجود في BuildConfig؟",
+    "optionsEn": [
+      "No, it is encrypted",
+      "Only with root access",
+      "Only by Google",
+      "Yes, from the APK"
+    ],
+    "optionsAr": [
+      "لا، فهو مشفر",
+      "فقط مع صلاحيات الجذر",
+      "Google وحدها",
+      "نعم، من ملف APK"
+    ],
+    "answer": 3,
+    "explanationEn": "Decompilers show BuildConfig fields as plain strings.",
+    "explanationAr": "تُظهر أدوات التفكيك حقول BuildConfig كنصوص عادية."
+  },
+  {
+    "key": "qz-and-sec-code-2",
+    "topic": "and-sec-code",
+    "questionEn": "Where should a payment provider's secret key live?",
+    "questionAr": "أين يجب أن يعيش المفتاح السري لمزوّد الدفع؟",
+    "optionsEn": [
+      "In strings.xml",
+      "In a native library",
+      "On your backend",
+      "In local.properties"
+    ],
+    "optionsAr": [
+      "في strings.xml",
+      "في مكتبة أصلية",
+      "على خادمك",
+      "في local.properties"
+    ],
+    "answer": 2,
+    "explanationEn": "The app calls your backend, which calls the provider.",
+    "explanationAr": "يستدعي التطبيق خادمك، ويستدعي الخادم المزوّد."
+  },
+  {
+    "key": "qz-and-sec-code-3",
+    "topic": "and-sec-code",
+    "questionEn": "How should a public Maps key be protected?",
+    "questionAr": "كيف يُحمى مفتاح خرائط عام؟",
+    "optionsEn": [
+      "Rename the variable that holds it",
+      "Restrict it to package and certificate",
+      "Hide it inside a Base64 string",
+      "Split it across two source files"
+    ],
+    "optionsAr": [
+      "أعد تسمية المتغير الذي يحمله",
+      "قيّده بالحزمة والشهادة",
+      "أخفِه داخل نص بترميز Base64",
+      "قسّمه على ملفين مصدريين"
+    ],
+    "answer": 1,
+    "explanationEn": "Restrictions limit abuse even if it's copied.",
+    "explanationAr": "القيود تحد الإساءة حتى لو نُسخ."
+  },
+  {
+    "key": "qz-and-sec-code-4",
+    "topic": "and-sec-code",
+    "questionEn": "What does R8 do in release builds?",
+    "questionAr": "ماذا تفعل R8 في بناءات الإصدار؟",
+    "optionsEn": [
+      "Shrinks, optimises and obfuscates",
+      "Encrypts every string in the app",
+      "Signs the APK for Play",
+      "Uploads crash reports"
+    ],
+    "optionsAr": [
+      "تقلّص وتحسّن وتموّه",
+      "تشفّر كل نص في التطبيق",
+      "توقّع ملف APK للمتجر",
+      "ترفع تقارير الانهيار تلقائيًا"
+    ],
+    "answer": 0,
+    "explanationEn": "It slows reverse engineering but doesn't stop it.",
+    "explanationAr": "تبطئ الهندسة العكسية دون أن توقفها."
+  },
+  {
+    "key": "qz-and-sec-code-5",
+    "topic": "and-sec-code",
+    "questionEn": "Why upload mapping.txt to Play Console?",
+    "questionAr": "لماذا ترفع mapping.txt إلى Play Console؟",
+    "optionsEn": [
+      "To speed up the app's downloads",
+      "To turn on the Play Integrity API",
+      "To store user data in the cloud",
+      "To read obfuscated crash traces"
+    ],
+    "optionsAr": [
+      "لتسريع تنزيلات التطبيق",
+      "لتفعيل واجهة Play Integrity",
+      "لحفظ بيانات المستخدم في السحابة",
+      "لقراءة تتبعات الانهيار المموّهة"
+    ],
+    "answer": 3,
+    "explanationEn": "Without it, stack traces show renamed classes.",
+    "explanationAr": "دونه تُظهر التتبعات أصنافًا معاد تسميتها."
+  },
+  {
+    "key": "qz-and-sec-code-6",
+    "topic": "and-sec-code",
+    "questionEn": "Where is a Play Integrity token verified?",
+    "questionAr": "أين يُتحقق من رمز Play Integrity؟",
+    "optionsEn": [
+      "In a WebView",
+      "In WorkManager",
+      "On your server",
+      "In the app itself"
+    ],
+    "optionsAr": [
+      "في WebView",
+      "في WorkManager",
+      "على خادمك",
+      "في التطبيق نفسه"
+    ],
+    "answer": 2,
+    "explanationEn": "Client-side checks can be patched out.",
+    "explanationAr": "يمكن إزالة فحوصات العميل بالتعديل."
+  },
+  {
+    "key": "qz-and-sec-code-7",
+    "topic": "and-sec-code",
+    "questionEn": "Why bind a nonce to the integrity request?",
+    "questionAr": "لماذا تربط nonce بطلب السلامة؟",
+    "optionsEn": [
+      "To choose the right dispatcher",
+      "To stop replaying an old token",
+      "To compress the token's size",
+      "To skip checks on the server"
+    ],
+    "optionsAr": [
+      "لاختيار الـ Dispatcher المناسب",
+      "لمنع إعادة استخدام رمز قديم",
+      "لضغط حجم الرمز",
+      "لتخطي الفحوصات على الخادم"
+    ],
+    "answer": 1,
+    "explanationEn": "The token then belongs to one action.",
+    "explanationAr": "فيصبح الرمز خاصًا بإجراء واحد."
+  },
+  {
+    "key": "qz-and-sec-code-8",
+    "topic": "and-sec-code",
+    "questionEn": "Which code usually needs R8 keep rules?",
+    "questionAr": "أي كود يحتاج عادة قواعد إبقاء في R8؟",
+    "optionsEn": [
+      "Code reached by reflection",
+      "Every composable function",
+      "All of the app's ViewModels",
+      "Simple data classes only"
+    ],
+    "optionsAr": [
+      "الكود الذي يُصل إليه بالانعكاس",
+      "كل دالة composable في التطبيق",
+      "كل أصناف ViewModel في التطبيق",
+      "أصناف data البسيطة فقط"
+    ],
+    "answer": 0,
+    "explanationEn": "R8 can't see reflective uses.",
+    "explanationAr": "لا ترى R8 الاستخدامات عبر الانعكاس."
+  },
+  {
+    "key": "qz-and-sec-privacy-1",
+    "topic": "and-sec-privacy",
+    "questionEn": "Which API picks images without a permission?",
+    "questionAr": "أي واجهة تختار الصور دون إذن؟",
+    "optionsEn": [
+      "MANAGE_EXTERNAL_STORAGE",
+      "A file:// path",
+      "The photo picker",
+      "READ_MEDIA_IMAGES"
+    ],
+    "optionsAr": [
+      "الإذن MANAGE_EXTERNAL_STORAGE",
+      "مسار file://",
+      "منتقي الصور",
+      "الإذن READ_MEDIA_IMAGES"
+    ],
+    "answer": 2,
+    "explanationEn": "Only the chosen items are shared.",
+    "explanationAr": "لا تُشارك إلا العناصر المختارة."
+  },
+  {
+    "key": "qz-and-sec-privacy-2",
+    "topic": "and-sec-privacy",
+    "questionEn": "When should a permission be requested?",
+    "questionAr": "متى يجب طلب الإذن؟",
+    "optionsEn": [
+      "After every update of the app",
+      "Right before the feature needs it",
+      "On the splash screen at launch",
+      "During the app's installation"
+    ],
+    "optionsAr": [
+      "بعد كل تحديث للتطبيق",
+      "قبل الميزة التي تحتاجه مباشرة",
+      "في شاشة البداية عند الفتح",
+      "أثناء تثبيت التطبيق"
+    ],
+    "answer": 1,
+    "explanationEn": "Context makes the reason clear.",
+    "explanationAr": "السياق يجعل السبب واضحًا."
+  },
+  {
+    "key": "qz-and-sec-privacy-3",
+    "topic": "and-sec-privacy",
+    "questionEn": "How do you remove a permission an SDK added?",
+    "questionAr": "كيف تحذف إذنًا أضافته مكتبة SDK؟",
+    "optionsEn": [
+      "tools:node=\"remove\" in the manifest",
+      "Delete the SDK's JAR file",
+      "Deny it in Settings yourself",
+      "Rename the permission"
+    ],
+    "optionsAr": [
+      "tools:node=\"remove\" في الـ manifest",
+      "احذف ملف JAR الخاص بالمكتبة",
+      "ارفضه بنفسك في الإعدادات",
+      "أعد تسمية الإذن"
+    ],
+    "answer": 0,
+    "explanationEn": "Check the merged manifest to find them.",
+    "explanationAr": "افحص الـ manifest المدمج لتجدها."
+  },
+  {
+    "key": "qz-and-sec-privacy-4",
+    "topic": "and-sec-privacy",
+    "questionEn": "Which location permission fits \"stores near you\"?",
+    "questionAr": "أي إذن موقع يناسب «المتاجر القريبة منك»؟",
+    "optionsEn": [
+      "ACCESS_FINE_LOCATION",
+      "ACCESS_BACKGROUND_LOCATION",
+      "READ_PHONE_STATE",
+      "ACCESS_COARSE_LOCATION"
+    ],
+    "optionsAr": [
+      "ACCESS_FINE_LOCATION",
+      "ACCESS_BACKGROUND_LOCATION",
+      "READ_PHONE_STATE",
+      "ACCESS_COARSE_LOCATION"
+    ],
+    "answer": 3,
+    "explanationEn": "City-level accuracy is enough.",
+    "explanationAr": "دقة مستوى المدينة كافية."
+  },
+  {
+    "key": "qz-and-sec-privacy-5",
+    "topic": "and-sec-privacy",
+    "questionEn": "What should release logs contain?",
+    "questionAr": "ماذا يجب أن تحتوي سجلات الإصدار؟",
+    "optionsEn": [
+      "The email of the signed-in user",
+      "Every SQL query that runs",
+      "No personal data or tokens",
+      "Full bodies of all requests"
+    ],
+    "optionsAr": [
+      "بريد المستخدم المسجّل",
+      "كل استعلام SQL يعمل",
+      "لا بيانات شخصية ولا رموز",
+      "أجسام كل الطلبات كاملة"
+    ],
+    "answer": 2,
+    "explanationEn": "Anyone with adb can read logcat.",
+    "explanationAr": "أي شخص لديه adb يستطيع قراءة logcat."
+  },
+  {
+    "key": "qz-and-sec-privacy-6",
+    "topic": "and-sec-privacy",
+    "questionEn": "Why exclude the token store from backup?",
+    "questionAr": "لماذا تستثني مخزن الرموز من النسخ الاحتياطي؟",
+    "optionsEn": [
+      "Google forbids all app backups",
+      "Sessions must not move phones",
+      "Backups are far too slow",
+      "Tokens are too large to back up"
+    ],
+    "optionsAr": [
+      "لأن Google تمنع كل النسخ الاحتياطية",
+      "لا يجب أن تنتقل الجلسة إلى هاتف آخر",
+      "لأن النسخ الاحتياطي بطيء جدًا",
+      "لأن الرموز أكبر من أن تُنسخ"
+    ],
+    "answer": 1,
+    "explanationEn": "Keystore-encrypted files also can't be decrypted there.",
+    "explanationAr": "والملفات المشفرة بـ Keystore لا يمكن فكها هناك أيضًا."
+  },
+  {
+    "key": "qz-and-sec-privacy-7",
+    "topic": "and-sec-privacy",
+    "questionEn": "Which attribute controls backups on Android 12+?",
+    "questionAr": "أي خاصية تتحكم في النسخ الاحتياطي في Android 12 فأحدث؟",
+    "optionsEn": [
+      "android:dataExtractionRules",
+      "android:largeHeap",
+      "android:hardwareAccelerated",
+      "android:supportsRtl"
+    ],
+    "optionsAr": [
+      "android:dataExtractionRules",
+      "android:largeHeap",
+      "android:hardwareAccelerated",
+      "android:supportsRtl"
+    ],
+    "answer": 0,
+    "explanationEn": "Older versions use fullBackupContent.",
+    "explanationAr": "الإصدارات الأقدم تستخدم fullBackupContent."
+  },
+  {
+    "key": "qz-and-sec-privacy-8",
+    "topic": "and-sec-privacy",
+    "questionEn": "What must the Play Data safety form match?",
+    "questionAr": "بماذا يجب أن يطابق نموذج Data safety في Play؟",
+    "optionsEn": [
+      "The screenshots in the listing",
+      "The location of the team",
+      "The size of the APK file",
+      "What the app and its SDKs collect"
+    ],
+    "optionsAr": [
+      "لقطات الشاشة في صفحة التطبيق",
+      "موقع الفريق الجغرافي",
+      "حجم ملف APK النهائي",
+      "ما يجمعه التطبيق ومكتباته"
+    ],
+    "answer": 3,
+    "explanationEn": "Update it with every new SDK.",
+    "explanationAr": "حدّثه مع كل مكتبة SDK جديدة."
+  }
+]
