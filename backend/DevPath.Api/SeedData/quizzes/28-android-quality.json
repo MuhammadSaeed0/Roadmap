@@ -1,0 +1,1178 @@
+[
+  {
+    "key": "qz-and-qa-strategy-1",
+    "topic": "and-qa-strategy",
+    "questionEn": "Where should most Android tests run?",
+    "questionAr": "أين يجب أن تعمل معظم اختبارات Android؟",
+    "optionsEn": [
+      "In production",
+      "In the Play Console",
+      "On the JVM, in src/test",
+      "On real devices only"
+    ],
+    "optionsAr": [
+      "في الإنتاج",
+      "في Play Console",
+      "على JVM في src/test",
+      "على أجهزة حقيقية فقط"
+    ],
+    "answer": 2,
+    "explanationEn": "They are fast and precise.",
+    "explanationAr": "فهي سريعة ودقيقة."
+  },
+  {
+    "key": "qz-and-qa-strategy-2",
+    "topic": "and-qa-strategy",
+    "questionEn": "What is a fake?",
+    "questionAr": "ما هو البديل الوهمي؟",
+    "optionsEn": [
+      "A screenshot of the UI",
+      "A small working implementation",
+      "A mock that verifies calls",
+      "A real production server"
+    ],
+    "optionsAr": [
+      "لقطة شاشة للواجهة",
+      "تنفيذ صغير يعمل",
+      "محاكاة تتحقق من الاستدعاءات",
+      "خادم إنتاج حقيقي"
+    ],
+    "answer": 1,
+    "explanationEn": "For example, an in-memory repository.",
+    "explanationAr": "مثل مستودع في الذاكرة."
+  },
+  {
+    "key": "qz-and-qa-strategy-3",
+    "topic": "and-qa-strategy",
+    "questionEn": "Why prefer fakes for your own interfaces?",
+    "questionAr": "لماذا تفضّل البدائل الوهمية لواجهاتك؟",
+    "optionsEn": [
+      "Tests survive refactoring",
+      "They need no setup code at all",
+      "They only run on real devices",
+      "They hide tests that fail"
+    ],
+    "optionsAr": [
+      "تنجو الاختبارات من إعادة الهيكلة",
+      "لأنها لا تحتاج أي كود تهيئة",
+      "لأنها تعمل على الأجهزة الحقيقية فقط",
+      "لأنها تخفي الاختبارات الفاشلة"
+    ],
+    "answer": 0,
+    "explanationEn": "They check outcomes, not internal calls.",
+    "explanationAr": "تتحقق من النتائج لا من الاستدعاءات الداخلية."
+  },
+  {
+    "key": "qz-and-qa-strategy-4",
+    "topic": "and-qa-strategy",
+    "questionEn": "Which code is hardest to test?",
+    "questionAr": "أي كود هو الأصعب في الاختبار؟",
+    "optionsEn": [
+      "Code with constructor injection",
+      "Pure functions",
+      "Small data classes",
+      "Code that creates its own dependencies"
+    ],
+    "optionsAr": [
+      "كود بحقن عبر المُنشئ",
+      "الدوال النقية",
+      "أصناف data الصغيرة",
+      "كود ينشئ اعتمادياته بنفسه"
+    ],
+    "answer": 3,
+    "explanationEn": "Inject dependencies, clocks and dispatchers.",
+    "explanationAr": "احقن الاعتماديات والساعات والـ Dispatchers."
+  },
+  {
+    "key": "qz-and-qa-strategy-5",
+    "topic": "and-qa-strategy",
+    "questionEn": "What should a test name describe?",
+    "questionAr": "ماذا يجب أن يصف اسم الاختبار؟",
+    "optionsEn": [
+      "The date",
+      "The file size",
+      "The behaviour",
+      "The author"
+    ],
+    "optionsAr": [
+      "التاريخ",
+      "حجم الملف",
+      "السلوك",
+      "كاتب الاختبار"
+    ],
+    "answer": 2,
+    "explanationEn": "For example doubleTapSendsOnePayment.",
+    "explanationAr": "مثل doubleTapSendsOnePayment."
+  },
+  {
+    "key": "qz-and-qa-strategy-6",
+    "topic": "and-qa-strategy",
+    "questionEn": "Where should end-to-end journeys be?",
+    "questionAr": "أين يجب أن تكون المسارات الشاملة؟",
+    "optionsEn": [
+      "Only in production",
+      "A few, for critical flows",
+      "Hundreds, for every screen",
+      "None, ever"
+    ],
+    "optionsAr": [
+      "في الإنتاج فقط",
+      "قليلة، للمسارات الحرجة",
+      "المئات، لكل شاشة",
+      "لا شيء أبدًا"
+    ],
+    "answer": 1,
+    "explanationEn": "They are slow and break for many reasons.",
+    "explanationAr": "فهي بطيئة وتنكسر لأسباب كثيرة."
+  },
+  {
+    "key": "qz-and-qa-strategy-7",
+    "topic": "and-qa-strategy",
+    "questionEn": "How do you test code that reads the current time?",
+    "questionAr": "كيف تختبر كودًا يقرأ الوقت الحالي؟",
+    "optionsEn": [
+      "Inject a Clock",
+      "Change the device time",
+      "Sleep until midnight",
+      "Skip the test"
+    ],
+    "optionsAr": [
+      "احقن Clock",
+      "غيّر وقت الجهاز",
+      "انتظر حتى منتصف الليل",
+      "تخطَّ الاختبار"
+    ],
+    "answer": 0,
+    "explanationEn": "Clock.fixed makes it deterministic.",
+    "explanationAr": "تجعله Clock.fixed حتميًا."
+  },
+  {
+    "key": "qz-and-qa-strategy-8",
+    "topic": "and-qa-strategy",
+    "questionEn": "How should test coverage targets be set?",
+    "questionAr": "كيف تُحدد أهداف تغطية الاختبارات؟",
+    "optionsEn": [
+      "By a fixed 100%",
+      "By team size",
+      "By APK size",
+      "By risk"
+    ],
+    "optionsAr": [
+      "بنسبة 100% ثابتة",
+      "حسب حجم الفريق",
+      "حسب حجم APK",
+      "حسب الخطر"
+    ],
+    "answer": 3,
+    "explanationEn": "Test the code whose failure hurts most.",
+    "explanationAr": "اختبر الكود الذي يضر فشله أكثر."
+  },
+  {
+    "key": "qz-and-qa-unit-1",
+    "topic": "and-qa-unit",
+    "questionEn": "Why does a ViewModel test need a Main dispatcher rule?",
+    "questionAr": "لماذا يحتاج اختبار ViewModel قاعدة لـ Main؟",
+    "optionsEn": [
+      "Room needs it to open tables",
+      "It makes Gradle builds faster",
+      "viewModelScope uses Main",
+      "JUnit 4 requires one rule"
+    ],
+    "optionsAr": [
+      "لأن Room تحتاجه لفتح الجداول",
+      "لأنه يجعل بناءات Gradle أسرع",
+      "لأن viewModelScope تستخدم Main",
+      "لأن JUnit 4 تشترط قاعدة واحدة"
+    ],
+    "answer": 2,
+    "explanationEn": "Dispatchers.Main doesn't exist on the JVM.",
+    "explanationAr": "الـ Dispatcher المسمى Dispatchers.Main غير موجود على JVM."
+  },
+  {
+    "key": "qz-and-qa-unit-2",
+    "topic": "and-qa-unit",
+    "questionEn": "What does Turbine help test?",
+    "questionAr": "فيمَ تساعد Turbine في الاختبار؟",
+    "optionsEn": [
+      "Signing the release APK",
+      "Flow emissions in order",
+      "Measuring network latency",
+      "Checking the screen colors"
+    ],
+    "optionsAr": [
+      "توقيع ملف APK للإصدار",
+      "إصدارات Flow بالترتيب",
+      "قياس زمن استجابة الشبكة",
+      "فحص ألوان الشاشة"
+    ],
+    "answer": 1,
+    "explanationEn": "test { awaitItem() } returns each value.",
+    "explanationAr": "تُرجع test { awaitItem() } كل قيمة."
+  },
+  {
+    "key": "qz-and-qa-unit-3",
+    "topic": "and-qa-unit",
+    "questionEn": "When is StandardTestDispatcher useful?",
+    "questionAr": "متى يفيد StandardTestDispatcher؟",
+    "optionsEn": [
+      "When timing matters",
+      "When tests need a device",
+      "For UI screenshots",
+      "For Gradle sync"
+    ],
+    "optionsAr": [
+      "عندما يهم التوقيت",
+      "عندما تحتاج الاختبارات جهازًا",
+      "للقطات الواجهة",
+      "لمزامنة Gradle"
+    ],
+    "answer": 0,
+    "explanationEn": "Coroutines wait until you advance time.",
+    "explanationAr": "تنتظر الـ Coroutines حتى تقدّم الزمن."
+  },
+  {
+    "key": "qz-and-qa-unit-4",
+    "topic": "and-qa-unit",
+    "questionEn": "What should a fake repository allow?",
+    "questionAr": "ماذا يجب أن يتيح المستودع الوهمي؟",
+    "optionsEn": [
+      "Calling the real API",
+      "Writing to production",
+      "Changing the OS",
+      "Being told to fail"
+    ],
+    "optionsAr": [
+      "استدعاء الواجهة الحقيقية",
+      "الكتابة في الإنتاج",
+      "تغيير نظام التشغيل",
+      "إخباره بالفشل"
+    ],
+    "answer": 3,
+    "explanationEn": "So you can test error states.",
+    "explanationAr": "حتى تختبر حالات الخطأ."
+  },
+  {
+    "key": "qz-and-qa-unit-5",
+    "topic": "and-qa-unit",
+    "questionEn": "How do you test a one-off navigation event?",
+    "questionAr": "كيف تختبر حدث تنقل لمرة واحدة؟",
+    "optionsEn": [
+      "Check the logcat",
+      "Use a screenshot",
+      "Turbine on the events flow",
+      "Sleep then read a field"
+    ],
+    "optionsAr": [
+      "افحص logcat",
+      "استخدم لقطة شاشة",
+      "Turbine على تدفق الأحداث",
+      "انتظر ثم اقرأ حقلًا"
+    ],
+    "answer": 2,
+    "explanationEn": "expectNoEvents proves nothing else arrived.",
+    "explanationAr": "تثبت expectNoEvents أنه لم يصل شيء آخر."
+  },
+  {
+    "key": "qz-and-qa-unit-6",
+    "topic": "and-qa-unit",
+    "questionEn": "When should you reach for MockK?",
+    "questionAr": "متى تلجأ إلى MockK؟",
+    "optionsEn": [
+      "Only inside UI tests",
+      "Third-party types hard to fake",
+      "Every class that you own",
+      "Plain Kotlin data classes"
+    ],
+    "optionsAr": [
+      "داخل اختبارات الواجهة فقط",
+      "أنواع خارجية يصعب صنع بديل لها",
+      "كل صنف تملكه في المشروع",
+      "أصناف data البسيطة في Kotlin"
+    ],
+    "answer": 1,
+    "explanationEn": "Prefer fakes for your own interfaces.",
+    "explanationAr": "فضّل البدائل الوهمية لواجهاتك."
+  },
+  {
+    "key": "qz-and-qa-unit-7",
+    "topic": "and-qa-unit",
+    "questionEn": "What does Robolectric do?",
+    "questionAr": "ماذا تفعل Robolectric؟",
+    "optionsEn": [
+      "Runs Android APIs on the JVM",
+      "Records videos of the screen",
+      "Signs builds for the release",
+      "Uploads crash logs to a server"
+    ],
+    "optionsAr": [
+      "تشغّل واجهات Android على JVM",
+      "تسجّل فيديو للشاشة",
+      "توقّع البناءات للإصدار",
+      "ترفع سجلات الانهيار إلى خادم"
+    ],
+    "answer": 0,
+    "explanationEn": "Slower than plain JVM tests, faster than devices.",
+    "explanationAr": "أبطأ من اختبارات JVM العادية وأسرع من الأجهزة."
+  },
+  {
+    "key": "qz-and-qa-unit-8",
+    "topic": "and-qa-unit",
+    "questionEn": "Why assert whole state objects?",
+    "questionAr": "لماذا تتحقق من كائنات الحالة كاملة؟",
+    "optionsEn": [
+      "It makes tests longer",
+      "Kotlin requires it",
+      "It skips coroutines",
+      "It catches fields not reset"
+    ],
+    "optionsAr": [
+      "تجعل الاختبارات أطول",
+      "لأن Kotlin تشترطه",
+      "تتخطى الـ Coroutines",
+      "تكشف الحقول التي لم تُعَد"
+    ],
+    "answer": 3,
+    "explanationEn": "A forgotten loading flag shows up immediately.",
+    "explanationAr": "تظهر علامة تحميل منسية فورًا."
+  },
+  {
+    "key": "qz-and-qa-integration-1",
+    "topic": "and-qa-integration",
+    "questionEn": "What needs an instrumented test?",
+    "questionAr": "ما الذي يحتاج اختبارًا على الجهاز؟",
+    "optionsEn": [
+      "A string helper",
+      "A Room migration",
+      "A price formatter",
+      "A pure mapper"
+    ],
+    "optionsAr": [
+      "دالة نصوص مساعدة",
+      "ترحيل Room",
+      "منسق الأسعار",
+      "محوّل نقي"
+    ],
+    "answer": 1,
+    "explanationEn": "It needs real SQLite on Android.",
+    "explanationAr": "يحتاج SQLite حقيقية على Android."
+  },
+  {
+    "key": "qz-and-qa-integration-2",
+    "topic": "and-qa-integration",
+    "questionEn": "Which annotation replaces a Hilt module in all tests?",
+    "questionAr": "أي تعليق يستبدل وحدة Hilt في كل الاختبارات؟",
+    "optionsEn": [
+      "@TestInstallIn",
+      "@InstallIn",
+      "@Singleton",
+      "@Provides"
+    ],
+    "optionsAr": [
+      "@TestInstallIn",
+      "@InstallIn",
+      "@Singleton",
+      "@Provides"
+    ],
+    "answer": 0,
+    "explanationEn": "Set replaces = [RealModule::class].",
+    "explanationAr": "اضبط replaces = [RealModule::class]."
+  },
+  {
+    "key": "qz-and-qa-integration-3",
+    "topic": "and-qa-integration",
+    "questionEn": "Why must HiltAndroidRule have order = 0?",
+    "questionAr": "لماذا يجب أن تكون HiltAndroidRule بترتيب 0؟",
+    "optionsEn": [
+      "It makes the tests run faster",
+      "It turns off Room for the test",
+      "It records a video of each test",
+      "It injects before others run"
+    ],
+    "optionsAr": [
+      "لأنها تجعل الاختبارات أسرع",
+      "لأنها تعطّل Room للاختبار",
+      "لأنها تسجل فيديو لكل اختبار",
+      "لأنها تحقن قبل تشغيل غيرها"
+    ],
+    "answer": 3,
+    "explanationEn": "Other rules may need injected objects.",
+    "explanationAr": "قد تحتاج القواعد الأخرى كائنات محقونة."
+  },
+  {
+    "key": "qz-and-qa-integration-4",
+    "topic": "and-qa-integration",
+    "questionEn": "How do you test a worker's constraints?",
+    "questionAr": "كيف تختبر قيود Worker؟",
+    "optionsEn": [
+      "Wait 15 minutes",
+      "Use Robolectric only",
+      "WorkManagerTestInitHelper",
+      "Unplug the phone"
+    ],
+    "optionsAr": [
+      "انتظر 15 دقيقة",
+      "استخدم Robolectric فقط",
+      "WorkManagerTestInitHelper",
+      "افصل الهاتف"
+    ],
+    "answer": 2,
+    "explanationEn": "The TestDriver can mark constraints met.",
+    "explanationAr": "يستطيع TestDriver تعليم القيود كمتحققة."
+  },
+  {
+    "key": "qz-and-qa-integration-5",
+    "topic": "and-qa-integration",
+    "questionEn": "Which tool tests system UI like permission dialogs?",
+    "questionAr": "أي أداة تختبر واجهة النظام مثل نوافذ الأذونات؟",
+    "optionsEn": [
+      "Kover",
+      "UI Automator",
+      "MockWebServer",
+      "detekt"
+    ],
+    "optionsAr": [
+      "Kover",
+      "UI Automator",
+      "MockWebServer",
+      "detekt"
+    ],
+    "answer": 1,
+    "explanationEn": "It works across apps and the system.",
+    "explanationAr": "تعمل عبر التطبيقات والنظام."
+  },
+  {
+    "key": "qz-and-qa-integration-6",
+    "topic": "and-qa-integration",
+    "questionEn": "What do Gradle Managed Devices give CI?",
+    "questionAr": "ماذا تعطي Gradle Managed Devices لـ CI؟",
+    "optionsEn": [
+      "Clean identical emulators",
+      "Free physical phones",
+      "Faster unit tests",
+      "Signed APKs"
+    ],
+    "optionsAr": [
+      "محاكيات نظيفة ومتطابقة",
+      "هواتف حقيقية مجانية",
+      "اختبارات وحدة أسرع",
+      "ملفات APK موقعة"
+    ],
+    "answer": 0,
+    "explanationEn": "Every run starts from the same state.",
+    "explanationAr": "يبدأ كل تشغيل من الحالة نفسها."
+  },
+  {
+    "key": "qz-and-qa-integration-7",
+    "topic": "and-qa-integration",
+    "questionEn": "What does the Test Orchestrator with clearPackageData do?",
+    "questionAr": "ماذا يفعل Test Orchestrator مع clearPackageData؟",
+    "optionsEn": [
+      "Merges all tests into one",
+      "Skips the slowest tests",
+      "Uploads reports to Play",
+      "Isolates each test's state"
+    ],
+    "optionsAr": [
+      "يدمج كل الاختبارات في واحد",
+      "يتخطى الاختبارات الأبطأ",
+      "يرفع التقارير إلى Play",
+      "يعزل حالة كل اختبار"
+    ],
+    "answer": 3,
+    "explanationEn": "One test can't leak data into another.",
+    "explanationAr": "لا يستطيع اختبار تسريب بيانات إلى آخر."
+  },
+  {
+    "key": "qz-and-qa-integration-8",
+    "topic": "and-qa-integration",
+    "questionEn": "How should a device test wait for content?",
+    "questionAr": "كيف ينتظر اختبار الجهاز ظهور المحتوى؟",
+    "optionsEn": [
+      "A retry loop forever",
+      "Restarting the app",
+      "waitUntil or idling",
+      "Thread.sleep(5000)"
+    ],
+    "optionsAr": [
+      "حلقة إعادة للأبد",
+      "إعادة تشغيل التطبيق",
+      "waitUntil أو آلية الخمول",
+      "Thread.sleep(5000)"
+    ],
+    "answer": 2,
+    "explanationEn": "Sleeps make tests slow and flaky.",
+    "explanationAr": "التأخيرات تجعل الاختبارات بطيئة وغير مستقرة."
+  },
+  {
+    "key": "qz-and-qa-screenshot-1",
+    "topic": "and-qa-screenshot",
+    "questionEn": "What do screenshot tests compare?",
+    "questionAr": "ماذا تقارن اختبارات لقطات الشاشة؟",
+    "optionsEn": [
+      "Rendered images with references",
+      "Responses from the network",
+      "Rows in the database",
+      "Logs from crash reports"
+    ],
+    "optionsAr": [
+      "الصور المعروضة بالمراجع",
+      "الاستجابات القادمة من الشبكة",
+      "الصفوف في قاعدة البيانات",
+      "سجلات تقارير الانهيار"
+    ],
+    "answer": 0,
+    "explanationEn": "They fail when pixels change.",
+    "explanationAr": "تفشل عندما تتغير البكسلات."
+  },
+  {
+    "key": "qz-and-qa-screenshot-2",
+    "topic": "and-qa-screenshot",
+    "questionEn": "Which bug do screenshot tests catch best?",
+    "questionAr": "أي خطأ تكشفه اختبارات اللقطات أفضل؟",
+    "optionsEn": [
+      "A wrong URL for the API",
+      "A slow database query",
+      "A memory leak in a screen",
+      "Broken RTL layout"
+    ],
+    "optionsAr": [
+      "عنوان خاطئ للواجهة البرمجية",
+      "استعلام بطيء في قاعدة البيانات",
+      "تسرب ذاكرة في شاشة",
+      "تخطيط معطوب من اليمين لليسار"
+    ],
+    "answer": 3,
+    "explanationEn": "Assertions rarely check layout direction.",
+    "explanationAr": "نادرًا ما تفحص التحققات اتجاه التخطيط."
+  },
+  {
+    "key": "qz-and-qa-screenshot-3",
+    "topic": "and-qa-screenshot",
+    "questionEn": "Do Roborazzi and Paparazzi need a device?",
+    "questionAr": "هل تحتاج Roborazzi وPaparazzi جهازًا؟",
+    "optionsEn": [
+      "Only for dark mode",
+      "Only on tablets",
+      "No, they run on the JVM",
+      "Yes, always"
+    ],
+    "optionsAr": [
+      "للوضع الداكن فقط",
+      "على الأجهزة اللوحية فقط",
+      "لا، تعمل على JVM",
+      "نعم، دائمًا"
+    ],
+    "answer": 2,
+    "explanationEn": "So they're fast enough for every pull request.",
+    "explanationAr": "لذلك هي سريعة بما يكفي لكل طلب دمج."
+  },
+  {
+    "key": "qz-and-qa-screenshot-4",
+    "topic": "and-qa-screenshot",
+    "questionEn": "Why use fixed fake data in screenshots?",
+    "questionAr": "لماذا تستخدم بيانات وهمية ثابتة في اللقطات؟",
+    "optionsEn": [
+      "Previews require it",
+      "Images stay deterministic",
+      "It hides bugs",
+      "It shrinks the APK"
+    ],
+    "optionsAr": [
+      "لأن المعاينات تشترطها",
+      "تبقى الصور حتمية",
+      "لأنها تخفي الأخطاء",
+      "لأنها تقلّص APK"
+    ],
+    "answer": 1,
+    "explanationEn": "Random data would change images every run.",
+    "explanationAr": "البيانات العشوائية تغيّر الصور مع كل تشغيل."
+  },
+  {
+    "key": "qz-and-qa-screenshot-5",
+    "topic": "and-qa-screenshot",
+    "questionEn": "What should happen when a change is intentional?",
+    "questionAr": "ماذا يحدث عندما يكون التغيير مقصودًا؟",
+    "optionsEn": [
+      "Update references in the PR",
+      "Delete the failing test",
+      "Turn off CI for the branch",
+      "Ignore the diff and merge"
+    ],
+    "optionsAr": [
+      "حدّث المراجع في طلب الدمج",
+      "احذف الاختبار الفاشل",
+      "أطفئ CI لهذا الفرع",
+      "تجاهل الفرق وادمج"
+    ],
+    "answer": 0,
+    "explanationEn": "Reviewers then see old and new images.",
+    "explanationAr": "فيرى المراجعون الصور القديمة والجديدة."
+  },
+  {
+    "key": "qz-and-qa-screenshot-6",
+    "topic": "and-qa-screenshot",
+    "questionEn": "Which variant reveals overflowing text?",
+    "questionAr": "أي تنويع يكشف النص الفائض؟",
+    "optionsEn": [
+      "showBackground = true",
+      "A blue theme",
+      "A short title",
+      "fontScale = 2f"
+    ],
+    "optionsAr": [
+      "showBackground = true",
+      "سمة زرقاء",
+      "عنوان قصير",
+      "fontScale = 2f"
+    ],
+    "answer": 3,
+    "explanationEn": "Large fonts expose fixed sizes.",
+    "explanationAr": "الخطوط الكبيرة تكشف الأحجام الثابتة."
+  },
+  {
+    "key": "qz-and-qa-screenshot-7",
+    "topic": "and-qa-screenshot",
+    "questionEn": "Where should you start screenshot testing?",
+    "questionAr": "من أين تبدأ اختبار اللقطات؟",
+    "optionsEn": [
+      "Only the splash screen",
+      "Only error dialogs",
+      "Shared design-system parts",
+      "Every screen at once"
+    ],
+    "optionsAr": [
+      "شاشة البداية فقط",
+      "نوافذ الأخطاء فقط",
+      "أجزاء نظام التصميم المشتركة",
+      "كل الشاشات دفعة واحدة"
+    ],
+    "answer": 2,
+    "explanationEn": "One change there affects every screen.",
+    "explanationAr": "تغيير واحد هناك يؤثر في كل شاشة."
+  },
+  {
+    "key": "qz-and-qa-screenshot-8",
+    "topic": "and-qa-screenshot",
+    "questionEn": "Which task records reference images?",
+    "questionAr": "أي مهمة تسجّل الصور المرجعية؟",
+    "optionsEn": [
+      "lintDebug",
+      "updateDebugScreenshotTest",
+      "validateDebugScreenshotTest",
+      "assembleRelease"
+    ],
+    "optionsAr": [
+      "lintDebug",
+      "updateDebugScreenshotTest",
+      "validateDebugScreenshotTest",
+      "assembleRelease"
+    ],
+    "answer": 1,
+    "explanationEn": "validate compares against them in CI.",
+    "explanationAr": "وتقارن validate بها في CI."
+  },
+  {
+    "key": "qz-and-qa-performance-1",
+    "topic": "and-qa-performance",
+    "questionEn": "Which build should you benchmark?",
+    "questionAr": "أي بناء يجب أن تقيسه؟",
+    "optionsEn": [
+      "An emulator snapshot",
+      "A release-like build",
+      "A debug build",
+      "An instant app"
+    ],
+    "optionsAr": [
+      "لقطة محاكٍ",
+      "بناء شبيه بالإصدار",
+      "بناء debug",
+      "تطبيق فوري"
+    ],
+    "answer": 1,
+    "explanationEn": "Debug builds are much slower and misleading.",
+    "explanationAr": "بناءات debug أبطأ بكثير ومضللة."
+  },
+  {
+    "key": "qz-and-qa-performance-2",
+    "topic": "and-qa-performance",
+    "questionEn": "Which metric measures cold startup?",
+    "questionAr": "أي مقياس يقيس البدء البارد؟",
+    "optionsEn": [
+      "StartupTimingMetric",
+      "FrameTimingMetric",
+      "MemoryUsageMetric",
+      "PowerMetric only"
+    ],
+    "optionsAr": [
+      "StartupTimingMetric",
+      "FrameTimingMetric",
+      "MemoryUsageMetric",
+      "PowerMetric فقط"
+    ],
+    "answer": 0,
+    "explanationEn": "It reports time to initial and full display.",
+    "explanationAr": "يبلّغ عن زمن العرض الأولي والكامل."
+  },
+  {
+    "key": "qz-and-qa-performance-3",
+    "topic": "and-qa-performance",
+    "questionEn": "What does a Baseline Profile do?",
+    "questionAr": "ماذا يفعل Baseline Profile؟",
+    "optionsEn": [
+      "Shrinks all of the images",
+      "Encrypts the whole app",
+      "Adds a dark mode theme",
+      "Precompiles hot code paths"
+    ],
+    "optionsAr": [
+      "يقلّص كل الصور في التطبيق",
+      "يشفّر التطبيق كله",
+      "يضيف سمة للوضع الداكن",
+      "يترجم الكود الساخن مسبقًا"
+    ],
+    "answer": 3,
+    "explanationEn": "Startup and first scrolls get faster.",
+    "explanationAr": "يصبح البدء وأول تمرير أسرع."
+  },
+  {
+    "key": "qz-and-qa-performance-4",
+    "topic": "and-qa-performance",
+    "questionEn": "Why call reportFullyDrawn()?",
+    "questionAr": "لماذا تستدعي reportFullyDrawn()؟",
+    "optionsEn": [
+      "To start a background service",
+      "To clear the image cache",
+      "To mark real content visible",
+      "To close the app on purpose"
+    ],
+    "optionsAr": [
+      "لبدء خدمة في الخلفية",
+      "لمسح ذاكرة الصور المؤقتة",
+      "لتعليم ظهور المحتوى الحقيقي",
+      "لإغلاق التطبيق عن قصد"
+    ],
+    "answer": 2,
+    "explanationEn": "Time to full display then means something.",
+    "explanationAr": "فيصبح لزمن العرض الكامل معنى."
+  },
+  {
+    "key": "qz-and-qa-performance-5",
+    "topic": "and-qa-performance",
+    "questionEn": "Which change reduces Compose list jank?",
+    "questionAr": "أي تغيير يقلل تقطع قوائم Compose؟",
+    "optionsEn": [
+      "Bigger images",
+      "Stable item keys",
+      "More nested Columns",
+      "Sorting in composition"
+    ],
+    "optionsAr": [
+      "صور أكبر",
+      "مفاتيح ثابتة للعناصر",
+      "أعمدة متداخلة أكثر",
+      "الترتيب داخل التركيب"
+    ],
+    "answer": 1,
+    "explanationEn": "Items keep identity and skip recomposition.",
+    "explanationAr": "تحتفظ العناصر بهويتها وتتخطى إعادة التركيب."
+  },
+  {
+    "key": "qz-and-qa-performance-6",
+    "topic": "and-qa-performance",
+    "questionEn": "When is derivedStateOf useful?",
+    "questionAr": "متى تفيد derivedStateOf؟",
+    "optionsEn": [
+      "Values derived from scroll state",
+      "Every simple local variable",
+      "Calls made to the network",
+      "Queries sent to Room"
+    ],
+    "optionsAr": [
+      "القيم المشتقة من حالة التمرير",
+      "كل متغير محلي بسيط",
+      "الاستدعاءات المرسلة إلى الشبكة",
+      "الاستعلامات المرسلة إلى Room"
+    ],
+    "answer": 0,
+    "explanationEn": "Recomposition happens only when the result changes.",
+    "explanationAr": "تحدث إعادة التركيب فقط عندما تتغير النتيجة."
+  },
+  {
+    "key": "qz-and-qa-performance-7",
+    "topic": "and-qa-performance",
+    "questionEn": "Where should startup analytics init run?",
+    "questionAr": "أين يجب أن تعمل تهيئة التحليلات عند البدء؟",
+    "optionsEn": [
+      "First in onCreate on Main",
+      "In every Activity",
+      "Inside a composable",
+      "Off the main thread or lazily"
+    ],
+    "optionsAr": [
+      "أولًا في onCreate على Main",
+      "في كل Activity",
+      "داخل دالة composable",
+      "خارج الخيط الرئيسي أو بكسل"
+    ],
+    "answer": 3,
+    "explanationEn": "Main-thread work delays the first frame.",
+    "explanationAr": "العمل على الخيط الرئيسي يؤخر الإطار الأول."
+  },
+  {
+    "key": "qz-and-qa-performance-8",
+    "topic": "and-qa-performance",
+    "questionEn": "How do you stop performance regressions?",
+    "questionAr": "كيف توقف تراجعات الأداء؟",
+    "optionsEn": [
+      "Test only on debug builds",
+      "Turn off R8 in release",
+      "Benchmarks in CI with a budget",
+      "Ask users to report it"
+    ],
+    "optionsAr": [
+      "اختبر على بناءات debug فقط",
+      "أطفئ R8 في الإصدار",
+      "قياسات في CI مع ميزانية",
+      "اطلب من المستخدمين التبليغ عنها"
+    ],
+    "answer": 2,
+    "explanationEn": "The build fails when numbers get worse.",
+    "explanationAr": "يفشل البناء عندما تسوء الأرقام."
+  },
+  {
+    "key": "qz-and-qa-static-1",
+    "topic": "and-qa-static",
+    "questionEn": "What can Android Lint find?",
+    "questionAr": "ماذا يستطيع Android Lint أن يجد؟",
+    "optionsEn": [
+      "APIs above minSdk",
+      "Slow network calls",
+      "Users' crash reports",
+      "Store reviews"
+    ],
+    "optionsAr": [
+      "واجهات أعلى من minSdk",
+      "استدعاءات شبكة بطيئة",
+      "تقارير انهيار المستخدمين",
+      "تقييمات المتجر"
+    ],
+    "answer": 0,
+    "explanationEn": "NewApi flags calls without a version check.",
+    "explanationAr": "يعلّم NewApi الاستدعاءات دون فحص الإصدار."
+  },
+  {
+    "key": "qz-and-qa-static-2",
+    "topic": "and-qa-static",
+    "questionEn": "What does a lint baseline do?",
+    "questionAr": "ماذا يفعل خط أساس lint؟",
+    "optionsEn": [
+      "Fixes every issue it finds",
+      "Turns lint off entirely",
+      "Signs the release APK",
+      "Reports only new issues"
+    ],
+    "optionsAr": [
+      "يصلح كل مشكلة يجدها",
+      "يطفئ lint تمامًا",
+      "يوقّع ملف APK للإصدار",
+      "يبلّغ عن الجديد فقط"
+    ],
+    "answer": 3,
+    "explanationEn": "Shrink it over time.",
+    "explanationAr": "قلّصه مع الوقت."
+  },
+  {
+    "key": "qz-and-qa-static-3",
+    "topic": "and-qa-static",
+    "questionEn": "Which tool checks Kotlin code smells?",
+    "questionAr": "أي أداة تفحص روائح كود Kotlin؟",
+    "optionsEn": [
+      "Coil",
+      "Glance",
+      "detekt",
+      "MockWebServer"
+    ],
+    "optionsAr": [
+      "Coil",
+      "Glance",
+      "detekt",
+      "MockWebServer"
+    ],
+    "answer": 2,
+    "explanationEn": "Complexity, long methods, swallowed exceptions.",
+    "explanationAr": "التعقيد والدوال الطويلة والاستثناءات المبتلعة."
+  },
+  {
+    "key": "qz-and-qa-static-4",
+    "topic": "and-qa-static",
+    "questionEn": "Why use an automatic formatter?",
+    "questionAr": "لماذا تستخدم أداة تنسيق آلية؟",
+    "optionsEn": [
+      "It writes the tests for you",
+      "Reviews skip style debates",
+      "It finds bugs in the logic",
+      "It makes the app run faster"
+    ],
+    "optionsAr": [
+      "تكتب الاختبارات نيابة عنك",
+      "تتخطى المراجعات جدل الأسلوب",
+      "تجد الأخطاء في المنطق",
+      "تجعل التطبيق يعمل أسرع"
+    ],
+    "answer": 1,
+    "explanationEn": "One style, applied by the tool.",
+    "explanationAr": "أسلوب واحد تطبقه الأداة."
+  },
+  {
+    "key": "qz-and-qa-static-5",
+    "topic": "and-qa-static",
+    "questionEn": "How should coverage be used?",
+    "questionAr": "كيف يجب استخدام التغطية؟",
+    "optionsEn": [
+      "To find untested risky code",
+      "As a strict 100% gate",
+      "To rank developers",
+      "To replace reviews"
+    ],
+    "optionsAr": [
+      "لإيجاد كود خطر غير مختبر",
+      "كبوابة صارمة بنسبة 100%",
+      "لترتيب المطورين",
+      "لتحل محل المراجعات"
+    ],
+    "answer": 0,
+    "explanationEn": "Covered lines with weak asserts prove little.",
+    "explanationAr": "الأسطر المغطاة بتحققات ضعيفة لا تثبت الكثير."
+  },
+  {
+    "key": "qz-and-qa-static-6",
+    "topic": "and-qa-static",
+    "questionEn": "Which lint check helps RTL layouts?",
+    "questionAr": "أي فحص lint يساعد تخطيطات اليمين لليسار؟",
+    "optionsEn": [
+      "NewApi",
+      "UnusedResources",
+      "GradleDependency",
+      "RtlHardcoded"
+    ],
+    "optionsAr": [
+      "NewApi",
+      "UnusedResources",
+      "GradleDependency",
+      "RtlHardcoded"
+    ],
+    "answer": 3,
+    "explanationEn": "Use start and end instead of left and right.",
+    "explanationAr": "استخدم start وend بدل left وright."
+  },
+  {
+    "key": "qz-and-qa-static-7",
+    "topic": "and-qa-static",
+    "questionEn": "What should human reviewers focus on?",
+    "questionAr": "على ماذا يجب أن يركز المراجعون البشريون؟",
+    "optionsEn": [
+      "The order of the imports",
+      "The line endings in files",
+      "Design, edge cases and tests",
+      "Spaces, commas and brackets"
+    ],
+    "optionsAr": [
+      "ترتيب الاستيرادات في الملفات",
+      "نهايات الأسطر في الملفات",
+      "التصميم والحالات الحدية والاختبارات",
+      "المسافات والفواصل والأقواس"
+    ],
+    "answer": 2,
+    "explanationEn": "Tools handle formatting.",
+    "explanationAr": "الأدوات تتولى التنسيق."
+  },
+  {
+    "key": "qz-and-qa-static-8",
+    "topic": "and-qa-static",
+    "questionEn": "When should static checks run?",
+    "questionAr": "متى يجب أن تعمل الفحوصات الثابتة؟",
+    "optionsEn": [
+      "Never on the main branch",
+      "On every pull request in CI",
+      "Once a year, before audits",
+      "Only right before a release"
+    ],
+    "optionsAr": [
+      "أبدًا على الفرع الرئيسي",
+      "مع كل طلب دمج في CI",
+      "مرة في السنة قبل التدقيق",
+      "قبل الإصدار مباشرة فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Fail the build on errors.",
+    "explanationAr": "أفشل البناء عند الأخطاء."
+  },
+  {
+    "key": "qz-and-qa-crashes-1",
+    "topic": "and-qa-crashes",
+    "questionEn": "What makes production stack traces readable?",
+    "questionAr": "ما الذي يجعل تتبعات الانهيار في الإنتاج مقروءة؟",
+    "optionsEn": [
+      "Using debug builds",
+      "Uploading the R8 mapping",
+      "Disabling crash reports",
+      "Logging more emails"
+    ],
+    "optionsAr": [
+      "استخدام بناءات debug",
+      "رفع ملف التحويل من R8",
+      "تعطيل تقارير الانهيار",
+      "تسجيل المزيد من البريد"
+    ],
+    "answer": 1,
+    "explanationEn": "Without it, class names are obfuscated.",
+    "explanationAr": "دونه تكون أسماء الأصناف مموّهة."
+  },
+  {
+    "key": "qz-and-qa-crashes-2",
+    "topic": "and-qa-crashes",
+    "questionEn": "What causes an ANR?",
+    "questionAr": "ما الذي يسبب ANR؟",
+    "optionsEn": [
+      "A blocked main thread",
+      "A slow backend server",
+      "An APK that is too large",
+      "A dark theme in the app"
+    ],
+    "optionsAr": [
+      "خيط رئيسي محجوب",
+      "خادم خلفي بطيء",
+      "ملف APK كبير جدًا",
+      "سمة داكنة في التطبيق"
+    ],
+    "answer": 0,
+    "explanationEn": "About five seconds without handling input.",
+    "explanationAr": "نحو خمس ثوانٍ دون معالجة الإدخال."
+  },
+  {
+    "key": "qz-and-qa-crashes-3",
+    "topic": "and-qa-crashes",
+    "questionEn": "How should crashes be prioritised?",
+    "questionAr": "كيف تُرتب أولويات الانهيارات؟",
+    "optionsEn": [
+      "By alphabetical order",
+      "By the name of the file",
+      "By the oldest ones first",
+      "By users affected"
+    ],
+    "optionsAr": [
+      "بالترتيب الأبجدي",
+      "حسب اسم الملف",
+      "الأقدم منها أولًا",
+      "حسب عدد المتأثرين"
+    ],
+    "answer": 3,
+    "explanationEn": "New issues after a release need fast attention.",
+    "explanationAr": "المشكلات الجديدة بعد الإصدار تحتاج انتباهًا سريعًا."
+  },
+  {
+    "key": "qz-and-qa-crashes-4",
+    "topic": "and-qa-crashes",
+    "questionEn": "What should never go into crash logs?",
+    "questionAr": "ما الذي يجب ألا يدخل سجلات الانهيار أبدًا؟",
+    "optionsEn": [
+      "Feature flags",
+      "The app version",
+      "Personal data",
+      "The screen name"
+    ],
+    "optionsAr": [
+      "علامات الميزات",
+      "إصدار التطبيق",
+      "البيانات الشخصية",
+      "اسم الشاشة"
+    ],
+    "answer": 2,
+    "explanationEn": "Use pseudonymous ids only.",
+    "explanationAr": "استخدم المعرّفات المستعارة فقط."
+  },
+  {
+    "key": "qz-and-qa-crashes-5",
+    "topic": "and-qa-crashes",
+    "questionEn": "What does recordException do?",
+    "questionAr": "ماذا تفعل recordException؟",
+    "optionsEn": [
+      "Restarts the device",
+      "Reports a non-fatal error",
+      "Crashes the app",
+      "Deletes the log"
+    ],
+    "optionsAr": [
+      "تعيد تشغيل الجهاز",
+      "تبلّغ عن خطأ غير قاتل",
+      "تُسقط التطبيق",
+      "تحذف السجل"
+    ],
+    "answer": 1,
+    "explanationEn": "Caught errors still show in the dashboard.",
+    "explanationAr": "تظهر الأخطاء الملتقطة في لوحة المتابعة."
+  },
+  {
+    "key": "qz-and-qa-crashes-6",
+    "topic": "and-qa-crashes",
+    "questionEn": "How do you reproduce a process-death bug?",
+    "questionAr": "كيف تعيد إنتاج خطأ موت العملية؟",
+    "optionsEn": [
+      "\"Don't keep activities\"",
+      "Rotate the screen twice",
+      "Clear the app's cache",
+      "Switch Wi-Fi on and off"
+    ],
+    "optionsAr": [
+      "خيار «Don't keep activities»",
+      "دوّر الشاشة مرتين متتاليتين",
+      "امسح ذاكرة التطبيق المؤقتة",
+      "شغّل Wi-Fi ثم أطفئه"
+    ],
+    "answer": 0,
+    "explanationEn": "Or adb shell am kill while in background.",
+    "explanationAr": "أو adb shell am kill والتطبيق في الخلفية."
+  },
+  {
+    "key": "qz-and-qa-crashes-7",
+    "topic": "and-qa-crashes",
+    "questionEn": "Why ship fixes with a staged rollout?",
+    "questionAr": "لماذا تشحن الإصلاحات بنشر تدريجي؟",
+    "optionsEn": [
+      "To make the APK smaller",
+      "To skip Play review",
+      "To hide the release notes",
+      "To stop if a new issue appears"
+    ],
+    "optionsAr": [
+      "لجعل APK أصغر",
+      "لتخطي مراجعة Play",
+      "لإخفاء ملاحظات الإصدار",
+      "للتوقف إذا ظهرت مشكلة جديدة"
+    ],
+    "answer": 3,
+    "explanationEn": "Watch vitals at each step.",
+    "explanationAr": "راقب vitals عند كل خطوة."
+  },
+  {
+    "key": "qz-and-qa-crashes-8",
+    "topic": "and-qa-crashes",
+    "questionEn": "Which tool catches main-thread disk access in debug?",
+    "questionAr": "أي أداة تكشف الوصول إلى القرص على الخيط الرئيسي في debug؟",
+    "optionsEn": [
+      "ProGuard",
+      "Glance",
+      "StrictMode",
+      "Crashlytics"
+    ],
+    "optionsAr": [
+      "ProGuard",
+      "Glance",
+      "StrictMode",
+      "Crashlytics"
+    ],
+    "answer": 2,
+    "explanationEn": "It logs or crashes on violations.",
+    "explanationAr": "تسجّل المخالفات أو تُسقط التطبيق عندها."
+  }
+]

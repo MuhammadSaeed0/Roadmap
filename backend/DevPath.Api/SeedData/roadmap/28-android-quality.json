@@ -1,0 +1,269 @@
+{
+  "slug": "android-quality",
+  "order": 28,
+  "titleEn": "Testing and app quality",
+  "titleAr": "الاختبار وجودة التطبيق",
+  "descriptionEn": "Ship apps that keep working: a test strategy with fakes instead of mocks where it counts, fast unit tests for ViewModels and repositories, instrumented and Hilt integration tests, screenshot tests that catch visual regressions, performance work with Macrobenchmark and Baseline Profiles, static analysis with Lint and detekt, and finding and fixing crashes and ANRs in production.",
+  "descriptionAr": "اشحن تطبيقات تستمر في العمل: استراتيجية اختبار تستخدم البدائل الوهمية بدل المحاكاة حيث يهم ذلك، واختبارات وحدة سريعة لـ ViewModel والمستودعات، واختبارات تكامل على الجهاز ومع Hilt، واختبارات لقطات شاشة تكشف التراجعات المرئية، وتحسين الأداء بـ Macrobenchmark وBaseline Profiles، والتحليل الثابت بـ Lint وdetekt، وإيجاد الانهيارات وحالات ANR في الإنتاج وإصلاحها.",
+  "topics": [
+    {
+      "slug": "and-qa-strategy",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 40,
+      "difficulty": "Intermediate",
+      "titleEn": "A test strategy for Android apps",
+      "titleAr": "استراتيجية اختبار لتطبيقات Android",
+      "summaryEn": "Good Android test suites are shaped like a pyramid: many fast local unit tests on the JVM (ViewModels, use cases, repositories, mappers), fewer integration tests (Room, WorkManager, Hilt wiring, Retrofit with MockWebServer), and a small number of end-to-end UI tests on devices for the critical journeys. Test doubles make this possible: fakes are small working implementations (an in-memory repository), stubs return fixed answers, and mocks verify calls. Prefer fakes for your own interfaces; they make tests readable and survive refactoring.",
+      "summaryAr": "مجموعات اختبار Android الجيدة على شكل هرم: اختبارات وحدة محلية سريعة كثيرة على JVM (‏ViewModel وحالات الاستخدام والمستودعات والمحوّلات)، واختبارات تكامل أقل (‏Room وWorkManager وتوصيلات Hilt وRetrofit مع MockWebServer)، وعدد قليل من اختبارات الواجهة الشاملة على الأجهزة للمسارات الحرجة. والبدائل الاختبارية تجعل ذلك ممكنًا: البدائل الوهمية تنفيذات صغيرة تعمل (مستودع في الذاكرة)، والبدائل الثابتة تُرجع إجابات محددة، والمحاكاة تتحقق من الاستدعاءات. وفضّل البدائل الوهمية لواجهاتك، فهي تجعل الاختبارات مقروءة وتنجو من إعادة الهيكلة.",
+      "whyEn": "Without a strategy, teams either have no tests or a slow, flaky suite that nobody trusts. A clear pyramid keeps feedback in seconds, catches regressions before users do and makes refactoring safe.",
+      "whyAr": "دون استراتيجية، إما ألا تملك الفرق اختبارات، أو تملك مجموعة بطيئة وغير مستقرة لا يثق بها أحد. والهرم الواضح يُبقي النتيجة خلال ثوانٍ، ويكشف التراجعات قبل المستخدمين، ويجعل إعادة الهيكلة آمنة.",
+      "howEn": "Design for testability: inject dependencies (Hilt or constructors), depend on interfaces at layer boundaries, inject dispatchers and clocks. Test behaviour, not implementation details. Name tests after the behaviour, follow Arrange-Act-Assert, keep each test independent, and run unit tests on every push and device tests on main or nightly. Decide coverage by risk, not by a number.",
+      "howAr": "صمّم لقابلية الاختبار: احقن الاعتماديات (‏Hilt أو المُنشئات)، واعتمد على الواجهات عند حدود الطبقات، واحقن الـ Dispatchers والساعات. واختبر السلوك لا تفاصيل التنفيذ. وسمِّ الاختبارات باسم السلوك، واتبع ترتيب التهيئة ثم التنفيذ ثم التحقق، واجعل كل اختبار مستقلًا، وشغّل اختبارات الوحدة مع كل دفع واختبارات الأجهزة على main أو ليلًا. وحدد التغطية حسب الخطر لا حسب رقم.",
+      "exampleEn": "A banking app's suite: 600 JVM tests in 40 seconds for ViewModels, validators and mappers; 60 instrumented tests for Room migrations, the WorkManager sync and Hilt modules; and 8 end-to-end journeys (sign in, transfer, pay a bill) on two emulator API levels in CI every night.",
+      "exampleAr": "مجموعة اختبارات تطبيق مصرفي: ‏600 اختبار على JVM في 40 ثانية لـ ViewModel والمتحققات والمحوّلات، و60 اختبارًا على الجهاز لترحيلات Room ومزامنة WorkManager ووحدات Hilt، و8 مسارات شاملة (تسجيل الدخول والتحويل ودفع فاتورة) على مستويين من المحاكي في CI كل ليلة.",
+      "practiceEn": "1) Draw your app's test pyramid. 2) Replace one mock with a fake. 3) Inject a clock into a class that uses System.currentTimeMillis.",
+      "practiceAr": "1) ارسم هرم الاختبارات لتطبيقك. 2) استبدل محاكاة واحدة ببديل وهمي. 3) احقن ساعة في صنف يستخدم System.currentTimeMillis.",
+      "challengeEn": "Write a testing guide for your team: folders and naming, which doubles to use where, what runs on each CI stage, and a checklist for reviewing tests in pull requests.",
+      "challengeAr": "اكتب دليل اختبار لفريقك: المجلدات والتسمية، وأي البدائل تُستخدم وأين، وما يعمل في كل مرحلة من CI، وقائمة فحص لمراجعة الاختبارات في طلبات الدمج.",
+      "objectivesEn": [
+        "Explain the Android test pyramid",
+        "Choose between fakes, stubs and mocks",
+        "Design code for testability",
+        "Plan what runs where in CI"
+      ],
+      "objectivesAr": [
+        "شرح هرم الاختبارات في Android",
+        "الاختيار بين البدائل الوهمية والثابتة والمحاكاة",
+        "تصميم الكود لقابلية الاختبار",
+        "تخطيط ما يعمل وأين في CI"
+      ],
+      "prerequisites": [
+        "and-arch-di-hilt",
+        "kt-coroutines-testing"
+      ]
+    },
+    {
+      "slug": "and-qa-unit",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 55,
+      "difficulty": "Intermediate",
+      "titleEn": "Unit testing ViewModels and repositories",
+      "titleAr": "اختبار الوحدة لـ ViewModel والمستودعات",
+      "summaryEn": "Local unit tests run on the JVM in src/test with JUnit 4 or 5, and can use kotlinx-coroutines-test, Turbine, and assertion libraries like Truth or AssertK. A ViewModel test replaces Dispatchers.Main with a test dispatcher, gives the ViewModel fake repositories, triggers events and asserts the StateFlow's states and one-off events. Repository tests use fake data sources or MockWebServer. MockK can mock Kotlin classes when a fake would be heavy, and Robolectric runs Android framework code on the JVM when you can't avoid it.",
+      "summaryAr": "تعمل اختبارات الوحدة المحلية على JVM في src/test مع JUnit 4 أو 5، ويمكنها استخدام kotlinx-coroutines-test وTurbine ومكتبات التحقق مثل Truth أو AssertK. ويستبدل اختبار ViewModel الـ Dispatcher المسمى Dispatchers.Main بـ Dispatcher اختبار، ويعطي ViewModel مستودعات وهمية، ويطلق الأحداث، ويتحقق من حالات StateFlow والأحداث لمرة واحدة. وتستخدم اختبارات المستودع مصادر بيانات وهمية أو MockWebServer. وتستطيع MockK محاكاة أصناف Kotlin عندما يكون البديل الوهمي ثقيلًا، وتشغّل Robolectric كود إطار Android على JVM عندما لا تستطيع تجنبه.",
+      "whyEn": "Most bugs live in state logic: a loading flag that never resets, an error that hides the data, a double tap that sends twice. JVM tests catch these in milliseconds, run on every commit and document how each screen is supposed to behave.",
+      "whyAr": "معظم الأخطاء تعيش في منطق الحالة: علامة تحميل لا تُعاد أبدًا، أو خطأ يخفي البيانات، أو ضغط مزدوج يرسل مرتين. واختبارات JVM تكشفها في أجزاء من الثانية، وتعمل مع كل commit، وتوثّق كيف يُفترض أن تتصرف كل شاشة.",
+      "howEn": "Keep ViewModels free of Android types so they test on the JVM. Write one test per behaviour: initial state, success, empty, error, retry, and edge cases like rapid input. Build fakes that record calls and can be told to fail. Use runTest and a MainDispatcherRule, assert full state objects rather than single fields, and use Turbine for flows and channels.",
+      "howAr": "أبقِ ViewModel خالية من أنواع Android حتى تُختبر على JVM. واكتب اختبارًا واحدًا لكل سلوك: الحالة الأولية، والنجاح، والفراغ، والخطأ، وإعادة المحاولة، والحالات الحدية مثل الإدخال السريع. وابنِ بدائل وهمية تسجّل الاستدعاءات ويمكن إخبارها بالفشل. واستخدم runTest وMainDispatcherRule، وتحقق من كائنات الحالة كاملة بدل حقول مفردة، واستخدم Turbine للتدفقات والقنوات.",
+      "exampleEn": "A checkout ViewModel test suite: totals update when quantities change, an invalid coupon shows an inline error and keeps the cart, \"Pay\" disables itself while the request runs so a double tap sends one request, and a network failure shows Retry; all with a FakeCartRepository and FakePaymentApi in under a second.",
+      "exampleAr": "مجموعة اختبارات لـ ViewModel الدفع: تتحدث الإجماليات عند تغيّر الكميات، والقسيمة غير الصالحة تعرض خطأ في مكانها وتُبقي السلة، وزر «ادفع» يعطّل نفسه أثناء الطلب فيرسل الضغط المزدوج طلبًا واحدًا، وعطل الشبكة يعرض إعادة المحاولة، وكلها مع FakeCartRepository وFakePaymentApi في أقل من ثانية.",
+      "practiceEn": "1) Write a MainDispatcherRule. 2) Test a ViewModel's loading, success and error states. 3) Write a fake repository that can be told to fail.",
+      "practiceAr": "1) اكتب MainDispatcherRule. 2) اختبر حالات التحميل والنجاح والخطأ في ViewModel. 3) اكتب مستودعًا وهميًا يمكن إخباره بالفشل.",
+      "challengeEn": "Take a ViewModel without tests, write a full behaviour suite with fakes, find at least one real bug, fix it, and keep the suite under two seconds.",
+      "challengeAr": "خذ ViewModel دون اختبارات، واكتب لها مجموعة سلوكية كاملة ببدائل وهمية، وأوجد خطأً حقيقيًا واحدًا على الأقل، وأصلحه، وأبقِ المجموعة تحت ثانيتين.",
+      "objectivesEn": [
+        "Test ViewModels with coroutines and Turbine",
+        "Write fakes for repositories and APIs",
+        "Use MockK and Robolectric only where they help",
+        "Cover states and edge cases"
+      ],
+      "objectivesAr": [
+        "اختبار ViewModel مع الـ Coroutines وTurbine",
+        "كتابة بدائل وهمية للمستودعات والواجهات البرمجية",
+        "استخدام MockK وRobolectric فقط حيث تفيدان",
+        "تغطية الحالات والحالات الحدية"
+      ],
+      "prerequisites": [
+        "and-qa-strategy",
+        "and-arch-mvvm"
+      ]
+    },
+    {
+      "slug": "and-qa-integration",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Advanced",
+      "titleEn": "Instrumented, Hilt and end-to-end tests",
+      "titleAr": "الاختبارات على الجهاز ومع Hilt والشاملة",
+      "summaryEn": "Instrumented tests in src/androidTest run on a device or emulator with the real Android framework. Use them for things the JVM can't check: Room queries and migrations, WorkManager with WorkManagerTestInitHelper, Hilt wiring with HiltAndroidTest and @TestInstallIn modules that swap real dependencies for fakes, permissions, and full screens with createAndroidComposeRule. End-to-end tests drive the app like a user, across screens and even other apps with UI Automator. Gradle Managed Devices run emulators from Gradle in CI, and the Android Test Orchestrator isolates each test.",
+      "summaryAr": "تعمل الاختبارات على الجهاز في src/androidTest على جهاز أو محاكٍ مع إطار Android الحقيقي. فاستخدمها لما لا يستطيع JVM فحصه: استعلامات Room وترحيلاتها، وWorkManager مع WorkManagerTestInitHelper، وتوصيلات Hilt مع HiltAndroidTest ووحدات @TestInstallIn التي تستبدل الاعتماديات الحقيقية ببدائل وهمية، والأذونات، والشاشات الكاملة مع createAndroidComposeRule. وتقود الاختبارات الشاملة التطبيق كمستخدم، عبر الشاشات وحتى عبر تطبيقات أخرى بـ UI Automator. وتشغّل Gradle Managed Devices المحاكيات من Gradle في CI، ويعزل Android Test Orchestrator كل اختبار.",
+      "whyEn": "Some of the worst bugs only appear on a real device: a migration that fails on SQLite, a Hilt binding missing in release wiring, a worker that never runs, a sign-in journey broken by a navigation change. A small set of device tests catches them before release.",
+      "whyAr": "بعض أسوأ الأخطاء لا يظهر إلا على جهاز حقيقي: ترحيل يفشل على SQLite، أو ربط Hilt مفقود في توصيلات الإصدار، أو Worker لا يعمل أبدًا، أو مسار تسجيل دخول كسره تغيير في التنقل. ومجموعة صغيرة من اختبارات الجهاز تكشفها قبل الإصدار.",
+      "howEn": "Keep device tests focused and few. Replace network and time with fakes through @TestInstallIn, use in-memory databases, give each test its own state, wait with Compose's idling instead of sleeps, and use test tags for stable selectors. Run them on a Gradle Managed Device in CI, retry only genuinely flaky infrastructure, and track flaky tests as bugs.",
+      "howAr": "اجعل اختبارات الجهاز مركّزة وقليلة. واستبدل الشبكة والوقت ببدائل وهمية عبر @TestInstallIn، واستخدم قواعد بيانات في الذاكرة، وأعطِ كل اختبار حالته الخاصة، وانتظر بآلية الخمول في Compose بدل التأخيرات، واستخدم وسوم الاختبار لمحددات مستقرة. وشغّلها على Gradle Managed Device في CI، ولا تُعِد إلا ما كان غير مستقر بسبب البنية التحتية فعلًا، وتتبّع الاختبارات غير المستقرة كأخطاء.",
+      "exampleEn": "A shopping app's end-to-end test launches MainActivity with Hilt replacing the API with a fake catalogue, searches for \"mug\", adds one to the cart, signs in on the checkout screen and confirms the order screen shows the right total, all on a Pixel 6 API 34 managed device in CI.",
+      "exampleAr": "اختبار شامل لتطبيق تسوق يشغّل MainActivity مع استبدال Hilt للواجهة البرمجية بفهرس وهمي، ويبحث عن «كوب»، ويضيف واحدًا إلى السلة، ويسجّل الدخول في شاشة الدفع، ويتأكد أن شاشة الطلب تعرض الإجمالي الصحيح، وكل ذلك على جهاز مُدار Pixel 6 بالواجهة 34 في CI.",
+      "practiceEn": "1) Write a HiltAndroidTest that swaps the repository with a fake. 2) Test a WorkManager worker with the test helper. 3) Run tests on a Gradle Managed Device.",
+      "practiceAr": "1) اكتب HiltAndroidTest يستبدل المستودع ببديل وهمي. 2) اختبر Worker بأداة الاختبار المساعدة. 3) شغّل الاختبارات على Gradle Managed Device.",
+      "challengeEn": "Write three end-to-end journeys for an app you built, run them in CI on two API levels with the Test Orchestrator, and make them pass 50 runs in a row.",
+      "challengeAr": "اكتب ثلاثة مسارات شاملة لتطبيق بنيته، وشغّلها في CI على مستويين من الواجهة مع Test Orchestrator، واجعلها تنجح 50 مرة متتالية.",
+      "objectivesEn": [
+        "Write instrumented tests for Room, WorkManager and screens",
+        "Replace dependencies with @TestInstallIn",
+        "Drive journeys end to end",
+        "Run device tests reliably in CI"
+      ],
+      "objectivesAr": [
+        "كتابة اختبارات على الجهاز لـ Room وWorkManager والشاشات",
+        "استبدال الاعتماديات بـ @TestInstallIn",
+        "قيادة المسارات من البداية إلى النهاية",
+        "تشغيل اختبارات الجهاز بموثوقية في CI"
+      ],
+      "prerequisites": [
+        "and-qa-unit",
+        "and-compose-testing",
+        "and-data-room-basics"
+      ]
+    },
+    {
+      "slug": "and-qa-screenshot",
+      "skill": "Android",
+      "priority": "Optional",
+      "minutes": 35,
+      "difficulty": "Intermediate",
+      "titleEn": "Screenshot testing",
+      "titleAr": "اختبار لقطات الشاشة",
+      "summaryEn": "Screenshot tests render a composable and compare the image with a stored reference, failing when pixels change. They catch visual regressions that assertions miss: a padding change, a broken dark theme, text overflowing in Arabic or at large font sizes. Compose Preview Screenshot Testing turns @Preview functions into tests run by Gradle; Roborazzi and Paparazzi render on the JVM without a device. You record references once, review diffs in pull requests and update references when a change is intentional.",
+      "summaryAr": "تعرض اختبارات لقطات الشاشة دالة composable وتقارن الصورة بمرجع محفوظ، وتفشل عندما تتغير البكسلات. فتكشف التراجعات المرئية التي تفوتها التحققات: تغيير في الحشو، أو سمة داكنة معطوبة، أو نص يفيض بالعربية أو بأحجام الخط الكبيرة. وتحوّل Compose Preview Screenshot Testing دوال @Preview إلى اختبارات يشغّلها Gradle، وتعرض Roborazzi وPaparazzi على JVM دون جهاز. فتسجّل المراجع مرة، وتراجع الفروق في طلبات الدمج، وتحدّث المراجع عندما يكون التغيير مقصودًا.",
+      "whyEn": "UIs break quietly. Someone changes a shared component and three screens look wrong in right-to-left or dark mode, and nobody notices until a user posts a screenshot. Screenshot tests make every visual change explicit in review.",
+      "whyAr": "الواجهات تنكسر بهدوء. فيغيّر شخص مكوّنًا مشتركًا فتبدو ثلاث شاشات خاطئة بالاتجاه من اليمين إلى اليسار أو في الوضع الداكن، ولا يلاحظ أحد حتى ينشر مستخدم لقطة شاشة. واختبارات اللقطات تجعل كل تغيير مرئي صريحًا في المراجعة.",
+      "howEn": "Screenshot components and key screens in their important variations: light and dark, LTR and RTL, font scale 1.0 and 2.0, phone and tablet widths, loading, empty and error states. Use fake data and fixed clocks so images are stable, keep references in the repository, and run the verify task in CI.",
+      "howAr": "التقط لقطات المكونات والشاشات الأساسية في تنويعاتها المهمة: الفاتح والداكن، ومن اليسار إلى اليمين ومن اليمين إلى اليسار، ومقياس الخط 1.0 و2.0، وعرض الهاتف واللوح، وحالات التحميل والفراغ والخطأ. واستخدم بيانات وهمية وساعات ثابتة حتى تستقر الصور، واحفظ المراجع في المستودع، وشغّل مهمة التحقق في CI.",
+      "exampleEn": "A design-system team adds screenshot tests for Button, TextField and Card in light, dark, Arabic RTL and 200% font size. A pull request that shortens a padding token shows red diffs on 12 images, the reviewer sees exactly what changed, and the author updates the references on purpose.",
+      "exampleAr": "فريق نظام تصميم يضيف اختبارات لقطات لـ Button وTextField وCard في الفاتح والداكن والعربية من اليمين إلى اليسار وحجم خط 200%. فيُظهر طلب دمج يقصّر قيمة حشو فروقًا حمراء في 12 صورة، ويرى المراجع بالضبط ما تغيّر، ويحدّث صاحب التغيير المراجع عن قصد.",
+      "practiceEn": "1) Add a screenshot test for a card composable. 2) Add dark and RTL variants with a multi-preview annotation. 3) Break the padding and read the diff.",
+      "practiceAr": "1) أضف اختبار لقطة لدالة composable لبطاقة. 2) أضف تنويعي الداكن ومن اليمين إلى اليسار بتعليق معاينات متعددة. 3) اكسر الحشو واقرأ الفرق.",
+      "challengeEn": "Cover your app's five most important screens in loading, content, empty and error states, light and dark, and run verification in CI with references reviewed in pull requests.",
+      "challengeAr": "غطِّ أهم خمس شاشات في تطبيقك في حالات التحميل والمحتوى والفراغ والخطأ، فاتحة وداكنة، وشغّل التحقق في CI مع مراجعة المراجع في طلبات الدمج.",
+      "objectivesEn": [
+        "Explain what screenshot tests catch",
+        "Write Compose preview screenshot tests",
+        "Cover theme, direction and font scale",
+        "Review and update references"
+      ],
+      "objectivesAr": [
+        "شرح ما تكشفه اختبارات اللقطات",
+        "كتابة اختبارات لقطات لمعاينات Compose",
+        "تغطية السمة والاتجاه ومقياس الخط",
+        "مراجعة المراجع وتحديثها"
+      ],
+      "prerequisites": [
+        "and-compose-theming",
+        "and-qa-unit"
+      ]
+    },
+    {
+      "slug": "and-qa-performance",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 55,
+      "difficulty": "Advanced",
+      "titleEn": "Performance: startup, jank and Baseline Profiles",
+      "titleAr": "الأداء: البدء والتقطع وBaseline Profiles",
+      "summaryEn": "Performance is measured, not guessed. Macrobenchmark runs your release-like app from a separate test module and measures startup time (cold, warm, hot), frame timing while scrolling and custom traces. Baseline Profiles list the code paths used at startup and in key journeys so ART compiles them ahead of time, often making startup and first scrolls 20 to 30 percent faster; the Baseline Profile Gradle plugin generates them with a Macrobenchmark journey. JankStats and Android vitals show slow and frozen frames from real users, and the Compose compiler reports and Layout Inspector reveal unnecessary recomposition.",
+      "summaryAr": "الأداء يُقاس ولا يُخمّن. فتشغّل Macrobenchmark تطبيقك الشبيه بالإصدار من وحدة اختبار منفصلة، وتقيس زمن البدء (البارد والدافئ والساخن)، وتوقيت الإطارات أثناء التمرير، والتتبعات المخصصة. وتسرد Baseline Profiles مسارات الكود المستخدمة عند البدء وفي المسارات الأساسية حتى تترجمها ART مسبقًا، فيصبح البدء وأول تمرير أسرع غالبًا بنسبة 20 إلى 30 في المئة، وتولّدها إضافة Baseline Profile في Gradle بمسار Macrobenchmark. وتُظهر JankStats وAndroid vitals الإطارات البطيئة والمتجمدة من المستخدمين الحقيقيين، وتكشف تقارير مترجم Compose وLayout Inspector إعادة التركيب غير اللازمة.",
+      "whyEn": "Slow startup and janky scrolling cost users and Play ranking; Android vitals thresholds can reduce your app's visibility. Measuring in CI stops performance from silently getting worse release after release.",
+      "whyAr": "البدء البطيء والتمرير المتقطع يكلّفان المستخدمين وترتيب Play، وقد تقلل عتبات Android vitals ظهور تطبيقك. والقياس في CI يمنع الأداء من التدهور بصمت إصدارًا بعد إصدار.",
+      "howEn": "Measure release builds on real or managed devices, never debug builds. Generate a Baseline Profile covering startup and the top journeys and regenerate it each release. Defer non-essential startup work with lazy init or App Startup, keep work off the main thread, give LazyColumn items stable keys and content types, make state classes stable or immutable, and use derivedStateOf for expensive derived values.",
+      "howAr": "قِس بناءات الإصدار على أجهزة حقيقية أو مُدارة، ولا تقِس بناءات debug أبدًا. وولّد Baseline Profile يغطي البدء وأهم المسارات، وأعد توليده مع كل إصدار. وأجّل عمل البدء غير الضروري بالتهيئة الكسولة أو App Startup، وأبقِ العمل خارج الخيط الرئيسي، وأعطِ عناصر LazyColumn مفاتيح ثابتة وأنواع محتوى، واجعل أصناف الحالة مستقرة أو غير قابلة للتغيير، واستخدم derivedStateOf للقيم المشتقة المكلفة.",
+      "exampleEn": "A news app measured a 1.9 s cold start and 8 percent janky frames in the feed. Moving analytics and remote config init off the main thread, adding a Baseline Profile and fixing unstable list item parameters brought it to 1.1 s and under 1 percent, verified by a Macrobenchmark in CI that fails if startup regresses by more than 10 percent.",
+      "exampleAr": "قاس تطبيق أخبار بدءًا باردًا بزمن 1.9 ثانية و8 في المئة من الإطارات المتقطعة في التدفق. فنقل تهيئة التحليلات والإعدادات البعيدة خارج الخيط الرئيسي، وأضاف Baseline Profile، وأصلح معاملات غير مستقرة لعناصر القائمة، فوصل إلى 1.1 ثانية وأقل من 1 في المئة، وتحقق من ذلك Macrobenchmark في CI يفشل إذا تراجع البدء أكثر من 10 في المئة.",
+      "practiceEn": "1) Add a Macrobenchmark module and measure cold startup. 2) Generate a Baseline Profile and measure again. 3) Find one unnecessary recomposition with Layout Inspector.",
+      "practiceAr": "1) أضف وحدة Macrobenchmark وقِس البدء البارد. 2) ولّد Baseline Profile وقِس مجددًا. 3) أوجد إعادة تركيب غير لازمة واحدة بـ Layout Inspector.",
+      "challengeEn": "Set a performance budget for startup and scroll jank, enforce it in CI with Macrobenchmark on a managed device, and write up the before-and-after numbers of three fixes.",
+      "challengeAr": "ضع ميزانية أداء للبدء وتقطع التمرير، وافرضها في CI بـ Macrobenchmark على جهاز مُدار، واكتب أرقام قبل وبعد لثلاثة إصلاحات.",
+      "objectivesEn": [
+        "Measure startup and jank with Macrobenchmark",
+        "Generate and ship Baseline Profiles",
+        "Fix common Compose performance issues",
+        "Track performance in CI and vitals"
+      ],
+      "objectivesAr": [
+        "قياس البدء والتقطع بـ Macrobenchmark",
+        "توليد Baseline Profiles وشحنها",
+        "إصلاح مشكلات أداء Compose الشائعة",
+        "تتبع الأداء في CI وvitals"
+      ],
+      "prerequisites": [
+        "and-compose-lists",
+        "kt-coroutines-dispatchers"
+      ]
+    },
+    {
+      "slug": "and-qa-static",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 35,
+      "difficulty": "Intermediate",
+      "titleEn": "Lint, detekt and code review",
+      "titleAr": "أدوات Lint وdetekt ومراجعة الكود",
+      "summaryEn": "Static analysis finds bugs without running the app. Android Lint knows the platform: missing permissions checks, API calls above minSdk, hard-coded text, accessibility issues, wrong PendingIntent flags and more, and can be extended with custom checks. detekt checks Kotlin code smells and complexity, and ktlint or Spotless enforce formatting. A lint baseline lets an old project adopt rules without fixing everything at once. Together with coverage reports (Kover or JaCoCo) and clear review guidelines, they keep quality consistent as the team grows.",
+      "summaryAr": "يكشف التحليل الثابت الأخطاء دون تشغيل التطبيق. فـ Android Lint يعرف النظام: فحوصات الأذونات المفقودة، واستدعاءات واجهات أعلى من minSdk، والنصوص المكتوبة في الكود، ومشكلات الإتاحة، وعلامات PendingIntent الخاطئة وغيرها، ويمكن توسيعه بفحوصات مخصصة. ويفحص detekt روائح كود Kotlin وتعقيده، ويفرض ktlint أو Spotless التنسيق. ويسمح خط أساس Lint لمشروع قديم بتبني القواعد دون إصلاح كل شيء دفعة واحدة. ومع تقارير التغطية (‏Kover أو JaCoCo) وإرشادات مراجعة واضحة، تحافظ على اتساق الجودة مع نمو الفريق.",
+      "whyEn": "Reviewers miss things and argue about style. Automated checks catch a whole class of bugs for free on every pull request, end formatting debates and let human reviewers focus on design and behaviour.",
+      "whyAr": "يفوّت المراجعون أشياء ويتجادلون في الأسلوب. والفحوصات الآلية تكشف فئة كاملة من الأخطاء مجانًا في كل طلب دمج، وتنهي الجدل حول التنسيق، وتترك المراجعين البشريين يركزون على التصميم والسلوك.",
+      "howEn": "Run lint, detekt and formatting in CI and fail the build on errors. Treat important lint warnings as errors in lint.xml, adopt a baseline for legacy issues and shrink it over time, add custom lint rules for team conventions, and keep review comments for things tools can't judge: naming, architecture, edge cases and tests.",
+      "howAr": "شغّل lint وdetekt والتنسيق في CI وأفشل البناء عند الأخطاء. واعتبر تحذيرات lint المهمة أخطاء في lint.xml، وتبنَّ خط أساس للمشكلات القديمة وقلّصه مع الوقت، وأضف قواعد lint مخصصة لأعراف الفريق، واترك تعليقات المراجعة لما لا تستطيع الأدوات الحكم عليه: التسمية والمعمارية والحالات الحدية والاختبارات.",
+      "exampleEn": "A team adds lint, detekt and Spotless to CI with a baseline of 340 existing issues. New code must be clean; each sprint they remove 20 baseline items. A custom lint rule flags Log.d calls outside a debug wrapper, which stopped a token leak from ever reaching release again.",
+      "exampleAr": "فريق يضيف lint وdetekt وSpotless إلى CI مع خط أساس من 340 مشكلة قائمة. ويجب أن يكون الكود الجديد نظيفًا، وفي كل دورة يزيلون 20 بندًا من خط الأساس. وقاعدة lint مخصصة تعلّم استدعاءات Log.d خارج غلاف debug، فمنعت تسرب رمز من الوصول إلى الإصدار مرة أخرى.",
+      "practiceEn": "1) Run lint and fix three warnings. 2) Add detekt with a baseline. 3) Configure Spotless with ktlint and run it in CI.",
+      "practiceAr": "1) شغّل lint وأصلح ثلاثة تحذيرات. 2) أضف detekt مع خط أساس. 3) اضبط Spotless مع ktlint وشغّله في CI.",
+      "challengeEn": "Write a custom lint rule for a convention in your codebase (for example, no direct Dispatchers.IO outside the data layer), with a test, and add it to CI.",
+      "challengeAr": "اكتب قاعدة lint مخصصة لعُرف في قاعدة كودك (مثلًا: لا استخدام مباشر لـ Dispatchers.IO خارج طبقة البيانات)، مع اختبار، وأضفها إلى CI.",
+      "objectivesEn": [
+        "Run and configure Android Lint",
+        "Use detekt and a formatter",
+        "Adopt baselines in legacy code",
+        "Review code effectively"
+      ],
+      "objectivesAr": [
+        "تشغيل Android Lint وضبطه",
+        "استخدام detekt وأداة تنسيق",
+        "تبني خطوط الأساس في الكود القديم",
+        "مراجعة الكود بفاعلية"
+      ],
+      "prerequisites": [
+        "and-build-release-basics"
+      ]
+    },
+    {
+      "slug": "and-qa-crashes",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Crashes, ANRs and production debugging",
+      "titleAr": "الانهيارات وحالات ANR والتصحيح في الإنتاج",
+      "summaryEn": "Users rarely report crashes; tools do. Firebase Crashlytics or Sentry collect crash stack traces, ANRs and non-fatal errors with device and app-version context, and Play Console's Android vitals show crash and ANR rates that affect store visibility. ANRs happen when the main thread is blocked for about five seconds; their traces show what it was waiting on. Good production debugging combines deobfuscated stack traces (upload the R8 mapping), breadcrumbs and custom keys, staged rollouts and the ability to reproduce on the same device type and Android version.",
+      "summaryAr": "نادرًا ما يبلّغ المستخدمون عن الانهيارات، بل تفعل الأدوات. فتجمع Firebase Crashlytics أو Sentry تتبعات الانهيار وحالات ANR والأخطاء غير القاتلة مع سياق الجهاز وإصدار التطبيق، وتُظهر Android vitals في Play Console معدلات الانهيار وANR التي تؤثر في الظهور في المتجر. وتحدث ANR عندما يُحجب الخيط الرئيسي نحو خمس ثوانٍ، وتُظهر تتبعاتها ما كان ينتظره. والتصحيح الجيد في الإنتاج يجمع تتبعات الانهيار بعد فك التمويه (برفع ملف التحويل من R8)، والمسارات والمفاتيح المخصصة، والنشر التدريجي، والقدرة على إعادة الإنتاج على نوع الجهاز وإصدار Android نفسيهما.",
+      "whyEn": "Play flags apps whose user-perceived crash rate exceeds about 1.09 percent or ANR rate exceeds about 0.47 percent, and users uninstall apps that crash. Finding the top crash and fixing it is often the highest-value work in a release.",
+      "whyAr": "تعلّم Play التطبيقات التي يتجاوز معدل الانهيار الذي يلاحظه المستخدم فيها نحو 1.09 في المئة أو معدل ANR نحو 0.47 في المئة، ويحذف المستخدمون التطبيقات التي تنهار. وإيجاد أكثر انهيار تكرارًا وإصلاحه غالبًا أعلى عمل قيمة في الإصدار.",
+      "howEn": "Integrate one crash reporter early, upload mapping files automatically, add breadcrumbs for key user actions and custom keys like screen and feature flags, and never log personal data. Triage by users affected, not by count. Reproduce with the same OS and device class, add a test for the bug, ship the fix in a staged rollout and watch the crash-free rate. Treat ANRs as main-thread bugs and fix them with profiling and StrictMode.",
+      "howAr": "ادمج أداة تقارير انهيار واحدة مبكرًا، وارفع ملفات التحويل تلقائيًا، وأضف مسارات لإجراءات المستخدم الأساسية ومفاتيح مخصصة مثل الشاشة وعلامات الميزات، ولا تسجّل بيانات شخصية أبدًا. ورتّب الأولويات حسب عدد المستخدمين المتأثرين لا حسب العدد الكلي. وأعد الإنتاج على نظام التشغيل وفئة الجهاز نفسيهما، وأضف اختبارًا للخطأ، واشحن الإصلاح بنشر تدريجي وراقب نسبة الجلسات الخالية من الانهيار. وعامل حالات ANR كأخطاء في الخيط الرئيسي، وأصلحها بالتحليل وStrictMode.",
+      "exampleEn": "After a release, Crashlytics shows a new IllegalStateException in the checkout screen on Android 14 only, affecting 2 percent of users. Breadcrumbs show it happens after returning from the payment app; the team reproduces it with \"Don't keep activities\", fixes the missing SavedStateHandle restore, adds a test, and halts the rollout until the fix ships.",
+      "exampleAr": "بعد إصدار تُظهر Crashlytics استثناء IllegalStateException جديدًا في شاشة الدفع على Android 14 فقط، يصيب 2 في المئة من المستخدمين. وتُظهر المسارات أنه يحدث بعد العودة من تطبيق الدفع، فيعيد الفريق إنتاجه بخيار «Don't keep activities»، ويصلح استعادة SavedStateHandle المفقودة، ويضيف اختبارًا، ويوقف النشر حتى يُشحن الإصلاح.",
+      "practiceEn": "1) Add Crashlytics or Sentry and send a test crash. 2) Add breadcrumbs and custom keys. 3) Read an ANR trace in Play Console or a sample and find the blocking call.",
+      "practiceAr": "1) أضف Crashlytics أو Sentry وأرسل انهيارًا تجريبيًا. 2) أضف مسارات ومفاتيح مخصصة. 3) اقرأ تتبع ANR في Play Console أو عينة وأوجد الاستدعاء المعطِّل.",
+      "challengeEn": "Take the top three crashes of a real or sample app, write a reproduction, a failing test and a fix for each, and describe how you'd verify them with a staged rollout.",
+      "challengeAr": "خذ أكثر ثلاثة انهيارات في تطبيق حقيقي أو نموذجي، واكتب لكل منها إعادة إنتاج واختبارًا فاشلًا وإصلاحًا، وصِف كيف تتحقق منها بنشر تدريجي.",
+      "objectivesEn": [
+        "Set up crash and ANR reporting",
+        "Read and deobfuscate stack traces",
+        "Reproduce and fix production bugs",
+        "Use vitals and staged rollouts"
+      ],
+      "objectivesAr": [
+        "إعداد تقارير الانهيار وANR",
+        "قراءة تتبعات الانهيار وفك تمويهها",
+        "إعادة إنتاج أخطاء الإنتاج وإصلاحها",
+        "استخدام vitals والنشر التدريجي"
+      ],
+      "prerequisites": [
+        "and-debugging",
+        "and-sec-code"
+      ]
+    }
+  ]
+}

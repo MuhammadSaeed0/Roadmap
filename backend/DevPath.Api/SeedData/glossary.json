@@ -1895,5 +1895,89 @@
     "shortEn": "The Jetpack library for building app widgets with a Compose-like API.",
     "shortAr": "مكتبة Jetpack لبناء أدوات التطبيق بواجهة تشبه Compose.",
     "topicSlug": "and-dev-widgets"
+  },
+  {
+    "term": "test pyramid",
+    "arabic": "هرم الاختبارات",
+    "shortEn": "A test suite shape with many fast unit tests, fewer integration tests and few end-to-end tests.",
+    "shortAr": "شكل لمجموعة الاختبارات فيه اختبارات وحدة سريعة كثيرة، واختبارات تكامل أقل، واختبارات شاملة قليلة.",
+    "topicSlug": "and-qa-strategy"
+  },
+  {
+    "term": "test double",
+    "arabic": "البديل الاختباري",
+    "shortEn": "Any object that replaces a real dependency in a test: a fake, stub or mock.",
+    "shortAr": "أي كائن يحل محل اعتمادية حقيقية في الاختبار: بديل وهمي أو ثابت أو محاكاة.",
+    "topicSlug": "and-qa-strategy"
+  },
+  {
+    "term": "fake",
+    "arabic": "البديل الوهمي",
+    "shortEn": "A lightweight working implementation used in tests, such as an in-memory repository.",
+    "shortAr": "تنفيذ خفيف يعمل يُستخدم في الاختبارات، مثل مستودع في الذاكرة.",
+    "topicSlug": "and-qa-strategy"
+  },
+  {
+    "term": "Robolectric",
+    "arabic": "مكتبة Robolectric",
+    "shortEn": "A library that runs Android framework code on the JVM for faster tests.",
+    "shortAr": "مكتبة تشغّل كود إطار Android على JVM لاختبارات أسرع.",
+    "topicSlug": "and-qa-unit"
+  },
+  {
+    "term": "Turbine",
+    "arabic": "مكتبة Turbine",
+    "shortEn": "A small library for testing Kotlin Flows by awaiting each emission in order.",
+    "shortAr": "مكتبة صغيرة لاختبار تدفقات Kotlin بانتظار كل إصدار بالترتيب.",
+    "topicSlug": "and-qa-unit"
+  },
+  {
+    "term": "flaky test",
+    "arabic": "الاختبار غير المستقر",
+    "shortEn": "A test that sometimes passes and sometimes fails without any code change.",
+    "shortAr": "اختبار ينجح أحيانًا ويفشل أحيانًا دون أي تغيير في الكود.",
+    "topicSlug": "and-qa-integration"
+  },
+  {
+    "term": "screenshot test",
+    "arabic": "اختبار لقطة الشاشة",
+    "shortEn": "A test that renders UI and compares the image with a stored reference.",
+    "shortAr": "اختبار يعرض الواجهة ويقارن الصورة بمرجع محفوظ.",
+    "topicSlug": "and-qa-screenshot"
+  },
+  {
+    "term": "Baseline Profile",
+    "arabic": "ملف Baseline Profile",
+    "shortEn": "A list of hot code paths that Android compiles ahead of time to speed up startup and key journeys.",
+    "shortAr": "قائمة بمسارات الكود الساخنة يترجمها Android مسبقًا لتسريع البدء والمسارات الأساسية.",
+    "topicSlug": "and-qa-performance"
+  },
+  {
+    "term": "jank",
+    "arabic": "التقطع",
+    "shortEn": "Visible stutter when frames take too long to draw.",
+    "shortAr": "تعثر ظاهر عندما يستغرق رسم الإطارات وقتًا طويلًا.",
+    "topicSlug": "and-qa-performance"
+  },
+  {
+    "term": "detekt",
+    "arabic": "أداة detekt",
+    "shortEn": "A static analysis tool for Kotlin code smells, complexity and risky patterns.",
+    "shortAr": "أداة تحليل ثابت لروائح كود Kotlin وتعقيده وأنماطه الخطرة.",
+    "topicSlug": "and-qa-static"
+  },
+  {
+    "term": "ANR",
+    "arabic": "حالة ANR",
+    "shortEn": "Application Not Responding: the main thread was blocked for about five seconds.",
+    "shortAr": "التطبيق لا يستجيب: حُجب الخيط الرئيسي نحو خمس ثوانٍ.",
+    "topicSlug": "and-qa-crashes"
+  },
+  {
+    "term": "staged rollout",
+    "arabic": "النشر التدريجي",
+    "shortEn": "Releasing an update to a growing percentage of users so problems can be stopped early.",
+    "shortAr": "إصدار تحديث لنسبة متزايدة من المستخدمين حتى يمكن إيقاف المشكلات مبكرًا.",
+    "topicSlug": "and-qa-crashes"
   }
 ]
