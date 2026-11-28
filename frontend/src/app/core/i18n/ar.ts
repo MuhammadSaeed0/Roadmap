@@ -270,7 +270,7 @@ export const ar: Translations = {
   },
   skills: {
     CSharp: 'C#', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server', TypeScript: 'TypeScript',
-    Angular: 'Angular', FullStack: 'الدمج بين الواجهة والخلفية', Testing: 'الاختبار', Git: 'Git وGitHub', Professional: 'المهارات الاحترافية', DevOps: 'السحابة وDevOps', AI: 'تطبيقات الذكاء الاصطناعي',
+    Angular: 'Angular', FullStack: 'الدمج بين الواجهة والخلفية', Testing: 'الاختبار', Git: 'Git وGitHub', Professional: 'المهارات الاحترافية', DevOps: 'السحابة وDevOps', AI: 'تطبيقات الذكاء الاصطناعي', Kotlin: 'لغة Kotlin', Android: 'تطبيقات Android',
   },
   priority: { Core: 'أساسي', Important: 'مهم', Optional: 'اختياري' },
   topicStatus: { NotStarted: 'لم يبدأ', InProgress: 'قيد التعلم', Completed: 'مكتمل', Skipped: 'أعرفه مسبقًا' },
@@ -293,6 +293,7 @@ export const ar: Translations = {
     TypeScript: 'TypeScript', Angular: 'Angular', RestApi: 'واجهات REST', Testing: 'الاختبار', Git: 'Git', FullStackDesign: 'تصميم Full-Stack',
     DataStructures: 'هياكل البيانات', Algorithms: 'الخوارزميات', ObjectOrientedDesign: 'التصميم كائني التوجه',
     SystemDesign: 'تصميم الأنظمة', Concurrency: 'التزامن', Behavioral: 'أسئلة سلوكية', DevOps: 'السحابة و DevOps',
+    Kotlin: 'لغة Kotlin', Android: 'منصة Android', Compose: 'Jetpack Compose',
   },
   rating: { NeedReview: 'يحتاج مراجعة', Partial: 'فهمته جزئيًا', Confident: 'واثق', unrated: 'لم أتدرب عليه' },
   confidence: {

@@ -268,7 +268,7 @@ export const en = {
   },
   skills: {
     CSharp: 'C#', AspNetCore: 'ASP.NET Core', EfCore: 'EF Core', SqlServer: 'SQL Server', TypeScript: 'TypeScript',
-    Angular: 'Angular', FullStack: 'Full-stack integration', Testing: 'Testing', Git: 'Git & GitHub', Professional: 'Professional skills', DevOps: 'Cloud & DevOps', AI: 'AI applications',
+    Angular: 'Angular', FullStack: 'Full-stack integration', Testing: 'Testing', Git: 'Git & GitHub', Professional: 'Professional skills', DevOps: 'Cloud & DevOps', AI: 'AI applications', Kotlin: 'Kotlin', Android: 'Android apps',
   },
   priority: { Core: 'Core', Important: 'Important', Optional: 'Optional' },
   topicStatus: { NotStarted: 'Not started', InProgress: 'In progress', Completed: 'Completed', Skipped: 'Already known' },
@@ -291,6 +291,7 @@ export const en = {
     TypeScript: 'TypeScript', Angular: 'Angular', RestApi: 'REST APIs', Testing: 'Testing', Git: 'Git', FullStackDesign: 'Full-stack design',
     DataStructures: 'Data structures', Algorithms: 'Algorithms', ObjectOrientedDesign: 'Object-oriented design',
     SystemDesign: 'System design', Concurrency: 'Concurrency', Behavioral: 'Behavioral', DevOps: 'Cloud & DevOps',
+    Kotlin: 'Kotlin', Android: 'Android', Compose: 'Jetpack Compose',
   },
   rating: { NeedReview: 'Need to review', Partial: 'Partially understood', Confident: 'Confident', unrated: 'Not practised' },
   confidence: {

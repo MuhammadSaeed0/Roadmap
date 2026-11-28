@@ -75,7 +75,8 @@
       "ai-llm-foundations": "dotnet",
       "ai-python-for-devs": "fundamentals",
       "ai-dotnet-models": "dotnet",
-      "ai-prompt-engineering": "dotnet"
+      "ai-prompt-engineering": "dotnet",
+      "kotlin-fundamentals": "fundamentals"
     }
   },
 
@@ -87,7 +88,8 @@
     "ai-llm-foundations": "Beginner",
     "ai-python-for-devs": "Beginner",
     "ai-dotnet-models": "Intermediate",
-    "ai-prompt-engineering": "Intermediate"
+    "ai-prompt-engineering": "Intermediate",
+    "kotlin-fundamentals": "Beginner"
   },
 
   "exerciseExtraCategories": {

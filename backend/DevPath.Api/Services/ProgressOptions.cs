@@ -31,6 +31,8 @@ public class ProgressOptions
         [SkillArea.Professional] = 0.7,
         [SkillArea.DevOps] = 0.8,
         [SkillArea.AI] = 1.0,
+        [SkillArea.Kotlin] = 1.0,
+        [SkillArea.Android] = 1.0,
     };
 
     public Dictionary<TopicPriority, double> PriorityWeights { get; set; } = new()

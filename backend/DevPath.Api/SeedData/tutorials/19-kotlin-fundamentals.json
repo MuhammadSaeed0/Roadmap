@@ -1,0 +1,186 @@
+[
+  {
+    "topic": "kt-basics",
+    "lessons": [
+      {
+        "key": "tut-kt-basics-1",
+        "titleEn": "val, var and types",
+        "titleAr": "val وvar والأنواع",
+        "bodyEn": "Declare values with val when they never change and var when they must. Kotlin infers the type from the value, so val count = 3 is an Int. Write the type when it helps the reader or when there is no value yet.\n\nNumbers don't convert themselves: an Int is not a Long, so use toLong() or toDouble() explicitly. Strings use templates: $name for a variable and ${order.total} for an expression.",
+        "bodyAr": "عرّف القيم بـ val عندما لا تتغير أبدًا، وبـ var عندما يجب أن تتغير. وKotlin تستنتج النوع من القيمة، فالسطر val count = 3 يكون Int. واكتب النوع عندما يساعد القارئ أو عندما لا توجد قيمة بعد.\n\nوالأرقام لا تتحول وحدها: Int ليس Long، فاستخدم toLong() أو toDouble() صراحة. والنصوص تستخدم القوالب: $name للمتغير و${order.total} للتعبير.",
+        "code": "fun main() {\n    val city = \"Cairo\"           // String\n    val year = 2026              // Int\n    val price = 49.99            // Double\n    var stock = 10               // can change\n    stock -= 3\n\n    val total: Double = price * 2\n    val big: Long = year.toLong() * 1_000_000\n\n    println(\"$city $year: ${stock} left, total ${\"%.2f\".format(total)}\")\n    // Cairo 2026: 7 left, total 99.98\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-basics-2",
+        "titleEn": "if, when and loops",
+        "titleAr": "if وwhen والحلقات",
+        "bodyEn": "if and when are expressions: they return a value you can store. when replaces long if-else chains and can match values, ranges (in 0..9), types (is String) or conditions.\n\nfor loops run over ranges and collections. 1..5 includes 5, 0 until 5 stops before 5, and downTo and step change the direction and the size of each step.",
+        "bodyAr": "التعبيران if وwhen يُرجعان قيمة تستطيع حفظها. وwhen تحل محل سلاسل if-else الطويلة، ويمكنها مطابقة القيم والنطاقات (in 0..9) والأنواع (is String) والشروط.\n\nوحلقات for تعمل على النطاقات والمجموعات. والنطاق 1..5 يتضمن 5، و0 until 5 يتوقف قبل 5، وdownTo وstep تغيّران الاتجاه وحجم كل خطوة.",
+        "code": "fun grade(score: Int): String = when (score) {\n    in 90..100 -> \"A\"\n    in 80..89 -> \"B\"\n    in 65..79 -> \"C\"\n    in 0..64 -> \"F\"\n    else -> \"Invalid score\"\n}\n\nfun main() {\n    for (n in 1..15) {\n        val text = when {\n            n % 15 == 0 -> \"FizzBuzz\"\n            n % 3 == 0 -> \"Fizz\"\n            n % 5 == 0 -> \"Buzz\"\n            else -> n.toString()\n        }\n        print(\"$text \")\n    }\n    println()\n    for (i in 10 downTo 0 step 5) println(i)   // 10, 5, 0\n    println(grade(84))                          // B\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-functions",
+    "lessons": [
+      {
+        "key": "tut-kt-functions-1",
+        "titleEn": "Functions with defaults and names",
+        "titleAr": "الدوال بقيم افتراضية وأسماء",
+        "bodyEn": "A function lists its parameters with their types and its return type after a colon. Give parameters default values so callers pass only what changes, and call with names when it makes the call clearer.\n\nWhen the body is a single expression, write it with = and let Kotlin infer the return type.",
+        "bodyAr": "الدالة تسرد وسائطها بأنواعها ونوع ما تُرجعه بعد نقطتين. وأعطِ الوسائط قيمًا افتراضية حتى يمرر المستدعي ما يتغير فقط، واستدعِ بالأسماء عندما يجعل ذلك الاستدعاء أوضح.\n\nوعندما يكون الجسم تعبيرًا واحدًا، اكتبه بـ = ودع Kotlin تستنتج نوع الإرجاع.",
+        "code": "fun formatPrice(amount: Double, currency: String = \"EGP\", decimals: Int = 2): String =\n    \"%.${decimals}f %s\".format(amount, currency)\n\nfun fullName(first: String, last: String, middle: String = \"\"): String =\n    listOf(first, middle, last).filter { it.isNotBlank() }.joinToString(\" \")\n\nfun main() {\n    println(formatPrice(120.0))                      // 120.00 EGP\n    println(formatPrice(9.5, decimals = 0))           // 10 EGP\n    println(fullName(first = \"Ali\", last = \"Hassan\"))  // Ali Hassan\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-functions-2",
+        "titleEn": "Lambdas and higher-order functions",
+        "titleAr": "تعبيرات Lambda والدوال العليا",
+        "bodyEn": "A lambda is a function without a name: { a: Int, b: Int -> a + b }. Its type is written (Int, Int) -> Int. With one parameter you can use it. When the last parameter of a function is a function, pass the lambda after the parentheses.\n\nThis is exactly how Compose works: Button(onClick = { ... }) { Text(\"Save\") }.",
+        "bodyAr": "تعبير lambda دالة بلا اسم: { a: Int, b: Int -> a + b }. ونوعه يُكتب (Int, Int) -> Int. ومع وسيط واحد تستطيع استخدام it. وعندما يكون آخر وسيط في دالة دالةً، مرّر lambda بعد الأقواس.\n\nوهكذا يعمل Compose بالضبط: Button(onClick = { ... }) { Text(\"Save\") }.",
+        "code": "fun applyTwice(value: Int, operation: (Int) -> Int): Int = operation(operation(value))\n\nfun measure(label: String, block: () -> Unit) {\n    val start = System.nanoTime()\n    block()\n    println(\"$label took ${(System.nanoTime() - start) / 1_000} µs\")\n}\n\nfun main() {\n    val add: (Int, Int) -> Int = { a, b -> a + b }\n    println(add(2, 3))                         // 5\n    println(applyTwice(3) { it * 10 })          // 300\n\n    val operations = mapOf<String, (Int, Int) -> Int>(\"+\" to add, \"*\" to { a, b -> a * b })\n    println(operations[\"*\"]?.invoke(4, 5))      // 20\n\n    measure(\"Sorting\") { (1..10_000).shuffled().sorted() }\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-collections",
+    "lessons": [
+      {
+        "key": "tut-kt-collections-1",
+        "titleEn": "Read-only and mutable collections",
+        "titleAr": "المجموعات للقراءة فقط والقابلة للتغيير",
+        "bodyEn": "listOf, setOf and mapOf create read-only collections: you can read them but not add or remove. mutableListOf and friends create changeable ones.\n\nA common pattern keeps the mutable collection private and exposes a read-only view, so only the class itself can change the data.",
+        "bodyAr": "الدوال listOf وsetOf وmapOf تنشئ مجموعات للقراءة فقط: تستطيع قراءتها لكن لا تستطيع الإضافة أو الحذف. وmutableListOf وأخواتها تنشئ مجموعات قابلة للتغيير.\n\nونمط شائع يحتفظ بالمجموعة القابلة للتغيير خاصة ويعرض نسخة للقراءة فقط، حتى لا يغيّر البيانات إلا الصنف نفسه.",
+        "code": "class Cart {\n    private val _items = mutableListOf<String>()\n    val items: List<String> get() = _items          // read-only view\n\n    fun add(item: String) { _items += item }\n}\n\nfun main() {\n    val colors = setOf(\"red\", \"green\", \"red\")        // [red, green]: no duplicates\n    val stock = mapOf(\"pen\" to 12, \"mug\" to 0)\n    println(\"${colors.size} colors, ${stock[\"pen\"]} pens, mug in stock: ${stock.getValue(\"mug\") > 0}\")\n\n    val cart = Cart()\n    cart.add(\"Notebook\")\n    println(cart.items)                               // [Notebook]\n    // cart.items.add(\"x\")  does not compile: List has no add\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-collections-2",
+        "titleEn": "Transforming data",
+        "titleAr": "تحويل البيانات",
+        "bodyEn": "Most list work is a chain: filter what you need, map it to a new shape, then sort, group or sum. Each step returns a new collection, and the original stays the same.\n\nFor long chains over big data, asSequence() runs every step per element lazily and stops early with take or first.",
+        "bodyAr": "أغلب العمل على القوائم سلسلة: صفِّ ما تحتاجه بـ filter، وحوّله إلى شكل جديد بـ map، ثم رتّب أو جمّع أو اجمع. وكل خطوة تُرجع مجموعة جديدة، والأصلية تبقى كما هي.\n\nوللسلاسل الطويلة على بيانات كبيرة، تنفّذ asSequence() كل خطوة لكل عنصر بشكل كسول، وتتوقف مبكرًا مع take أو first.",
+        "code": "data class Order(val customer: String, val amount: Double, val paid: Boolean)\n\nfun main() {\n    val orders = listOf(\n        Order(\"Sara\", 250.0, true), Order(\"Omar\", 90.0, false),\n        Order(\"Sara\", 120.0, true), Order(\"Mona\", 400.0, true),\n    )\n\n    val paidTotalByCustomer = orders\n        .filter { it.paid }\n        .groupBy { it.customer }\n        .mapValues { (_, list) -> list.sumOf { it.amount } }\n    println(paidTotalByCustomer)                         // {Sara=370.0, Mona=400.0}\n\n    val topCustomer = paidTotalByCustomer.maxByOrNull { it.value }?.key\n    println(topCustomer)                                 // Mona\n\n    val firstBig = (1..1_000_000).asSequence().map { it * 3 }.first { it > 1_000 }\n    println(firstBig)                                    // 1002\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-null-safety",
+    "lessons": [
+      {
+        "key": "tut-kt-null-safety-1",
+        "titleEn": "Nullable types and safe calls",
+        "titleAr": "الأنواع التي تقبل null والاستدعاء الآمن",
+        "bodyEn": "String can never be null; String? can. Before using a String? you must deal with null. The safe call a?.b gives null if a is null, the Elvis operator x ?: default gives a fallback, and after if (x != null) the compiler treats x as non-null (a smart cast).\n\nUse let to run code only when a value exists: email?.let { send(it) }.",
+        "bodyAr": "النوع String لا يمكن أن يكون null أبدًا، وString? يمكن. وقبل استخدام String? يجب أن تتعامل مع null. والاستدعاء الآمن a?.b يعطي null إذا كان a يساوي null، وعامل Elvis في x ?: default يعطي بديلًا، وبعد if (x != null) يعامل المترجم x على أنه ليس null (تحويل ذكي).\n\nواستخدم let لتنفيذ كود فقط عندما توجد قيمة: email?.let { send(it) }.",
+        "code": "data class Profile(val name: String, val bio: String?, val email: String?)\n\nfun main() {\n    val profile = Profile(\"Nour\", bio = null, email = \"nour@example.com\")\n\n    val bioLength = profile.bio?.length ?: 0              // 0\n    val shown = profile.bio ?: \"No bio yet\"\n    profile.email?.let { println(\"Send welcome mail to $it\") }\n\n    if (profile.bio != null) {\n        println(profile.bio.uppercase())                   // smart cast, not reached here\n    }\n    println(\"$bioLength | $shown\")\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-null-safety-2",
+        "titleEn": "Avoiding !! and handling outside data",
+        "titleAr": "تجنب !! والتعامل مع البيانات الخارجية",
+        "bodyEn": "x!! means \"I am sure this is not null\" and throws a NullPointerException if you are wrong. It brings back the crash Kotlin was designed to prevent, so replace it with ?:, let, an early return or requireNotNull with a clear message.\n\nData from JSON, Intents and Java libraries can be null even when you expect it not to be. Check it once at the boundary and work with non-null values after that.",
+        "bodyAr": "الكتابة x!! تعني «أنا متأكد أن هذه ليست null»، وترمي NullPointerException إذا كنت مخطئًا. فهي تعيد الانهيار الذي صُممت Kotlin لمنعه، لذا استبدلها بـ ?: أو let أو رجوع مبكر أو requireNotNull برسالة واضحة.\n\nوالبيانات القادمة من JSON وIntent ومكتبات Java قد تكون null حتى عندما تتوقع ألا تكون. افحصها مرة واحدة عند الحدود واعمل بقيم ليست null بعد ذلك.",
+        "code": "// Before: crashes when the key is missing\n// val userId = intentExtras[\"userId\"]!!.toInt()\n\nfun readUserId(extras: Map<String, String?>): Int? {\n    val raw = extras[\"userId\"] ?: return null        // missing key\n    return raw.toIntOrNull()                          // not a number\n}\n\nfun loadScreen(extras: Map<String, String?>): String {\n    val id = readUserId(extras) ?: return \"Open the profile from the list\"\n    return \"Loading user $id\"\n}\n\nfun main() {\n    println(loadScreen(mapOf(\"userId\" to \"42\")))     // Loading user 42\n    println(loadScreen(mapOf(\"userId\" to null)))     // Open the profile from the list\n    val config = requireNotNull(System.getenv(\"PATH\")) { \"PATH must be set\" }\n    println(config.isNotEmpty())\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-oop",
+    "lessons": [
+      {
+        "key": "tut-kt-oop-1",
+        "titleEn": "Classes, constructors and visibility",
+        "titleAr": "الأصناف والمُنشئات ومحددات الوصول",
+        "bodyEn": "The primary constructor sits in the class header. Writing val or var there creates properties. init blocks run when an object is created and are a good place for validation.\n\nKeep state private and change it only through methods, so the class can protect its own rules. A custom getter computes a property every time it is read.",
+        "bodyAr": "المُنشئ الأساسي يقع في رأس الصنف. وكتابة val أو var فيه تنشئ خصائص. وكتل init تعمل عند إنشاء الكائن، وهي مكان جيد للتحقق.\n\nواحتفظ بالحالة خاصة وغيّرها عبر الدوال فقط، حتى يحمي الصنف قواعده. والـ Getter المخصص يحسب الخاصية في كل مرة تُقرأ.",
+        "code": "class BankAccount(val owner: String, initialBalance: Double = 0.0) {\n    var balance: Double = initialBalance\n        private set                                   // readable outside, changed only inside\n\n    init {\n        require(owner.isNotBlank()) { \"Owner is required\" }\n        require(initialBalance >= 0) { \"Balance can't be negative\" }\n    }\n\n    val isEmpty: Boolean get() = balance == 0.0\n\n    fun deposit(amount: Double) {\n        require(amount > 0) { \"Deposit must be positive\" }\n        balance += amount\n    }\n\n    fun withdraw(amount: Double): Boolean {\n        if (amount <= 0 || amount > balance) return false\n        balance -= amount\n        return true\n    }\n}\n\nfun main() {\n    val account = BankAccount(\"Hana\", 100.0)\n    account.deposit(50.0)\n    println(\"${account.withdraw(500.0)} ${account.balance} ${account.isEmpty}\")   // false 150.0 false\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-oop-2",
+        "titleEn": "Interfaces, inheritance and composition",
+        "titleAr": "الواجهات والوراثة والتركيب",
+        "bodyEn": "Classes are final unless marked open, which keeps hierarchies small on purpose. An interface describes what something can do; any class can implement several.\n\nComposition means a class receives the objects it works with, usually as interfaces. That makes it easy to swap a real implementation for a fake one, which you will do in every Android test.",
+        "bodyAr": "الأصناف نهائية ما لم تُعلَّم بـ open، وهذا يبقي التسلسلات الهرمية صغيرة عن قصد. والواجهة تصف ما يستطيع الشيء فعله، وأي صنف يستطيع تنفيذ عدة واجهات.\n\nوالتركيب يعني أن الصنف يستقبل الكائنات التي يعمل معها، عادةً كواجهات. وهذا يسهّل استبدال التنفيذ الحقيقي بآخر وهمي، وهو ما ستفعله في كل اختبار Android.",
+        "code": "interface Notifier {\n    fun send(to: String, message: String)\n}\n\nclass SmsNotifier : Notifier {\n    override fun send(to: String, message: String) = println(\"SMS to $to: $message\")\n}\n\nclass FakeNotifier : Notifier {\n    val sent = mutableListOf<String>()\n    override fun send(to: String, message: String) { sent += message }\n}\n\nclass OrderService(private val notifier: Notifier) {\n    fun confirm(phone: String, orderId: Int) = notifier.send(phone, \"Order $orderId confirmed\")\n}\n\nfun main() {\n    OrderService(SmsNotifier()).confirm(\"0100\", 7)        // real use\n\n    val fake = FakeNotifier()\n    OrderService(fake).confirm(\"0100\", 8)                 // in a test\n    println(fake.sent)                                    // [Order 8 confirmed]\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-data-sealed-enum",
+    "lessons": [
+      {
+        "key": "tut-kt-data-sealed-enum-1",
+        "titleEn": "Data classes and copy",
+        "titleAr": "أصناف data والنسخ بـ copy",
+        "bodyEn": "Mark a class data when it only carries values. Kotlin writes equals and hashCode (compare by content), toString (readable logs), copy (a changed clone) and componentN (destructuring).\n\nWith val properties, copy is the only way to change a value. That is how Android screen state is updated: state = state.copy(isLoading = false).",
+        "bodyAr": "علّم الصنف بـ data عندما يحمل القيم فقط. فتكتب Kotlin الدوال equals وhashCode (المقارنة بالمحتوى)، وtoString (سجلات مقروءة)، وcopy (نسخة معدّلة)، وcomponentN (التفكيك).\n\nومع خصائص val يكون copy الطريقة الوحيدة لتغيير القيمة. وهكذا تُحدَّث حالة شاشة Android: state = state.copy(isLoading = false).",
+        "code": "data class ScreenState(\n    val isLoading: Boolean = true,\n    val items: List<String> = emptyList(),\n    val error: String? = null,\n)\n\nfun main() {\n    var state = ScreenState()\n    state = state.copy(isLoading = false, items = listOf(\"Tea\", \"Coffee\"))\n    println(state)        // ScreenState(isLoading=false, items=[Tea, Coffee], error=null)\n\n    val (loading, items) = state\n    println(\"$loading ${items.size}\")                                   // false 2\n    println(ScreenState() == ScreenState())                             // true: same content\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-data-sealed-enum-2",
+        "titleEn": "Enums and sealed types",
+        "titleAr": "التعدادات والأنواع sealed",
+        "bodyEn": "An enum is a fixed list of constants of one shape, and each constant can have properties. A sealed interface is a fixed list of types that can carry different data: Loading has none, Success has a list, Error has a message.\n\nA when over a sealed type with no else branch must cover every case. Adding a new case breaks the build until every screen handles it, which is exactly what you want.",
+        "bodyAr": "التعداد (enum) قائمة ثابتة من ثوابت بشكل واحد، ويمكن أن تكون لكل ثابت خصائص. والواجهة sealed قائمة ثابتة من أنواع يمكن أن تحمل بيانات مختلفة: Loading لا تحمل شيئًا، وSuccess تحمل قائمة، وError تحمل رسالة.\n\nوتعبير when على نوع sealed دون فرع else يجب أن يغطي كل حالة. وإضافة حالة جديدة تكسر البناء حتى تعالجها كل شاشة، وهذا بالضبط ما تريده.",
+        "code": "enum class OrderStatus(val label: String) {\n    PLACED(\"Placed\"), SHIPPED(\"On the way\"), DELIVERED(\"Delivered\");\n    val isFinal get() = this == DELIVERED\n}\n\nsealed interface PaymentResult {\n    data class Paid(val receiptId: String) : PaymentResult\n    data class Declined(val reason: String) : PaymentResult\n    data object Cancelled : PaymentResult\n}\n\nfun message(result: PaymentResult): String = when (result) {\n    is PaymentResult.Paid -> \"Paid. Receipt ${result.receiptId}\"\n    is PaymentResult.Declined -> \"Card declined: ${result.reason}\"\n    PaymentResult.Cancelled -> \"Payment cancelled\"\n}\n\nfun main() {\n    println(OrderStatus.SHIPPED.label + \" \" + OrderStatus.SHIPPED.isFinal)   // On the way false\n    println(message(PaymentResult.Declined(\"insufficient funds\")))\n    println(OrderStatus.entries.map { it.name })                             // [PLACED, SHIPPED, DELIVERED]\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-generics-extensions",
+    "lessons": [
+      {
+        "key": "tut-kt-generics-extensions-1",
+        "titleEn": "Generics and extension functions",
+        "titleAr": "الأنواع العامة ودوال الامتداد",
+        "bodyEn": "A type parameter like <T> lets one class work for every type while keeping type safety: a Box<String> only holds strings. Add a bound such as <T : Comparable<T>> when the code needs something from T.\n\nAn extension function is written as fun Type.name() and is called like a member. It cannot see private members; it is a neat way to add helpers to types you don't own.",
+        "bodyAr": "وسيط النوع مثل <T> يتيح لصنف واحد العمل مع كل الأنواع مع الحفاظ على أمان الأنواع: Box<String> لا يحمل إلا نصوصًا. وأضف قيدًا مثل <T : Comparable<T>> عندما يحتاج الكود شيئًا من T.\n\nودالة الامتداد تُكتب fun Type.name() وتُستدعى كأنها دالة عضو. ولا ترى الأعضاء الخاصة، وهي طريقة أنيقة لإضافة مساعدات إلى أنواع لا تملكها.",
+        "code": "data class Page<T>(val items: List<T>, val page: Int, val hasMore: Boolean)\n\nfun <T> Page<T>.next(load: (Int) -> Page<T>): Page<T>? = if (hasMore) load(page + 1) else null\n\nfun <T : Comparable<T>> List<T>.isSortedAscending(): Boolean = zipWithNext().all { (a, b) -> a <= b }\n\nfun String.maskEmail(): String {\n    val name = substringBefore('@')\n    return name.take(2) + \"***@\" + substringAfter('@')\n}\n\nfun main() {\n    val first = Page(listOf(\"a\", \"b\"), page = 1, hasMore = true)\n    val second = first.next { p -> Page(listOf(\"c\"), p, hasMore = false) }\n    println(second)                                   // Page(items=[c], page=2, hasMore=false)\n    println(listOf(1, 3, 7).isSortedAscending())      // true\n    println(\"sara.ali@example.com\".maskEmail())       // sa***@example.com\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-generics-extensions-2",
+        "titleEn": "Choosing a scope function",
+        "titleAr": "اختيار دالة النطاق",
+        "bodyEn": "All five scope functions run a block on an object; they differ in two ways. Inside the block the object is this (run, with, apply) or it (let, also). The result is the block's last value (let, run, with) or the object itself (apply, also).\n\nRule of thumb: apply to configure, also for side effects, let for nullable values and conversions, run and with to compute something from an object. Don't nest them deeply; readability comes first.",
+        "bodyAr": "دوال النطاق الخمس كلها تنفّذ كتلة على كائن، وتختلف في أمرين. داخل الكتلة يكون الكائن this (في run وwith وapply) أو it (في let وalso). والنتيجة آخر قيمة في الكتلة (في let وrun وwith) أو الكائن نفسه (في apply وalso).\n\nوالقاعدة العملية: apply للتهيئة، وalso للآثار الجانبية، وlet للقيم التي تقبل null وللتحويلات، وrun وwith لحساب شيء من كائن. ولا تداخلها بعمق، فالوضوح أولًا.",
+        "code": "data class Notification(var title: String = \"\", var body: String = \"\", var silent: Boolean = false)\n\nfun main() {\n    val note = Notification().apply {           // this = Notification, returns the object\n        title = \"Order shipped\"\n        body = \"Your order #1042 is on the way\"\n    }.also { println(\"Created: ${it.title}\") }  // it = Notification, returns the object\n\n    val couponCode: String? = \"SAVE10\"\n    val discount = couponCode?.let { code ->    // runs only when not null, returns the last value\n        if (code.startsWith(\"SAVE\")) code.drop(4).toInt() else 0\n    } ?: 0\n\n    val summary = with(note) { \"$title: ${body.length} characters\" }   // compute from an object\n    println(\"$discount% | $summary\")\n}",
+        "language": "kotlin"
+      }
+    ]
+  },
+  {
+    "topic": "kt-errors-idioms",
+    "lessons": [
+      {
+        "key": "tut-kt-errors-idioms-1",
+        "titleEn": "Exceptions, require and Result",
+        "titleAr": "الاستثناءات وrequire وResult",
+        "bodyEn": "Throw an exception for situations the code cannot handle, and catch it where you can do something useful, such as show a message. try is an expression, so val n = try { s.toInt() } catch (e: NumberFormatException) { 0 } works.\n\nrequire checks arguments (IllegalArgumentException) and check checks state (IllegalStateException). runCatching returns a Result, which you can transform with map, recover with getOrElse, or inspect with onFailure. Catch specific exceptions and never leave an empty catch block.",
+        "bodyAr": "ارمِ استثناء للحالات التي لا يستطيع الكود معالجتها، والتقطه حيث تستطيع فعل شيء مفيد مثل عرض رسالة. وtry تعبير، فالسطر val n = try { s.toInt() } catch (e: NumberFormatException) { 0 } يعمل.\n\nوrequire تتحقق من الوسائط (IllegalArgumentException)، وcheck تتحقق من الحالة (IllegalStateException). وrunCatching تُرجع Result يمكنك تحويله بـ map، أو التعافي منه بـ getOrElse، أو فحصه بـ onFailure. والتقط استثناءات محددة، ولا تترك كتلة catch فارغة أبدًا.",
+        "code": "class Player {\n    var started = false\n        private set\n    fun start() { started = true }\n    fun pause() {\n        check(started) { \"Call start() before pause()\" }\n    }\n}\n\nfun readQuantity(text: String): Result<Int> = runCatching {\n    val n = text.trim().toInt()\n    require(n in 1..99) { \"Quantity must be 1-99\" }\n    n\n}\n\nfun main() {\n    println(readQuantity(\"3\").getOrElse { -1 })                       // 3\n    readQuantity(\"500\").onFailure { println(it.message) }              // Quantity must be 1-99\n    println(readQuantity(\"abc\").exceptionOrNull()?.javaClass?.simpleName) // NumberFormatException\n\n    val safe = runCatching { Player().pause() }\n    println(safe.isFailure)                                            // true\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "tut-kt-errors-idioms-2",
+        "titleEn": "Idiomatic Kotlin for problem solving",
+        "titleAr": "Kotlin الاصطلاحية لحل المشكلات",
+        "bodyEn": "Interview and real-world problems go better with a method: restate the task, write two or three examples including edge cases (empty input, one element, duplicates), choose a data structure, write the simplest correct version, then improve it.\n\nIdiomatic Kotlin makes the solution short: a HashSet to remember what you saw, a Map with getOrDefault or groupingBy to count, and expressions instead of temporary variables.",
+        "bodyAr": "مسائل المقابلات والعمل الحقيقي تنجح أكثر مع منهج: أعد صياغة المهمة، واكتب مثالين أو ثلاثة بحالات حدّية (مدخل فارغ، وعنصر واحد، وتكرارات)، واختر بنية البيانات، واكتب أبسط نسخة صحيحة، ثم حسّنها.\n\nوKotlin الاصطلاحية تجعل الحل قصيرًا: HashSet لتتذكر ما رأيت، وMap مع getOrDefault أو groupingBy للعدّ، وتعبيرات بدل المتغيرات المؤقتة.",
+        "code": "// Two-sum: indexes of two numbers that add up to target, in one pass (O(n)).\nfun twoSum(numbers: List<Int>, target: Int): Pair<Int, Int>? {\n    val seen = HashMap<Int, Int>()                  // value -> index\n    numbers.forEachIndexed { i, n ->\n        seen[target - n]?.let { return it to i }\n        seen[n] = i\n    }\n    return null\n}\n\n// Group words that use the same letters.\nfun groupAnagrams(words: List<String>): List<List<String>> =\n    words.groupBy { it.lowercase().toCharArray().sorted().joinToString(\"\") }.values.toList()\n\nfun isPalindrome(text: String): Boolean {\n    val letters = text.lowercase().filter { it.isLetterOrDigit() }\n    return letters == letters.reversed()\n}\n\nfun main() {\n    println(twoSum(listOf(2, 7, 11, 15), 9))                       // (0, 1)\n    println(groupAnagrams(listOf(\"listen\", \"silent\", \"enlist\", \"cat\", \"act\")))\n    println(isPalindrome(\"Never odd or even\"))                     // true\n}",
+        "language": "kotlin"
+      }
+    ]
+  }
+]

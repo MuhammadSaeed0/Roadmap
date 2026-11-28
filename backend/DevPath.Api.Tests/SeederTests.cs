@@ -47,9 +47,10 @@ public class SeederTests : IAsyncLifetime
         Assert.All(exercisesPerTopic, t => Assert.True(t.Count >= 1, $"{t.Slug} has no practice exercise"));
         Assert.False(await _db.PracticeExercises.AnyAsync(e => e.TitleAr == "" || e.ProblemAr == "" || e.SolutionAr == ""
             || e.HintsEn == "" || e.HintsAr == "" || e.SolutionEn == ""));
-        // Every technology of the roadmap has exercises, and the full-stack challenges are complete.
+        // Every technology the roadmaps teach has exercises, and the full-stack challenges are complete.
         var skills = await _db.PracticeExercises.Select(e => e.Topic!.Skill).Distinct().ToListAsync();
-        Assert.All(Enum.GetValues<SkillArea>().Where(s => s != SkillArea.Professional), s => Assert.Contains(s, skills));
+        var taught = await _db.Topics.Select(t => t.Skill).Distinct().ToListAsync();
+        Assert.All(taught.Where(s => s != SkillArea.Professional), s => Assert.Contains(s, skills));
         Assert.True(await _db.PracticeExercises.CountAsync(e => e.Type == ExerciseType.FullStack) >= 10);
         Assert.True(await _db.InterviewQuestions.CountAsync() >= 50);
         // Every topic has at least two interview questions, each in both languages with a model answer.

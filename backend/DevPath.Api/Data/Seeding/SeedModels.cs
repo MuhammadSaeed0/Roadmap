@@ -145,7 +145,8 @@ public class SnippetStore
     {
         [".cs"] = "csharp", [".ts"] = "typescript", [".sql"] = "sql", [".html"] = "html",
         [".css"] = "css", [".json"] = "json", [".sh"] = "bash", [".http"] = "http", [".txt"] = "text",
-        [".yml"] = "yaml", [".dockerfile"] = "dockerfile", [".py"] = "python"
+        [".yml"] = "yaml", [".dockerfile"] = "dockerfile", [".py"] = "python",
+        [".kt"] = "kotlin", [".kts"] = "kotlin", [".xml"] = "xml"
     };
 
     private readonly Dictionary<string, (string Code, string Language)> _snippets = new(StringComparer.OrdinalIgnoreCase);

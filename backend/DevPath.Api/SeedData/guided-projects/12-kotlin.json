@@ -1,0 +1,176 @@
+[
+  {
+    "key": "kt-console-calculator",
+    "skill": "Kotlin",
+    "level": "Beginner",
+    "hours": 4,
+    "titleEn": "Kotlin console calculator",
+    "titleAr": "آلة حاسبة في الطرفية بـ Kotlin",
+    "summaryEn": "A calculator that runs in the terminal: it reads expressions such as 12 * 3.5, keeps a history, handles bad input without crashing, and supports memory commands.",
+    "summaryAr": "آلة حاسبة تعمل في الطرفية: تقرأ تعبيرات مثل 12 * 3.5، وتحتفظ بسجل، وتتعامل مع المدخلات الخاطئة دون انهيار، وتدعم أوامر الذاكرة.",
+    "techStack": "Kotlin · IntelliJ IDEA or Android Studio · Kotlin standard library",
+    "goalsEn": [
+      "Create and run a Kotlin console project",
+      "Use when, functions and a sealed type for results",
+      "Parse and validate user input without crashing",
+      "Keep history in a list and summarise it with collection operations"
+    ],
+    "goalsAr": [
+      "إنشاء مشروع Kotlin للطرفية وتشغيله",
+      "استخدام when والدوال ونوع sealed للنتائج",
+      "تحليل مدخلات المستخدم والتحقق منها دون انهيار",
+      "حفظ السجل في قائمة وتلخيصه بعمليات المجموعات"
+    ],
+    "requirementsEn": [
+      "Read lines like \"12 + 3\" until the user types quit",
+      "Support +, -, *, / and %, with a clear error for division by zero",
+      "Invalid input prints a message and the program continues",
+      "history shows the last 10 calculations; stats shows count, sum and average of results",
+      "m+ adds the last result to memory, mr prints it, mc clears it"
+    ],
+    "requirementsAr": [
+      "قراءة أسطر مثل \"12 + 3\" حتى يكتب المستخدم quit",
+      "دعم + و- و* و/ و%، مع خطأ واضح عند القسمة على صفر",
+      "المدخل غير الصالح يطبع رسالة ويستمر البرنامج",
+      "الأمر history يعرض آخر 10 عمليات، والأمر stats يعرض العدد والمجموع ومتوسط النتائج",
+      "الأمر m+ يضيف آخر نتيجة إلى الذاكرة، وmr يطبعها، وmc يمسحها"
+    ],
+    "acceptanceEn": [
+      "Typing 7 / 0, abc or 5 ^ 2 prints a clear message and never crashes",
+      "After five calculations, history and stats show the right values",
+      "All calculation logic lives in functions that don't read or print, so you could test them"
+    ],
+    "acceptanceAr": [
+      "كتابة 7 / 0 أو abc أو 5 ^ 2 تطبع رسالة واضحة ولا تنهار أبدًا",
+      "بعد خمس عمليات، يعرض history وstats القيم الصحيحة",
+      "كل منطق الحساب في دوال لا تقرأ ولا تطبع، بحيث يمكنك اختبارها"
+    ],
+    "stretchEn": [
+      "Support expressions with more than two numbers and operator precedence",
+      "Add unit tests with kotlin.test for the parser and the calculator",
+      "Save history to a file and load it on start"
+    ],
+    "stretchAr": [
+      "ادعم تعبيرات بأكثر من رقمين مع أولوية العمليات",
+      "أضف اختبارات وحدات بـ kotlin.test للمحلل والحاسبة",
+      "احفظ السجل في ملف وحمّله عند البدء"
+    ],
+    "steps": [
+      {
+        "key": "kt-calc-setup",
+        "titleEn": "Create the project",
+        "titleAr": "أنشئ المشروع",
+        "bodyEn": "In IntelliJ IDEA choose New Project, then Kotlin with the Gradle build system, or use Android Studio's Kotlin console template. Run the generated main to see \"Hello World!\".\n\nKeep everything in Main.kt for now, and split into files only when it grows.",
+        "bodyAr": "في IntelliJ IDEA اختر New Project ثم Kotlin مع نظام البناء Gradle، أو استخدم قالب Kotlin للطرفية في Android Studio. وشغّل main المولّدة لترى \"Hello World!\".\n\nواحتفظ بكل شيء في Main.kt حاليًا، وقسّمه إلى ملفات فقط عندما يكبر.",
+        "hintsEn": [
+          "The free IntelliJ IDEA Community edition is enough.",
+          "play.kotlinlang.org can't read input, so use an IDE for this project."
+        ],
+        "hintsAr": [
+          "نسخة IntelliJ IDEA Community المجانية تكفي.",
+          "الموقع play.kotlinlang.org لا يقرأ المدخلات، فاستخدم بيئة تطوير لهذا المشروع."
+        ]
+      },
+      {
+        "key": "kt-calc-model",
+        "titleEn": "Model the results",
+        "titleAr": "صمّم النتائج",
+        "bodyEn": "A calculation either succeeds with a number or fails with a reason. Model that with a sealed interface so the main loop must handle both.\n\nAdd an enum for the operators so the parsing and the maths share one list.",
+        "bodyAr": "العملية إما تنجح برقم أو تفشل بسبب. فمثّل ذلك بواجهة sealed حتى تُجبر الحلقة الرئيسية على معالجة الحالتين.\n\nوأضف تعدادًا للعمليات حتى يتشارك التحليل والحساب قائمة واحدة.",
+        "hintsEn": [
+          "Give each operator its symbol as a property.",
+          "entries.firstOrNull { it.symbol == text } finds an operator."
+        ],
+        "hintsAr": [
+          "أعطِ كل عملية رمزها كخاصية.",
+          "التعبير entries.firstOrNull { it.symbol == text } يجد العملية."
+        ],
+        "code": "enum class Operator(val symbol: String) { PLUS(\"+\"), MINUS(\"-\"), TIMES(\"*\"), DIVIDE(\"/\"), MOD(\"%\") }\n\nsealed interface CalcResult {\n    data class Ok(val value: Double) : CalcResult\n    data class Error(val message: String) : CalcResult\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "kt-calc-parse",
+        "titleEn": "Parse a line",
+        "titleAr": "حلّل السطر",
+        "bodyEn": "Split the line on spaces into three parts: number, operator, number. Use toDoubleOrNull so bad numbers become null instead of exceptions, and return a CalcResult.Error with a helpful message for each problem.\n\nKeep this function pure: it takes a String and returns a result, with no println.",
+        "bodyAr": "قسّم السطر عند المسافات إلى ثلاثة أجزاء: رقم وعملية ورقم. واستخدم toDoubleOrNull حتى تصبح الأرقام الخاطئة null بدل الاستثناءات، وأرجِع CalcResult.Error برسالة مفيدة لكل مشكلة.\n\nواجعل هذه الدالة نقية: تأخذ String وتُرجع نتيجة دون println.",
+        "hintsEn": [
+          "line.trim().split(Regex(\"\\\\s+\")) handles extra spaces.",
+          "Check parts.size == 3 first."
+        ],
+        "hintsAr": [
+          "التعبير line.trim().split(Regex(\"\\\\s+\")) يتعامل مع المسافات الزائدة.",
+          "افحص parts.size == 3 أولًا."
+        ],
+        "code": "fun calculate(line: String): CalcResult {\n    val parts = line.trim().split(Regex(\"\\\\s+\"))\n    if (parts.size != 3) return CalcResult.Error(\"Use the form: 12 + 3\")\n    val a = parts[0].toDoubleOrNull() ?: return CalcResult.Error(\"'${parts[0]}' is not a number\")\n    val op = Operator.entries.firstOrNull { it.symbol == parts[1] } ?: return CalcResult.Error(\"Unknown operator '${parts[1]}'\")\n    val b = parts[2].toDoubleOrNull() ?: return CalcResult.Error(\"'${parts[2]}' is not a number\")\n    return apply(a, op, b)\n}",
+        "language": "kotlin"
+      },
+      {
+        "key": "kt-calc-apply",
+        "titleEn": "Do the maths",
+        "titleAr": "نفّذ الحساب",
+        "bodyEn": "Write apply(a, op, b) with an exhaustive when over the enum. Division and modulo by zero return an Error instead of Infinity or NaN.\n\nBecause there is no else branch, adding a new operator later forces you to handle it here.",
+        "bodyAr": "اكتب apply(a, op, b) بتعبير when شامل على التعداد. والقسمة وباقي القسمة على صفر تُرجعان Error بدل Infinity أو NaN.\n\nولأنه لا يوجد فرع else، فإضافة عملية جديدة لاحقًا تجبرك على معالجتها هنا.",
+        "hintsEn": [
+          "Return CalcResult.Ok(a + b) and so on.",
+          "Check b == 0.0 inside the DIVIDE and MOD branches."
+        ],
+        "hintsAr": [
+          "أرجِع CalcResult.Ok(a + b) وهكذا.",
+          "افحص b == 0.0 داخل فرعي DIVIDE وMOD."
+        ]
+      },
+      {
+        "key": "kt-calc-loop",
+        "titleEn": "The main loop and commands",
+        "titleAr": "الحلقة الرئيسية والأوامر",
+        "bodyEn": "Read lines with readlnOrNull() in a loop until it returns null or the user types quit. Use when on the trimmed line for the commands (history, stats, m+, mr, mc, quit) and send anything else to calculate.\n\nKeep the history in a mutableListOf<Double>() and the memory in a var memory = 0.0.",
+        "bodyAr": "اقرأ الأسطر بـ readlnOrNull() في حلقة حتى تُرجع null أو يكتب المستخدم quit. واستخدم when على السطر بعد إزالة المسافات للأوامر (history وstats وm+ وmr وmc وquit)، وأرسل أي شيء آخر إلى calculate.\n\nواحفظ السجل في mutableListOf<Double>() والذاكرة في var memory = 0.0.",
+        "hintsEn": [
+          "history.takeLast(10) gives the last ten results.",
+          "Print results with \"%.4f\".format(value).trimEnd('0').trimEnd('.') for clean numbers."
+        ],
+        "hintsAr": [
+          "التعبير history.takeLast(10) يعطي آخر عشر نتائج.",
+          "اطبع النتائج بـ \"%.4f\".format(value).trimEnd('0').trimEnd('.') لأرقام نظيفة."
+        ]
+      },
+      {
+        "key": "kt-calc-stats",
+        "titleEn": "History and statistics",
+        "titleAr": "السجل والإحصاءات",
+        "bodyEn": "Write stats(history: List<Double>): String using collection operations: count, sum, average and the largest result. Handle the empty history with a friendly message.\n\nCall it from the stats command.",
+        "bodyAr": "اكتب stats(history: List<Double>): String باستخدام عمليات المجموعات: العدد والمجموع والمتوسط وأكبر نتيجة. وعالج السجل الفارغ برسالة لطيفة.\n\nواستدعها من الأمر stats.",
+        "hintsEn": [
+          "average() on an empty list returns NaN, so check isEmpty() first.",
+          "maxOrNull() returns null for an empty list."
+        ],
+        "hintsAr": [
+          "الدالة average() على قائمة فارغة تُرجع NaN، فافحص isEmpty() أولًا.",
+          "الدالة maxOrNull() تُرجع null لقائمة فارغة."
+        ]
+      },
+      {
+        "key": "kt-calc-finish",
+        "titleEn": "Try to break it",
+        "titleAr": "حاول أن تكسره",
+        "bodyEn": "Test the acceptance criteria by hand: empty lines, letters, two operators, very large numbers, division by zero and every command. Fix anything that crashes.\n\nPush the project to GitHub with a README that shows a sample session.",
+        "bodyAr": "اختبر معايير القبول يدويًا: أسطر فارغة، وحروف، وعمليتان، وأرقام كبيرة جدًا، وقسمة على صفر، وكل أمر. وأصلح أي شيء ينهار.\n\nوارفع المشروع إلى GitHub مع README يعرض جلسة نموذجية.",
+        "hintsEn": [
+          "If you did the stretch goal, run the tests with ./gradlew test.",
+          "A screenshot of the terminal makes the README clearer."
+        ],
+        "hintsAr": [
+          "إذا نفذت الهدف الإضافي، شغّل الاختبارات بـ ./gradlew test.",
+          "لقطة شاشة للطرفية تجعل README أوضح."
+        ]
+      }
+    ],
+    "topics": [
+      "kt-basics",
+      "kt-functions",
+      "kt-null-safety",
+      "kt-data-sealed-enum"
+    ]
+  }
+]

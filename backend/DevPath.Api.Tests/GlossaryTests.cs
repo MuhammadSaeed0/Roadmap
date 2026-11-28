@@ -3,6 +3,8 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using DevPath.Api.Data.Seeding;
 using DevPath.Api.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DevPath.Api.Tests;
 
@@ -40,7 +42,12 @@ public class GlossaryTests(ApiFactory factory) : IClassFixture<ApiFactory>
         var response = await client.GetAsync("/api/glossary");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var terms = JsonNode.Parse(await response.Content.ReadAsStringAsync())!.AsArray();
-        Assert.Equal(GlossaryService.LoadSeed().Count, terms.Count);
+        // Terms of draft topics (roadmaps not published yet) are hidden from learners.
+        HashSet<string> drafts;
+        using (var scope = factory.Services.CreateScope())
+            drafts = scope.ServiceProvider.GetRequiredService<DevPath.Api.Data.AppDbContext>().Topics.IgnoreQueryFilters()
+                .Where(t => t.IsDraft).Select(t => t.Slug).ToHashSet();
+        Assert.Equal(GlossaryService.LoadSeed().Count(t => t.TopicSlug is null || !drafts.Contains(t.TopicSlug)), terms.Count);
         var linq = terms.Single(t => (string)t!["term"]! == "LINQ")!;
         Assert.Equal("linq-fundamentals", (string)linq["topicSlug"]!);
         Assert.True((int)linq["topicId"]! > 0);

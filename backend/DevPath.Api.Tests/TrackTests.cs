@@ -18,6 +18,7 @@ public class TrackTests(TrackTests.Factory factory) : IClassFixture<TrackTests.F
 
     private const string DotNet = "dotnet-fullstack";
     private const string Ai = "ai-app-developer";
+    private const string Android = "android-developer";
 
     private static async Task<JsonNode> Json(HttpResponseMessage response)
     {
@@ -56,7 +57,8 @@ public class TrackTests(TrackTests.Factory factory) : IClassFixture<TrackTests.F
     {
         var (admin, _) = await factory.CreateAdminClientAsync();
         var tracks = await Json(await admin.GetAsync("/api/tracks"));
-        Assert.Equal([DotNet, Ai], Slugs(tracks));
+        Assert.Equal([DotNet, Ai, Android], Slugs(tracks));
+        Assert.True(tracks["tracks"]![2]!["isDraft"]!.GetValue<bool>());
         Assert.True(tracks["tracks"]![1]!["isDraft"]!.GetValue<bool>());
 
         await Json(await admin.PutAsJsonAsync("/api/tracks/active", new { slug = Ai }));

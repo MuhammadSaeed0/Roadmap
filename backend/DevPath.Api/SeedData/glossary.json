@@ -1293,5 +1293,68 @@
     "shortEn": "A queue that collects messages that could not be processed.",
     "shortAr": "طابور يجمع الرسائل التي تعذّرت معالجتها.",
     "topicSlug": "arch-message-brokers"
+  },
+  {
+    "term": "val",
+    "arabic": "val (قيمة للقراءة فقط)",
+    "shortEn": "A read-only variable in Kotlin: it is assigned once and can't be reassigned.",
+    "shortAr": "متغير للقراءة فقط في Kotlin: يُسند مرة واحدة ولا يمكن إعادة إسناده.",
+    "topicSlug": "kt-basics"
+  },
+  {
+    "term": "lambda",
+    "arabic": "تعبير Lambda",
+    "shortEn": "A function without a name, written in braces, that can be stored or passed to another function.",
+    "shortAr": "دالة بلا اسم تُكتب بين أقواس معقوفة، ويمكن حفظها أو تمريرها إلى دالة أخرى.",
+    "topicSlug": "kt-functions"
+  },
+  {
+    "term": "higher-order function",
+    "arabic": "الدالة العليا (Higher-order function)",
+    "shortEn": "A function that takes a function as a parameter or returns one, such as map or filter.",
+    "shortAr": "دالة تأخذ دالة كوسيط أو تُرجع دالة، مثل map وfilter.",
+    "topicSlug": "kt-functions"
+  },
+  {
+    "term": "nullable type",
+    "arabic": "النوع الذي يقبل null",
+    "shortEn": "A Kotlin type marked with ?, such as String?, that may hold null and must be checked before use.",
+    "shortAr": "نوع في Kotlin معلّم بـ ? مثل String?، قد يحمل null ويجب فحصه قبل الاستخدام.",
+    "topicSlug": "kt-null-safety"
+  },
+  {
+    "term": "Elvis operator",
+    "arabic": "عامل Elvis",
+    "shortEn": "The ?: operator, which gives a fallback value when the expression on its left is null.",
+    "shortAr": "العامل ?: الذي يعطي قيمة بديلة عندما يكون التعبير على يساره null.",
+    "topicSlug": "kt-null-safety"
+  },
+  {
+    "term": "data class",
+    "arabic": "صنف data",
+    "shortEn": "A Kotlin class for holding values that gets equals, hashCode, toString and copy automatically.",
+    "shortAr": "صنف في Kotlin لحمل القيم يحصل تلقائيًا على equals وhashCode وtoString وcopy.",
+    "topicSlug": "kt-data-sealed-enum"
+  },
+  {
+    "term": "sealed class",
+    "arabic": "الصنف sealed",
+    "shortEn": "A class or interface whose subtypes are all known at compile time, so when over it can be exhaustive.",
+    "shortAr": "صنف أو واجهة كل أنواعها الفرعية معروفة وقت الترجمة، فيمكن أن يكون when عليها شاملًا.",
+    "topicSlug": "kt-data-sealed-enum"
+  },
+  {
+    "term": "extension function",
+    "arabic": "دالة الامتداد",
+    "shortEn": "A function added to an existing type from outside it, called as if it were a member.",
+    "shortAr": "دالة تُضاف إلى نوع موجود من خارجه، وتُستدعى كأنها عضو فيه.",
+    "topicSlug": "kt-generics-extensions"
+  },
+  {
+    "term": "scope function",
+    "arabic": "دالة النطاق",
+    "shortEn": "One of let, run, with, apply and also, which run a block of code on an object.",
+    "shortAr": "إحدى الدوال let وrun وwith وapply وalso التي تنفّذ كتلة كود على كائن.",
+    "topicSlug": "kt-generics-extensions"
   }
 ]
