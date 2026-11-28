@@ -1,0 +1,170 @@
+[
+  {
+    "key": "and-ex-net-retrofit",
+    "type": "Practical",
+    "topic": "and-net-retrofit",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "A tested GitHub client",
+    "titleAr": "عميل GitHub مختبر",
+    "problemEn": "Build a small client for the public GitHub API: list a user's repositories sorted by update time and get one repository's details. Use Retrofit with kotlinx.serialization, map DTOs to domain models (no nulls reach the UI), and write MockWebServer tests that check the request path and query, mapping with missing fields, and a 404 becoming a NotFound error.",
+    "problemAr": "ابنِ عميلًا صغيرًا للواجهة البرمجية العامة لـ GitHub: اعرض مستودعات مستخدم مرتبة بوقت التحديث، واجلب تفاصيل مستودع واحد. واستخدم Retrofit مع kotlinx.serialization، وحوّل أصناف DTO إلى نماذج مجال (لا تصل أي قيمة null إلى الواجهة)، واكتب اختبارات MockWebServer تتحقق من مسار الطلب واستعلامه، والتحويل مع حقول مفقودة، وتحوّل 404 إلى خطأ NotFound.",
+    "expectedEn": "A Retrofit interface with two suspend functions, @Serializable DTOs with defaults, a repository returning domain models or NotFound, and three passing MockWebServer tests.",
+    "expectedAr": "واجهة Retrofit بدالتي suspend، وأصناف DTO عليها @Serializable بقيم افتراضية، ومستودع يُرجع نماذج مجال أو NotFound، وثلاثة اختبارات MockWebServer ناجحة.",
+    "hintsEn": [
+      "server.url(\"/\") gives a base URL for the mock server.",
+      "takeRequest().path includes the query string."
+    ],
+    "hintsAr": [
+      "الدالة server.url(\"/\") تعطي عنوانًا أساسيًا للخادم الوهمي.",
+      "القيمة takeRequest().path تتضمن سلسلة الاستعلام."
+    ],
+    "solutionEn": "Interface GitHubApi with repos(@Path user, @Query sort, @Query per_page) and repo(@Path owner, @Path name): Response<RepoDto>. RepoDto has description: String? = null and stars with @SerialName. Repository maps description ?: \"\" and returns NotFound when response.code() == 404. Tests enqueue JSON, assert the domain list and request.path, and enqueue MockResponse().setResponseCode(404).",
+    "solutionAr": "الواجهة GitHubApi فيها repos(@Path user, @Query sort, @Query per_page) وrepo(@Path owner, @Path name): Response<RepoDto>. وفي RepoDto الحقل description: String? = null والحقل stars مع @SerialName. ويحوّل المستودع description ?: \"\" ويُرجع NotFound عندما يكون response.code() == 404. وتضع الاختبارات JSON في الطابور، وتتحقق من قائمة المجال وrequest.path، وتضع MockResponse().setResponseCode(404).",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-net-interceptor",
+    "type": "Practical",
+    "topic": "and-net-okhttp",
+    "difficulty": "Intermediate",
+    "minutes": 35,
+    "titleEn": "Headers, logging and offline cache",
+    "titleAr": "الترويسات والتسجيل والذاكرة المؤقتة دون اتصال",
+    "problemEn": "Configure the app's OkHttpClient: an interceptor that adds Accept-Language and X-App-Version, a 10 MB HTTP cache, a 25-second call timeout, debug-only body logging with Authorization redacted, and an interceptor that serves cached responses up to a day old when offline. Verify the headers and the offline behaviour with MockWebServer.",
+    "problemAr": "اضبط OkHttpClient الخاص بالتطبيق: معترض يضيف Accept-Language وX-App-Version، وذاكرة HTTP مؤقتة بـ 10 ميجابايت، ومهلة استدعاء 25 ثانية، وتسجيل للأجسام في debug فقط مع إخفاء Authorization، ومعترض يقدّم الاستجابات المخزنة حتى عمر يوم عند عدم الاتصال. وتحقق من الترويسات والسلوك دون اتصال بـ MockWebServer.",
+    "expectedEn": "Two small interceptors in the right order, a cache in cacheDir, a test asserting headers on the recorded request, and a test that gets a cached body after the server is shut down.",
+    "expectedAr": "معترضان صغيران بالترتيب الصحيح، وذاكرة مؤقتة في cacheDir، واختبار يتحقق من الترويسات في الطلب المسجل، واختبار يحصل على جسم مخزن بعد إيقاف الخادم.",
+    "hintsEn": [
+      "The server response needs Cache-Control: max-age for OkHttp to store it.",
+      "Inject an isOnline lambda so the test can switch it."
+    ],
+    "hintsAr": [
+      "تحتاج استجابة الخادم إلى Cache-Control: max-age حتى تخزنها OkHttp.",
+      "احقن دالة isOnline حتى يستطيع الاختبار تبديلها."
+    ],
+    "solutionEn": "HeadersInterceptor adds both headers; OfflineCacheInterceptor sets CacheControl.Builder().onlyIfCached().maxStale(1, DAYS) when !isOnline(). Order: headers, offline cache, then logging (debug). Test 1: enqueue a response, call, assert takeRequest().getHeader(\"X-App-Version\"). Test 2: enqueue a response with Cache-Control: max-age=60, call once, shut down the server, flip isOnline to false and call again: the body is served from cache.",
+    "solutionAr": "يضيف HeadersInterceptor الترويستين، ويضبط OfflineCacheInterceptor القيمة CacheControl.Builder().onlyIfCached().maxStale(1, DAYS) عندما يكون !isOnline(). والترتيب: الترويسات، ثم الذاكرة المؤقتة دون اتصال، ثم التسجيل (في debug). والاختبار الأول: ضع استجابة في الطابور، واستدعِ، وتحقق من takeRequest().getHeader(\"X-App-Version\"). والاختبار الثاني: ضع استجابة فيها Cache-Control: max-age=60، واستدعِ مرة، وأوقف الخادم، واجعل isOnline خطأ واستدعِ مجددًا: يُقدَّم الجسم من الذاكرة المؤقتة.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-net-errors",
+    "type": "Practical",
+    "topic": "and-net-errors",
+    "difficulty": "Intermediate",
+    "minutes": 40,
+    "titleEn": "safeApiCall with every error case",
+    "titleAr": "الدالة safeApiCall بكل حالات الخطأ",
+    "problemEn": "Write safeApiCall that returns Result<T, NetworkError> and handles no connection, timeout, 401, 404, 422 with a JSON error body, other server errors, malformed JSON and cancellation (which must propagate). Then write one MockWebServer test per case and a composable function that maps each error to a user-facing message and action.",
+    "problemAr": "اكتب safeApiCall تُرجع Result<T, NetworkError> وتعالج غياب الاتصال، وانتهاء المهلة، و401، و404، و422 بجسم خطأ JSON، وأخطاء الخادم الأخرى، وJSON المشوه، والإلغاء (الذي يجب أن ينتقل). ثم اكتب اختبار MockWebServer واحدًا لكل حالة، ودالة composable تحوّل كل خطأ إلى رسالة وإجراء للمستخدم.",
+    "expectedEn": "A sealed NetworkError, one helper with CancellationException rethrown first, eight passing tests, and a when expression with no else branch in the UI mapping.",
+    "expectedAr": "خطأ NetworkError من نوع sealed، ودالة مساعدة واحدة تعيد رمي CancellationException أولًا، وثمانية اختبارات ناجحة، وتعبير when دون فرع else في تحويل الواجهة.",
+    "hintsEn": [
+      "MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE) simulates a timeout.",
+      "Cancel the test's job while the request waits to check propagation."
+    ],
+    "hintsAr": [
+      "تحاكي MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE) انتهاء المهلة.",
+      "ألغِ مهمة الاختبار أثناء انتظار الطلب للتحقق من الانتقال."
+    ],
+    "solutionEn": "Catch order: CancellationException (rethrow), UnknownHostException or ConnectException (NoConnection), SocketTimeoutException (Timeout), HttpException mapped by code with the 422 body parsed into Validation, SerializationException (Unexpected). Tests: shut the server down for NoConnection, NO_RESPONSE with a short timeout, response codes 401, 404, 422 and 500, an invalid body, and a cancelled job asserting CancellationException.",
+    "solutionAr": "ترتيب الالتقاط: ‏CancellationException (إعادة رمي)، ثم UnknownHostException أو ConnectException (‏NoConnection)، ثم SocketTimeoutException (‏Timeout)، ثم HttpException حسب الرمز مع تحليل جسم 422 إلى Validation، ثم SerializationException (‏Unexpected). والاختبارات: إيقاف الخادم لحالة NoConnection، وNO_RESPONSE مع مهلة قصيرة، ورموز الاستجابة 401 و404 و422 و500، وجسم غير صالح، ومهمة ملغاة تتحقق من CancellationException.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-net-auth",
+    "type": "Debugging",
+    "topic": "and-net-auth",
+    "difficulty": "Advanced",
+    "minutes": 50,
+    "titleEn": "Random logouts after an hour",
+    "titleAr": "خروج عشوائي بعد ساعة",
+    "problemEn": "Users are logged out roughly an hour after signing in, usually on the home screen, which fires several requests at once. Logs show three or four refresh calls within a second and then 401 from the refresh endpoint. Read the code below, explain the race, and fix it so concurrent 401s cause a single refresh, the refresh call can't recurse, and a real refresh failure signs the user out once.",
+    "problemAr": "يخرج المستخدمون بعد ساعة تقريبًا من تسجيل الدخول، غالبًا في الشاشة الرئيسية التي تطلق عدة طلبات معًا. وتُظهر السجلات ثلاثة أو أربعة استدعاءات تحديث خلال ثانية ثم 401 من نقطة التحديث. اقرأ الكود أدناه، واشرح السباق، وأصلحه بحيث تسبب طلبات 401 المتزامنة تحديثًا واحدًا، ولا يتكرر استدعاء التحديث على نفسه، ويُخرج فشل التحديث الحقيقي المستخدم مرة واحدة.",
+    "expectedEn": "A Mutex with a check of the token the failed request used, a separate client for refresh, a retry limit, and a MockWebServer test with ten concurrent requests and one refresh.",
+    "expectedAr": "قفل Mutex مع فحص الرمز الذي استخدمه الطلب الفاشل، وعميل منفصل للتحديث، وحد لإعادة المحاولة، واختبار MockWebServer بعشرة طلبات متزامنة وتحديث واحد.",
+    "hintsEn": [
+      "Many servers rotate refresh tokens: the second refresh with the old token fails.",
+      "Why does refreshing through the same client risk recursion?"
+    ],
+    "hintsAr": [
+      "خوادم كثيرة تدوّر رموز التحديث: التحديث الثاني بالرمز القديم يفشل.",
+      "لماذا يعرّض التحديث عبر العميل نفسه للتكرار اللانهائي؟"
+    ],
+    "solutionEn": "Each 401 refreshes independently; with rotating refresh tokens the first refresh invalidates the old refresh token, so the others fail and trigger sign-out. Fix: wrap the refresh in mutex.withLock, compare the stored access token with the one in the failed request and reuse it if newer, call refresh through a client without the authenticator, cap retries with priorResponse, and sign out only when the guarded refresh itself fails.",
+    "solutionAr": "كل 401 يحدّث بشكل مستقل، ومع تدوير رموز التحديث يُبطل التحديث الأول رمز التحديث القديم، فتفشل البقية وتسبب الخروج. والإصلاح: غلّف التحديث بـ mutex.withLock، وقارن رمز الوصول المحفوظ بالرمز في الطلب الفاشل وأعد استخدامه إذا كان أحدث، واستدعِ التحديث عبر عميل دون الـ Authenticator، وحدّد إعادة المحاولة بـ priorResponse، ولا تُخرج المستخدم إلا عندما يفشل التحديث المحمي نفسه.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-net-paging",
+    "type": "Practical",
+    "topic": "and-net-paging",
+    "difficulty": "Advanced",
+    "minutes": 60,
+    "titleEn": "An offline-friendly paged feed",
+    "titleAr": "تدفق مقسم إلى صفحات يعمل دون اتصال",
+    "problemEn": "Build a feed of articles from a cursor-based API with Paging 3 and a RemoteMediator over Room. The app must open on cached articles when they are less than 30 minutes old, load more as the user scrolls, show a retry footer when a page fails, support pull-to-refresh and keep working in airplane mode. Test REFRESH, APPEND and end of pagination.",
+    "problemAr": "ابنِ تدفق مقالات من واجهة برمجية معتمدة على المؤشرات بـ Paging 3 وRemoteMediator فوق Room. ويجب أن يفتح التطبيق على المقالات المخزنة عندما يكون عمرها أقل من 30 دقيقة، ويحمّل المزيد أثناء التمرير، ويعرض تذييل إعادة محاولة عند فشل صفحة، ويدعم السحب للتحديث، ويستمر في العمل في وضع الطيران. واختبر REFRESH وAPPEND ونهاية التقسيم.",
+    "expectedEn": "Articles and remote keys tables, a mediator with initialize() and transactional writes, a Pager with cachedIn, LazyColumn with load-state handling, and three mediator tests with a fake API.",
+    "expectedAr": "جدولا المقالات والمفاتيح البعيدة، ووسيط فيه initialize() وكتابات داخل معاملة، وPager مع cachedIn، وLazyColumn مع معالجة حالات التحميل، وثلاثة اختبارات للوسيط بواجهة وهمية.",
+    "hintsEn": [
+      "Call mediator.load directly in tests with a PagingState built from an empty list.",
+      "Pull-to-refresh calls items.refresh()."
+    ],
+    "hintsAr": [
+      "استدعِ mediator.load مباشرة في الاختبارات مع PagingState مبني من قائمة فارغة.",
+      "السحب للتحديث يستدعي items.refresh()."
+    ],
+    "solutionEn": "Mediator: initialize() returns SKIP_INITIAL_REFRESH when remote_keys.updatedAt is under 30 minutes; load() maps REFRESH to a null cursor, APPEND to the stored next cursor, PREPEND to end; writes items and keys in withTransaction, clearing on REFRESH. UI: PullToRefreshBox with items.refresh(), footer for loadState.append Error with items.retry(). Tests use Room.inMemoryDatabaseBuilder and a fake API with two pages.",
+    "solutionAr": "الوسيط: تُرجع initialize() القيمة SKIP_INITIAL_REFRESH عندما يكون remote_keys.updatedAt أقل من 30 دقيقة، وتحوّل load() النوع REFRESH إلى مؤشر null، وAPPEND إلى المؤشر التالي المحفوظ، وPREPEND إلى النهاية، وتكتب العناصر والمفاتيح داخل withTransaction مع المسح عند REFRESH. والواجهة: ‏PullToRefreshBox مع items.refresh()، وتذييل لحالة loadState.append من نوع Error مع items.retry(). والاختبارات تستخدم Room.inMemoryDatabaseBuilder وواجهة وهمية بصفحتين.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-net-images",
+    "type": "CodeReview",
+    "topic": "and-net-images",
+    "difficulty": "Beginner",
+    "minutes": 25,
+    "titleEn": "Review an image grid",
+    "titleAr": "راجع شبكة صور",
+    "problemEn": "This product grid stutters while scrolling, uses 600 MB of memory on some phones and reloads every image after a refresh. Review the code and list each problem with its fix.",
+    "problemAr": "شبكة المنتجات هذه تتقطع أثناء التمرير، وتستخدم 600 ميجابايت من الذاكرة على بعض الهواتف، وتعيد تحميل كل صورة بعد التحديث. راجع الكود واذكر كل مشكلة مع إصلاحها.",
+    "expectedEn": "Problems identified: an ImageLoader per item, wrap-content sizing, full-size URLs, no stable keys, missing contentDescription; fixed code uses the singleton loader, aspectRatio, thumbnails and keys.",
+    "expectedAr": "المشكلات المحددة: ‏ImageLoader لكل عنصر، وحجم wrap-content، وعناوين بالحجم الكامل، وغياب المفاتيح الثابتة، وغياب contentDescription، والكود المصلح يستخدم المحمّل الوحيد وaspectRatio والصور المصغرة والمفاتيح.",
+    "hintsEn": [
+      "What size does Coil decode at when the composable has no constraints?",
+      "What happens to item state without keys when the list changes?"
+    ],
+    "hintsAr": [
+      "بأي حجم تفك Coil الترميز عندما لا تكون لدالة composable قيود؟",
+      "ماذا يحدث لحالة العنصر دون مفاتيح عند تغيّر القائمة؟"
+    ],
+    "solutionEn": "1) Creating ImageLoader inside each item loses caching and allocates pools per item: use the app's singleton loader. 2) No size: Coil decodes the original 4000 px image; add Modifier.aspectRatio(1f). 3) Request ?w=320 thumbnails. 4) items(products) without key reloads after a refresh; add key = { it.id }. 5) contentDescription is missing; use the product name.",
+    "solutionAr": "1) إنشاء ImageLoader داخل كل عنصر يُضيع التخزين المؤقت ويحجز مجموعات لكل عنصر، فاستخدم المحمّل الوحيد للتطبيق. 2) غياب الحجم: تفك Coil الصورة الأصلية بعرض 4000 بكسل، فأضف Modifier.aspectRatio(1f). 3) اطلب صورًا مصغرة بـ ?w=320. 4) الدالة items(products) دون مفتاح تعيد التحميل بعد التحديث، فأضف key = { it.id }. 5) القيمة contentDescription مفقودة، فاستخدم اسم المنتج.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-net-websocket",
+    "type": "Practical",
+    "topic": "and-net-realtime",
+    "difficulty": "Advanced",
+    "minutes": 60,
+    "titleEn": "Live order tracking",
+    "titleAr": "تتبع الطلب مباشرة",
+    "problemEn": "Build the tracking screen of a delivery app. The courier's position arrives over a WebSocket as JSON with an id, a sequence and coordinates. Wrap the socket in a Flow that closes when the screen is not visible, reconnects with capped exponential backoff on network errors, resumes from the last sequence after reconnecting, stores positions in Room deduplicated by id, and shows a \"Reconnecting\" label while offline. When the order is delivered, an FCM data message triggers a sync that updates the order status even if the app is closed.",
+    "problemAr": "ابنِ شاشة التتبع في تطبيق توصيل. يصل موقع المندوب عبر WebSocket كـ JSON فيه معرّف ورقم تسلسلي وإحداثيات. فغلّف المقبس في Flow يُغلق عندما لا تكون الشاشة ظاهرة، ويعيد الاتصال بانتظار أُسّي محدود عند أعطال الشبكة، ويستأنف من آخر رقم تسلسلي بعد إعادة الاتصال، ويحفظ المواقع في Room مع إزالة التكرار بالمعرّف، ويعرض عبارة «جارٍ إعادة الاتصال» أثناء عدم الاتصال. وعند تسليم الطلب تحفّز رسالة بيانات FCM مزامنة تحدّث حالة الطلب حتى لو كان التطبيق مغلقًا.",
+    "expectedEn": "A callbackFlow around OkHttp's WebSocket, retryWhen with a cap, a ?since= parameter from Room, stateIn(WhileSubscribed), a connection state in the UI, and a FirebaseMessagingService that enqueues a WorkManager sync.",
+    "expectedAr": "الدالة callbackFlow حول WebSocket من OkHttp، وretryWhen مع حد أقصى، ومعامل ?since= من Room، وstateIn(WhileSubscribed)، وحالة اتصال في الواجهة، وFirebaseMessagingService تضيف مزامنة WorkManager إلى الطابور.",
+    "hintsEn": [
+      "Emit a connection status alongside positions with a sealed type.",
+      "Test reconnection with MockWebServer's withWebSocketUpgrade."
+    ],
+    "hintsAr": [
+      "أصدر حالة الاتصال بجانب المواقع بنوع من نوع sealed.",
+      "اختبر إعادة الاتصال بـ withWebSocketUpgrade في MockWebServer."
+    ],
+    "solutionEn": "Repository.track(orderId) = flow { emit(Connecting); val since = dao.lastSeq(orderId) ?: 0; emitAll(client.events(url(orderId, since)).onStart { emit(Connected) }) }.retryWhen { e, n -> if (e is IOException) { emit(Reconnecting); delay(min(30s, 1s shl n)); true } else false }. Positions are upserted by id. The ViewModel uses stateIn(WhileSubscribed(5_000)). PushService.onMessageReceived enqueues OrderSyncWorker for type == \"delivered\".",
+    "solutionAr": "الدالة Repository.track(orderId) = flow { emit(Connecting); val since = dao.lastSeq(orderId) ?: 0; emitAll(client.events(url(orderId, since)).onStart { emit(Connected) }) }.retryWhen { e, n -> if (e is IOException) { emit(Reconnecting); delay(min(30s, 1s shl n)); true } else false }. وتُحفظ المواقع بـ upsert حسب المعرّف. وتستخدم ViewModel القيمة stateIn(WhileSubscribed(5_000)). وتضيف PushService.onMessageReceived العامل OrderSyncWorker إلى الطابور عندما يكون type == \"delivered\".",
+    "runner": "None"
+  }
+]

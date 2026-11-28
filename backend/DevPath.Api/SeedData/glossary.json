@@ -1671,5 +1671,75 @@
     "shortEn": "A record that marks an item as deleted so other devices learn about the delete during sync.",
     "shortAr": "سجل يعلّم عنصرًا كمحذوف لتعرف الأجهزة الأخرى بالحذف أثناء المزامنة.",
     "topicSlug": "and-data-offline-first"
+  },
+  {
+    "term": "Retrofit",
+    "arabic": "مكتبة Retrofit",
+    "shortEn": "A library that turns an HTTP API into a Kotlin interface of suspend functions.",
+    "shortAr": "مكتبة تحوّل واجهة HTTP إلى واجهة Kotlin من دوال suspend.",
+    "topicSlug": "and-net-retrofit"
+  },
+  {
+    "term": "OkHttp",
+    "arabic": "مكتبة OkHttp",
+    "shortEn": "The HTTP client under Retrofit, with interceptors, caching, timeouts and connection pooling.",
+    "shortAr": "عميل HTTP تحت Retrofit، مع المعترضات والتخزين المؤقت والمهلات وتجميع الاتصالات.",
+    "topicSlug": "and-net-okhttp"
+  },
+  {
+    "term": "MockWebServer",
+    "arabic": "الخادم الوهمي MockWebServer",
+    "shortEn": "A local HTTP server for tests that returns scripted responses and records requests.",
+    "shortAr": "خادم HTTP محلي للاختبارات يُرجع استجابات مكتوبة مسبقًا ويسجّل الطلبات.",
+    "topicSlug": "and-net-retrofit"
+  },
+  {
+    "term": "access token",
+    "arabic": "رمز الوصول",
+    "shortEn": "A short-lived credential sent with each API request to prove who the user is.",
+    "shortAr": "بيانات اعتماد قصيرة العمر تُرسل مع كل طلب لإثبات هوية المستخدم.",
+    "topicSlug": "and-net-auth"
+  },
+  {
+    "term": "refresh token",
+    "arabic": "رمز التحديث",
+    "shortEn": "A long-lived credential used only to get a new access token.",
+    "shortAr": "بيانات اعتماد طويلة العمر تُستخدم فقط للحصول على رمز وصول جديد.",
+    "topicSlug": "and-net-auth"
+  },
+  {
+    "term": "PKCE",
+    "arabic": "مفتاح الإثبات PKCE",
+    "shortEn": "An OAuth extension where the app proves it started the login, so a stolen code is useless.",
+    "shortAr": "امتداد لـ OAuth يثبت فيه التطبيق أنه بدأ تسجيل الدخول، فيصبح الرمز المسروق عديم الفائدة.",
+    "topicSlug": "and-net-auth"
+  },
+  {
+    "term": "RemoteMediator",
+    "arabic": "الوسيط RemoteMediator",
+    "shortEn": "A Paging 3 component that loads pages from the network into the local database.",
+    "shortAr": "مكوّن في Paging 3 يحمّل الصفحات من الشبكة إلى قاعدة البيانات المحلية.",
+    "topicSlug": "and-net-paging"
+  },
+  {
+    "term": "Coil",
+    "arabic": "مكتبة Coil",
+    "shortEn": "A Kotlin-first image loading library with memory and disk caching for Compose.",
+    "shortAr": "مكتبة لتحميل الصور موجهة لـ Kotlin أولًا مع تخزين مؤقت في الذاكرة وعلى القرص لـ Compose.",
+    "topicSlug": "and-net-images"
+  },
+  {
+    "term": "WebSocket",
+    "arabic": "المقبس WebSocket",
+    "shortEn": "A persistent two-way connection between the app and a server.",
+    "shortAr": "اتصال دائم باتجاهين بين التطبيق والخادم.",
+    "topicSlug": "and-net-realtime"
+  },
+  {
+    "term": "Firebase Cloud Messaging",
+    "arabic": "خدمة Firebase Cloud Messaging",
+    "shortEn": "Google's service for delivering push messages to apps, even when they aren't running.",
+    "shortAr": "خدمة Google لإيصال رسائل الدفع إلى التطبيقات حتى عندما لا تعمل.",
+    "topicSlug": "and-net-realtime"
   }
 ]

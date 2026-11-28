@@ -1,0 +1,271 @@
+{
+  "slug": "android-networking",
+  "order": 25,
+  "titleEn": "Networking and APIs",
+  "titleAr": "الشبكات والواجهات البرمجية",
+  "descriptionEn": "Talk to servers reliably: Retrofit with kotlinx.serialization, OkHttp interceptors, timeouts and caching, turning network failures into clear UI states, authentication with access and refresh tokens, paging large lists with Paging 3, loading images with Coil, and real-time updates with WebSockets and push messages.",
+  "descriptionAr": "تواصل مع الخوادم بموثوقية: مكتبة Retrofit مع kotlinx.serialization، ومعترضات OkHttp ومهلاتها وتخزينها المؤقت، وتحويل أعطال الشبكة إلى حالات واجهة واضحة، والمصادقة برموز الوصول والتحديث، وتقسيم القوائم الكبيرة إلى صفحات بـ Paging 3، وتحميل الصور بـ Coil، والتحديثات الفورية عبر WebSockets ورسائل الدفع.",
+  "topics": [
+    {
+      "slug": "and-net-retrofit",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Intermediate",
+      "titleEn": "REST APIs with Retrofit",
+      "titleAr": "الواجهات البرمجية REST بـ Retrofit",
+      "summaryEn": "Retrofit turns an HTTP API into a Kotlin interface: annotate methods with @GET, @POST, @PUT, @DELETE, and parameters with @Path, @Query, @Body and @Header, mark them suspend, and Retrofit generates the implementation. A converter (kotlinx.serialization or Moshi) maps JSON to @Serializable DTO classes. Return the body directly to throw on errors, or Response<T> to inspect status codes and headers. Keep DTOs in the data layer and map them to domain models.",
+      "summaryAr": "تحوّل Retrofit الواجهة البرمجية HTTP إلى واجهة Kotlin: تعلّم الدوال بـ @GET و@POST و@PUT و@DELETE، والوسائط بـ @Path و@Query و@Body و@Header، وتجعلها suspend، فتولّد Retrofit التنفيذ. ويحوّل محوّل (‏kotlinx.serialization أو Moshi) نصوص JSON إلى أصناف DTO عليها @Serializable. وأرجع الجسم مباشرة ليُرمى استثناء عند الأخطاء، أو Response<T> لفحص رموز الحالة والترويسات. وأبقِ أصناف DTO في طبقة البيانات وحوّلها إلى نماذج المجال.",
+      "whyEn": "Almost every app loads data from a backend. Retrofit is the de facto standard on Android, so you'll read and write it in every job, and interviewers expect you to explain how a request flows from the ViewModel to the server and back.",
+      "whyAr": "كل تطبيق تقريبًا يحمّل بيانات من خادم. وRetrofit هي المعيار الفعلي في Android، فستقرؤها وتكتبها في كل وظيفة، ويتوقع المحاورون أن تشرح كيف ينتقل الطلب من ViewModel إلى الخادم ثم يعود.",
+      "howEn": "Create one Retrofit instance with a base URL ending in a slash and one OkHttpClient, provided by Hilt as singletons. Keep API interfaces small and grouped by feature. Use @Serializable DTOs with ignoreUnknownKeys = true so new server fields don't crash old apps, and map nullable server fields to safe domain values. Call the API only from repositories, never from the UI.",
+      "howAr": "أنشئ نسخة Retrofit واحدة بعنوان أساسي ينتهي بشرطة مائلة، ونسخة OkHttpClient واحدة، توفرهما Hilt كنسختين وحيدتين. واجعل واجهات الـ API صغيرة ومجمعة حسب الميزة. واستخدم أصناف DTO عليها @Serializable مع ignoreUnknownKeys = true حتى لا تُسقط حقول الخادم الجديدة التطبيقات القديمة، وحوّل حقول الخادم التي تقبل الفراغ إلى قيم مجال آمنة. ولا تستدعِ الـ API إلا من المستودعات، وليس من الواجهة أبدًا.",
+      "exampleEn": "A weather app declares interface WeatherApi { @GET(\"forecast\") suspend fun forecast(@Query(\"city\") city: String): ForecastDto }. The repository calls it, maps ForecastDto to a Forecast with Celsius values and icons, saves it to Room, and the screen shows the cached forecast while the request is in flight.",
+      "exampleAr": "تطبيق طقس يعرّف interface WeatherApi { @GET(\"forecast\") suspend fun forecast(@Query(\"city\") city: String): ForecastDto }. ويستدعيها المستودع، ويحوّل ForecastDto إلى Forecast بقيم مئوية وأيقونات، ويحفظها في Room، وتعرض الشاشة التوقعات المخزنة أثناء تنفيذ الطلب.",
+      "practiceEn": "1) Call a public JSON API with Retrofit and show the result. 2) Add a POST with a @Body DTO. 3) Map DTOs to domain models with defaults for missing fields.",
+      "practiceAr": "1) استدعِ واجهة JSON عامة بـ Retrofit واعرض النتيجة. 2) أضف طلب POST بصنف DTO في @Body. 3) حوّل أصناف DTO إلى نماذج مجال بقيم افتراضية للحقول المفقودة.",
+      "challengeEn": "Write repository tests with MockWebServer that enqueue real JSON responses, assert the request path, query and body your API sends, and check mapping of a response with unknown and missing fields.",
+      "challengeAr": "اكتب اختبارات للمستودع بـ MockWebServer تضع استجابات JSON حقيقية في الطابور، وتتحقق من المسار والاستعلام والجسم الذي ترسله واجهتك، وتفحص تحويل استجابة فيها حقول مجهولة ومفقودة.",
+      "objectivesEn": [
+        "Declare Retrofit interfaces with suspend functions",
+        "Serialize JSON with kotlinx.serialization",
+        "Map DTOs to domain models",
+        "Test API code with MockWebServer"
+      ],
+      "objectivesAr": [
+        "تعريف واجهات Retrofit بدوال suspend",
+        "تسلسل JSON بـ kotlinx.serialization",
+        "تحويل أصناف DTO إلى نماذج المجال",
+        "اختبار كود الـ API بـ MockWebServer"
+      ],
+      "prerequisites": [
+        "kt-coroutines-basics",
+        "and-arch-repository"
+      ]
+    },
+    {
+      "slug": "and-net-okhttp",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "OkHttp: interceptors, timeouts and caching",
+      "titleAr": "مكتبة OkHttp: المعترضات والمهلات والتخزين المؤقت",
+      "summaryEn": "OkHttp is the HTTP client under Retrofit. Interceptors see every request and response: an application interceptor can add headers (API key, Accept-Language, User-Agent), log in debug builds with HttpLoggingInterceptor, or measure timing; a network interceptor sees redirects and cache behaviour. You configure connect, read, write and call timeouts, an HTTP cache directory that honours Cache-Control headers, connection pooling, and certificate pinning for high-risk apps.",
+      "summaryAr": "مكتبة OkHttp هي عميل HTTP تحت Retrofit. وترى المعترضات كل طلب واستجابة: يستطيع معترض التطبيق إضافة ترويسات (مفتاح الـ API وAccept-Language وUser-Agent)، أو التسجيل في بناءات debug بـ HttpLoggingInterceptor، أو قياس التوقيت، ويرى معترض الشبكة عمليات إعادة التوجيه وسلوك التخزين المؤقت. وتضبط مهلات الاتصال والقراءة والكتابة والاستدعاء، ومجلد تخزين HTTP مؤقت يحترم ترويسات Cache-Control، وتجميع الاتصالات، وتثبيت الشهادات للتطبيقات عالية الخطورة.",
+      "whyEn": "Most network problems in production are configuration problems: default timeouts that hang on bad networks, logs that leak tokens, missing headers, or no caching so every screen re-downloads the same data. A well-configured client fixes all of them in one place.",
+      "whyAr": "معظم مشكلات الشبكة في الإنتاج مشكلات إعداد: مهلات افتراضية تتعلق على الشبكات السيئة، أو سجلات تسرّب الرموز، أو ترويسات مفقودة، أو غياب التخزين المؤقت فتعيد كل شاشة تنزيل البيانات نفسها. والعميل المضبوط جيدًا يصلحها كلها في مكان واحد.",
+      "howEn": "Build one OkHttpClient for the app (it holds connection and thread pools). Add HttpLoggingInterceptor only in debug, with headers redacted. Set explicit timeouts and a cache of a few MB in cacheDir. Keep interceptors small and single-purpose, and order them deliberately: headers first, auth next, logging last so it shows the final request.",
+      "howAr": "ابنِ OkHttpClient واحدًا للتطبيق (فهو يحمل مجموعات الاتصالات والخيوط). وأضف HttpLoggingInterceptor في debug فقط مع إخفاء الترويسات الحساسة. واضبط مهلات صريحة وذاكرة مؤقتة ببضعة ميجابايت في cacheDir. واجعل المعترضات صغيرة وذات غرض واحد، ورتّبها عن قصد: الترويسات أولًا، ثم المصادقة، ثم التسجيل أخيرًا ليعرض الطلب النهائي.",
+      "exampleEn": "A news app adds an interceptor that sets Accept-Language from the device locale and an X-App-Version header, enables a 10 MB cache so articles opened twice load from disk, sets a 15-second call timeout, and logs bodies only in debug with the Authorization header redacted.",
+      "exampleAr": "تطبيق أخبار يضيف معترضًا يضبط Accept-Language من لغة الجهاز وترويسة X-App-Version، ويفعّل ذاكرة مؤقتة بـ 10 ميجابايت فتُحمّل المقالات المفتوحة مرتين من القرص، ويضبط مهلة استدعاء 15 ثانية، ويسجّل الأجسام في debug فقط مع إخفاء ترويسة Authorization.",
+      "practiceEn": "1) Add a header interceptor and verify it with MockWebServer. 2) Turn on logging only in debug. 3) Enable an HTTP cache and observe a cached response.",
+      "practiceAr": "1) أضف معترض ترويسات وتحقق منه بـ MockWebServer. 2) فعّل التسجيل في debug فقط. 3) فعّل ذاكرة HTTP مؤقتة ولاحظ استجابة من الذاكرة.",
+      "challengeEn": "Write an interceptor that serves stale cached data when the device is offline (Cache-Control: only-if-cached, max-stale) and test both online and offline paths.",
+      "challengeAr": "اكتب معترضًا يقدّم البيانات المخزنة القديمة عندما يكون الجهاز دون اتصال (‏Cache-Control: only-if-cached, max-stale)، واختبر المسارين مع الاتصال ودونه.",
+      "objectivesEn": [
+        "Configure one OkHttpClient with timeouts",
+        "Write application and network interceptors",
+        "Log safely and only in debug",
+        "Use the HTTP cache"
+      ],
+      "objectivesAr": [
+        "ضبط OkHttpClient واحد بالمهلات",
+        "كتابة معترضات التطبيق والشبكة",
+        "التسجيل بأمان وفي debug فقط",
+        "استخدام ذاكرة HTTP المؤقتة"
+      ],
+      "prerequisites": [
+        "and-net-retrofit"
+      ]
+    },
+    {
+      "slug": "and-net-errors",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Handling network errors and connectivity",
+      "titleAr": "معالجة أعطال الشبكة والاتصال",
+      "summaryEn": "Network calls fail in many ways: no connection (UnknownHostException), timeouts (SocketTimeoutException), HTTP errors (401, 404, 422, 500), malformed JSON (SerializationException) and cancellation. The data layer catches these and converts them into a small domain error type, such as a sealed NetworkError with NoConnection, Timeout, Unauthorized, NotFound, Validation(message) and Server. The UI maps each to a clear message and an action (retry, sign in, edit the form). ConnectivityManager reports network availability as a Flow so the UI can show an offline banner.",
+      "summaryAr": "تفشل استدعاءات الشبكة بطرق كثيرة: غياب الاتصال (‏UnknownHostException)، وانتهاء المهلة (‏SocketTimeoutException)، وأخطاء HTTP (‏401 و404 و422 و500)، ونصوص JSON المشوهة (‏SerializationException)، والإلغاء. فتلتقطها طبقة البيانات وتحوّلها إلى نوع خطأ مجال صغير، مثل NetworkError من نوع sealed فيه NoConnection وTimeout وUnauthorized وNotFound وValidation(message) وServer. وتحوّل الواجهة كلًا منها إلى رسالة واضحة وإجراء (إعادة المحاولة أو تسجيل الدخول أو تعديل النموذج). ويبلّغ ConnectivityManager عن توفر الشبكة كـ Flow فتعرض الواجهة شريط عدم الاتصال.",
+      "whyEn": "Users judge an app by how it behaves on a bad connection. Raw exceptions leaking to the UI give messages like \"java.net.UnknownHostException\" or a crash, and treating every error the same hides problems a retry could fix.",
+      "whyAr": "يحكم المستخدمون على التطبيق بسلوكه على اتصال سيئ. والاستثناءات الخام التي تتسرب إلى الواجهة تعطي رسائل مثل «java.net.UnknownHostException» أو انهيارًا، ومعاملة كل الأخطاء بالطريقة نفسها تخفي مشكلات كان يمكن أن تحلها إعادة المحاولة.",
+      "howEn": "Wrap calls in one helper that rethrows CancellationException and maps everything else to NetworkError. Parse the server's error body for validation messages. Retry only idempotent requests and only for transient errors (timeouts, 503) with backoff. Show cached data with a banner rather than an error screen when possible, and log unexpected errors to crash reporting.",
+      "howAr": "غلّف الاستدعاءات في دالة مساعدة واحدة تعيد رمي CancellationException وتحوّل كل ما عداه إلى NetworkError. وحلّل جسم خطأ الخادم لاستخراج رسائل التحقق. ولا تُعِد المحاولة إلا للطلبات متساوية الأثر وللأعطال المؤقتة فقط (انتهاء المهلة و503) بانتظار متزايد. واعرض البيانات المخزنة مع شريط بدل شاشة خطأ عندما يمكن، وسجّل الأخطاء غير المتوقعة في تقارير الانهيار.",
+      "exampleEn": "A sign-up form posts to /users. A 422 response with {\"field\":\"email\",\"message\":\"Already registered\"} becomes Validation(\"email\", ...) and the email field shows the message; a timeout shows \"Slow connection, try again\" with a retry button; no network disables the button and shows an offline banner.",
+      "exampleAr": "نموذج تسجيل يرسل إلى /users. فتصبح استجابة 422 فيها {\"field\":\"email\",\"message\":\"Already registered\"} خطأ Validation(\"email\", ...) ويعرض حقل البريد الرسالة، وانتهاء المهلة يعرض «اتصال بطيء، حاول مجددًا» مع زر إعادة المحاولة، وغياب الشبكة يعطّل الزر ويعرض شريط عدم الاتصال.",
+      "practiceEn": "1) Write a safeApiCall helper that returns Result with a sealed error. 2) Map each error to a message resource in the UI. 3) Observe connectivity as a Flow with callbackFlow.",
+      "practiceAr": "1) اكتب دالة safeApiCall تُرجع Result بخطأ من نوع sealed. 2) حوّل كل خطأ إلى مورد رسالة في الواجهة. 3) راقب الاتصال كـ Flow بـ callbackFlow.",
+      "challengeEn": "Test safeApiCall with MockWebServer for a 500, a 422 with an error body, a malformed body, a slow response that times out and a cancelled call, asserting the exact error each produces.",
+      "challengeAr": "اختبر safeApiCall بـ MockWebServer لاستجابة 500، و422 بجسم خطأ، وجسم مشوه، واستجابة بطيئة تنتهي مهلتها، واستدعاء ملغى، مع التحقق من الخطأ الدقيق لكل منها.",
+      "objectivesEn": [
+        "Classify network failures",
+        "Map errors to a sealed domain type",
+        "Show the right message and action",
+        "Observe connectivity changes"
+      ],
+      "objectivesAr": [
+        "تصنيف أعطال الشبكة",
+        "تحويل الأخطاء إلى نوع مجال من نوع sealed",
+        "عرض الرسالة والإجراء المناسبين",
+        "مراقبة تغيّرات الاتصال"
+      ],
+      "prerequisites": [
+        "and-net-retrofit",
+        "and-arch-errors"
+      ]
+    },
+    {
+      "slug": "and-net-auth",
+      "skill": "Android",
+      "priority": "Core",
+      "minutes": 60,
+      "difficulty": "Advanced",
+      "titleEn": "Authentication and token refresh",
+      "titleAr": "المصادقة وتحديث الرموز",
+      "summaryEn": "Most APIs use short-lived access tokens sent as Authorization: Bearer, plus a long-lived refresh token. An OkHttp interceptor adds the access token to each request; an Authenticator runs on 401, refreshes the token once (guarded by a Mutex so parallel requests don't all refresh), retries the request with the new token, and signs the user out if the refresh fails. Tokens are stored encrypted (DataStore with a Keystore-backed key), never in logs or plain files. For third-party sign-in, use the system browser through Custom Tabs with OAuth 2.0 and PKCE, or Credential Manager for passkeys and Google sign-in.",
+      "summaryAr": "تستخدم معظم الواجهات البرمجية رموز وصول قصيرة العمر تُرسل كـ Authorization: Bearer، مع رمز تحديث طويل العمر. ويضيف معترض OkHttp رمز الوصول إلى كل طلب، ويعمل Authenticator عند 401، فيحدّث الرمز مرة واحدة (محميًا بـ Mutex حتى لا تحدّث الطلبات المتوازية كلها)، ويعيد الطلب بالرمز الجديد، ويُخرج المستخدم إذا فشل التحديث. وتُحفظ الرموز مشفرة (‏DataStore مع مفتاح مدعوم بـ Keystore)، ولا تظهر في السجلات أو الملفات العادية أبدًا. ولتسجيل الدخول عبر طرف ثالث استخدم متصفح النظام عبر Custom Tabs مع OAuth 2.0 وPKCE، أو Credential Manager لمفاتيح المرور وتسجيل الدخول بـ Google.",
+      "whyEn": "Broken auth is the bug users notice most: random logouts, infinite refresh loops, or every screen failing after the token expires. It is also a favourite senior interview question because it combines networking, concurrency and security.",
+      "whyAr": "المصادقة المعطوبة هي الخطأ الذي يلاحظه المستخدمون أكثر: خروج عشوائي، أو حلقات تحديث لا تنتهي، أو فشل كل شاشة بعد انتهاء صلاحية الرمز. وهي أيضًا سؤال مفضل في مقابلات المستوى الأول لأنها تجمع الشبكات والتزامن والأمان.",
+      "howEn": "Keep tokens in a TokenStore behind an interface. Add them in an interceptor, refresh in an Authenticator with a Mutex and a check whether another request already refreshed, and cap retries. Use a separate OkHttpClient without the authenticator for the refresh call. Expose a session state Flow so the app navigates to sign-in when the session ends. Never put secrets such as client secrets in the APK.",
+      "howAr": "احفظ الرموز في TokenStore خلف واجهة. وأضفها في معترض، وحدّثها في Authenticator مع Mutex وفحص هل حدّثها طلب آخر بالفعل، وحدّد عدد المحاولات. واستخدم OkHttpClient منفصلًا دون Authenticator لاستدعاء التحديث. واعرض Flow لحالة الجلسة حتى ينتقل التطبيق إلى تسجيل الدخول عند انتهاء الجلسة. ولا تضع أسرارًا مثل أسرار العميل في ملف APK أبدًا.",
+      "exampleEn": "A banking app opens the accounts screen, which fires four requests at once just after the access token expired. All four get 401; the first to enter the Authenticator refreshes, the other three wait on the Mutex, see a newer token and retry with it. One refresh call, four successful screens, no logout.",
+      "exampleAr": "تطبيق مصرفي يفتح شاشة الحسابات، فتنطلق أربعة طلبات معًا بعد انتهاء صلاحية رمز الوصول مباشرة. فتحصل الأربعة على 401، وأول من يدخل Authenticator يحدّث الرمز، والثلاثة الأخرى تنتظر عند Mutex، ثم ترى رمزًا أحدث وتعيد المحاولة به. استدعاء تحديث واحد، وأربع شاشات ناجحة، ولا خروج.",
+      "practiceEn": "1) Add a bearer token with an interceptor. 2) Write an Authenticator that refreshes on 401. 3) Emit a SignedOut event when the refresh fails.",
+      "practiceAr": "1) أضف رمز Bearer بمعترض. 2) اكتب Authenticator يحدّث عند 401. 3) أصدر حدث SignedOut عندما يفشل التحديث.",
+      "challengeEn": "Prove with a MockWebServer test that ten concurrent requests receiving 401 cause exactly one refresh call and all ten succeed, and that a failed refresh signs out without looping.",
+      "challengeAr": "أثبت باختبار MockWebServer أن عشرة طلبات متزامنة تستقبل 401 تسبب استدعاء تحديث واحدًا بالضبط وتنجح كلها، وأن فشل التحديث يُخرج المستخدم دون حلقة.",
+      "objectivesEn": [
+        "Send and store tokens safely",
+        "Refresh tokens once with an Authenticator and a Mutex",
+        "End the session cleanly",
+        "Use Custom Tabs, PKCE or Credential Manager for sign-in"
+      ],
+      "objectivesAr": [
+        "إرسال الرموز وحفظها بأمان",
+        "تحديث الرموز مرة واحدة بـ Authenticator وMutex",
+        "إنهاء الجلسة بشكل نظيف",
+        "استخدام Custom Tabs أو PKCE أو Credential Manager لتسجيل الدخول"
+      ],
+      "prerequisites": [
+        "and-net-okhttp",
+        "kt-concurrency-safety",
+        "and-data-datastore"
+      ]
+    },
+    {
+      "slug": "and-net-paging",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Advanced",
+      "titleEn": "Paging large lists with Paging 3",
+      "titleAr": "تقسيم القوائم الكبيرة إلى صفحات بـ Paging 3",
+      "summaryEn": "Paging 3 loads big lists a page at a time. A PagingSource loads pages from one source (the network or Room) given a key such as a page number or cursor. For offline-friendly paging, a RemoteMediator fetches pages from the network and writes them into Room, and Room's PagingSource feeds the UI, so the database stays the single source of truth. The Pager exposes Flow<PagingData>, which you cache in viewModelScope with cachedIn and display with collectAsLazyPagingItems in a LazyColumn, including load states for the first page, appends and errors.",
+      "summaryAr": "تحمّل Paging 3 القوائم الكبيرة صفحة بعد صفحة. ويحمّل PagingSource الصفحات من مصدر واحد (الشبكة أو Room) بمفتاح مثل رقم الصفحة أو المؤشر. وللتقسيم الذي يعمل دون اتصال، يجلب RemoteMediator الصفحات من الشبكة ويكتبها في Room، ويغذي PagingSource الخاص بـ Room الواجهة، فتبقى قاعدة البيانات مصدر الحقيقة الوحيد. ويعرض Pager تدفقًا Flow<PagingData> تخزّنه في viewModelScope بـ cachedIn وتعرضه بـ collectAsLazyPagingItems داخل LazyColumn، بما في ذلك حالات التحميل للصفحة الأولى والإلحاق والأخطاء.",
+      "whyEn": "Feeds, search results and order histories can have thousands of items. Loading them all wastes data, memory and battery; hand-written \"load more\" code is full of duplicate-page and race bugs that Paging 3 already solves.",
+      "whyAr": "التدفقات ونتائج البحث وسجلات الطلبات قد تحتوي آلاف العناصر. وتحميلها كلها يهدر البيانات والذاكرة والبطارية، وكود «تحميل المزيد» المكتوب يدويًا مليء بأخطاء الصفحات المكررة والسباق التي تحلها Paging 3 أصلًا.",
+      "howEn": "Prefer cursor-based APIs over offsets for feeds that change. Use a network-only PagingSource for search and a RemoteMediator with Room for feeds you want offline. Store remote keys in a table, refresh in a transaction, call cachedIn(viewModelScope), and give items stable keys. Handle loadState.refresh, append and prepend with placeholders and retry buttons.",
+      "howAr": "فضّل الواجهات المعتمدة على المؤشرات على الإزاحات للتدفقات التي تتغير. واستخدم PagingSource للشبكة فقط في البحث، وRemoteMediator مع Room للتدفقات التي تريدها دون اتصال. واحفظ المفاتيح البعيدة في جدول، وحدّث داخل معاملة، واستدعِ cachedIn(viewModelScope)، وأعطِ العناصر مفاتيح ثابتة. وعالج loadState.refresh وappend وprepend بعناصر مؤقتة وأزرار إعادة المحاولة.",
+      "exampleEn": "A photo feed uses a RemoteMediator: on REFRESH it clears cached photos and remote keys and loads the first page; on APPEND it reads the next cursor from the remote keys table. Scrolling to the end shows a spinner row; a failed append shows \"Couldn't load more · Retry\" at the bottom while everything above stays usable.",
+      "exampleAr": "تدفق صور يستخدم RemoteMediator: عند REFRESH يمسح الصور المخزنة والمفاتيح البعيدة ويحمّل الصفحة الأولى، وعند APPEND يقرأ المؤشر التالي من جدول المفاتيح البعيدة. والتمرير إلى النهاية يعرض صف تحميل، وفشل الإلحاق يعرض «تعذّر تحميل المزيد · أعد المحاولة» في الأسفل بينما يبقى كل ما فوقه قابلًا للاستخدام.",
+      "practiceEn": "1) Write a PagingSource for a paged search API. 2) Show it in a LazyColumn with load states. 3) Add a retry footer for append errors.",
+      "practiceAr": "1) اكتب PagingSource لواجهة بحث مقسمة إلى صفحات. 2) اعرضها في LazyColumn مع حالات التحميل. 3) أضف تذييل إعادة محاولة لأخطاء الإلحاق.",
+      "challengeEn": "Implement a RemoteMediator with a remote keys table for a cursor-based feed and test REFRESH, APPEND and the end of pagination with a fake API and an in-memory database.",
+      "challengeAr": "نفّذ RemoteMediator مع جدول مفاتيح بعيدة لتدفق يعتمد على المؤشرات، واختبر REFRESH وAPPEND ونهاية التقسيم بواجهة وهمية وقاعدة بيانات في الذاكرة.",
+      "objectivesEn": [
+        "Write a PagingSource",
+        "Combine network and Room with RemoteMediator",
+        "Display PagingData with load states",
+        "Test paging logic"
+      ],
+      "objectivesAr": [
+        "كتابة PagingSource",
+        "الجمع بين الشبكة وRoom بـ RemoteMediator",
+        "عرض PagingData مع حالات التحميل",
+        "اختبار منطق التقسيم إلى صفحات"
+      ],
+      "prerequisites": [
+        "and-net-retrofit",
+        "and-data-room-basics",
+        "and-compose-lists"
+      ]
+    },
+    {
+      "slug": "and-net-images",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 35,
+      "difficulty": "Beginner",
+      "titleEn": "Loading images with Coil",
+      "titleAr": "تحميل الصور بـ Coil",
+      "summaryEn": "Coil is the Kotlin-first image loader for Compose. AsyncImage(model = url) downloads, decodes, resizes to the target size, and caches in memory and on disk. You can add a placeholder, an error image, crossfade, transformations such as circle crop, and request headers for protected images. Coil shares OkHttp with Retrofit and works with SubcomposeAsyncImage when you need custom loading UI. Always provide a contentDescription, or null for decorative images.",
+      "summaryAr": "مكتبة Coil هي محمّل الصور الموجه لـ Kotlin أولًا في Compose. فتنزّل AsyncImage(model = url) الصورة وتفك ترميزها وتغيّر حجمها إلى الحجم المستهدف وتخزنها مؤقتًا في الذاكرة وعلى القرص. وتستطيع إضافة صورة مؤقتة، وصورة خطأ، وتلاشٍ متقاطع، وتحويلات مثل القص الدائري، وترويسات طلب للصور المحمية. وتتشارك Coil مكتبة OkHttp مع Retrofit، وتعمل مع SubcomposeAsyncImage عندما تحتاج واجهة تحميل مخصصة. ووفّر دائمًا contentDescription، أو null للصور الزخرفية.",
+      "whyEn": "Images are usually the heaviest thing an app downloads. Loading full-size photos into small thumbnails causes out-of-memory crashes and janky scrolling; a proper loader with sizing and caching makes lists smooth and saves data.",
+      "whyAr": "الصور عادة أثقل ما يحمّله التطبيق. وتحميل صور بالحجم الكامل في صور مصغرة صغيرة يسبب انهيارات نفاد الذاكرة وتمريرًا متقطعًا، والمحمّل الصحيح مع تحديد الحجم والتخزين المؤقت يجعل القوائم سلسة ويوفر البيانات.",
+      "howEn": "Configure one ImageLoader for the app with a memory cache percentage and a disk cache, reuse the app's OkHttpClient, and ask the server for thumbnails sized for the view when it supports it. Use fixed sizes or aspect ratios in lists to avoid layout jumps, and give each item a stable key so images aren't reloaded when the list changes.",
+      "howAr": "اضبط ImageLoader واحدًا للتطبيق بنسبة ذاكرة مؤقتة وذاكرة قرص، وأعد استخدام OkHttpClient الخاص بالتطبيق، واطلب من الخادم صورًا مصغرة بحجم العرض عندما يدعم ذلك. واستخدم أحجامًا ثابتة أو نسب عرض إلى ارتفاع في القوائم لتجنب قفزات التخطيط، وأعطِ كل عنصر مفتاحًا ثابتًا حتى لا تُعاد الصور عند تغيّر القائمة.",
+      "exampleEn": "A product grid uses AsyncImage with a gray placeholder, an error icon, a 1:1 aspect ratio and crossfade. Product photos load once and come from the disk cache on the next app start, and scrolling stays at 60 frames per second.",
+      "exampleAr": "شبكة منتجات تستخدم AsyncImage مع صورة مؤقتة رمادية، وأيقونة خطأ، ونسبة 1:1، وتلاشٍ متقاطع. فتُحمّل صور المنتجات مرة واحدة وتأتي من ذاكرة القرص عند بدء التطبيق التالي، ويبقى التمرير عند 60 إطارًا في الثانية.",
+      "practiceEn": "1) Show avatars with AsyncImage and a circle crop. 2) Add placeholder and error images. 3) Configure a custom ImageLoader with a disk cache.",
+      "practiceAr": "1) اعرض الصور الشخصية بـ AsyncImage مع قص دائري. 2) أضف صورة مؤقتة وصورة خطأ. 3) اضبط ImageLoader مخصصًا مع ذاكرة قرص.",
+      "challengeEn": "Profile a feed with large images using the Layout Inspector and memory profiler, then fix it with correct sizing, thumbnails and stable keys, and compare memory and dropped frames before and after.",
+      "challengeAr": "حلّل أداء تدفق بصور كبيرة بـ Layout Inspector ومحلل الذاكرة، ثم أصلحه بالحجم الصحيح والصور المصغرة والمفاتيح الثابتة، وقارن الذاكرة والإطارات الساقطة قبل الإصلاح وبعده.",
+      "objectivesEn": [
+        "Load images with AsyncImage",
+        "Handle placeholders, errors and transformations",
+        "Configure caching and sizing",
+        "Keep image lists smooth"
+      ],
+      "objectivesAr": [
+        "تحميل الصور بـ AsyncImage",
+        "معالجة الصور المؤقتة والأخطاء والتحويلات",
+        "ضبط التخزين المؤقت والحجم",
+        "إبقاء قوائم الصور سلسة"
+      ],
+      "prerequisites": [
+        "and-compose-lists",
+        "and-net-okhttp"
+      ]
+    },
+    {
+      "slug": "and-net-realtime",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Advanced",
+      "titleEn": "Real-time updates: WebSockets and push",
+      "titleAr": "التحديثات الفورية: WebSockets ورسائل الدفع",
+      "summaryEn": "Some data must arrive the moment it changes: chat messages, delivery tracking, live scores. While the app is in the foreground, a WebSocket (OkHttp's WebSocket or Ktor's client) keeps a two-way connection, wrapped in a callbackFlow that reconnects with backoff and resyncs missed events on reconnect. Server-sent events suit one-way streams. When the app is in the background, Firebase Cloud Messaging delivers push messages: notification messages to show alerts and data messages to trigger a sync. Polling is the fallback, and it is the most expensive one for battery.",
+      "summaryAr": "بعض البيانات يجب أن تصل لحظة تغيّرها: رسائل الدردشة، وتتبع التوصيل، والنتائج المباشرة. وما دام التطبيق في المقدمة، يحافظ WebSocket (من OkHttp أو عميل Ktor) على اتصال باتجاهين، مغلفًا في callbackFlow يعيد الاتصال بانتظار متزايد ويعيد مزامنة الأحداث الفائتة عند إعادة الاتصال. وتناسب Server-sent events التدفقات باتجاه واحد. وعندما يكون التطبيق في الخلفية، توصل Firebase Cloud Messaging رسائل الدفع: رسائل الإشعار لعرض التنبيهات، ورسائل البيانات لتحفيز المزامنة. والاستطلاع الدوري هو الحل الاحتياطي، وهو الأغلى على البطارية.",
+      "whyEn": "Real-time features are where naive code drains batteries, misses messages after a reconnect, or shows duplicates. Messaging and live-tracking apps are also classic Android system-design questions.",
+      "whyAr": "الميزات الفورية هي المكان الذي يستنزف فيه الكود الساذج البطارية، أو يفوّت الرسائل بعد إعادة الاتصال، أو يعرض نسخًا مكررة. وتطبيقات المراسلة والتتبع المباشر أيضًا أسئلة تصميم أنظمة كلاسيكية في Android.",
+      "howEn": "Open the socket only while a screen needs it (collect with repeatOnLifecycle or WhileSubscribed) and close it when the app goes to the background. Give every event an id and a sequence number, store events in Room and deduplicate by id, and on reconnect fetch everything after the last sequence you saw. Use FCM data messages to wake a sync instead of keeping sockets open in the background.",
+      "howAr": "افتح المقبس فقط ما دامت شاشة تحتاجه (اجمع بـ repeatOnLifecycle أو WhileSubscribed)، وأغلقه عند ذهاب التطبيق إلى الخلفية. وأعطِ كل حدث معرّفًا ورقمًا تسلسليًا، واحفظ الأحداث في Room وأزل التكرار بالمعرّف، وعند إعادة الاتصال اجلب كل ما بعد آخر رقم تسلسلي رأيته. واستخدم رسائل بيانات FCM لإيقاظ المزامنة بدل إبقاء المقابس مفتوحة في الخلفية.",
+      "exampleEn": "A delivery app opens a WebSocket on the tracking screen and receives the courier's position every few seconds into a StateFlow that moves the map marker. If the connection drops in a tunnel, it reconnects with backoff and asks for positions since the last sequence. When the order is delivered, an FCM notification reaches the user even if the app is closed.",
+      "exampleAr": "تطبيق توصيل يفتح WebSocket في شاشة التتبع ويستقبل موقع المندوب كل بضع ثوانٍ في StateFlow تحرّك علامة الخريطة. وإذا انقطع الاتصال في نفق، يعيد الاتصال بانتظار متزايد ويطلب المواقع منذ آخر رقم تسلسلي. وعند تسليم الطلب يصل إشعار FCM إلى المستخدم حتى لو كان التطبيق مغلقًا.",
+      "practiceEn": "1) Wrap an OkHttp WebSocket in a callbackFlow. 2) Reconnect with exponential backoff. 3) Receive an FCM data message and enqueue a sync.",
+      "practiceAr": "1) غلّف WebSocket من OkHttp في callbackFlow. 2) أعد الاتصال بانتظار متزايد أُسّي. 3) استقبل رسالة بيانات FCM وأضف مزامنة إلى الطابور.",
+      "challengeEn": "Build a chat screen backed by Room where messages arrive over a WebSocket, are deduplicated by id, show sending, sent and failed states for your own messages, and resync missed messages after a reconnect.",
+      "challengeAr": "ابنِ شاشة دردشة مدعومة بـ Room تصل فيها الرسائل عبر WebSocket، ويُزال تكرارها بالمعرّف، وتعرض حالات الإرسال والمرسلة والفاشلة لرسائلك، وتعيد مزامنة الرسائل الفائتة بعد إعادة الاتصال.",
+      "objectivesEn": [
+        "Choose between WebSockets, SSE, push and polling",
+        "Wrap a socket in a lifecycle-aware Flow",
+        "Reconnect and resync without duplicates",
+        "Use FCM data and notification messages"
+      ],
+      "objectivesAr": [
+        "الاختيار بين WebSockets وSSE والدفع والاستطلاع",
+        "تغليف مقبس في Flow يراعي دورة الحياة",
+        "إعادة الاتصال والمزامنة دون تكرار",
+        "استخدام رسائل البيانات والإشعارات في FCM"
+      ],
+      "prerequisites": [
+        "and-net-okhttp",
+        "kt-stateflow-sharedflow",
+        "and-data-room-basics"
+      ]
+    }
+  ]
+}

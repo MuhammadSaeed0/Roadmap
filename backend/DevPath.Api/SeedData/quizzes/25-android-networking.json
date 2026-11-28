@@ -1,0 +1,1178 @@
+[
+  {
+    "key": "qz-and-net-retrofit-1",
+    "topic": "and-net-retrofit",
+    "questionEn": "What does Retrofit generate for you?",
+    "questionAr": "ماذا تولّد لك Retrofit؟",
+    "optionsEn": [
+      "The JSON schema the server uses",
+      "A local database for API responses",
+      "The Compose UI for each endpoint",
+      "The implementation of an API interface"
+    ],
+    "optionsAr": [
+      "مخطط JSON الذي يستخدمه الخادم",
+      "قاعدة بيانات محلية للاستجابات",
+      "واجهة Compose لكل نقطة اتصال",
+      "تنفيذ واجهة الـ API"
+    ],
+    "answer": 3,
+    "explanationEn": "You declare the interface; Retrofit implements it.",
+    "explanationAr": "أنت تعرّف الواجهة، وRetrofit تنفّذها."
+  },
+  {
+    "key": "qz-and-net-retrofit-2",
+    "topic": "and-net-retrofit",
+    "questionEn": "Which annotation fills {id} in a path?",
+    "questionAr": "أي تعليق يملأ {id} في المسار؟",
+    "optionsEn": [
+      "@Body",
+      "@Field",
+      "@Path",
+      "@Query"
+    ],
+    "optionsAr": [
+      "@Body",
+      "@Field",
+      "@Path",
+      "@Query"
+    ],
+    "answer": 2,
+    "explanationEn": "@Query appends ?key=value instead.",
+    "explanationAr": "أما @Query فتُلحق ?key=value."
+  },
+  {
+    "key": "qz-and-net-retrofit-3",
+    "topic": "and-net-retrofit",
+    "questionEn": "What must the base URL end with?",
+    "questionAr": "بماذا يجب أن ينتهي العنوان الأساسي؟",
+    "optionsEn": [
+      "A file extension",
+      "A slash /",
+      "A question mark ?",
+      "The version number"
+    ],
+    "optionsAr": [
+      "امتداد ملف",
+      "شرطة مائلة /",
+      "علامة استفهام ?",
+      "رقم الإصدار"
+    ],
+    "answer": 1,
+    "explanationEn": "Relative paths are resolved against it.",
+    "explanationAr": "تُحل المسارات النسبية بالنسبة إليه."
+  },
+  {
+    "key": "qz-and-net-retrofit-4",
+    "topic": "and-net-retrofit",
+    "questionEn": "A suspend function returning a DTO gets a 404. What happens?",
+    "questionAr": "دالة suspend تُرجع DTO تحصل على 404. ماذا يحدث؟",
+    "optionsEn": [
+      "It throws HttpException",
+      "It returns null silently",
+      "It retries forever",
+      "It returns an empty DTO"
+    ],
+    "optionsAr": [
+      "ترمي HttpException",
+      "تُرجع null بصمت",
+      "تعيد المحاولة للأبد",
+      "تُرجع DTO فارغًا"
+    ],
+    "answer": 0,
+    "explanationEn": "Return Response<T> to read the code without an exception.",
+    "explanationAr": "أرجع Response<T> لقراءة الرمز دون استثناء."
+  },
+  {
+    "key": "qz-and-net-retrofit-5",
+    "topic": "and-net-retrofit",
+    "questionEn": "Why set ignoreUnknownKeys = true?",
+    "questionAr": "لماذا تضبط ignoreUnknownKeys = true؟",
+    "optionsEn": [
+      "It makes every request faster",
+      "It hides secret fields from logs",
+      "It sorts the JSON keys by name",
+      "New server fields won't crash parsing"
+    ],
+    "optionsAr": [
+      "لأنه يجعل كل طلب أسرع بكثير",
+      "لأنه يخفي الحقول السرية من السجلات",
+      "لأنه يرتب مفاتيح JSON حسب الاسم",
+      "حتى لا تُفشل حقول الخادم الجديدة التحليل"
+    ],
+    "answer": 3,
+    "explanationEn": "Old app versions keep working when the API adds fields.",
+    "explanationAr": "تستمر الإصدارات القديمة في العمل عندما تضيف الواجهة حقولًا."
+  },
+  {
+    "key": "qz-and-net-retrofit-6",
+    "topic": "and-net-retrofit",
+    "questionEn": "Why map DTOs to domain models?",
+    "questionAr": "لماذا تحوّل DTO إلى نماذج مجال؟",
+    "optionsEn": [
+      "It reduces the final APK size",
+      "It encrypts all of the user's data",
+      "Server changes stay in the data layer",
+      "Retrofit refuses to work without it"
+    ],
+    "optionsAr": [
+      "لأنه يقلل حجم ملف APK النهائي",
+      "لأنه يشفّر كل بيانات المستخدم",
+      "تبقى تغييرات الخادم في طبقة البيانات",
+      "لأن Retrofit ترفض العمل بدونه"
+    ],
+    "answer": 2,
+    "explanationEn": "Only the DTO and mapper change when the API does.",
+    "explanationAr": "يتغير DTO والمحوّل فقط عندما تتغير الواجهة."
+  },
+  {
+    "key": "qz-and-net-retrofit-7",
+    "topic": "and-net-retrofit",
+    "questionEn": "How many Retrofit and OkHttp instances should an app have?",
+    "questionAr": "كم نسخة من Retrofit وOkHttp يجب أن يملك التطبيق؟",
+    "optionsEn": [
+      "A new pair for each coroutine",
+      "One shared instance of each",
+      "A separate pair for every screen",
+      "A fresh pair for every request"
+    ],
+    "optionsAr": [
+      "زوج جديد لكل Coroutine",
+      "نسخة مشتركة واحدة من كل منهما",
+      "زوج منفصل لكل شاشة",
+      "زوج جديد مع كل طلب"
+    ],
+    "answer": 1,
+    "explanationEn": "They hold connection and thread pools.",
+    "explanationAr": "فهما يحملان مجموعات الاتصالات والخيوط."
+  },
+  {
+    "key": "qz-and-net-retrofit-8",
+    "topic": "and-net-retrofit",
+    "questionEn": "What does MockWebServer let a test check?",
+    "questionAr": "ماذا يتيح MockWebServer للاختبار أن يتحقق منه؟",
+    "optionsEn": [
+      "The real request your code sends",
+      "The device's GPS position",
+      "The UI's colors",
+      "The Play Store listing"
+    ],
+    "optionsAr": [
+      "الطلب الحقيقي الذي يرسله كودك",
+      "موقع GPS للجهاز",
+      "ألوان الواجهة",
+      "صفحة التطبيق في المتجر"
+    ],
+    "answer": 0,
+    "explanationEn": "takeRequest() exposes the path, headers and body.",
+    "explanationAr": "تكشف takeRequest() المسار والترويسات والجسم."
+  },
+  {
+    "key": "qz-and-net-okhttp-1",
+    "topic": "and-net-okhttp",
+    "questionEn": "What can an interceptor do?",
+    "questionAr": "ماذا يستطيع المعترض أن يفعل؟",
+    "optionsEn": [
+      "Schedule periodic work",
+      "Change requests and responses",
+      "Draw the app's UI",
+      "Run database migrations"
+    ],
+    "optionsAr": [
+      "جدولة عمل دوري",
+      "تغيير الطلبات والاستجابات",
+      "رسم واجهة التطبيق",
+      "تشغيل ترحيلات قاعدة البيانات"
+    ],
+    "answer": 1,
+    "explanationEn": "It wraps chain.proceed(request).",
+    "explanationAr": "يغلّف chain.proceed(request)."
+  },
+  {
+    "key": "qz-and-net-okhttp-2",
+    "topic": "and-net-okhttp",
+    "questionEn": "Where should HttpLoggingInterceptor be added?",
+    "questionAr": "أين يجب إضافة HttpLoggingInterceptor؟",
+    "optionsEn": [
+      "In debug builds only",
+      "In every release build",
+      "In the database layer",
+      "Inside each composable"
+    ],
+    "optionsAr": [
+      "في بناءات debug فقط",
+      "في كل بناءات الإصدار",
+      "في طبقة قاعدة البيانات",
+      "داخل كل دالة composable"
+    ],
+    "answer": 0,
+    "explanationEn": "Logs can leak tokens and personal data.",
+    "explanationAr": "قد تسرّب السجلات الرموز والبيانات الشخصية."
+  },
+  {
+    "key": "qz-and-net-okhttp-3",
+    "topic": "and-net-okhttp",
+    "questionEn": "Which timeout limits the whole call?",
+    "questionAr": "أي مهلة تحد الاستدعاء كله؟",
+    "optionsEn": [
+      "connectTimeout",
+      "readTimeout",
+      "writeTimeout",
+      "callTimeout"
+    ],
+    "optionsAr": [
+      "connectTimeout",
+      "readTimeout",
+      "writeTimeout",
+      "callTimeout"
+    ],
+    "answer": 3,
+    "explanationEn": "It includes retries and redirects.",
+    "explanationAr": "تشمل إعادة المحاولة وإعادة التوجيه."
+  },
+  {
+    "key": "qz-and-net-okhttp-4",
+    "topic": "and-net-okhttp",
+    "questionEn": "What does the HTTP cache follow?",
+    "questionAr": "ماذا تتبع ذاكرة HTTP المؤقتة؟",
+    "optionsEn": [
+      "Room's schema version",
+      "The screen orientation",
+      "Cache-Control headers",
+      "The phone's battery level"
+    ],
+    "optionsAr": [
+      "إصدار مخطط Room",
+      "اتجاه الشاشة",
+      "ترويسات Cache-Control",
+      "مستوى بطارية الهاتف"
+    ],
+    "answer": 2,
+    "explanationEn": "The server decides how long responses stay fresh.",
+    "explanationAr": "يقرر الخادم مدة بقاء الاستجابات حديثة."
+  },
+  {
+    "key": "qz-and-net-okhttp-5",
+    "topic": "and-net-okhttp",
+    "questionEn": "Why put logging last among interceptors?",
+    "questionAr": "لماذا تضع التسجيل آخر المعترضات؟",
+    "optionsEn": [
+      "To skip the auth header",
+      "To see the request as finally sent",
+      "To make logging faster",
+      "Because Android requires it"
+    ],
+    "optionsAr": [
+      "لتخطي ترويسة المصادقة",
+      "لترى الطلب كما أُرسل أخيرًا",
+      "لجعل التسجيل أسرع",
+      "لأن Android تشترطه"
+    ],
+    "answer": 1,
+    "explanationEn": "Earlier interceptors have already added their headers.",
+    "explanationAr": "تكون المعترضات السابقة قد أضافت ترويساتها."
+  },
+  {
+    "key": "qz-and-net-okhttp-6",
+    "topic": "and-net-okhttp",
+    "questionEn": "Which interceptor type sees each network round trip?",
+    "questionAr": "أي نوع معترض يرى كل رحلة عبر الشبكة؟",
+    "optionsEn": [
+      "A network interceptor",
+      "An application interceptor",
+      "A Retrofit converter",
+      "A Room callback"
+    ],
+    "optionsAr": [
+      "معترض الشبكة",
+      "معترض التطبيق",
+      "محوّل Retrofit",
+      "استدعاء Room الراجع"
+    ],
+    "answer": 0,
+    "explanationEn": "Application interceptors run once per call.",
+    "explanationAr": "معترضات التطبيق تعمل مرة لكل استدعاء."
+  },
+  {
+    "key": "qz-and-net-okhttp-7",
+    "topic": "and-net-okhttp",
+    "questionEn": "How do you avoid logging the token?",
+    "questionAr": "كيف تتجنب تسجيل الرمز؟",
+    "optionsEn": [
+      "Log at a higher level instead",
+      "Use a much longer read timeout",
+      "Rename the header to X-Token",
+      "redactHeader(\"Authorization\")"
+    ],
+    "optionsAr": [
+      "التسجيل بمستوى أعلى بدلًا من ذلك",
+      "استخدام مهلة قراءة أطول بكثير",
+      "إعادة تسمية الترويسة إلى X-Token",
+      "redactHeader(\"Authorization\")"
+    ],
+    "answer": 3,
+    "explanationEn": "Redacted headers appear as ██ in the log.",
+    "explanationAr": "تظهر الترويسات المخفية كـ ██ في السجل."
+  },
+  {
+    "key": "qz-and-net-okhttp-8",
+    "topic": "and-net-okhttp",
+    "questionEn": "Is the HTTP cache a good offline database?",
+    "questionAr": "هل ذاكرة HTTP المؤقتة قاعدة بيانات جيدة للعمل دون اتصال؟",
+    "optionsEn": [
+      "Yes, but only while on Wi-Fi",
+      "Only for caching large images",
+      "No, keep offline data in Room",
+      "Yes, it fully replaces Room"
+    ],
+    "optionsAr": [
+      "نعم، لكن على Wi-Fi فقط",
+      "فقط لتخزين الصور الكبيرة مؤقتًا",
+      "لا، احفظ بيانات عدم الاتصال في Room",
+      "نعم، فهي تغني عن Room تمامًا"
+    ],
+    "answer": 2,
+    "explanationEn": "It's a performance tool the system may evict.",
+    "explanationAr": "هي أداة أداء قد يحذفها النظام."
+  },
+  {
+    "key": "qz-and-net-errors-1",
+    "topic": "and-net-errors",
+    "questionEn": "Which exception means no network or DNS failure?",
+    "questionAr": "أي استثناء يعني غياب الشبكة أو فشل DNS؟",
+    "optionsEn": [
+      "IllegalStateException",
+      "UnknownHostException",
+      "HttpException",
+      "SerializationException"
+    ],
+    "optionsAr": [
+      "IllegalStateException",
+      "UnknownHostException",
+      "HttpException",
+      "SerializationException"
+    ],
+    "answer": 1,
+    "explanationEn": "It is a subclass of IOException.",
+    "explanationAr": "وهو صنف فرعي من IOException."
+  },
+  {
+    "key": "qz-and-net-errors-2",
+    "topic": "and-net-errors",
+    "questionEn": "What must a safeApiCall helper never catch and hide?",
+    "questionAr": "ما الذي يجب ألا تلتقطه دالة safeApiCall وتخفيه أبدًا؟",
+    "optionsEn": [
+      "CancellationException",
+      "SocketTimeoutException",
+      "HttpException",
+      "UnknownHostException"
+    ],
+    "optionsAr": [
+      "CancellationException",
+      "SocketTimeoutException",
+      "HttpException",
+      "UnknownHostException"
+    ],
+    "answer": 0,
+    "explanationEn": "Rethrow it so cancellation keeps working.",
+    "explanationAr": "أعد رميه حتى يستمر الإلغاء في العمل."
+  },
+  {
+    "key": "qz-and-net-errors-3",
+    "topic": "and-net-errors",
+    "questionEn": "Why use a sealed NetworkError?",
+    "questionAr": "لماذا تستخدم NetworkError من نوع sealed؟",
+    "optionsEn": [
+      "It makes requests faster",
+      "It removes the need for tests",
+      "It hides errors from users",
+      "when must handle every case"
+    ],
+    "optionsAr": [
+      "لأنه يجعل الطلبات أسرع",
+      "لأنه يلغي الحاجة إلى الاختبارات",
+      "لأنه يخفي الأخطاء عن المستخدمين",
+      "لأن when يجب أن يعالج كل حالة"
+    ],
+    "answer": 3,
+    "explanationEn": "Adding a case shows every screen to update.",
+    "explanationAr": "إضافة حالة تُظهر كل شاشة تحتاج تحديثًا."
+  },
+  {
+    "key": "qz-and-net-errors-4",
+    "topic": "and-net-errors",
+    "questionEn": "A 422 response usually means...",
+    "questionAr": "استجابة 422 تعني عادة...",
+    "optionsEn": [
+      "The token expired",
+      "The URL doesn't exist",
+      "The input failed validation",
+      "The server is down"
+    ],
+    "optionsAr": [
+      "أن الرمز انتهت صلاحيته",
+      "أن العنوان غير موجود",
+      "أن المدخلات فشلت في التحقق",
+      "أن الخادم متوقف"
+    ],
+    "answer": 2,
+    "explanationEn": "Parse its error body to show the message on the field.",
+    "explanationAr": "حلّل جسم الخطأ لعرض الرسالة على الحقل."
+  },
+  {
+    "key": "qz-and-net-errors-5",
+    "topic": "and-net-errors",
+    "questionEn": "Which requests are safe to retry automatically?",
+    "questionAr": "أي الطلبات آمنة لإعادة المحاولة تلقائيًا؟",
+    "optionsEn": [
+      "Any request that got a 401 back",
+      "Idempotent ones on transient errors",
+      "Every POST request, always",
+      "Only the payments that failed"
+    ],
+    "optionsAr": [
+      "أي طلب حصل على استجابة 401",
+      "متساوية الأثر عند الأعطال المؤقتة",
+      "كل طلب POST دائمًا وبلا استثناء",
+      "المدفوعات التي فشلت فقط"
+    ],
+    "answer": 1,
+    "explanationEn": "Retrying a non-idempotent POST can duplicate data.",
+    "explanationAr": "إعادة طلب POST غير متساوي الأثر قد تكرر البيانات."
+  },
+  {
+    "key": "qz-and-net-errors-6",
+    "topic": "and-net-errors",
+    "questionEn": "What should the UI show for NoConnection?",
+    "questionAr": "ماذا تعرض الواجهة عند غياب الاتصال؟",
+    "optionsEn": [
+      "Cached data and an offline banner",
+      "The raw exception text as is",
+      "A blank screen with no actions",
+      "A crash dialog and a restart"
+    ],
+    "optionsAr": [
+      "البيانات المخزنة وشريط عدم الاتصال",
+      "نص الاستثناء الخام كما هو",
+      "شاشة فارغة دون أي إجراء",
+      "نافذة انهيار ثم إعادة تشغيل"
+    ],
+    "answer": 0,
+    "explanationEn": "Keep the app useful offline.",
+    "explanationAr": "أبقِ التطبيق مفيدًا دون اتصال."
+  },
+  {
+    "key": "qz-and-net-errors-7",
+    "topic": "and-net-errors",
+    "questionEn": "How do you observe connectivity as a Flow?",
+    "questionAr": "كيف تراقب الاتصال كـ Flow؟",
+    "optionsEn": [
+      "Polling a URL every second",
+      "Reading a static boolean",
+      "Using Thread.sleep in a loop",
+      "callbackFlow with a NetworkCallback"
+    ],
+    "optionsAr": [
+      "استطلاع عنوان كل ثانية",
+      "قراءة قيمة منطقية ثابتة",
+      "استخدام Thread.sleep في حلقة",
+      "callbackFlow مع NetworkCallback"
+    ],
+    "answer": 3,
+    "explanationEn": "Unregister the callback in awaitClose.",
+    "explanationAr": "ألغِ تسجيل الاستدعاء في awaitClose."
+  },
+  {
+    "key": "qz-and-net-errors-8",
+    "topic": "and-net-errors",
+    "questionEn": "Does \"connected\" guarantee the server is reachable?",
+    "questionAr": "هل «متصل» يضمن الوصول إلى الخادم؟",
+    "optionsEn": [
+      "Only on mobile data",
+      "Only with HTTPS",
+      "No, still handle errors",
+      "Yes, always"
+    ],
+    "optionsAr": [
+      "على بيانات الجوال فقط",
+      "مع HTTPS فقط",
+      "لا، فما زلت تعالج الأخطاء",
+      "نعم، دائمًا"
+    ],
+    "answer": 2,
+    "explanationEn": "Captive portals and outages still fail requests.",
+    "explanationAr": "بوابات الدخول والأعطال ما زالت تُفشل الطلبات."
+  },
+  {
+    "key": "qz-and-net-auth-1",
+    "topic": "and-net-auth",
+    "questionEn": "Where does the access token usually go?",
+    "questionAr": "أين يوضع رمز الوصول عادة؟",
+    "optionsEn": [
+      "The URL query string",
+      "The request body of GETs",
+      "A cookie set by the app",
+      "The Authorization header"
+    ],
+    "optionsAr": [
+      "سلسلة الاستعلام في العنوان",
+      "جسم طلبات GET",
+      "ملف تعريف ارتباط يضبطه التطبيق",
+      "ترويسة Authorization"
+    ],
+    "answer": 3,
+    "explanationEn": "As Authorization: Bearer <token>.",
+    "explanationAr": "بصيغة Authorization: Bearer <token>."
+  },
+  {
+    "key": "qz-and-net-auth-2",
+    "topic": "and-net-auth",
+    "questionEn": "Which OkHttp hook runs on a 401?",
+    "questionAr": "أي نقطة في OkHttp تعمل عند 401؟",
+    "optionsEn": [
+      "CookieJar",
+      "Dns",
+      "Authenticator",
+      "EventListener"
+    ],
+    "optionsAr": [
+      "CookieJar",
+      "Dns",
+      "Authenticator",
+      "EventListener"
+    ],
+    "answer": 2,
+    "explanationEn": "It returns a new request or null.",
+    "explanationAr": "يُرجع طلبًا جديدًا أو null."
+  },
+  {
+    "key": "qz-and-net-auth-3",
+    "topic": "and-net-auth",
+    "questionEn": "Why guard the refresh with a Mutex?",
+    "questionAr": "لماذا تحمي التحديث بـ Mutex؟",
+    "optionsEn": [
+      "Because OkHttp requires a Mutex",
+      "So parallel 401s refresh once",
+      "To encrypt the token in memory",
+      "To make each request faster"
+    ],
+    "optionsAr": [
+      "لأن OkHttp تشترط وجود Mutex دائمًا",
+      "حتى تحدّث طلبات 401 المتوازية مرة واحدة",
+      "لتشفير الرمز أثناء وجوده في الذاكرة",
+      "لجعل كل طلب أسرع"
+    ],
+    "answer": 1,
+    "explanationEn": "Others wait, then reuse the new token.",
+    "explanationAr": "ينتظر الآخرون ثم يعيدون استخدام الرمز الجديد."
+  },
+  {
+    "key": "qz-and-net-auth-4",
+    "topic": "and-net-auth",
+    "questionEn": "What should the refresh call use?",
+    "questionAr": "ماذا يجب أن يستخدم استدعاء التحديث؟",
+    "optionsEn": [
+      "A client without the authenticator",
+      "The same client and authenticator",
+      "A WebView",
+      "A WorkManager chain"
+    ],
+    "optionsAr": [
+      "عميلًا دون الـ Authenticator",
+      "العميل والـ Authenticator نفسهما",
+      "WebView",
+      "سلسلة WorkManager"
+    ],
+    "answer": 0,
+    "explanationEn": "Otherwise a 401 from refresh would recurse.",
+    "explanationAr": "وإلا فإن 401 من التحديث تسبب تكرارًا لا ينتهي."
+  },
+  {
+    "key": "qz-and-net-auth-5",
+    "topic": "and-net-auth",
+    "questionEn": "What happens when the refresh token is rejected?",
+    "questionAr": "ماذا يحدث عندما يُرفض رمز التحديث؟",
+    "optionsEn": [
+      "Retry the refresh call forever",
+      "Keep using the expired token",
+      "Show the raw 401 to the user",
+      "Clear tokens and sign out"
+    ],
+    "optionsAr": [
+      "أعد استدعاء التحديث للأبد",
+      "استمر في استخدام الرمز المنتهي",
+      "اعرض 401 الخام للمستخدم",
+      "امسح الرموز وأخرج المستخدم"
+    ],
+    "answer": 3,
+    "explanationEn": "Return null from the Authenticator and emit a signed-out event.",
+    "explanationAr": "أرجع null من الـ Authenticator وأصدر حدث خروج."
+  },
+  {
+    "key": "qz-and-net-auth-6",
+    "topic": "and-net-auth",
+    "questionEn": "Where should tokens be stored?",
+    "questionAr": "أين يجب حفظ الرموز؟",
+    "optionsEn": [
+      "In the app's debug logs",
+      "As constants in BuildConfig",
+      "Encrypted with a Keystore key",
+      "In a plain text file on disk"
+    ],
+    "optionsAr": [
+      "في سجلات debug الخاصة بالتطبيق",
+      "كثوابت داخل BuildConfig",
+      "مشفرة بمفتاح من Keystore",
+      "في ملف نصي عادي على القرص"
+    ],
+    "answer": 2,
+    "explanationEn": "A copied file is useless without the device key.",
+    "explanationAr": "الملف المنسوخ عديم الفائدة دون مفتاح الجهاز."
+  },
+  {
+    "key": "qz-and-net-auth-7",
+    "topic": "and-net-auth",
+    "questionEn": "How should a third-party OAuth login open?",
+    "questionAr": "كيف يجب أن يُفتح تسجيل دخول OAuth لطرف ثالث؟",
+    "optionsEn": [
+      "An SMS with the password",
+      "Custom Tabs with PKCE",
+      "A WebView in the app",
+      "A hidden background request"
+    ],
+    "optionsAr": [
+      "رسالة SMS بكلمة المرور",
+      "Custom Tabs مع PKCE",
+      "WebView داخل التطبيق",
+      "طلب خفي في الخلفية"
+    ],
+    "answer": 1,
+    "explanationEn": "The app never sees the user's password.",
+    "explanationAr": "التطبيق لا يرى كلمة مرور المستخدم أبدًا."
+  },
+  {
+    "key": "qz-and-net-auth-8",
+    "topic": "and-net-auth",
+    "questionEn": "Is it safe to ship a client secret in the APK?",
+    "questionAr": "هل من الآمن شحن سر العميل داخل APK؟",
+    "optionsEn": [
+      "No, anything in the APK can be read",
+      "Yes, if it's in BuildConfig",
+      "Yes, if it's obfuscated",
+      "Yes, in a raw resource"
+    ],
+    "optionsAr": [
+      "لا، فكل ما في APK يمكن قراءته",
+      "نعم، إذا كان في BuildConfig",
+      "نعم، إذا كان مموّهًا",
+      "نعم، في مورد خام"
+    ],
+    "answer": 0,
+    "explanationEn": "Keep secrets on your backend.",
+    "explanationAr": "احتفظ بالأسرار في خادمك."
+  },
+  {
+    "key": "qz-and-net-paging-1",
+    "topic": "and-net-paging",
+    "questionEn": "What does a PagingSource return for each load?",
+    "questionAr": "ماذا تُرجع PagingSource لكل تحميل؟",
+    "optionsEn": [
+      "A Room migration for the page",
+      "Items plus previous and next keys",
+      "Every item in the list at once",
+      "A single row from the database"
+    ],
+    "optionsAr": [
+      "ترحيل Room خاص بالصفحة",
+      "العناصر مع المفتاحين السابق والتالي",
+      "كل عناصر القائمة دفعة واحدة",
+      "صفًا واحدًا من قاعدة البيانات"
+    ],
+    "answer": 1,
+    "explanationEn": "Or LoadResult.Error on failure.",
+    "explanationAr": "أو LoadResult.Error عند الفشل."
+  },
+  {
+    "key": "qz-and-net-paging-2",
+    "topic": "and-net-paging",
+    "questionEn": "Why call cachedIn(viewModelScope)?",
+    "questionAr": "لماذا تستدعي cachedIn(viewModelScope)؟",
+    "optionsEn": [
+      "Rotation doesn't reload page one",
+      "It saves every page into Room",
+      "It encrypts the loaded pages",
+      "It starts a WorkManager sync job"
+    ],
+    "optionsAr": [
+      "حتى لا يعيد التدوير تحميل الصفحة الأولى",
+      "لأنها تحفظ كل صفحة في Room",
+      "لأنها تشفّر الصفحات المحملة",
+      "لأنها تبدأ مهمة مزامنة WorkManager"
+    ],
+    "answer": 0,
+    "explanationEn": "Loaded pages survive configuration changes.",
+    "explanationAr": "تنجو الصفحات المحملة من تغييرات الإعداد."
+  },
+  {
+    "key": "qz-and-net-paging-3",
+    "topic": "and-net-paging",
+    "questionEn": "What does a RemoteMediator do?",
+    "questionAr": "ماذا يفعل RemoteMediator؟",
+    "optionsEn": [
+      "Draws the list items",
+      "Replaces Retrofit",
+      "Deletes old app data",
+      "Fills Room from the network"
+    ],
+    "optionsAr": [
+      "يرسم عناصر القائمة",
+      "يحل محل Retrofit",
+      "يحذف بيانات التطبيق القديمة",
+      "يملأ Room من الشبكة"
+    ],
+    "answer": 3,
+    "explanationEn": "The UI pages from Room, the source of truth.",
+    "explanationAr": "تقسّم الواجهة الصفحات من Room، مصدر الحقيقة."
+  },
+  {
+    "key": "qz-and-net-paging-4",
+    "topic": "and-net-paging",
+    "questionEn": "Why store remote keys in a table?",
+    "questionAr": "لماذا تحفظ المفاتيح البعيدة في جدول؟",
+    "optionsEn": [
+      "To store the user's password",
+      "To count how often the app opens",
+      "To know the next page on APPEND",
+      "To speed up loading of images"
+    ],
+    "optionsAr": [
+      "لحفظ كلمة مرور المستخدم بأمان",
+      "لعدّ مرات فتح التطبيق يوميًا",
+      "لمعرفة الصفحة التالية عند APPEND",
+      "لتسريع تحميل الصور في القائمة"
+    ],
+    "answer": 2,
+    "explanationEn": "The cursor isn't part of the items themselves.",
+    "explanationAr": "المؤشر ليس جزءًا من العناصر نفسها."
+  },
+  {
+    "key": "qz-and-net-paging-5",
+    "topic": "and-net-paging",
+    "questionEn": "Which pagination style suits a feed that changes often?",
+    "questionAr": "أي أسلوب تقسيم يناسب تدفقًا يتغير كثيرًا؟",
+    "optionsEn": [
+      "Random page numbers",
+      "Cursor-based",
+      "Offset-based",
+      "Loading all at once"
+    ],
+    "optionsAr": [
+      "أرقام صفحات عشوائية",
+      "المعتمد على المؤشر",
+      "المعتمد على الإزاحة",
+      "تحميل الكل دفعة واحدة"
+    ],
+    "answer": 1,
+    "explanationEn": "Offsets shift when new items are inserted.",
+    "explanationAr": "الإزاحات تتحرك عند إدراج عناصر جديدة."
+  },
+  {
+    "key": "qz-and-net-paging-6",
+    "topic": "and-net-paging",
+    "questionEn": "How does Compose read PagingData?",
+    "questionAr": "كيف تقرأ Compose البيانات PagingData؟",
+    "optionsEn": [
+      "collectAsLazyPagingItems()",
+      "collectAsState() on a List",
+      "LiveData.observe()",
+      "runBlocking { first() }"
+    ],
+    "optionsAr": [
+      "collectAsLazyPagingItems()",
+      "collectAsState() على List",
+      "LiveData.observe()",
+      "runBlocking { first() }"
+    ],
+    "answer": 0,
+    "explanationEn": "It exposes itemCount, items and loadState.",
+    "explanationAr": "تعرض itemCount والعناصر وloadState."
+  },
+  {
+    "key": "qz-and-net-paging-7",
+    "topic": "and-net-paging",
+    "questionEn": "Where do you show \"Couldn't load more\"?",
+    "questionAr": "أين تعرض «تعذّر تحميل المزيد»؟",
+    "optionsEn": [
+      "In a full-screen dialog",
+      "In the app bar title",
+      "In a toast on every scroll",
+      "In a footer for loadState.append"
+    ],
+    "optionsAr": [
+      "في نافذة بملء الشاشة",
+      "في عنوان شريط التطبيق",
+      "في رسالة مع كل تمرير",
+      "في تذييل لـ loadState.append"
+    ],
+    "answer": 3,
+    "explanationEn": "Items above stay usable.",
+    "explanationAr": "تبقى العناصر أعلاه قابلة للاستخدام."
+  },
+  {
+    "key": "qz-and-net-paging-8",
+    "topic": "and-net-paging",
+    "questionEn": "What does SKIP_INITIAL_REFRESH allow?",
+    "questionAr": "ماذا تتيح SKIP_INITIAL_REFRESH؟",
+    "optionsEn": [
+      "Disabling paging for the list",
+      "Ignoring every network error",
+      "Opening on fresh cached data",
+      "Skipping the database entirely"
+    ],
+    "optionsAr": [
+      "تعطيل التقسيم للقائمة كلها",
+      "تجاهل كل أخطاء الشبكة",
+      "الفتح على بيانات مخزنة حديثة",
+      "تخطي قاعدة البيانات تمامًا"
+    ],
+    "answer": 2,
+    "explanationEn": "Return it from initialize() when data isn't stale.",
+    "explanationAr": "أرجعها من initialize() عندما لا تكون البيانات قديمة."
+  },
+  {
+    "key": "qz-and-net-images-1",
+    "topic": "and-net-images",
+    "questionEn": "Which composable loads a URL image with Coil?",
+    "questionAr": "أي دالة composable تحمّل صورة من عنوان بـ Coil؟",
+    "optionsEn": [
+      "Icon",
+      "AsyncImage",
+      "Image(painterResource)",
+      "Canvas"
+    ],
+    "optionsAr": [
+      "Icon",
+      "AsyncImage",
+      "Image(painterResource)",
+      "Canvas"
+    ],
+    "answer": 1,
+    "explanationEn": "It downloads, decodes and caches.",
+    "explanationAr": "تنزّل وتفك الترميز وتخزن مؤقتًا."
+  },
+  {
+    "key": "qz-and-net-images-2",
+    "topic": "and-net-images",
+    "questionEn": "Why give images a known size?",
+    "questionAr": "لماذا تعطي الصور حجمًا معروفًا؟",
+    "optionsEn": [
+      "Coil decodes them at that size",
+      "It makes every download secure",
+      "Compose refuses images without it",
+      "It turns on dark mode for images"
+    ],
+    "optionsAr": [
+      "لأن Coil تفك ترميزها بذلك الحجم",
+      "لأنه يجعل كل تنزيل آمنًا",
+      "لأن Compose ترفض الصور بدونه",
+      "لأنه يفعّل الوضع الداكن للصور"
+    ],
+    "answer": 0,
+    "explanationEn": "Unknown sizes force loading the original.",
+    "explanationAr": "الأحجام المجهولة تجبر على تحميل الأصل."
+  },
+  {
+    "key": "qz-and-net-images-3",
+    "topic": "and-net-images",
+    "questionEn": "When does the fallback image show?",
+    "questionAr": "متى تظهر صورة fallback؟",
+    "optionsEn": [
+      "While the image loads",
+      "When the image is large",
+      "When the app is offline",
+      "When the model is null"
+    ],
+    "optionsAr": [
+      "أثناء تحميل الصورة",
+      "عندما تكون الصورة كبيرة",
+      "عندما يكون التطبيق دون اتصال",
+      "عندما يكون النموذج null"
+    ],
+    "answer": 3,
+    "explanationEn": "placeholder shows while loading, error on failure.",
+    "explanationAr": "تظهر placeholder أثناء التحميل وerror عند الفشل."
+  },
+  {
+    "key": "qz-and-net-images-4",
+    "topic": "and-net-images",
+    "questionEn": "What contentDescription should a decorative image have?",
+    "questionAr": "ما قيمة contentDescription لصورة زخرفية؟",
+    "optionsEn": [
+      "The word \"image\"",
+      "The file size",
+      "null",
+      "The image URL"
+    ],
+    "optionsAr": [
+      "كلمة «صورة»",
+      "حجم الملف",
+      "null",
+      "عنوان الصورة"
+    ],
+    "answer": 2,
+    "explanationEn": "Screen readers then skip it.",
+    "explanationAr": "فتتخطاها قارئات الشاشة."
+  },
+  {
+    "key": "qz-and-net-images-5",
+    "topic": "and-net-images",
+    "questionEn": "Why share the app's OkHttpClient with Coil?",
+    "questionAr": "لماذا تشارك OkHttpClient الخاص بالتطبيق مع Coil؟",
+    "optionsEn": [
+      "It disables the disk cache",
+      "Same pools, interceptors and rules",
+      "It makes images smaller",
+      "Coil can't download otherwise"
+    ],
+    "optionsAr": [
+      "لأنه يعطّل ذاكرة القرص",
+      "المجموعات والمعترضات والقواعد نفسها",
+      "لأنه يجعل الصور أصغر",
+      "لأن Coil لا تستطيع التنزيل غير ذلك"
+    ],
+    "answer": 1,
+    "explanationEn": "One client, consistent behaviour.",
+    "explanationAr": "عميل واحد وسلوك متسق."
+  },
+  {
+    "key": "qz-and-net-images-6",
+    "topic": "and-net-images",
+    "questionEn": "What keeps images from reloading when a list changes?",
+    "questionAr": "ما الذي يمنع إعادة تحميل الصور عند تغيّر القائمة؟",
+    "optionsEn": [
+      "Stable item keys",
+      "Bigger placeholders",
+      "Disabling crossfade",
+      "A shorter timeout"
+    ],
+    "optionsAr": [
+      "مفاتيح ثابتة للعناصر",
+      "صور مؤقتة أكبر",
+      "تعطيل التلاشي المتقاطع",
+      "مهلة أقصر"
+    ],
+    "answer": 0,
+    "explanationEn": "Items keep their identity and state.",
+    "explanationAr": "تحتفظ العناصر بهويتها وحالتها."
+  },
+  {
+    "key": "qz-and-net-images-7",
+    "topic": "and-net-images",
+    "questionEn": "Which contentScale suits a square thumbnail?",
+    "questionAr": "أي contentScale يناسب صورة مصغرة مربعة؟",
+    "optionsEn": [
+      "ContentScale.None",
+      "ContentScale.Inside",
+      "ContentScale.FillHeight",
+      "ContentScale.Crop"
+    ],
+    "optionsAr": [
+      "ContentScale.None",
+      "ContentScale.Inside",
+      "ContentScale.FillHeight",
+      "ContentScale.Crop"
+    ],
+    "answer": 3,
+    "explanationEn": "It fills the box and crops the overflow.",
+    "explanationAr": "يملأ الصندوق ويقص الزائد."
+  },
+  {
+    "key": "qz-and-net-images-8",
+    "topic": "and-net-images",
+    "questionEn": "How should a protected image send its token?",
+    "questionAr": "كيف ترسل صورة محمية رمزها؟",
+    "optionsEn": [
+      "In the file name",
+      "In a cookie in the APK",
+      "In a header via interceptor",
+      "In the image URL"
+    ],
+    "optionsAr": [
+      "في اسم الملف",
+      "في ملف ارتباط داخل APK",
+      "في ترويسة عبر معترض",
+      "في عنوان الصورة"
+    ],
+    "answer": 2,
+    "explanationEn": "URLs end up in logs and caches.",
+    "explanationAr": "العناوين تنتهي في السجلات والذاكرة المؤقتة."
+  },
+  {
+    "key": "qz-and-net-realtime-1",
+    "topic": "and-net-realtime",
+    "questionEn": "What suits two-way updates while a screen is open?",
+    "questionAr": "ما الذي يناسب التحديثات باتجاهين ما دامت الشاشة مفتوحة؟",
+    "optionsEn": [
+      "Periodic WorkManager",
+      "An HTTP cache",
+      "A FileProvider",
+      "A WebSocket"
+    ],
+    "optionsAr": [
+      "WorkManager دوري",
+      "ذاكرة HTTP مؤقتة",
+      "FileProvider",
+      "WebSocket"
+    ],
+    "answer": 3,
+    "explanationEn": "It keeps one persistent connection.",
+    "explanationAr": "يحافظ على اتصال دائم واحد."
+  },
+  {
+    "key": "qz-and-net-realtime-2",
+    "topic": "and-net-realtime",
+    "questionEn": "How do you reach the app when it isn't running?",
+    "questionAr": "كيف تصل إلى التطبيق عندما لا يعمل؟",
+    "optionsEn": [
+      "A tight polling loop",
+      "A foreground Activity",
+      "Firebase Cloud Messaging",
+      "An open WebSocket"
+    ],
+    "optionsAr": [
+      "استطلاع في حلقة ضيقة",
+      "Activity في المقدمة",
+      "Firebase Cloud Messaging",
+      "WebSocket مفتوح"
+    ],
+    "answer": 2,
+    "explanationEn": "Push messages are delivered by the system.",
+    "explanationAr": "يوصل النظام رسائل الدفع."
+  },
+  {
+    "key": "qz-and-net-realtime-3",
+    "topic": "and-net-realtime",
+    "questionEn": "What should an FCM data message usually do?",
+    "questionAr": "ماذا يجب أن تفعل رسالة بيانات FCM عادة؟",
+    "optionsEn": [
+      "Replace the API entirely",
+      "Trigger a sync",
+      "Carry the full database",
+      "Hold the user's password"
+    ],
+    "optionsAr": [
+      "الحلول محل الواجهة كليًا",
+      "تحفيز مزامنة",
+      "حمل قاعدة البيانات كاملة",
+      "حمل كلمة مرور المستخدم"
+    ],
+    "answer": 1,
+    "explanationEn": "Treat it as a hint and fetch the real data.",
+    "explanationAr": "عاملها كتلميح واجلب البيانات الحقيقية."
+  },
+  {
+    "key": "qz-and-net-realtime-4",
+    "topic": "and-net-realtime",
+    "questionEn": "Why wrap a WebSocket in callbackFlow?",
+    "questionAr": "لماذا تغلّف WebSocket في callbackFlow؟",
+    "optionsEn": [
+      "It closes when collection stops",
+      "It encrypts every message",
+      "It makes sockets faster",
+      "It's required by FCM"
+    ],
+    "optionsAr": [
+      "لأنه يُغلق عند توقف الجمع",
+      "لأنه يشفّر كل رسالة",
+      "لأنه يجعل المقابس أسرع",
+      "لأن FCM تشترطه"
+    ],
+    "answer": 0,
+    "explanationEn": "awaitClose closes the socket.",
+    "explanationAr": "تُغلق awaitClose المقبس."
+  },
+  {
+    "key": "qz-and-net-realtime-5",
+    "topic": "and-net-realtime",
+    "questionEn": "How do you avoid duplicate messages after reconnecting?",
+    "questionAr": "كيف تتجنب الرسائل المكررة بعد إعادة الاتصال؟",
+    "optionsEn": [
+      "Clear the list on reconnect",
+      "Ignore all old messages",
+      "Reconnect less often",
+      "Dedupe by message id in Room"
+    ],
+    "optionsAr": [
+      "امسح القائمة عند إعادة الاتصال",
+      "تجاهل كل الرسائل القديمة",
+      "أعد الاتصال بشكل أقل",
+      "أزل التكرار بمعرّف الرسالة في Room"
+    ],
+    "answer": 3,
+    "explanationEn": "Ids as primary keys make upserts safe.",
+    "explanationAr": "المعرّفات كمفاتيح أساسية تجعل upsert آمنة."
+  },
+  {
+    "key": "qz-and-net-realtime-6",
+    "topic": "and-net-realtime",
+    "questionEn": "How do you recover messages missed while offline?",
+    "questionAr": "كيف تستعيد الرسائل الفائتة أثناء عدم الاتصال؟",
+    "optionsEn": [
+      "Wait for the next message",
+      "Reinstall the app",
+      "Fetch after the last sequence",
+      "Ask the user to refresh"
+    ],
+    "optionsAr": [
+      "انتظر الرسالة التالية",
+      "أعد تثبيت التطبيق",
+      "اجلب ما بعد آخر رقم تسلسلي",
+      "اطلب من المستخدم التحديث"
+    ],
+    "answer": 2,
+    "explanationEn": "Sequence numbers make gaps detectable.",
+    "explanationAr": "الأرقام التسلسلية تجعل الفجوات قابلة للكشف."
+  },
+  {
+    "key": "qz-and-net-realtime-7",
+    "topic": "and-net-realtime",
+    "questionEn": "When should the socket close?",
+    "questionAr": "متى يجب أن يُغلق المقبس؟",
+    "optionsEn": [
+      "Only when the phone reboots",
+      "When the app goes to the background",
+      "Never, keep it open all day",
+      "Right after every message"
+    ],
+    "optionsAr": [
+      "فقط عند إعادة تشغيل الهاتف",
+      "عندما يذهب التطبيق إلى الخلفية",
+      "أبدًا، أبقِه مفتوحًا طوال اليوم",
+      "مباشرة بعد كل رسالة"
+    ],
+    "answer": 1,
+    "explanationEn": "Use push for background updates instead.",
+    "explanationAr": "استخدم الدفع للتحديثات في الخلفية بدلًا منه."
+  },
+  {
+    "key": "qz-and-net-realtime-8",
+    "topic": "and-net-realtime",
+    "questionEn": "Which is the most battery-hungry option?",
+    "questionAr": "أي خيار يستهلك البطارية أكثر؟",
+    "optionsEn": [
+      "Frequent polling",
+      "FCM data messages",
+      "A socket that closes in background",
+      "Server-sent events on screen"
+    ],
+    "optionsAr": [
+      "الاستطلاع المتكرر",
+      "رسائل بيانات FCM",
+      "مقبس يُغلق في الخلفية",
+      "أحداث الخادم على الشاشة"
+    ],
+    "answer": 0,
+    "explanationEn": "Each poll wakes the radio even when nothing changed.",
+    "explanationAr": "كل استطلاع يوقظ الهوائي حتى لو لم يتغير شيء."
+  }
+]
