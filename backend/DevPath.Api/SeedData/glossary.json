@@ -2196,5 +2196,82 @@
     "shortEn": "A Play Console A/B test that compares listing variants on first-time installers.",
     "shortAr": "اختبار A/B في Play Console يقارن متغيرات صفحة المتجر على المثبتين لأول مرة.",
     "topicSlug": "and-pro-growth"
+  },
+  {
+    "term": "foldable posture",
+    "arabic": "وضع الجهاز القابل للطي",
+    "shortEn": "How a foldable is held, such as tabletop or book, reported through WindowInfoTracker.",
+    "shortAr": "طريقة إمساك الجهاز القابل للطي، مثل وضع الطاولة أو الكتاب، ويُبلّغ عنها عبر WindowInfoTracker.",
+    "topicSlug": "and-spec-adaptive"
+  },
+  {
+    "term": "Kotlin Multiplatform",
+    "arabic": "منصة Kotlin Multiplatform",
+    "shortEn": "A Kotlin technology for sharing code across Android, iOS, desktop, web and server.",
+    "shortAr": "تقنية Kotlin لمشاركة الكود بين Android وiOS وسطح المكتب والويب والخادم.",
+    "topicSlug": "and-spec-kmp"
+  },
+  {
+    "term": "expect/actual",
+    "arabic": "التعريفان expect وactual",
+    "shortEn": "Kotlin Multiplatform declarations where common code expects an API and each platform provides it.",
+    "shortAr": "تعريفات في Kotlin Multiplatform يتوقع فيها الكود المشترك واجهة وتوفرها كل منصة.",
+    "topicSlug": "and-spec-kmp"
+  },
+  {
+    "term": "Compose Multiplatform",
+    "arabic": "مكتبة Compose Multiplatform",
+    "shortEn": "JetBrains' framework for sharing Compose UI across Android, iOS, desktop and web.",
+    "shortAr": "إطار JetBrains لمشاركة واجهات Compose بين Android وiOS وسطح المكتب والويب.",
+    "topicSlug": "and-spec-kmp"
+  },
+  {
+    "term": "Wear OS tile",
+    "arabic": "بلاطة Wear OS",
+    "shortEn": "A quick, swipeable summary and action surface shown from the watch face.",
+    "shortAr": "سطح سريع للملخص والإجراءات يمكن تمريره ويظهر من واجهة الساعة.",
+    "topicSlug": "and-spec-wear"
+  },
+  {
+    "term": "complication",
+    "arabic": "الإضافة على واجهة الساعة",
+    "shortEn": "A small piece of app data shown on a watch face, chosen by the user.",
+    "shortAr": "قطعة صغيرة من بيانات التطبيق تظهر على واجهة الساعة ويختارها المستخدم.",
+    "topicSlug": "and-spec-wear"
+  },
+  {
+    "term": "D-pad",
+    "arabic": "أزرار الاتجاه",
+    "shortEn": "The directional pad on TV remotes used to move focus between elements.",
+    "shortAr": "لوحة الاتجاهات في أجهزة تحكم التلفزيون، وتُستخدم لنقل التركيز بين العناصر.",
+    "topicSlug": "and-spec-tv"
+  },
+  {
+    "term": "Android Auto",
+    "arabic": "منصة Android Auto",
+    "shortEn": "Projects apps from the phone onto a car's screen using driver-safe templates.",
+    "shortAr": "تعرض التطبيقات من الهاتف على شاشة السيارة باستخدام قوالب آمنة للسائق.",
+    "topicSlug": "and-spec-auto"
+  },
+  {
+    "term": "Android Automotive OS",
+    "arabic": "نظام Android Automotive OS",
+    "shortEn": "A version of Android that runs directly in the car, with apps installed from Google Play.",
+    "shortAr": "إصدار من Android يعمل مباشرة في السيارة، وتُثبت تطبيقاته من Google Play.",
+    "topicSlug": "and-spec-auto"
+  },
+  {
+    "term": "Android XR",
+    "arabic": "منصة Android XR",
+    "shortEn": "Google's Android platform for headsets and glasses, where apps run as panels or spatial experiences.",
+    "shortAr": "منصة Android من Google لأجهزة الرأس والنظارات، تعمل فيها التطبيقات كلوحات أو تجارب مكانية.",
+    "topicSlug": "and-spec-xr"
+  },
+  {
+    "term": "orbiter",
+    "arabic": "المدار",
+    "shortEn": "A floating Compose for XR element attached to a panel's edge, often used for toolbars and navigation.",
+    "shortAr": "عنصر عائم في Compose for XR مرتبط بحافة لوحة، ويُستخدم غالبًا لأشرطة الأدوات والتنقل.",
+    "topicSlug": "and-spec-xr"
   }
 ]

@@ -1,0 +1,182 @@
+[
+  {
+    "key": "and-everywhere-player",
+    "skill": "Android",
+    "level": "Advanced",
+    "hours": 18,
+    "titleEn": "A lecture player on every screen",
+    "titleAr": "مشغّل محاضرات على كل شاشة",
+    "summaryEn": "One learning app that plays recorded lectures everywhere Android runs: adaptive on phones, tablets, foldables and desktop windows, shared logic with an iOS screen through Kotlin Multiplatform, lessons on Google TV with D-pad navigation, audio lectures in Android Auto, a study streak on Wear OS, and a spatial layout on Android XR.",
+    "summaryAr": "تطبيق تعلم واحد يشغّل المحاضرات المسجلة في كل مكان يعمل فيه Android: متكيف على الهواتف والأجهزة اللوحية والقابلة للطي ونوافذ سطح المكتب، ومنطق مشترك مع شاشة iOS عبر Kotlin Multiplatform، ودروس على Google TV بالتنقل بأزرار الاتجاه، ومحاضرات صوتية في Android Auto، وسلسلة دراسة على Wear OS، وتخطيط مكاني على Android XR.",
+    "techStack": "Kotlin Multiplatform · Ktor · Room · Jetpack Compose · Material 3 adaptive · Compose for TV · Media3 · Car App Library · Compose for Wear OS · Jetpack XR SDK",
+    "goalsEn": [
+      "Build one app that adapts to any window",
+      "Share logic across Android and iOS",
+      "Reuse one media session on TV and in cars",
+      "Add glanceable watch features",
+      "Add a spatial layout without losing the 2D app"
+    ],
+    "goalsAr": [
+      "بناء تطبيق واحد يتكيف مع أي نافذة",
+      "مشاركة المنطق بين Android وiOS",
+      "إعادة استخدام جلسة وسائط واحدة على التلفزيون والسيارة",
+      "إضافة ميزات سريعة على الساعة",
+      "إضافة تخطيط مكاني دون خسارة التطبيق ثنائي الأبعاد"
+    ],
+    "requirementsEn": [
+      "Course and lecture data, progress and the player ViewModel live in a KMP shared module with commonTest tests",
+      "Phone, tablet and foldable layouts with adaptive navigation and list-detail, state kept across resizing",
+      "Playback in a MediaSessionService used by the phone, TV and car",
+      "A TV app module with Compose for TV, full D-pad navigation and continue-watching",
+      "Android Auto support with a browse tree, search and resumption",
+      "A Wear OS app with a streak tile and complication",
+      "An XR spatial mode with an orbiter and two panels, falling back to 2D"
+    ],
+    "requirementsAr": [
+      "بيانات الدورات والمحاضرات والتقدم وViewModel المشغّل في وحدة KMP مشتركة مع اختبارات commonTest",
+      "تخطيطات للهاتف والجهاز اللوحي والقابل للطي بتنقل متكيف وقائمة وتفاصيل، مع حفظ الحالة عبر تغيير الحجم",
+      "التشغيل في MediaSessionService يستخدمها الهاتف والتلفزيون والسيارة",
+      "وحدة تطبيق للتلفزيون بـ Compose for TV وتنقل كامل بأزرار الاتجاه ومتابعة المشاهدة",
+      "دعم Android Auto بشجرة تصفح وبحث واستئناف",
+      "تطبيق Wear OS ببلاطة وإضافة لسلسلة الدراسة",
+      "وضع مكاني في XR بمدار ولوحتين، مع العودة إلى ثنائي الأبعاد"
+    ],
+    "acceptanceEn": [
+      "The app passes the large screen app quality checklist on a tablet, a foldable and a desktop window",
+      "Every TV screen can be used with the D-pad only and focus is never lost",
+      "A lecture started in the car resumes at the same position on the phone and TV",
+      "The shared module's tests pass on Android and iOS targets"
+    ],
+    "acceptanceAr": [
+      "يجتاز التطبيق قائمة جودة الشاشات الكبيرة على جهاز لوحي وجهاز قابل للطي ونافذة سطح مكتب",
+      "يمكن استخدام كل شاشة على التلفزيون بأزرار الاتجاه وحدها ولا يضيع التركيز أبدًا",
+      "تُستأنف المحاضرة التي بدأت في السيارة من الموضع نفسه على الهاتف والتلفزيون",
+      "تنجح اختبارات الوحدة المشتركة على أهداف Android وiOS"
+    ],
+    "stretchEn": [
+      "Share the settings screen with Compose Multiplatform on iOS",
+      "Add Android Automotive OS support with sign-in on the car screen",
+      "Show a 3D model of a lab experiment with SceneCore"
+    ],
+    "stretchAr": [
+      "شارك شاشة الإعدادات مع iOS بـ Compose Multiplatform",
+      "أضف دعم Android Automotive OS مع تسجيل الدخول على شاشة السيارة",
+      "اعرض نموذجًا ثلاثي الأبعاد لتجربة مختبر بـ SceneCore"
+    ],
+    "steps": [
+      {
+        "key": "and-ep-shared",
+        "titleEn": "Build the shared core",
+        "titleAr": "ابنِ النواة المشتركة",
+        "bodyEn": "Create a KMP shared module with lecture models, a Ktor API client, a repository with offline caching, progress tracking and the player state. Write commonTest tests with MockEngine, and use the module from the Android app.",
+        "bodyAr": "أنشئ وحدة KMP مشتركة فيها نماذج المحاضرات، وعميل Ktor للواجهة، ومستودع بتخزين مؤقت دون اتصال، وتتبع التقدم، وحالة المشغّل. واكتب اختبارات commonTest مع MockEngine، واستخدم الوحدة من تطبيق Android.",
+        "hintsEn": [
+          "Keep the API Swift-friendly from the start.",
+          "Store positions per lecture id so every device can resume."
+        ],
+        "hintsAr": [
+          "اجعل الواجهة مناسبة لـ Swift من البداية.",
+          "احفظ المواضع لكل معرّف محاضرة حتى يستطيع كل جهاز الاستئناف."
+        ]
+      },
+      {
+        "key": "and-ep-adaptive",
+        "titleEn": "Make the phone app adaptive",
+        "titleAr": "اجعل تطبيق الهاتف متكيفًا",
+        "bodyEn": "Use NavigationSuiteScaffold and ListDetailPaneScaffold for courses and lectures, a tabletop layout for the player on foldables, keyboard shortcuts for play and seek, and test in resizable and desktop windows.",
+        "bodyAr": "استخدم NavigationSuiteScaffold وListDetailPaneScaffold للدورات والمحاضرات، وتخطيط الطاولة للمشغّل في الأجهزة القابلة للطي، واختصارات لوحة المفاتيح للتشغيل والتقديم، واختبر في نوافذ قابلة لتغيير الحجم ونوافذ سطح المكتب.",
+        "hintsEn": [
+          "Hoist state above the adaptive branch.",
+          "Space bar for play and pause is what keyboard users expect."
+        ],
+        "hintsAr": [
+          "ارفع الحالة فوق تفرع التكيف.",
+          "يتوقع مستخدمو لوحة المفاتيح زر المسافة للتشغيل والإيقاف."
+        ]
+      },
+      {
+        "key": "and-ep-media",
+        "titleEn": "One media session for every screen",
+        "titleAr": "جلسة وسائط واحدة لكل شاشة",
+        "bodyEn": "Move playback into a MediaLibraryService with a browse tree (Continue, Courses, Downloads), search and resumption. Make the phone UI a MediaController client so playback survives leaving the app.",
+        "bodyAr": "انقل التشغيل إلى MediaLibraryService بشجرة تصفح (تابع والدورات والتنزيلات) وبحث واستئناف. واجعل واجهة الهاتف عميل MediaController حتى ينجو التشغيل من مغادرة التطبيق.",
+        "hintsEn": [
+          "The same service powers TV controls and Android Auto.",
+          "Save the position on pause and every 15 seconds."
+        ],
+        "hintsAr": [
+          "تشغّل الخدمة نفسها أزرار التلفزيون وAndroid Auto.",
+          "احفظ الموضع عند الإيقاف وكل 15 ثانية."
+        ]
+      },
+      {
+        "key": "and-ep-tv",
+        "titleEn": "Add the TV app",
+        "titleAr": "أضف تطبيق التلفزيون",
+        "bodyEn": "Create a TV app module with Compose for TV: a featured carousel, rows of courses with focus-scaling cards, a D-pad friendly player, focus restoration, and continue-watching on the home screen.",
+        "bodyAr": "أنشئ وحدة تطبيق للتلفزيون بـ Compose for TV: دوّارة مميزة، وصفوف دورات ببطاقات تكبر عند التركيز، ومشغّل مناسب لأزرار الاتجاه، واستعادة التركيز، ومتابعة المشاهدة على الشاشة الرئيسية.",
+        "hintsEn": [
+          "Test with the D-pad only.",
+          "The TV module depends on the same shared and media modules."
+        ],
+        "hintsAr": [
+          "اختبر بأزرار الاتجاه وحدها.",
+          "تعتمد وحدة التلفزيون على الوحدتين المشتركة والوسائط نفسيهما."
+        ]
+      },
+      {
+        "key": "and-ep-auto",
+        "titleEn": "Lectures in the car",
+        "titleAr": "المحاضرات في السيارة",
+        "bodyEn": "Declare Android Auto media support, make the browse tree car-friendly with short titles and artwork, check voice search and resumption on the Desktop Head Unit, and review the car app quality guidelines.",
+        "bodyAr": "عرّف دعم الوسائط في Android Auto، واجعل شجرة التصفح مناسبة للسيارة بعناوين قصيرة وصور، وافحص البحث الصوتي والاستئناف على Desktop Head Unit، وراجع إرشادات جودة تطبيقات السيارات.",
+        "hintsEn": [
+          "Start playback from the car with the phone app closed.",
+          "Keep the root at four tabs or fewer."
+        ],
+        "hintsAr": [
+          "ابدأ التشغيل من السيارة وتطبيق الهاتف مغلق.",
+          "أبقِ الجذر في أربعة تبويبات أو أقل."
+        ]
+      },
+      {
+        "key": "and-ep-wear",
+        "titleEn": "A study streak on the watch",
+        "titleAr": "سلسلة دراسة على الساعة",
+        "bodyEn": "Build a small Wear OS app that shows today's study minutes and streak, with a tile, a complication and a reminder, synced from the phone through the Data Layer.",
+        "bodyAr": "ابنِ تطبيق Wear OS صغيرًا يعرض دقائق الدراسة اليوم والسلسلة، مع بلاطة وإضافة وتذكير، متزامنًا من الهاتف عبر Data Layer.",
+        "hintsEn": [
+          "Use DataItems so values sync after reconnecting.",
+          "One screen and one action are enough."
+        ],
+        "hintsAr": [
+          "استخدم DataItem حتى تتزامن القيم بعد إعادة الاتصال.",
+          "تكفي شاشة واحدة وإجراء واحد."
+        ]
+      },
+      {
+        "key": "and-ep-xr",
+        "titleEn": "A spatial layout",
+        "titleAr": "تخطيط مكاني",
+        "bodyEn": "On the Android XR emulator, check the app as a panel, then add a spatial mode with the course list and the player in two panels and playback controls in an orbiter, falling back to the normal layout elsewhere.",
+        "bodyAr": "على محاكي Android XR افحص التطبيق كلوحة، ثم أضف وضعًا مكانيًا فيه قائمة الدورات والمشغّل في لوحتين وأزرار التشغيل في مدار، مع العودة إلى التخطيط العادي في غير ذلك.",
+        "hintsEn": [
+          "Check LocalSpatialCapabilities before using spatial APIs.",
+          "Test a 20-minute session for comfort."
+        ],
+        "hintsAr": [
+          "افحص LocalSpatialCapabilities قبل استخدام الواجهات المكانية.",
+          "اختبر جلسة مدتها 20 دقيقة للراحة."
+        ]
+      }
+    ],
+    "topics": [
+      "and-spec-adaptive",
+      "and-spec-kmp",
+      "and-spec-wear",
+      "and-spec-tv",
+      "and-spec-auto",
+      "and-spec-xr"
+    ]
+  }
+]

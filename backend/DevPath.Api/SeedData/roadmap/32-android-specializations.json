@@ -1,0 +1,232 @@
+{
+  "slug": "android-specializations",
+  "order": 32,
+  "titleEn": "Specializations: beyond the phone",
+  "titleAr": "التخصصات: ما بعد الهاتف",
+  "descriptionEn": "Optional paths for when your phone app is solid: adaptive apps for tablets, foldables and desktop windows, sharing code with iOS through Kotlin Multiplatform, and building for watches, TVs, cars and headsets with Wear OS, Google TV, Android Auto and Android XR. Pick the ones that match the jobs or products you want.",
+  "descriptionAr": "مسارات اختيارية عندما يصبح تطبيق الهاتف متينًا: تطبيقات متكيفة للأجهزة اللوحية والقابلة للطي ونوافذ سطح المكتب، ومشاركة الكود مع iOS عبر Kotlin Multiplatform، والبناء للساعات والتلفزيونات والسيارات والنظارات بـ Wear OS وGoogle TV وAndroid Auto وAndroid XR. فاختر منها ما يناسب الوظائف أو المنتجات التي تريدها.",
+  "topics": [
+    {
+      "slug": "and-spec-adaptive",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 45,
+      "difficulty": "Intermediate",
+      "titleEn": "Large screens, foldables and desktop windows",
+      "titleAr": "الشاشات الكبيرة والأجهزة القابلة للطي ونوافذ سطح المكتب",
+      "summaryEn": "Hundreds of millions of tablets, foldables and Chromebooks run Android apps, and Android now runs apps in resizable desktop windows. Adaptive apps react to the window size, not the device: window size classes (compact, medium, expanded) choose the layout; NavigationSuiteScaffold switches between a bottom bar, a rail and a drawer; ListDetailPaneScaffold and SupportingPaneScaffold show one or two panes; foldable postures (tabletop, book) come from WindowInfoTracker. Large screens also mean keyboard, mouse, trackpad and stylus input, drag and drop between apps, and multi-window with configuration changes that must not lose state.",
+      "summaryAr": "يشغّل مئات الملايين من الأجهزة اللوحية والقابلة للطي وأجهزة Chromebook تطبيقات Android، ويشغّل Android الآن التطبيقات في نوافذ سطح مكتب قابلة لتغيير الحجم. والتطبيقات المتكيفة تستجيب لحجم النافذة لا للجهاز: فتختار فئات حجم النافذة (‏compact وmedium وexpanded) التخطيط، ويبدّل NavigationSuiteScaffold بين شريط سفلي وشريط جانبي ودرج، ويعرض ListDetailPaneScaffold وSupportingPaneScaffold لوحة أو لوحتين، وتأتي أوضاع الأجهزة القابلة للطي (الطاولة والكتاب) من WindowInfoTracker. وتعني الشاشات الكبيرة أيضًا إدخال لوحة المفاتيح والفأرة ولوحة اللمس والقلم، والسحب والإفلات بين التطبيقات، وتعدد النوافذ مع تغييرات إعداد يجب ألا تفقد الحالة.",
+      "whyEn": "Google Play ranks apps that work well on large screens higher on those devices, and Android 16 removes the ability for most apps to lock orientation and size on large screens. A stretched phone layout looks broken there, and users review accordingly.",
+      "whyAr": "ترفع Google Play ترتيب التطبيقات التي تعمل جيدًا على الشاشات الكبيرة في تلك الأجهزة، ويزيل Android 16 قدرة معظم التطبيقات على قفل الاتجاه والحجم على الشاشات الكبيرة. فيبدو تخطيط الهاتف الممدود معطوبًا هناك، ويقيّم المستخدمون على هذا الأساس.",
+      "howEn": "Read currentWindowAdaptiveInfo() and branch on the window size class, never on device type. Use the Material 3 adaptive scaffolds for navigation and panes, keep state in ViewModels so resizing doesn't lose it, test with the resizable emulator and desktop windowing, and support keyboard shortcuts, hover states and stylus where they help.",
+      "howAr": "اقرأ currentWindowAdaptiveInfo() وتفرّع حسب فئة حجم النافذة، لا حسب نوع الجهاز أبدًا. واستخدم هياكل Material 3 المتكيفة للتنقل واللوحات، واحفظ الحالة في ViewModel حتى لا يفقدها تغيير الحجم، واختبر بالمحاكي القابل لتغيير الحجم ونوافذ سطح المكتب، وادعم اختصارات لوحة المفاتيح وحالات التمرير والقلم حيث تفيد.",
+      "exampleEn": "A mail app shows the inbox alone on phones, inbox and message side by side on tablets and unfolded foldables, a navigation rail instead of a bottom bar, and supports Ctrl+N, Delete and drag-and-drop of attachments into other apps.",
+      "exampleAr": "تطبيق بريد يعرض صندوق الوارد وحده في الهواتف، وصندوق الوارد والرسالة جنبًا إلى جنب في الأجهزة اللوحية والقابلة للطي المفتوحة، وشريطًا جانبيًا للتنقل بدل الشريط السفلي، ويدعم Ctrl+N وDelete وسحب المرفقات وإفلاتها في تطبيقات أخرى.",
+      "practiceEn": "1) Replace a bottom bar with NavigationSuiteScaffold. 2) Turn a list and detail screen into ListDetailPaneScaffold. 3) Add two keyboard shortcuts and test in a resizable window.",
+      "practiceAr": "1) استبدل الشريط السفلي بـ NavigationSuiteScaffold. 2) حوّل شاشتي القائمة والتفاصيل إلى ListDetailPaneScaffold. 3) أضف اختصارين للوحة المفاتيح واختبر في نافذة قابلة لتغيير الحجم.",
+      "challengeEn": "Make an existing app pass Google's large screen app quality guidelines at tier 2: adaptive layouts, no letterboxing, state kept across resizing and folding, keyboard and mouse support, and screenshots from a tablet and a foldable.",
+      "challengeAr": "اجعل تطبيقًا موجودًا يجتاز إرشادات جودة تطبيقات الشاشات الكبيرة من Google في المستوى الثاني: تخطيطات متكيفة، ودون أشرطة جانبية سوداء، وحالة محفوظة عبر تغيير الحجم والطي، ودعم لوحة المفاتيح والفأرة، ولقطات من جهاز لوحي وجهاز قابل للطي.",
+      "objectivesEn": [
+        "Choose layouts from window size classes",
+        "Use adaptive navigation and pane scaffolds",
+        "Handle foldable postures and resizing",
+        "Support keyboard, mouse and stylus"
+      ],
+      "objectivesAr": [
+        "اختيار التخطيطات من فئات حجم النافذة",
+        "استخدام هياكل التنقل واللوحات المتكيفة",
+        "التعامل مع أوضاع الطي وتغيير الحجم",
+        "دعم لوحة المفاتيح والفأرة والقلم"
+      ],
+      "prerequisites": [
+        "and-compose-adaptive-a11y",
+        "and-compose-navigation"
+      ]
+    },
+    {
+      "slug": "and-spec-kmp",
+      "skill": "Android",
+      "priority": "Important",
+      "minutes": 50,
+      "difficulty": "Advanced",
+      "titleEn": "Kotlin Multiplatform: sharing code with iOS",
+      "titleAr": "مكتبة Kotlin Multiplatform: مشاركة الكود مع iOS",
+      "summaryEn": "Kotlin Multiplatform (KMP) compiles the same Kotlin code for Android, iOS, desktop, web and server. A shared module has commonMain for code that runs everywhere and platform source sets (androidMain, iosMain) for the rest; expect and actual declarations bridge platform APIs. Teams usually share the data and domain layers (networking with Ktor, storage with Room or SQLDelight, DataStore, business rules and ViewModels) and keep native UI, or share the UI too with Compose Multiplatform, which is stable on iOS. iOS consumes the shared code as a framework through Xcode, with tools like SKIE making Flows and suspend functions feel natural in Swift.",
+      "summaryAr": "تترجم Kotlin Multiplatform (‏KMP) كود Kotlin نفسه لـ Android وiOS وسطح المكتب والويب والخادم. وللوحدة المشتركة commonMain للكود الذي يعمل في كل مكان، ومجموعات مصادر للمنصات (‏androidMain وiosMain) للباقي، وتربط تعريفات expect وactual واجهات المنصات. وتشارك الفرق عادة طبقتي البيانات والمجال (الشبكة بـ Ktor، والتخزين بـ Room أو SQLDelight، وDataStore، وقواعد العمل وViewModel) وتُبقي الواجهة أصلية، أو تشارك الواجهة أيضًا بـ Compose Multiplatform، المستقرة على iOS. ويستهلك iOS الكود المشترك كإطار عمل عبر Xcode، مع أدوات مثل SKIE تجعل Flow والدوال المعلقة طبيعية في Swift.",
+      "whyEn": "Companies such as Netflix, McDonald's and Cash App use KMP to write business logic once, and Google supports it officially for Jetpack libraries. Android developers who know KMP can work on both apps, which more job posts now ask for.",
+      "whyAr": "تستخدم شركات مثل Netflix وMcDonald's وCash App مكتبة KMP لكتابة منطق العمل مرة واحدة، وتدعمها Google رسميًا لمكتبات Jetpack. والمطورون الذين يعرفون KMP يستطيعون العمل على التطبيقين، وهو ما تطلبه إعلانات وظائف أكثر الآن.",
+      "howEn": "Start by moving one feature's models, repository and use cases into a shared module with Ktor and kotlinx.serialization. Keep platform code behind interfaces or expect/actual, inject it with Koin or constructor parameters, write tests in commonTest, and expose a simple API to Swift. Decide UI sharing per screen.",
+      "howAr": "ابدأ بنقل نماذج ميزة واحدة ومستودعها وحالات استخدامها إلى وحدة مشتركة مع Ktor وkotlinx.serialization. واحفظ كود المنصة خلف واجهات أو expect/actual، وحقنه بـ Koin أو معاملات المنشئ، واكتب الاختبارات في commonTest، واعرض واجهة بسيطة لـ Swift. وقرّر مشاركة الواجهة لكل شاشة على حدة.",
+      "exampleEn": "A news app shares networking, caching in SQLDelight, the feed repository and its ViewModel; Android uses Jetpack Compose and iOS uses SwiftUI over the same StateFlow, so a bug fixed in the shared module is fixed on both platforms.",
+      "exampleAr": "تطبيق أخبار يشارك الشبكة، والتخزين المؤقت في SQLDelight، ومستودع الخلاصة وViewModel الخاصة بها، فيستخدم Android مكتبة Jetpack Compose ويستخدم iOS واجهة SwiftUI فوق StateFlow نفسه، فيُصلح الخطأ في الوحدة المشتركة على المنصتين معًا.",
+      "practiceEn": "1) Create a KMP project with the wizard. 2) Write an expect/actual function for the platform name. 3) Fetch JSON with Ktor in commonMain and test it in commonTest.",
+      "practiceAr": "1) أنشئ مشروع KMP بالمعالج. 2) اكتب دالة expect/actual لاسم المنصة. 3) اجلب JSON بـ Ktor في commonMain واختبرها في commonTest.",
+      "challengeEn": "Move the data and domain layers of one of your apps into a shared KMP module, keep the Android UI working, and build a minimal iOS screen (SwiftUI or Compose Multiplatform) that shows the same data.",
+      "challengeAr": "انقل طبقتي البيانات والمجال لأحد تطبيقاتك إلى وحدة KMP مشتركة، وحافظ على عمل واجهة Android، وابنِ شاشة iOS بسيطة (‏SwiftUI أو Compose Multiplatform) تعرض البيانات نفسها.",
+      "objectivesEn": [
+        "Structure shared and platform source sets",
+        "Bridge platforms with expect and actual",
+        "Share networking, storage and logic",
+        "Choose between native and shared UI"
+      ],
+      "objectivesAr": [
+        "تنظيم مجموعات المصادر المشتركة والخاصة بالمنصات",
+        "الربط بين المنصات بـ expect وactual",
+        "مشاركة الشبكة والتخزين والمنطق",
+        "الاختيار بين الواجهة الأصلية والمشتركة"
+      ],
+      "prerequisites": [
+        "and-arch-modularization",
+        "kt-flow-basics",
+        "and-net-retrofit"
+      ]
+    },
+    {
+      "slug": "and-spec-wear",
+      "skill": "Android",
+      "priority": "Optional",
+      "minutes": 40,
+      "difficulty": "Intermediate",
+      "titleEn": "Wear OS: apps, tiles and complications",
+      "titleAr": "نظام Wear OS: التطبيقات والبلاطات والإضافات",
+      "summaryEn": "Wear OS apps are built with Compose for Wear OS: ScalingLazyColumn, Chip, TimeText and the round-screen aware Material 3 components, designed for glances of a few seconds. Tiles give quick, swipeable summaries from the watch face carousel, complications put small data on watch faces, and ongoing activities keep a workout or timer visible. Health Services provides heart rate and exercise tracking, the Data Layer API syncs with the phone app, and apps must work standalone, on battery budgets far smaller than a phone's.",
+      "summaryAr": "تُبنى تطبيقات Wear OS بمكتبة Compose for Wear OS: ‏ScalingLazyColumn وChip وTimeText ومكونات Material 3 المدركة للشاشة الدائرية، وهي مصممة لنظرات لا تتجاوز بضع ثوانٍ. وتعطي البلاطات ملخصات سريعة يمكن تمريرها من دوّارة واجهة الساعة، وتضع الإضافات بيانات صغيرة على واجهات الساعة، وتُبقي الأنشطة المستمرة تمرينًا أو مؤقتًا ظاهرًا. وتوفر Health Services نبض القلب وتتبع التمارين، وتزامن Data Layer API مع تطبيق الهاتف، ويجب أن تعمل التطبيقات مستقلة، بميزانيات بطارية أصغر بكثير من الهاتف.",
+      "whyEn": "Fitness, health, messaging and payments apps are expected to have a watch experience, and Wear OS is the platform for Pixel and Samsung Galaxy watches. Few developers know its constraints, which makes it a useful specialisation.",
+      "whyAr": "يُتوقع من تطبيقات اللياقة والصحة والمراسلة والدفع أن تقدم تجربة على الساعة، وWear OS هي منصة ساعات Pixel وSamsung Galaxy. وقليل من المطورين يعرفون قيودها، فتصبح تخصصًا مفيدًا.",
+      "howEn": "Design for one action per screen, use Wear Compose components and rotary input, prefer tiles and complications for glanceable data, use Health Services instead of raw sensors, sync with the phone through the Data Layer only when needed, and test on round and square emulators.",
+      "howAr": "صمّم لإجراء واحد في كل شاشة، واستخدم مكونات Wear Compose والإدخال الدوّار، وفضّل البلاطات والإضافات للبيانات السريعة، واستخدم Health Services بدل الحساسات الخام، وزامن مع الهاتف عبر Data Layer عند الحاجة فقط، واختبر على محاكيات دائرية ومربعة.",
+      "exampleEn": "A running app starts a workout from a tile, shows pace and heart rate in an ongoing activity, puts today's distance in a complication, and sends the finished run to the phone app through the Data Layer.",
+      "exampleAr": "تطبيق جري يبدأ تمرينًا من بلاطة، ويعرض السرعة ونبض القلب في نشاط مستمر، ويضع مسافة اليوم في إضافة على الواجهة، ويرسل الجري المكتمل إلى تطبيق الهاتف عبر Data Layer.",
+      "practiceEn": "1) Build a Wear app with ScalingLazyColumn and three chips. 2) Add a tile that shows a counter. 3) Add a complication data source for the same value.",
+      "practiceAr": "1) ابنِ تطبيق Wear بـ ScalingLazyColumn وثلاث رقائق. 2) أضف بلاطة تعرض عدّادًا. 3) أضف مصدر بيانات إضافة للقيمة نفسها.",
+      "challengeEn": "Build a standalone water-intake tracker for Wear OS with a tile, a complication, reminders, and sync to a phone app through the Data Layer.",
+      "challengeAr": "ابنِ متتبعًا مستقلًا لشرب الماء على Wear OS مع بلاطة وإضافة وتذكيرات ومزامنة مع تطبيق الهاتف عبر Data Layer.",
+      "objectivesEn": [
+        "Build watch UIs with Compose for Wear OS",
+        "Create tiles and complications",
+        "Use Health Services and ongoing activities",
+        "Sync with the phone through the Data Layer"
+      ],
+      "objectivesAr": [
+        "بناء واجهات الساعة بـ Compose for Wear OS",
+        "إنشاء البلاطات والإضافات",
+        "استخدام Health Services والأنشطة المستمرة",
+        "المزامنة مع الهاتف عبر Data Layer"
+      ],
+      "prerequisites": [
+        "and-compose-lists",
+        "and-dev-notifications"
+      ]
+    },
+    {
+      "slug": "and-spec-tv",
+      "skill": "Android",
+      "priority": "Optional",
+      "minutes": 35,
+      "difficulty": "Intermediate",
+      "titleEn": "Android TV and Google TV",
+      "titleAr": "منصتا Android TV وGoogle TV",
+      "summaryEn": "TV apps are used from a couch with a D-pad remote, so every element must be focusable and the focused item obvious. Compose for TV provides TV Material components such as carousels, cards with focus scaling and immersive lists. Apps declare the leanback launcher category and a banner, play media with Media3 ExoPlayer and a MediaSession so the remote and Google Assistant work, and surface content on the home screen through Engage SDK or watch next channels. Text must be readable at 3 metres and layouts respect overscan-safe margins.",
+      "summaryAr": "تُستخدم تطبيقات التلفزيون من الأريكة بجهاز تحكم بأزرار اتجاه، فيجب أن يكون كل عنصر قابلًا للتركيز وأن يكون العنصر المركّز عليه واضحًا. وتوفر Compose for TV مكونات TV Material مثل الدوّارات والبطاقات التي تكبر عند التركيز والقوائم الغامرة. وتعرّف التطبيقات فئة مشغّل leanback وصورة شعار، وتشغّل الوسائط بـ Media3 ExoPlayer مع MediaSession حتى يعمل جهاز التحكم وGoogle Assistant، وتُظهر المحتوى على الشاشة الرئيسية عبر Engage SDK أو قنوات Watch Next. ويجب أن يكون النص مقروءًا من 3 أمتار، وأن تحترم التخطيطات هوامش الأمان من القص.",
+      "whyEn": "Streaming, sports and fitness apps reach living rooms through Google TV and Android TV devices from Sony, TCL, Hisense and others. Focus handling and media sessions are skills that carry over to cars and large screens.",
+      "whyAr": "تصل تطبيقات البث والرياضة واللياقة إلى غرف المعيشة عبر أجهزة Google TV وAndroid TV من Sony وTCL وHisense وغيرها. ومهارات التعامل مع التركيز وجلسات الوسائط تنتقل إلى السيارات والشاشات الكبيرة.",
+      "howEn": "Build screens with Compose for TV components, test every path with only the D-pad, set initial focus and restore it when returning, keep playback in a MediaSessionService, and support the Watch Next row for continue-watching.",
+      "howAr": "ابنِ الشاشات بمكونات Compose for TV، واختبر كل مسار بأزرار الاتجاه وحدها، واضبط التركيز الأولي واستعده عند العودة، واحفظ التشغيل في MediaSessionService، وادعم صف Watch Next لمتابعة المشاهدة.",
+      "exampleEn": "A lecture app shows a hero carousel of new courses, rows of lessons with focus-scaling cards, plays with ExoPlayer, and adds the current lesson to Watch Next so learners can resume from the TV home screen.",
+      "exampleAr": "تطبيق محاضرات يعرض دوّارة رئيسية للدورات الجديدة، وصفوفًا من الدروس ببطاقات تكبر عند التركيز، ويشغّل بـ ExoPlayer، ويضيف الدرس الحالي إلى Watch Next حتى يستأنف المتعلمون من الشاشة الرئيسية للتلفزيون.",
+      "practiceEn": "1) Create a TV app with a Carousel and two rows of cards. 2) Navigate it with the emulator's D-pad only. 3) Play a video with Media3 and test pause from the remote.",
+      "practiceAr": "1) أنشئ تطبيق TV فيه Carousel وصفان من البطاقات. 2) تنقّل فيه بأزرار اتجاه المحاكي فقط. 3) شغّل فيديو بـ Media3 واختبر الإيقاف من جهاز التحكم.",
+      "challengeEn": "Port a phone video or podcast app to TV with Compose for TV, full D-pad navigation, focus restoration, MediaSession controls and Watch Next integration.",
+      "challengeAr": "انقل تطبيق فيديو أو بودكاست من الهاتف إلى التلفزيون بـ Compose for TV، مع تنقل كامل بأزرار الاتجاه، واستعادة التركيز، وتحكم MediaSession، والتكامل مع Watch Next.",
+      "objectivesEn": [
+        "Design for D-pad focus and distance viewing",
+        "Build screens with Compose for TV",
+        "Play media with Media3 and MediaSession",
+        "Surface content on the TV home screen"
+      ],
+      "objectivesAr": [
+        "التصميم لتركيز أزرار الاتجاه والمشاهدة من بعيد",
+        "بناء الشاشات بـ Compose for TV",
+        "تشغيل الوسائط بـ Media3 وMediaSession",
+        "إظهار المحتوى على الشاشة الرئيسية للتلفزيون"
+      ],
+      "prerequisites": [
+        "and-compose-lists",
+        "and-dev-media"
+      ]
+    },
+    {
+      "slug": "and-spec-auto",
+      "skill": "Android",
+      "priority": "Optional",
+      "minutes": 35,
+      "difficulty": "Intermediate",
+      "titleEn": "Android Auto and Android Automotive OS",
+      "titleAr": "منصتا Android Auto وAndroid Automotive OS",
+      "summaryEn": "Cars run Android in two ways: Android Auto projects your phone app onto the car screen, and Android Automotive OS runs apps directly in the car. Because drivers must not be distracted, you don't draw your own UI: media apps expose a MediaBrowserService/MediaLibraryService that the car renders, messaging apps use notifications with MessagingStyle and reply actions, and navigation, point-of-interest, parking, charging and IoT apps use the Car App Library's templates (list, grid, map, pane). The system limits list lengths and steps while driving, and apps go through extra quality review.",
+      "summaryAr": "تعمل السيارات بـ Android بطريقتين: يعرض Android Auto تطبيق هاتفك على شاشة السيارة، ويشغّل Android Automotive OS التطبيقات مباشرة في السيارة. ولأن السائقين يجب ألا يتشتتوا، فلا ترسم واجهتك الخاصة: تعرض تطبيقات الوسائط MediaBrowserService أو MediaLibraryService ترسمها السيارة، وتستخدم تطبيقات المراسلة إشعارات بـ MessagingStyle وإجراءات الرد، وتستخدم تطبيقات التنقل ونقاط الاهتمام والمواقف والشحن وإنترنت الأشياء قوالب Car App Library (القائمة والشبكة والخريطة واللوحة). ويحدّ النظام أطوال القوائم والخطوات أثناء القيادة، وتمر التطبيقات بمراجعة جودة إضافية.",
+      "whyEn": "Android Auto works in most new cars, and cars from Volvo, Polestar, GM, Renault, Honda and others run Android Automotive OS with Google built in. Media, messaging and EV charging apps are expected there.",
+      "whyAr": "يعمل Android Auto في معظم السيارات الجديدة، وتشغّل سيارات من Volvo وPolestar وGM وRenault وHonda وغيرها Android Automotive OS مع خدمات Google المدمجة. ويُتوقع وجود تطبيقات الوسائط والمراسلة وشحن السيارات الكهربائية هناك.",
+      "howEn": "Pick the right category first, because it decides the API. Reuse your Media3 session for audio, add MessagingStyle notifications with RemoteInput replies for messaging, and build templated screens with CarAppService and Screen classes for other categories. Test with the Desktop Head Unit and the Automotive OS emulator, and follow the car app quality guidelines.",
+      "howAr": "اختر الفئة الصحيحة أولًا، لأنها تحدد الواجهة. وأعد استخدام جلسة Media3 للصوت، وأضف إشعارات MessagingStyle مع ردود RemoteInput للمراسلة، وابنِ شاشات بالقوالب بأصناف CarAppService وScreen للفئات الأخرى. واختبر بـ Desktop Head Unit ومحاكي Automotive OS، واتبع إرشادات جودة تطبيقات السيارات.",
+      "exampleEn": "A podcast app shows its library and queue in Android Auto through its existing MediaLibraryService, supports voice search like \"play the latest episode\", and an EV charging app lists nearby chargers on a map template with availability and navigation.",
+      "exampleAr": "تطبيق بودكاست يعرض مكتبته وطابوره في Android Auto عبر MediaLibraryService الموجودة لديه، ويدعم البحث الصوتي مثل «شغّل آخر حلقة»، وتطبيق شحن سيارات كهربائية يسرد الشواحن القريبة على قالب خريطة مع التوفر والتنقل.",
+      "practiceEn": "1) Run the Desktop Head Unit and connect a phone or emulator. 2) Expose a two-level media tree from a MediaLibraryService. 3) Build one Car App Library ListTemplate screen.",
+      "practiceAr": "1) شغّل Desktop Head Unit واربط هاتفًا أو محاكيًا. 2) اعرض شجرة وسائط بمستويين من MediaLibraryService. 3) ابنِ شاشة واحدة بـ ListTemplate من Car App Library.",
+      "challengeEn": "Add Android Auto support to an audio app: a browsable library, playback controls, voice search and a queue, tested on the Desktop Head Unit and checked against the car app quality guidelines.",
+      "challengeAr": "أضف دعم Android Auto إلى تطبيق صوتي: مكتبة قابلة للتصفح، وأزرار تشغيل، وبحث صوتي، وطابور، مع الاختبار على Desktop Head Unit والفحص مقابل إرشادات جودة تطبيقات السيارات.",
+      "objectivesEn": [
+        "Tell Android Auto from Automotive OS",
+        "Expose media to cars with Media3",
+        "Build templated car screens",
+        "Follow driver-distraction rules"
+      ],
+      "objectivesAr": [
+        "التمييز بين Android Auto وAutomotive OS",
+        "عرض الوسائط للسيارات بـ Media3",
+        "بناء شاشات السيارة بالقوالب",
+        "اتباع قواعد منع تشتيت السائق"
+      ],
+      "prerequisites": [
+        "and-dev-media",
+        "and-dev-notifications"
+      ]
+    },
+    {
+      "slug": "and-spec-xr",
+      "skill": "Android",
+      "priority": "Optional",
+      "minutes": 35,
+      "difficulty": "Advanced",
+      "titleEn": "Android XR: apps for headsets and glasses",
+      "titleAr": "منصة Android XR: تطبيقات النظارات وأجهزة الرأس",
+      "summaryEn": "Android XR runs Android apps on headsets such as the Samsung Galaxy XR and is coming to glasses. Existing large-screen apps run as 2D panels in the user's space with no changes, which is why adaptive layouts matter first. The Jetpack XR SDK then lets you go further: Jetpack Compose for XR adds spatial panels, orbiters (floating toolbars) and spatial elevation, SceneCore places 3D models and environments, and ARCore for Jetpack XR provides hand tracking, planes and anchors. Users interact with eyes, hands and controllers, so targets must be large and comfortable.",
+      "summaryAr": "تشغّل Android XR تطبيقات Android على أجهزة الرأس مثل Samsung Galaxy XR، وهي قادمة إلى النظارات. وتعمل تطبيقات الشاشات الكبيرة الموجودة كلوحات ثنائية الأبعاد في مساحة المستخدم دون أي تغيير، ولهذا تأتي التخطيطات المتكيفة أولًا. ثم تتيح Jetpack XR SDK الذهاب أبعد: فتضيف Jetpack Compose for XR لوحات مكانية والمدارات (أشرطة أدوات عائمة) والارتفاع المكاني، وتضع SceneCore النماذج والبيئات ثلاثية الأبعاد، وتوفر ARCore for Jetpack XR تتبع اليدين والأسطح والمراسي. ويتفاعل المستخدمون بالعينين واليدين ووحدات التحكم، فيجب أن تكون الأهداف كبيرة ومريحة.",
+      "whyEn": "XR is early, so most work today is making apps look good as panels and adding a few spatial touches. Developers who learn it now are ready if headsets and glasses grow, and the skills (adaptive layouts, 3D thinking) are useful anyway.",
+      "whyAr": "منصة XR في بدايتها، فمعظم العمل اليوم هو جعل التطبيقات تبدو جيدة كلوحات وإضافة لمسات مكانية قليلة. والمطورون الذين يتعلمونها الآن مستعدون إذا نمت أجهزة الرأس والنظارات، والمهارات (التخطيطات المتكيفة والتفكير ثلاثي الأبعاد) مفيدة على أي حال.",
+      "howEn": "First make the app adaptive and test it on the Android XR emulator as a panel. Then, behind a check for spatial capabilities, move a toolbar into an orbiter, split content into spatial panels, or show a 3D model with SceneCore. Keep a 2D fallback, and test comfort: distances, sizes and motion.",
+      "howAr": "اجعل التطبيق متكيفًا أولًا واختبره على محاكي Android XR كلوحة. ثم، خلف فحص للقدرات المكانية، انقل شريط أدوات إلى مدار، أو قسّم المحتوى إلى لوحات مكانية، أو اعرض نموذجًا ثلاثي الأبعاد بـ SceneCore. واحتفظ ببديل ثنائي الأبعاد، واختبر الراحة: المسافات والأحجام والحركة.",
+      "exampleEn": "A furniture shop app runs as a normal panel, moves its filters into an orbiter in spatial mode, and lets users place a 3D sofa model in their room with SceneCore before buying.",
+      "exampleAr": "تطبيق متجر أثاث يعمل كلوحة عادية، وينقل مرشحاته إلى مدار في الوضع المكاني، ويتيح للمستخدمين وضع نموذج أريكة ثلاثي الأبعاد في غرفتهم بـ SceneCore قبل الشراء.",
+      "practiceEn": "1) Run an adaptive app on the Android XR emulator. 2) Add an orbiter for its main actions. 3) Show a glTF model in a spatial panel.",
+      "practiceAr": "1) شغّل تطبيقًا متكيفًا على محاكي Android XR. 2) أضف مدارًا لإجراءاته الرئيسية. 3) اعرض نموذج glTF في لوحة مكانية.",
+      "challengeEn": "Take a list-detail app, make it excellent as a panel, then add a spatial mode with two panels, an orbiter and one 3D element, and write down what felt comfortable or tiring in testing.",
+      "challengeAr": "خذ تطبيق قائمة وتفاصيل، واجعله ممتازًا كلوحة، ثم أضف وضعًا مكانيًا بلوحتين ومدار وعنصر واحد ثلاثي الأبعاد، ودوّن ما شعرت أنه مريح أو متعب في الاختبار.",
+      "objectivesEn": [
+        "Run existing apps well as XR panels",
+        "Use spatial panels and orbiters",
+        "Place 3D content with SceneCore",
+        "Design for comfort and fallbacks"
+      ],
+      "objectivesAr": [
+        "تشغيل التطبيقات الموجودة جيدًا كلوحات XR",
+        "استخدام اللوحات المكانية والمدارات",
+        "وضع المحتوى ثلاثي الأبعاد بـ SceneCore",
+        "التصميم للراحة والبدائل"
+      ],
+      "prerequisites": [
+        "and-spec-adaptive"
+      ]
+    }
+  ]
+}
