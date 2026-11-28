@@ -52,25 +52,35 @@ export default class InterviewsPage {
 
   /** Show every roadmap's content instead of the learner's roadmap only. */
   protected readonly everyRoadmap = signal(false);
-  protected readonly data = createLoader(() => this.api.interviews({ category: this.category(), rating: this.rating(), all: this.everyRoadmap() || null }));
-  /** Every question, for the mock interview (loaded the first time that mode opens). */
-  protected readonly pool = createLoader(() => this.api.interviews({ all: this.everyRoadmap() || null }), { immediate: false });
+  /** Every question of the roadmap (or of every roadmap), loaded once; all filters work in the browser. */
+  protected readonly data = createLoader(() => this.api.interviews({ all: this.everyRoadmap() || null }));
+  /**
+   * The questions that matched the rating filter when it was chosen. Rating a question while the filter is on
+   * doesn't make it vanish from the list (or move the practice position) until the filter is chosen again.
+   */
+  private readonly ratingMatches = signal<Set<number> | null>(null);
+  /** Category and rating filters, applied to the loaded list. */
+  private readonly inCategory = computed(() => {
+    const category = this.category();
+    const matches = this.ratingMatches();
+    return (this.data.value()?.questions ?? []).filter(q => (!category || q.category === category) && (!matches || matches.has(q.id)));
+  });
   /** The topics the loaded questions belong to, for the topic filter, in alphabetical order. */
   protected readonly topics = computed(() => {
     const seen = new Map<number, { id: number; titleEn: string; titleAr: string; count: number }>();
-    for (const q of this.data.value()?.questions ?? []) {
+    for (const q of this.inCategory()) {
       const t = seen.get(q.topicId) ?? { id: q.topicId, titleEn: q.topicTitleEn, titleAr: q.topicTitleAr, count: 0 };
       t.count++;
       seen.set(q.topicId, t);
     }
     return [...seen.values()].sort((a, b) => this.i18n.pick(a.titleEn, a.titleAr).localeCompare(this.i18n.pick(b.titleEn, b.titleAr), this.i18n.lang()));
   });
-  /** Category and rating are filtered by the API; topic, difficulty and text search in the browser. */
+  /** Topic, difficulty and text search on top of the category and rating filters. */
   protected readonly questions = computed(() => {
     const level = this.difficulty();
     const topic = this.topic();
     const term = this.search().trim().toLowerCase();
-    return (this.data.value()?.questions ?? []).filter(q =>
+    return this.inCategory().filter(q =>
       (!level || q.difficulty === level) &&
       (!topic || q.topicId === topic) &&
       (!term || [q.questionEn, q.questionAr, q.topicTitleEn, q.topicTitleAr].some(text => text.toLowerCase().includes(term))));
@@ -97,7 +107,6 @@ export default class InterviewsPage {
 
   protected setMode(mode: Mode): void {
     this.mode.set(mode);
-    if (mode === 'mock' && !this.pool.value() && !this.pool.loading()) void this.pool.reload();
     this.index.set(0);
     this.revealed.set(new Set());
     this.syncUrl();
@@ -109,14 +118,25 @@ export default class InterviewsPage {
     this.index.set(0);
     this.limit.set(PAGE_SIZE);
     this.syncUrl();
-    void this.data.reload();
   }
 
   protected setRating(rating: string): void {
     this.rating.set(rating);
     this.index.set(0);
     this.limit.set(PAGE_SIZE);
-    void this.data.reload();
+    this.ratingMatches.set(this.matchingRating(rating));
+  }
+
+  /** The roadmap scope changed: reload the list, keeping the chosen rating filter. */
+  protected async reloadScope(): Promise<void> {
+    await this.data.reload();
+    this.ratingMatches.set(this.matchingRating(this.rating()));
+  }
+
+  private matchingRating(rating: string): Set<number> | null {
+    if (!rating) return null;
+    const wanted = (q: InterviewQuestion) => (rating === 'unrated' ? q.rating === null : q.rating === rating);
+    return new Set((this.data.value()?.questions ?? []).filter(wanted).map(q => q.id));
   }
 
   protected setDifficulty(difficulty: Difficulty | ''): void {
@@ -135,7 +155,6 @@ export default class InterviewsPage {
   /** A rating saved during the mock interview: keep the study and practice lists in step. */
   protected onMockRated(saved: InterviewQuestion): void {
     this.data.update(v => ({ ...v, questions: v.questions.map(x => (x.id === saved.id ? saved : x)) }));
-    this.pool.update(v => ({ ...v, questions: v.questions.map(x => (x.id === saved.id ? saved : x)) }));
   }
 
   protected onSearch(term: string): void {

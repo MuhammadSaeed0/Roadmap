@@ -10,8 +10,11 @@ public record ActiveTrack(int Id, string Slug, string TitleEn, string TitleAr, I
 /// Resolves the signed-in learner's roadmap once per request: the one they chose if they can still see it, otherwise
 /// the first published roadmap. Null when no roadmaps are seeded, in which case every phase is shown in order.
 /// </summary>
-public class TrackContext(AppDbContext db, ICurrentUser user)
+public class TrackContext(AppDbContext db, ICurrentUser user, ContentCache cache)
 {
+    private record TrackRow(int Id, string Slug, string TitleEn, string TitleAr, bool IsPublished, List<TrackPhaseRow> Phases);
+    private record TrackPhaseRow(int PhaseId, int Position);
+
     private Task<ActiveTrack?>? _track;
 
     public Task<ActiveTrack?> GetAsync(CancellationToken ct) => _track ??= LoadAsync(ct);
@@ -24,17 +27,18 @@ public class TrackContext(AppDbContext db, ICurrentUser user)
     public async Task<IReadOnlySet<int>?> TopicIdsAsync(bool everyRoadmap, CancellationToken ct)
     {
         if (everyRoadmap || await GetAsync(ct) is not { } track) return null;
-        var phases = track.Positions.Keys.ToList();
-        return (await db.Topics.AsNoTracking().Where(t => phases.Contains(t.PhaseId)).Select(t => t.Id).ToListAsync(ct)).ToHashSet();
+        var topicPhases = await cache.GetAsync("topic-phases", db.ShowDrafts, () => db.Topics.AsNoTracking()
+            .Select(t => new { t.Id, t.PhaseId }).ToDictionaryAsync(t => t.Id, t => t.PhaseId, CancellationToken.None));
+        return topicPhases.Where(t => track.Positions.ContainsKey(t.Value)).Select(t => t.Key).ToHashSet();
     }
 
     private async Task<ActiveTrack?> LoadAsync(CancellationToken ct)
     {
-        var tracks = (await db.Tracks.AsNoTracking().OrderBy(t => t.Order)
-                .Select(t => new { t.Id, t.Slug, t.TitleEn, t.TitleAr, t.IsPublished,
-                    Phases = t.Phases.Select(p => new { p.PhaseId, p.Position }).ToList() })
-                .ToListAsync(ct))
-            .Where(t => t.IsPublished || user.CanSeeDrafts).ToList();
+        var all = await cache.GetAsync("tracks", false, () => db.Tracks.AsNoTracking().OrderBy(t => t.Order)
+            .Select(t => new TrackRow(t.Id, t.Slug, t.TitleEn, t.TitleAr, t.IsPublished,
+                t.Phases.Select(p => new TrackPhaseRow(p.PhaseId, p.Position)).ToList()))
+            .ToListAsync(CancellationToken.None));
+        var tracks = all.Where(t => t.IsPublished || user.CanSeeDrafts).ToList();
         if (tracks.Count == 0) return null;
 
         var chosen = user.Id is null ? null : await db.UserTracks.AsNoTracking().Select(u => u.TrackSlug).SingleOrDefaultAsync(ct);
