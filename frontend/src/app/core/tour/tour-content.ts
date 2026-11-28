@@ -7,9 +7,13 @@ export interface TourText { title: string; body: string; }
  * so they don't add to the app's first download. Both languages implement this interface,
  * so a section without a translation fails the build.
  */
+export interface WelcomeText { title: string; body: string; points: string[]; }
+
 export interface TourContent {
   ui: {
     welcomeEyebrow: string; welcomeTitle: string; welcomeBody: string; welcomePoints: string[];
+    /** Replaces the title, body and points for a roadmap other than the default .NET one, keyed by track slug. */
+    welcomeByTrack: Record<string, WelcomeText>;
     startTour: string; skipIntro: string; tourLength: string;
     next: string; back: string; skip: string; close: string; done: string; stepOf: string;
     notOnScreen: string;

@@ -12,6 +12,26 @@ export const content: TourContent = {
       'Every topic explained, with videos, short quizzes and practice exercises, then four real projects to apply what you’ve learned',
       'Progress tracking and regular review to make it stick, plus a view of how ready you are for your first job',
     ],
+    welcomeByTrack: {
+      'android-developer': {
+        title: 'Become an Android developer, one step at a time',
+        body: 'This roadmap starts with the basics of Kotlin and builds up to production Android apps with Jetpack Compose, clean architecture, offline data, testing and a real Google Play release, always showing you what to learn next and how to practise it.',
+        points: [
+          'A roadmap of 14 phases, from Kotlin to publishing on Google Play',
+          'Every topic explained, with videos, short quizzes, written exercises and guided projects you build in Android Studio',
+          'Progress tracking and regular review to make it stick, plus interview practice for Android roles',
+        ],
+      },
+      'ai-app-developer': {
+        title: 'Build real applications powered by AI',
+        body: 'This roadmap starts with the basics of C# and ASP.NET Core, then teaches you to call language models safely, ground them in your own data and ship AI features that people can trust, always showing you what to learn next and how to practise it.',
+        points: [
+          'Phases that build on each other, from C# to production AI features',
+          'Every topic explained, with videos, short quizzes and practice exercises',
+          'Progress tracking and regular review to make it stick, plus a view of how ready you are for your first job',
+        ],
+      },
+    },
     startTour: 'Take the tour', skipIntro: 'Skip for now', tourLength: 'About 2 minutes. You can stop at any time.',
     next: 'Next', back: 'Back', skip: 'Skip tour', close: 'Close', done: 'Done', stepOf: 'Step {n} of {total}',
     notOnScreen: 'This part isn’t on screen right now (it may still be loading, or appear only in some cases).',

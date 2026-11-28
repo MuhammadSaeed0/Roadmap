@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, inject, input, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '../../core/i18n/pipes';
 import { TourService } from '../../core/tour/tour.service';
+import { TrackStore } from '../../core/track.service';
 import { IconComponent } from '../../shared/icon.component';
 
 /**
@@ -26,10 +27,10 @@ import { IconComponent } from '../../shared/icon.component';
           </span>
         </div>
         <p class="eyebrow">{{ c.ui.welcomeEyebrow }}</p>
-        <h2 id="tour-welcome-title">{{ c.ui.welcomeTitle }}</h2>
-        <p id="tour-welcome-body" class="muted">{{ c.ui.welcomeBody }}</p>
+        <h2 id="tour-welcome-title">{{ welcome()!.title }}</h2>
+        <p id="tour-welcome-body" class="muted">{{ welcome()!.body }}</p>
         <ul class="tour-welcome-points" role="list">
-          @for (point of c.ui.welcomePoints; track point) {
+          @for (point of welcome()!.points; track point) {
             <li><app-icon name="check-circle" [size]="17" /> <span>{{ point }}</span></li>
           }
         </ul>
@@ -50,6 +51,14 @@ import { IconComponent } from '../../shared/icon.component';
 export class TourWelcomeComponent {
   protected readonly tour = inject(TourService);
   private readonly router = inject(Router);
+  private readonly tracks = inject(TrackStore);
+  /** The welcome text for the learner's roadmap; the default text describes the .NET roadmap. */
+  protected readonly welcome = computed(() => {
+    const c = this.tour.content();
+    if (!c) return null;
+    const slug = this.tracks.activeSlug();
+    return (slug && c.ui.welcomeByTrack[slug]) || { title: c.ui.welcomeTitle, body: c.ui.welcomeBody, points: c.ui.welcomePoints };
+  });
   /** Off on the sign-in style pages, where there is nothing to tour. */
   readonly enabled = input(true);
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
