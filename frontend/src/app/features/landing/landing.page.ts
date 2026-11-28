@@ -14,7 +14,8 @@ export const loadPreRoadmap = () => import('../pre-roadmap/pre-roadmap.page');
  * with the app's real numbers and real screenshots, and leads to sign-up. Signed-in learners never see it:
  * "/" matches the dashboard for them (see guestMatch in app.routes.ts).
  *
- * The numbers match the content as of 2026-11-20 (the same facts as the marketing post); update both together.
+ * The numbers match the published .NET and Android roadmaps as of 2026-11-28. The marketing post still uses the
+ * .NET-only numbers from 2026-11-20.
  */
 @Component({
   selector: 'app-landing-page',
@@ -27,12 +28,12 @@ export default class LandingPage {
   protected readonly i18n = inject(I18nService);
 
   protected readonly facts = [
-    { n: '14', key: 'landing.facts.phases', icon: 'map' },
-    { n: '166', key: 'landing.facts.topics', icon: 'book' },
-    { n: '250+', key: 'landing.facts.exercises', icon: 'code' },
+    { n: '28', key: 'landing.facts.phases', icon: 'map' },
+    { n: '265', key: 'landing.facts.topics', icon: 'book' },
+    { n: '350+', key: 'landing.facts.exercises', icon: 'code' },
     { n: '97', key: 'landing.facts.challenges', icon: 'target' },
-    { n: '66', key: 'landing.facts.projects', icon: 'layers' },
-    { n: '900+', key: 'landing.facts.interviews', icon: 'chat' },
+    { n: '80', key: 'landing.facts.projects', icon: 'layers' },
+    { n: '1,100+', key: 'landing.facts.interviews', icon: 'chat' },
   ];
 
   protected readonly features = [

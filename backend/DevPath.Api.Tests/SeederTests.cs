@@ -35,9 +35,12 @@ public class SeederTests : IAsyncLifetime
     {
         await Seeder().SeedAsync();
 
-        // The published roadmap; draft roadmaps (seen here because the seeder's context shows drafts) come on top.
-        Assert.Equal(14, await _db.Phases.CountAsync(p => !p.IsDraft));
-        Assert.Equal(166, await _db.Topics.CountAsync(t => !t.IsDraft));
+        // The .NET roadmap and the published Android roadmap; the AI draft (seen here because the seeder's context
+        // shows drafts) comes on top.
+        Assert.Equal(14, await _db.TrackPhases.CountAsync(tp => tp.Track.Slug == "dotnet-fullstack"));
+        Assert.Equal(166, await _db.Topics.CountAsync(t => _db.TrackPhases.Any(tp => tp.PhaseId == t.PhaseId && tp.Track.Slug == "dotnet-fullstack")));
+        Assert.Equal(14, await _db.TrackPhases.CountAsync(tp => tp.Track.Slug == "android-developer"));
+        Assert.Equal(28, await _db.Phases.CountAsync(p => !p.IsDraft));
         Assert.True(await _db.Topics.CountAsync(t => t.IsDraft) >= 6, "the AI roadmap's draft phases are seeded");
         Assert.Equal(4, await _db.Projects.CountAsync());
         Assert.True(await _db.Resources.CountAsync() > 100);
@@ -63,6 +66,7 @@ public class SeederTests : IAsyncLifetime
         // YouTube ids. Draft roadmaps get their videos before they are published (then their topics stop being drafts).
         var videosPerTopic = await _db.Topics.Where(t => !t.IsDraft).Select(t => new
         {
+            DotNet = _db.TrackPhases.Any(tp => tp.PhaseId == t.PhaseId && tp.Track.Slug == "dotnet-fullstack"),
             English = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.English),
             Arabic = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.Arabic),
         }).ToListAsync();
@@ -73,11 +77,14 @@ public class SeederTests : IAsyncLifetime
             English = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.English),
             Arabic = _db.CuratedVideos.Count(v => v.TopicId == t.Id && v.Language == VideoLanguage.Arabic),
         }).ToListAsync();
-        Assert.True(draftVideos.Count(n => n.English > 0) >= 124, "the first four AI phases and all fourteen Android phases have their videos");
+        Assert.True(draftVideos.Count(n => n.English > 0) >= 25, "the first four AI phases have their videos (Android is published, so its topics are checked above)");
         Assert.All(draftVideos.Where(n => n.English + n.Arabic > 0), n => { Assert.InRange(n.English, 2, 4); Assert.InRange(n.Arabic, 0, 2); });
         // Removing the channels the owner did not want (2026-11-20) left 82 of 166 topics with an Arabic video; Arabic videos
         // for phases 1-5 (2026-11-23) raised that to 105. Each later batch should raise this floor again.
-        Assert.True(videosPerTopic.Count(n => n.Arabic > 0) >= videosPerTopic.Count * 63 / 100, "at least 63% of the topics should have an Arabic video");
+        var dotnetVideos = videosPerTopic.Where(n => n.DotNet).ToList();
+        Assert.True(dotnetVideos.Count(n => n.Arabic > 0) >= dotnetVideos.Count * 63 / 100, "at least 63% of the .NET topics should have an Arabic video");
+        // Few genuine Arabic Android videos exist: 60 of the 99 Android topics had one when it was published (2026-11-28).
+        Assert.True(videosPerTopic.Count(n => !n.DotNet && n.Arabic > 0) >= 60, "the Android topics keep their Arabic videos");
         Assert.All(await _db.CuratedVideos.Select(v => v.VideoId).ToListAsync(), id => Assert.True(DevPath.Api.Services.YouTubeIds.IsValid(id)));
         // Every project task has videos, and every topic has a quiz with a valid answer for each question.
         Assert.False(await _db.ProjectTasks.AnyAsync(t => !_db.ProjectTaskVideos.Any(v => v.ProjectTaskId == t.Id)));
@@ -131,7 +138,7 @@ public class SeederTests : IAsyncLifetime
         });
         Assert.Contains(topics.Single(t => t.Slug == "devops-ci-cd").Demand, d => d.Technology == "CI/CD");
         // The cloud phase sits before the projects phase, which stays last.
-        var phases = await _db.Phases.Where(p => !p.IsDraft).OrderBy(p => p.Order).Select(p => p.Slug).ToListAsync();
+        var phases = await _db.TrackPhases.Where(tp => tp.Track.Slug == "dotnet-fullstack").OrderBy(tp => tp.Position).Select(tp => tp.Phase.Slug).ToListAsync();
         Assert.Equal(phases.Count - 2, phases.IndexOf(topics.Single(t => t.Slug == "devops-docker").Phase!.Slug));
     }
 
@@ -184,7 +191,7 @@ public class SeederTests : IAsyncLifetime
         try
         {
             await Seeder().SeedAsync(oldDir);
-            Assert.Equal(159, await _db.Topics.CountAsync(t => !t.IsDraft));
+            Assert.Equal(159, await _db.Topics.CountAsync(t => _db.TrackPhases.Any(tp => tp.PhaseId == t.PhaseId && tp.Track.Slug == "dotnet-fullstack")));
             Assert.False(await _db.Topics.AnyAsync(t => newSlugs.Contains(t.Slug)));
 
             // Topics right next to where the new ones go, so their Order values shift.
@@ -198,7 +205,7 @@ public class SeederTests : IAsyncLifetime
 
             await Seeder().SeedAsync();
 
-            Assert.Equal(166, await _db.Topics.CountAsync(t => !t.IsDraft));
+            Assert.Equal(166, await _db.Topics.CountAsync(t => _db.TrackPhases.Any(tp => tp.PhaseId == t.PhaseId && tp.Track.Slug == "dotnet-fullstack")));
             var after = await _db.Topics.Where(t => tracked.Contains(t.Slug)).ToDictionaryAsync(t => t.Slug, t => t.Id);
             Assert.Equal(before, after); // same ids, so progress still points at the same topics
             var progress = await _db.TopicProgress.IgnoreQueryFilters().Include(p => p.Topic).ToListAsync();

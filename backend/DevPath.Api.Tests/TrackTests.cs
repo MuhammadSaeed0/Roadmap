@@ -32,7 +32,7 @@ public class TrackTests(TrackTests.Factory factory) : IClassFixture<TrackTests.F
     public async Task Visitors_and_learners_see_only_published_roadmaps_and_new_learners_have_not_chosen()
     {
         var anonymous = await Json(await factory.CreateClient().GetAsync("/api/tracks"));
-        Assert.Equal([DotNet], Slugs(anonymous));
+        Assert.Equal([DotNet, Android], Slugs(anonymous));
         var card = anonymous["tracks"]![0]!;
         Assert.Equal(14, card["phaseCount"]!.GetValue<int>());
         Assert.True(card["topicCount"]!.GetValue<int>() >= 166);
@@ -41,7 +41,7 @@ public class TrackTests(TrackTests.Factory factory) : IClassFixture<TrackTests.F
 
         var learner = await factory.CreateUserClientAsync();
         var mine = await Json(await learner.GetAsync("/api/tracks"));
-        Assert.Equal([DotNet], Slugs(mine));
+        Assert.Equal([DotNet, Android], Slugs(mine));
         Assert.Null(mine["chosenSlug"]);
         Assert.Equal(DotNet, mine["activeSlug"]!.GetValue<string>());
 
@@ -58,7 +58,7 @@ public class TrackTests(TrackTests.Factory factory) : IClassFixture<TrackTests.F
         var (admin, _) = await factory.CreateAdminClientAsync();
         var tracks = await Json(await admin.GetAsync("/api/tracks"));
         Assert.Equal([DotNet, Ai, Android], Slugs(tracks));
-        Assert.True(tracks["tracks"]![2]!["isDraft"]!.GetValue<bool>());
+        Assert.False(tracks["tracks"]![2]!["isDraft"]!.GetValue<bool>());
         Assert.True(tracks["tracks"]![1]!["isDraft"]!.GetValue<bool>());
 
         await Json(await admin.PutAsJsonAsync("/api/tracks/active", new { slug = Ai }));
@@ -96,6 +96,32 @@ public class TrackTests(TrackTests.Factory factory) : IClassFixture<TrackTests.F
         // Progress is per topic, so switching back keeps it.
         await Json(await admin.PutAsJsonAsync("/api/tracks/active", new { slug = DotNet }));
         Assert.Equal(14, (await Json(await admin.GetAsync("/api/roadmap")))["phases"]!.AsArray().Count);
+    }
+
+    [Fact]
+    public async Task Previous_and_next_topics_stay_inside_the_roadmap()
+    {
+        var learner = await factory.CreateUserClientAsync();
+        await Json(await learner.PutAsJsonAsync("/api/tracks/active", new { slug = Android }));
+        var topics = (await Json(await learner.GetAsync("/api/roadmap")))["phases"]!.AsArray()
+            .SelectMany(p => p!["topics"]!.AsArray()).Select(t => t!["id"]!.GetValue<int>()).ToList();
+
+        // The first Android topic has no previous one (the AI and .NET phases come earlier in the catalogue).
+        var first = await Json(await learner.GetAsync($"/api/topics/{topics[0]}"));
+        Assert.Null(first["previous"]);
+        Assert.Equal(topics[1], first["next"]!["id"]!.GetValue<int>());
+        var last = await Json(await learner.GetAsync($"/api/topics/{topics[^1]}"));
+        Assert.Null(last["next"]);
+        Assert.Equal(topics[^2], last["previous"]!["id"]!.GetValue<int>());
+
+        // A .NET topic opened from the Android roadmap still links to its .NET neighbours.
+        await Json(await learner.PutAsJsonAsync("/api/tracks/active", new { slug = DotNet }));
+        var dotnet = (await Json(await learner.GetAsync("/api/roadmap")))["phases"]!.AsArray()
+            .SelectMany(p => p!["topics"]!.AsArray()).Select(t => t!["id"]!.GetValue<int>()).ToList();
+        await Json(await learner.PutAsJsonAsync("/api/tracks/active", new { slug = Android }));
+        var lastDotnet = await Json(await learner.GetAsync($"/api/topics/{dotnet[^1]}"));
+        Assert.Null(lastDotnet["next"]);
+        Assert.Equal(dotnet[^2], lastDotnet["previous"]!["id"]!.GetValue<int>());
     }
 
     [Fact]

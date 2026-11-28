@@ -8,8 +8,8 @@ import { IconComponent } from '../../shared/icon.component';
 
 /** Which roadmap each answer points to. Answers for roadmaps that aren't published are simply ignored. */
 const QUESTIONS = [
-  { key: 'build', options: [{ key: 'apps', track: 'dotnet-fullstack' }, { key: 'ai', track: 'ai-app-developer' }] },
-  { key: 'enjoy', options: [{ key: 'systems', track: 'dotnet-fullstack' }, { key: 'language', track: 'ai-app-developer' }] },
+  { key: 'build', options: [{ key: 'apps', track: 'dotnet-fullstack' }, { key: 'mobile', track: 'android-developer' }, { key: 'ai', track: 'ai-app-developer' }] },
+  { key: 'enjoy', options: [{ key: 'systems', track: 'dotnet-fullstack' }, { key: 'devices', track: 'android-developer' }, { key: 'language', track: 'ai-app-developer' }] },
 ] as const;
 
 /**
@@ -44,7 +44,7 @@ const QUESTIONS = [
         <h2 [id]="'tr-h-' + mode()">{{ (mode() === 'quiz' ? 'tracks.quizTitle' : 'tracks.landingTitle') | t }}</h2>
         @if (mode() === 'quiz') {
           <div class="tr-quiz">
-            @for (q of questions; track q.key; let i = $index) {
+            @for (q of questions(); track q.key; let i = $index) {
               <fieldset>
                 <legend>{{ 'tracks.q.' + q.key | t }}</legend>
                 <div class="tr-options">
@@ -84,7 +84,11 @@ export class TrackRecommenderComponent {
   private readonly auth = inject(AuthService);
   protected readonly signedIn = computed(() => !!this.auth.account());
   readonly mode = input<'cards' | 'quiz'>('cards');
-  protected readonly questions = QUESTIONS;
+  /** Only the answers whose roadmap is published (a draft roadmap can't be recommended). */
+  protected readonly questions = computed(() => {
+    const slugs = new Set(this.tracks().map(t => t.slug));
+    return QUESTIONS.map(q => ({ key: q.key, options: q.options.filter(o => slugs.has(o.track)) }));
+  });
   protected readonly tracks = signal<Track[]>([]);
   protected readonly answers = signal<(string | null)[]>([null, null]);
 

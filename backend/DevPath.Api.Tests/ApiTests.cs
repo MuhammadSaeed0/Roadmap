@@ -111,8 +111,9 @@ public class ApiTests(ApiFactory factory) : IClassFixture<ApiFactory>, IAsyncLif
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var catalog = await Json(response);
         var phases = catalog["phases"]!.AsArray();
-        Assert.Equal(14, phases.Count);
-        Assert.Equal(166, phases.Sum(p => p!["topics"]!.AsArray().Count));
+        // Every published roadmap: .NET (14 phases, 166 topics) and Android (14 phases, 99 topics).
+        Assert.Equal(28, phases.Count);
+        Assert.Equal(265, phases.Sum(p => p!["topics"]!.AsArray().Count));
         Assert.NotEmpty(catalog["paths"]!.AsArray());
         var body = catalog.ToJsonString();
         foreach (var personal in new[] { "status", "percent", "knowledge", "confidence" })
