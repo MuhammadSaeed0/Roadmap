@@ -1,0 +1,170 @@
+[
+  {
+    "key": "and-ex-pro-convention",
+    "type": "Practical",
+    "topic": "and-pro-gradle",
+    "difficulty": "Intermediate",
+    "minutes": 60,
+    "titleEn": "Extract a convention plugin",
+    "titleAr": "استخرج إضافة أعراف",
+    "problemEn": "Three library modules repeat the same android { } and kotlin { } blocks. Add a version catalog for their dependencies, create a build-logic included build with an AndroidLibraryConventionPlugin registered as devpath.android.library, and reduce each module's build file to the plugin id, a namespace and its own dependencies.",
+    "problemAr": "ثلاث وحدات مكتبات تكرر كتل android { } وkotlin { } نفسها. فأضف فهرس إصدارات لاعتمادياتها، وأنشئ بناءً مضمّنًا باسم build-logic فيه AndroidLibraryConventionPlugin مسجلة بالمعرّف devpath.android.library، وقلّص ملف بناء كل وحدة إلى معرّف الإضافة ومساحة الاسم واعتمادياتها الخاصة.",
+    "expectedEn": "A libs.versions.toml, build-logic with the plugin class and gradlePlugin registration, settings.gradle.kts including the build, and three short module build files that still build.",
+    "expectedAr": "ملف libs.versions.toml، وبناء build-logic فيه صنف الإضافة وتسجيل gradlePlugin، وملف settings.gradle.kts يضمّن البناء، وثلاثة ملفات بناء قصيرة للوحدات ما زالت تُبنى.",
+    "hintsEn": [
+      "The plugin's own build file needs compileOnly dependencies on the Android and Kotlin Gradle plugins.",
+      "Use libs from the catalog inside the plugin through VersionCatalogsExtension."
+    ],
+    "hintsAr": [
+      "يحتاج ملف بناء الإضافة نفسها اعتماديات compileOnly على إضافتي Gradle لـ Android وKotlin.",
+      "استخدم libs من الفهرس داخل الإضافة عبر VersionCatalogsExtension."
+    ],
+    "solutionEn": "Catalog: versions (agp, kotlin, coroutines), libraries and plugins. build-logic/settings.gradle.kts reads the same catalog with versionCatalogs { create(\"libs\") { from(files(\"../gradle/libs.versions.toml\")) } }. build-logic/convention/build.gradle.kts applies kotlin-dsl, adds compileOnly(libs.android.gradlePlugin) and compileOnly(libs.kotlin.gradlePlugin), and registers the plugin id. The plugin applies com.android.library and kotlin android, sets compileSdk 35, minSdk 24, Java 17, lint abortOnError and adds coroutines from the catalog. Each module: plugins { id(\"devpath.android.library\") }, android { namespace = \"...\" }, and its own dependencies.",
+    "solutionAr": "الفهرس: الإصدارات (‏agp وkotlin وcoroutines) والمكتبات والإضافات. ويقرأ build-logic/settings.gradle.kts الفهرس نفسه بـ versionCatalogs { create(\"libs\") { from(files(\"../gradle/libs.versions.toml\")) } }. ويطبّق build-logic/convention/build.gradle.kts إضافة kotlin-dsl، ويضيف compileOnly(libs.android.gradlePlugin) وcompileOnly(libs.kotlin.gradlePlugin)، ويسجّل معرّف الإضافة. وتطبّق الإضافة com.android.library وkotlin android، وتضبط compileSdk 35 وminSdk 24 وJava 17 وlint abortOnError، وتضيف coroutines من الفهرس. وفي كل وحدة: plugins { id(\"devpath.android.library\") } وandroid { namespace = \"...\" } واعتمادياتها الخاصة.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-pro-ci",
+    "type": "Practical",
+    "topic": "and-pro-ci",
+    "difficulty": "Intermediate",
+    "minutes": 45,
+    "titleEn": "Fix a slow, unsafe workflow",
+    "titleAr": "أصلح سير عمل بطيئًا وغير آمن",
+    "problemEn": "This GitHub Actions workflow runs everything in one job, has no caching, prints the keystore password, runs the release build on every pull request and doesn't keep test reports. Rewrite it as a fast pull request workflow plus a separate tag-triggered release workflow.",
+    "problemAr": "سير عمل GitHub Actions هذا يشغّل كل شيء في مهمة واحدة، ولا يخزن مؤقتًا، ويطبع كلمة مرور مخزن المفاتيح، ويشغّل بناء الإصدار مع كل طلب دمج، ولا يحتفظ بتقارير الاختبار. أعد كتابته كسير عمل سريع لطلبات الدمج مع سير عمل إصدار منفصل يُحفَّز بالوسوم.",
+    "expectedEn": "A PR workflow with parallel static and test jobs, setup-gradle caching, concurrency cancel-in-progress and always-uploaded reports; a release workflow on v* tags in a protected environment that decodes secrets to a temp file without printing them.",
+    "expectedAr": "سير عمل لطلبات الدمج بمهمتين متوازيتين للفحص والاختبار، وتخزين setup-gradle المؤقت، وconcurrency مع cancel-in-progress، وتقارير تُرفع دائمًا، وسير عمل إصدار عند وسوم v* في بيئة محمية يفك ترميز الأسرار إلى ملف مؤقت دون طباعتها.",
+    "hintsEn": [
+      "Release secrets should never be available to pull request runs.",
+      "Use if: always() on the upload step."
+    ],
+    "hintsAr": [
+      "يجب ألا تتوفر أسرار الإصدار أبدًا لتشغيلات طلبات الدمج.",
+      "استخدم if: always() في خطوة الرفع."
+    ],
+    "solutionEn": "pr.yml: on pull_request to main; concurrency group per PR with cancel-in-progress; jobs static (spotlessCheck detekt lintDebug) and tests (testDebugUnitTest + upload-artifact with if: always()), each with checkout, setup-java 17 and gradle/actions/setup-gradle. release.yml: on push tags v*; environment play-internal; permissions contents: read; decode UPLOAD_KEYSTORE_BASE64 into $RUNNER_TEMP; pass passwords through env to ./gradlew bundleRelease; no echo of secrets; upload the mapping file as an artifact.",
+    "solutionAr": "ملف pr.yml: عند pull_request إلى main، ومجموعة concurrency لكل طلب دمج مع cancel-in-progress، ومهمتا static (‏spotlessCheck detekt lintDebug) وtests (‏testDebugUnitTest مع upload-artifact وif: always())، ولكل منهما checkout وsetup-java 17 وgradle/actions/setup-gradle. وملف release.yml: عند دفع وسوم v*، والبيئة play-internal، والصلاحيات contents: read، وفك ترميز UPLOAD_KEYSTORE_BASE64 إلى $RUNNER_TEMP، وتمرير كلمات المرور عبر env إلى ./gradlew bundleRelease، ودون طباعة الأسرار، ورفع ملف التحويل كملف ناتج.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-pro-signing",
+    "type": "Scenario",
+    "topic": "and-pro-signing",
+    "difficulty": "Intermediate",
+    "minutes": 25,
+    "titleEn": "The developer who held the key left",
+    "titleAr": "المطور الذي كان يحمل المفتاح غادر",
+    "problemEn": "The only developer with the upload keystore has left and the file is gone. The app uses Play App Signing. Google sign-in also fails for testers who install the CI-built APK. Write the recovery plan and explain the sign-in problem.",
+    "problemAr": "المطور الوحيد الذي كان يملك مخزن مفتاح الرفع غادر، والملف ضاع. والتطبيق يستخدم Play App Signing. ويفشل تسجيل الدخول بـ Google أيضًا للمختبرين الذين يثبتون APK المبني في CI. فاكتب خطة الاستعادة واشرح مشكلة تسجيل الدخول.",
+    "expectedEn": "Steps for an upload key reset, how to store the new key, which fingerprints to register where, and why the CI build fails sign-in.",
+    "expectedAr": "خطوات إعادة ضبط مفتاح الرفع، وكيف تحفظ المفتاح الجديد، وأي البصمات تسجّلها وأين، ولماذا يفشل البناء من CI في تسجيل الدخول.",
+    "hintsEn": [
+      "Users are signed by the app signing key, which Google still holds.",
+      "Each signing certificate has its own SHA-1 and SHA-256."
+    ],
+    "hintsAr": [
+      "يُوقّع ما يثبته المستخدمون بمفتاح توقيع التطبيق، الذي ما زالت Google تحمله.",
+      "لكل شهادة توقيع بصمتا SHA-1 وSHA-256 خاصتان بها."
+    ],
+    "solutionEn": "Recovery: generate a new upload key with keytool, export its certificate as PEM, and request an upload key reset in Play Console (App integrity), which takes effect after Google processes it; users are unaffected because the app signing key didn't change. Store the new keystore in a password manager or secret store shared by at least two owners, and in CI as a base64 secret. Sign-in: Play installs are signed with the app signing key, but the CI APK is signed with the (old) upload key, whose fingerprint was never registered. Register the app signing key's SHA-1/SHA-256 from Play Console plus the new upload key's and the debug key's in the Google Cloud or Firebase project.",
+    "solutionAr": "الاستعادة: ولّد مفتاح رفع جديدًا بـ keytool، وصدّر شهادته بصيغة PEM، واطلب إعادة ضبط مفتاح الرفع في Play Console (‏App integrity)، ويسري بعد أن تعالجه Google، ولا يتأثر المستخدمون لأن مفتاح توقيع التطبيق لم يتغير. واحفظ مخزن المفاتيح الجديد في مدير كلمات مرور أو مخزن أسرار يتشاركه مالكان على الأقل، وفي CI كسر مرمّز بـ base64. وتسجيل الدخول: تثبيتات Play موقعة بمفتاح توقيع التطبيق، لكن APK من CI موقّع بمفتاح الرفع (القديم) الذي لم تُسجل بصمته أبدًا. فسجّل بصمتي SHA-1 وSHA-256 لمفتاح توقيع التطبيق من Play Console مع بصمات مفتاح الرفع الجديد ومفتاح debug في مشروع Google Cloud أو Firebase.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-pro-rollout",
+    "type": "Scenario",
+    "topic": "and-pro-play-release",
+    "difficulty": "Advanced",
+    "minutes": 30,
+    "titleEn": "Run a release week",
+    "titleAr": "أدِر أسبوع إصدار",
+    "problemEn": "You're releasing 5.0 with a redesigned checkout. Write the plan for the week: tracks, rollout percentages and timing, the exact numbers that would make you halt, what you'd do if checkout conversion drops but crashes don't, and how you'd communicate.",
+    "problemAr": "أنت تُصدر 5.0 مع صفحة دفع معاد تصميمها. فاكتب خطة الأسبوع: المسارات، ونسب النشر وتوقيتها، والأرقام الدقيقة التي تجعلك توقف النشر، وماذا تفعل إذا انخفض التحويل في صفحة الدفع دون أن ترتفع الانهيارات، وكيف تتواصل.",
+    "expectedEn": "A day-by-day plan with internal and closed testing, staged percentages, halt thresholds for crashes, ANRs and a business metric, a feature-flag fallback, and a communication channel.",
+    "expectedAr": "خطة يومًا بيوم فيها الاختبار الداخلي والمغلق، ونسب مرحلية، وعتبات إيقاف للانهيارات وANR ومقياس تجاري، وبديل بعلم ميزة، وقناة تواصل.",
+    "hintsEn": [
+      "Crashes aren't the only way a release fails.",
+      "A feature flag can roll back behaviour without a new build."
+    ],
+    "hintsAr": [
+      "الانهيارات ليست الطريقة الوحيدة لفشل الإصدار.",
+      "يستطيع علم الميزة التراجع عن السلوك دون بناء جديد."
+    ],
+    "solutionEn": "Mon: internal track and QA pass; Tue: closed beta with staff. Wed: production 5 percent; Thu: 20 percent if crash-free users stay above 99.5 percent, ANR rate under 0.3 percent and no new top-5 crash; Fri: no increases before the weekend; next Mon: 50 then 100 percent. Halt on any threshold breach or a new crash affecting more than 0.5 percent of 5.0 users. The new checkout ships behind a Remote Config flag: if conversion drops more than 3 percent against the old flow at the same stage, turn the flag off for everyone while the rollout continues or pauses. A release channel posts each step with the dashboard link; support gets a short note on what changed.",
+    "solutionAr": "الاثنين: المسار الداخلي واجتياز فريق الجودة، والثلاثاء: نسخة تجريبية مغلقة مع الفريق. والأربعاء: الإنتاج بنسبة 5 في المئة، والخميس: 20 في المئة إذا بقيت نسبة المستخدمين الخالين من الانهيار فوق 99.5 في المئة، ومعدل ANR تحت 0.3 في المئة، ولا انهيار جديد بين الخمسة الأولى، والجمعة: لا زيادات قبل العطلة، والاثنين التالي: 50 ثم 100 في المئة. وأوقف النشر عند تجاوز أي عتبة أو ظهور انهيار جديد يصيب أكثر من 0.5 في المئة من مستخدمي 5.0. وتُشحن صفحة الدفع الجديدة خلف علم في Remote Config: فإذا انخفض التحويل أكثر من 3 في المئة مقارنة بالمسار القديم في المرحلة نفسها، أوقف العلم للجميع بينما يستمر النشر أو يتوقف. وتنشر قناة الإصدار كل خطوة مع رابط اللوحة، ويحصل الدعم على ملاحظة قصيرة بما تغيّر.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-pro-version",
+    "type": "Coding",
+    "topic": "and-pro-automation",
+    "difficulty": "Beginner",
+    "minutes": 20,
+    "titleEn": "Version codes from tags",
+    "titleAr": "قيم versionCode من الوسوم",
+    "problemEn": "Write versionInfo(tag: String): VersionInfo that turns tags like \"v3.2.1\" or \"v3.2.1-rc2\" into a versionName and a versionCode, where release candidates sort before the final release. Reject malformed tags and parts that would overflow the scheme.",
+    "problemAr": "اكتب versionInfo(tag: String): VersionInfo التي تحوّل وسومًا مثل \"v3.2.1\" أو \"v3.2.1-rc2\" إلى versionName وversionCode، بحيث تأتي الإصدارات المرشحة قبل الإصدار النهائي في الترتيب. وارفض الوسوم المشوهة والأجزاء التي تتجاوز المخطط.",
+    "expectedEn": "v3.2.1 gives 3.2.1 and 3020199; v3.2.1-rc2 gives 3.2.1-rc2 and 3020102; v3.2 and v3.200.0 throw.",
+    "expectedAr": "يعطي v3.2.1 القيمتين 3.2.1 و3020199، ويعطي v3.2.1-rc2 القيمتين 3.2.1-rc2 و3020102، ويرمي v3.2 وv3.200.0 استثناءً.",
+    "hintsEn": [
+      "Add two digits for the pre-release number and use 99 for final releases.",
+      "A Regex with named groups keeps parsing readable."
+    ],
+    "hintsAr": [
+      "أضف رقمين لرقم الإصدار المرشح واستخدم 99 للإصدارات النهائية.",
+      "يجعل Regex بمجموعات مسماة التحليل مقروءًا."
+    ],
+    "solutionEn": "Use Regex(\"^v(\\\\d+)\\\\.(\\\\d+)\\\\.(\\\\d+)(?:-rc(\\\\d+))?$\"). require each of minor, patch and rc to be below 100 and rc to be at least 1. versionCode = ((major * 100 + minor) * 100 + patch) * 100 + (rc ?: 99), so every rc of a version is lower than its final release and higher than the previous version. versionName is the tag without the leading v.",
+    "solutionAr": "استخدم Regex(\"^v(\\\\d+)\\\\.(\\\\d+)\\\\.(\\\\d+)(?:-rc(\\\\d+))?$\"). واشترط أن تكون minor وpatch وrc أقل من 100، وأن تكون rc واحدًا على الأقل. والقيمة versionCode = ((major * 100 + minor) * 100 + patch) * 100 + (rc ?: 99)، فيكون كل إصدار مرشح أقل من إصداره النهائي وأعلى من الإصدار السابق. والقيمة versionName هي الوسم دون حرف v في البداية.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-pro-billing",
+    "type": "CodeReview",
+    "topic": "and-pro-billing",
+    "difficulty": "Advanced",
+    "minutes": 35,
+    "titleEn": "Review a subscription unlock",
+    "titleAr": "راجع فتح اشتراك",
+    "problemEn": "This code unlocks Pro when the purchase listener fires. Review it: find the security and correctness problems and describe the corrected client and server flow.",
+    "problemAr": "يفتح هذا الكود خطة Pro عندما يعمل مستمع الشراء. راجعه: اعثر على مشكلات الأمان والصحة، وصِف المسار المصحح في العميل والخادم.",
+    "expectedEn": "Findings for client-only trust, ignored PENDING state, missing acknowledgement, a hard-coded price, no restore on start and a local boolean as entitlement, plus the corrected flow.",
+    "expectedAr": "نتائج تخص الثقة بالعميل وحده، وتجاهل حالة PENDING، وغياب التأكيد، والسعر المكتوب في الكود، وغياب الاستعادة عند البدء، وقيمة منطقية محلية كاستحقاق، مع المسار المصحح.",
+    "hintsEn": [
+      "What can a user with a rooted phone change in SharedPreferences?",
+      "What does Play do to unacknowledged purchases after three days?"
+    ],
+    "hintsAr": [
+      "ماذا يستطيع مستخدم بهاتف مكسور الحماية أن يغيّر في SharedPreferences؟",
+      "ماذا تفعل Play بالمشتريات غير المؤكدة بعد ثلاثة أيام؟"
+    ],
+    "solutionEn": "Problems: Pro is unlocked on the client from the callback, so a patched app or a replayed token unlocks it for free; PENDING purchases are treated as paid; purchases are never acknowledged, so Play refunds them after three days; the price \"$4.99\" is hard-coded instead of formattedPrice; nothing restores purchases on start; a SharedPreferences boolean is the entitlement and never expires. Fix: on PURCHASED, send the token to the backend; the server verifies with subscriptionsv2.get, stores the entitlement with expiry and acknowledges; RTDN updates it; the app reads entitlements from the API, caches them with an expiry, calls queryPurchasesAsync on start, and shows prices from ProductDetails.",
+    "solutionAr": "المشكلات: تُفتح Pro في العميل من الرد، فيستطيع تطبيق معدّل أو رمز معاد استخدامه فتحها مجانًا، وتُعامل مشتريات PENDING كمدفوعة، ولا تُؤكد المشتريات أبدًا فتستردها Play بعد ثلاثة أيام، والسعر \"$4.99\" مكتوب في الكود بدل formattedPrice، ولا شيء يستعيد المشتريات عند البدء، وقيمة منطقية في SharedPreferences هي الاستحقاق ولا تنتهي أبدًا. والإصلاح: عند PURCHASED أرسل الرمز إلى الخادم، فيتحقق الخادم بـ subscriptionsv2.get، ويحفظ الاستحقاق مع تاريخ الانتهاء، ويؤكد الشراء، وتحدّثه إشعارات RTDN، ويقرأ التطبيق الاستحقاقات من الواجهة، ويخزنها مؤقتًا مع انتهاء، ويستدعي queryPurchasesAsync عند البدء، ويعرض الأسعار من ProductDetails.",
+    "runner": "None"
+  },
+  {
+    "key": "and-ex-pro-listing",
+    "type": "Practical",
+    "topic": "and-pro-growth",
+    "difficulty": "Beginner",
+    "minutes": 40,
+    "titleEn": "Write a bilingual store listing",
+    "titleAr": "اكتب صفحة متجر بلغتين",
+    "problemEn": "Pick an app you built in this roadmap. Write its Play listing in English and Arabic: a title within 30 characters, a short description within 80, a full description of about 150 words, five screenshot captions in order, and one store listing experiment with a hypothesis.",
+    "problemAr": "اختر تطبيقًا بنيته في هذه الخارطة. واكتب صفحته في Play بالإنجليزية والعربية: عنوانًا في حدود 30 حرفًا، ووصفًا قصيرًا في حدود 80، ووصفًا كاملًا بنحو 150 كلمة، وخمس تسميات للقطات الشاشة بالترتيب، وتجربة واحدة لصفحة المتجر مع فرضية.",
+    "expectedEn": "Both languages within the limits, plain words about what the app does, no unverifiable claims, screenshots captured in each language, and a one-variable experiment.",
+    "expectedAr": "اللغتان في حدود الطول، وكلمات بسيطة عن عمل التطبيق، ودون ادعاءات لا يمكن التحقق منها، ولقطات ملتقطة بكل لغة، وتجربة بمتغير واحد.",
+    "hintsEn": [
+      "Lead with what the user gets, not the technology.",
+      "Arabic screenshots should show the real right-to-left layout."
+    ],
+    "hintsAr": [
+      "ابدأ بما يحصل عليه المستخدم لا بالتقنية.",
+      "يجب أن تُظهر اللقطات العربية التخطيط الحقيقي من اليمين إلى اليسار."
+    ],
+    "solutionEn": "A strong answer names the core job in the title (\"Habitly: Habit Tracker\"), uses the short description for the top two benefits, structures the full description as a short paragraph and a list of features, avoids words like \"best\" or \"#1\", writes the Arabic version natively rather than word for word, and runs one experiment such as a benefit-led first screenshot against a feature-led one, measured on first-time installers.",
+    "solutionAr": "الإجابة القوية تسمي المهمة الأساسية في العنوان (‏«Habitly: Habit Tracker»)، وتستخدم الوصف القصير لأهم فائدتين، وتنظم الوصف الكامل كفقرة قصيرة وقائمة ميزات، وتتجنب كلمات مثل «الأفضل» أو «رقم 1»، وتكتب النسخة العربية بأسلوب أصلي لا ترجمة حرفية، وتجري تجربة واحدة مثل لقطة أولى تقود بالفائدة مقابل أخرى تقود بالميزة، مقيسة على المثبتين لأول مرة.",
+    "runner": "None"
+  }
+]

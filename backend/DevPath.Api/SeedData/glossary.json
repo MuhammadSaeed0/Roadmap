@@ -2126,5 +2126,75 @@
     "shortEn": "A versioned set of realistic inputs and expected qualities used to test prompts and models.",
     "shortAr": "مجموعة بإصدارات من المدخلات الواقعية والصفات المتوقعة تُستخدم لاختبار التعليمات والنماذج.",
     "topicSlug": "and-ai-responsible"
+  },
+  {
+    "term": "version catalog",
+    "arabic": "فهرس الإصدارات",
+    "shortEn": "A TOML file listing dependency versions and coordinates that Gradle turns into type-safe accessors.",
+    "shortAr": "ملف TOML يسرد إصدارات الاعتماديات وإحداثياتها، ويحوّله Gradle إلى وصول آمن النوع.",
+    "topicSlug": "and-pro-gradle"
+  },
+  {
+    "term": "convention plugin",
+    "arabic": "إضافة الأعراف",
+    "shortEn": "A small Gradle plugin in your own build that applies shared module configuration.",
+    "shortAr": "إضافة Gradle صغيرة في بنائك تطبّق إعداد الوحدات المشترك.",
+    "topicSlug": "and-pro-gradle"
+  },
+  {
+    "term": "configuration cache",
+    "arabic": "ذاكرة الإعداد المؤقتة",
+    "shortEn": "A Gradle feature that stores the result of the configuration phase and reuses it in later builds.",
+    "shortAr": "ميزة في Gradle تحفظ نتيجة مرحلة الإعداد وتعيد استخدامها في البناءات اللاحقة.",
+    "topicSlug": "and-pro-gradle"
+  },
+  {
+    "term": "Play App Signing",
+    "arabic": "توقيع التطبيقات في Play",
+    "shortEn": "A Google Play service that keeps your app signing key and signs the APKs delivered to users.",
+    "shortAr": "خدمة في Google Play تحفظ مفتاح توقيع تطبيقك وتوقّع ملفات APK التي تصل إلى المستخدمين.",
+    "topicSlug": "and-pro-signing"
+  },
+  {
+    "term": "upload key",
+    "arabic": "مفتاح الرفع",
+    "shortEn": "The key you sign app bundles with before uploading them to Google Play; it can be reset if lost.",
+    "shortAr": "المفتاح الذي توقّع به حزم التطبيق قبل رفعها إلى Google Play، ويمكن إعادة ضبطه إذا فُقد.",
+    "topicSlug": "and-pro-signing"
+  },
+  {
+    "term": "versionCode",
+    "arabic": "رقم الإصدار الداخلي",
+    "shortEn": "An integer that orders an app's builds; every upload to Play must use a higher one.",
+    "shortAr": "عدد صحيح يرتب بناءات التطبيق، ويجب أن يستخدم كل رفع إلى Play قيمة أعلى.",
+    "topicSlug": "and-pro-automation"
+  },
+  {
+    "term": "Android vitals",
+    "arabic": "مؤشرات Android vitals",
+    "shortEn": "Play Console metrics for stability, performance and battery, including crash and ANR rates.",
+    "shortAr": "مقاييس في Play Console للاستقرار والأداء والبطارية، منها معدلا الانهيار وANR.",
+    "topicSlug": "and-pro-play-release"
+  },
+  {
+    "term": "Real-time Developer Notifications",
+    "arabic": "إشعارات المطورين الفورية",
+    "shortEn": "Messages Google Play sends through Cloud Pub/Sub when a purchase or subscription changes.",
+    "shortAr": "رسائل ترسلها Google Play عبر Cloud Pub/Sub عندما يتغير شراء أو اشتراك.",
+    "topicSlug": "and-pro-billing"
+  },
+  {
+    "term": "in-app update",
+    "arabic": "التحديث داخل التطبيق",
+    "shortEn": "A Play Core flow that lets users update the app without leaving it, flexibly or immediately.",
+    "shortAr": "مسار من Play Core يتيح للمستخدمين تحديث التطبيق دون مغادرته، بشكل مرن أو فوري.",
+    "topicSlug": "and-pro-growth"
+  },
+  {
+    "term": "store listing experiment",
+    "arabic": "تجربة صفحة المتجر",
+    "shortEn": "A Play Console A/B test that compares listing variants on first-time installers.",
+    "shortAr": "اختبار A/B في Play Console يقارن متغيرات صفحة المتجر على المثبتين لأول مرة.",
+    "topicSlug": "and-pro-growth"
   }
 ]
