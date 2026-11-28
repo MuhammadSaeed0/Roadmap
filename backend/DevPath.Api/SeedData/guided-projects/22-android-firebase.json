@@ -1,0 +1,200 @@
+[
+  {
+    "key": "and-team-board",
+    "skill": "Android",
+    "level": "Advanced",
+    "hours": 16,
+    "titleEn": "Real-time team board on Firebase",
+    "titleAr": "لوحة فريق فورية على Firebase",
+    "summaryEn": "A collaborative task board built on Firebase: Google and anonymous sign-in, shared boards with members, real-time tasks that work offline, task photos in Cloud Storage, push when someone assigns you a task, server-side rules and functions for anything that must be trusted, remote feature flags, and a tracking plan, all developed against the Emulator Suite.",
+    "summaryAr": "لوحة مهام تعاونية مبنية على Firebase: تسجيل الدخول بـ Google والدخول المجهول، ولوحات مشتركة بأعضاء، ومهام فورية تعمل دون اتصال، وصور المهام في Cloud Storage، ودفع عندما يسند إليك أحد مهمة، وقواعد ودوال في الخادم لكل ما يجب أن يكون موثوقًا، وعلامات ميزات بعيدة، وخطة تتبع، وكلها تُطوّر مقابل Emulator Suite.",
+    "techStack": "Kotlin · Jetpack Compose · Firebase Auth · Cloud Firestore · Cloud Storage · Cloud Functions · FCM · Remote Config · Analytics · App Check · Emulator Suite · Hilt",
+    "goalsEn": [
+      "Design a Firestore data model for collaboration",
+      "Secure data with rules and functions",
+      "Build real-time, offline-friendly UI",
+      "Run push end to end",
+      "Ship features behind remote flags"
+    ],
+    "goalsAr": [
+      "تصميم نموذج بيانات Firestore للتعاون",
+      "تأمين البيانات بالقواعد والدوال",
+      "بناء واجهة فورية تعمل دون اتصال",
+      "تشغيل الدفع من البداية إلى النهاية",
+      "شحن الميزات خلف علامات بعيدة"
+    ],
+    "requirementsEn": [
+      "Users start anonymously and can upgrade to Google without losing boards",
+      "A board has members invited by email link or code; only members see it",
+      "Tasks update live for everyone and can be created and edited offline",
+      "Task photos upload in the background and show thumbnails",
+      "Assigning a task sends a push to the assignee's devices",
+      "A \"due date reminders\" feature ships behind a Remote Config flag",
+      "Rules and functions are tested with the Emulator Suite"
+    ],
+    "requirementsAr": [
+      "يبدأ المستخدمون مجهولين ويستطيعون الترقية إلى Google دون فقد اللوحات",
+      "للوحة أعضاء يُدعون برابط بريد أو رمز، ولا يراها إلا الأعضاء",
+      "تتحدث المهام مباشرة للجميع ويمكن إنشاؤها وتعديلها دون اتصال",
+      "تُرفع صور المهام في الخلفية وتظهر صورها المصغرة",
+      "إسناد مهمة يرسل دفعًا إلى أجهزة المسند إليه",
+      "ميزة «تذكيرات مواعيد الاستحقاق» تُشحن خلف علامة في Remote Config",
+      "تُختبر القواعد والدوال بـ Emulator Suite"
+    ],
+    "acceptanceEn": [
+      "Two phones see each other's edits within a second",
+      "A non-member can't read a board even with direct API calls (proven by tests)",
+      "Edits made in airplane mode appear for others after reconnecting",
+      "Turning the flag off hides reminders without a release"
+    ],
+    "acceptanceAr": [
+      "يرى هاتفان تعديلات بعضهما خلال ثانية",
+      "لا يستطيع غير العضو قراءة لوحة حتى باستدعاءات مباشرة للواجهة (مثبت بالاختبارات)",
+      "التعديلات في وضع الطيران تظهر للآخرين بعد عودة الاتصال",
+      "إطفاء العلامة يخفي التذكيرات دون إصدار"
+    ],
+    "stretchEn": [
+      "Add an activity feed written by a Firestore-triggered function",
+      "Show presence (who's viewing the board) cheaply",
+      "Export a board to CSV through a callable function"
+    ],
+    "stretchAr": [
+      "أضف سجل نشاط تكتبه دالة تحفزها Firestore",
+      "اعرض الحضور (من يشاهد اللوحة) بكلفة منخفضة",
+      "صدّر لوحة إلى CSV عبر دالة قابلة للاستدعاء"
+    ],
+    "steps": [
+      {
+        "key": "and-tb-setup",
+        "titleEn": "Projects and the emulator",
+        "titleAr": "المشاريع والمحاكي",
+        "bodyEn": "Create dev and prod Firebase projects, wire the BoM, App Check (debug and Play Integrity) and the Emulator Suite for Auth, Firestore, Storage and Functions in debug builds. Hide Firebase behind AuthRepository, BoardRepository and TaskRepository interfaces.",
+        "bodyAr": "أنشئ مشروعي Firebase للتطوير والإنتاج، ووصّل BoM وApp Check (‏debug وPlay Integrity) وEmulator Suite لـ Auth وFirestore وStorage وFunctions في بناءات debug. وأخفِ Firebase خلف واجهات AuthRepository وBoardRepository وTaskRepository.",
+        "hintsEn": [
+          "Seed the emulator with a script so every developer starts with the same data.",
+          "Use firebase emulators:export to save a test dataset."
+        ],
+        "hintsAr": [
+          "املأ المحاكي ببيانات عبر نص برمجي حتى يبدأ كل مطور بالبيانات نفسها.",
+          "استخدم firebase emulators:export لحفظ مجموعة بيانات اختبار."
+        ]
+      },
+      {
+        "key": "and-tb-model",
+        "titleEn": "Data model and rules first",
+        "titleAr": "نموذج البيانات والقواعد أولًا",
+        "bodyEn": "Design boards/{boardId} (title, members, roles) and boards/{boardId}/tasks/{taskId} (title, assignee, due, done, position, imagePath). Write security rules for membership, field validation and immutable fields, and rules tests before any UI.",
+        "bodyAr": "صمّم boards/{boardId} (العنوان والأعضاء والأدوار) وboards/{boardId}/tasks/{taskId} (العنوان والمسند إليه والاستحقاق والإنجاز والموضع وimagePath). واكتب قواعد الأمان للعضوية والتحقق من الحقول والحقول الثابتة، واختبارات القواعد قبل أي واجهة.",
+        "code": "match /boards/{boardId}/tasks/{taskId} {\n  function isMember() {\n    return request.auth != null &&\n      request.auth.uid in get(/databases/$(database)/documents/boards/$(boardId)).data.members;\n  }\n  allow read: if isMember();\n  allow create, update: if isMember()\n    && request.resource.data.title is string\n    && request.resource.data.title.size() <= 200;\n  allow delete: if isMember();\n}",
+        "language": "text",
+        "hintsEn": [
+          "Only a function should add members, so invites can't be forged.",
+          "Use array-contains on members for the \"my boards\" query."
+        ],
+        "hintsAr": [
+          "يجب ألا تضيف الأعضاء إلا دالة، حتى لا يمكن تزوير الدعوات.",
+          "استخدم array-contains على members لاستعلام «لوحاتي»."
+        ]
+      },
+      {
+        "key": "and-tb-auth",
+        "titleEn": "Sign-in and upgrade",
+        "titleAr": "تسجيل الدخول والترقية",
+        "bodyEn": "Start anonymously, route from the currentUser Flow, and add \"Sign in with Google\" through Credential Manager that links the anonymous account; handle the existing-account case.",
+        "bodyAr": "ابدأ مجهولًا، ووجّه من تدفق currentUser، وأضف «تسجيل الدخول بـ Google» عبر Credential Manager يربط الحساب المجهول، وعالج حالة الحساب الموجود مسبقًا.",
+        "hintsEn": [
+          "Because boards reference uids, linking keeps memberships.",
+          "Test the upgrade against the Auth emulator."
+        ],
+        "hintsAr": [
+          "لأن اللوحات تشير إلى معرّفات uid، يحفظ الربط العضويات.",
+          "اختبر الترقية مقابل محاكي Auth."
+        ]
+      },
+      {
+        "key": "and-tb-realtime",
+        "titleEn": "Real-time, offline board",
+        "titleAr": "لوحة فورية تعمل دون اتصال",
+        "bodyEn": "Show boards and tasks from snapshots() Flows with stateIn(WhileSubscribed), reorder tasks by position, show a small \"saving\" marker for pending writes, and verify that edits in airplane mode sync later.",
+        "bodyAr": "اعرض اللوحات والمهام من تدفقات snapshots() مع stateIn(WhileSubscribed)، وأعد ترتيب المهام حسب الموضع، واعرض علامة «جارٍ الحفظ» صغيرة للكتابات المعلّقة، وتحقق أن التعديلات في وضع الطيران تُزامن لاحقًا.",
+        "hintsEn": [
+          "snapshot.metadata.hasPendingWrites marks unsynced documents.",
+          "Use fractional positions so reordering writes one document."
+        ],
+        "hintsAr": [
+          "تعلّم snapshot.metadata.hasPendingWrites المستندات غير المزامنة.",
+          "استخدم مواضع كسرية حتى تكتب إعادة الترتيب مستندًا واحدًا."
+        ]
+      },
+      {
+        "key": "and-tb-functions",
+        "titleEn": "Invites and assignments in functions",
+        "titleAr": "الدعوات والإسناد في الدوال",
+        "bodyEn": "Write a callable joinBoard(code) that validates an invite code and adds the caller to members, and a Firestore-triggered function that sends FCM to the assignee's devices when a task's assignee changes. Make both idempotent and test them in the emulator.",
+        "bodyAr": "اكتب دالة قابلة للاستدعاء joinBoard(code) تتحقق من رمز الدعوة وتضيف المستدعي إلى الأعضاء، ودالة تحفزها Firestore ترسل FCM إلى أجهزة المسند إليه عندما يتغير المسند إليه في مهمة. واجعل الاثنتين متساويتي الأثر واختبرهما في المحاكي.",
+        "hintsEn": [
+          "Store invite codes in a collection clients can't read.",
+          "Compare before and after assignee to avoid duplicate pushes."
+        ],
+        "hintsAr": [
+          "احفظ رموز الدعوة في مجموعة لا يستطيع العملاء قراءتها.",
+          "قارن المسند إليه قبل وبعد لتجنب تكرار الدفع."
+        ]
+      },
+      {
+        "key": "and-tb-photos",
+        "titleEn": "Task photos",
+        "titleAr": "صور المهام",
+        "bodyEn": "Attach a photo to a task with the photo picker, compress it, upload it in WorkManager to boards/{boardId}/tasks/{taskId}.jpg, and save imagePath. Storage rules allow only board members, images under 5 MB.",
+        "bodyAr": "أرفق صورة بمهمة بمنتقي الصور، واضغطها، وارفعها في WorkManager إلى boards/{boardId}/tasks/{taskId}.jpg، واحفظ imagePath. وتسمح قواعد Storage لأعضاء اللوحة فقط، وللصور الأصغر من 5 ميجابايت.",
+        "hintsEn": [
+          "Storage rules can read Firestore with firestore.get().",
+          "Show upload progress in the task row."
+        ],
+        "hintsAr": [
+          "تستطيع قواعد Storage قراءة Firestore بـ firestore.get().",
+          "اعرض تقدم الرفع في صف المهمة."
+        ]
+      },
+      {
+        "key": "and-tb-push",
+        "titleEn": "Push on the device",
+        "titleAr": "الدفع على الجهاز",
+        "bodyEn": "Sync FCM tokens per device on sign-in and onNewToken, remove them on sign-out, and handle the \"task_assigned\" data message with a notification in its own channel that opens the task.",
+        "bodyAr": "زامن رموز FCM لكل جهاز عند تسجيل الدخول وعند onNewToken، واحذفها عند تسجيل الخروج، وعالج رسالة البيانات «task_assigned» بإشعار في قناته الخاصة يفتح المهمة.",
+        "hintsEn": [
+          "Ask for POST_NOTIFICATIONS when the user joins their first board.",
+          "Use the task id in the notification id so updates replace it."
+        ],
+        "hintsAr": [
+          "اطلب POST_NOTIFICATIONS عندما ينضم المستخدم إلى لوحته الأولى.",
+          "استخدم معرّف المهمة في معرّف الإشعار حتى تستبدله التحديثات."
+        ]
+      },
+      {
+        "key": "and-tb-flags",
+        "titleEn": "Flags, analytics and launch",
+        "titleAr": "العلامات والتحليلات والإطلاق",
+        "bodyEn": "Ship due-date reminders behind a Remote Config flag rolled out to 10 percent, add a tracking plan with five events behind an AnalyticsTracker, enable App Check enforcement after checking metrics, and record a two-phone demo of real-time and offline sync.",
+        "bodyAr": "اشحن تذكيرات مواعيد الاستحقاق خلف علامة في Remote Config منشورة لـ 10 في المئة، وأضف خطة تتبع بخمسة أحداث خلف AnalyticsTracker، وفعّل فرض App Check بعد فحص المقاييس، وسجّل عرضًا بهاتفين للمزامنة الفورية ودون اتصال.",
+        "hintsEn": [
+          "Set budget alerts in the Google Cloud console.",
+          "Write in the README how each security decision is enforced."
+        ],
+        "hintsAr": [
+          "اضبط تنبيهات الميزانية في لوحة Google Cloud.",
+          "اكتب في README كيف يُفرض كل قرار أمني."
+        ]
+      }
+    ],
+    "topics": [
+      "and-fb-setup",
+      "and-fb-auth",
+      "and-fb-firestore",
+      "and-fb-messaging",
+      "and-fb-remote-config",
+      "and-fb-analytics",
+      "and-fb-storage-functions"
+    ]
+  }
+]
